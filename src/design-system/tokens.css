@@ -1,0 +1,29 @@
+/* Product composition tokens. Semantic colors, fonts and controls remain owned by Apps SDK UI. */
+:root {
+  --hither-font-body: 14px;
+  --hither-font-label: 13px;
+  --hither-font-caption: 12px;
+  --hither-font-meta: 11px;
+  --hither-font-page-title: 28px;
+  --hither-font-section-title: 18px;
+  --hither-space-1: 4px;
+  --hither-space-2: 8px;
+  --hither-space-3: 12px;
+  --hither-space-4: 16px;
+  --hither-space-5: 24px;
+  --hither-space-6: 32px;
+  --hither-space-7: 40px;
+  --hither-space-8: 48px;
+  --hither-radius-control: 8px;
+  --hither-radius-panel: 12px;
+  --hither-radius-dialog: 16px;
+  --hither-radius-composer: 24px;
+  --hither-sidebar-width: 232px;
+  --hither-reading-width: 740px;
+  --hither-color-canvas: var(--color-surface);
+  --hither-color-inset: var(--color-surface-secondary);
+  --hither-color-hover: var(--color-surface-tertiary);
+  --hither-color-line: var(--color-border-subtle);
+  --hither-motion-fast: 150ms;
+}
+@media (max-width: 1200px) { :root { --hither-sidebar-width: 216px; } }

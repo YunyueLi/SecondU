@@ -48,6 +48,7 @@ API 只监听 `127.0.0.1`，拒绝跨站写入。密钥单独保存在权限为 
 
 - [产品边界与验收目标](docs/PRODUCT.md)
 - [设计来源与采用理由](docs/RESEARCH.md)
+- [桌面设计规范与验收矩阵](docs/DESIGN.md)
 - [接口与实体](docs/API.md)
 - [跨设备协议预留](docs/DEVICES.md)
 - [实际验收记录](docs/ACCEPTANCE.md)

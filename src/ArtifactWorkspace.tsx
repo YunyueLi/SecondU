@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { Artifact, Bootstrap } from '../shared/contracts';
 import { Button, ButtonLink } from '@openai/apps-sdk-ui/components/Button';
 import { Input } from '@openai/apps-sdk-ui/components/Input';
@@ -24,27 +24,31 @@ export function ArtifactEditor({ artifact, onRefresh, onClose, compact = false }
   const [baseVersion, setBaseVersion] = useState(initial.baseVersion);
   const [historyVersion, setHistoryVersion] = useState(String(artifact.version));
   const [saving, setSaving] = useState(false);
+  const saveInFlight = useRef(false);
   const [error, setError] = useState('');
   const [saved, setSaved] = useState(false);
   const [draftWarning, setDraftWarning] = useState('');
   const dirty = draft !== baseContent;
-  useEffect(() => { if (!dirty) { setDraft(artifact.content); setBaseContent(artifact.content); setBaseVersion(artifact.version); } }, [artifact.content, artifact.version]);
+  useEffect(() => { if (!dirty && !saveInFlight.current) { setDraft(artifact.content); setBaseContent(artifact.content); setBaseVersion(artifact.version); } }, [artifact.content, artifact.version]);
   useEffect(() => { try { if (dirty) sessionStorage.setItem(`hither.artifact.${artifact.id}`, JSON.stringify({content:draft,baseContent,baseVersion})); else sessionStorage.removeItem(`hither.artifact.${artifact.id}`); setDraftWarning(''); } catch { setDraftWarning('无法暂存草稿，请在离开前保存修改。'); } }, [artifact.id,draft,baseContent,baseVersion,dirty]);
   useEffect(() => { if (!dirty) return; const prevent = (event: BeforeUnloadEvent) => { event.preventDefault(); event.returnValue = ''; }; addEventListener('beforeunload', prevent); return () => removeEventListener('beforeunload', prevent); }, [dirty]);
   async function save() {
-    if (!dirty) return;
+    if (!dirty || saveInFlight.current) return;
+    saveInFlight.current = true;
+    const submittedDraft = draft;
     setSaving(true); setError(''); setSaved(false);
-    try { const result = await write<Artifact>(`/artifacts/${artifact.id}`, { content: draft, baseVersion }, 'PUT'); setBaseVersion(result.version); setBaseContent(result.content); setDraft(result.content); await onRefresh(); setSaved(true); }
+    try { const result = await write<Artifact>(`/artifacts/${artifact.id}`, { content: submittedDraft, baseVersion }, 'PUT'); setBaseVersion(result.version); setBaseContent(result.content); setDraft(current => current === submittedDraft ? result.content : current); await onRefresh(); setSaved(true); }
     catch (e) { setError(messageOf(e)); }
-    finally { setSaving(false); }
+    finally { saveInFlight.current = false; setSaving(false); }
   }
   const historical = artifact.versions.find(v => String(v.version) === historyVersion);
   const preview = tab === 'history' ? historical?.content ?? artifact.content : draft;
   return <section className={`artifact-editor ${compact ? 'compact' : ''}`} aria-label={`成果：${artifact.name}`}>
-    <header className="artifact-header"><div><Document /><div><h2>{artifact.name}</h2><span>第 {artifact.version} 版 · {when(artifact.updatedAt)}</span></div></div><div className="row"><ButtonLink as="a" color="secondary" variant="ghost" href={`/api/artifacts/${artifact.id}/download`} aria-label="下载成果"><Download /></ButtonLink>{onClose && <Button color="secondary" variant="ghost" uniform aria-label="关闭成果" onClick={() => { if (!dirty || window.confirm('还有未保存的修改，仍然关闭？')) onClose(); }}><CloseBold /></Button>}</div></header>
-    {artifact.reviewStatus === 'pending' && <Alert color="warning" variant="soft" title="中断前留下的成果，等待核对" description="任务没有完整结束。这份文件可能不完整，查看内容后再决定如何继续。" />}<div className="artifact-toolbar"><SegmentedControl aria-label="成果视图" value={tab} onChange={setTab} size="sm"><SegmentedControl.Option value="preview">预览</SegmentedControl.Option><SegmentedControl.Option value="edit">编辑</SegmentedControl.Option><SegmentedControl.Option value="history">版本</SegmentedControl.Option></SegmentedControl><Button color="primary" size="sm" disabled={!dirty || saving} loading={saving} onClick={save}><Check />保存修改</Button></div>
+    <div className="artifact-chrome"><header className="artifact-header"><div><Document /><div><h2>{artifact.name}</h2><span role="status">第 {artifact.version} 版 · {saving ? '正在保存…' : dirty ? '有未保存的修改' : saved ? '修改已保存' : when(artifact.updatedAt)}</span></div></div><div className="row"><ButtonLink as="a" color="secondary" variant="ghost" href={`/api/artifacts/${artifact.id}/download`} aria-label="下载成果"><Download /></ButtonLink>{onClose && <Button color="secondary" variant="ghost" uniform aria-label="关闭成果" onClick={() => { if (!dirty || window.confirm('还有未保存的修改，仍然关闭？')) onClose(); }}><CloseBold /></Button>}</div></header>
+    <div className="artifact-toolbar"><SegmentedControl aria-label="成果视图" value={tab} onChange={setTab} size="sm"><SegmentedControl.Option value="preview">预览</SegmentedControl.Option><SegmentedControl.Option value="edit">编辑</SegmentedControl.Option><SegmentedControl.Option value="history">版本</SegmentedControl.Option></SegmentedControl><Button color="primary" size="sm" disabled={!dirty || saving} loading={saving} onClick={save}><Check />保存修改</Button></div>
+    </div>
+    {artifact.reviewStatus === 'pending' && <Alert color="warning" variant="soft" title="中断前留下的成果，等待核对" description="任务没有完整结束。这份文件可能不完整，查看内容后再决定如何继续。" />}
     <ErrorNotice error={error || draftWarning} />
-    {saved && !dirty && <p className="saved-notice" role="status">修改已保存为新版本。</p>}
     {artifact.version !== baseVersion && dirty && <Alert color="warning" variant="soft" title="有更新的版本" description="你的草稿仍在。请先查看新版本，避免覆盖其他修改。" actions={<Button color="secondary" variant="outline" size="sm" onClick={() => { if (confirm('放弃当前草稿并载入最新版本？')) { setDraft(artifact.content); setBaseContent(artifact.content); setBaseVersion(artifact.version); setError(''); } }}>载入新版本</Button>} />}
     {tab === 'history' && <div className="history-picker"><Select value={historyVersion} onChange={option => setHistoryVersion(option.value)} options={[...artifact.versions].sort((a,b) => b.version-a.version).map(v => ({ value: String(v.version), label: `第 ${v.version} 版 · ${when(v.createdAt)}`, description: v.author }))} /><Button color="secondary" variant="outline" size="sm" onClick={() => { setDraft(preview); setBaseContent(artifact.content); setBaseVersion(artifact.version); setTab('edit'); }}>以此版本继续编辑</Button></div>}
     <div className="artifact-body">{tab === 'edit' ? <Textarea className="artifact-textarea" aria-label="编辑成果内容" value={draft} onChange={event => { setDraft(event.target.value); setSaved(false); }} rows={24} spellCheck={false} onKeyDown={event => { if ((event.metaKey || event.ctrlKey) && event.key === 's') { event.preventDefault(); void save(); } }} /> : artifact.type === 'html' ? <iframe title={artifact.name} sandbox="" srcDoc={`<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src data:;">${preview}`} /> : <RichText className="document-markdown">{artifact.type === 'markdown' ? preview : `\`\`\`\n${preview}\n\`\`\``}</RichText>}</div>
