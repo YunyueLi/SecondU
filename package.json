@@ -1,0 +1,40 @@
+{
+  "name": "hither-desktop",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "A local personal agent with inspectable personal cognition. Hither is a working name.",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 58644",
+    "server": "node server/index.mjs",
+    "build": "tsc --noEmit && vite build",
+    "start": "node server/index.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "desktop": "electron desktop/main.cjs",
+    "desktop:package": "npm run build && node desktop/package.mjs"
+  },
+  "dependencies": {
+    "@openai/apps-sdk-ui": "0.2.2",
+    "react": "19.1.1",
+    "react-dom": "19.1.1",
+    "qrcode": "1.5.4",
+    "jsqr": "1.4.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "4.3.3",
+    "tailwindcss": "4.3.3",
+    "vite": "8.3.1",
+    "typescript": "5.9.3",
+    "@types/react": "19.1.16",
+    "@types/react-dom": "19.1.9",
+    "@types/node": "24.10.0",
+    "@types/qrcode": "1.5.6",
+    "electron": "38.1.2"
+  },
+  "allowScripts": {
+    "electron@38.1.2": true
+  }
+}

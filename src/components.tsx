@@ -1,0 +1,65 @@
+import React, { useEffect, useRef, useId } from 'react';
+import { createPortal } from 'react-dom';
+import type { TaskStatus } from '../shared/contracts';
+import { Button } from '@openai/apps-sdk-ui/components/Button';
+import { Badge } from '@openai/apps-sdk-ui/components/Badge';
+import { Alert } from '@openai/apps-sdk-ui/components/Alert';
+import { EmptyMessage } from '@openai/apps-sdk-ui/components/EmptyMessage';
+import { LoadingIndicator } from '@openai/apps-sdk-ui/components/Indicator';
+import { Markdown } from '@openai/apps-sdk-ui/components/Markdown';
+import { TextLink } from '@openai/apps-sdk-ui/components/TextLink';
+import { CloseBold } from '@openai/apps-sdk-ui/components/Icon';
+
+export const taskLabels: Record<TaskStatus, string> = { queued: '准备开始', running: '进行中', needs_input: '等你补充', awaiting_approval: '等你确认', completed: '已完成', failed: '未完成', cancelled: '已停止', interrupted: '已中断' };
+export function TaskBadge({ status }: { status: TaskStatus }) {
+  return <Badge color={status === 'failed' ? 'danger' : status === 'awaiting_approval' || status === 'needs_input' ? 'warning' : 'secondary'} size="sm">{taskLabels[status] || status}</Badge>;
+}
+export function ErrorNotice({ error }: { error?: string | null }) { return error ? <Alert color="danger" variant="soft" title="操作未完成" description={error} /> : null; }
+export function Busy({ label = '正在加载…' }: { label?: string }) { return <div className="busy-state" role="status"><LoadingIndicator /><span>{label}</span></div>; }
+export function Empty({ title, description, action }: { title: string; description?: string; action?: React.ReactNode }) { return <EmptyMessage fill="none"><EmptyMessage.Title>{title}</EmptyMessage.Title>{description && <EmptyMessage.Description>{description}</EmptyMessage.Description>}{action && <EmptyMessage.ActionRow>{action}</EmptyMessage.ActionRow>}</EmptyMessage>; }
+export function PageHeading({ title, description, action }: { title: string; description?: string; action?: React.ReactNode }) { return <div className="page-heading"><div><h1>{title}</h1>{description && <p>{description}</p>}</div>{action}</div>; }
+const contentComponents = {
+  img: ({src,alt}: React.ImgHTMLAttributes<HTMLImageElement>) => <TextLink as="a" href={typeof src==='string'?src:undefined} target="_blank" rel="noopener noreferrer">{alt || '查看图片'}</TextLink>,
+};
+export function RichText({children,className}:{children:string;className?:string}) { return <Markdown className={className} components={contentComponents}>{children}</Markdown>; }
+export function Dialog({ title, children, onClose }: { title: string; children: React.ReactNode; onClose: () => void }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const closeRef = useRef(onClose); closeRef.current = onClose;
+  useEffect(() => {
+    const opener = document.activeElement as HTMLElement | null;
+    const shell = document.querySelector<HTMLElement>('.app-shell');
+    const wasInert = shell?.inert || false;
+    if (shell) shell.inert = true;
+    const focusable = () => Array.from(ref.current?.querySelectorAll<HTMLElement>('button:not(:disabled), a[href], input:not(:disabled), textarea:not(:disabled), select:not(:disabled), [tabindex="0"]') || []).filter(el => el.getClientRects().length > 0);
+    (focusable()[0] || ref.current)?.focus();
+    const keys = (event: KeyboardEvent) => {
+      // Official Select menus are portalled beside this modal. Let their own
+      // keyboard handler close the menu before closing the surrounding form.
+      const menuOpen = [...document.querySelectorAll('[data-radix-popper-content-wrapper]')].some(el => el.querySelector('[data-state="open"]'));
+      if (menuOpen || event.defaultPrevented) return;
+      if (event.key === 'Escape') { event.preventDefault(); closeRef.current(); }
+      if (event.key === 'Tab') {
+        const elements = focusable(); const first = elements[0]; const last = elements.at(-1);
+        if (!first) { event.preventDefault(); ref.current?.focus(); }
+        else if (event.shiftKey && (document.activeElement === first || document.activeElement === ref.current)) { event.preventDefault(); last?.focus(); }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+      }
+    };
+    document.addEventListener('keydown', keys);
+    return () => { document.removeEventListener('keydown', keys); if (shell) shell.inert = wasInert; if (opener?.isConnected) opener.focus(); };
+  }, []);
+  return createPortal(<div className="dialog-overlay" onMouseDown={event => { if (event.target === event.currentTarget) onClose(); }}><div ref={ref} className="app-dialog" role="dialog" aria-modal="true" aria-label={title} tabIndex={-1}><header><h2>{title}</h2><Button color="secondary" variant="ghost" uniform aria-label="关闭" onClick={onClose}><CloseBold /></Button></header>{children}</div></div>, document.body);
+}
+export function Field({ label, hint, children }: { label: string; hint?: string; children: React.ReactNode }) {
+  const generatedId = useId();
+  const child = React.isValidElement<{id?:string}>(children) ? children : null;
+  const id = child?.props.id || generatedId;
+  return <div className="form-field"><label className="field-label" htmlFor={id}>{label}</label>{child ? React.cloneElement(child,{id}) : children}{hint && <p className="field-hint">{hint}</p>}</div>;
+}
+export function when(value?: string) { if (!value) return '尚未运行'; const date = new Date(value); return Number.isNaN(date.getTime()) ? value : date.toLocaleString('zh-CN', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }); }
+
+export class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { error: boolean }> {
+  state = { error: false };
+  static getDerivedStateFromError() { return { error: true }; }
+  render() { return this.state.error ? <div className="startup"><Empty title="页面暂时无法显示" description="已保存的工作仍留在本机。请重新加载页面。" action={<Button color="primary" onClick={() => location.reload()}>重新加载</Button>} /></div> : this.props.children; }
+}

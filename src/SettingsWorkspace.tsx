@@ -1,0 +1,40 @@
+import { useEffect, useState } from 'react';
+import type { Bootstrap, ProviderSettings } from '../shared/contracts';
+import { Button, ButtonLink } from '@openai/apps-sdk-ui/components/Button';
+import { Input } from '@openai/apps-sdk-ui/components/Input';
+import { Textarea } from '@openai/apps-sdk-ui/components/Textarea';
+import { Switch } from '@openai/apps-sdk-ui/components/Switch';
+import { Select } from '@openai/apps-sdk-ui/components/Select';
+import { SegmentedControl } from '@openai/apps-sdk-ui/components/SegmentedControl';
+import { Badge } from '@openai/apps-sdk-ui/components/Badge';
+import { Alert } from '@openai/apps-sdk-ui/components/Alert';
+import { Download, Check, ArrowRotateCw, ApiKey, Sun, Moon } from '@openai/apps-sdk-ui/components/Icon';
+import { ErrorNotice, Field, PageHeading, when } from './components';
+import { write, messageOf } from './api';
+
+export type Theme = 'light'|'dark'|'system';
+function PersonalSpace({data,onRefresh}:{data:Bootstrap;onRefresh:()=>Promise<void>}){
+  const [name,setName]=useState(data.profile.name);const [description,setDescription]=useState(data.profile.description);const [personal,setPersonal]=useState(!data.profile.demo);const [busy,setBusy]=useState(false);const [error,setError]=useState('');const [saved,setSaved]=useState(false);
+  async function save(){setBusy(true);setError('');setSaved(false);try{await write('/profile',{name:name.trim(),description:description.trim(),demo:personal?false:data.profile.demo},'PUT');await onRefresh();setSaved(true);}catch(e){setError(messageOf(e));}finally{setBusy(false);}}
+  return <section className="settings-section"><h2>个人空间</h2><Field label="怎么称呼你"><Input aria-label="我的称呼" value={name} onChange={event=>{setName(event.target.value);setSaved(false);}} placeholder="你的名字或习惯的称呼" /></Field><Field label="简单介绍自己"><Textarea aria-label="个人介绍" value={description} onChange={event=>{setDescription(event.target.value);setSaved(false);}} rows={3} placeholder="你正在做什么，什么对你比较重要…" /></Field>{data.profile.demo?<Switch label="作为我的个人空间" checked={personal} onCheckedChange={setPersonal} />:<Badge variant="outline">个人空间</Badge>}<p className="field-hint">填写自己的信息后，可切换为个人空间。这不会删除现有示例；原有演示来源和人物仍需分别检查、纠正。称呼不会自动替换为其他名字。</p><ErrorNotice error={error} />{saved&&<p className="saved-notice" role="status">个人信息已保存。</p>}<div className="settings-actions"><Button color="primary" disabled={busy||!name.trim()} loading={busy} onClick={save}>保存个人信息</Button></div></section>;
+}
+export function SettingsWorkspace({ data, onRefresh, theme, onTheme }: { data: Bootstrap; onRefresh: () => Promise<void>; theme: Theme; onTheme: (theme: Theme) => void }) {
+  const [settings, setSettings] = useState(data.settings);
+  const [key, setKey] = useState('');
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
+  const [notice, setNotice] = useState('');
+  const [testResult, setTestResult] = useState<{ok:boolean;message:string;latencyMs?:number} | null>(null);
+  useEffect(() => { setSettings(data.settings); }, [data.settings.hasKey, data.settings.model, data.settings.baseUrl, data.settings.provider, data.settings.reasoningEffort]);
+  async function save(test = false, clearKey = false) {
+    setBusy(true); setError(''); setNotice(''); setTestResult(null);
+    try { await write<ProviderSettings>('/settings/provider', { provider: settings.provider, model: settings.model.trim(), baseUrl: settings.baseUrl.trim(), api: 'responses', reasoningEffort: settings.reasoningEffort, ...(key.trim() && !clearKey ? { apiKey: key.trim() } : {}), ...(clearKey ? { clearKey: true } : {}) }, 'PUT'); setKey(''); await onRefresh(); if (test) { const result = await write<{ok:boolean;message:string;latencyMs?:number}>('/settings/provider/test'); setTestResult(result); await onRefresh(); } else setNotice(clearKey ? '已移除本机保存的密钥。' : '模型设置已保存。'); }
+    catch(e) { setError(messageOf(e)); } finally { setBusy(false); }
+  }
+  return <div className="page-content settings-page"><PageHeading title="设置" description="选择你的模型、执行电脑与本地偏好。" /><PersonalSpace data={data} onRefresh={onRefresh} />
+    <section className="settings-section"><div className="section-heading"><h2>模型连接</h2><Badge variant="outline">{data.settings.hasKey ? '已保存密钥' : '尚未连接'}</Badge></div><p className="secondary">使用你自己的 API 密钥。只有选择“我的模型”运行任务时，才会把该任务及所选上下文交给服务提供方。</p><div className="settings-grid"><Field label="服务提供方"><Select value={settings.provider} onChange={option => setSettings({...settings,provider:option.value as ProviderSettings['provider']})} options={[{value:'deepseek',label:'DeepSeek'},{value:'openai',label:'OpenAI'},{value:'custom',label:'其他兼容服务'}]} /></Field><Field label="模型名称"><Input aria-label="模型名称" value={settings.model} onChange={event => setSettings({...settings,model:event.target.value})} placeholder="服务提供方的模型 ID" /></Field></div><Field label="服务地址" hint="执行器使用 Responses 接口。请填写支持该接口的服务地址；兼容情况由连接测试说明。"><Input aria-label="模型服务地址" type="url" value={settings.baseUrl} onChange={event => setSettings({...settings,baseUrl:event.target.value})} placeholder="https://…/v1" autoComplete="off" /></Field><Field label="API 密钥" hint={data.settings.hasKey ? `本机已保存 ${data.settings.keyHint || '一个密钥'}。留空会继续使用它。` : '密钥仅保存在本机运行目录，不随个人资料导出。'}><Input aria-label="API 密钥" type="password" value={key} onChange={event => setKey(event.target.value)} placeholder={data.settings.hasKey ? '输入新密钥以替换' : '由你输入密钥'} autoComplete="new-password" startAdornment={<ApiKey />} /></Field><Field label="思考深度"><Select value={settings.reasoningEffort} onChange={option => setSettings({...settings,reasoningEffort:option.value as ProviderSettings['reasoningEffort']})} options={[{value:'low',label:'简短'},{value:'medium',label:'均衡'},{value:'high',label:'深入'}]} /></Field><ErrorNotice error={error} />{notice && <p className="saved-notice" role="status">{notice}</p>}{testResult && <Alert color={testResult.ok ? 'primary' : 'danger'} variant="soft" title={testResult.ok ? '连接测试通过' : '连接测试未通过'} description={`${testResult.message}${testResult.latencyMs ? `（${testResult.latencyMs} ms）` : ''}`} />}<div className="settings-actions"><Button color="primary" loading={busy} disabled={busy || !settings.model.trim() || !settings.baseUrl.trim()} onClick={() => save()}><Check />保存设置</Button><Button color="secondary" variant="outline" disabled={busy || (!key.trim() && !data.settings.hasKey)} onClick={() => save(true)}><ArrowRotateCw />保存并测试</Button>{data.settings.hasKey && <Button color="danger" variant="ghost" disabled={busy} onClick={() => { if (confirm('移除本机保存的模型密钥？之后需要重新输入。')) void save(false,true); }}>移除密钥</Button>}</div>{data.settings.lastTest && !testResult && <p className="field-hint">上次测试：{when(data.settings.lastTest.at)} · {data.settings.lastTest.ok ? '通过' : '未通过'} · {data.settings.lastTest.message}</p>}</section>
+    <section className="settings-section"><div className="section-heading"><h2>当前电脑</h2><Badge>{data.computer.status === 'online' ? '在线' : '离线'}</Badge></div><dl className="settings-facts"><div><dt>执行设备</dt><dd>{data.computer.name}</dd></div><div><dt>系统</dt><dd>{data.computer.platform}</dd></div><div><dt>执行环境</dt><dd>{data.computer.codexAvailable ? `Codex ${data.computer.codexVersion || '已就绪'}` : '尚未检测到 Codex'}</dd></div><div><dt>工作目录</dt><dd className="path-value">{data.computer.workspace}</dd></div></dl><p className="field-hint">任务在这台电脑上执行。关闭本机服务或让电脑休眠后，任务与自动化不能继续运行。</p></section>
+    <section className="settings-section"><h2>外观</h2><SegmentedControl value={theme} onChange={onTheme} aria-label="外观主题"><SegmentedControl.Option value="light"><Sun />浅色</SegmentedControl.Option><SegmentedControl.Option value="dark"><Moon />深色</SegmentedControl.Option><SegmentedControl.Option value="system">跟随系统</SegmentedControl.Option></SegmentedControl></section>
+    <section className="settings-section"><h2>你的资料</h2><p className="secondary">导出来源、认识、关系、任务与成果。模型密钥不包含在内。</p><ButtonLink as="a" color="secondary" variant="outline" href="/api/export"><Download />导出个人资料</ButtonLink><p className="field-hint">当前空间：{data.profile.demo ? '虚构演示资料' : data.profile.name}。Hither 为暂用名称。</p></section>
+  </div>;
+}
