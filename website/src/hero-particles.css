@@ -6,10 +6,6 @@
 .site-hero-portrait .hero-portrait-fallback{display:block;position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:18px 0 40px;opacity:1;transition:opacity .65s ease;pointer-events:none}
 .site-hero-portrait .hero-portrait-field[data-ready=true] .hero-portrait-fallback{opacity:0}
 .site-hero-portrait .hero-portrait-field[data-ready=false] .hero-particle-canvas{opacity:0}
-.site-hero-portrait .hero-portrait-caption{position:absolute;left:0;right:0;bottom:2px;z-index:2;text-align:center;font-size:10px;letter-spacing:.045em;color:var(--site-muted);opacity:.7;pointer-events:none}
-.site-hero-portrait .hero-object-controls{position:relative;z-index:3;padding-top:16px}
-.site-hero-portrait .hero-motion-actions{display:flex;align-items:center;justify-content:center;gap:18px}
-.site-hero-portrait .hero-motion-actions .hero-motion-control{margin:8px 0 0}
 .site-hero-portrait .hero-pause-button{position:absolute;right:12px;bottom:12px;z-index:3;width:30px;height:30px;min-width:30px;padding:7px;border:1px solid var(--site-line);border-radius:50%;background:color-mix(in srgb,var(--site-bg) 78%,transparent);color:var(--site-muted);opacity:.58;transition:opacity .2s,background .2s}
 .site-hero-portrait .hero-pause-button:hover,.site-hero-portrait .hero-pause-button:focus-visible{opacity:1;background:var(--site-surface);color:var(--site-ink)}
 .site-hero-portrait .hero-pause-button svg{width:14px;height:14px}
@@ -18,10 +14,6 @@
 [data-theme=dark] .site-hero-portrait .hero-portrait-field{background:transparent}
 [data-theme=dark] .site-hero-portrait .hero-portrait-field::before{inset:2% -2% 3%;background:radial-gradient(ellipse at 60% 48%,rgb(154 127 181 / .18),transparent 58%),radial-gradient(ellipse at 42% 58%,rgb(200 177 136 / .07),transparent 48%),radial-gradient(ellipse at 53% 77%,rgb(113 94 146 / .12),transparent 54%)}
 [data-theme=dark] .site-hero-portrait .hero-portrait-field[data-ready=false] .hero-portrait-fallback{filter:drop-shadow(0 16px 30px rgb(0 0 0 / .22))}
-[data-theme=dark] .site-hero-portrait .hero-portrait-caption{color:var(--site-muted);opacity:.9}
-[data-theme=dark] .site-hero-portrait .hero-object-controls>div button[aria-pressed=true]{background:color-mix(in srgb,var(--site-accent) 17%,var(--site-surface));color:var(--site-ink)}
-[data-theme=dark] .site-hero-portrait .hero-object-controls>div button:hover{color:var(--site-ink)}
-[data-theme=dark] .site-hero-portrait .hero-motion-control:focus-visible{outline-color:var(--site-accent)}
 @media(max-width:950px){.site-hero-portrait .hero-portrait-field{height:500px;width:100%;margin-inline:0}}
-@media(max-width:700px){.site-hero-portrait .hero-portrait-field{height:440px;width:calc(100% + 40px);margin-inline:-20px}.site-hero-portrait .hero-object-controls{padding-top:12px}.site-hero-portrait .hero-portrait-caption{font-size:9px}.site-hero-portrait .hero-portrait-fallback{padding-block:12px 32px}}
-@media(prefers-reduced-motion:reduce){.site-hero-portrait .hero-portrait-fallback,.site-hero-portrait .hero-particle-canvas{transition:none}.site-hero-portrait .hero-portrait-caption{display:none}}
+@media(max-width:700px){.site-hero-portrait .hero-portrait-field{height:440px;width:calc(100% + 40px);margin-inline:-20px}.site-hero-portrait .hero-portrait-fallback{padding-block:12px 32px}}
+@media(prefers-reduced-motion:reduce){.site-hero-portrait .hero-portrait-fallback,.site-hero-portrait .hero-particle-canvas,.site-hero-portrait .hero-pause-button{transition:none}}

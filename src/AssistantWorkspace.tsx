@@ -151,7 +151,7 @@ export function AssistantWorkspace({ navigation, data, taskId, composition, onRe
 
           </div></section> : <div className="task-thread"><RevisionNavigation task={task} tasks={data.tasks} rooms={data.agentRooms}/>{project&&<a className="task-project-reference" href={`#projects/${project.id}`}><Folder/>{project.name}<ArrowRight/></a>}
           {example && <span className="demo-thread-note">{t("示例", "Example")}</span>}
-          {task.interaction==='task' && task.agentIds.length > 1 && <div className="task-agents"><Agent />{task.agentIds.map(id => data.agents.find(agent => agent.id === id)?.name || t("未命名角色", "Unnamed agent")).join('、')} {t("参与此任务", "on this task")}</div>}
+          {task.interaction==='task' && task.agentIds.length > 1 && <div className="task-agents"><Agent />{task.agentIds.map(id => data.agents.find(agent => agent.id === id)?.name || t("未命名角色", "Unnamed agent")).join(t('、', ', '))} {t("参与此任务", "on this task")}</div>}
           <div className="messages">{turns.map(turn=>{
             const replies=turn.messages.filter(message=>message.role==='assistant');
             const firstReply=replies[0]?.id,lastReply=replies.at(-1)?.id;

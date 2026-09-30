@@ -72,7 +72,9 @@ test('HTTP health exposes the captured revision and startup leaves an older list
   const currentPort=app.server.address().port;
   health=await (await fetch(`http://127.0.0.1:${currentPort}/api/health`)).json();
   assert.equal(health.revision,runtimeRevision);
-  const expected={application:'hither-desktop',version:'0.1.0',spaceId:health.spaceId,revision:runtimeRevision};
+  const version=JSON.parse(readFileSync(path.join(root,'package.json'),'utf8')).version;
+  assert.equal(health.version,version);
+  const expected={application:'hither-desktop',version,spaceId:health.spaceId,revision:runtimeRevision};
   assert.equal(backendIdentityMatches(health,expected),true);
   await new Promise(resolve=>old.listen(0,'127.0.0.1',resolve));
   const oldPort=old.address().port;

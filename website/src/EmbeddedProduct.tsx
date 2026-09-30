@@ -2,11 +2,12 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useSiteLanguage } from './site-language';
 import { useSiteTheme } from './site-theme';
 import './embedded-product.css';
+import {isProductRoute,productNavigationEvent,type ProductRoute} from './product-navigation';
 
 const WIDTH = 1440, HEIGHT = 900;
 export default function EmbeddedProduct() {
-  const { language, t } = useSiteLanguage();
-  const { theme } = useSiteTheme();
+  const { language, setLanguage, t } = useSiteLanguage();
+  const { preference, theme, setPreference } = useSiteTheme();
   const viewport = useRef<HTMLDivElement>(null);
   const stage = useRef<HTMLDivElement>(null);
   const workspace = useRef<HTMLDivElement>(null);
@@ -17,11 +18,11 @@ export default function EmbeddedProduct() {
   const frame = useRef<HTMLIFrameElement>(null);
   const [near, setNear] = useState(false);
   const [ready, setReady] = useState(false);
-  const [route, setRoute] = useState('task/website-weekend');
+  const [route, setRoute] = useState<ProductRoute>('example-chat');
   // Theme/language updates use a message, preserving the frame and its drafts.
-  const [source] = useState(() => `${import.meta.env.BASE_URL}product/embed.html?space=demo-cn-v1&lang=${language}&theme=${theme}#task/website-weekend`);
-  const state = useRef({ language, theme, expanded }); state.current = { language, theme, expanded };
-  const send = (next?: string) => frame.current?.contentWindow?.postMessage({ type: 'secondu-website-example', ...state.current, ...(next ? { route: next } : {}) }, location.origin);
+  const [source] = useState(() => `${import.meta.env.BASE_URL}product/embed.html?space=${language==='zh'?'demo-cn-v1':'demo-us-v1'}&lang=${language}&theme=${theme}#example-chat`);
+  const state = useRef({ language, theme, preference, expanded, route }); state.current = { language, theme, preference, expanded, route };
+  const send = (next?: string) => frame.current?.contentWindow?.postMessage({ type: 'secondu-website-example', language:state.current.language,theme:state.current.theme,themePreference:state.current.preference,expanded:state.current.expanded,...(next ? { route: next } : {}) }, location.origin);
   useEffect(() => {
     const element = viewport.current; if (!element) return;
     const fit = () => element.style.setProperty('--product-scale', String(element.clientWidth / WIDTH));
@@ -30,7 +31,18 @@ export default function EmbeddedProduct() {
     observer.observe(element);
     return () => { resize.disconnect(); observer.disconnect(); };
   }, []);
-  useEffect(() => { if (ready) send(); }, [language, theme, ready, expanded]);
+  useEffect(() => { if (ready) send(); }, [language, theme, preference, ready, expanded]);
+  useEffect(() => {
+    const navigate = (event:Event) => {
+      const next=(event as CustomEvent).detail?.route;
+      if(!isProductRoute(next))return;
+      setNear(true); setRoute(next); state.current.route=next;
+      if(ready)send(next);
+      if(matchMedia('(max-width:600px)').matches){stageHeight.current=stage.current?.getBoundingClientRect().height||0;setExpanded(true);}else document.getElementById('experience')?.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
+    };
+    addEventListener(productNavigationEvent,navigate);addEventListener('secondu:explore',navigate);
+    return()=>{removeEventListener(productNavigationEvent,navigate);removeEventListener('secondu:explore',navigate);};
+  },[ready]);
   useLayoutEffect(() => {
     if (!expanded || !workspace.current) return;
     const muted: { element: HTMLElement; inert: boolean }[] = [];
@@ -60,8 +72,13 @@ export default function EmbeddedProduct() {
   useEffect(() => {
     const receive = (event: MessageEvent) => {
       if (event.origin !== location.origin || event.source !== frame.current?.contentWindow) return;
-      if (event.data?.type === 'secondu-example-ready') { setReady(true); send(); }
+      if (event.data?.type === 'secondu-example-ready') { setReady(true); send(state.current.route); }
       if (event.data?.type === 'secondu-example-collapse') setExpanded(false);
+      if (event.data?.type === 'secondu-example-preferences') {
+        const { theme: nextTheme, language: nextLanguage } = event.data;
+        if (nextTheme === 'light' || nextTheme === 'dark' || nextTheme === 'system') setPreference(nextTheme);
+        if (nextLanguage === 'zh' || nextLanguage === 'en') setLanguage(nextLanguage);
+      }
       if (!state.current.expanded && event.data?.type === 'secondu-example-scroll' && Number.isFinite(event.data.deltaY)) window.scrollBy({ top: Math.max(-1000, Math.min(1000, event.data.deltaY)), behavior: 'auto' });
     };
     addEventListener('message', receive); return () => removeEventListener('message', receive);
@@ -72,14 +89,15 @@ export default function EmbeddedProduct() {
         {expanded && <span className="embedded-product-focus-guard" tabIndex={0} onFocus={() => frame.current?.focus()} />}
         <div className="embedded-product-chrome"><span className="embedded-product-dots" aria-hidden="true"><i /><i /><i /></span><span>SecondU</span><span className="embedded-product-badge">{expanded ? <button type="button" ref={closeButton} className="embedded-product-close" onClick={() => setExpanded(false)} aria-label={t('收起产品体验', 'Close expanded workspace')}>{t('收起', 'Close')} <span aria-hidden="true">×</span></button> : t('虚构示例', 'Fictional example')}</span></div>
         <div className="embedded-product-viewport" ref={viewport} style={{ '--product-height': `${HEIGHT}px` } as React.CSSProperties}>
-          {near && <iframe ref={frame} src={source} title={t('SecondU 完整工作区：导航、对话与可编辑成果', 'Full SecondU workspace: navigation, conversation and editable results')} sandbox="allow-scripts allow-same-origin allow-downloads allow-modals" loading="lazy" className="embedded-product-frame" width={WIDTH} height={HEIGHT} />}
+          {/* Forms dispatch their local submit handlers; the embed CSP blocks native form destinations. */}
+          {near && <iframe ref={frame} src={source} title={t('SecondU 完整工作区：导航、对话与可编辑成果', 'Full SecondU workspace: navigation, conversation and editable results')} sandbox="allow-scripts allow-same-origin allow-downloads allow-modals allow-forms" loading="lazy" className="embedded-product-frame" width={WIDTH} height={HEIGHT} />}
           {!ready && <div className="embedded-product-loading" role="status">{t('正在打开产品示例…', 'Opening the product example…')}</div>}
         </div>
         {expanded && <span className="embedded-product-focus-guard" tabIndex={0} onFocus={() => closeButton.current?.focus()} />}
       </div>
     </div>
     <div className="embedded-product-caption"><div role="group" aria-label={t('切换产品示例页面', 'Choose a product example page')}>{[
-      ['task/website-weekend', t('对话与成果', 'Chat and results')], ['self', t('数字分身', 'Digital twin')], ['agents', t('专家团队', 'Expert team')], ['artifacts', t('资料库', 'Library')],
-    ].map(([id, label]) => <button type="button" key={id} disabled={!ready} aria-pressed={route === id} onClick={() => { setRoute(id); send(id); }}>{label}</button>)}<button type="button" ref={expandButton} className="embedded-product-expand" aria-haspopup="dialog" onClick={() => { stageHeight.current = stage.current?.getBoundingClientRect().height || 0; setExpanded(true); }}>{t('展开体验', 'Expand workspace')} <span aria-hidden="true">↗</span></button></div><p>{t('体验对话、数字分身与成果编辑。示例内容仅保存在当前页面。', 'Explore conversations, your digital twin and artifact editing. Fictional example content stays in this page only.')}</p></div>
+      ['example-chat', t('对话与成果', 'Chat and results')], ['self', t('数字分身', 'Digital twin')], ['agents', t('专家团队', 'Expert team')], ['artifacts', t('资料库', 'Library')],
+    ].map(([id, label]) => <button type="button" key={id} disabled={!ready} aria-pressed={route === id} onClick={() => { if(isProductRoute(id)){setRoute(id);state.current.route=id;send(id);} }}>{label}</button>)}<button type="button" ref={expandButton} className="embedded-product-expand" aria-haspopup="dialog" onClick={() => { stageHeight.current = stage.current?.getBoundingClientRect().height || 0; setExpanded(true); }}>{t('展开体验', 'Expand workspace')} <span aria-hidden="true">↗</span></button></div><p>{t('体验对话、数字分身与成果编辑。示例内容仅保存在当前页面。', 'Explore conversations, your digital twin and artifact editing. Fictional example content stays in this page only.')}</p></div>
   </section>;
 }

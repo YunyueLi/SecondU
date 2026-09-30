@@ -44,7 +44,7 @@ import { saveAttachment, getAttachment, publicAttachment, ATTACHMENT_LIMIT } fro
 
 const here=path.dirname(fileURLToPath(import.meta.url));
 const PROJECT=path.resolve(here,'..');
-export const VERSION='0.1.0';
+export const VERSION=JSON.parse(readFileSync(path.join(PROJECT,'package.json'),'utf8')).version;
 function respond(res,status,value,headers={}){const data=typeof value==='string'?value:JSON.stringify(value);res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff',...headers});res.end(data);}
 async function readJson(req,maxBytes=2*1024*1024){
   if(!/^application\/json(?:;|$)/i.test(req.headers['content-type']??''))throw new HttpError(415,'写入操作需要 application/json','json_required');

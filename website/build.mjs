@@ -54,6 +54,11 @@ for (const [source, name] of [
 
 await build({ configFile: path.join(directory, 'vite.config.ts'), base, build: { outDir: output, emptyOutDir: false },
   plugins: [{ name: 'website-local-public-assets', enforce: 'pre', transform(code, id) {
+    if (id.split('?')[0] === path.join(root, 'shared/brand.json')) {
+      const brand = JSON.parse(code);
+      for (const key of ['mark', 'wordmark', 'favicon']) if (typeof brand[key] === 'string' && brand[key].startsWith('/brand/')) brand[key] = `${base}assets/${path.basename(brand[key])}`;
+      return JSON.stringify(brand);
+    }
     if (!/\.css(?:\?|$)/.test(id)) return;
     return code.replaceAll('https://cdn.openai.com/common/fonts/katex/', `${base}fonts/`).replace(/url\((['"]?)\/art\//g, `url($1${base}art/`);
   } }],

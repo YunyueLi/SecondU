@@ -1,8 +1,25 @@
 # Changelog
 
-User-visible changes are recorded here. Detailed decisions and scoped checks remain in [Development](docs/DEVELOPMENT.md) and [Iteration](docs/ITERATION.md). The package version `0.1.0` identifies the prototype; it does not establish a published release.
+User-visible changes are recorded here. Detailed decisions and scoped checks remain in [Development](docs/DEVELOPMENT.md) and [Iteration](docs/ITERATION.md). Published releases are tied to a tag and commit; subsequent changes remain under Unreleased.
 
 ## Unreleased
+
+## 0.1.1 — 2026-10-01
+
+See the [release notes](docs/releases/v0.1.1.md). Publication and the release commit are recorded separately.
+
+### Fixed
+
+- Index untouched American example conversations as explicit demo histories so editing a message can preserve the original and create a correctly truncated branch. Existing replies, saved results, user changes and deleted records remain intact.
+
+### Changed
+
+- Restructure the website around the complete desktop example workspace, with capability links and real expert badges. Example actions remain isolated in the browser without model requests or access to personal records.
+- Keep desktop bundle and application versions aligned with the root package version.
+
+## [0.1.0](https://github.com/YunyueLi/SecondU/releases/tag/v0.1.0) — 2026-10-01
+
+Release target: [`c6eb3019c43faa124501e4540354e4e39e96c8e8`](https://github.com/YunyueLi/SecondU/commit/c6eb3019c43faa124501e4540354e4e39e96c8e8).
 
 ### Added
 
@@ -34,7 +51,7 @@ User-visible changes are recorded here. Detailed decisions and scoped checks rem
 
 ### Scope
 
-No notarized desktop distribution, verified Windows support, all-provider certification or general remote-host acceptance is claimed. Current evidence is linked in the development record; CI configuration is not itself a successful hosted run.
+No notarized desktop distribution, verified Windows support, all-provider certification or general remote-host acceptance is claimed. Current evidence is linked in the development record. Source CI, website deployment and the native release are recorded independently; their success does not certify every product capability.
 
 ## Prototype history
 

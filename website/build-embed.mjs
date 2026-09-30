@@ -3,6 +3,7 @@ import tailwindcss from '@tailwindcss/vite';
 import ts from 'typescript';
 import path from 'node:path';
 import { mkdir, cp, readFile, readdir, lstat } from 'node:fs/promises';
+import { exportCanonicalExamples } from './export-examples.mjs';
 
 /** Build the real product App with a website-only in-memory adapter. */
 export async function buildEmbeddedProduct({ root, output, base }) {
@@ -11,6 +12,9 @@ export async function buildEmbeddedProduct({ root, output, base }) {
   const apiSource = path.join(productRoot, 'api');
   const apiAdapter = path.join(directory, 'src/embed/api.ts');
   const isolatedStorage = path.join(directory, 'src/embed/storage.ts');
+  const serverStore = path.join(root, 'server/store.mjs');
+  const portableModules = new Set(['personal-context.mjs', 'room-reactions.mjs'].map(file => path.join(root, 'server', file)));
+  const examples = await exportCanonicalExamples();
   const embeddedBase = `${base}product/`;
   const outDir = path.resolve(root, output, 'product');
   const brandFile = path.join(root, 'shared/brand.json');
@@ -37,7 +41,12 @@ export async function buildEmbeddedProduct({ root, output, base }) {
     plugins: [{
       name: 'website-product-isolation', enforce: 'pre',
       resolveId(source, importer) {
+        if (source === 'virtual:secondu-canonical-examples') return '\0secondu-canonical-examples';
+        if (importer && portableModules.has(importer.split('?')[0]) && path.resolve(path.dirname(importer), source) === serverStore) return path.join(directory, 'src/embed/runtime-store.mjs');
         if (importer && source.startsWith('.') && path.resolve(path.dirname(importer.split('?')[0]), source).replace(/\.tsx?$/, '') === apiSource) return apiAdapter;
+      },
+      load(id) {
+        if (id === '\0secondu-canonical-examples') return `export default ${JSON.stringify(examples)};`;
       },
       transform(code, id) {
         const file = id.split('?')[0];
@@ -53,8 +62,24 @@ export async function buildEmbeddedProduct({ root, output, base }) {
         if (!file.startsWith(`${productRoot}${path.sep}`) && !file.startsWith(path.join(root, 'shared') + path.sep)) return;
         if (!/\.(?:m?js|tsx?)$/.test(file)) return;
         const source = ts.createSourceFile(file, code, ts.ScriptTarget.Latest, true, file.endsWith('.tsx') ? ts.ScriptKind.TSX : ts.ScriptKind.TS);
-        const edits = []; let storage = false;
+        const edits = []; let storage = false, conversationScroll = false;
         function visit(node) {
+          // Include template heads: provider icons and spot illustrations use
+          // dynamic filenames, so rewriting only quoted literals misses them.
+          if (ts.isStringLiteralLike(node) || ts.isTemplateHead(node)) {
+            const start = node.getStart(source) + 1;
+            if (/^\/(art|brand|fonts|icons)\//.test(node.text) && code[start] === '/') edits.push({ start, end: start + 1, text: embeddedBase });
+            // Inline style templates have url('/icons/...') before their first
+            // interpolation. Rewrite just that URL, never arbitrary prose.
+            const raw = node.getText(source);
+            for (const match of raw.matchAll(/url\((?:\\?['"])?(\/(?:art|brand|fonts|icons)\/)/g)) {
+              const slash = node.getStart(source) + match.index + match[0].length - match[1].length;
+              edits.push({ start: slash, end: slash + 1, text: embeddedBase });
+            }
+          }
+          if (file === path.join(productRoot, 'AssistantWorkspace.tsx') && ts.isCallExpression(node) && ts.isPropertyAccessExpression(node.expression) && node.expression.name.text === 'scrollIntoView' && node.expression.expression.getText(source) === 'endRef.current') {
+            edits.push({ start: node.getStart(source), end: node.end, text: `__website_scrollConversationEnd(endRef.current, ${node.arguments[0]?.getText(source) || '{}'})` }); conversationScroll = true; return;
+          }
           if (ts.isPropertyAccessExpression(node) && ['window', 'globalThis'].includes(node.expression.getText(source)) && ['localStorage', 'sessionStorage'].includes(node.name.text)) {
             edits.push({ start: node.getStart(source), end: node.end, text: `__website_${node.name.text}` }); storage = true; return;
           }
@@ -66,7 +91,8 @@ export async function buildEmbeddedProduct({ root, output, base }) {
         visit(source);
         for (const edit of edits.sort((a, b) => b.start - a.start)) code = code.slice(0, edit.start) + edit.text + code.slice(edit.end);
         if (storage) code = `import {localStorage as __website_localStorage, sessionStorage as __website_sessionStorage} from ${JSON.stringify(isolatedStorage)};\n${code}`;
-        return code.replace(/(['"])\/(art|brand|fonts|icons)\//g, `$1${embeddedBase}$2/`);
+        if (conversationScroll) code = `import {scrollConversationEnd as __website_scrollConversationEnd} from ${JSON.stringify(path.join(directory, 'src/embed/scroll.mjs'))};\n${code}`;
+        return code;
       },
       transformIndexHtml: { order: 'post', handler: () => [{ tag: 'style', attrs: { 'data-product-layers': '' }, children: '@layer properties, theme, base, components, utilities;', injectTo: 'head-prepend' }] },
       generateBundle(_options, bundle) {
@@ -84,6 +110,7 @@ export async function buildEmbeddedProduct({ root, output, base }) {
   for (const name of files.filter(name => name.endsWith('.js'))) {
     const code = await readFile(path.join(outDir, 'assets', name), 'utf8');
     if (brandFields.some(field => code.includes(JSON.stringify(brand[field])) || code.includes(`'${brand[field]}'`))) throw new Error('An unprefixed JSON brand asset entered the embedded product bundle.');
+    if (/['"`]\/(?:art|brand|fonts|icons)\//.test(code)) throw new Error('An unprefixed public asset entered the embedded product bundle.');
     if (code.includes('The local service returned an unreadable response.')) throw new Error('The production API implementation entered the website product bundle.');
   }
 }

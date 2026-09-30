@@ -1,6 +1,6 @@
 # SecondU desktop
 
-SecondU is the product name confirmed on 2026-09-30; Hither is the former name and a retained compatibility identity. This is an independent local project intended for open source, not the private digital-twin repository; it has not been publicly released.
+SecondU is the product name confirmed on 2026-09-30; Hither is the former name and a retained compatibility identity. This is the public product repository at `YunyueLi/SecondU`, separate from the private digital-twin repository. Its first source, website and macOS release was published on 2026-10-01. Verify subsequent builds and releases independently.
 
 - Use official `@openai/apps-sdk-ui` components and CSS directly. All screens, custom timeline/graph compositions, settings and component catalogue share those tokens. No alternative green/glass dashboard design.
 - Only fictional, clearly labelled seed records belong in this repository. Never copy private records, keys, local logs or research media. Runtime data and credentials stay in `.hither/` and are never tracked.

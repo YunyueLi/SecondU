@@ -10,7 +10,12 @@
 
 完整定位见 [产品说明](docs/PRODUCT.md)。当前是可运行原型，已实现范围、实际验收与后续规划分别记录；完整形态不等同于当前版本的交付声明。
 
-[English](README.md) · [启动说明](QUICKSTART.md) · [产品与体验路线](docs/PROTOTYPE.md) · [完整产品路线](docs/ROADMAP.md) · [项目网站](https://yunyueli.github.io/SecondU/) · [构建过程](docs/DEVELOPMENT.md)
+- [English](README.md)
+- [启动说明](QUICKSTART.md)
+- [产品与体验路线](docs/PROTOTYPE.md)
+- [完整产品路线](docs/ROADMAP.md)
+- [项目网站](https://yunyueli.github.io/SecondU/)
+- [构建过程](docs/DEVELOPMENT.md)
 
 当前是**可运行原型**。示例、接口测试、本机运行、提供方调用和公开发布分别记录，不将其中一项通过等同于所有能力完成验收。
 
@@ -51,7 +56,7 @@ npm start
 
 ## 实现与边界
 
-界面采用 React 和官方 **OpenAI Apps SDK UI**；本机 Node 服务维护 SQLite 记录、任务目录与版本历史；执行底层复用 **Codex CLI app-server**。个人上下文装配、任务状态、负责人委派、执行树和产物工作区由本项目实现。[Harness](docs/HARNESS.md) · [API](docs/API.md)
+界面采用 React 和官方 **OpenAI Apps SDK UI**；本机 Node 服务维护 SQLite 记录、任务目录与版本历史；执行底层复用 **Codex CLI app-server**。个人上下文装配、任务状态、负责人委派、执行树和产物工作区由本项目实现。参见 [Harness](docs/HARNESS.md) 和 [API](docs/API.md)。
 
 示例不调用模型。真实执行需要进入个人空间，安装 Codex CLI 并配置自己的模型凭据；缺少配置会明确等待，不自动替换成模拟结果。服务商预设不代表所有模型能力都已验证。
 
@@ -75,6 +80,11 @@ API 只监听回环地址并拒绝跨站写入。密钥存于限制权限的本�
 
 在两个终端分别运行 `npm run server` 和 `npm run dev`，打开 <http://127.0.0.1:58644>。提交前运行 `npm test` 与 `npm run build`，界面修改还需真实页面验收。
 
-[贡献规范](CONTRIBUTING.md) · [测试说明](docs/TESTING.md) · [设计规范](docs/DESIGN.md) · [开发记录](docs/DEVELOPMENT.md) · [迭代记录](docs/ITERATION.md) · [更新记录](CHANGELOG.md)
+- [贡献规范](CONTRIBUTING.md)
+- [测试说明](docs/TESTING.md)
+- [设计规范](docs/DESIGN.md)
+- [开发记录](docs/DEVELOPMENT.md)
+- [迭代记录](docs/ITERATION.md)
+- [更新记录](CHANGELOG.md)
 
 代码采用 [MIT](LICENSE)。依赖、头像设计、品牌标识与字体分别保留原许可，[第三方说明](THIRD_PARTY_NOTICES.md) 列出归属。SecondU 与 OpenAI、模型提供方及参考项目无官方从属关系。

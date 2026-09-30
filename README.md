@@ -12,7 +12,12 @@ Three priorities express the product’s value:
 
 These priorities do not limit the complete product scope. The [product definition](docs/PRODUCT.md) describes that direction; the runnable prototype’s implementation, actual acceptance and future plans are recorded separately. The complete vision is not a statement that every capability has shipped.
 
-[中文](README.zh-CN.md) · [Quick start](QUICKSTART.md) · [Product walkthrough](docs/PROTOTYPE.md) · [Roadmap](docs/ROADMAP.md) · [Website](https://yunyueli.github.io/SecondU/) · [Development record](docs/DEVELOPMENT.md)
+- [中文](README.zh-CN.md)
+- [Quick start](QUICKSTART.md)
+- [Product walkthrough](docs/PROTOTYPE.md)
+- [Roadmap](docs/ROADMAP.md)
+- [Website](https://yunyueli.github.io/SecondU/)
+- [Development record](docs/DEVELOPMENT.md)
 
 > **Runnable prototype.** The source includes fictional examples and locally testable workflows. It is not a production service or a promise that every provider, remote computer or external account has been verified. Website publication and downloadable releases have their own deployment status.
 
@@ -80,7 +85,7 @@ flowchart LR
   F --> C
 ```
 
-React and the official **OpenAI Apps SDK UI** form the interface. A loopback Node service owns SQLite records, task workspaces and revision history. The installed **Codex CLI app-server** supplies the execution harness. SecondU owns the personal-context assembly, task lifecycle, team orchestration and file experience. [Architecture and evidence](docs/HARNESS.md) · [API](docs/API.md)
+React and the official **OpenAI Apps SDK UI** form the interface. A loopback Node service owns SQLite records, task workspaces and revision history. The installed **Codex CLI app-server** supplies the execution harness. SecondU owns the personal-context assembly, task lifecycle, team orchestration and file experience. See [architecture and evidence](docs/HARNESS.md) and the [API reference](docs/API.md).
 
 ## Real execution and current limits
 
