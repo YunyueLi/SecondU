@@ -4,6 +4,12 @@ User-visible changes are recorded here. Detailed decisions and scoped checks rem
 
 ## Unreleased
 
+## 0.1.2 — 2026-10-01
+
+### Changed
+
+- Align the product documentation, roadmap closing line and website sharing summary with the current Hero message. Product capabilities and verification limits are unchanged from v0.1.1. See the [release notes](docs/releases/v0.1.2.md).
+
 ## 0.1.1 — 2026-10-01
 
 See the [release notes](docs/releases/v0.1.1.md). Publication and the release commit are recorded separately.
