@@ -1,0 +1,35 @@
+{
+  "url": "https://openrouter.ai/api/v1/models",
+  "fetchedAt": "2026-09-29T09:13:43.753160+00:00",
+  "selection": "Only the public openrouter/free catalogue entry; no authentication or model request.",
+  "entry": {
+    "id": "openrouter/free",
+    "name": "Free Models Router",
+    "pricing": {
+      "prompt": "0",
+      "completion": "0"
+    },
+    "supported_parameters": [
+      "frequency_penalty",
+      "include_reasoning",
+      "logprobs",
+      "max_completion_tokens",
+      "max_tokens",
+      "min_p",
+      "presence_penalty",
+      "reasoning",
+      "reasoning_effort",
+      "repetition_penalty",
+      "response_format",
+      "seed",
+      "stop",
+      "structured_outputs",
+      "temperature",
+      "tool_choice",
+      "tools",
+      "top_k",
+      "top_logprobs",
+      "top_p"
+    ]
+  }
+}

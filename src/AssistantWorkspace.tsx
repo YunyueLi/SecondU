@@ -1,49 +1,72 @@
-import { useEffect, useRef, useState } from 'react';
-import type { Bootstrap, Task, Fact } from '../shared/contracts';
+import {ConnectorPicker} from './connectors/Connectors';
+import {ComposerTools,DigitalTwinMode,ComposerContextBar} from './composer/ComposerTools';
+import { useAttachments, AttachmentDrafts, MessageAttachments } from './composer/attachments';
+import { pasteComposerLinks } from './composer/composerInput';
+import { ProjectPicker } from './ProjectWorkspace';
+import { TaskProgress, type WorkbenchTab } from './TaskWorkbench';
+import { showRoomTaskSummary } from './agents/roomTaskPresentation';
+import { t, getLocale } from './i18n';
+import { ComposerSurface } from './composer/ComposerSurface';
+import { shouldSend } from './appearance';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
+import type { Bootstrap, Task, Fact, TaskEvent } from '../shared/contracts';
 import { Button, ButtonLink } from '@openai/apps-sdk-ui/components/Button';
 import { Textarea } from '@openai/apps-sdk-ui/components/Textarea';
+import { Popover } from '@openai/apps-sdk-ui/components/Popover';
+import { Switch } from '@openai/apps-sdk-ui/components/Switch';
 import { Badge } from '@openai/apps-sdk-ui/components/Badge';
-import { Checkbox } from '@openai/apps-sdk-ui/components/Checkbox';
-import { Select } from '@openai/apps-sdk-ui/components/Select';
+import { selectTaskContext, selectDigitalTwinContext } from './contextSelection';
+import './composer/personal-context.css';
+import { ModelPicker } from './composer/ModelPicker';
+import { VoiceInput } from './composer/VoiceInput';
+import { WelcomeLettering } from './WelcomeLettering';
+import { HitherMark } from './HitherMark';
+import { TaskActivity } from './design-system/TaskActivity';
 import { Alert } from '@openai/apps-sdk-ui/components/Alert';
-import { ArrowUp, Stop, Plus, User, Agent, Document, ArrowRight, Check, CloseBold, Clock, Sparkles } from '@openai/apps-sdk-ui/components/Icon';
-import { ArtifactEditor } from './ArtifactWorkspace';
+import { ArrowUp, Stop, Plus, Folder, User, Agent, Document, ArrowRight, Check, CloseBold, Clock, Sparkles, Desktop } from '@openai/apps-sdk-ui/components/Icon';
+import { WorkbenchPanel } from './WorkbenchPanel';
+import { TaskResources, TaskChatActions } from './TaskResourceMenu';
 import { Dialog, Empty, ErrorNotice, TaskBadge, when, Busy, RichText } from './components';
 import { write, messageOf } from './api';
 import { TaskApproval } from './design-system/TaskApproval';
+import { FeedbackAction } from './cognition/TaskFeedback';
 import { ArtifactCard } from './design-system/ArtifactCard';
-import { TaskFeedback } from './cognition/TaskFeedback';
 
-const statusDescription: Partial<Record<Task['status'], string>> = { queued: '任务已保存，等待开始。', needs_input: '补充下面的信息后，可以继续这项工作。', interrupted: '上一次执行已中断。已保存的对话和成果仍在。', cancelled: '任务已停止。你可以补充新要求后继续。' };
-export type TaskComposition = { id: string; prompt: string; factIds: string[]; agentIds: string[] };
+const getStatusDescription = (): Partial<Record<Task['status'], string>> => ({ queued: t("任务已保存，等待开始。", "Saved and ready to start."), needs_input: t("补充下面的信息后，可以继续这项工作。", "Add the requested information to continue."), interrupted: t("上一次执行已中断。已保存的对话和成果仍在。", "The last run was interrupted. Your saved messages and files are still available."), cancelled: t("任务已停止。你可以补充新要求后继续。", "Stopped. Add instructions whenever you want to continue.") });
+export type TaskComposition = { projectId?: string; id: string; prompt: string; factIds?: string[]; agentIds: string[] };
 type ContextFact = Pick<Fact,'id'|'statement'|'status'|'sourceIds'|'version'>;
 function taskContext(task: Task, data: Bootstrap): ContextFact[] {
   const event = [...task.events].reverse().find(item => item.type === 'context');
   if (event?.detail) { try { const value: unknown = JSON.parse(event.detail); if (Array.isArray(value)) return value.filter((fact): fact is ContextFact => !!fact && typeof fact.statement === 'string' && typeof fact.id === 'string' && Array.isArray(fact.sourceIds)); } catch { return []; } }
   return task.status === 'queued' ? data.facts.filter(fact => task.contextFactIds.includes(fact.id)) : [];
 }
-type Props = { data: Bootstrap; taskId?: string; composition?: TaskComposition; onRefresh: () => Promise<void>; onCreateTask: (prompt: string, facts?: string[], agents?: string[], mode?: 'demo'|'live') => Promise<void> };
+type Props = { navigation?:ReactNode; data: Bootstrap; taskId?: string; composition?: TaskComposition; onRefresh: () => Promise<void>; onCreateTask: (prompt: string, facts?: string[], agents?: string[], mode?: 'demo'|'live', connectionId?: string, projectId?: string, attachmentIds?: string[], connectorIds?: string[], digitalTwinEnabled?:boolean) => Promise<void> };
 
-function ContextPicker({ data, factIds, agentIds, onFacts, onAgents, onClose }: { data: Bootstrap; factIds: string[]; agentIds: string[]; onFacts: (ids: string[]) => void; onAgents: (ids: string[]) => void; onClose: () => void }) {
-  const toggle = (ids: string[], id: string) => ids.includes(id) ? ids.filter(value => value !== id) : [...ids,id];
-  return <Dialog title="给这次任务的上下文" onClose={onClose}><p className="secondary">只使用你选中的认识和角色。来源与推断的状态会一并提供给助理。</p><div className="context-picker-section"><h3>关于我的认识</h3>{data.facts.filter(fact => fact.status !== 'superseded').length ? data.facts.filter(fact => fact.status !== 'superseded').map(fact => <div className="check-row" key={fact.id}><Checkbox checked={factIds.includes(fact.id)} onCheckedChange={() => onFacts(toggle(factIds, fact.id))} label={<span>{fact.statement}<small>{fact.status === 'confirmed' ? '已确认' : fact.status === 'inferred' ? '推断' : '待确认'} · {fact.sourceIds.length} 份依据</small></span>} /></div>) : <p className="secondary">还没有可选的认识。可以先在“认识我”中添加。</p>}</div><div className="context-picker-section"><h3>一起参与的 Agents</h3>{data.agents.map(agent => <div className="check-row" key={agent.id}><Checkbox checked={agentIds.includes(agent.id)} onCheckedChange={() => onAgents(toggle(agentIds, agent.id))} label={<span>{agent.name}<small>{agent.role}</small></span>} /></div>)}</div><div className="dialog-actions"><Button color="primary" onClick={onClose}>使用所选内容</Button></div></Dialog>;
-}
+function ContextFacts({ facts, queued }: { facts: ContextFact[]; queued: boolean }) { return facts.length ? <details className="task-context"><summary>{queued ? t("将参考", "Will use") : t("本轮参考了", "Used")} {facts.length} {t("条关于你的认识", "personal context entries")}</summary><ul>{facts.map(fact => <li key={fact.id}>{fact.statement}<small>{fact.status === 'confirmed' ? t("已确认", "Confirmed") : fact.status === 'inferred' ? t("推断", "Inferred") : fact.status === 'superseded' ? t("已替代", "Superseded") : t("待确认", "Unconfirmed")}{t("，第", ", version ")}{fact.version} {t("版，", ", ")}{fact.sourceIds.length} {t("份来源", "sources")}</small></li>)}</ul><ButtonLink as="a" color="secondary" variant="ghost" size="sm" href="#self">{t("检查与纠正", "Review and correct")}<ArrowRight /></ButtonLink></details> : null; }
 
-function ContextFacts({ facts, queued }: { facts: ContextFact[]; queued: boolean }) { return facts.length ? <details className="task-context"><summary>{queued ? '将参考' : '本轮参考了'} {facts.length} 条关于你的认识</summary><ul>{facts.map(fact => <li key={fact.id}>{fact.statement}<small>{fact.status === 'confirmed' ? '已确认' : fact.status === 'inferred' ? '推断' : fact.status === 'superseded' ? '已替代' : '待确认'} · 第 {fact.version} 版 · {fact.sourceIds.length} 份来源</small></li>)}</ul><ButtonLink as="a" color="secondary" variant="ghost" size="sm" href="#self">检查与纠正<ArrowRight /></ButtonLink></details> : null; }
-
-export function AssistantWorkspace({ data, taskId, composition, onRefresh, onCreateTask }: Props) {
+export function AssistantWorkspace({ navigation, data, taskId, composition, onRefresh, onCreateTask }: Props) {
   const task = data.tasks.find(item => item.id === taskId);
+  const attachments = useAttachments({contextKey:taskId || composition?.id || 'new'});
+  const statusDescription=getStatusDescription();
   const [prompt, setPrompt] = useState('');
   const promptRevision = useRef(0);
   function replacePrompt(value: string) { promptRevision.current += 1; setPrompt(value); }
-  const [mode, setMode] = useState<'demo'|'live'>('demo');
+  const [mode, setMode] = useState<'demo'|'live'>('live');
+  const [connectionId, setConnectionId] = useState<string>();
+  const [connectorIds,setConnectorIds]=useState<string[]>([]);
+  const [projectId,setProjectId]=useState<string>();
+  const project=(data.projects||[]).find(p=>p.id===(task?task.projectId:projectId));
   const [factIds, setFactIds] = useState<string[]>(() => data.facts.filter(fact => fact.status === 'confirmed').map(fact => fact.id));
   const [agentIds, setAgentIds] = useState<string[]>([]);
-  const [contextOpen, setContextOpen] = useState(false);
-  const [learning, setLearning] = useState<string>();
+  const [automaticContext,setAutomaticContext]=useState(true);
+  const [digitalTwinEnabled,setDigitalTwinEnabled]=useState(true);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
+  const [artifactDirty,setArtifactDirty]=useState(false);
   const [openArtifactId, setOpenArtifactId] = useState<string | undefined>();
+  const [workbenchOpen,setWorkbenchOpen]=useState(false);
+  const [workbenchTab,setWorkbenchTab]=useState<WorkbenchTab>();
+  const [workbenchEventId,setWorkbenchEventId]=useState<string>();
   const [artifactOverlay, setArtifactOverlay] = useState(() => matchMedia('(max-width: 1000px)').matches);
   const artifactPaneRef = useRef<HTMLElement>(null);
   const artifactOpenerRef = useRef<HTMLElement | null>(null);
@@ -52,9 +75,21 @@ export function AssistantWorkspace({ data, taskId, composition, onRefresh, onCre
   const initialTask = useRef(taskId);
   const working = task?.status === 'running' || task?.status === 'queued';
   const currentMode = task?.mode || mode;
-  const configurationMissing = currentMode === 'live' && (!data.settings.hasKey || !data.computer.codexAvailable);
+  const example = !!data.profile.demo || task?.mode === 'demo';
+  const currentConnectionId = task ? task.connectionId : connectionId;
+  const selectedConnection = currentConnectionId ? data.modelConnections?.find(item=>item.id===currentConnectionId) : data.settings;
+  const selectedAgents=(task?.agentIds || agentIds).flatMap(id=>data.agents.find(agent=>agent.id===id)||[]);
+  const agentModels=selectedAgents.map(agent=>{const conn=agent.connectionId?data.modelConnections?.find(item=>item.id===agent.connectionId):selectedConnection;return{id:agent.id,name:agent.name,model:conn?.model||t("连接已不可用", "Connection unavailable"),connectionName:agent.connectionId?data.modelConnections?.find(item=>item.id===agent.connectionId)?.name||t("连接已移除", "Connection removed"):currentConnectionId?t("本次任务模型", "Task model"):t("默认连接", "Default connection"),hasKey:!!conn?.hasKey};});
+  const modelReady=agentModels.length?agentModels.every(agent=>agent.hasKey):!!selectedConnection?.hasKey;
+  const configurationMissing = !example && ((currentMode === 'live' && (!modelReady || !data.computer.codexAvailable)) || (!!project && project.execution.status!=='ready'));
   const artifact = data.artifacts.find(item => item.id === openArtifactId);
-  const taskArtifacts = data.artifacts.filter(item => item.taskId === task?.id);
+  const panelOpen=workbenchOpen&&(!!artifact||!!workbenchTab);
+  const showWorkbench=!!task&&showRoomTaskSummary(task,data.artifacts);
+  function rememberWorkbenchOpener(){if(panelOpen)return;const active=document.activeElement;artifactOpenerRef.current=active instanceof HTMLElement&&!active.closest('[data-radix-popper-content-wrapper]')?active:document.querySelector<HTMLElement>('[data-task-resources-trigger]');}
+  function openWorkbench(tab:WorkbenchTab){rememberWorkbenchOpener();setWorkbenchOpen(true);setWorkbenchTab(tab);if(tab==='activity')setWorkbenchEventId(undefined);}
+  function closeWorkbench(){if(artifactDirty&&!window.confirm(t('还有未保存的修改，仍然关闭？','You have unsaved changes. Close anyway?')))return;setWorkbenchOpen(false);requestAnimationFrame(()=>{if(artifactOpenerRef.current?.isConnected)artifactOpenerRef.current.focus();});}
+  function openEvent(event:TaskEvent){openWorkbench('activity');setWorkbenchEventId(event.id);}
+  const taskArtifacts = data.artifacts.filter(item => item.taskId === task?.id && item.classification !== 'reply_snapshot');
   useEffect(() => {
     const media = matchMedia('(max-width: 1000px)');
     const update = () => setArtifactOverlay(media.matches);
@@ -63,18 +98,18 @@ export function AssistantWorkspace({ data, taskId, composition, onRefresh, onCre
   }, []);
   useEffect(() => {
     const pane = artifactPaneRef.current;
-    if (!artifact || !artifactOverlay || !pane) return;
+    if (!panelOpen || !artifactOverlay || !pane) return;
     const opener = artifactOpenerRef.current;
     const menuOpen = () => [...document.querySelectorAll('[data-radix-popper-content-wrapper]')].some(el => el.querySelector('[data-state="open"]'));
     const focusable = () => [...pane.querySelectorAll<HTMLElement>('button:not(:disabled), a[href], input:not(:disabled), textarea:not(:disabled), select:not(:disabled), summary, [tabindex]')].filter(el => el.tabIndex >= 0 && el.getClientRects().length > 0 && !el.closest('[inert]'));
-    const focusStart = () => (pane.querySelector<HTMLButtonElement>('button[aria-label="关闭成果"]') || pane).focus();
+    const focusStart = () => (pane.querySelector<HTMLButtonElement>('button[data-close-artifact], button[data-close-workbench]') || pane).focus();
     if (!pane.contains(document.activeElement)) focusStart();
     const keys = (event: KeyboardEvent) => {
       if (menuOpen() || event.defaultPrevented || pane.closest('[inert]')) return;
       if (event.key === 'Escape') {
         event.preventDefault(); event.stopPropagation();
         // Reuse the editor's close action so unsaved changes still require confirmation.
-        pane.querySelector<HTMLButtonElement>('button[aria-label="关闭成果"]')?.click();
+        pane.querySelector<HTMLButtonElement>('button[data-close-artifact], button[data-close-workbench]')?.click();
       }
       if (event.key === 'Tab') {
         const elements = focusable(); const first = elements[0]; const last = elements.at(-1);
@@ -94,71 +129,84 @@ export function AssistantWorkspace({ data, taskId, composition, onRefresh, onCre
       document.removeEventListener('focusin', containFocus);
       if (!pane.isConnected && opener?.isConnected) opener.focus();
     };
-  }, [artifact?.id, artifactOverlay]);
-  useEffect(() => { if (initialTask.current !== taskId) { replacePrompt(''); setError(''); setOpenArtifactId(undefined); initialTask.current = taskId; } }, [taskId]);
-  useEffect(() => { if (composition && !taskId) { replacePrompt(composition.prompt); setFactIds(composition.factIds); setAgentIds(composition.agentIds); setError(''); composerRef.current?.focus(); } }, [composition?.id]);
-  useEffect(() => { endRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' }); }, [task?.messages.length, task?.approvals.length]);
+  }, [artifact?.id, panelOpen, artifactOverlay]);
+  useEffect(() => { if (initialTask.current !== taskId) { replacePrompt(''); setError(''); setOpenArtifactId(undefined); setWorkbenchTab(undefined); setWorkbenchOpen(false); initialTask.current = taskId; } }, [taskId]);
+  useEffect(() => { if (composition && !taskId) { setProjectId(composition.projectId);setConnectorIds([]);setDigitalTwinEnabled(true); replacePrompt(composition.prompt); setFactIds(composition.factIds??data.facts.filter(f=>f.status==='confirmed').map(f=>f.id));setAutomaticContext(composition.factIds===undefined); setAgentIds(composition.agentIds); setError(''); composerRef.current?.focus(); } }, [composition?.id]);
+  useEffect(() => { endRef.current?.scrollIntoView({ behavior: document.documentElement.dataset.motion === 'reduced' || matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'end' }); }, [task?.messages.length, task?.approvals.length]);
   async function send() {
-    if (!prompt.trim() || busy || configurationMissing) return;
+    if (example || (!prompt.trim() && !attachments.items.length) || busy || attachments.busy || attachments.hasErrors || configurationMissing) return;
     const submittedRevision = promptRevision.current;
+    const submittedAttachments = attachments.items.map(item=>item.id);
     setBusy(true); setError('');
-    try { if (task) { await write<Task>(`/tasks/${task.id}/message`, { content: prompt.trim() }); await onRefresh(); } else { await onCreateTask(prompt.trim(), factIds, agentIds, mode); } if (promptRevision.current === submittedRevision) replacePrompt(''); }
+    try { if (task) { await write<Task>(`/tasks/${task.id}/message`, { content: prompt.trim(), attachmentIds:attachments.attachmentIds }); await onRefresh(); } else { await onCreateTask(prompt.trim(), digitalTwinEnabled?(automaticContext?selectDigitalTwinContext(data.facts,prompt):factIds):[], agentIds, mode, connectionId, projectId, attachments.attachmentIds, connectorIds, digitalTwinEnabled); } submittedAttachments.forEach(attachments.remove); if (promptRevision.current === submittedRevision) replacePrompt(''); }
     catch (e) { setError(messageOf(e)); } finally { setBusy(false); }
   }
   async function action(path: string, body?: unknown) {
-    if (!task || busy) return;
+    if (!task || busy || example) return;
     setBusy(true); setError('');
     try { await write<Task>(`/tasks/${task.id}/${path}`, body); await onRefresh(); }
     catch (e) { setError(messageOf(e)); } finally { setBusy(false); }
   }
-  function useSuggestion(text: string) { replacePrompt(text); composerRef.current?.focus(); }
-  function openArtifact(id: string) { artifactOpenerRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null; setOpenArtifactId(id); }
-  const suggestions = data.profile.demo ? [
-    { title: '把想法变成计划', text: '结合我当前的目标和时间约束，为社区声音展做一份可执行的本周计划。标出需要我确认的取舍。' },
-    { title: '帮我看清取舍', text: '我想为声音展增加互动装置，但又担心时间不够。请根据你对我的了解，列出两种可行选择和各自代价。' },
-    { title: '写一份合作草稿', text: '帮我写一份给合作伙伴的声音展提案草稿。先说明目标、分工与还没有确认的事情，不要代我发送。' },
-  ] : [
-    {title:'把想法变成计划',text:'根据我当前的目标和时间约束，和我一起制定一份本周计划，标出需要确认的取舍。'},
-    {title:'帮我看清取舍',text:'我有一件正在犹豫的事。请先了解我的目标和约束，再帮我比较可行选项。'},
-    {title:'一起完成一份草稿',text:'我想一起写一份工作草稿。请先问我希望达成的目的，以及需要提供的材料。'},
-  ];
-  const composer = <div className="composer-wrap"><ErrorNotice error={error} />{configurationMissing && <Alert color="primary" variant="soft" indicator={false} description={!data.settings.hasKey ? '连接你自己的模型后，就可以开始真实任务。' : '还需要在这台电脑上启用执行环境。'} actions={<ButtonLink as="a" color="secondary" variant="outline" size="sm" href="#settings">前往设置</ButtonLink>} />}
-        <form className="composer" onSubmit={event => { event.preventDefault(); void send(); }}><Textarea ref={composerRef} variant="soft" aria-label={task ? '补充任务要求' : '向助理说明任务'} placeholder={task ? working ? '补充想法，或告诉我需要调整什么…' : '继续这件事，或补充你的想法…' : '告诉我你想做什么…'} rows={2} maxRows={7} autoResize disabled={busy} value={prompt} onChange={event => replacePrompt(event.target.value)} onKeyDown={event => { if (event.key === 'Enter' && !event.shiftKey && !event.nativeEvent.isComposing) { event.preventDefault(); void send(); } }} /><div className="composer-controls"><div className="row">{!task && <Button type="button" color="secondary" variant="ghost" size="sm" onClick={() => setContextOpen(true)}><Plus />{factIds.length || agentIds.length ? `${factIds.length} 条认识${agentIds.length ? ` · ${agentIds.length} 个角色` : ''}` : '上下文与角色'}</Button>}{!task && <Select block={false} size="sm" variant="ghost" value={mode} onChange={option => setMode(option.value as 'demo'|'live')} options={[{value:'demo',label:'本地演示'},{value:'live',label:'我的模型'}]} />}{task && <span className="composer-mode">{currentMode === 'demo' ? '本地演示' : data.settings.model}</span>}</div><div className="row">{working && <Button type="button" color="secondary" variant="outline" uniform aria-label="停止任务" disabled={busy} onClick={() => action('cancel')}><Stop /></Button>}<Button type="submit" color="primary" uniform size="lg" aria-label={task ? '发送补充要求' : '开始任务'} disabled={!prompt.trim() || busy || configurationMissing} loading={busy}><ArrowUp /></Button></div></div></form><p className="composer-footnote">Enter 发送 · Shift + Enter 换行{currentMode === 'demo' ? ' · 演示不调用模型' : ' · 重要操作会单独请你确认'}</p>
-      </div>;
-  return <div className={`assistant-workspace ${artifact ? 'with-artifact' : ''} ${task ? 'has-task' : 'is-home'}`}>
-    <div className="conversation-pane" inert={!!artifact && artifactOverlay}>
+  function openArtifact(id?:string){if(id!==openArtifactId&&artifactDirty&&!window.confirm(t('还有未保存的修改，仍然切换？','You have unsaved changes. Switch anyway?')))return;rememberWorkbenchOpener();setWorkbenchTab('files');setWorkbenchOpen(true);setOpenArtifactId(id);}
+  const controlsLocked=example||busy||working||task?.status==='awaiting_approval';
+  async function updateTaskConfig(body:Record<string,unknown>){if(!task||controlsLocked)return false;setBusy(true);setError('');try{await write(`/tasks/${task.id}`,body,'PUT');await onRefresh();return true;}catch(e){setError(messageOf(e));return false;}finally{setBusy(false);}}
+  async function chooseConnection(id:string|undefined){if(task)return updateTaskConfig({connectionId:id||null});setConnectionId(id);setMode('live');}
+  async function chooseMode(value:'live'|'demo'){if(task){if(task.mode!==value)return updateTaskConfig({mode:value});return;}setMode(value);}
+  const contextTools=<><ConnectorPicker data={data} value={task?.connectorIds||connectorIds} onChange={controlsLocked?undefined:task?ids=>{void updateTaskConfig({connectorIds:ids});}:setConnectorIds} disabled={controlsLocked}/><DigitalTwinMode enabled={task?task.digitalTwinEnabled!==false:digitalTwinEnabled} onChange={controlsLocked?undefined:enabled=>{if(task){void updateTaskConfig({digitalTwinEnabled:enabled});}else{setDigitalTwinEnabled(enabled);setAutomaticContext(true);}}} disabled={controlsLocked}/></>;
+  const exampleStories=data.profile.demo?['demo-showcase-task-launch','demo-showcase-task-family','demo-showcase-task-demo-story'].flatMap(id=>data.tasks.find(item=>item.id===id&&!item.archived)||[]):[];
+  const compactComposer = !task && !prompt.includes('\n') && prompt.length < 48 && !attachments.items.length;
+  const composer = <div className="composer-wrap">
+    {task&&showWorkbench&&<TaskProgress task={task} fileCount={taskArtifacts.length} onOpen={openWorkbench} onEvent={openEvent}/>}
+    <ErrorNotice error={error}/>
+    {configurationMissing&&<Alert color="primary" variant="soft" indicator={false} description={project&&project.execution.status!=='ready'?t('该项目尚未连接执行环境。请选择本地项目。','This project has no connected runtime. Choose a local project.'):!modelReady?t('连接模型后，就可以开始真实任务。','Connect a model to run this task.'):t('还需要在这台电脑上启用执行环境。','Set up the runtime on this computer first.')} actions={<ButtonLink as="a" color="secondary" variant="outline" size="sm" href="#settings">{t('前往设置','Open settings')}</ButtonLink>}/>}
+    <ComposerSurface compact={compactComposer} context={!task&&<ComposerContextBar><ProjectPicker data={data} value={projectId} onChange={setProjectId} disabled={busy}/>{contextTools}</ComposerContextBar>} onDragOver={event=>{if(example)event.preventDefault();else attachments.onDragOver(event);}} onDrop={event=>{if(!busy&&!example)attachments.onDrop(event);else event.preventDefault();}} onSubmit={event=>{event.preventDefault();void send();}}>
+      <AttachmentDrafts controller={attachments} disabled={busy||example}/>
+      <div className="composer-leading"><ComposerTools onAttach={()=>attachments.inputRef.current?.click()} disabled={busy||example}>{task&&contextTools}</ComposerTools></div>
+      <div className="composer-input"><Textarea ref={composerRef} variant="soft" aria-label={task?t('补充任务要求','Additional instructions'):t('发送消息','Message SecondU')} placeholder={task?t('继续对话','Message SecondU'):data.profile.demo?t('选择下方的完整案例','Choose a complete story below'):t('询问 SecondU','Ask SecondU')} rows={1} maxRows={7} autoResize disabled={busy} value={prompt} onPaste={event=>{if(example||!attachments.onPaste(event))pasteComposerLinks(event,prompt,replacePrompt);}} onChange={event=>replacePrompt(event.target.value)} onKeyDown={event=>{if(shouldSend(event)){event.preventDefault();void send();}}}/></div>
+      <div className="composer-trailing"><ModelPicker example={example} settings={data.settings} connections={data.modelConnections} defaultConnectionId={data.defaultConnectionId} connectionId={currentConnectionId} onConnection={chooseConnection} agentModels={agentModels.length?agentModels:undefined} mode={currentMode} onMode={chooseMode} onSettings={()=>{location.hash='settings/model';}} disabled={controlsLocked}/><VoiceInput disabled={example||busy||working} contextKey={taskId||'new'} onTranscript={text=>{replacePrompt(`${prompt}${prompt&&!/\s$/.test(prompt)?' ':''}${text}`);composerRef.current?.focus();}}/>{working?<Button type="button" color="primary" uniform aria-label={t('停止任务','Stop task')} disabled={busy} onClick={()=>action('cancel')}><Stop/></Button>:<Button type="submit" color="primary" uniform aria-label={task?t('发送补充要求','Send instructions'):t('发送消息','Send message')} disabled={example||(!prompt.trim()&&!attachments.items.length)||busy||attachments.busy||attachments.hasErrors||configurationMissing} loading={busy}><ArrowUp/></Button>}</div>
+    </ComposerSurface>
+
+  </div>;
+  return <div className={`assistant-workspace ${panelOpen ? 'with-artifact' : ''} ${task ? 'has-task' : 'is-home'}`}>
+    <div className="conversation-pane" inert={panelOpen && artifactOverlay}>
+      {(task||navigation)&&<header className="conversation-header">{navigation}<h1 title={task?.title}>{task?.title||'SecondU'}</h1>{task&&<div className="conversation-header-actions"><TaskChatActions task={task} onRefresh={onRefresh}/><TaskResources data={data} tasks={[task]} projectId={task.projectId} agentIds={task.agentIds} onOpen={(_task,tab,id)=>id?openArtifact(id):openWorkbench(tab)}/></div>}</header>}
       <div className="conversation-scroll">
         {!task ? <section className="assistant-welcome">
-          <div className="welcome-intro"><h1>今天，想一起推进什么？</h1><p>从你的目标、经历和偏好出发。</p></div>
+          <div className="welcome-start"><div className="welcome-artwork"><WelcomeLettering /></div><div className="welcome-intro"><h1>{data.profile.demo?t("从哪件事开始看？", "Which story would you like to explore?"):t("今天想做些什么？", "What shall we work on?")}</h1></div>
           {composer}
-          <div className="suggestion-list">{suggestions.map((item,index) => <Button key={item.title} color="secondary" variant="outline" size="sm" onClick={() => useSuggestion(item.text)}>{index === 0 ? <Clock /> : index === 1 ? <Sparkles /> : <Document />}<span>{item.title}</span></Button>)}</div>
-          <div className="home-context">
-            <section><header><h2>正在关注</h2><ButtonLink as="a" color="secondary" variant="ghost" size="sm" href="#life" aria-label="查看当前生活"><ArrowRight /></ButtonLink></header>{data.goals.filter(goal => goal.status === 'active').length ? data.goals.filter(goal => goal.status === 'active').slice(0,2).map(goal => <a className="home-goal" key={goal.id} href="#life"><span className="home-goal-mark"><Clock /></span><span><strong>{goal.title}</strong><small>{goal.description}</small></span><ArrowRight /></a>) : <p className="home-empty">在“当前生活”里，留下你想推进的事。</p>}</section>
-            <section><header><h2>从了解你开始</h2><ButtonLink as="a" color="secondary" variant="ghost" size="sm" href="#self" aria-label="查看个人认知"><ArrowRight /></ButtonLink></header><div className="home-understanding">{data.facts.filter(fact => fact.status === 'confirmed' && fact.kind === 'constraint').slice(0,2).map(fact => <a href="#self" key={fact.id}><span className="knowledge-dot" /><span>{fact.statement}</span></a>)}<a className="home-understanding-more" href="#self">查看与纠正关于你的认识 <ArrowRight /></a></div></section>
-          </div>
-          {data.tasks.length > 0 && <section className="home-recent"><header><h2>接着上次的事</h2><span>任务和成果都在这里</span></header>{[...data.tasks].sort((a,b)=>b.updatedAt.localeCompare(a.updatedAt)).slice(0,2).map(item=><a className="home-task" href={`#task/${item.id}`} key={item.id}><span className="home-task-icon"><Document /></span><strong>{item.title}</strong><TaskBadge status={item.status}/><ArrowRight /></a>)}</section>}
-          <p className="welcome-note">{data.profile.demo ? '你正在体验虚构示例空间，人物与记录均为演示资料。' : '个人资料保存在本机，由你选择这次任务需要的上下文。'}</p>
-        </section> : <div className="task-thread">
-          <header className="thread-heading"><div className="row"><TaskBadge status={task.status} /><Badge variant="outline">{task.mode === 'demo' ? '本地流程演示' : '模型任务'}</Badge></div></header>
-          {task.mode === 'demo' && <p className="demo-thread-note">这是本地流程演示，未调用模型。对话、审批和成果版本会真实保存在本机。</p>}
-          <ContextFacts facts={taskContext(task,data)} queued={task.status === 'queued'} />
-          {task.agentIds.length > 0 && <div className="task-agents"><Agent />{task.agentIds.map(id => data.agents.find(agent => agent.id === id)?.name || '未命名角色').join('、')} 参与此任务</div>}
-          <div className="messages">{task.messages.map(message => <div className={`message message-${message.role}`} key={message.id}>{message.role !== 'user' && <div className="message-author"><span className="assistant-avatar"><Agent /></span>{message.agentId ? data.agents.find(agent => agent.id === message.agentId)?.name || '助理' : message.role === 'system' ? '任务记录' : 'Hither'}</div>}<RichText className="message-content">{message.content}</RichText>{message.role === 'user' && message.id !== task.messages[0]?.id && <Button color="secondary" variant="ghost" size="sm" onClick={() => setLearning(message.content)}>记为个人反馈</Button>}</div>)}</div>
-          {task.events.length > 0 && <details className="activity-details" open={working || task.status === 'awaiting_approval'}><summary><Clock /><span>{working ? '正在推进' : '查看活动记录'} · {task.events.length} 项</span></summary><ol>{task.events.map(event => <li key={event.id}><span className="event-dot" /><div><strong>{event.label}</strong>{event.detail && event.type !== 'context' && (event.type === 'evidence' ? <details><summary>查看本轮来源摘录</summary><pre className="evidence-detail">{event.detail}</pre></details> : <p>{event.detail}</p>)}<small>{when(event.createdAt)}{event.agentId ? ` · ${data.agents.find(agent => agent.id === event.agentId)?.name || 'Agent'}` : ''}</small></div></li>)}</ol></details>}
-          {task.approvals.map(approval => <TaskApproval key={approval.id} approval={approval} busy={busy} onDecision={decision => { void action('approval', { approvalId: approval.id, decision }); }} />)}
-          {working && <Busy label={task.mode === 'demo' ? '正在运行本地流程…' : '助理正在处理…'} />}
-          {task.error && <Alert color="danger" variant="soft" title="这一步没有完成" description={task.error} />}
+          {exampleStories.length>0&&<nav className="assistant-example-stories" aria-label={t("完整案例", "Complete stories")}>{exampleStories.map(story=><a key={story.id} href={`#task/${story.id}`}><span>{story.title}</span><ArrowRight/></a>)}</nav>}
+
+          </div></section> : <div className="task-thread">{project&&<a className="task-project-reference" href={`#projects/${project.id}`}><Folder/>{project.name}<ArrowRight/></a>}
+          {task.status!=='completed'&&<header className="thread-heading"><TaskBadge status={task.status} /></header>}
+          {example && <span className="demo-thread-note">{t("示例", "Example")}</span>}
+          {task.interaction==='task' && task.agentIds.length > 1 && <div className="task-agents"><Agent />{task.agentIds.map(id => data.agents.find(agent => agent.id === id)?.name || t("未命名角色", "Unnamed agent")).join('、')} {t("参与此任务", "on this task")}</div>}
+          <div className="messages">{task.messages.map((message,index) => {
+            const priorUser=task.messages.slice(0,index+1).reverse().find(item=>item.role==='user');
+            const nextUser=task.messages.slice(index+1).find(item=>item.role==='user');
+            const firstReply=message.role==='assistant'&&task.messages.slice(task.messages.findIndex(item=>item.id===priorUser?.id)+1,index).every(item=>item.role!=='assistant');
+            const turnEvents=priorUser?task.events.filter(event=>event.createdAt>=priorUser.createdAt&&(!nextUser||event.createdAt<nextUser.createdAt)):[];
+            const turnTask={...task,events:turnEvents,status:nextUser?'completed' as const:task.status};
+            const author=message.agentId&&message.agentId!=='hither'?data.agents.find(agent=>agent.id===message.agentId):undefined;
+            return <div className={`message message-${message.role}`} key={message.id}>
+              {firstReply&&<TaskActivity task={turnTask} agents={data.agents} onEvent={openEvent}/>}
+              {author&&<div className="message-author">{author.name}</div>}
+              <MessageAttachments attachments={(data.attachments||[]).filter(item=>message.attachmentIds?.includes(item.id))}/>{message.content&&<RichText className="message-content">{message.content}</RichText>}{message.role==='assistant'&&!example&&<FeedbackAction task={task} messageId={message.id} artifacts={taskArtifacts} onRefresh={onRefresh}/>}
+            </div>;
+          })}</div>
+          {task.messages.at(-1)?.role==='user'&&<TaskActivity task={{...task,events:task.events.filter(event=>event.createdAt>=(task.messages.at(-1)?.createdAt||''))}} agents={data.agents} onEvent={openEvent}/>}
+          <ContextFacts key={task.id} facts={taskContext(task,data)} queued={task.status === 'queued'} />
+          {task.approvals.map(approval => <TaskApproval key={approval.id} approval={approval} busy={busy||example} onDecision={decision => { void action('approval', { approvalId: approval.id, decision }); }} />)}
+          {working && !example && <Busy label={task.mode === 'demo' ? t("正在运行本地流程", "Running the local demo") : t("助理正在处理", "Working")} />}
+          {task.error && <Alert color="danger" variant="soft" title={t("这一步没有完成", "This step failed")} description={task.error} />}
           {statusDescription[task.status] && <p className="task-state-note">{statusDescription[task.status]}</p>}
-          {(task.status === 'queued' || task.status === 'interrupted' || task.status === 'failed') && !configurationMissing && <Button color="secondary" variant="outline" disabled={busy} onClick={() => action('run')}>继续任务<ArrowRight /></Button>}
-          {taskArtifacts.length > 0 && <div className="task-artifacts"><h3>这次的成果</h3>{taskArtifacts.map(item => <ArtifactCard key={item.id} artifact={item} onOpen={() => openArtifact(item.id)} />)}</div>}
+          {(task.status === 'queued' || task.status === 'interrupted' || task.status === 'failed') && !configurationMissing && !example && <Button color="secondary" variant="outline" disabled={busy} onClick={() => action('run')}>{t("继续任务", "Continue task")}<ArrowRight /></Button>}
+          {taskArtifacts.length > 0 && <div className="task-artifacts"><h3>{t("生成的文件", "Created files")}</h3>{taskArtifacts.map(item => <ArtifactCard key={item.id} artifact={item} onOpen={() => openArtifact(item.id)} />)}</div>}
           <div ref={endRef} />
         </div>}
       </div>
       {task && composer}
     </div>
-    {artifact && <aside ref={artifactPaneRef} className="task-artifact-pane" role={artifactOverlay ? 'dialog' : undefined} aria-modal={artifactOverlay ? true : undefined} aria-label={`成果：${artifact.name}`} tabIndex={-1}><ArtifactEditor key={artifact.id} artifact={artifact} compact onRefresh={onRefresh} onClose={() => setOpenArtifactId(undefined)} /></aside>}
-    {task && learning !== undefined && <TaskFeedback task={task} feedback={learning} onRefresh={onRefresh} onClose={() => setLearning(undefined)} />}
-    {contextOpen && <ContextPicker data={data} factIds={factIds} agentIds={agentIds} onFacts={setFactIds} onAgents={setAgentIds} onClose={() => setContextOpen(false)} />}
-    {taskId && !task && <div className="missing-task"><Empty title="找不到这个任务" description="它可能不属于当前本地空间。" action={<ButtonLink as="a" color="primary" href="#assistant">回到助理</ButtonLink>} /></div>}
+    {panelOpen && task && <aside ref={artifactPaneRef} className="task-artifact-pane workbench-pane" role={artifactOverlay ? 'dialog' : undefined} aria-modal={artifactOverlay ? true : undefined} aria-label={t("任务工作区","Task workspace")} tabIndex={-1}><WorkbenchPanel data={data} task={task} tab={workbenchTab||'files'} artifactId={openArtifactId} eventId={workbenchEventId} onEvent={openEvent} onTab={setWorkbenchTab} onClose={closeWorkbench} onArtifact={openArtifact} onDirtyChange={setArtifactDirty} onRefresh={onRefresh}/></aside>}
+    {taskId && !task && <div className="missing-task"><Empty title={t("找不到这个任务", "Task not found")} description={t("它可能不属于当前本地空间。", "It may belong to another workspace.")} action={<ButtonLink as="a" color="primary" href="#assistant">{t("回到助理", "New chat")}</ButtonLink>} /></div>}
   </div>;
 }

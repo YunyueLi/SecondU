@@ -1,0 +1,23 @@
+{
+  "name": "SecondU",
+  "shortName": "SecondU",
+  "wordmark": "/brand/secondu-wordmark.svg",
+  "mark": "/brand/secondu-mark.svg",
+  "favicon": "/brand/secondu-favicon.svg",
+  "desktop": {
+    "executable": "SecondU",
+    "bundleName": "SecondU",
+    "bundleIdentifier": "im.hither.desktop.local",
+    "iconFile": "SecondU.icns",
+    "iconImage": "secondu.png"
+  },
+  "compatibility": {
+    "formerName": "Hither",
+    "userDataDirectory": "Hither",
+    "developmentDataDirectory": ".hither",
+    "applicationId": "hither-desktop",
+    "packagedFlag": "hitherPackaged",
+    "environmentPrefix": "HITHER_",
+    "storagePrefix": "hither."
+  }
+}

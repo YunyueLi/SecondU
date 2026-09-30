@@ -1,0 +1,124 @@
+{
+  "projects": {
+    "demo-showcase-project-workbench": {
+      "Kimi 工作台发布": "Kimi Workbench Launch",
+      "从用户访谈、原型到小范围发布。把反馈、取舍和交付放在同一个项目里。": "From interviews and prototypes to a focused rollout. Feedback, decisions and deliverables live together."
+    },
+    "demo-showcase-project-hangzhou": {
+      "回杭州，陪家人慢一点": "A Slower Weekend in Hangzhou",
+      "四天假期，留出真正相处的时间。行程、家庭偏好和临时变化一起考虑。": "Four days with room to be together. Plans adapt to family preferences and changing circumstances."
+    },
+    "demo-showcase-project-fieldnotes": {
+      "把产品做出来，也讲清楚": "Build It. Explain It.",
+      "把产品实践整理成能演示、能复盘、能被别人理解的作品。": "Turn product work into demonstrations and stories that other people can follow."
+    },
+    "demo-showcase-project-next-quarter": {
+      "下一季的个人计划": "The Next Quarter",
+      "连接工作、学习与生活，减少并行目标，让重要的事持续前进。": "Connect work, learning and life. Fewer concurrent goals; steadier progress on what matters."
+    }
+  },
+  "sources": {
+    "demo-showcase-source": {
+      "SecondU 演示案例集": "SecondU demonstration scenarios",
+      "本示例集中的人物经历、聊天、业务指标与任务产物均为预先编写的虚构内容，用于展示产品体验；没有代表真实账号、真实模型调用、发布或预订。\n\n工作台内测素材：48条样本反馈中，19条与恢复任务有关、13条与成果编辑有关、9条与来源理解有关、7条与首次使用有关。样本只用于演示，不能推断总体用户比例。开发窗口为2天；模型调用预算上限为2000元。\n家庭安排素材：万叶计划10月2日至5日回杭州，父亲不喜欢赶路，母亲希望一起吃家常饭。10月3日下午留作休息，不安排跨城行程。\n表达偏好：先给具体决定和依据，不写空泛口号。未经确认不发送、不预订。": "The people, conversations, business figures and deliverables in this collection are fictional, prewritten demonstration material. They do not represent real accounts, model runs, releases or bookings.\n\nWorkbench study material: 48 sample observations comprise 19 about resuming work, 13 about editing deliverables, 9 about understanding sources and 7 about onboarding. These illustrative counts do not establish population-level rates. The development window is two days and the model-call budget is CNY 2,000.\nFamily planning material: Caspian plans to visit Hangzhou from October 2–5. His father dislikes rushed schedules, and his mother would like to cook together. October 3 afternoon is reserved for rest; no intercity travel.\nCommunication preference: lead with a concrete decision and its evidence. No slogans. Sending and booking require confirmation."
+    }
+  },
+  "tasks": {
+    "demo-showcase-task-launch": {
+      "周五要评审。把这48条内测反馈变成两天能做完的版本计划，不要堆需求。": "The review is on Friday. Turn these 48 observations into a version plan we can finish in two days. Don’t give me a feature backlog.",
+      "我建议先做三件事：恢复原任务、让成果能直接编辑、让关键判断能回到来源。\n\n我按你的两天开发窗口、2000元调用预算和上午连续开发的习惯安排。19条“恢复任务”反馈最多，但并非都要加功能：其中的目标是让人知道任务停在哪、继续会发生什么。首版先把这个闭环做稳。": "I would ship three changes: resume the original task, edit the deliverable in place, and trace important judgments back to their sources.\n\nThe plan uses your two-day window, CNY 2,000 model budget and protected morning work sessions. Resuming work appears in 19 observations, but that does not mean adding 19 features. The immediate need is to know where work stopped and what resuming it will do.",
+      "别把频次当严重程度。成果丢了只有两例，但比别的问题严重。": "Frequency is not severity. Only two people lost a deliverable, but that matters more than the other issues.",
+      "对。优先级改为“先阻止数据丢失，再降低任务失败，最后减少理解成本”。我把成果保存放到发布门槛，48条频次只作为覆盖面线索。\n\n计划已经改成三个可验收结果，每项都有失败场景、负责人和退出条件；超过两天就减少范围，不压缩保存与恢复检查。": "Agreed. The order is now: prevent data loss, reduce task failure, then reduce confusion. Durable saving is a release gate; observation counts only indicate coverage.\n\nThe revised plan defines three testable outcomes, each with a failure case, an owner and an exit condition. If two days is insufficient, reduce scope rather than skipping save and recovery checks.",
+      "48 条反馈，下一版只做哪三件事？": "48 observations. Which three changes ship next?",
+      "预设案例": "Prewritten scenario",
+      "这是可阅读、可检查产物的完整演示记录。": "A complete demonstration with inspectable deliverables."
+    },
+    "demo-showcase-task-family": {
+      "10月2日回杭州，5日走。帮我安排一下，别又整成打卡行程。": "I’ll be in Hangzhou from October 2 to 5. Help me plan it, without turning it into a sightseeing checklist.",
+      "我先留了两顿在家做饭、一次短距离散步和一整段不安排的下午。你父亲不喜欢赶路，母亲想一起吃家常饭，所以每天最多一个外出安排，交通也按少换乘来选。": "I reserved two home-cooked meals, one short walk and an entire unplanned afternoon. Your father dislikes rushing and your mother wants to cook together, so there is at most one outing each day, with minimal transfers.",
+      "我妈说周六想在家，别安排西湖。": "My mother wants to stay home on Saturday. Skip West Lake that day.",
+      "已把周六改成买菜、一起做饭和休息。西湖散步只留作周日天气和体力都合适时的备选。行程里没有任何已预订项目；返程车次留给你确认。": "Saturday is now for groceries, cooking and rest. A West Lake walk is only an option for Sunday if the weather and everyone’s energy allow it. Nothing is booked; the return train remains for you to confirm.",
+      "把“去杭州玩”改成真正陪父母": "Make the Hangzhou trip about time with my parents",
+      "预设案例": "Prewritten scenario",
+      "这是可阅读、可检查产物的完整演示记录。": "A complete demonstration with inspectable deliverables."
+    },
+    "demo-showcase-task-demo-story": {
+      "周五有三分钟演示时间。帮我选场景，别上来讲记忆、多Agent、工具调用。": "I have three minutes for Friday’s demo. Choose a scene. Don’t lead with memory, multi-agent systems or tool calling.",
+      "从“周五前只剩两天，先做什么”开始。观众先看一个具体取舍，再看到它为什么符合你：上午的工作习惯、2000元预算、对成果丢失的重视。然后当场纠正“频次不等于严重程度”，让下一版计划发生可见变化。": "Start with: “Two days until Friday. What should I do first?” Show a concrete trade-off, then why it fits you: protected mornings, the CNY 2,000 budget and your concern about losing work. Correct “frequency is not severity” on screen and show the plan change.",
+      "结尾要落到用户能继续做什么，不要品牌口号。": "End with what the user can do next, not a slogan.",
+      "结尾改成打开更新后的发布清单，指向第一项“验证保存后能重新打开”，随后展示项目里已保留的两版成果。三分钟只证明这一条链路，其余能力留在可浏览的示例空间。": "The ending now opens the revised release checklist, points to “verify the saved result survives reopening,” and shows both versions in the project. The three-minute demo proves this one workflow; the rest remains available in the browsable example space.",
+      "三分钟，让人看到 SecondU 为什么懂我": "Three minutes to show why SecondU understands me",
+      "预设案例": "Prewritten scenario",
+      "这是可阅读、可检查产物的完整演示记录。": "A complete demonstration with inspectable deliverables."
+    },
+    "demo-showcase-task-weekly": {
+      "这周又有工作台、演示、回杭州、阅读计划。帮我整理一下，但别给我一张塞满的时间表。": "This week has the workbench, a demo, the Hangzhou trip and my reading plan. Help me sort it out, without filling every hour.",
+      "本周只保留两个需要主动推进的重点：工作台发布门槛和三分钟演示。回杭州按已确认的简单行程执行，阅读降为可选。上午九点到十一点不安排整理、消息和评审准备；这些集中放到下午半小时。": "Keep two active priorities: the workbench release gates and the three-minute demo. Follow the simple confirmed Hangzhou plan; reading becomes optional. Protect 09:00–11:00 from admin, messages and review preparation. Batch those into thirty minutes in the afternoon.",
+      "周三上午有评审，挪不开。": "Wednesday morning has a review that I can’t move.",
+      "保留周三评审，不假设你的理想习惯总能实现。那天的开发窗口挪到14:00–16:00，反馈整理并入评审后的十分钟。周四上午仍留给最难的保存与恢复检查。": "Keep Wednesday’s review; your preferred routine is a preference, not an absolute rule. Move that day’s development block to 14:00–16:00 and use ten minutes after the review for feedback notes. Thursday morning remains for the hardest save-and-resume checks.",
+      "这周别再塞满了，替我留住两个重点": "Keep this week focused on two things",
+      "预设案例": "Prewritten scenario",
+      "这是可阅读、可检查产物的完整演示记录。": "A complete demonstration with inspectable deliverables."
+    },
+    "demo-showcase-task-review-brief": {
+      "产品想快上，工程担心恢复不稳，设计觉得确认步骤太多。帮我准备一页评审材料。": "Product wants to ship, engineering is worried about recovery and design thinks there are too many confirmations. Prepare one page for the review.",
+      "三方没有在争同一个问题。我把它们拆成：本轮发布边界、重复执行的风险、确认发生的位置。建议只对真实外部副作用保留确认，普通编辑和查看直接完成；恢复流程有证据后才放进发布范围。": "These are three different questions: release scope, the risk of repeated actions and where confirmation belongs. Keep confirmation for consequential external actions; ordinary viewing and editing should be immediate. Include recovery in the release only once there is evidence it works.",
+      "别假装大家已经同意，把待决定的地方留清楚。": "Don’t imply everyone has agreed. Make the open decisions explicit.",
+      "已分开“建议”“已有依据”和“会议要决定的事”。最后只留两个决定：是否接受本轮范围，以及谁负责判断恢复门槛是否通过。没有代替任何人表态。": "The page now separates the recommendation, available evidence and decisions required in the meeting. It ends with two decisions: whether to accept this release scope and who owns the recovery gate. It does not claim anyone has agreed.",
+      "开会前，把大家分歧收敛成一个决定": "Turn the team’s disagreement into one decision",
+      "预设案例": "Prewritten scenario",
+      "这是可阅读、可检查产物的完整演示记录。": "A complete demonstration with inspectable deliverables."
+    },
+    "demo-showcase-task-personal-letter": {
+      "给大学同学说说最近在做什么。写短一点，别像产品新闻稿。": "Tell my university friends what I’ve been working on. Keep it short and don’t make it sound like a product announcement.",
+      "最近在做一个能陪人把事情接着做完的工作台。最费时间的不是让它多说几句，而是它做了一半停下来以后，能不能记得停在哪，留下的东西还在不在。\n\n这周在反复测保存和恢复，周五做一个很短的演示。国庆回杭州，应该终于能吃上家里的饭了。": "I’ve been building a workbench that helps you keep going until something is actually finished. The slow part isn’t getting it to say more. It’s making sure it knows where it stopped and that the work is still there when you come back.\n\nThis week is mostly save-and-resume checks, then a short demo on Friday. I’m going home to Hangzhou for the holiday. Looking forward to eating at home again.",
+      "第二句“最费时间”有点苦大仇深，轻一点。": "“The slow part” sounds a little too weary. Make it lighter.",
+      "改成“最近发现，最值得打磨的是一些小事”。保留具体经历，去掉抱怨感。正文已经另存为短稿，没有发送给任何人。": "Changed it to “I’m finding that the small things deserve the most attention.” The concrete experience stays, with less weariness. The revised short draft is saved separately and has not been sent.",
+      "把“最近在忙什么”写得像我": "Write “what I’ve been working on” in my voice",
+      "预设案例": "Prewritten scenario",
+      "这是可阅读、可检查产物的完整演示记录。": "A complete demonstration with inspectable deliverables."
+    }
+  },
+  "artifacts": {
+    "demo-showcase-artifact-launch": {
+      "# 两天内测发布决定\n\n**决定：只发布保存、恢复、追溯三个完整闭环。**\n\n## 发布门槛\n\n| 顺序 | 用户应该能做到 | 必须通过的失败场景 | 负责人 |\n|---|---|---|---|\n| 1 | 改过的成果再次打开仍然存在 | 断开页面、重启应用、重复点保存 | 万叶 |\n| 2 | 中断后继续原任务 | 不重做已完成动作；过期确认不能复用 | 沈川 |\n| 3 | 看见建议依据并纠正它 | 来源不存在或认知已更新时明确说明 | 乔宁 |\n\n## 两天安排\n\n- 第一天 09:00–11:00：先完成成果保存和版本回读。下午检查失败记录，不扩功能。\n- 第二天 09:00–11:00：完成恢复与来源路径。下午 15:00 按三个真实场景走查。\n- 每次调用成本与失败原因单独记录；预算达到 1600 元停止新增实验，保留 400 元复验。\n\n## 如何使用反馈\n\n48条演示样本：恢复19、编辑13、来源9、首次使用7。频次不代表严重程度；两例成果丢失仍然是最高优先级。没有对总体用户比例作推断。\n\n## 周五评审只回答三件事\n\n1. 结果是否保住了？\n2. 继续执行是否保持上下文且没有重复副作用？\n3. 用户是否能找到依据并修正错误？\n\n任一门槛失败则延后发布，保留可复现步骤与原始产物。\n": "# Two-day pilot release decision\n\n**Decision: ship three complete workflows—save, resume and trace.**\n\n## Release gates\n\n| Priority | User outcome | Required failure case | Owner |\n|---|---|---|---|\n| 1 | Edited work survives reopening | Page disconnect, app restart, repeated save | Caspian |\n| 2 | An interrupted task resumes in place | No repeated completed actions or reused expired approvals | Shen Chuan |\n| 3 | A recommendation has inspectable, correctable evidence | Missing sources and changed context are explained | Qiao Ning |\n\n## Two-day schedule\n\n- Day 1, 09:00–11:00: implement durable saving and version readback. Review failures in the afternoon; do not expand scope.\n- Day 2, 09:00–11:00: complete resume and source tracing. Walk through three real scenarios at 15:00.\n- Record call cost and failure cause separately. Stop new experiments at CNY 1,600 and reserve CNY 400 for verification.\n\n## How feedback is used\n\nThe 48 illustrative observations concern resuming (19), editing (13), sources (9) and onboarding (7). Frequency is not severity: two lost-deliverable cases remain the top priority. No population-level rate is inferred.\n\n## Friday’s review answers three questions\n\n1. Did the result survive?\n2. Did resuming preserve context without repeating side effects?\n3. Could the user inspect the evidence and correct mistakes?\n\nDelay release if any gate fails. Keep the reproduction steps and original deliverables.\n",
+      "最初按反馈频次安排：恢复任务、成果编辑、来源理解。": "Initial order based on observation counts: resuming, editing and source clarity."
+    },
+    "demo-showcase-artifact-family": {
+      "# 回杭州，陪家人慢一点\n\n10月2日至5日。每天只保留一个外出选择，吃饭和休息不让路。\n\n| 日期 | 主要安排 | 可以放弃的部分 |\n|---|---|---|\n| 10月2日 | 到家、放行李，晚上一起吃饭 | 到家后不再安排外出 |\n| 10月3日 | 早上买菜，一起做午饭，下午休息 | 不安排西湖，不临时加景点 |\n| 10月4日 | 若天气与体力合适，选一段平缓湖边路散步 | 下雨就在家整理老照片 |\n| 10月5日 | 早餐后慢慢收拾，留足车站余量 | 不把返程前半天排满 |\n\n## 先确认的两件事\n\n- 出发前一天问父母想吃什么，再买食材。\n- 由万叶确认返程车次和到站时间，随后再安排送站。\n\n## 行程改变时的原则\n\n家人的临时意愿优先。走累就返回，不为完成行程绕路。这里没有预订、付款或已经发送的通知。\n": "# A slower weekend in Hangzhou\n\nOctober 2–5. At most one optional outing per day; meals and rest come first.\n\n| Date | Main plan | What can be dropped |\n|---|---|---|\n| Oct 2 | Arrive, unpack and have dinner together | No additional outing after arrival |\n| Oct 3 | Buy groceries, cook lunch and rest | No West Lake visit or added attractions |\n| Oct 4 | A short, level lakeside walk if weather and energy permit | Sort family photos at home if it rains |\n| Oct 5 | Breakfast, unhurried packing and a station buffer | Keep the morning before departure open |\n\n## Two confirmations first\n\n- Ask what the family would like to eat the day before buying ingredients.\n- Caspian confirms the return train and arrival time before arranging a station ride.\n\n## When plans change\n\nThe family’s wishes take priority. Return when tired; do not detour to finish an itinerary. No bookings, payments or messages have been made.\n"
+    },
+    "demo-showcase-artifact-demo-story": {
+      "# 三分钟演示稿\n\n## 00:00–00:25 先提出真正的问题\n\n“周五要评审，只剩两天。我手里有48条反馈，该先做什么？”\n\n打开项目，先让观众看见任务和成果，不解释技术名词。\n\n## 00:25–01:10 看见取舍，以及为什么适合我\n\n展示两天计划，指出三项依据：上午保留连续开发时间、预算2000元、未经确认不发送。打开一条来源即可，不展开所有个人资料。\n\n## 01:10–02:05 当场纠正\n\n“频次不是严重程度。成果丢失只有两例，也应该优先。”\n\n展示修订前后的差别：从按反馈频次排序，变为把成果保存设为发布门槛。让观众读到具体变化。\n\n## 02:05–02:40 把讨论变成下一步\n\n打开发布清单，第一步是“保存一个修改过的成果，重启后再打开”。显示负责人和退出条件。\n\n## 02:40–03:00 留下能继续工作的东西\n\n展示项目中的原稿、修订稿和最终清单。\n\n结束语：“我现在知道先做什么，也知道它为什么这样建议；我不同意时，能改它，并留下这次改变。”\n\n> 演示方式：本空间播放预设案例；真实运行在个人空间另行配置。不要把预设输出表述为现场模型结果。\n": "# Three-minute demonstration script\n\n## 00:00–00:25 Start with the real question\n\n“The review is on Friday. I have two days and 48 observations. What should I do first?”\n\nOpen the project. Show the task and deliverable before explaining any technology.\n\n## 00:25–01:10 Show the trade-off—and why it fits me\n\nShow the two-day plan and three constraints: protected morning work, a CNY 2,000 budget and confirmation before sending. Open one source without exposing the entire personal profile.\n\n## 01:10–02:05 Make a correction\n\n“Frequency is not severity. There were only two lost-deliverable cases, but those should come first.”\n\nCompare the two versions: a frequency-based list becomes a release gate for durable saving. Let the audience read the concrete change.\n\n## 02:05–02:40 Turn discussion into the next action\n\nOpen the checklist. Step one: save an edited deliverable, restart and reopen it. Show the owner and exit condition.\n\n## 02:40–03:00 Leave something usable\n\nShow the original, revision and final checklist in the project.\n\nClosing: “I know what to do first and why it was suggested. If I disagree, I can correct it and keep a record of what changed.”\n\n> Presentation mode: this space contains prewritten scenarios. Real execution is configured in the personal space. Do not present these outputs as a live model run.\n"
+    },
+    "demo-showcase-artifact-weekly": {
+      "# 本周只守住两个重点\n\n**重点一：工作台通过保存与恢复的发布门槛。**\n\n**重点二：三分钟演示能完整走通，不依赖临场解释。**\n\n| 时间 | 留给什么 | 遇到变化怎么办 |\n|---|---|---|\n| 周三上午 | 已确定的评审 | 不移动；会后十分钟记录决定 |\n| 周三14:00–16:00 | 连续开发 | 新消息留到16:00后处理 |\n| 周四09:00–11:00 | 保存、恢复和重开的验证 | 失败先修复，不追加新功能 |\n| 周四下午 | 演示排练一次 | 超时删场景，不加速讲解 |\n| 周五 | 评审与整理发布决定 | 门槛未过就延后，不用口头承诺替代 |\n\n回杭州沿用已有安排。阅读是有余力再做的选择，不放进必须完成的清单。\n\n## 本周结束时只检查\n\n- 一次真实的重开是否保留修改？\n- 一次不超时的完整演示是否完成？\n- 是否给家人留出了不被工作打断的时间？\n": "# Protect two priorities this week\n\n**Priority one: pass the workbench’s save-and-resume release gates.**\n\n**Priority two: complete the three-minute demonstration without improvising explanations.**\n\n| Time | Purpose | If circumstances change |\n|---|---|---|\n| Wednesday morning | The confirmed review | Keep it; spend ten minutes recording decisions afterward |\n| Wednesday 14:00–16:00 | Focused development | Leave new messages until 16:00 |\n| Thursday 09:00–11:00 | Save, resume and reopen checks | Fix failures before adding features |\n| Thursday afternoon | One full demo rehearsal | Cut a scene if it runs long; do not speak faster |\n| Friday | Review and record the release decision | Delay if a gate fails; promises do not replace evidence |\n\nKeep the existing Hangzhou plan. Reading is optional when there is energy left, not another obligation.\n\n## At the end of the week, check only\n\n- Did a real reopen preserve the edit?\n- Was one complete demo delivered within the time limit?\n- Was time with family protected from work?\n"
+    },
+    "demo-showcase-artifact-review-brief": {
+      "# 发布评审一页纸\n\n## 建议\n\n本轮只发布保存、恢复、来源追溯。普通查看与编辑不额外确认；发送、预订等外部动作在执行前单独确认。\n\n## 分歧与共同目标\n\n| 关注方 | 实际担心 | 建议如何回应 |\n|---|---|---|\n| 产品 | 范围持续变大，迟迟不能试用 | 只保留三个结果，其他进下一轮 |\n| 工程 | 中断恢复导致重复动作或成果丢失 | 将保存、旧审批失效和不重做列为门槛 |\n| 设计 | 每一步都弹确认，用户无法连续工作 | 确认贴近真正的副作用，不用于普通浏览编辑 |\n\n## 已有依据\n\n有演示反馈分类、两天开发窗口和2000元预算约束。本文不把虚构样本当作真实发布证据；正式发布需要真实失败场景的记录。\n\n## 会议需要决定\n\n1. 是否接受本轮范围，并明确推迟项？\n2. 谁负责确认恢复门槛通过，失败后由谁决定延后？\n\n## 会后留下什么\n\n一份明确的发布决定、一位验收负责人、三条通过或失败的证据。未作出的决定保持待定。\n": "# One-page release review\n\n## Recommendation\n\nShip save, resume and source tracing. Do not add confirmation to ordinary viewing or editing. Confirm external actions such as sending or booking immediately before execution.\n\n## Disagreements and shared goals\n\n| Perspective | Actual concern | Proposed response |\n|---|---|---|\n| Product | Scope keeps growing and trial access keeps slipping | Keep three outcomes; move the rest to a later iteration |\n| Engineering | Recovery repeats actions or loses work | Gate release on durable saving, expired-approval handling and no repeated actions |\n| Design | Constant confirmation interrupts work | Place confirmation at real side effects, not ordinary browsing and editing |\n\n## Available evidence\n\nThe demonstration includes categorized observations, a two-day window and a CNY 2,000 budget. Fictional samples are not release evidence; a real release requires recorded failure-case checks.\n\n## Decisions required in the meeting\n\n1. Accept the proposed scope and explicitly defer the rest?\n2. Who owns the recovery gate, and who decides to delay if it fails?\n\n## What remains afterward\n\nA release decision, an acceptance owner and three pass-or-fail records. Decisions that have not been made stay open.\n"
+    },
+    "demo-showcase-artifact-personal-letter": {
+      "最近在做一个能陪人把事情接着做完的工作台。最近发现，最值得打磨的是一些小事：做了一半停下来以后，能不能接着做，留下的东西还在不在。\n\n这周在反复测保存和恢复，周五做一个很短的演示。国庆回杭州，应该终于能吃上家里的饭了。\n": "I’ve been building a workbench that helps you keep going until something is actually finished. I’m finding that the small things deserve the most attention: can you pick up where you left off, and is your work still there when you return?\n\nThis week is mostly save-and-resume checks, then a short demo on Friday. I’m going home to Hangzhou for the holiday. Looking forward to eating at home again.\n"
+    }
+  },
+  "agentRooms": {
+    "demo-showcase-room-review": {
+      "帮我评审两天发布计划。规划师压缩范围，评审员专门找不能发布的理由。": "Review the two-day release plan. Planner, narrow the scope. Reviewer, look for reasons we should not ship.",
+      "把来源追溯限制为“从关键判断回到一条来源”，先不做跨来源自动合并。省下来的时间给成果保存和恢复。": "Limit source tracing to opening one source behind a key judgment. Defer automatic cross-source merging. Use the time for durable saving and recovery.",
+      "我反对仅凭页面显示“已保存”就通过。验收要关闭应用后重开，并核对修订内容和版本号；否则保存状态只是界面承诺。": "I would not accept an on-screen “Saved” label as proof. Close and reopen the app, then check the revised content and version number. Otherwise the status is only a UI promise.",
+      "接受这个门槛。时间不够就延后发布，不要删验收。": "Keep that gate. If time runs out, delay the release rather than deleting the checks.",
+      "计划已收敛：三个用户结果、一位验收负责人、两个连续开发窗口。评审只看保存、恢复、追溯是否完整走通。": "The plan is now three user outcomes, one acceptance owner and two focused development blocks. Review whether save, resume and trace work end to end.",
+      "我会用三类反例检查：数据丢失、重复执行、来源失效。每项需要可重现步骤；没有证据的部分标为待验证。": "I will review three failure classes: data loss, repeated execution and stale sources. Each needs reproducible steps. Anything without evidence stays unverified.",
+      "上线前的最后一轮评审": "The final review before release"
+    }
+  },
+  "automations": {
+    "demo-showcase-automation-morning": {
+      "开工前，排好真正重要的事": "Start the day with what matters",
+      "结合当前项目、已确认的安排和我的工作习惯，整理今天两个重点及第一步。": "Use current projects, confirmed commitments and my working preferences to identify two priorities and the first action."
+    },
+    "demo-showcase-automation-review": {
+      "周五，留下这一周的进展": "Keep a useful record every Friday",
+      "回看本周项目成果、未完成事项和明确纠正，整理一页周复盘。": "Review this week’s deliverables, unfinished work and explicit corrections, then prepare a one-page weekly reflection."
+    }
+  }
+}

@@ -1,0 +1,20 @@
+[
+  {
+    "url": "https://platform.kimi.com/docs/models",
+    "file": "models.html",
+    "status": 200,
+    "bytes": 293985,
+    "sha256": "7fa2627ac6047a7d0d168532d0d174b2676e7f8745daac779047b219f0bbc60c",
+    "retrievedAt": "2026-09-29T08:19:08.290904+00:00",
+    "format": "HTML snapshot, not an interactive walkthrough"
+  },
+  {
+    "url": "https://platform.kimi.com/docs/get-api-key",
+    "file": "get-api-key.html",
+    "status": 200,
+    "bytes": 446925,
+    "sha256": "8ebdddf4667af02d2fafc3ccde9f4125a2942395a0b63b57088e8d0c8016c6cc",
+    "retrievedAt": "2026-09-29T08:19:09.536332+00:00",
+    "format": "HTML snapshot, not an interactive walkthrough"
+  }
+]

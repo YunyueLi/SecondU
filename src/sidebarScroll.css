@@ -1,0 +1,55 @@
+/* Header and account remain fixed around one scrollable navigation column. */
+.app-shell .app-sidebar { overflow:clip;gap:0; }
+.app-shell .sidebar-brand { margin-bottom:14px; }
+.sidebar-scroll-body { display:flex;flex:1 1 auto;flex-direction:column;min-height:0;min-width:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;margin-bottom:-24px;padding-bottom:48px;scroll-padding-bottom:48px;mask-image:linear-gradient(to bottom,#000 calc(100% - 48px),transparent calc(100% - 24px),transparent); }
+.sidebar-scroll-body>.main-navigation,.sidebar-scroll-body>.sidebar-projects { flex-shrink:0; }
+.sidebar-scroll-body>.task-navigation { flex:0 0 auto;min-height:0;overflow:visible;padding-bottom:0; }
+.sidebar-scroll-body>.task-navigation>nav { overflow:visible;min-height:0;padding:0 0 4px;margin-top:7px; }
+.sidebar-collapsed .sidebar-scroll-body { width:100%;align-items:center;gap:8px;padding:0;mask-image:none; }
+.sidebar-collapsed .sidebar-scroll-body>.main-navigation { align-items:center;width:100%; }
+.sidebar-collapsed .sidebar-scroll-body>.main-navigation>.nav-item,.sidebar-collapsed .sidebar-scroll-body>.main-navigation>.new-task-button,.sidebar-collapsed .sidebar-scroll-body>.nav-item { width:42px;padding-inline:0; }
+.sidebar-collapsed .sidebar-scroll-body>.main-navigation>.nav-item>span,.sidebar-collapsed .sidebar-scroll-body>.main-navigation>.new-task-button>span { justify-content:center; }
+.app-sidebar > .sidebar-bottom {
+  flex-shrink:0;
+  position:relative;
+  margin-top:0;
+  padding-top:0;
+  background:transparent;
+  z-index:2;
+}
+.app-sidebar > .sidebar-bottom::before { content:"";position:absolute;left:0;right:0;top:-24px;height:24px;pointer-events:none;background:transparent;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);mask-image:linear-gradient(to bottom,transparent,#000); }
+.app-sidebar .sidebar-explore-card { padding:11px 12px 10px;margin-bottom:7px;border-radius:12px;background:color-mix(in srgb,var(--color-text) 3%,transparent); }
+.app-sidebar .sidebar-explore-card>strong { font-size:var(--hither-font-caption);line-height:19px; }
+.app-sidebar .sidebar-explore-card>p { margin:5px 0 9px;font-size:var(--hither-font-meta);line-height:18px; }
+.app-sidebar .sidebar-explore-card>button:last-child { min-height:28px;height:28px;font-size:var(--hither-font-caption); }
+.app-shell .app-sidebar .main-navigation > .nav-item,.app-shell .app-sidebar .main-navigation > .new-task-button { font-size:var(--hither-font-label); }
+.app-sidebar .sidebar-section-label,.app-sidebar .sidebar-projects-header>a { font-size:var(--hither-font-meta);line-height:18px;font-weight:500;color:var(--color-text-secondary); }
+.app-sidebar .sidebar-projects { padding-top:10px; }
+.app-sidebar .sidebar-projects-header { padding:0 8px 5px;min-height:28px; }
+.app-sidebar .sidebar-projects-header>button { width:26px;height:26px; }
+.app-sidebar .sidebar-projects-header>button svg { width:17px;height:17px; }
+.app-sidebar .sidebar-project-link { min-height:36px;height:36px;gap:10px;padding:7px 10px;border-radius:9px;font-size:var(--hither-font-label);line-height:22px;font-weight:400;color:var(--color-text);text-decoration:none; }
+.app-sidebar .sidebar-project-link>svg { width:18px;height:18px; }
+.app-sidebar .sidebar-project-link>span { min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+.app-sidebar .sidebar-project-link:hover { background:color-mix(in srgb,var(--color-text) 4%,transparent); }
+.app-sidebar .sidebar-project-link[aria-current=page] { background:color-mix(in srgb,var(--color-text) 7%,transparent);font-weight:500; }
+.app-sidebar .sidebar-scroll-body>.task-navigation { padding-top:20px; }
+.app-sidebar .profile-trigger .profile-copy strong { font-size:14px; }
+
+.recent-chat-row { display:flex;align-items:center;gap:0;border-radius:9px;position:relative; }
+.recent-chat-row:hover,.recent-chat-row:focus-within,.recent-chat-row[data-current=true] { background:var(--color-surface-secondary); }
+.app-sidebar .recent-chat-row .recent-room-link { flex:1;min-width:0;width:100%;height:34px;min-height:34px;padding:4px 8px;background:transparent; }
+.app-sidebar .recent-chat-row .recent-room-link>span { gap:8px; }
+.app-sidebar .recent-chat-row .recent-hither-avatar { width:22px;height:22px;flex:0 0 22px;border-radius:6px; }
+.app-sidebar .recent-chat-row .recent-hither-avatar svg { width:16px;height:16px; }
+.app-sidebar .recent-chat-row .recent-chat-copy { min-width:0;flex:1; }
+.app-sidebar .recent-chat-row .recent-room-link strong { display:block;font-size:14px;line-height:20px;font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;overflow-wrap:normal; }
+.recent-chat-menu { position:absolute!important;right:3px;top:50%;transform:translateY(-50%);width:25px!important;height:28px!important;opacity:0;pointer-events:none; }
+.recent-chat-row:hover .recent-chat-menu,.recent-chat-row:focus-within .recent-chat-menu,.recent-chat-menu[data-state=open] { pointer-events:auto; }
+.app-sidebar .recent-chat-row:hover .recent-room-link,.app-sidebar .recent-chat-row:focus-within .recent-room-link { padding-right:33px; }
+.recent-chat-menu>span>svg { width:15px;height:15px; }.recent-chat-row:hover .recent-chat-menu,.recent-chat-row:focus-within .recent-chat-menu,.recent-chat-menu[data-state=open] { opacity:1; }
+.recent-chat-error { font-size:var(--hither-font-meta);line-height:1.6;padding:8px;color:var(--color-text-secondary); }
+.recent-rename-dialog { max-width:420px; }.recent-rename-dialog .form-field { margin:0;gap:7px; }.recent-rename-dialog footer { display:flex;justify-content:flex-end;gap:8px;margin-top:20px; }
+@media(hover:none){.recent-chat-menu{opacity:1;pointer-events:auto}.app-sidebar .recent-chat-row .recent-room-link{padding-right:33px}}
+
+.app-sidebar .recent-chat-empty{margin:0;padding:2px 10px 8px;font-size:13px;line-height:20px;font-weight:400;color:var(--color-text-secondary)}.sidebar-scroll-body>.task-navigation>nav:has(.recent-chat-empty){margin-top:0}.app-sidebar .task-navigation:has(.recent-chat-empty) .sidebar-section-label{padding-bottom:5px}

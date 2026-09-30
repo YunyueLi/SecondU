@@ -1,0 +1,289 @@
+{
+  "sources": {
+    "source-chat": {
+      "和许安约试用，也约一碗面": "Trying the Workbench and meeting for noodles",
+      "万叶和许安是浙江大学软件工程同学，2016 年入学时住同一层宿舍。许安现在在杭州做阿里云的后端开发。\n万叶：这周想把 Kimi 工作台内测版跑通。上午九点到十一点我先不排会，下午留半小时看反馈。\n许安：你把能跑的版本发我，周三晚上我试。先别讲功能，我就按自己的任务用。\n万叶：好。国庆回杭州再约碗片儿川，还是学校附近？\n许安：可以，时间定了告诉我。": "Caspian and Xu An studied software engineering together at Zhejiang University. They lived on the same dormitory floor when they enrolled in 2016. Xu An now works on backend development at Alibaba Cloud in Hangzhou.\nCaspian: I want to get the Kimi Workbench pilot working this week. I am keeping 9 to 11 a.m. free of meetings and setting aside half an hour in the afternoon to review feedback.\nXu An: Send me a working version and I will try it on Wednesday evening. Skip the feature tour for now; I will use it for a task of my own.\nCaspian: Sounds good. When I am back in Hangzhou for the National Day holiday, shall we have pian er chuan noodles near campus again?\nXu An: Sure. Let me know once you have a date."
+    },
+    "demo-v2-source-chat-lu": {
+      "和陆老师聊工作，也聊读书": "Talking with Professor Lu about work and books",
+      "万叶：陆老师，最近在 Kimi 做一个工作台，从访谈到前端都要自己跟。\n陆棠：听起来像你毕业项目的放大版。最难的是哪一段？\n万叶：功能不难列，难的是知道哪些真值得先做。\n陆棠：先看一个人从开始到结束怎么完成事情。别急着总结十种需求。\n万叶：五次访谈里，有三个人都卡在任务中断以后。\n陆棠：那就先把这一步看透，做完请他们再试一次。\n万叶：您当年让我去食堂问同学怎么报名活动，也是这个意思。\n陆棠：是。还有，不要天天只看产品文章。最近有读别的书吗？\n万叶：在看《置身事内》，国庆带回杭州接着看。\n陆棠：好，回来了有空喝杯茶，不必准备汇报。": "Caspian: Professor Lu, I have been building a Workbench at Kimi lately, following everything from interviews to the frontend myself.\nLu Tang: It sounds like a larger version of your graduation project. Which part is hardest?\nCaspian: Listing features is easy. Figuring out which ones are worth doing first is harder.\nLu Tang: Watch how one person completes something from beginning to end. Do not rush to summarize ten different needs.\nCaspian: In five interviews, three people got stuck after a task was interrupted.\nLu Tang: Then study that step closely first. Once you have improved it, ask them to try it again.\nCaspian: Is that why you had me ask classmates in the dining hall how they signed up for events back then?\nLu Tang: Exactly. And try reading something beyond product articles. Have you read any other books lately?\nCaspian: I am reading Zhi Shen Shi Nei. I will take it back to Hangzhou during the National Day holiday and keep reading.\nLu Tang: Good. Come by for tea if you have time when you are back. No presentation needed."
+    },
+    "demo-v2-source-chat-song": {
+      "约国庆后在上海见面": "Planning a visit to Shanghai after the holiday",
+      "万叶：国庆你回杭州吗？\n宋岚：今年留上海，想把家里收拾一下。你呢？\n万叶：先回去看爸妈，十月中旬也许去上海一趟。\n宋岚：那来找我吃饭，别只在虹桥转车。\n万叶：好。你们最近也在做 AI 功能？\n宋岚：在试，但我更想知道用户离开页面之前究竟缺了什么。\n万叶：我们现在也把接更多工具往后放了，先让任务停下后能接着做。\n宋岚：这个听起来很具体。到时候带电脑来给我看十分钟就够。\n万叶：剩下时间不聊工作。想沿苏州河走走。\n宋岚：可以，等你的日期定下来。": "Caspian: Are you going back to Hangzhou for the National Day holiday?\nSong Lan: I am staying in Shanghai this year. I want to get the apartment in order. What about you?\nCaspian: I will visit my parents first. I might come to Shanghai in mid-October.\nSong Lan: Then come and have a meal with me. Do not just change trains at Hongqiao.\nCaspian: I will. Have you been working on AI features too?\nSong Lan: We are trying some, but I am more interested in what users are missing just before they leave the page.\nCaspian: We have also moved additional tool integrations further down the list. First, we want people to be able to resume a task after it stops.\nSong Lan: That sounds concrete. Bring your laptop when you visit; a ten-minute look will be enough.\nCaspian: And no work talk for the rest of the visit. I would like to walk along Suzhou Creek.\nSong Lan: Sounds good. Let me know when your dates are set."
+    },
+    "demo-v2-source-chat-he": {
+      "评测先看失败在哪里": "Understanding where evaluations fail",
+      "万叶：何舟，首轮评测我想先跑五类任务，不做一个大分数。\n何舟：可以，每类写清什么才算完成。\n万叶：整理资料和改已有文稿先放进去，都是访谈里实际做的。\n何舟：失败样例别删，尤其要保留工具调用之前的上下文。\n万叶：这轮模型调用先控制在两千元内。\n何舟：我先跑小批量，给你实际用量和失败分布。\n万叶：界面会标出最后完成的一步，工具失败不会显示完成。\n何舟：好，模型判断错和工具没返回最好分开看。\n万叶：周四下午一起看第一轮？\n何舟：四点可以。先拿十条完整记录来。": "Caspian: He Zhou, for the first evaluation, I would like to try five types of tasks without combining everything into one big score.\nHe Zhou: That works. Define what counts as complete for each type.\nCaspian: Let us start with organizing materials and revising existing drafts. Both came up in the interviews.\nHe Zhou: Keep the failure cases, especially the context from before each tool call.\nCaspian: Let us keep model calls within CNY 2,000 for this round.\nHe Zhou: I will run a small batch first and send you the actual usage and a breakdown of failures.\nCaspian: The interface will show the last completed step. A tool failure will not appear as completion.\nHe Zhou: Good. We should distinguish a mistaken model judgment from a tool that did not respond.\nCaspian: Shall we review the first round together on Thursday afternoon?\nHe Zhou: Four o’clock works. Bring ten complete records to start with."
+    },
+    "demo-v2-source-chat-xu": {
+      "把中断发生的时刻测清楚": "Testing the exact moment a task is interrupted",
+      "万叶：我把中断和继续接好了，你今天能帮我看吗？\n徐沐：可以，我会在保存前后各按一次，不只测正常完成。\n万叶：部分写好的文件会保留，界面标成待检查。\n徐沐：那关掉软件再打开，能找回原来的状态吗？\n万叶：能读到最后一条执行事件，我再补一轮重启验证。\n徐沐：还有一种：停下后用户自己改了文件，再点继续。\n万叶：不能盖掉他的改动，我会让它提示版本冲突。\n徐沐：这条我来测。报错最好告诉我哪个文件，不要只说失败。\n万叶：好。测完我们优先修会丢输入的。\n徐沐：明天中午前把复现记录发你。": "Caspian: I have connected interruption and resume. Can you take a look today?\nXu Mu: Yes. I will interrupt once before saving and once after, as well as testing normal completion.\nCaspian: Partially written files will remain, with the interface marking them for review.\nXu Mu: If I close the application and reopen it, can it recover the previous state?\nCaspian: It can read the last execution event. I will add another restart check.\nXu Mu: There is another case: the user stops, edits the file, and then resumes.\nCaspian: It must preserve those edits. I will make it report a version conflict.\nXu Mu: I will test that. The error should tell me which file is affected, rather than just saying it failed.\nCaspian: Agreed. After testing, let us fix anything that loses user input first.\nXu Mu: I will send you the reproduction notes before noon tomorrow."
+    },
+    "demo-v2-source-chat-tang": {
+      "午休时一起走了一遍确认弹窗": "Walking through a confirmation dialog over lunch",
+      "万叶：下楼买咖啡吗？我顺便给你看一下确认弹窗。\n唐悦：走。现在弹窗只有是否继续，我看不出要确认什么。\n万叶：发邮件时应该直接看到收件人和正文。\n唐悦：对，改完正文再确认一次。读一份文档就不用每步都问。\n万叶：我先把按钮写成发送这封邮件。\n唐悦：拒绝以后也别报错，让用户回去改内容。\n万叶：这一版我下午接到可运行页面里。\n唐悦：别只发截图，我想真的按一遍。\n万叶：好。你还是冰美式？\n唐悦：今天热的，外面有点凉。": "Caspian: Want to go downstairs for coffee? I can show you the confirmation dialog on the way.\nTang Yue: Let us go. Right now it only asks whether to continue. I cannot tell what I am confirming.\nCaspian: When sending an email, the recipient and full message should be visible.\nTang Yue: Yes, and it should ask again if the message is edited. Reading a document does not need a confirmation at every step.\nCaspian: I will change the button to “Send this email.”\nTang Yue: Rejecting it should let the user return and edit the content, without showing an error.\nCaspian: I will connect this version to a working page this afternoon.\nTang Yue: Send me something I can actually click through, not just a screenshot.\nCaspian: Will do. Iced Americano as usual?\nTang Yue: Hot today. It is a little chilly outside."
+    },
+    "demo-v2-source-chat-shen": {
+      "对齐任务状态与文件版本": "Aligning task states and file versions",
+      "万叶：前端现在要区分等用户、运行中和失败。\n沈川：我给你明确状态字段，不用从消息文本猜。\n万叶：关页面以后，只要本机服务没停，任务就继续对吗？\n沈川：对。服务停了会留下中断状态，重启后不会假装完成。\n万叶：文件每次保存带版本号？\n沈川：带，版本对不上返回冲突，旧内容还在。\n万叶：那我在编辑区让用户先看自己的修改。\n沈川：可以。我把最后完成的步骤也一起返回。\n万叶：这下继续按钮可以有明确依据了。\n沈川：接口说明更新了，下午我们连起来走一遍。": "Caspian: The frontend needs to distinguish waiting for the user, running, and failed.\nShen Chuan: I will give you explicit state fields so you do not have to infer them from message text.\nCaspian: If the page closes, the task continues as long as the local service stays running, right?\nShen Chuan: Right. If the service stops, it leaves an interrupted state. Restarting will not pretend it completed.\nCaspian: Does every file save include a version number?\nShen Chuan: Yes. A version mismatch returns a conflict, and the old content remains.\nCaspian: Then the editor can ask users to review their own changes first.\nShen Chuan: That works. I will also return the last completed step.\nCaspian: That gives the resume button something clear to work from.\nShen Chuan: The API notes are updated. Let us connect it all and walk through it this afternoon."
+    },
+    "demo-v2-source-chat-zhao": {
+      "和高中班主任说说近况": "Catching up with a high school teacher",
+      "万叶：赵老师，好久没联系，最近忙吗？\n赵栩：刚送走一届高三，难得轻松一点。你在北京还习惯吗？\n万叶：习惯了，现在在月之暗面做 Kimi 产品，工作挺有意思。\n赵栩：我也用过 Kimi，原来你做这个。每天是不是很忙？\n万叶：最近有内测，白天忙些。周末会出去跑跑步。\n赵栩：那就好。你以前一做题就坐着不动。\n万叶：这个习惯还在改。国庆回杭州，想找您喝茶。\n赵栩：先陪家里，时间有余再来，不着急。\n万叶：好，我提前给您发消息。\n赵栩：路上顺利，回来了再说。": "Caspian: Teacher Zhao, it has been a while. Have you been busy?\nZhao Xu: My latest class has just finished its final year of high school, so things are a little quieter. Have you settled into Beijing?\nCaspian: I have. I work on Kimi at Moonshot AI now, and the work is interesting.\nZhao Xu: I have used Kimi too. So that is what you do. Are you busy every day?\nCaspian: We have a pilot coming up, so the days are busy. I go running on weekends.\nZhao Xu: That is good. You used to sit still for ages once you started working on math problems.\nCaspian: I am still trying to change that habit. I will be back in Hangzhou during the National Day holiday and would love to have tea with you.\nZhao Xu: Spend time with your family first. Come if you have time to spare. There is no rush.\nCaspian: Of course. I will message you ahead of time.\nZhao Xu: Safe travels. We can arrange it once you are back."
+    },
+    "demo-v2-source-chat-wu": {
+      "敲定第一批内测回访的安排": "Arranging the first pilot follow-up sessions",
+      "万叶：十月十二日那轮先按八位用户准备吧。\n吴桐：可以，五位已经聊过，另外三位我还在约时间。\n万叶：别让大家照着我们的脚本点，最好带自己的任务。\n吴桐：我在邀请里写清楚准备一件最近真想做的事。\n万叶：如果中间停住，记录停在哪里就行，不用帮我们找借口。\n吴桐：哈哈，这句我会换个自然点的说法。\n万叶：使用说明我先缩成一页。\n吴桐：好，我把反馈入口放在最后，不要发一大包文档。\n万叶：邀请今天给韩知看一眼，明天再核对名单。\n吴桐：收到，有回复我同步到表里。": "Caspian: Let us prepare for eight users in the October 12 pilot.\nWu Tong: Sounds good. We have spoken to five; I am still arranging times with the other three.\nCaspian: We should ask them to bring their own tasks instead of following a script we give them.\nWu Tong: I will ask them in the invitation to bring something they have recently wanted to get done.\nCaspian: If they get stuck, recording where is enough. They do not need to make excuses for us.\nWu Tong: Ha, I will phrase that a little more naturally.\nCaspian: I will cut the usage guide down to one page.\nWu Tong: Good. I will put the feedback link at the end. We should avoid sending a huge bundle of documents.\nCaspian: Let Han Zhi review the invitation today, then we can check the participant list again tomorrow.\nWu Tong: Got it. I will add replies to the spreadsheet as they arrive."
+    },
+    "demo-v2-source-chat-ye": {
+      "一起把成果编辑区做顺": "Making the output editor easier to use",
+      "万叶：今天你接状态列表，我做成果编辑，可以吗？\n叶澄：行。切换文稿前记得留住草稿。\n万叶：我做了自动保存本地草稿，正式版本还是点保存。\n叶澄：长会话别强制拉到最下面，我昨天看上一段总被拽走。\n万叶：收到。窄窗口的成果区我改成可收起的侧层。\n叶澄：关掉以后焦点回到打开按钮，这个也顺便测。\n万叶：你午饭想吃什么？我想出去走一下。\n叶澄：楼下面馆吧，回来我们拿真实长标题再测一遍。\n万叶：好，中文和英文都看。\n叶澄：两点见，先吃饭。": "Caspian: Can you take the status list today while I work on editing outputs?\nYe Cheng: Sure. Remember to keep the draft when switching documents.\nCaspian: I have added automatic local draft saving. Saving an official version still requires the Save button.\nYe Cheng: Long chats should not keep jumping to the bottom. Yesterday, it kept pulling me away from an earlier message.\nCaspian: Got it. For narrow windows, I have made the output area a collapsible side panel.\nYe Cheng: Check that focus returns to the button that opened it when the panel closes.\nCaspian: What do you want for lunch? I would like to get out for a walk.\nYe Cheng: The noodle place downstairs? When we get back, let us test again with realistic long titles.\nCaspian: Sounds good. We will check both Chinese and English.\nYe Cheng: See you at two. Lunch first."
+    },
+    "demo-v2-source-chat-liang": {
+      "五次访谈里重复出现的停顿": "The same hesitation across five interviews",
+      "梁秋：五次访谈原话都在文档里了。\n万叶：我先看具体操作，再写结论。哪一段最值得重放？\n梁秋：三个人在任务停下后都问过：现在做到了哪里？\n万叶：那执行状态和恢复入口可以放在同一轮原型里看。\n梁秋：还有一个人想先改要求，再决定重跑哪部分。\n万叶：这个很关键，不只是再试一次。\n梁秋：对。也有人不愿意把全部资料交进来，要能只选几份。\n万叶：我在界面上保留选择范围，别逼他先导入所有东西。\n梁秋：下轮先找两位回访，看看改完是否好理解。\n万叶：时间定了叫我，我一起听。": "Liang Qiu: The verbatim notes from all five interviews are in the document.\nCaspian: I will look at the specific interactions before drawing conclusions. Which part is most useful to replay?\nLiang Qiu: After a task stopped, three people asked, “How far has it got?”\nCaspian: Then we can test execution status and the resume entry point in the same prototype round.\nLiang Qiu: One person also wanted to change the request before deciding which part to run again.\nCaspian: That is key. They need more than a retry.\nLiang Qiu: Exactly. Some people also do not want to provide all their materials. They should be able to choose just a few.\nCaspian: I will keep that choice in the interface so they do not have to import everything first.\nLiang Qiu: Let us follow up with two people in the next round and see whether the changes make it clearer.\nCaspian: Let me know when the time is set. I will join and listen."
+    },
+    "demo-v2-source-chat-wei": {
+      "周日四点，奥森见": "Sunday at four, Olympic Forest Park",
+      "万叶：周日还跑吗？这周坐太久了。\n魏禾：跑，四点奥森南门？\n万叶：可以，先按六公里，跑不动就走。\n魏禾：本来也不是训练营。你别一边跑一边回工作消息就行。\n万叶：我把手机放腰包，工作到周五先收个尾。\n魏禾：跑完去吃面？上次那家汤不错。\n万叶：好。最近早晚凉，要不要带个薄外套？\n魏禾：带着吧，停下来会冷。\n万叶：如果下雨就改散步，临时看天气。\n魏禾：没问题，出门前联系。": "Caspian: Are we running on Sunday? I have spent too much of this week sitting.\nWei He: Yes. South gate of Olympic Forest Park at four?\nCaspian: Works for me. Let us aim for six kilometers and walk if we need to.\nWei He: It is hardly a training camp. Just do not answer work messages while running.\nCaspian: I will keep my phone in the running belt and wrap up work on Friday.\nWei He: Noodles afterward? The soup at the place we tried last time was good.\nCaspian: Yes. It has been cooler in the mornings and evenings. Should we bring light jackets?\nWei He: Bring one. It gets cold once we stop.\nCaspian: If it rains, we can switch to a walk. Let us check the weather on the day.\nWei He: No problem. We will be in touch before leaving."
+    },
+    "demo-v2-source-chat-du": {
+      "国庆回杭州，先吃一顿家常饭": "A family meal in Hangzhou during the holiday",
+      "万叶：妈，我想二号中午回杭州吃饭，车次还没定。\n杜晴：好，你定了再告诉我，不用一早赶。\n万叶：这次回去不带一堆工作安排，下午陪你们走走。\n杜晴：那最好。阳台的桂花这几天开了，你回来能闻到。\n万叶：想吃爸做的片儿川。\n杜晴：跟他说了，他已经在想买什么菜。\n万叶：不用做太多，我们三四个人够吃就好。\n杜晴：你妹妹也回来，她说有新歌要放给你听。\n万叶：哈哈好，课程作业晚点再看。\n杜晴：回来先吃饭，别把家里也变成办公室。": "Caspian: Mum, I am thinking of coming back to Hangzhou for lunch on the second. I have not chosen a train yet.\nDu Qing: Good. Let me know when you have. No need to rush off early in the morning.\nCaspian: I will not fill this visit with work. We can take a walk together in the afternoon.\nDu Qing: That would be lovely. The osmanthus on the balcony has started blooming. You will be able to smell it when you come home.\nCaspian: I would like Dad’s pian er chuan noodles.\nDu Qing: I have told him. He is already thinking about which ingredients to buy.\nCaspian: No need to make too much. Enough for the three or four of us is fine.\nDu Qing: Your sister will be home too. She says she has new songs for you to hear.\nCaspian: Great. We can look at her coursework later.\nDu Qing: Eat first when you get home. Do not turn the house into an office too."
+    },
+    "demo-v2-source-chat-lin": {
+      "和父亲约一碗片儿川": "A bowl of noodles with Dad",
+      "万叶：爸，二号如果中午到，想吃你做的片儿川。\n万建明：可以，提前一天告诉我，我去买雪菜和笋。\n万叶：不用一大桌，就吃面。\n万建明：好。你最近做的那个工作台，是帮人干什么的？\n万叶：把一句要求变成实际做事的过程，能看到做到了哪里。\n万建明：它做错了，人还能改吧？\n万叶：能，最近就在做停下来改要求、接着做这一段。\n万建明：这就挺好，人自己干活也经常改主意。\n万叶：回去给你看个简单的。\n万建明：先吃饭，吃完想看再看。": "Caspian: Dad, if I arrive around noon on the second, I would love your pian er chuan noodles.\nWan Jianming: Of course. Tell me the day before and I will buy preserved mustard greens and bamboo shoots.\nCaspian: Just noodles will be fine. No need for a table full of dishes.\nWan Jianming: All right. What does that Workbench you are building help people do?\nCaspian: It turns a request into a process that gets things done, and lets you see how far it has got.\nWan Jianming: Can people still make changes if it gets something wrong?\nCaspian: Yes. Lately I have been working on stopping, changing the request, and carrying on.\nWan Jianming: That sounds useful. People change their minds when they are working too.\nCaspian: I will show you a simple example when I am home.\nWan Jianming: Let us eat first. We can look afterward if we feel like it."
+    },
+    "demo-v2-source-chat-jiang": {
+      "和妹妹看校园活动报名原型": "Reviewing a campus registration prototype with his sister",
+      "万晴：哥，我们课程要做校园活动报名，页面越想越多。\n万叶：先说一个同学从看见活动到报上名，要经过哪几步？\n万晴：看时间地点，填信息，最后知道报名成功。\n万叶：那先把这三步画出来，别急着加其他页。\n万晴：我还想放一个聊天机器人。\n万叶：你先问问同学，他们报名时具体有什么问题。\n万晴：好，如果只是问地点，页面写清楚就行。\n万叶：对。先找两个人试一下，你就知道哪里没讲明白。\n万晴：我周末发原型给你，顺便给你听新歌。\n万叶：新歌可以现在发，作业我们周末看。": "Wan Qing: We have to build campus event registration for a class, and I keep thinking of more pages to add.\nCaspian: Start with one student. What steps do they take from seeing an event to signing up?\nWan Qing: They check the time and place, fill in their information, and find out whether registration succeeded.\nCaspian: Sketch those three steps first. The other pages can wait.\nWan Qing: I also wanted to add a chatbot.\nCaspian: First ask classmates what specific questions they have when signing up.\nWan Qing: Right. If they only need to know the location, we can make it clear on the page.\nCaspian: Exactly. Ask two people to try it first, and you will see what needs explaining.\nWan Qing: I will send you the prototype this weekend, along with some new songs.\nCaspian: You can send the songs now. We will look at the coursework over the weekend."
+    },
+    "demo-v2-source-chat-zhou": {
+      "处理出租屋漏水和续租": "A leaking kitchen sink and a lease renewal",
+      "万叶：厨房水槽下面又湿了，周末做饭才发现。\n周芮：先看看是不是软管接口，拍张照给房东。\n万叶：拍了，他说可以约师傅，我准备周六上午在家等。\n周芮：那先别自己拆。之前续租合同也快到期了吧？\n万叶：十一月底，想等漏水修好再聊续租。\n周芮：可以，把维修责任和涨租写清楚。\n万叶：你上次搬家那家搬运公司怎么样？\n周芮：还行，不过你先别急着搬，通勤短挺重要的。\n万叶：也是。修完来家里吃饭，我最近学会煎三文鱼了。\n周芮：期待，别只给我看成品照片。": "Caspian: It is wet under the kitchen sink again. I only noticed while cooking over the weekend.\nZhou Rui: Check whether it is the hose connection and send the landlord a photo.\nCaspian: I did. He said we can arrange a repair, so I am planning to wait at home on Saturday morning.\nZhou Rui: Then leave it assembled for now. Your lease is nearly up for renewal too, is it not?\nCaspian: At the end of November. I want to discuss renewing after the leak is fixed.\nZhou Rui: Makes sense. Get the repair responsibilities and any rent increase written down clearly.\nCaspian: How was the moving company you used last time?\nZhou Rui: It was fine, but there is no need to rush into moving. A short commute matters.\nCaspian: True. Come over for dinner once it is fixed. I have learned to pan-fry salmon.\nZhou Rui: Looking forward to it. Do not just send me a photo of the finished dish."
+    },
+    "demo-v2-source-chat-gao": {
+      "从青岛照片里挑十二张": "Choosing twelve photographs from Qingdao",
+      "万叶：青岛那批照片你选完了吗？我还有三百多张没看。\n高远：先选十二张，别一开始就修图。\n万叶：我最喜欢阴天海边那张，颜色很淡。\n高远：我喜欢你拍的车窗倒影，比打卡照有意思。\n万叶：下次想少排两个地方，就沿着路走。\n高远：同意。旅行不是把地图上的点都点亮。\n万叶：周末我先把相册做个小版本。\n高远：发我，我帮你看顺序。\n万叶：等打印出来带去跑步后给你看。\n高远：好，封面别堆字，留张你最喜欢的。": "Caspian: Have you finished choosing your Qingdao photos? I still have more than three hundred to look through.\nGao Yuan: Choose twelve first. Do not start editing straight away.\nCaspian: My favorite is the one by the sea on the cloudy day. The colors are very soft.\nGao Yuan: I like your reflection in the train window. It is more interesting than a standard tourist shot.\nCaspian: Next time I want to plan fewer stops and just walk along the streets.\nGao Yuan: Agreed. A trip does not have to cover every point on the map.\nCaspian: I will put together a small version of the album this weekend.\nGao Yuan: Send it to me. I can help with the order.\nCaspian: When it is printed, I will bring it for you to see after a run.\nGao Yuan: Good. Keep the cover simple and use the photograph you like best."
+    }
+  },
+  "conversations": {
+    "conversation-xuan": {
+      "许安": "Xu An",
+      "这周想把 Kimi 工作台内测版跑通。上午九点到十一点我先不排会，下午留半小时看反馈。": "I want to get the Kimi Workbench pilot working this week. I am keeping 9 to 11 a.m. free of meetings and setting aside half an hour in the afternoon to review feedback.",
+      "你把能跑的版本发我，周三晚上我试。先别讲功能，我就按自己的任务用。": "Send me a working version and I will try it on Wednesday evening. Skip the feature tour for now; I will use it for a task of my own.",
+      "好。国庆回杭州再约碗片儿川，还是学校附近？": "Sounds good. When I am back in Hangzhou for the National Day holiday, shall we have pian er chuan noodles near campus again?",
+      "可以，时间定了告诉我。": "Sure. Let me know once you have a date."
+    },
+    "demo-v2-chat-lu": {
+      "陆棠": "Lu Tang",
+      "陆老师，最近在 Kimi 做一个工作台，从访谈到前端都要自己跟。": "Professor Lu, I have been building a Workbench at Kimi lately, following everything from interviews to the frontend myself.",
+      "听起来像你毕业项目的放大版。最难的是哪一段？": "It sounds like a larger version of your graduation project. Which part is hardest?",
+      "功能不难列，难的是知道哪些真值得先做。": "Listing features is easy. Figuring out which ones are worth doing first is harder.",
+      "先看一个人从开始到结束怎么完成事情。别急着总结十种需求。": "Watch how one person completes something from beginning to end. Do not rush to summarize ten different needs.",
+      "五次访谈里，有三个人都卡在任务中断以后。": "In five interviews, three people got stuck after a task was interrupted.",
+      "那就先把这一步看透，做完请他们再试一次。": "Then study that step closely first. Once you have improved it, ask them to try it again.",
+      "您当年让我去食堂问同学怎么报名活动，也是这个意思。": "Is that why you had me ask classmates in the dining hall how they signed up for events back then?",
+      "是。还有，不要天天只看产品文章。最近有读别的书吗？": "Exactly. And try reading something beyond product articles. Have you read any other books lately?",
+      "在看《置身事内》，国庆带回杭州接着看。": "I am reading Zhi Shen Shi Nei. I will take it back to Hangzhou during the National Day holiday and keep reading.",
+      "好，回来了有空喝杯茶，不必准备汇报。": "Good. Come by for tea if you have time when you are back. No presentation needed."
+    },
+    "demo-v2-chat-song": {
+      "宋岚": "Song Lan",
+      "国庆你回杭州吗？": "Are you going back to Hangzhou for the National Day holiday?",
+      "今年留上海，想把家里收拾一下。你呢？": "I am staying in Shanghai this year. I want to get the apartment in order. What about you?",
+      "先回去看爸妈，十月中旬也许去上海一趟。": "I will visit my parents first. I might come to Shanghai in mid-October.",
+      "那来找我吃饭，别只在虹桥转车。": "Then come and have a meal with me. Do not just change trains at Hongqiao.",
+      "好。你们最近也在做 AI 功能？": "I will. Have you been working on AI features too?",
+      "在试，但我更想知道用户离开页面之前究竟缺了什么。": "We are trying some, but I am more interested in what users are missing just before they leave the page.",
+      "我们现在也把接更多工具往后放了，先让任务停下后能接着做。": "We have also moved additional tool integrations further down the list. First, we want people to be able to resume a task after it stops.",
+      "这个听起来很具体。到时候带电脑来给我看十分钟就够。": "That sounds concrete. Bring your laptop when you visit; a ten-minute look will be enough.",
+      "剩下时间不聊工作。想沿苏州河走走。": "And no work talk for the rest of the visit. I would like to walk along Suzhou Creek.",
+      "可以，等你的日期定下来。": "Sounds good. Let me know when your dates are set."
+    },
+    "demo-v2-chat-he": {
+      "何舟": "He Zhou",
+      "何舟，首轮评测我想先跑五类任务，不做一个大分数。": "He Zhou, for the first evaluation, I would like to try five types of tasks without combining everything into one big score.",
+      "可以，每类写清什么才算完成。": "That works. Define what counts as complete for each type.",
+      "整理资料和改已有文稿先放进去，都是访谈里实际做的。": "Let us start with organizing materials and revising existing drafts. Both came up in the interviews.",
+      "失败样例别删，尤其要保留工具调用之前的上下文。": "Keep the failure cases, especially the context from before each tool call.",
+      "这轮模型调用先控制在两千元内。": "Let us keep model calls within CNY 2,000 for this round.",
+      "我先跑小批量，给你实际用量和失败分布。": "I will run a small batch first and send you the actual usage and a breakdown of failures.",
+      "界面会标出最后完成的一步，工具失败不会显示完成。": "The interface will show the last completed step. A tool failure will not appear as completion.",
+      "好，模型判断错和工具没返回最好分开看。": "Good. We should distinguish a mistaken model judgment from a tool that did not respond.",
+      "周四下午一起看第一轮？": "Shall we review the first round together on Thursday afternoon?",
+      "四点可以。先拿十条完整记录来。": "Four o’clock works. Bring ten complete records to start with."
+    },
+    "demo-v2-chat-xu": {
+      "徐沐": "Xu Mu",
+      "我把中断和继续接好了，你今天能帮我看吗？": "I have connected interruption and resume. Can you take a look today?",
+      "可以，我会在保存前后各按一次，不只测正常完成。": "Yes. I will interrupt once before saving and once after, as well as testing normal completion.",
+      "部分写好的文件会保留，界面标成待检查。": "Partially written files will remain, with the interface marking them for review.",
+      "那关掉软件再打开，能找回原来的状态吗？": "If I close the application and reopen it, can it recover the previous state?",
+      "能读到最后一条执行事件，我再补一轮重启验证。": "It can read the last execution event. I will add another restart check.",
+      "还有一种：停下后用户自己改了文件，再点继续。": "There is another case: the user stops, edits the file, and then resumes.",
+      "不能盖掉他的改动，我会让它提示版本冲突。": "It must preserve those edits. I will make it report a version conflict.",
+      "这条我来测。报错最好告诉我哪个文件，不要只说失败。": "I will test that. The error should tell me which file is affected, rather than just saying it failed.",
+      "好。测完我们优先修会丢输入的。": "Agreed. After testing, let us fix anything that loses user input first.",
+      "明天中午前把复现记录发你。": "I will send you the reproduction notes before noon tomorrow."
+    },
+    "demo-v2-chat-tang": {
+      "唐悦": "Tang Yue",
+      "下楼买咖啡吗？我顺便给你看一下确认弹窗。": "Want to go downstairs for coffee? I can show you the confirmation dialog on the way.",
+      "走。现在弹窗只有是否继续，我看不出要确认什么。": "Let us go. Right now it only asks whether to continue. I cannot tell what I am confirming.",
+      "发邮件时应该直接看到收件人和正文。": "When sending an email, the recipient and full message should be visible.",
+      "对，改完正文再确认一次。读一份文档就不用每步都问。": "Yes, and it should ask again if the message is edited. Reading a document does not need a confirmation at every step.",
+      "我先把按钮写成发送这封邮件。": "I will change the button to “Send this email.”",
+      "拒绝以后也别报错，让用户回去改内容。": "Rejecting it should let the user return and edit the content, without showing an error.",
+      "这一版我下午接到可运行页面里。": "I will connect this version to a working page this afternoon.",
+      "别只发截图，我想真的按一遍。": "Send me something I can actually click through, not just a screenshot.",
+      "好。你还是冰美式？": "Will do. Iced Americano as usual?",
+      "今天热的，外面有点凉。": "Hot today. It is a little chilly outside."
+    },
+    "demo-v2-chat-shen": {
+      "沈川": "Shen Chuan",
+      "前端现在要区分等用户、运行中和失败。": "The frontend needs to distinguish waiting for the user, running, and failed.",
+      "我给你明确状态字段，不用从消息文本猜。": "I will give you explicit state fields so you do not have to infer them from message text.",
+      "关页面以后，只要本机服务没停，任务就继续对吗？": "If the page closes, the task continues as long as the local service stays running, right?",
+      "对。服务停了会留下中断状态，重启后不会假装完成。": "Right. If the service stops, it leaves an interrupted state. Restarting will not pretend it completed.",
+      "文件每次保存带版本号？": "Does every file save include a version number?",
+      "带，版本对不上返回冲突，旧内容还在。": "Yes. A version mismatch returns a conflict, and the old content remains.",
+      "那我在编辑区让用户先看自己的修改。": "Then the editor can ask users to review their own changes first.",
+      "可以。我把最后完成的步骤也一起返回。": "That works. I will also return the last completed step.",
+      "这下继续按钮可以有明确依据了。": "That gives the resume button something clear to work from.",
+      "接口说明更新了，下午我们连起来走一遍。": "The API notes are updated. Let us connect it all and walk through it this afternoon."
+    },
+    "demo-v2-chat-zhao": {
+      "赵栩": "Zhao Xu",
+      "赵老师，好久没联系，最近忙吗？": "Teacher Zhao, it has been a while. Have you been busy?",
+      "刚送走一届高三，难得轻松一点。你在北京还习惯吗？": "My latest class has just finished its final year of high school, so things are a little quieter. Have you settled into Beijing?",
+      "习惯了，现在在月之暗面做 Kimi 产品，工作挺有意思。": "I have. I work on Kimi at Moonshot AI now, and the work is interesting.",
+      "我也用过 Kimi，原来你做这个。每天是不是很忙？": "I have used Kimi too. So that is what you do. Are you busy every day?",
+      "最近有内测，白天忙些。周末会出去跑跑步。": "We have a pilot coming up, so the days are busy. I go running on weekends.",
+      "那就好。你以前一做题就坐着不动。": "That is good. You used to sit still for ages once you started working on math problems.",
+      "这个习惯还在改。国庆回杭州，想找您喝茶。": "I am still trying to change that habit. I will be back in Hangzhou during the National Day holiday and would love to have tea with you.",
+      "先陪家里，时间有余再来，不着急。": "Spend time with your family first. Come if you have time to spare. There is no rush.",
+      "好，我提前给您发消息。": "Of course. I will message you ahead of time.",
+      "路上顺利，回来了再说。": "Safe travels. We can arrange it once you are back."
+    },
+    "demo-v2-chat-wu": {
+      "吴桐": "Wu Tong",
+      "十月十二日那轮先按八位用户准备吧。": "Let us prepare for eight users in the October 12 pilot.",
+      "可以，五位已经聊过，另外三位我还在约时间。": "Sounds good. We have spoken to five; I am still arranging times with the other three.",
+      "别让大家照着我们的脚本点，最好带自己的任务。": "We should ask them to bring their own tasks instead of following a script we give them.",
+      "我在邀请里写清楚准备一件最近真想做的事。": "I will ask them in the invitation to bring something they have recently wanted to get done.",
+      "如果中间停住，记录停在哪里就行，不用帮我们找借口。": "If they get stuck, recording where is enough. They do not need to make excuses for us.",
+      "哈哈，这句我会换个自然点的说法。": "Ha, I will phrase that a little more naturally.",
+      "使用说明我先缩成一页。": "I will cut the usage guide down to one page.",
+      "好，我把反馈入口放在最后，不要发一大包文档。": "Good. I will put the feedback link at the end. We should avoid sending a huge bundle of documents.",
+      "邀请今天给韩知看一眼，明天再核对名单。": "Let Han Zhi review the invitation today, then we can check the participant list again tomorrow.",
+      "收到，有回复我同步到表里。": "Got it. I will add replies to the spreadsheet as they arrive."
+    },
+    "demo-v2-chat-ye": {
+      "叶澄": "Ye Cheng",
+      "今天你接状态列表，我做成果编辑，可以吗？": "Can you take the status list today while I work on editing outputs?",
+      "行。切换文稿前记得留住草稿。": "Sure. Remember to keep the draft when switching documents.",
+      "我做了自动保存本地草稿，正式版本还是点保存。": "I have added automatic local draft saving. Saving an official version still requires the Save button.",
+      "长会话别强制拉到最下面，我昨天看上一段总被拽走。": "Long chats should not keep jumping to the bottom. Yesterday, it kept pulling me away from an earlier message.",
+      "收到。窄窗口的成果区我改成可收起的侧层。": "Got it. For narrow windows, I have made the output area a collapsible side panel.",
+      "关掉以后焦点回到打开按钮，这个也顺便测。": "Check that focus returns to the button that opened it when the panel closes.",
+      "你午饭想吃什么？我想出去走一下。": "What do you want for lunch? I would like to get out for a walk.",
+      "楼下面馆吧，回来我们拿真实长标题再测一遍。": "The noodle place downstairs? When we get back, let us test again with realistic long titles.",
+      "好，中文和英文都看。": "Sounds good. We will check both Chinese and English.",
+      "两点见，先吃饭。": "See you at two. Lunch first."
+    },
+    "demo-v2-chat-liang": {
+      "梁秋": "Liang Qiu",
+      "五次访谈原话都在文档里了。": "The verbatim notes from all five interviews are in the document.",
+      "我先看具体操作，再写结论。哪一段最值得重放？": "I will look at the specific interactions before drawing conclusions. Which part is most useful to replay?",
+      "三个人在任务停下后都问过：现在做到了哪里？": "After a task stopped, three people asked, “How far has it got?”",
+      "那执行状态和恢复入口可以放在同一轮原型里看。": "Then we can test execution status and the resume entry point in the same prototype round.",
+      "还有一个人想先改要求，再决定重跑哪部分。": "One person also wanted to change the request before deciding which part to run again.",
+      "这个很关键，不只是再试一次。": "That is key. They need more than a retry.",
+      "对。也有人不愿意把全部资料交进来，要能只选几份。": "Exactly. Some people also do not want to provide all their materials. They should be able to choose just a few.",
+      "我在界面上保留选择范围，别逼他先导入所有东西。": "I will keep that choice in the interface so they do not have to import everything first.",
+      "下轮先找两位回访，看看改完是否好理解。": "Let us follow up with two people in the next round and see whether the changes make it clearer.",
+      "时间定了叫我，我一起听。": "Let me know when the time is set. I will join and listen."
+    },
+    "demo-v2-chat-wei": {
+      "魏禾": "Wei He",
+      "周日还跑吗？这周坐太久了。": "Are we running on Sunday? I have spent too much of this week sitting.",
+      "跑，四点奥森南门？": "Yes. South gate of Olympic Forest Park at four?",
+      "可以，先按六公里，跑不动就走。": "Works for me. Let us aim for six kilometers and walk if we need to.",
+      "本来也不是训练营。你别一边跑一边回工作消息就行。": "It is hardly a training camp. Just do not answer work messages while running.",
+      "我把手机放腰包，工作到周五先收个尾。": "I will keep my phone in the running belt and wrap up work on Friday.",
+      "跑完去吃面？上次那家汤不错。": "Noodles afterward? The soup at the place we tried last time was good.",
+      "好。最近早晚凉，要不要带个薄外套？": "Yes. It has been cooler in the mornings and evenings. Should we bring light jackets?",
+      "带着吧，停下来会冷。": "Bring one. It gets cold once we stop.",
+      "如果下雨就改散步，临时看天气。": "If it rains, we can switch to a walk. Let us check the weather on the day.",
+      "没问题，出门前联系。": "No problem. We will be in touch before leaving."
+    },
+    "demo-v2-chat-du": {
+      "杜晴": "Du Qing",
+      "妈，我想二号中午回杭州吃饭，车次还没定。": "Mum, I am thinking of coming back to Hangzhou for lunch on the second. I have not chosen a train yet.",
+      "好，你定了再告诉我，不用一早赶。": "Good. Let me know when you have. No need to rush off early in the morning.",
+      "这次回去不带一堆工作安排，下午陪你们走走。": "I will not fill this visit with work. We can take a walk together in the afternoon.",
+      "那最好。阳台的桂花这几天开了，你回来能闻到。": "That would be lovely. The osmanthus on the balcony has started blooming. You will be able to smell it when you come home.",
+      "想吃爸做的片儿川。": "I would like Dad’s pian er chuan noodles.",
+      "跟他说了，他已经在想买什么菜。": "I have told him. He is already thinking about which ingredients to buy.",
+      "不用做太多，我们三四个人够吃就好。": "No need to make too much. Enough for the three or four of us is fine.",
+      "你妹妹也回来，她说有新歌要放给你听。": "Your sister will be home too. She says she has new songs for you to hear.",
+      "哈哈好，课程作业晚点再看。": "Great. We can look at her coursework later.",
+      "回来先吃饭，别把家里也变成办公室。": "Eat first when you get home. Do not turn the house into an office too."
+    },
+    "demo-v2-chat-lin": {
+      "万建明": "Wan Jianming",
+      "爸，二号如果中午到，想吃你做的片儿川。": "Dad, if I arrive around noon on the second, I would love your pian er chuan noodles.",
+      "可以，提前一天告诉我，我去买雪菜和笋。": "Of course. Tell me the day before and I will buy preserved mustard greens and bamboo shoots.",
+      "不用一大桌，就吃面。": "Just noodles will be fine. No need for a table full of dishes.",
+      "好。你最近做的那个工作台，是帮人干什么的？": "All right. What does that Workbench you are building help people do?",
+      "把一句要求变成实际做事的过程，能看到做到了哪里。": "It turns a request into a process that gets things done, and lets you see how far it has got.",
+      "它做错了，人还能改吧？": "Can people still make changes if it gets something wrong?",
+      "能，最近就在做停下来改要求、接着做这一段。": "Yes. Lately I have been working on stopping, changing the request, and carrying on.",
+      "这就挺好，人自己干活也经常改主意。": "That sounds useful. People change their minds when they are working too.",
+      "回去给你看个简单的。": "I will show you a simple example when I am home.",
+      "先吃饭，吃完想看再看。": "Let us eat first. We can look afterward if we feel like it."
+    },
+    "demo-v2-chat-jiang": {
+      "万晴": "Wan Qing",
+      "哥，我们课程要做校园活动报名，页面越想越多。": "We have to build campus event registration for a class, and I keep thinking of more pages to add.",
+      "先说一个同学从看见活动到报上名，要经过哪几步？": "Start with one student. What steps do they take from seeing an event to signing up?",
+      "看时间地点，填信息，最后知道报名成功。": "They check the time and place, fill in their information, and find out whether registration succeeded.",
+      "那先把这三步画出来，别急着加其他页。": "Sketch those three steps first. The other pages can wait.",
+      "我还想放一个聊天机器人。": "I also wanted to add a chatbot.",
+      "你先问问同学，他们报名时具体有什么问题。": "First ask classmates what specific questions they have when signing up.",
+      "好，如果只是问地点，页面写清楚就行。": "Right. If they only need to know the location, we can make it clear on the page.",
+      "对。先找两个人试一下，你就知道哪里没讲明白。": "Exactly. Ask two people to try it first, and you will see what needs explaining.",
+      "我周末发原型给你，顺便给你听新歌。": "I will send you the prototype this weekend, along with some new songs.",
+      "新歌可以现在发，作业我们周末看。": "You can send the songs now. We will look at the coursework over the weekend."
+    },
+    "demo-v2-chat-zhou": {
+      "周芮": "Zhou Rui",
+      "厨房水槽下面又湿了，周末做饭才发现。": "It is wet under the kitchen sink again. I only noticed while cooking over the weekend.",
+      "先看看是不是软管接口，拍张照给房东。": "Check whether it is the hose connection and send the landlord a photo.",
+      "拍了，他说可以约师傅，我准备周六上午在家等。": "I did. He said we can arrange a repair, so I am planning to wait at home on Saturday morning.",
+      "那先别自己拆。之前续租合同也快到期了吧？": "Then leave it assembled for now. Your lease is nearly up for renewal too, is it not?",
+      "十一月底，想等漏水修好再聊续租。": "At the end of November. I want to discuss renewing after the leak is fixed.",
+      "可以，把维修责任和涨租写清楚。": "Makes sense. Get the repair responsibilities and any rent increase written down clearly.",
+      "你上次搬家那家搬运公司怎么样？": "How was the moving company you used last time?",
+      "还行，不过你先别急着搬，通勤短挺重要的。": "It was fine, but there is no need to rush into moving. A short commute matters.",
+      "也是。修完来家里吃饭，我最近学会煎三文鱼了。": "True. Come over for dinner once it is fixed. I have learned to pan-fry salmon.",
+      "期待，别只给我看成品照片。": "Looking forward to it. Do not just send me a photo of the finished dish."
+    },
+    "demo-v2-chat-gao": {
+      "高远": "Gao Yuan",
+      "青岛那批照片你选完了吗？我还有三百多张没看。": "Have you finished choosing your Qingdao photos? I still have more than three hundred to look through.",
+      "先选十二张，别一开始就修图。": "Choose twelve first. Do not start editing straight away.",
+      "我最喜欢阴天海边那张，颜色很淡。": "My favorite is the one by the sea on the cloudy day. The colors are very soft.",
+      "我喜欢你拍的车窗倒影，比打卡照有意思。": "I like your reflection in the train window. It is more interesting than a standard tourist shot.",
+      "下次想少排两个地方，就沿着路走。": "Next time I want to plan fewer stops and just walk along the streets.",
+      "同意。旅行不是把地图上的点都点亮。": "Agreed. A trip does not have to cover every point on the map.",
+      "周末我先把相册做个小版本。": "I will put together a small version of the album this weekend.",
+      "发我，我帮你看顺序。": "Send it to me. I can help with the order.",
+      "等打印出来带去跑步后给你看。": "When it is printed, I will bring it for you to see after a run.",
+      "好，封面别堆字，留张你最喜欢的。": "Good. Keep the cover simple and use the photograph you like best."
+    }
+  }
+}

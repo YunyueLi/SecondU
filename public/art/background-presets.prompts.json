@@ -1,0 +1,38 @@
+{
+  "mode": "builtin image_gen",
+  "generatedOn": "2026-09-29",
+  "assets": [
+    {
+      "file": "tidal-pencil.png",
+      "title": "潮汐之间",
+      "width": 2172,
+      "height": 724,
+      "sha256": "8d8c43bcf68bc9dd4235e2fe33bd83327718da18e670d4e1155854a9e3dd1641",
+      "prompts": [
+        "Use case: stylized-concept.\nAsset type: a finished horizontal background illustration for a calm personal desktop workspace, not a UI mockup. Generate one image only.\nPrimary request: “潮汐之间” — a sophisticated, tactile coloured-pencil artwork about abstract coastlines, rounded coastal stones, tide currents and small islands.\nStyle/medium: exceptional hand-drawn fine-art coloured pencil on warm ivory cotton paper. Dense visible pencil hatching in coloured areas, delicate irregular edges, genuine fine paper tooth, beautifully restrained editorial art direction. It should feel like an original artist's drawing rather than a flat digital vector.\nPalette: deep cobalt blue, muted seafoam green, small confident accents of coral vermilion, and generous untouched warm cream paper.\nComposition: very wide panoramic canvas, approximately 3:1 aspect ratio. Flowing shoreline rhythms and a few sculptural islands enter around the edges and lower third. An elegant spacious composition with a broad quiet paper area through the centre and upper middle, so the image breathes as a workspace background. Detailed but not busy; asymmetrical balance, subtle variation of scale and rich material detail.\nLighting/mood: serene, curious, intimate, quietly imaginative.\nConstraints: no words, typography, lettering, logos, watermarks, borders, UI, icons, people, animals, architecture, flowers, boats, or poster layout. Do not create a collage or multiple panels. Full-bleed image. Output a high-resolution landscape image around 3:1.",
+        "Refine this wide coloured-pencil coastal artwork into a much more ABSTRACT fine-art composition. Keep the beautiful tactile ivory paper, visible coloured-pencil hatching, panoramic 3:1 framing, calm sophistication and spaciousness. Change the literal realistic landscape, horizon and mountains into a top-down or flattened poetic arrangement of rounded sculptural stones, small island shapes and sweeping tide contours. No realistic horizon line and no mountain panorama. Make cobalt blue saturated and confident in a few large rounded forms; make seafoam green a quiet secondary colour; use two or three clear coral-vermilion shapes as small bold accents. Place organic forms mostly along the left edge, lower edge and far right, with broad untouched warm ivory paper across the middle and upper centre. Delicate layered contour lines suggest water moving between islands. Intimate hand-drawn coloured pencil and artist-book sophistication, neither a scenic postcard nor a poster. Rich paper tooth, imperfect pencil edges, assured asymmetry, airy negative space. One unified full-bleed image; no collage or panels. No lettering, words, logos, UI, icons, people, boats, buildings, flowers or animals."
+      ],
+      "iterations": 2
+    },
+    {
+      "file": "moon-voyage.png",
+      "title": "月下远行",
+      "width": 2172,
+      "height": 724,
+      "sha256": "012db2011e6d293fac54a55b5b2d9d7625b4615b345af1a0d7ea4a7490fb9a10",
+      "prompts": [
+        "Use case: photorealistic-natural.\nAsset type: a finished premium deep-space atmospheric background for a personal desktop workspace; one image only, no UI mockup.\nPrimary request: “月下远行” — an extraordinarily restrained, photographic-quality deep indigo night cosmos. A barely luminous Milky Way haze and soft star dust, diffused blue-violet halos, a few extremely small warm-white stars, and one small delicate crescent moon.\nStyle/medium: refined astrophotographic atmosphere with subtle optical softness and fine natural film-like texture. Deep, layered tonal detail with very smooth but genuinely cloud-like stellar dust structure. No artificial rainbow gradient or plastic CGI.\nComposition: very wide panoramic landscape, approximately 3:1 aspect ratio. Spacious, immersive and calm, with broad dark negative space through the centre for visual rest. The star dust is softly off-centre and understated; the crescent is small rather than a giant focal planet. Tiny stars vary naturally and sparingly. Sophisticated contrast: luminous details emerge gently from inky indigo rather than blazing neon.\nPalette: midnight indigo, near-black blue, understated blue-violet haze, tiny warm ivory star points. Preserve dark details without turning the whole image flat black.\nConstraints: no people, silhouettes, astronauts, spacecraft, buildings, mountains, horizon, planets, starburst icons, constellations drawn as lines, aurora curtains, neon rings, lens-flare gimmicks, labels, text, logos, watermarks, borders, UI, or split panels. Not an inexpensive science-fiction wallpaper. One elegant full-bleed high-resolution image around 3:1."
+      ],
+      "iterations": 1
+    },
+    {
+      "file": "paper-notebook.png",
+      "title": "纸上笔记",
+      "use": "Transparent spot illustration for library and project empty states",
+      "mode": "builtin image_gen, edit from pencil-garden.png",
+      "reference": "pencil-garden.png",
+      "sha256": "34bddb5d2e95a3a37445331d3aa14cbbf1030f453a06ea34c91d3df7baae65e1",
+      "description": "Open ivory notebook with tactile colored pencil shading, cobalt leaves, a vermilion bookmark and a small golden seed; no text."
+    }
+  ]
+}

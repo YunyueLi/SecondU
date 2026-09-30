@@ -1,11 +1,14 @@
-/* Product composition tokens. Semantic colors, fonts and controls remain owned by Apps SDK UI. */
+/* Product composition uses SDK primitives with readable text roles for dense desktop UI. */
 :root {
   --hither-font-body: 14px;
-  --hither-font-label: 13px;
-  --hither-font-caption: 12px;
-  --hither-font-meta: 11px;
-  --hither-font-page-title: 28px;
-  --hither-font-section-title: 18px;
+  --hither-font-label: 14px;
+  --hither-font-caption: 13px;
+  --hither-font-meta: 12px;
+  --hither-font-page-title: calc(var(--hither-font-body) + 10px);
+  --hither-font-page-title-compact: calc(var(--hither-font-body) + 8px);
+  --hither-font-section-title: calc(var(--hither-font-body) + 2px);
+  --hither-font-modal-title: calc(var(--hither-font-body) + 4px);
+  --hither-font-form: var(--hither-font-label);
   --hither-space-1: 4px;
   --hither-space-2: 8px;
   --hither-space-3: 12px;
@@ -25,5 +28,13 @@
   --hither-color-hover: var(--color-surface-tertiary);
   --hither-color-line: var(--color-border-subtle);
   --hither-motion-fast: 150ms;
+}
+:root, [data-theme=light] {
+  --color-text-secondary: var(--gray-600);
+  --color-text-tertiary: var(--gray-500);
+}
+[data-theme=dark] {
+  --color-text-secondary: var(--gray-800);
+  --color-text-tertiary: var(--gray-700);
 }
 @media (max-width: 1200px) { :root { --hither-sidebar-width: 216px; } }

@@ -1,3 +1,11 @@
+import { ensureDemoShowcase } from './demo-showcase.mjs';
+import { resolveExecutionPolicy, guardExecutionRoute } from './execution-policy.mjs';
+import { normalizeContextRequest, personalContextFor } from './personal-context.mjs';
+import { feedbackRecord, taskFeedback, saveTaskFeedback } from './task-learning.mjs';
+import { ImCliService } from './im-cli.mjs';
+import { AgentResourcesService } from './agent-resources.mjs';
+import { saveProfile } from './profile.mjs';
+import { ConnectorService, connectorSelection, publicConnector, saveConnector, deleteConnector } from './connectors.mjs';
 import http from 'node:http';
 import path from 'node:path';
 import os from 'node:os';
@@ -6,32 +14,57 @@ import { readFileSync, existsSync, statSync, unlinkSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { Store, HttpError, collections, now, id } from './store.mjs';
-import { createEntity, createTask, assertDeletable, text, choice, addEvent } from './domain.mjs';
+import { publicProject, listProjectFiles } from './projects.mjs';
+import { chooseProjectDirectory } from './directory-picker.mjs';
+import { createEntity, createTask, assertDeletable, text, choice, bool, refs, addEvent } from './domain.mjs';
 import { TaskRunner } from './runner.mjs';
 import { codexCommand } from './codex.mjs';
-import { providerIdentity, validateTextResponse } from './provider-test.mjs';
+import { saveConnection, setDefaultConnection, deleteConnection, testConnection } from './connections.mjs';
+import { createRoom, roomTask } from './rooms.mjs';
+import { previewChatImport, commitChatImport } from './imports.mjs';
+import { dailyActivity, previewActivityImport, commitActivityImport } from './daily-activity.mjs';
+import { runtimeCapabilities, taskTrace } from './runtime-observation.mjs';
+import { saveAgentAvatar, getAvatar, batchAvatarStyle, defaultAgentAvatarStyle } from './avatars.mjs';
+import { ENGINEER_SPACE, PERSONAL_SPACE, localSpaceDirectory } from './demo-space.mjs';
+import { getAppearance, saveAppearance, getArtwork, getArtworkInfo, saveArtwork } from './local-appearance.mjs';
+import { saveAttachment, getAttachment, publicAttachment, ATTACHMENT_LIMIT } from './attachments.mjs';
 
 const here=path.dirname(fileURLToPath(import.meta.url));
 const PROJECT=path.resolve(here,'..');
 export const VERSION='0.1.0';
 function respond(res,status,value,headers={}){const data=typeof value==='string'?value:JSON.stringify(value);res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff',...headers});res.end(data);}
-async function readJson(req){
+async function readJson(req,maxBytes=2*1024*1024){
   if(!/^application\/json(?:;|$)/i.test(req.headers['content-type']??''))throw new HttpError(415,'写入操作需要 application/json','json_required');
-  let bytes=0,parts=[];for await(const chunk of req){bytes+=chunk.length;if(bytes>2*1024*1024)throw new HttpError(413,'请求超过 2 MB');parts.push(chunk);}
+  // Drain an oversized request without retaining more bytes. Throwing inside the
+  // iterator destroys the stream and can turn the intended 413 into client EPIPE.
+  let bytes=0,parts=[];for await(const chunk of req){bytes+=chunk.length;if(bytes<=maxBytes)parts.push(chunk);}
+  if(bytes>maxBytes)throw new HttpError(413,`请求超过 ${maxBytes/1024/1024} MB`);
   try {const value=JSON.parse(Buffer.concat(parts).toString()||'{}');if(!value||typeof value!=='object'||Array.isArray(value))throw new Error();return value;}catch{throw new HttpError(400,'JSON 请求格式无效');}
 }
 function detectCodex(){try{const version=execFileSync(codexCommand(),['--version'],{encoding:'utf8',timeout:5000,stdio:['ignore','pipe','ignore']}).trim();return version.startsWith('codex-cli ')?{codexAvailable:true,codexVersion:version}:{codexAvailable:false};}catch{return {codexAvailable:false};}}
 
-export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJECT,'.hither'),seed=true,runCodex,scheduler=true,computerInfo,distDir=path.join(PROJECT,'dist')}={}) {
-  const store=new Store(dataDir,{seed});
+export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJECT,'.hither'),seed=true,runCodex,runImCli,runResourceCli,scheduler=true,computerInfo,chooseDirectory=chooseProjectDirectory,distDir=path.join(PROJECT,'dist'),executionPolicy,_allowDemoSpace=true,_parentPort,_protectedDataDirectory}={}) {
+  const store=new Store(dataDir,{seed,protectedDataDirectory:_protectedDataDirectory});
+  const policy=resolveExecutionPolicy(executionPolicy,store.meta('profile'));
+  if(policy==='showcase')ensureDemoShowcase(store);
   const spaceId=createHash('sha256').update(path.resolve(store.directory)).digest('hex').slice(0,24);
-  const runner=new TaskRunner(store,{runCodex,scheduler});
+  const connectors=new ConnectorService(store,{blockedPorts:()=>[58644,58645,server?.address()?.port,_parentPort?.()]});
+  const im=new ImCliService(store,{runCli:runImCli});
+  const resources=new AgentResourcesService(store,{im,runCli:runResourceCli});
+  const runner=new TaskRunner(store,{runCodex,scheduler,connectors,executionPolicy:policy});
   const computer={id:'local',name:os.hostname(),platform:process.platform,status:'online',workspace:store.workspace,...(computerInfo??detectCodex())};
-  const bootstrap=()=>({version:VERSION,profile:store.meta('profile'),...Object.fromEntries(collections.map(c=>[c,store.list(c)])),settings:store.settings(),computer});
-  let providerRevision=0;
+  const bootstrap=()=>({version:VERSION,...(policy?{executionPolicy:policy}:{}),connectors:connectors.list(),attachments:store.list('attachments').map(publicAttachment),defaultAgentAvatarStyle:defaultAgentAvatarStyle(store),dailyActivities:dailyActivity(store),profile:store.meta('profile'),...Object.fromEntries(collections.map(c=>[c,c==='projects'?store.list(c).map(project=>publicProject(project,store.protectedDataDirectory)):store.list(c)])),settings:store.settings(),modelConnections:store.connectionList(),defaultConnectionId:store.defaultConnectionId(),computer});
   let server;
+  const childApps=new Map();
+  function localApp(space,create=false){
+    if(childApps.has(space))return childApps.get(space);
+    const directory=localSpaceDirectory(store.directory,space,{create});
+    if(!directory||(!create&&!existsSync(path.join(directory,'hither.sqlite'))))throw new HttpError(404,'尚未创建此空间，请从设置进入。','space_missing');
+    const app=createApp({dataDir:directory,seed:space===ENGINEER_SPACE,executionPolicy:space===ENGINEER_SPACE?'showcase':'personal',runCodex,runImCli,runResourceCli,scheduler,chooseDirectory,computerInfo:{codexAvailable:computer.codexAvailable,codexVersion:computer.codexVersion},distDir,_allowDemoSpace:false,_parentPort:()=>server.address()?.port,_protectedDataDirectory:store.protectedDataDirectory});
+    childApps.set(space,app);return app;
+  }
   function guard(req) {
-    const ports=new Set([String(server.address()?.port??58645),'58645','58644']);
+    const ports=new Set([String(server.address()?.port??58645),'58645','58644',String(_parentPort?.()??'')]);
     let host;try{host=new URL(`http://${req.headers.host}`);}catch{throw new HttpError(403,'无效本机请求','origin_denied');}
     if(!['127.0.0.1','localhost','[::1]'].includes(host.hostname)||!ports.has(host.port))throw new HttpError(403,'仅接受本机应用请求','origin_denied');
     if(req.headers['sec-fetch-site']==='cross-site')throw new HttpError(403,'不接受跨站请求','origin_denied');
@@ -40,6 +73,20 @@ export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJEC
   async function route(req,res) {
     guard(req);
     const url=new URL(req.url,'http://127.0.0.1');let parts;try{parts=url.pathname.split('/').filter(Boolean).map(decodeURIComponent);}catch{throw new HttpError(400,'路径格式无效');}
+    if(parts[0]==='api'&&parts[1]==='spaces'){
+      if(!_allowDemoSpace)throw new HttpError(404,'接口不存在','not_found');
+      if(parts.length===2&&req.method==='GET')return respond(res,200,{spaces:[{id:'main',name:store.meta('profile').name,kind:'original'},...[{id:PERSONAL_SPACE,name:'我的真实空间',kind:'personal'},{id:ENGINEER_SPACE,name:'产品工程师示例',kind:'fictional'}].map(space=>{const dir=localSpaceDirectory(store.directory,space.id);return {...space,exists:!!dir&&existsSync(path.join(dir,'hither.sqlite'))};})]});
+      if(![ENGINEER_SPACE,PERSONAL_SPACE].includes(parts[2]))throw new HttpError(404,'空间不存在','space_not_found');
+      if(parts.length===3&&req.method==='POST'){
+        await readJson(req);const app=localApp(parts[2],true);
+        return respond(res,200,{id:parts[2],name:parts[2]===PERSONAL_SPACE?'我的真实空间':'产品工程师示例',href:`/?space=${parts[2]}`,profile:app.store.meta('profile')});
+      }
+      if(parts.length>=4){
+        const app=localApp(parts[2]);req.url='/api/'+parts.slice(3).map(encodeURIComponent).join('/')+url.search;
+        return app.handleRequest(req,res);
+      }
+      throw new HttpError(405,'空间不支持该操作');
+    }
     if(parts[0]!=='api'){
       if(req.method!=='GET'&&req.method!=='HEAD')throw new HttpError(405,'方法不支持');
       const requested=path.resolve(distDir,'.'+url.pathname);if(requested!==distDir&&!requested.startsWith(distDir+path.sep))throw new HttpError(403,'路径超出范围');
@@ -49,81 +96,217 @@ export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJEC
       const data=readFileSync(file);res.writeHead(200,{'Content-Type':mime,'Cache-Control':'no-cache','X-Content-Type-Options':'nosniff'});return res.end(req.method==='HEAD'?undefined:data);
     }
     const [,resource,key,action]=parts,method=req.method;
-    const body=['POST','PUT','PATCH','DELETE'].includes(method)?await readJson(req):{};
+    const avatarUpload=resource==='agents'&&action==='avatar'&&method==='POST';
+    const artworkUpload=resource==='settings'&&key==='artwork'&&parts.length===3&&method==='PUT';
+    const attachmentUpload=resource==='attachments'&&!key&&parts.length===2&&method==='POST';
+    const body=['POST','PUT','PATCH','DELETE'].includes(method)?await readJson(req,attachmentUpload?Math.ceil(ATTACHMENT_LIMIT/3)*4+4096:artworkUpload?12*1024*1024:avatarUpload?4*1024*1024+4096:2*1024*1024):{};
+    guardExecutionRoute(policy,{resource,key,action,operation:parts[4],method,body},store);
+    if(resource==='attachments'){
+      if(attachmentUpload)return respond(res,201,saveAttachment(store,body));
+      if(key&&parts.length===3&&['GET','HEAD'].includes(method)){
+        const attachment=getAttachment(store,key),filename=encodeURIComponent(attachment.name).replaceAll("'",'%27');
+        res.writeHead(200,{'Content-Type':attachment.kind==='image'?attachment.mime:'application/octet-stream','Content-Length':attachment.size,'Content-Disposition':`${attachment.kind==='image'?'inline':'attachment'}; filename*=UTF-8''${filename}`,'Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff','Cross-Origin-Resource-Policy':'same-origin','Content-Security-Policy':"default-src 'none'; sandbox"});
+        return res.end(method==='HEAD'?undefined:attachment.data);
+      }
+      throw new HttpError(405,'附件仅支持本地添加和读取。','attachment_method_not_allowed');
+    }
+    if(resource==='avatars'&&key&&['GET','HEAD'].includes(method)){const image=getAvatar(store,key);res.writeHead(200,{'Content-Type':image.mime,'Content-Length':image.bytes,'Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff'});return res.end(method==='HEAD'?undefined:image.data);}
+    if(avatarUpload)return respond(res,200,saveAgentAvatar(store,key,body));
     if(resource==='health'&&method==='GET')return respond(res,200,{application:'hither-desktop',version:VERSION,status:'ok',spaceId});
     if(resource==='bootstrap'&&method==='GET')return respond(res,200,bootstrap());
+    if(resource==='daily-activity'&&method==='GET')return respond(res,200,dailyActivity(store));
+    if(resource==='imports'&&key==='activity'&&method==='POST'){
+      if(action==='preview')return respond(res,200,previewActivityImport(store,body));
+      if(action==='commit')return respond(res,200,commitActivityImport(store,body.previewId));
+    }
+    if(resource==='runtime'&&key==='capabilities'&&method==='GET')return respond(res,200,runtimeCapabilities(store,computer));
     if(resource==='export'&&method==='GET'){
-      const data=bootstrap();data.settings={...store.meta('settings'),hasKey:false};delete data.settings.keyHint;delete data.settings.lastTest;delete data.computer;
-      return respond(res,200,{exportVersion:1,exportedAt:now(),...data},{'Content-Disposition':'attachment; filename="hither-export.json"'});
+      const data=bootstrap();data.settings={...store.meta('settings'),hasKey:false};delete data.settings.keyHint;delete data.settings.lastTest;data.modelConnections=store.connectionList().map(({keyHint,lastTest,...connection})=>({...connection,hasKey:false}));data.connectors=data.connectors.map(({lastTest,...connector})=>({...connector,hasToken:false}));delete data.computer;
+      return respond(res,200,{exportVersion:1,exportedAt:now(),...data,taskFeedback:store.list('taskFeedback')},{'Content-Disposition':'attachment; filename="hither-export.json"'});
     }
-    if(resource==='profile'&&method==='PUT'){const current=store.meta('profile');return respond(res,200,store.setMeta('profile',{name:text(body.name??current.name,'name',200),description:text(body.description??current.description,'description',3000,false),demo:body.demo===false?false:current.demo}));}
+    if(resource==='profile'&&method==='PUT')return respond(res,200,saveProfile(store,body));
+    if(resource==='imports'&&key==='chat'&&method==='POST'){
+      if(action==='preview')return respond(res,200,previewChatImport(store,body));
+      if(action==='commit'){const result=commitChatImport(store,body.previewId);if(!result.alreadyImported)runner.sourceImported(store.require('sources',result.sourceId));return respond(res,200,result);}
+    }
+    if(resource==='goal-lists'){
+      if(method==='GET'&&!action)return respond(res,200,key?store.require('goalLists',key):store.list('goalLists'));
+      if(method==='POST'&&!key)return respond(res,201,store.put('goalLists',createEntity(store,'goalLists',body)));
+      if(method==='PUT'&&key&&!action)return respond(res,200,store.put('goalLists',createEntity(store,'goalLists',body,store.require('goalLists',key))));
+      if(method==='DELETE'&&key&&!action){assertDeletable(store,'goalLists',key);store.delete('goalLists',key);return respond(res,200,{deleted:true});}
+      throw new HttpError(405,'清单不支持该操作。');
+    }
+    if(resource==='agent-resources'){
+      if(method==='GET'&&!key)return respond(res,200,resources.list(url.searchParams.get('agentId')??undefined));
+      if(method==='GET'&&key&&!action)return respond(res,200,resources.get(key));
+      if(method==='POST'&&!key)return respond(res,201,resources.save(body));
+      if(method==='PUT'&&key&&!action)return respond(res,200,resources.save(body,key));
+      if(method==='POST'&&key&&action==='probe')return respond(res,200,await resources.probe(key));
+      if(method==='POST'&&key&&action==='enabled')return respond(res,200,resources.setEnabled(key,body));
+      if(method==='POST'&&key&&action==='check-permission')return respond(res,200,resources.checkPermission(key,body));
+      throw new HttpError(405,'身份资源不支持该操作。');
+    }
+    if(resource==='im-connections'){
+      if(method==='GET'&&!key)return respond(res,200,im.list());
+      if(method==='POST'&&!key)return respond(res,201,im.save(body));
+      if(method==='PUT'&&key&&!action)return respond(res,200,im.save(body,store.require('imConnections',key)));
+      if(method==='POST'&&key&&action==='probe')return respond(res,200,await im.probe(key));
+      if(method==='POST'&&key&&action==='preview')return respond(res,200,await im.preview(key));
+      if(method==='POST'&&key&&action==='commit')return respond(res,200,im.commit(key,body.previewId));
+      if(method==='POST'&&key&&action==='drafts')return respond(res,201,im.draft(key,body));
+      throw new HttpError(405,'通信连接不支持该操作。');
+    }
+    if(resource==='im-outbox'){
+      if(method==='GET'&&!key)return respond(res,200,im.drafts(url.searchParams.get('connectionId')));
+      if(method==='POST'&&key&&action==='prepare')return respond(res,200,im.prepare(key));
+      if(method==='POST'&&key&&action==='send')return respond(res,200,await im.send(key,body));
+      throw new HttpError(405,'发送记录不支持该操作。');
+    }
+    if(resource==='connectors'){
+      if(key&&action==='oauth'&&parts.length===5){
+        const operation=parts[4];
+        if(method==='POST'&&operation==='start')return respond(res,200,await connectors.oauth.start(key));
+        if(method==='GET'&&operation==='status'){const result=connectors.oauth.status(key,url.searchParams.get('attemptId'));return respond(res,200,{...result,...(result.status==='connected'?{connector:publicConnector(store,store.require('connectors',key))}:{})});}
+        if(method==='POST'&&operation==='disconnect'){connectors.oauth.disconnect(key);return respond(res,200,publicConnector(store,store.require('connectors',key)));}
+        if(method==='POST'&&operation==='revoke'){await connectors.oauth.revoke(key);return respond(res,200,publicConnector(store,store.require('connectors',key)));}
+        if(method==='POST'&&operation==='refresh'){await connectors.oauth.refresh(key);return respond(res,200,publicConnector(store,store.require('connectors',key)));}
+        throw new HttpError(405,'OAuth 不支持该操作。');
+      }
+      if(method==='GET'&&!action)return respond(res,200,key?publicConnector(store,store.require('connectors',key)):connectors.list());
+      if(method==='POST'&&!key)return respond(res,201,saveConnector(store,body));
+      if(method==='PUT'&&key&&!action){const result=saveConnector(store,body,store.require('connectors',key));connectors.oauth.invalidate(key);return respond(res,200,result);}
+      if(method==='DELETE'&&key&&!action){const result=deleteConnector(store,key);connectors.oauth.invalidate(key);return respond(res,200,result);}
+      if(method==='POST'&&key&&action==='test'){
+        const controller=new AbortController(),cancel=()=>{if(!res.writableFinished)controller.abort();};res.once('close',cancel);
+        try{const result=await connectors.test(key,{signal:controller.signal});return respond(res,result.stale?409:200,result);}
+        finally{res.off('close',cancel);}
+      }
+      throw new HttpError(405,'连接器不支持该操作。');
+    }
+    if(resource==='agent-rooms'){
+      if(method==='GET'&&!action)return respond(res,200,key?store.require('agentRooms',key):store.list('agentRooms'));
+      if(method==='POST'&&!key)return respond(res,201,createRoom(store,body));
+      if(method==='PUT'&&key&&!action)return respond(res,200,createRoom(store,body,store.require('agentRooms',key)));
+      if(method==='POST'&&['messages','tasks'].includes(action))return respond(res,201,roomTask(store,runner,key,body,{send:action==='messages'}));
+      throw new HttpError(405,'会话历史保留，不支持该操作。');
+    }
+    if(resource==='settings'&&key==='appearance'&&parts.length===3){
+      if(method==='GET')return respond(res,200,getAppearance(store));
+      if(method==='PUT')return respond(res,200,saveAppearance(store,body));
+      throw new HttpError(405,'外观设置不支持该操作');
+    }
+    if(resource==='settings'&&key==='artwork'){
+      if(method==='GET'&&action==='info'&&parts.length===4)return respond(res,200,getArtworkInfo(store));
+      if(parts.length!==3)throw new HttpError(404,'接口不存在','not_found');
+      if(method==='PUT')return respond(res,200,saveArtwork(store,body));
+      if(method==='GET'){
+        const artwork=getArtwork(store);
+        res.writeHead(200,{'Content-Type':artwork.mime,'Content-Length':artwork.bytes,'Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff'});
+        return res.end(artwork.data);
+      }
+      throw new HttpError(405,'自定义图片不支持该操作');
+    }
+    if(resource==='model-connections') {
+      if(method==='GET'&&!action)return respond(res,200,key?store.publicConnection(store.connection(key)):{connections:store.connectionList(),defaultConnectionId:store.defaultConnectionId()});
+      if(method==='POST'&&!key)return respond(res,201,saveConnection(store,body));
+      if(method==='PUT'&&key&&!action)return respond(res,200,saveConnection(store,body,store.connection(key)));
+      if(method==='DELETE'&&key&&!action)return respond(res,200,deleteConnection(store,key,runner));
+      if(method==='POST'&&action==='default')return respond(res,200,setDefaultConnection(store,key));
+      if(method==='POST'&&action==='test'){const result=await testConnection(store,key,{cleanError:message=>runner.cleanError(message)});return respond(res,result.status,result.value);}
+      throw new HttpError(405,'模型连接不支持该操作');
+    }
     if(resource==='settings'&&key==='provider') {
-      if(method==='GET')return respond(res,200,store.settings());
-      if(method==='PUT'){
-        const current=store.meta('settings'),v={...current,...body};
-        const settings={provider:choice(v.provider,['deepseek','openai','custom'],'provider'),model:text(v.model,'model',200),baseUrl:text(v.baseUrl,'baseUrl',2000),api:choice(v.api,['responses'],'api'),reasoningEffort:choice(v.reasoningEffort,['low','medium','high'],'reasoningEffort'),hasKey:false};
-        let parsed;try{parsed=new URL(settings.baseUrl);}catch{throw new HttpError(400,'模型地址无效');}
-        if(parsed.username||parsed.password||parsed.search||parsed.hash||!['https:','http:'].includes(parsed.protocol)||(parsed.protocol==='http:'&&!['127.0.0.1','localhost','[::1]'].includes(parsed.hostname)))throw new HttpError(400,'使用 HTTPS 地址，或本机 HTTP 地址；地址不能含凭据、查询或片段');
-        settings.baseUrl=parsed.href;
-        if(body.apiKey!==undefined && body.apiKey!==''){const apiKey=text(body.apiKey,'apiKey',10000);if(/[\r\n]/.test(apiKey))throw new HttpError(400,'密钥格式无效');store.setKey(settings,apiKey);}
-        if(body.clearKey===true)store.setKey(settings,null);
-        store.setMeta('settings',settings);providerRevision++;return respond(res,200,store.settings());
-      }
-      if(action==='test'&&method==='POST'){
-        const settings=store.settings(),key=store.getKey();if(!key)throw new HttpError(409,'尚未填写当前提供方的密钥，未发送请求','key_required');
-        const identity=providerIdentity(settings,key),revision=providerRevision;
-        const started=Date.now();let outcome;
-        try{
-          const endpoint=settings.baseUrl.replace(/\/$/,'')+'/responses';
-          const response=await fetch(endpoint,{method:'POST',headers:{Authorization:`Bearer ${key}`,'Content-Type':'application/json'},body:JSON.stringify({model:settings.model,input:'Reply with OK.',max_output_tokens:32,store:false,stream:false}),signal:AbortSignal.timeout(20000),redirect:'error'});
-          if(!response.ok){await response.body?.cancel();outcome={ok:false,message:`提供方返回 HTTP ${response.status}。连接测试未通过；请核对模型、地址和密钥。`};}
-          else {outcome=validateTextResponse(await response.json());}
-        }catch(error){outcome={ok:false,message:runner.cleanError(`连接测试失败：${error.message}`)};}
-        const current=store.meta('settings');
-        if(revision!==providerRevision || providerIdentity(current,store.getKey(current))!==identity){
-          const message='测试期间模型配置或密钥已改变，过时结果已丢弃；请使用当前配置重新测试。';
-          return respond(res,409,{ok:false,stale:true,code:'stale_provider_test',error:message,message,latencyMs:Date.now()-started});
-        }
-        store.setMeta('settings',{...current,lastTest:{...outcome,at:now()}});return respond(res,200,{...outcome,latencyMs:Date.now()-started});
-      }
+      if(method==='GET'&&!action)return respond(res,200,store.settings());
+      if(method==='PUT'&&!action)return respond(res,200,saveConnection(store,body,store.connection()));
+      if(action==='test'&&method==='POST'){const defaultId=store.defaultConnectionId(),result=await testConnection(store,defaultId,{defaultId,cleanError:message=>runner.cleanError(message)});return respond(res,result.status,result.value);}
     }
+    if(resource==='task-feedback'&&key&&method==='GET')return respond(res,200,feedbackRecord(store,key));
     if(resource==='tasks') {
+      if(method==='GET'&&action==='context')return respond(res,200,personalContextFor(store,store.require('tasks',key)));
+      if(method==='GET'&&action==='feedback')return respond(res,200,taskFeedback(store,key));
+      if(method==='POST'&&action==='feedback')return respond(res,201,saveTaskFeedback(store,key,body));
+      if(method==='GET'&&action==='trace')return respond(res,200,taskTrace(store.require('tasks',key)));
       if(method==='POST'&&!key)return respond(res,201,createTask(store,body));
       if(method==='POST'&&action==='run')return respond(res,200,runner.start(key));
-      if(method==='POST'&&action==='message')return respond(res,200,runner.message(key,body.content));
+      if(method==='POST'&&action==='message')return respond(res,200,runner.message(key,body.content,body.attachmentIds));
       if(method==='POST'&&action==='cancel')return respond(res,200,await runner.cancel(key));
       if(method==='POST'&&action==='approval')return respond(res,200,runner.decide(key,body.approvalId,body.decision));
-      if(method==='PUT'&&key&&!action){if(runner.active.has(key))throw new HttpError(409,'请先停止任务再编辑其配置');const task=store.require('tasks',key);if(body.title!==undefined)task.title=text(body.title,'title',300);if(body.contextFactIds!==undefined){if(!Array.isArray(body.contextFactIds))throw new HttpError(400,'contextFactIds 无效');for(const fid of body.contextFactIds)store.require('facts',fid);task.contextFactIds=[...new Set(body.contextFactIds)];}if(body.agentIds!==undefined){if(!Array.isArray(body.agentIds))throw new HttpError(400,'agentIds 无效');for(const aid of body.agentIds)store.require('agents',aid);task.agentIds=[...new Set(body.agentIds)];}task.updatedAt=now();return respond(res,200,store.put('tasks',task));}
+      if(method==='PUT'&&key&&!action){
+        const task=store.require('tasks',key);
+        if(runner.active.has(key)||['running','awaiting_approval'].includes(task.status))throw new HttpError(409,'请先停止任务再编辑其配置','task_active');
+        if(Object.hasOwn(body,'projectId')&&body.projectId!==task.projectId)throw new HttpError(409,'已有任务不能更换项目，请在目标项目新建对话。','task_project_fixed');
+        const oldRuntimeConfig=JSON.stringify([task.mode,task.connectionId,task.digitalTwinEnabled,task.connectorIds??[],task.contextRequest]);
+        if(body.archived!==undefined)task.archived=bool(body.archived,'archived');
+        if(body.title!==undefined)task.title=text(body.title,'title',300);
+        if(body.contextRequest!==undefined)task.contextRequest=normalizeContextRequest(body.contextRequest);
+        if(body.contextFactIds!==undefined)task.contextFactIds=refs(store,body.contextFactIds,'facts','contextFactIds');
+        if(body.agentIds!==undefined)task.agentIds=refs(store,body.agentIds,'agents','agentIds');
+        if(body.mode!==undefined)task.mode=choice(body.mode,['live','demo'],'mode');
+        if(Object.hasOwn(body,'connectionId')){
+          if(body.connectionId===null||body.connectionId==='')delete task.connectionId;
+          else {task.connectionId=text(body.connectionId,'connectionId',200);store.connection(task.connectionId);}
+        }
+        if(body.digitalTwinEnabled!==undefined)task.digitalTwinEnabled=bool(body.digitalTwinEnabled,'digitalTwinEnabled');
+        if(body.connectorIds!==undefined)task.connectorIds=connectorSelection(store,body.connectorIds);
+        const runtimeChanged=oldRuntimeConfig!==JSON.stringify([task.mode,task.connectionId,task.digitalTwinEnabled,task.connectorIds??[],task.contextRequest]);
+        task.updatedAt=now();
+        store.transaction(()=>{
+          if(runtimeChanged){
+            delete task.threadId;
+            for(const record of store.list('runtime'))if(record.id.startsWith(`${task.id}:`))store.delete('runtime',record.id);
+          }
+          store.put('tasks',task);
+        });
+        return respond(res,200,task);
+      }
+    }
+    if(resource==='agents'&&key==='avatar-style'&&method==='PUT')return respond(res,200,batchAvatarStyle(store,body));
+    if(resource==='projects'){
+      if(key==='choose-directory'&&!action){
+        if(method!=='POST')throw new HttpError(405,'方法不支持');
+        if(Object.keys(body).length)throw new HttpError(400,'文件夹选择不接受路径或命令参数。','invalid_picker_request');
+        const controller=new AbortController();const cancel=()=>{if(!res.writableFinished)controller.abort();};res.once('close',cancel);
+        try{return respond(res,200,{path:await chooseDirectory({signal:controller.signal})});}finally{res.removeListener('close',cancel);}
+      }
+      if(method==='GET'&&key&&action==='files')return respond(res,200,listProjectFiles(store,key,url.searchParams.get('path')??''));
+      if(action)throw new HttpError(404,'项目接口不存在','not_found');
+      if(method==='DELETE')throw new HttpError(405,'项目保留任务和文件引用，请使用归档而非删除。','archive_project');
+      if(method==='GET')return respond(res,200,key?publicProject(store.require('projects',key),store.protectedDataDirectory):store.list('projects').map(project=>publicProject(project,store.protectedDataDirectory)));
+      if(method==='PUT'&&key&&[...runner.active.keys()].some(id=>store.require('tasks',id).projectId===key))throw new HttpError(409,'项目正在执行任务，请结束或中断后再修改项目。','project_active');
+      if(method==='POST'&&!key||method==='PUT'&&key){const project=createEntity(store,'projects',body,key?store.require('projects',key):undefined);store.put('projects',project);return respond(res,method==='POST'?201:200,publicProject(project,store.protectedDataDirectory));}
     }
     if(resource==='artifacts'){
-      if(method==='PUT'&&key&&!action){const old=store.require('artifacts',key);if(runner.active.has(old.taskId)&&store.require('tasks',old.taskId).mode==='live')throw new HttpError(409,'请先中断模型执行，再编辑这份产物，避免模型同时写入。','task_active');if(body.baseVersion!==old.version)throw new HttpError(409,'文件已被更新，请刷新后再保存','version_conflict');text(body.content,'content',1024*1024,false);const content=body.content,version=old.version+1,stamp=now();const artifact={...old,content,version,updatedAt:stamp,versions:[...old.versions,{version,content,createdAt:stamp,author:'用户'}]};store.writeArtifact(artifact);runner.event(old.taskId,'artifact_edited',`用户编辑了 ${old.name}`,`版本 ${version}`);return respond(res,200,artifact);}
-      if(method==='POST'&&!key){const task=store.require('tasks',body.taskId);if(runner.active.has(task.id))throw new HttpError(409,'执行中暂不能新增同名产物');const name=text(body.name,'name',200);text(body.content??'','content',1024*1024,false);const content=body.content??'';if(store.list('artifacts').some(a=>a.taskId===task.id&&a.name===name))throw new HttpError(409,'同名产物已存在');return respond(res,201,runner.saveArtifact(task.id,name,content,'用户'));}
+      if(method==='PUT'&&key&&!action){const old=store.require('artifacts',key);if(runner.active.has(old.taskId)&&store.require('tasks',old.taskId).mode==='live')throw new HttpError(409,'请先中断模型执行，再编辑这份产物，避免模型同时写入。','task_active');if(body.baseVersion!==old.version)throw new HttpError(409,'文件已被更新，请刷新后再保存','version_conflict');if(store.require('tasks',old.taskId).projectId){runner.ensureProjectReady(store.require('tasks',old.taskId));const file=store.artifactPath(old);if(!existsSync(file)||readFileSync(file,'utf8')!==old.content)throw new HttpError(409,'项目文件已在其他位置修改，请先核对当前文件，不能覆盖。','version_conflict');if([...runner.active.keys()].some(id=>store.require('tasks',id).projectId===store.require('tasks',old.taskId).projectId))throw new HttpError(409,'项目正在执行任务，请先中断后再编辑文件。','project_active');}text(body.content,'content',1024*1024,false);const content=body.content,version=old.version+1,stamp=now();const artifact={...old,classification:'artifact',origin:{kind:'user'},content,version,updatedAt:stamp,versions:[...old.versions,{version,content,createdAt:stamp,author:'用户'}]};store.writeArtifact(artifact);runner.event(old.taskId,'artifact_edited',`用户编辑了 ${old.name}`,`版本 ${version}`);return respond(res,200,artifact);}
+      if(method==='POST'&&!key){const task=store.require('tasks',body.taskId);if(runner.active.has(task.id))throw new HttpError(409,'执行中暂不能新增同名产物');runner.ensureProjectReady(task);const name=text(body.name,'name',200);text(body.content??'','content',1024*1024,false);const content=body.content??'';if(store.list('artifacts').some(a=>a.taskId===task.id&&a.name===name))throw new HttpError(409,'同名产物已存在');return respond(res,201,runner.saveArtifact(task.id,name,content,'用户'));}
       if(method==='GET'&&action==='download'){const artifact=store.require('artifacts',key);res.writeHead(200,{'Content-Type':'text/plain; charset=utf-8','Content-Disposition':`attachment; filename*=UTF-8''${encodeURIComponent(artifact.name)}`,'X-Content-Type-Options':'nosniff','Cache-Control':'no-store'});return res.end(artifact.content);}
     }
     if(resource==='automations'&&method==='POST'&&action==='run')return respond(res,200,runner.runAutomation(key));
-    if(collections.includes(resource) && !action){
+    if(collections.includes(resource) && resource!=='agentRooms' && !action){
       if(resource==='sources'&&method==='PUT')throw new HttpError(405,'来源原文不可覆盖。请导入一份新的反馈来源，并在认知修订中关联它。','immutable_source');
+      if(resource==='conversations'&&method==='PUT'&&store.require('conversations',key).externalId)throw new HttpError(405,'导入的聊天记录不可改写，请保留原文件并导入新的反馈来源。','immutable_import');
       if(method==='GET')return respond(res,200,key?store.require(resource,key):store.list(resource));
       if(method==='DELETE'&&key){
+        if(resource==='sources'&&store.list('dailyActivities').some(activity=>activity.sourceIds.includes(key)))throw new HttpError(409,'日常活动仍引用这份原始来源，不能删除。','record_in_use');
         assertDeletable(store,resource,key);
         if(resource==='tasks'){
           if(runner.active.has(key))throw new HttpError(409,'请先停止运行中的任务');
-          const task=store.require('tasks',key);for(const aid of task.artifactIds){const a=store.get('artifacts',aid);if(a){const file=store.artifactPath(a);if(existsSync(file))unlinkSync(file);store.delete('artifacts',aid);}}
+          const task=store.require('tasks',key);for(const aid of task.artifactIds){const a=store.get('artifacts',aid);if(a){if(!task.projectId){const file=store.artifactPath(a);if(existsSync(file))unlinkSync(file);}store.delete('artifacts',aid);}}
         }
-        if(resource==='artifacts'){const a=store.require('artifacts',key);if(runner.active.has(a.taskId))throw new HttpError(409,'请先停止运行中的任务');const file=store.artifactPath(a);if(existsSync(file))unlinkSync(file);runner.mutate(a.taskId,t=>{t.artifactIds=t.artifactIds.filter(x=>x!==key);});}
+        if(resource==='artifacts'){const a=store.require('artifacts',key);if(store.require('tasks',a.taskId).projectId)throw new HttpError(405,'项目原文件不会从资料库删除，请在项目目录中管理。','project_file_retained');if(runner.active.has(a.taskId))throw new HttpError(409,'请先停止运行中的任务');const file=store.artifactPath(a);if(existsSync(file))unlinkSync(file);runner.mutate(a.taskId,t=>{t.artifactIds=t.artifactIds.filter(x=>x!==key);});}
         store.delete(resource,key);return respond(res,200,{ok:true});
       }
       if(method==='POST'&&!key || method==='PUT'&&key){const entity=createEntity(store,resource,body,key?store.require(resource,key):undefined);store.put(resource,entity);if(resource==='sources'&&method==='POST')runner.sourceImported(entity);return respond(res,method==='POST'?201:200,entity);}
     }
     throw new HttpError(404,'接口不存在','not_found');
   }
-  server=http.createServer((req,res)=>route(req,res).catch(error=>{if(!res.headersSent)respond(res,error.status??500,{error:runner.cleanError(error.status?error.message:'本机服务遇到错误，请检查运行日志。'),code:error.code??'internal_error'});if(!error.status)console.error('[hither]',runner.cleanError(error.stack??error.message));}));
+  const handleRequest=(req,res)=>route(req,res).catch(error=>{if(!res.headersSent)respond(res,error.status??500,{error:runner.cleanError(error.status?error.message:'本机服务遇到错误，请检查运行日志。'),code:error.code??'internal_error'});if(!error.status)console.error('[hither]',runner.cleanError(error.stack??error.message));});
+  server=http.createServer(handleRequest);
   server.requestTimeout=30000;server.headersTimeout=10000;
-  return {server,store,runner,bootstrap,async close(){await runner.close();if(server.listening)await new Promise(resolve=>server.close(resolve));store.close();}};
+  return {server,store,runner,connectors,bootstrap,handleRequest,async close(){for(const app of childApps.values())await app.close();connectors.close();await runner.close();if(server.listening)await new Promise(resolve=>server.close(resolve));store.close();}};
 }
 
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){
-  const app=createApp();const port=Number(process.env.PORT??58645);
+  const app=createApp({executionPolicy:'auto'});const port=Number(process.env.PORT??58645);
   app.server.listen(port,'127.0.0.1',()=>console.log(`Hither ${VERSION} listening on http://127.0.0.1:${port}`));
   app.server.on('error',error=>{console.error(`Hither startup failed: ${error.code??error.message}`);process.exitCode=1;app.close();});
   for(const signal of ['SIGINT','SIGTERM'])process.once(signal,()=>{app.close().then(()=>process.exit(0));});

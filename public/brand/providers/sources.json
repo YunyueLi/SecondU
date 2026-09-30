@@ -1,0 +1,69 @@
+{
+  "source": "https://github.com/lobehub/lobe-icons",
+  "commit": "329f378cbd1a88f45b60cd096b9111ce16f3ea39",
+  "retrievedAt": "2026-09-29T08:19:07.811945+00:00",
+  "licenseFile": "LICENSE-lobe-icons",
+  "licenseUrl": "https://raw.githubusercontent.com/lobehub/lobe-icons/329f378cbd1a88f45b60cd096b9111ce16f3ea39/LICENSE",
+  "assets": [
+    {
+      "file": "deepseek.svg",
+      "url": "https://raw.githubusercontent.com/lobehub/lobe-icons/329f378cbd1a88f45b60cd096b9111ce16f3ea39/packages/static-svg/icons/deepseek-color.svg",
+      "sha256": "deba5f98a5c1796e20fcac3149bcd7eb8a32f0bdd04d048819400b1f28bd1439",
+      "bytes": 2164
+    },
+    {
+      "file": "kimi.svg",
+      "url": "https://raw.githubusercontent.com/lobehub/lobe-icons/329f378cbd1a88f45b60cd096b9111ce16f3ea39/packages/static-svg/icons/kimi.svg",
+      "sha256": "ed08131b46acf70e6e2144eceb775e74098b58ea65fa21eaee04be7b05cfe63b",
+      "bytes": 786
+    },
+    {
+      "file": "openrouter.svg",
+      "url": "https://raw.githubusercontent.com/lobehub/lobe-icons/329f378cbd1a88f45b60cd096b9111ce16f3ea39/packages/static-svg/icons/openrouter.svg",
+      "sha256": "ae671cc83de9bd45db97a47ed5e38a4e1bd9f93a12be495ba4b4f8b284026bca",
+      "bytes": 382
+    },
+    {
+      "file": "anthropic.svg",
+      "url": "https://raw.githubusercontent.com/lobehub/lobe-icons/329f378cbd1a88f45b60cd096b9111ce16f3ea39/packages/static-svg/icons/anthropic.svg",
+      "sha256": "e833fdfa7e7187a86a05b870925067556a506dcd4239089aed73e1e58c9366a3",
+      "bytes": 368,
+      "retrievedAt": "2026-09-29T08:34:22.111753+00:00"
+    },
+    {
+      "file": "gemini.svg",
+      "url": "https://raw.githubusercontent.com/lobehub/lobe-icons/329f378cbd1a88f45b60cd096b9111ce16f3ea39/packages/static-svg/icons/gemini-color.svg",
+      "sha256": "8ab0a9bafec11f7e69bcb9fc4ffd8f1bc927d1ddcbbb6ff36dee5ae8b5a9d602",
+      "bytes": 2836,
+      "retrievedAt": "2026-09-29T14:15:39.765765+00:00"
+    },
+    {
+      "file": "qwen.svg",
+      "url": "https://raw.githubusercontent.com/lobehub/lobe-icons/329f378cbd1a88f45b60cd096b9111ce16f3ea39/packages/static-svg/icons/qwen-color.svg",
+      "sha256": "77f5768c66d08ce1d3d14e73373975c1bc0454be88c81523ddd0ffd7e2974029",
+      "bytes": 2044,
+      "retrievedAt": "2026-09-29T14:15:39.408794+00:00"
+    },
+    {
+      "file": "glm.svg",
+      "url": "https://raw.githubusercontent.com/lobehub/lobe-icons/329f378cbd1a88f45b60cd096b9111ce16f3ea39/packages/static-svg/icons/zhipu-color.svg",
+      "sha256": "8174e65ff71647d5c705c920c953a82bd723d9e3e42887bdd4ffc9dfe51207a0",
+      "bytes": 3597,
+      "retrievedAt": "2026-09-29T14:15:39.722189+00:00"
+    },
+    {
+      "file": "doubao.svg",
+      "url": "https://raw.githubusercontent.com/lobehub/lobe-icons/329f378cbd1a88f45b60cd096b9111ce16f3ea39/packages/static-svg/icons/doubao-color.svg",
+      "sha256": "3cd31ba03ae44b8c29561597a3b863809efecb13fcdfd08407a086df86a69b55",
+      "bytes": 1153,
+      "retrievedAt": "2026-09-29T14:15:39.524846+00:00"
+    },
+    {
+      "file": "minimax.svg",
+      "url": "https://raw.githubusercontent.com/lobehub/lobe-icons/329f378cbd1a88f45b60cd096b9111ce16f3ea39/packages/static-svg/icons/minimax-color.svg",
+      "sha256": "7f7187fa6d9b341ac5f22f6c5a970523afb439dc45566d64eb4f4b9b604d6b01",
+      "bytes": 1570,
+      "retrievedAt": "2026-09-29T14:15:40.030656+00:00"
+    }
+  ]
+}

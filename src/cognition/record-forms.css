@@ -1,0 +1,17 @@
+.dialog-overlay .app-dialog.record-dialog { width:min(540px,calc(100vw - 32px)); padding:24px; }
+.dialog-overlay .app-dialog.record-dialog.person-portrait-form { width:min(740px,calc(100vw - 32px)); }
+.record-dialog .record-form { gap:18px; }
+.record-dialog .record-form .form-field { min-width:0; margin:0; gap:7px; }
+.record-dialog .record-form .field-label { color:var(--color-text-primary); font-size:var(--hither-font-label,13px); line-height:1.5; font-weight:500; }
+.record-dialog .record-form textarea { line-height:1.7; }
+.record-dialog .record-form .field-hint { margin:0; }
+.record-dialog .record-actions { display:flex; align-items:center; justify-content:flex-end; gap:8px; padding-top:16px; margin-top:2px; }
+.record-dialog .record-actions>button { width:auto; min-width:72px; flex:0 0 auto; }
+.record-dialog .record-form>button[type=submit] { width:auto; align-self:flex-end; }
+.record-date-input { display:flex; align-items:center; flex-wrap:wrap; gap:8px; min-width:0; }
+.record-date-input .record-date-trigger { width:220px; max-width:100%; min-width:0; height:32px; align-items:center; }
+.record-date-input.has-precision { flex-direction:column; align-items:flex-start; }
+.record-date-input .record-date-precision { width:120px; max-width:100%; font-size:12px; }
+.record-date-input .record-partial-date { width:220px; max-width:100%; }
+.record-dialog .record-form [role=button] { min-width:0; }
+@media(max-width:540px) { .dialog-overlay .app-dialog.record-dialog { padding:20px; } }

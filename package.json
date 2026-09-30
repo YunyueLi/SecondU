@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "A local personal agent with inspectable personal cognition. Hither is a working name.",
+  "description": "A local personal agent with inspectable personal cognition.",
   "engines": {
     "node": ">=22.13"
   },
@@ -17,24 +17,40 @@
     "desktop:package": "npm run build && node desktop/package.mjs"
   },
   "dependencies": {
+    "@dicebear/adventurer": "^9.4.2",
+    "@dicebear/avataaars": "^9.4.2",
+    "@dicebear/bottts": "^9.4.2",
+    "@dicebear/core": "9.4.3",
+    "@dicebear/lorelei": "^9.4.2",
+    "@dicebear/micah": "^9.4.2",
+    "@dicebear/notionists": "^9.4.2",
+    "@dicebear/open-peeps": "^9.4.2",
+    "@dicebear/pixel-art": "9.4.2",
+    "@dicebear/shapes": "^9.4.2",
+    "@dicebear/thumbs": "^9.4.2",
     "@openai/apps-sdk-ui": "0.2.2",
-    "react": "19.1.1",
-    "react-dom": "19.1.1",
+    "d3-force": "^3.0.0",
+    "jsqr": "1.4.0",
+    "luxon": "^3.7.1",
     "qrcode": "1.5.4",
-    "jsqr": "1.4.0"
+    "react": "19.1.1",
+    "react-dom": "19.1.1"
   },
   "devDependencies": {
     "@tailwindcss/vite": "4.3.3",
-    "tailwindcss": "4.3.3",
-    "vite": "8.3.1",
-    "typescript": "5.9.3",
-    "@types/react": "19.1.16",
-    "@types/react-dom": "19.1.9",
+    "@types/d3-force": "^3.0.10",
+    "@types/luxon": "^3.7.6",
     "@types/node": "24.10.0",
     "@types/qrcode": "1.5.6",
-    "electron": "38.1.2"
+    "@types/react": "19.1.16",
+    "@types/react-dom": "19.1.9",
+    "electron": "38.1.2",
+    "tailwindcss": "4.3.3",
+    "typescript": "5.9.3",
+    "vite": "8.3.1"
   },
   "allowScripts": {
     "electron@38.1.2": true
-  }
+  },
+  "productName": "SecondU"
 }

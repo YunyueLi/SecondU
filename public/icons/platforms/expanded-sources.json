@@ -1,0 +1,116 @@
+[
+  {
+    "platform": "slack",
+    "error": "HTTP Error 404: Not Found",
+    "used": false
+  },
+  {
+    "platform": "feishu",
+    "error": "HTTP Error 404: Not Found",
+    "used": false
+  },
+  {
+    "platform": "dingtalk",
+    "error": "HTTP Error 404: Not Found",
+    "used": false
+  },
+  {
+    "platform": "wecom",
+    "url": "https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/wechat.svg",
+    "bytes": 1330,
+    "used": false,
+    "note": "Fetched WeChat mark not used as WeCom identity; file removed."
+  },
+  {
+    "platform": "qq",
+    "url": "https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/qq.svg",
+    "bytes": 650,
+    "used": true,
+    "sha256": "3c94e923013fe13a5194c84d9a44e2d62225a7ea3537f3ad95a3cb72fdae1383"
+  },
+  {
+    "platform": "teams",
+    "error": "HTTP Error 404: Not Found",
+    "used": false
+  },
+  {
+    "platform": "telegram",
+    "url": "https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/telegram.svg",
+    "bytes": 742,
+    "used": true,
+    "sha256": "147fd8f8923e7e5f463fe98c0eb9913bead6b2ae59935728cda141002ec8a7c9"
+  },
+  {
+    "platform": "discord",
+    "url": "https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/discord.svg",
+    "bytes": 1374,
+    "used": true,
+    "sha256": "1d364b72c9eaf1fe37d17ca88cd8fb541308dc0f3b09e2ab3b824f380b3493d5"
+  },
+  {
+    "platform": "signal",
+    "url": "https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/signal.svg",
+    "bytes": 1645,
+    "used": true,
+    "sha256": "391f46b8feaef281a44dfdf40035d9a4546ded17d2c3eb88d6614762779f1930"
+  },
+  {
+    "platform": "line",
+    "url": "https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/line.svg",
+    "bytes": 1176,
+    "used": true,
+    "sha256": "b62430462354f95914536d7205128647d5563cdb805bc9aca000300aaed816c8"
+  },
+  {
+    "platform": "messenger",
+    "url": "https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/messenger.svg",
+    "bytes": 575,
+    "used": true,
+    "sha256": "a52aadd9f7602aebfe4d01e2b249963e136fc996edfa2b78b037ad7e1a400e71"
+  },
+  {
+    "platform": "imessage",
+    "url": "https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/imessage.svg",
+    "bytes": 458,
+    "used": true,
+    "sha256": "6f0701596b1b44ea9b863828b5a9363b77c30408bbb4655045378c33440de144"
+  },
+  {
+    "platform": "slack",
+    "url": "https://raw.githubusercontent.com/simple-icons/simple-icons/11.15.0/icons/slack.svg",
+    "bytes": 1123,
+    "used": true,
+    "sha256": "f23c317b279f53dcd2260a6cd2e279f7a696f87dcb3da259d6201f05bbc45b0d"
+  },
+  {
+    "platform": "feishu",
+    "error": "HTTP Error 404: Not Found",
+    "used": false
+  },
+  {
+    "platform": "dingtalk",
+    "error": "HTTP Error 404: Not Found",
+    "used": false
+  },
+  {
+    "platform": "teams",
+    "url": "https://raw.githubusercontent.com/simple-icons/simple-icons/11.15.0/icons/microsoftteams.svg",
+    "bytes": 1850,
+    "used": true,
+    "sha256": "9c509b9aea846e4a773d59df7fe3d29843e9e05c3579ce167d1e7e5ba14be1d1"
+  },
+  {
+    "platform": "wecom",
+    "error": "HTTP Error 404: Not Found",
+    "used": false,
+    "note": "Fetched WeChat mark not used as WeCom identity; file removed."
+  },
+  {
+    "platform": "dingtalk",
+    "url": "https://raw.githubusercontent.com/ant-design/ant-design-icons/master/packages/icons-svg/svg/outlined/dingding.svg",
+    "license": "MIT",
+    "bytes": 674,
+    "used": true,
+    "sha256": "3d27faad2720e1e7a9493b5539dbf357e3b33f2f1d7e4c2e81bfa8f2ccc4078e"
+  }
+]

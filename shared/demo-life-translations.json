@@ -1,0 +1,156 @@
+{
+  "sources": {
+    "demo-life-v3-biography": {
+      "万叶的求学、工作与生活": "Caspian's education, work, and life",
+      "万叶，英文名 Caspian，杭州长大，现在住北京。\n\n2016-09 至 2020-06：在浙江大学学习软件工程\n从杭州的家搬进紫金港校区，认识许安和宋岚。毕业项目做的是校园活动报名工具，陆棠老师让万叶先去问同学怎么组织活动，再画原型和写代码。\n\n2020-07 至 2023-02：加入字节跳动飞书团队\n毕业后来到北京，做飞书协作产品的前端开发。最初关注页面能不能稳定交付，后来开始参与需求访谈，追问同事为什么这样使用文档和表格。\n\n2022-03：在北京安顿下来\n搬到海淀的一间出租屋，通勤短了一些。添了一张结实的书桌，周末学着做饭，也开始给回杭州看家人留固定时间。周芮帮忙看过租房合同。\n\n2023-03：加入月之暗面，转做 Kimi 产品工程师\n想把模型能力做成日常能用的产品，加入月之暗面。工作逐渐包含用户研究、交互原型、产品实现和上线后的反馈。与乔宁、陈禾开始共事。\n\n2024-05：和魏禾开始每周去奥森跑步\n起初只能连续跑三公里，现在习惯周日下午四点在奥林匹克森林公园见面。速度随状态，不把跑步变成另一项考核。\n\n2025-11：把晚上和周末重新留给生活\n项目忙过一阵以后，开始把上午留给完整开发，晚上减少临时会议。固定给杭州的父母打电话，周末带相机出去走走。\n\n2026-07：开始负责 Kimi Agent 工作台内测\n与梁秋开展访谈，九月已有五份完整记录。首轮聚焦澄清、执行状态和中断恢复，十月十二日是计划内测日期，当前尚未正式上线。\n\n2026-08-16：带相机去了一趟青岛\n和高远坐火车去青岛，下午沿着海边走，拍了阴天的海和街边晾着的衣服。回北京后只挑了十二张留下，不再把旅行排成打卡清单。": "Caspian grew up in Hangzhou and now lives in Beijing.\n\n2016-09 to 2020-06: Studied software engineering at Zhejiang University\nMoved from the family home in Hangzhou to the Zijingang campus, where Caspian met Xu An and Song Lan. For his graduation project, he built a campus event registration tool. His adviser Lu Tang asked him to learn how classmates organized events before designing a prototype and writing code.\n\n2020-07 to 2023-02: Joined the Feishu team at ByteDance\nMoved to Beijing after graduation to work on frontend development for Feishu. At first, he focused on delivering reliable pages. He later began joining user interviews and asking colleagues why they used documents and spreadsheets in particular ways.\n\n2022-03: Settled into life in Beijing\nMoved to a rented apartment in Haidian with a shorter commute. He bought a sturdy desk, learned to cook on weekends, and began setting aside time to visit family in Hangzhou. Zhou Rui helped review the rental contract.\n\n2023-03: Joined Moonshot AI as a Kimi product engineer\nJoined Moonshot AI to turn model capabilities into products people could use every day. His work gradually grew to include user research, interaction prototypes, implementation, and feedback after launch. He began working with Qiao Ning and Chen He.\n\n2024-05: Started running every week with Wei He at Olympic Forest Park\nAt first, he could run only three kilometers without stopping. They now usually meet at Olympic Forest Park at 4 p.m. on Sundays. They adjust their pace to how they feel and keep running from becoming another performance target.\n\n2025-11: Made room for life in the evenings and on weekends\nAfter a busy stretch at work, he began reserving mornings for focused development and reducing last-minute evening meetings. He calls his parents in Hangzhou regularly and takes his camera out for walks on weekends.\n\n2026-07: Began leading the Kimi Agent Workbench pilot\nStarted interviews with Liang Qiu, with five complete records by September. The first round focuses on clarification, execution status, and resuming interrupted tasks. The pilot is planned for October 12; the product has not officially launched.\n\n2026-08-16: Took a photography trip to Qingdao\nTook the train to Qingdao with Gao Yuan. They spent an afternoon walking along the coast, photographing the sea under cloudy skies and laundry hanging beside the streets. Back in Beijing, he kept just twelve photographs and decided not to plan trips as lists of sights to check off."
+    }
+  },
+  "events": {
+    "demo-life-v3-study": {
+      "在浙江大学学习软件工程": "Studied software engineering at Zhejiang University",
+      "从杭州的家搬进紫金港校区，认识许安和宋岚。毕业项目做的是校园活动报名工具，陆棠老师让万叶先去问同学怎么组织活动，再画原型和写代码。": "Moved from the family home in Hangzhou to the Zijingang campus, where Caspian met Xu An and Song Lan. For his graduation project, he built a campus event registration tool. His adviser Lu Tang asked him to learn how classmates organized events before designing a prototype and writing code.",
+      "杭州": "Hangzhou"
+    },
+    "demo-life-v3-first-job": {
+      "加入字节跳动飞书团队": "Joined the Feishu team at ByteDance",
+      "毕业后来到北京，做飞书协作产品的前端开发。最初关注页面能不能稳定交付，后来开始参与需求访谈，追问同事为什么这样使用文档和表格。": "Moved to Beijing after graduation to work on frontend development for Feishu. At first, he focused on delivering reliable pages. He later began joining user interviews and asking colleagues why they used documents and spreadsheets in particular ways.",
+      "北京": "Beijing"
+    },
+    "demo-life-v3-move": {
+      "在北京安顿下来": "Settled into life in Beijing",
+      "搬到海淀的一间出租屋，通勤短了一些。添了一张结实的书桌，周末学着做饭，也开始给回杭州看家人留固定时间。周芮帮忙看过租房合同。": "Moved to a rented apartment in Haidian with a shorter commute. He bought a sturdy desk, learned to cook on weekends, and began setting aside time to visit family in Hangzhou. Zhou Rui helped review the rental contract.",
+      "北京 · 海淀": "Haidian, Beijing",
+      "北京海淀": "Haidian, Beijing"
+    },
+    "demo-life-v3-volunteer": {
+      "加入月之暗面，转做 Kimi 产品工程师": "Joined Moonshot AI as a Kimi product engineer",
+      "想把模型能力做成日常能用的产品，加入月之暗面。工作逐渐包含用户研究、交互原型、产品实现和上线后的反馈。与乔宁、陈禾开始共事。": "Joined Moonshot AI to turn model capabilities into products people could use every day. His work gradually grew to include user research, interaction prototypes, implementation, and feedback after launch. He began working with Qiao Ning and Chen He.",
+      "北京": "Beijing"
+    },
+    "demo-life-v3-running": {
+      "和魏禾开始每周去奥森跑步": "Started running every week with Wei He at Olympic Forest Park",
+      "起初只能连续跑三公里，现在习惯周日下午四点在奥林匹克森林公园见面。速度随状态，不把跑步变成另一项考核。": "At first, he could run only three kilometers without stopping. They now usually meet at Olympic Forest Park at 4 p.m. on Sundays. They adjust their pace to how they feel and keep running from becoming another performance target.",
+      "北京 · 奥林匹克森林公园": "Olympic Forest Park, Beijing",
+      "北京奥林匹克森林公园": "Olympic Forest Park, Beijing"
+    },
+    "demo-life-v3-boundaries": {
+      "把晚上和周末重新留给生活": "Made room for life in the evenings and on weekends",
+      "项目忙过一阵以后，开始把上午留给完整开发，晚上减少临时会议。固定给杭州的父母打电话，周末带相机出去走走。": "After a busy stretch at work, he began reserving mornings for focused development and reducing last-minute evening meetings. He calls his parents in Hangzhou regularly and takes his camera out for walks on weekends.",
+      "北京": "Beijing"
+    },
+    "demo-life-v3-workbench": {
+      "开始负责 Kimi Agent 工作台内测": "Began leading the Kimi Agent Workbench pilot",
+      "与梁秋开展访谈，九月已有五份完整记录。首轮聚焦澄清、执行状态和中断恢复，十月十二日是计划内测日期，当前尚未正式上线。": "Started interviews with Liang Qiu, with five complete records by September. The first round focuses on clarification, execution status, and resuming interrupted tasks. The pilot is planned for October 12; the product has not officially launched.",
+      "北京": "Beijing"
+    },
+    "demo-life-v3-photo-trip": {
+      "带相机去了一趟青岛": "Took a photography trip to Qingdao",
+      "和高远坐火车去青岛，下午沿着海边走，拍了阴天的海和街边晾着的衣服。回北京后只挑了十二张留下，不再把旅行排成打卡清单。": "Took the train to Qingdao with Gao Yuan. They spent an afternoon walking along the coast, photographing the sea under cloudy skies and laundry hanging beside the streets. Back in Beijing, he kept just twelve photographs and decided not to plan trips as lists of sights to check off.",
+      "青岛": "Qingdao"
+    }
+  },
+  "people": {
+    "person-self": {
+      "万叶，英文名 Caspian，在月之暗面做 Kimi 产品工程。": "Caspian is a product engineer working on Kimi at Moonshot AI.",
+      "杭州长大，2016—2020 年在浙江大学学习软件工程，毕业后到北京加入字节跳动飞书团队。": "Grew up in Hangzhou and studied software engineering at Zhejiang University from 2016 to 2020. After graduating, he moved to Beijing and joined the Feishu team at ByteDance.",
+      "2023 年加入月之暗面，2026 年开始负责 Kimi Agent 工作台的研究、原型与内测。": "Joined Moonshot AI in 2023 and began leading research, prototypes, and the pilot for Kimi Agent Workbench in 2026.",
+      "先给今天最值得做的一步，再展开依据和代价；建议简短、具体。": "Start with the most useful step to take today, then explain the evidence and tradeoffs. Keep advice brief and specific.",
+      "计划在十月十二日开始首轮内测，先验证澄清、执行状态与中断后继续。": "Plans to start the first pilot on October 12, initially testing clarification, execution status, and resuming interrupted tasks.",
+      "本轮模型调用预算上限 2000 元；重要的发送、付款和安排先核对内容。": "The model call budget for this round is capped at CNY 2,000. Review the details before important messages, payments, or arrangements.",
+      "周日和魏禾去奥森慢跑，喜欢摄影和坐火车旅行。": "Runs with Wei He at Olympic Forest Park on Sundays and enjoys photography and traveling by train.",
+      "这轮工作更重视一个任务是否完整可用，暂时把工具数量放到后面。": "For this round, he places more weight on completing one usable task and less on the number of available tools.",
+      "来自这轮内测取舍，后续可随安排更新。": "Inferred from the priorities of this pilot; it can be updated as plans change."
+    },
+    "person-qiao": {
+      "Kimi 团队产品经理，与万叶共同负责工作台首轮内测。": "A product manager on the Kimi team, working with Caspian on the first Workbench pilot.",
+      "首轮内测聚焦需求澄清、执行状态和中断后继续。": "The first pilot focuses on clarifying requirements, showing execution status, and resuming interrupted tasks."
+    },
+    "person-chen": {
+      "Kimi 产品设计师，与万叶一起评审实际原型和状态提示。": "A product designer on Kimi, reviewing working prototypes and status messages with Caspian."
+    },
+    "person-xuan": {
+      "2016 年在浙江大学与万叶相识，现在在杭州做阿里云后端开发。": "Met Caspian at Zhejiang University in 2016 and now works on backend development at Alibaba Cloud in Hangzhou.",
+      "试用时希望直接带自己的任务操作，再看功能说明。": "Prefers to try a product with a task of their own before reading the feature explanations.",
+      "约好试用新工作台，也想在国庆和万叶吃一碗面，具体时间待定。": "Has agreed to try the new Workbench and would also like to have noodles with Caspian during the National Day holiday. The time is not yet set."
+    },
+    "demo-v2-person-lu": {
+      "浙江大学软件工程教师，指导过万叶的毕业项目。": "A software engineering teacher at Zhejiang University who advised Caspian's graduation project.",
+      "先看一个人如何完成一件具体事情，再讨论功能和抽象需求。": "First observe how a person completes a specific task, then discuss features and broader requirements.",
+      "除职业成长外，也提醒万叶读些工作以外的书、留时间休息。": "Alongside career development, encourages Caspian to read beyond work and make time to rest."
+    },
+    "demo-v2-person-song": {
+      "浙江大学同学，现在在上海做内容产品。": "A former classmate at Zhejiang University, now working on content products in Shanghai.",
+      "国庆后想约万叶吃饭、沿苏州河走走，日期还没定。": "Would like to have a meal with Caspian and walk along Suzhou Creek after the National Day holiday. No date has been set."
+    },
+    "demo-v2-person-he": {
+      "月之暗面算法工程师，负责 Kimi 工具调用评测。": "An algorithm engineer at Moonshot AI, responsible for evaluating tool use in Kimi.",
+      "评测先写清完成条件，保留失败样例，并区分模型判断和工具返回的问题。": "Define completion criteria before an evaluation, retain failure cases, and distinguish model judgment problems from tool response problems.",
+      "先跑小批量任务，周四四点和万叶看十条完整记录与实际调用量。": "Plans to run a small batch first, then review ten complete records and actual call volume with Caspian at 4 p.m. on Thursday."
+    },
+    "demo-v2-person-xu": {
+      "Kimi 团队测试工程师，习惯给出可复现步骤。": "A test engineer on the Kimi team who provides reproducible steps.",
+      "检查保存前后中断、软件重启、用户改文件后的继续操作。": "Checks interruptions before and after saving, application restarts, and resuming work after the user has edited a file."
+    },
+    "demo-v2-person-tang": {
+      "Kimi 交互设计师，负责澄清与工具确认界面。": "An interaction designer on Kimi, responsible for clarification and tool confirmation screens.",
+      "希望在可运行页面里实际操作；确认弹窗要展示动作、对象和内容。": "Wants to test interactions in a working page. Confirmation dialogs should show the action, the target, and the content."
+    },
+    "demo-v2-person-shen": {
+      "Kimi 后端工程师，负责任务状态与执行接口。": "A backend engineer on Kimi, responsible for task states and execution interfaces.",
+      "通过明确字段表达状态，并把文件版本冲突和执行中断分别处理。": "Represent states with explicit fields and handle file version conflicts separately from execution interruptions."
+    },
+    "demo-v2-person-zhao": {
+      "万叶在杭州读高中时的班主任，教数学。": "Caspian's high school homeroom and mathematics teacher in Hangzhou.",
+      "鼓励万叶工作之余运动、回家陪伴家人；国庆见面不必赶。": "Encourages Caspian to exercise outside work and spend time with family. There is no need to rush to meet during the National Day holiday."
+    },
+    "demo-v2-person-zhou": {
+      "万叶的高中同学，在北京做用户体验研究，搬家时互相帮忙。": "A high school classmate of Caspian, now doing user experience research in Beijing. They have helped each other with moving.",
+      "处理租房问题先记录现状、找房东维修，再核对续租条款。": "For rental issues, first record the current condition, ask the landlord to make repairs, and then review the renewal terms."
+    },
+    "demo-v2-person-wu": {
+      "Kimi 产品运营，负责内测招募、使用说明和回访。": "Works in product operations for Kimi, handling pilot recruitment, usage guidance, and follow-up interviews.",
+      "约齐首轮八位内测用户，让他们带自己的任务试用。": "Plans to arrange the first group of eight pilot users and ask them to try the product with their own tasks."
+    },
+    "demo-v2-person-gao": {
+      "住在北京的数据工程师，也是万叶的摄影伙伴。": "A data engineer living in Beijing and Caspian's photography companion.",
+      "2026 年八月和万叶去青岛拍照。": "Visited Qingdao with Caspian to take photographs in August 2026.",
+      "先选少量照片再修图，旅行留出走路和观察的空档。": "Select a small number of photographs before editing, and leave room on trips to walk and observe."
+    },
+    "demo-v2-person-ye": {
+      "Kimi 前端工程师，与万叶共同开发会话与成果编辑界面。": "A frontend engineer on Kimi, working with Caspian on conversation and output editing interfaces.",
+      "关注草稿不丢失、长会话滚动和窄窗口的实际使用。": "Focuses on preserving drafts, scrolling through long conversations, and usability in narrow windows."
+    },
+    "demo-v2-person-liang": {
+      "Kimi 用户研究员，与万叶共同做访谈。": "A user researcher on Kimi who conducts interviews with Caspian.",
+      "从一次具体操作中找出停顿，先保留原话，再总结观察。": "Look for pauses during a specific interaction. Preserve the original words before summarizing observations.",
+      "找两位用户回访，观察修改要求、查看结果和再次开始的过程。": "Plans to follow up with two users and observe how they change requirements, review results, and start again."
+    },
+    "demo-v2-person-qiu": {
+      "Kimi 工作台工程负责人，和万叶一起定每轮交付范围。": "The engineering lead for Kimi Workbench, working with Caspian to define the scope of each delivery.",
+      "先修会阻塞用户的具体问题，再安排更多功能。": "Fix specific problems that block users before scheduling more features."
+    },
+    "demo-v2-person-wei": {
+      "住在北京，是万叶工作之外的朋友和跑步伙伴。": "Lives in Beijing and is a friend and running companion of Caspian outside work.",
+      "通常周日下午四点在奥森见面，跑步时少看工作消息，速度随状态。": "Usually meets at Olympic Forest Park at 4 p.m. on Sundays. Keeps work messages to a minimum during runs and adjusts the pace to how they feel.",
+      "2024 年五月开始与万叶保持每周跑步的习惯。": "Has kept up a weekly running routine with Caspian since May 2024."
+    },
+    "demo-v2-person-du": {
+      "万叶的母亲，住在杭州，喜欢逛菜市场和种花。": "Caspian's mother lives in Hangzhou and enjoys visiting food markets and growing flowers.",
+      "国庆和家人吃饭，万叶初步计划十月二日中午回家，车次待定。": "Plans to have a family meal during the National Day holiday. Caspian tentatively plans to arrive home around noon on October 2; the train has not been decided.",
+      "希望回家主要吃饭和相处，别把家里也安排成工作场所。": "Wants visits home to center on meals and time together, without turning the family home into another workplace."
+    },
+    "demo-v2-person-lin": {
+      "万叶的父亲，住在杭州，喜欢做饭、散步和看球。": "Caspian's father lives in Hangzhou and enjoys cooking, walking, and watching sports.",
+      "回家时间提前一天确认，再买菜准备片儿川。": "Confirm the arrival time a day in advance so he can buy ingredients and prepare pian er chuan noodles.",
+      "关心产品做错后能否让人修改，用普通使用者的视角问问题。": "Asks whether people can correct the product when it makes a mistake, approaching it from the perspective of an everyday user."
+    },
+    "demo-v2-person-jiang": {
+      "万叶的妹妹，在杭州读大学。": "Caspian's younger sister is studying at a university in Hangzhou.",
+      "课程项目做校园活动报名，先画列表、报名和确认结果的流程，再请两位同学试。": "For a course project on campus event registration, plans to sketch the list, registration, and confirmation flow, then ask two classmates to try it.",
+      "会和哥哥交流课程项目，也分享音乐和日常。": "Talks with her brother about course projects and also shares music and everyday experiences."
+    },
+    "demo-v2-person-han": {
+      "月之暗面隐私与法务同事，帮助 Kimi 团队核对访谈说明与数据使用范围。": "A privacy and legal colleague at Moonshot AI who helps the Kimi team review interview notices and the scope of data use."
+    }
+  }
+}

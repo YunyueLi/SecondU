@@ -1,0 +1,31 @@
+.app-shell:has(> .sidebar-resize-handle) { position: relative; }
+.sidebar-resize-handle {
+  position: absolute;
+  inset-block: 0;
+  left: calc(var(--hither-sidebar-width) - 4px);
+  width: 8px;
+  z-index: 61;
+  cursor: col-resize;
+  touch-action: none;
+  outline: none;
+  -webkit-app-region: no-drag;
+}
+.desktop-mode > .sidebar-resize-handle { top: 30px; }
+.sidebar-resize-handle::after {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  left: 3px;
+  width: 2px;
+  background: var(--color-text-secondary);
+  opacity: 0;
+}
+.sidebar-resize-handle:hover::after { opacity: .3; }
+.sidebar-resize-handle:focus-visible::after,
+.sidebar-resize-handle[data-resizing='true']::after { opacity: .65; }
+.app-shell:has(> .sidebar-resize-handle[data-resizing='true']) * { cursor: col-resize !important; user-select: none !important; }
+.app-shell:has(> .sidebar-resize-handle[data-resizing='true']) > .desktop-drag-region { -webkit-app-region: no-drag; }
+@media (min-width: 801px) {
+  .app-shell:has(> .sidebar-resize-handle[data-resizing='true']) > .app-sidebar { transition: none; }
+}
+@media (max-width: 800px), print { .sidebar-resize-handle { display: none; } }

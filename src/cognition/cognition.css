@@ -17,7 +17,7 @@
 .cog-refs button>svg{width:13px;height:13px;flex-shrink:0}
 .cog-refs.is-compact button{font-size:var(--hither-font-meta);gap:3px;padding-inline:4px;height:24px;min-height:24px}
 .cog-refs.is-compact button>svg{width:12px;height:12px}
-.cog-refs button>span{display:flex;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cog-refs button>span{display:flex;min-width:0; white-space:normal;overflow-wrap:anywhere;}
 .cog-avatar{display:grid;place-items:center;flex-shrink:0;border-radius:50%;width:34px;height:34px;background:var(--color-background-tertiary);color:var(--color-text-primary);font-size:var(--hither-font-label);font-weight:550}
 .cog-avatar>svg{width:18px;height:18px}
 .cog-avatar.large{width:44px;height:44px;font-size:17px}
@@ -26,33 +26,6 @@
 .cog-panel-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 20px;border-bottom:1px solid var(--color-border)}
 .cog-panel-heading h2{font-size:var(--hither-font-body);font-weight:600}
 .cog-panel-heading>span{font-size:var(--hither-font-caption);color:var(--color-text-secondary)}
-/* Saved conversations: a quiet inbox alongside the original record. */
-.conversation-layout{grid-template-columns:244px minmax(0,1fr);min-height:580px}
-.cog-list-panel{padding:16px 10px;border-right:1px solid var(--color-border);background:var(--color-background-secondary)}
-.cog-list-panel>div:first-child{margin:0 2px}
-.cog-list-caption{display:flex;align-items:center;justify-content:space-between;margin:19px 8px 9px;font-size:var(--hither-font-caption);color:var(--color-text-secondary)}
-.cog-list-caption span{font-variant-numeric:tabular-nums}
-.cog-conversation-list{display:flex;flex-direction:column;gap:4px}
-.cog-list-item{display:flex!important;justify-content:flex-start!important;align-items:center!important;width:100%;height:auto!important;min-height:76px!important;gap:10px!important;padding:12px 10px!important;border-radius:8px!important;text-align:left!important;white-space:normal!important}
-.cog-list-item.is-active{background:var(--color-background-tertiary)}
-.cog-list-copy{display:block;min-width:0;flex:1;overflow:hidden}
-.cog-list-copy strong{display:block;font-size:var(--hither-font-body);font-weight:550;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.cog-list-copy small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--color-text-secondary);font-size:var(--hither-font-caption);font-weight:400;line-height:1.5;margin-top:4px}
-.conversation-main header{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:82px;padding:16px 24px;border-bottom:1px solid var(--color-border)}
-.conversation-main header>div{min-width:0}
-.conversation-main header>.cog-refs{margin-top:5px}
-.conversation-main header h2{font-size:16px;font-weight:600;margin-bottom:3px}
-.conversation-messages{padding:20px 24px 28px;display:flex;flex-direction:column;gap:24px;max-height:640px;overflow:auto}
-.cog-record-label{align-self:center;font-size:var(--hither-font-caption);color:var(--color-text-secondary);margin-bottom:2px}
-.cog-message{max-width:84%;min-width:0;align-self:flex-start}
-.cog-message.is-self{align-self:flex-end}
-.cog-message>p{padding:11px 14px;border-radius:4px 12px 12px 12px;background:var(--color-background-secondary);line-height:1.7;font-size:var(--hither-font-body);overflow-wrap:anywhere;white-space:pre-wrap}
-.cog-message.is-self>p{border-radius:12px 4px 12px 12px;background:var(--color-background-tertiary)}
-.cog-message-meta{display:flex;gap:10px;flex-wrap:wrap;font-size:var(--hither-font-caption);color:var(--color-text-secondary);margin-bottom:6px}
-.cog-message-meta strong{font-weight:500;color:var(--color-text-primary)}
-.is-self .cog-message-meta{justify-content:flex-end}
-.cog-message .cog-refs{margin-top:5px}
-.cog-message.is-self .cog-refs{justify-content:flex-end}
 /* A chronological reading line, without a stack of cards. */
 .cog-timeline{max-width:920px;padding:4px 0 20px}
 .cog-timeline article{display:grid;grid-template-columns:112px minmax(0,1fr);position:relative}
@@ -65,40 +38,6 @@
 .cog-timeline h2{font-size:16px;line-height:1.5;font-weight:550}
 .cog-timeline p{font-size:var(--hither-font-body);line-height:1.75;max-width:70ch;color:var(--color-text-secondary)}
 .cog-timeline .cog-event-people{margin-top:10px;font-size:12px}
-/* The graph and the selected person's evidence stay in a single surface. */
-.relationship-layout{grid-template-columns:minmax(0,1fr) 280px;align-items:stretch;height:560px}
-.relationship-graph{display:flex;flex-direction:column;min-width:0}
-.relationship-graph svg{display:block;width:100%;height:0;min-height:0;flex:1}
-.relationship-graph line{stroke:var(--color-border);stroke-width:1.2}
-.relationship-graph .is-related line{stroke:var(--color-text-secondary);stroke-width:1.3;opacity:.6}
-.relationship-graph text{fill:var(--color-text-secondary);font-size:var(--hither-font-caption);paint-order:stroke;stroke:var(--color-background-primary);stroke-width:6px;stroke-linejoin:round}
-.relationship-graph circle{fill:var(--color-background-secondary);stroke:var(--color-border);stroke-width:1.5;transition:fill .15s ease,stroke .15s ease}
-.relationship-graph .anchor-node circle{fill:var(--color-background-tertiary)}
-.relationship-graph .selected-node circle{fill:var(--color-text-primary);stroke:var(--color-text-primary)}
-.relationship-graph .node-initial{font-size:15px;stroke:none;fill:var(--color-text-primary);font-weight:500}
-.relationship-graph .selected-node .node-initial{fill:var(--color-background-primary)}
-.relationship-graph .node-name{font-size:var(--hither-font-label);fill:var(--color-text-primary);font-weight:550}
-.relationship-graph g[role=button]{cursor:pointer;outline:none}
-.relationship-graph g[role=button]:focus-visible circle{stroke:var(--color-text-primary);stroke-width:4px}
-.relationship-graph g[role=button]:hover circle{stroke:var(--color-text-primary)}
-.cog-person-list{display:flex;gap:4px;flex-wrap:wrap;padding:12px 16px;border-top:1px solid var(--color-border)}
-.cog-person-list>button{font-size:var(--hither-font-caption);min-height:32px}
-.cog-person-dot{height:5px;width:5px;background:currentColor;border-radius:50%;opacity:.5}
-.cog-detail{padding:20px;border-left:1px solid var(--color-border);background:var(--color-background-secondary);min-width:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--color-border) transparent}
-.cog-person-heading{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.cog-person-heading>div:nth-child(2){flex:1;min-width:0}
-.cog-person-heading h2{font-size:var(--hither-font-section-title);font-weight:600;line-height:1.35;margin-bottom:4px;overflow-wrap:anywhere}
-.cog-person-heading>button{padding-inline:0;font-size:12px}
-.cog-person-description{font-size:var(--hither-font-body);line-height:1.75;margin:18px 0 8px;color:var(--color-text-secondary);overflow-wrap:anywhere}
-.cog-detail-section-title{display:flex;align-items:center;gap:8px;margin-top:28px;padding-bottom:10px;border-bottom:1px solid var(--color-border)}
-.cog-detail-section-title h3{font-size:var(--hither-font-label);font-weight:600}
-.cog-detail-section-title>span{font-size:var(--hither-font-caption);color:var(--color-text-secondary)}
-.cog-relation{padding:16px 0;border-bottom:1px solid var(--color-border);font-size:14px}
-.cog-relation:last-child{border-bottom:0;padding-bottom:0}
-.cog-relation-heading{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.cog-relation-heading strong{font-weight:550}
-.cog-relation p{font-size:var(--hither-font-label);line-height:1.75;margin-top:8px;color:var(--color-text-secondary)}
-.cog-relation>button{margin-top:6px;font-size:12px}
 /* Personal understanding is a versioned reading list, grouped by certainty. */
 .cog-self-intro{display:flex;align-items:center;gap:14px;padding:20px 0 24px;margin-bottom:12px;border-bottom:1px solid var(--color-border);min-width:0}
 .cog-profile-copy{flex:1;min-width:0}
@@ -174,7 +113,6 @@
 .qr-upload{display:flex;flex-direction:column;gap:12px;border:1px dashed var(--color-border);border-radius:var(--hither-radius-panel);padding:18px;font-size:14px}
 .cog-import-preview{display:flex;flex-direction:column;gap:15px}
 .cog-sources h2 button:hover,.cog-download:hover{text-decoration:underline;text-underline-offset:4px}
-.cognition-workspace button:focus-visible,.cog-download:focus-visible{outline:2px solid var(--color-text-primary);outline-offset:3px}
 .cognition-workspace ::selection{background:var(--color-background-tertiary);color:var(--color-text-primary)}
 .conversation-messages,.source-text{scrollbar-width:thin;scrollbar-color:var(--color-border) transparent}
 @media(max-width:1100px){.relationship-layout{grid-template-columns:minmax(0,1fr) 260px}.conversation-layout{grid-template-columns:220px minmax(0,1fr)}.cog-life-layout{grid-template-columns:minmax(0,1fr) 230px;gap:22px}.cog-detail{padding:18px}.cog-profile-summary{display:none}.cog-fact{grid-template-columns:64px minmax(0,1fr);gap:14px}.cog-person-heading>button{width:100%;justify-content:flex-start}}

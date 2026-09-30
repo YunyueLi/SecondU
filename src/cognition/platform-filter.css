@@ -1,0 +1,9 @@
+.platform-filter-trigger { height:32px;min-height:32px;max-width:100%;padding:0 10px;border-radius:8px;background:var(--color-surface-secondary);font-size:var(--hither-font-caption);font-weight:400;line-height:20px;color:var(--color-text-secondary); }
+.platform-filter-trigger>span { display:flex;align-items:center;justify-content:flex-start;gap:7px;min-width:0; }
+.platform-filter-trigger>span>span { min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis; }
+.platform-filter-trigger .platform-icon { width:16px;height:16px;flex:0 0 16px; }
+.platform-filter-trigger .platform-icon svg { width:16px;height:16px; }
+.platform-filter-trigger>span>svg:last-child { width:12px;height:12px;margin-left:2px;flex:0 0 12px; }
+.platform-filter-trigger:hover,.platform-filter-trigger[data-state=open] { background:var(--color-surface-tertiary);color:var(--color-text); }
+.inbox-reading .inbox-platform-filter { padding:12px 5px 10px;min-height:54px;gap:12px; }
+.inbox-reading .inbox-platform-filter>span { padding-right:5px;font-size:var(--hither-font-meta);line-height:20px;font-variant-numeric:tabular-nums; }

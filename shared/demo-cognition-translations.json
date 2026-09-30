@@ -1,0 +1,215 @@
+{
+  "facts": {
+    "fact-clear": {
+      "建议先给今天能做的一步，再说明理由；语言简短、具体。": "Start with one useful step to take today, then explain why. Keep the language brief and specific.",
+      "根据示例资料整理": "Compiled from the example materials"
+    },
+    "fact-budget": {
+      "Kimi Agent 工作台本轮内测的模型调用预算上限为 2000 元。": "The model call budget for this round of the Kimi Agent Workbench pilot is capped at CNY 2,000.",
+      "根据示例资料整理": "Compiled from the example materials"
+    },
+    "fact-time": {
+      "工作日上午九点到十一点留给连续开发，下午用半小时整理用户反馈。": "Keep 9–11 a.m. on workdays free for focused development, and set aside half an hour in the afternoon to review user feedback.",
+      "根据示例资料整理": "Compiled from the example materials"
+    },
+    "fact-consent": {
+      "重要的发送、付款和安排，先核对内容并确认。": "Review the details and confirm before important messages, payments, or arrangements.",
+      "根据示例资料整理": "Compiled from the example materials"
+    },
+    "fact-small": {
+      "可能更愿意先把一个实际任务做顺，再增加功能。": "May prefer making one practical task work smoothly before adding more features.",
+      "根据示例资料整理": "Compiled from the example materials"
+    },
+    "fact-identity": {
+      "万叶（Caspian）在月之暗面做 Kimi 产品工程，负责用户研究、交互原型和产品实现。": "Caspian is a Kimi product engineer at Moonshot AI, responsible for user research, interaction prototypes, and product implementation.",
+      "根据示例资料整理": "Compiled from the example materials"
+    }
+  },
+  "goals": {
+    "goal-exhibition": {
+      "完成 Kimi 工作台首轮内测": "Complete the first Kimi Workbench pilot",
+      "十月十二日前让八位用户走完自己的任务，重点看澄清、执行状态和中断恢复。模型调用控制在 2000 元以内。": "By October 12, have eight users complete tasks of their own. Focus on clarification, execution status, and recovery after interruptions. Keep model calls within CNY 2,000."
+    },
+    "goal-rest": {
+      "保留上午两小时的专注时间": "Keep two hours each morning for focused work",
+      "九点到十一点先不排会；下午集中整理反馈，减少来回切换。": "Keep 9–11 a.m. free of meetings. Review feedback in one afternoon session to reduce switching between tasks."
+    },
+    "demo-v2-goal-samples": {
+      "完成工作台核心流程验收": "Verify the core Workbench flow",
+      "和徐沐、叶澄检查澄清、执行、中断、继续与文件版本冲突。": "With Xu Mu and Ye Cheng, check clarification, execution, interruption, resuming work, and file version conflicts."
+    },
+    "demo-v2-goal-permission": {
+      "整理访谈结论，约齐首轮内测用户": "Summarize the interviews and schedule all pilot participants",
+      "整理五次访谈的原话与观察，和吴桐确认另外三位受访者的时间。": "Organize the original comments and observations from five interviews. Confirm the other three participants’ availability with Wu Tong."
+    },
+    "demo-v2-goal-interactive": {
+      "规划下一轮工具接入": "Plan the next round of tool integrations",
+      "等首轮内测结果出来，再决定哪些工具值得优先接入。": "Wait for the first pilot results before deciding which tools to integrate first."
+    },
+    "demo-v2-goal-rest": {
+      "确认国庆回杭州的车次": "Confirm the train home to Hangzhou for the National Day holiday",
+      "初步十月二日中午到家，确定后提前告诉爸妈，把那天下午留给家人。": "Tentatively arrive home at noon on October 2. Tell the family once the train is confirmed, and keep that afternoon free for them."
+    },
+    "demo-v2-goal-photos": {
+      "从青岛旅行照片里挑十二张": "Choose twelve photographs from the Qingdao trip",
+      "先选片，再调整顺序，做一本小相册给高远看。": "Select the photographs first, then arrange them into a small album to show Gao Yuan."
+    },
+    "demo-v2-goal-home": {
+      "约好厨房水槽的维修时间": "Schedule the kitchen sink repair",
+      "和房东确认周六上午，拍好渗水位置，修完检查软管接口。": "Confirm Saturday morning with the landlord. Photograph the leak and check the hose connection after the repair."
+    }
+  },
+  "relationships": {
+    "rel-xuan": {
+      "长期朋友与同学": "Long-term friend and classmate",
+      "2016 年在浙江大学相识，毕业后一个在北京、一个在杭州，仍常联系。": "Met at Zhejiang University in 2016. One now lives in Beijing and the other in Hangzhou, and they still stay in touch."
+    },
+    "rel-qiao": {
+      "同事": "Colleague",
+      "共同整理访谈和内测反馈，乔宁负责范围取舍，万叶把方案做成可试用的版本。": "They organize interview findings and pilot feedback together. Qiao Ning decides what to include, and Caspian turns the plans into a version people can try."
+    },
+    "rel-chen": {
+      "同事": "Colleague",
+      "一起在实际界面中检查工作台的状态、编辑和继续操作。": "They test status displays, editing, and resuming work together in the actual Workbench interface."
+    },
+    "demo-v2-rel-self-lu": {
+      "导师": "Mentor",
+      "浙江大学软件工程教师，指导过万叶的毕业项目。毕业后偶尔聊职业选择，也关心他有没有好好休息。": "A software engineering teacher at Zhejiang University who advised Caspian’s graduation project. They occasionally discuss career choices, and Lu Tang also checks that he is getting enough rest."
+    },
+    "demo-v2-rel-self-song": {
+      "长期朋友与同学": "Long-term friend and classmate",
+      "浙江大学同学，在上海做内容产品。两人会交换读书笔记、聊用户研究，假期找机会见面。": "A former classmate at Zhejiang University, now working on content products in Shanghai. They share reading notes, discuss user research, and try to meet during holidays."
+    },
+    "demo-v2-rel-self-he": {
+      "同事": "Colleague",
+      "月之暗面算法工程师，负责 Kimi 工具调用相关评测，和万叶一起看任务成功率与失败样例。": "An algorithm engineer at Moonshot AI, responsible for evaluating tool use in Kimi. Works with Caspian on task completion rates and failure cases."
+    },
+    "demo-v2-rel-self-xu": {
+      "同事": "Colleague",
+      "Kimi 团队测试工程师。习惯把问题写成可复现步骤，最近在测工作台中断、继续和文件冲突。": "A test engineer on the Kimi team who writes reproducible steps for problems. Recently testing interruptions, resuming work, and file conflicts in the Workbench."
+    },
+    "demo-v2-rel-self-tang": {
+      "同事": "Colleague",
+      "Kimi 交互设计师，负责澄清和工具确认界面。午休时常和万叶一起走出办公室买咖啡。": "An interaction designer on Kimi, responsible for clarification and tool confirmation screens. Often goes out for coffee with Caspian at lunchtime."
+    },
+    "demo-v2-rel-self-shen": {
+      "同事": "Colleague",
+      "Kimi 后端工程师，负责工作台任务状态和执行接口，和万叶共同排查前后端边界问题。": "A backend engineer on Kimi, responsible for Workbench task states and execution interfaces. Works with Caspian on problems at the boundary between frontend and backend."
+    },
+    "demo-v2-rel-self-zhao": {
+      "老师": "Teacher",
+      "万叶在杭州读高中时的班主任，教数学。节假日偶尔联系，关心他的工作和生活。": "Caspian’s high school homeroom and mathematics teacher in Hangzhou. They occasionally talk around holidays, and Zhao Xu asks about his work and life."
+    },
+    "demo-v2-rel-self-zhou": {
+      "高中同学与长期朋友": "High school classmate and long-term friend",
+      "高中同学，现在也在北京做用户体验研究。搬家时互相帮忙，平时会约饭和交换租房经验。": "A high school classmate who now works in user experience research in Beijing. They help each other with moving, meet for meals, and share rental advice."
+    },
+    "demo-v2-rel-self-wu": {
+      "同事": "Colleague",
+      "Kimi 产品运营，负责内测招募、使用说明和回访，和万叶一起读真实用户的反馈。": "Works in product operations for Kimi, handling pilot recruitment, instructions, and follow-up interviews. Reads real user feedback with Caspian."
+    },
+    "demo-v2-rel-self-gao": {
+      "朋友": "Friend",
+      "在北京做数据工程，工作之外喜欢街头摄影。八月和万叶去青岛拍照，约好每次只留少量满意的照片。": "A data engineer in Beijing who enjoys street photography outside work. Traveled to Qingdao with Caspian in August. They agreed to keep only a small selection of favorite photographs each time."
+    },
+    "demo-v2-rel-self-ye": {
+      "同事": "Colleague",
+      "Kimi 前端工程师，与万叶一起做工作台的会话和成果编辑界面，午饭时会交流各自读到的文章。": "A frontend engineer on Kimi, working with Caspian on Workbench conversations and editing outputs. They exchange articles they have read over lunch."
+    },
+    "demo-v2-rel-self-liang": {
+      "同事": "Colleague",
+      "Kimi 用户研究员，和万叶共同做访谈，擅长追问一次具体操作里发生了什么。": "A user researcher on Kimi who conducts interviews with Caspian and asks detailed questions about what happened during a specific interaction."
+    },
+    "demo-v2-rel-self-qiu": {
+      "同事": "Colleague",
+      "Kimi 工作台工程负责人，和万叶一起定每轮可交付的范围，倾向先修阻塞用户的具体问题。": "The engineering lead for Kimi Workbench. Decides with Caspian what the team can deliver each round and prefers to fix specific problems that block users first."
+    },
+    "demo-v2-rel-self-wei": {
+      "朋友": "Friend",
+      "住在北京的朋友。2024 年开始和万叶每周去奥森慢跑，跑完会找地方吃面。": "A friend in Beijing who has gone for weekly easy runs with Caspian at Olympic Forest Park since 2024. They often find somewhere to eat noodles afterward."
+    },
+    "demo-v2-rel-self-du": {
+      "母亲": "Mother",
+      "住在杭州，爱逛菜市场和种花。国庆想和家人吃顿饭，常提醒万叶别把周末也全排成工作。": "Lives in Hangzhou and enjoys visiting markets and growing flowers. Would like a family meal during the National Day holiday and often reminds Caspian to keep some of his weekends free from work."
+    },
+    "demo-v2-rel-self-jiang": {
+      "妹妹": "Younger sister",
+      "在杭州读大学，最近在做校园活动报名的课程项目。会请哥哥看原型，也给他推荐餐厅和音乐。": "A university student in Hangzhou, currently working on a course project for campus event registration. Asks her older brother to review prototypes and recommends restaurants and music to him."
+    },
+    "demo-v2-rel-self-lin": {
+      "父亲": "Father",
+      "住在杭州，喜欢做饭、散步和看球。万叶回家时会做片儿川，通常提前一天去买菜。": "Lives in Hangzhou and enjoys cooking, walking, and watching football. Makes pian’erchuan noodles when Caspian comes home, usually buying ingredients the day before."
+    },
+    "demo-v2-rel-self-han": {
+      "同事": "Colleague",
+      "月之暗面隐私与法务同事，帮助 Kimi 团队把访谈说明和数据使用范围写清楚。": "A privacy and legal colleague at Moonshot AI who helps the Kimi team write clear interview information and limits on data use."
+    },
+    "demo-v2-rel-lu-du": {
+      "模型与工具接口": "Model and tool interfaces",
+      "何舟与沈川：模型与工具接口。": "He Zhou and Shen Chuan: model and tool interfaces."
+    },
+    "demo-v2-rel-song-liang": {
+      "技术交流": "Technical discussions",
+      "何舟与高远：技术交流。": "He Zhou and Gao Yuan: technical discussions."
+    },
+    "demo-v2-rel-he-ye": {
+      "失败恢复测试": "Failure recovery testing",
+      "徐沐与沈川：失败恢复测试。": "Xu Mu and Shen Chuan: failure recovery testing."
+    },
+    "demo-v2-rel-xu-zhao": {
+      "界面验收": "Interface verification",
+      "徐沐与叶澄：界面验收。": "Xu Mu and Ye Cheng: interface verification."
+    },
+    "demo-v2-rel-tang-han": {
+      "交互实现": "Interaction implementation",
+      "唐悦与叶澄：交互实现。": "Tang Yue and Ye Cheng: interaction implementation."
+    },
+    "demo-v2-rel-shen-song": {
+      "授权界面评审": "Authorization interface review",
+      "唐悦与韩知：授权界面评审。": "Tang Yue and Han Zhi: authorization interface review."
+    },
+    "demo-v2-rel-wu-he": {
+      "内测回访": "Pilot follow-up interviews",
+      "吴桐与梁秋：内测回访。": "Wu Tong and Liang Qiu: pilot follow-up interviews."
+    },
+    "demo-v2-rel-gao-xu": {
+      "访谈说明核对": "Interview information review",
+      "吴桐与韩知：访谈说明核对。": "Wu Tong and Han Zhi: interview information review."
+    },
+    "demo-v2-rel-ye-liang": {
+      "工程交付": "Engineering delivery",
+      "邱原与沈川：工程交付。": "Qiu Yuan and Shen Chuan: engineering delivery."
+    },
+    "demo-v2-rel-qiu-wu": {
+      "评测与质量": "Evaluation and quality",
+      "邱原与何舟：评测与质量。": "Qiu Yuan and He Zhou: evaluation and quality."
+    },
+    "demo-v2-rel-wei-lin": {
+      "夫妻": "Married couple",
+      "杜晴与万建明：夫妻。": "Du Qing and Wan Jianming: married couple."
+    },
+    "demo-v2-rel-zhou-lu": {
+      "母女": "Mother and daughter",
+      "杜晴与万晴：母女。": "Du Qing and Wan Qing: mother and daughter."
+    },
+    "demo-v2-rel-lin-jiang": {
+      "父女": "Father and daughter",
+      "万建明与万晴：父女。": "Wan Jianming and Wan Qing: father and daughter."
+    },
+    "demo-v2-rel-song-zhou": {
+      "朋友": "Friends",
+      "宋岚与周芮：朋友。": "Song Lan and Zhou Rui: friends."
+    }
+  },
+  "goalLists": {
+    "goal-list-inbox": {
+      "提醒事项": "Reminders"
+    },
+    "goal-list-work": {
+      "工作": "Work"
+    },
+    "goal-list-personal": {
+      "个人": "Personal"
+    }
+  }
+}

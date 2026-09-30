@@ -1,0 +1,33 @@
+.portrait-view { min-width:0; font-size:13px; }
+.portrait-section { padding:16px 0 4px; border-top:1px solid var(--color-border); }
+.portrait-section h3 { margin:0 0 10px; font-size:13px; color:var(--color-text); font-weight:600; }
+.portrait-entry { margin:0 0 14px; }
+.portrait-entry-status { display:flex; align-items:center; gap:8px; margin-bottom:5px; }
+.portrait-entry p { margin:4px 0 7px; line-height:1.65; overflow-wrap:anywhere; }
+.portrait-entry small,.portrait-entry-note,.portrait-local-note,.portrait-empty { color:var(--color-text-secondary); font-size:12px; line-height:1.65; }
+.portrait-entry>small { display:block; margin-bottom:5px; }
+.portrait-local-note { margin:16px 0 0; }
+.portrait-json-view,.portrait-history { border-top:1px solid var(--color-border); padding:12px 0; font-size:12px; }
+.portrait-json-view summary,.portrait-history summary { cursor:pointer; }
+.portrait-json-view pre { font-size:var(--hither-font-meta); white-space:pre-wrap; overflow-wrap:anywhere; max-height:360px; overflow:auto; padding:12px; background:var(--color-background-secondary); border-radius:8px; }
+.portrait-history>details { padding:8px 0; }.portrait-history time { margin-left:8px; color:var(--color-text-secondary); }.portrait-history ul { padding-left:18px; }.portrait-history li { margin:10px 0; }.portrait-history li>small { display:block; color:var(--color-text-secondary); }
+.portrait-editor { min-width:0; }
+.portrait-editor-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; margin:8px 0 14px; }
+.portrait-editor-heading h3 { margin:0; font-size:16px; }
+.portrait-editor-heading p { margin:4px 0 0; font-size:12px; color:var(--color-text-secondary); }
+.portrait-editor-tabs { display:flex; flex-wrap:wrap; gap:4px; margin-bottom:12px; }
+.portrait-editor-row { min-width:0; padding:16px 0; border-top:1px solid var(--color-border); }
+.portrait-editor-row-head { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr) 32px; gap:8px; align-items:center; margin-bottom:10px; }
+.portrait-editor-row-head>[role="button"],.portrait-add>[role="button"] { min-width:0; width:100%; max-width:100%; }
+.portrait-editor-row-head>button { width:32px; height:32px; padding:0; }
+.portrait-editor-pair { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:10px; }
+.portrait-editor-json textarea { font-family:ui-monospace,monospace; font-size:12px; min-height:260px; }
+.portrait-editor-note { color:var(--color-text-secondary); font-size:12px; line-height:1.6; }
+.app-dialog.person-portrait-form { width:min(740px,calc(100vw - 32px)); max-width:760px; }
+.person-portrait-form .record-form>fieldset { display:grid; gap:18px; min-width:0; margin:0; padding:0; border:0; }
+.record-dialog.person-portrait-form .portrait-editor-row .form-field { margin-top:10px; }
+.portrait-add { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:8px; align-items:center; margin:14px 0; }
+@media(max-width:560px) {
+  .portrait-editor-pair { grid-template-columns:minmax(0,1fr); }
+  .portrait-editor-heading { align-items:flex-start; }
+}

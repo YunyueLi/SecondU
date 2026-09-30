@@ -1,0 +1,7 @@
+.hither-link-chip { display:inline-flex;align-items:baseline;gap:4px;max-width:100%;padding:0 4px;border-radius:5px;background:var(--color-surface-secondary);color:var(--color-text)!important;text-decoration:none!important;vertical-align:baseline;line-height:1.5; }
+.hither-link-chip>svg { width:13px;height:13px;flex:none;align-self:center;color:var(--color-text-secondary); }
+.hither-link-chip>span { min-width:0;overflow-wrap:anywhere; }
+.hither-link-chip:hover { background:var(--color-surface-tertiary);text-decoration:underline!important;text-underline-offset:3px; }
+.hither-link-chip:focus-visible,.hither-inline-link:focus-visible { outline:2px solid var(--color-text);outline-offset:3px; }
+.hither-link-chip.is-suspicious { text-decoration:underline!important;text-decoration-style:dotted!important;text-underline-offset:3px; }
+.hither-inline-link { text-decoration:underline;text-underline-offset:3px; }

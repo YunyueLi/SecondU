@@ -1,0 +1,146 @@
+[
+  {
+    "slug": "figma",
+    "source": "https://static.figma.com/app/icon/2/favicon.svg",
+    "file": "figma.svg",
+    "license": "Brand asset; rights retained by provider"
+  },
+  {
+    "slug": "huggingface",
+    "source": "https://huggingface.co/front/assets/huggingface_logo-noborder.svg",
+    "file": "huggingface.svg",
+    "license": "Brand asset; rights retained by provider"
+  },
+  {
+    "slug": "context7",
+    "source": "https://context7.com/favicon.ico",
+    "file": "context7.ico",
+    "license": "Brand asset; rights retained by provider"
+  },
+  {
+    "file": "gmail.svg",
+    "source": "https://www.gstatic.com/images/branding/productlogos/gmail_2026/v2/web/192px.svg",
+    "sha256": "0a242131424b796a26247a8edd41d66fa294da6d177897526a19b7e81aedfdb8",
+    "rights": "Provider brand asset; SimpleIcons source under CC0 where indicated"
+  },
+  {
+    "file": "googledrive.svg",
+    "source": "https://www.gstatic.com/images/branding/productlogos/drive_2026/v2/web/192px.svg",
+    "sha256": "60a6496d705d8bf010ce126469be89889db331622b14d8ae1645a38c2aaa23f5",
+    "rights": "Provider brand asset; SimpleIcons source under CC0 where indicated"
+  },
+  {
+    "file": "googlecalendar.svg",
+    "source": "https://www.gstatic.com/images/branding/productlogos/calendar_2026/v2/web/192px.svg",
+    "sha256": "7f55cd877b2261948168db3d2e9468c0cf3f07766789489e853a0f9931dff8ea",
+    "rights": "Provider brand asset; SimpleIcons source under CC0 where indicated"
+  },
+  {
+    "file": "googlechat.svg",
+    "source": "https://www.gstatic.com/images/branding/productlogos/chat_2026/v2/web/192px.svg",
+    "sha256": "6bae711bb69ac5e615007572c733e68c9d0f61a8098d5fa3f5075920df963c5b",
+    "rights": "Provider brand asset; SimpleIcons source under CC0 where indicated"
+  },
+  {
+    "file": "googledocs.svg",
+    "source": "https://www.gstatic.com/images/branding/productlogos/docs_2026/v2/web/192px.svg",
+    "sha256": "ce8a250ed67fa813f00e2f2be6fcf515b284dbd0c7fa29aab254b1ba8310258c",
+    "rights": "Provider brand asset; SimpleIcons source under CC0 where indicated"
+  },
+  {
+    "file": "googlesheets.svg",
+    "source": "https://www.gstatic.com/images/branding/productlogos/sheets_2026q3/v1/web/192px.svg",
+    "sha256": "3dd989706d03cf9ed780beb45af592bb46aa777edcc18543ea0764463ec936d2",
+    "rights": "Provider brand asset; SimpleIcons source under CC0 where indicated"
+  },
+  {
+    "file": "googleslides.svg",
+    "source": "https://www.gstatic.com/images/branding/productlogos/slides_2026/v2/web/192px.svg",
+    "sha256": "3ad971447ab6fc537eb8bb5eae651a0473b137ee70acbbb073a231b84235c0e6",
+    "rights": "Provider brand asset; SimpleIcons source under CC0 where indicated"
+  },
+  {
+    "file": "slack.png",
+    "source": "https://a.slack-edge.com/9cc0056/img/icons/favicon-32.png",
+    "sha256": "ca3872d0fb85ff9858bcbdc529d6e1db32c029c681c6e723e4f2ecb1c7defea6",
+    "rights": "Provider brand asset; SimpleIcons source under CC0 where indicated"
+  },
+  {
+    "file": "canva.webp",
+    "source": "https://www.canva.dev/_next/static/media/apple-touch-120x120.e46561c0.webp",
+    "sha256": "83ad32987462007905d20cd3d640aa0d2670fc1b7d999003b8122030602eb94e",
+    "rights": "Provider brand asset; SimpleIcons source under CC0 where indicated"
+  },
+  {
+    "file": "asana.png",
+    "error": "HTTP Error 401: Unauthorized"
+  },
+  {
+    "file": "linear.svg",
+    "source": "https://linear.app/static/favicon.svg?v=2",
+    "sha256": "6d49f8079f8cf91617657bd059ba1e186f2d3ecdcd9a4a366e0a6d5071c558e6",
+    "rights": "Provider brand asset; SimpleIcons source under CC0 where indicated"
+  },
+  {
+    "file": "stripe.svg",
+    "source": "https://images.stripeassets.com/fzn2n1nzq965/1hgcBNd12BfT9VLgbId7By/01d91920114b124fb4cf6d448f9f06eb/favicon.svg",
+    "sha256": "7253e3eb4657773723a696a1f4ad9c8f62794191b9f09c1359db74a51d2d3ae5",
+    "rights": "Provider brand asset; SimpleIcons source under CC0 where indicated"
+  },
+  {
+    "file": "hubspot.png",
+    "source": "https://www.hubspot.com/hubfs/HubSpot_Logos/HubSpot-Inversed-Favicon.png",
+    "sha256": "81ba53ce8917d2e443e5f4b17bbb8239ee7d73e8212008c4299525a0b80caf1a",
+    "rights": "Provider brand asset; SimpleIcons source under CC0 where indicated"
+  },
+  {
+    "file": "miro.png",
+    "source": "https://framerusercontent.com/images/6FBG66PBxjV2QFaDfIdUi5mi9A.png",
+    "sha256": "6d1a97e6922fee40efab035b669d1feb74d54074721b968321183a715213b605",
+    "rights": "Provider brand asset; SimpleIcons source under CC0 where indicated"
+  },
+  {
+    "file": "googlecontacts.svg",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "file": "teams.svg",
+    "source": "https://cdn-dynmedia-1.microsoft.com/is/content/microsoftcorp/Teams-Icon-FY26",
+    "page": "https://www.microsoft.com/en-us/microsoft-365/products-apps-services",
+    "sha256": "6a33d49f19d1be2bcdf86921935a2171e5c18c3b11abe297ca03d5f4f302ba3a",
+    "rights": "Microsoft brand asset"
+  },
+  {
+    "file": "outlook.svg",
+    "source": "https://cdn-dynmedia-1.microsoft.com/is/content/microsoftcorp/Outlook-Icon-FY26",
+    "page": "https://www.microsoft.com/en-us/microsoft-365/products-apps-services",
+    "sha256": "d67b8bb4bb8d7afe8e71e066112452d5d681ea7991fa1ec7c37df962246b2c31",
+    "rights": "Microsoft brand asset"
+  },
+  {
+    "file": "onedrive.svg",
+    "source": "https://cdn-dynmedia-1.microsoft.com/is/content/microsoftcorp/OneDrive-Icon-FY26",
+    "page": "https://www.microsoft.com/en-us/microsoft-365/products-apps-services",
+    "sha256": "9f72ac359c7e03ca4723ce1a3b60f932a0bc5d2ce72dbdce365e83223142f6bc",
+    "rights": "Microsoft brand asset"
+  },
+  {
+    "file": "sharepoint.svg",
+    "source": "https://www.microsoft.com/content/dam/microsoft/bade/images/icons/en-us/m365-app-icons-fy26/SharePoint-Icon-FY26.svg",
+    "page": "https://www.microsoft.com/en-us/microsoft-365/sharepoint/collaboration",
+    "sha256": "0e2713d7afa583ab45efc68a64cfe4e5a735c61a5f41f7d884c2df6130869a54",
+    "rights": "Microsoft brand asset"
+  },
+  {
+    "file": "microsoft.svg",
+    "source": "https://learn.microsoft.com/en-us/entra/identity-platform/media/howto-add-branding-in-apps/ms-symbollockup_mssymbol_19.svg",
+    "page": "https://learn.microsoft.com/en-us/entra/identity-platform/howto-add-branding-in-apps",
+    "sha256": "929f48f88c8ca7f3f5d294be47ec4caf51acc28ac25340c19a903125d7ecd84a",
+    "rights": "Microsoft brand asset"
+  },
+  {
+    "file": "googlecontacts.png",
+    "source": "https://www.gstatic.com/images/branding/product/2x/contacts_2022_48dp.png",
+    "rights": "Google brand asset"
+  }
+]

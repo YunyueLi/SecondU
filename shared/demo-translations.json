@@ -1,0 +1,527 @@
+{
+  "profile": {
+    "profile": {
+      "万叶": "Caspian",
+      "英文名 Caspian，杭州长大，现在住北京。2016—2020 年在浙江大学学习软件工程，2020 年加入字节跳动飞书团队，2023 年转到月之暗面，做 Kimi 的产品工程。工作之外喜欢跑步、摄影和坐火车旅行。": "Caspian grew up in Hangzhou and now lives in Beijing. He studied software engineering at Zhejiang University from 2016 to 2020, joined the Feishu team at ByteDance in 2020, and moved to Moonshot AI in 2023 to work on Kimi product engineering. Outside work he enjoys running, photography and train travel."
+    }
+  },
+  "people": {
+    "person-self": {
+      "万叶": "Caspian",
+      "我": "Me",
+      "英文名 Caspian。浙江大学软件工程毕业，先在字节跳动做飞书前端，后来加入月之暗面做 Kimi 产品工程。住在北京，周末喜欢跑步和摄影。": "A software engineering graduate of Zhejiang University, Caspian worked on Feishu frontend at ByteDance before joining Moonshot AI as a Kimi product engineer. He lives in Beijing and enjoys running and photography on weekends."
+    },
+    "person-xuan": {
+      "许安": "Xu An",
+      "大学同学，朋友": "University classmate and friend",
+      "浙江大学同学，现在在杭州做阿里云后端开发。聊技术也聊吃的，万叶回杭州时常约他见面。": "A Zhejiang University classmate who now works on backend systems at Alibaba Cloud in Hangzhou. He and Caspian talk about technology and food, and often meet when Caspian is home."
+    },
+    "person-qiao": {
+      "乔宁": "Qiao Ning",
+      "同事，产品经理": "Colleague, product manager",
+      "月之暗面 Kimi 团队的产品经理，和万叶一起筛用户反馈、定首轮内测范围。": "A product manager on the Kimi team at Moonshot AI who works with Caspian to review user feedback and define the first pilot."
+    },
+    "person-chen": {
+      "陈禾": "Chen He",
+      "同事，产品设计师": "Colleague, product designer",
+      "Kimi 产品设计师。评审时喜欢直接操作原型，再讨论信息层级和状态提示。": "A Kimi product designer who prefers trying a working prototype before discussing information hierarchy and status messages."
+    },
+    "demo-v2-person-lu": {
+      "陆棠": "Lu Tang",
+      "大学导师": "University mentor",
+      "浙江大学软件工程教师，指导过万叶的毕业项目。毕业后偶尔聊职业选择，也关心他有没有好好休息。": "A software engineering teacher at Zhejiang University who supervised Caspian’s graduation project. They still discuss career choices, and Lu asks whether he is getting enough rest."
+    },
+    "demo-v2-person-song": {
+      "宋岚": "Song Lan",
+      "大学同学，朋友": "University classmate and friend",
+      "浙江大学同学，在上海做内容产品。两人会交换读书笔记、聊用户研究，假期找机会见面。": "A Zhejiang University classmate working on content products in Shanghai. They exchange reading notes, discuss user research and try to meet during holidays."
+    },
+    "demo-v2-person-he": {
+      "何舟": "He Zhou",
+      "同事，算法工程师": "Colleague, algorithm engineer",
+      "月之暗面算法工程师，负责 Kimi 工具调用相关评测，和万叶一起看任务成功率与失败样例。": "A Moonshot AI algorithm engineer evaluating Kimi tool calls. He and Caspian review task completion and failed examples together."
+    },
+    "demo-v2-person-xu": {
+      "徐沐": "Xu Mu",
+      "同事，测试工程师": "Colleague, test engineer",
+      "Kimi 团队测试工程师。习惯把问题写成可复现步骤，最近在测工作台中断、继续和文件冲突。": "A Kimi test engineer who writes reproducible steps. Current checks cover workbench interruption, resuming tasks and file conflicts."
+    },
+    "demo-v2-person-tang": {
+      "唐悦": "Tang Yue",
+      "同事，交互设计师": "Colleague, interaction designer",
+      "Kimi 交互设计师，负责澄清和工具确认界面。午休时常和万叶一起走出办公室买咖啡。": "A Kimi interaction designer responsible for clarification and tool confirmation. She and Caspian often walk out for coffee at lunchtime."
+    },
+    "demo-v2-person-shen": {
+      "沈川": "Shen Chuan",
+      "同事，后端工程师": "Colleague, backend engineer",
+      "Kimi 后端工程师，负责工作台任务状态和执行接口，和万叶共同排查前后端边界问题。": "A Kimi backend engineer responsible for task state and execution interfaces. He and Caspian investigate frontend and backend boundaries together."
+    },
+    "demo-v2-person-zhao": {
+      "赵栩": "Zhao Xu",
+      "高中班主任": "High school teacher",
+      "万叶在杭州读高中时的班主任，教数学。节假日偶尔联系，关心他的工作和生活。": "Caspian’s former homeroom and mathematics teacher in Hangzhou. They keep in touch during holidays and talk about his work and life."
+    },
+    "demo-v2-person-zhou": {
+      "周芮": "Zhou Rui",
+      "高中同学，朋友": "High school classmate and friend",
+      "高中同学，现在也在北京做用户体验研究。搬家时互相帮忙，平时会约饭和交换租房经验。": "A high school classmate who now works in user experience research in Beijing. They help each other move, meet for meals and exchange renting advice."
+    },
+    "demo-v2-person-wu": {
+      "吴桐": "Wu Tong",
+      "同事，产品运营": "Colleague, product operations",
+      "Kimi 产品运营，负责内测招募、使用说明和回访，和万叶一起读真实用户的反馈。": "Kimi product operations colleague handling pilot recruitment, instructions and follow-ups. She reads user feedback with Caspian."
+    },
+    "demo-v2-person-gao": {
+      "高远": "Gao Yuan",
+      "朋友，摄影伙伴": "Friend and photography partner",
+      "在北京做数据工程，工作之外喜欢街头摄影。八月和万叶去青岛拍照，约好每次只留少量满意的照片。": "A data engineer in Beijing who enjoys street photography. He visited Qingdao with Caspian in August; they agreed to keep only a few favorite pictures each time."
+    },
+    "demo-v2-person-ye": {
+      "叶澄": "Ye Cheng",
+      "同事，前端工程师": "Colleague, frontend engineer",
+      "Kimi 前端工程师，与万叶一起做工作台的会话和成果编辑界面，午饭时会交流各自读到的文章。": "A Kimi frontend engineer building conversation and artifact editing screens with Caspian. They exchange articles over lunch."
+    },
+    "demo-v2-person-liang": {
+      "梁秋": "Liang Qiu",
+      "同事，用户研究员": "Colleague, user researcher",
+      "Kimi 用户研究员，和万叶共同做访谈，擅长追问一次具体操作里发生了什么。": "A Kimi user researcher who conducts interviews with Caspian and asks detailed questions about what happened during a specific action."
+    },
+    "demo-v2-person-qiu": {
+      "邱原": "Qiu Yuan",
+      "同事，工程负责人": "Colleague, engineering lead",
+      "Kimi 工作台工程负责人，和万叶一起定每轮可交付的范围，倾向先修阻塞用户的具体问题。": "The Kimi workbench engineering lead. He and Caspian define what can ship in each round, prioritizing specific problems that block users."
+    },
+    "demo-v2-person-wei": {
+      "魏禾": "Wei He",
+      "朋友，跑步伙伴": "Friend and running partner",
+      "住在北京的朋友。2024 年开始和万叶每周去奥森慢跑，跑完会找地方吃面。": "A friend in Beijing. Since 2024 he and Caspian have run at Olympic Forest Park each week, usually followed by noodles."
+    },
+    "demo-v2-person-du": {
+      "杜晴": "Du Qing",
+      "母亲": "Mother",
+      "住在杭州，爱逛菜市场和种花。国庆想和家人吃顿饭，常提醒万叶别把周末也全排成工作。": "Lives in Hangzhou and enjoys visiting markets and growing flowers. She hopes for a family meal during the holiday and reminds Caspian to keep some weekends free of work."
+    },
+    "demo-v2-person-jiang": {
+      "万晴": "Wan Qing",
+      "妹妹": "Younger sister",
+      "在杭州读大学，最近在做校园活动报名的课程项目。会请哥哥看原型，也给他推荐餐厅和音乐。": "A university student in Hangzhou building a campus event signup project. She asks her brother to review prototypes and shares restaurants and music with him."
+    },
+    "demo-v2-person-lin": {
+      "万建明": "Wan Jianming",
+      "父亲": "Father",
+      "住在杭州，喜欢做饭、散步和看球。万叶回家时会做片儿川，通常提前一天去买菜。": "Lives in Hangzhou and enjoys cooking, walking and watching sports. He makes pian-er-chuan noodles when Caspian comes home and usually shops the day before."
+    },
+    "demo-v2-person-han": {
+      "韩知": "Han Zhi",
+      "同事，隐私与法务": "Colleague, privacy and legal",
+      "月之暗面隐私与法务同事，帮助 Kimi 团队把访谈说明和数据使用范围写清楚。": "A privacy and legal colleague at Moonshot AI who helps the Kimi team explain interview procedures and the scope of data use."
+    }
+  },
+  "sources": {
+    "source-exhibition": {
+      "Kimi 工作台内测笔记（9 月）": "Kimi workbench pilot notes (September)",
+      "万叶（Caspian）在月之暗面做 Kimi 的产品工程，和产品经理乔宁、设计师陈禾一起准备一轮 Agent 工作台内测。九月完成了五次用户访谈，反复出现的问题是任务停下后不知道做到了哪一步。首轮准备先做好需求澄清、执行状态和中断后继续，目标是十月十二日邀请八位用户试用。还有三位受访者的时间没定。本轮模型调用预算上限是 2000 元；费用按测试记录核对。十月八日前和测试同事徐沐走完核心流程。": "Caspian is a Kimi product engineer at Moonshot AI, preparing an Agent workbench pilot with product manager Qiao Ning and designer Chen He. Five user interviews in September repeatedly showed that people did not know how far a task had progressed when it stopped. The first round will focus on clarification, execution status and resuming interrupted work, with a planned pilot of eight users on October 12. Three interviews are still being arranged. The model-call budget is capped at CNY 2,000 and costs will be checked against test records. Caspian and test engineer Xu Mu plan to check the core workflow before October 8."
+    },
+    "source-feedback": {
+      "我希望怎样一起做事": "How I like to work together",
+      "我叫万叶，英文名 Caspian。平时叫我万叶就好。建议先说今天最值得做的一步，再展开理由；别为了显得完整写很长。做决定时，我想知道依据和代价。重要的发送、付款和安排先让我看一眼。上午留给写代码和想事情，晚上能回到生活就尽量不要继续开会。": "My name is Caspian. Start advice with the most useful step I can take today, then explain the reasons; do not make it long merely to sound complete. When deciding, I want to understand the evidence and tradeoffs. Let me review important messages, payments and arrangements first. Keep mornings for coding and thinking, and leave evenings for life whenever possible."
+    },
+    "demo-v2-source-community": {
+      "万叶的亲友与同事": "Caspian’s family, friends and colleagues",
+      "万叶，英文名 Caspian，住在北京，在月之暗面做 Kimi 产品工程。父母与妹妹在杭州。\n\n陆棠，大学导师：浙江大学软件工程教师，指导过万叶的毕业项目。毕业后偶尔聊职业选择，也关心他有没有好好休息。\n宋岚，大学同学，朋友：浙江大学同学，在上海做内容产品。两人会交换读书笔记、聊用户研究，假期找机会见面。\n何舟，同事，算法工程师：月之暗面算法工程师，负责 Kimi 工具调用相关评测，和万叶一起看任务成功率与失败样例。\n徐沐，同事，测试工程师：Kimi 团队测试工程师。习惯把问题写成可复现步骤，最近在测工作台中断、继续和文件冲突。\n唐悦，同事，交互设计师：Kimi 交互设计师，负责澄清和工具确认界面。午休时常和万叶一起走出办公室买咖啡。\n沈川，同事，后端工程师：Kimi 后端工程师，负责工作台任务状态和执行接口，和万叶共同排查前后端边界问题。\n赵栩，高中班主任：万叶在杭州读高中时的班主任，教数学。节假日偶尔联系，关心他的工作和生活。\n周芮，高中同学，朋友：高中同学，现在也在北京做用户体验研究。搬家时互相帮忙，平时会约饭和交换租房经验。\n吴桐，同事，产品运营：Kimi 产品运营，负责内测招募、使用说明和回访，和万叶一起读真实用户的反馈。\n高远，朋友，摄影伙伴：在北京做数据工程，工作之外喜欢街头摄影。八月和万叶去青岛拍照，约好每次只留少量满意的照片。\n叶澄，同事，前端工程师：Kimi 前端工程师，与万叶一起做工作台的会话和成果编辑界面，午饭时会交流各自读到的文章。\n梁秋，同事，用户研究员：Kimi 用户研究员，和万叶共同做访谈，擅长追问一次具体操作里发生了什么。\n邱原，同事，工程负责人：Kimi 工作台工程负责人，和万叶一起定每轮可交付的范围，倾向先修阻塞用户的具体问题。\n魏禾，朋友，跑步伙伴：住在北京的朋友。2024 年开始和万叶每周去奥森慢跑，跑完会找地方吃面。\n杜晴，母亲：住在杭州，爱逛菜市场和种花。国庆想和家人吃顿饭，常提醒万叶别把周末也全排成工作。\n万晴，妹妹：在杭州读大学，最近在做校园活动报名的课程项目。会请哥哥看原型，也给他推荐餐厅和音乐。\n万建明，父亲：住在杭州，喜欢做饭、散步和看球。万叶回家时会做片儿川，通常提前一天去买菜。\n韩知，同事，隐私与法务：月之暗面隐私与法务同事，帮助 Kimi 团队把访谈说明和数据使用范围写清楚。\n\n人与人的联系：\n何舟与沈川：模型与工具接口。\n何舟与高远：技术交流。\n徐沐与沈川：失败恢复测试。\n徐沐与叶澄：界面验收。\n唐悦与叶澄：交互实现。\n唐悦与韩知：授权界面评审。\n吴桐与梁秋：内测回访。\n吴桐与韩知：访谈说明核对。\n邱原与沈川：工程交付。\n邱原与何舟：评测与质量。\n杜晴与万建明：夫妻。\n杜晴与万晴：母女。\n万建明与万晴：父女。\n宋岚与周芮：朋友。\n\n九月工作：十月三日前整理访谈，八日前完成核心流程验收，十二日计划开始首轮内测。生活安排：周日四点去奥森跑步；国庆回杭州看家人；周六等师傅修水槽；将青岛旅行照片选成十二张的小相册。": "Caspian lives in Beijing and works on Kimi product engineering at Moonshot AI. His parents and younger sister live in Hangzhou.\n\nLu Tang, University mentor: A software engineering teacher at Zhejiang University who supervised Caspian’s graduation project. They still discuss career choices, and Lu asks whether he is getting enough rest.\nSong Lan, University classmate and friend: A Zhejiang University classmate working on content products in Shanghai. They exchange reading notes, discuss user research and try to meet during holidays.\nHe Zhou, Colleague, algorithm engineer: A Moonshot AI algorithm engineer evaluating Kimi tool calls. He and Caspian review task completion and failed examples together.\nXu Mu, Colleague, test engineer: A Kimi test engineer who writes reproducible steps. Current checks cover workbench interruption, resuming tasks and file conflicts.\nTang Yue, Colleague, interaction designer: A Kimi interaction designer responsible for clarification and tool confirmation. She and Caspian often walk out for coffee at lunchtime.\nShen Chuan, Colleague, backend engineer: A Kimi backend engineer responsible for task state and execution interfaces. He and Caspian investigate frontend and backend boundaries together.\nZhao Xu, High school teacher: Caspian’s former homeroom and mathematics teacher in Hangzhou. They keep in touch during holidays and talk about his work and life.\nZhou Rui, High school classmate and friend: A high school classmate who now works in user experience research in Beijing. They help each other move, meet for meals and exchange renting advice.\nWu Tong, Colleague, product operations: Kimi product operations colleague handling pilot recruitment, instructions and follow-ups. She reads user feedback with Caspian.\nGao Yuan, Friend and photography partner: A data engineer in Beijing who enjoys street photography. He visited Qingdao with Caspian in August; they agreed to keep only a few favorite pictures each time.\nYe Cheng, Colleague, frontend engineer: A Kimi frontend engineer building conversation and artifact editing screens with Caspian. They exchange articles over lunch.\nLiang Qiu, Colleague, user researcher: A Kimi user researcher who conducts interviews with Caspian and asks detailed questions about what happened during a specific action.\nQiu Yuan, Colleague, engineering lead: The Kimi workbench engineering lead. He and Caspian define what can ship in each round, prioritizing specific problems that block users.\nWei He, Friend and running partner: A friend in Beijing. Since 2024 he and Caspian have run at Olympic Forest Park each week, usually followed by noodles.\nDu Qing, Mother: Lives in Hangzhou and enjoys visiting markets and growing flowers. She hopes for a family meal during the holiday and reminds Caspian to keep some weekends free of work.\nWan Qing, Younger sister: A university student in Hangzhou building a campus event signup project. She asks her brother to review prototypes and shares restaurants and music with him.\nWan Jianming, Father: Lives in Hangzhou and enjoys cooking, walking and watching sports. He makes pian-er-chuan noodles when Caspian comes home and usually shops the day before.\nHan Zhi, Colleague, privacy and legal: A privacy and legal colleague at Moonshot AI who helps the Kimi team explain interview procedures and the scope of data use.\n\nConnections between people:\nHe Zhou and Shen Chuan: Model and tool interfaces.\nHe Zhou and Gao Yuan: Technical exchange.\nXu Mu and Shen Chuan: Failure recovery testing.\nXu Mu and Ye Cheng: Interface acceptance.\nTang Yue and Ye Cheng: Interaction implementation.\nTang Yue and Han Zhi: Permission interface review.\nWu Tong and Liang Qiu: Pilot follow-ups.\nWu Tong and Han Zhi: Interview notice review.\nQiu Yuan and Shen Chuan: Engineering delivery.\nQiu Yuan and He Zhou: Evaluation and quality.\nDu Qing and Wan Jianming: Spouses.\nDu Qing and Wan Qing: Mother and daughter.\nWan Jianming and Wan Qing: Father and daughter.\nSong Lan and Zhou Rui: Friends.\n\nSeptember work: compile interview findings by October 3, check the core workflow by October 8, and plan the first pilot for October 12. Life plans: run at Olympic Forest Park at four on Sunday; visit family in Hangzhou for the holiday; wait for the sink repair on Saturday; select twelve Qingdao photographs for a small album."
+    },
+    "demo-story-source-qiao": {
+      "内测邀请前再看一次范围": "A final scope check before pilot invitations",
+      "乔宁：邀请发出前，我想再删一次范围。现在首页同时讲六种能力，有点散。\n万叶：那入口只保留带一件自己的任务来，后面跟着澄清和结果。\n乔宁：中断以后能知道做到哪里，这件事留在首轮。\n万叶：保留。更多工具的介绍先收起来，避免大家以为都已经接通。\n乔宁：梁秋说三个人问过同一个问题，这个取舍有依据。\n万叶：我把原话连到范围说明里。十月八日先和徐沐验收，再决定能不能邀请。\n乔宁：好，十月十二日仍是计划日期，别在邀请草稿里写成已经确定。\n万叶：记下了。今天先改入口和范围页，下午给你看。": "Qiao Ning: Before invitations go out, I want one more scope cut. The home page presents six capabilities and feels scattered.\nCaspian: Then the entry can simply ask people to bring one real task, followed by clarification and a result.\nQiao Ning: Keep showing where a task stopped in the first round.\nCaspian: Agreed. I will put the extra integrations aside so people do not assume they are all connected.\nQiao Ning: Liang Qiu heard the same question from three participants. That supports the decision.\nCaspian: I will link their exact comments in the scope note. We will check the flow with Xu Mu on October 8 before deciding whether to invite people.\nQiao Ning: Good. October 12 is still planned; the invitation draft should not call it confirmed.\nCaspian: Noted. I will update the entry and scope page today and show you this afternoon."
+    },
+    "demo-story-source-chen": {
+      "确认前先看清具体内容": "Seeing the exact content before confirming",
+      "陈禾：我刚按了一遍发送邮件的原型，收件人被缩成了一个名字。\n万叶：我展开成完整地址，主题和正文也直接放在确认区。\n陈禾：可以。取消以后不要清掉正文，我刚写的两句就丢了。\n万叶：这个确实有问题，草稿应该跟编辑区走，不能跟弹窗一起销毁。\n陈禾：按钮写发送这封邮件就够，不要写确认执行操作。\n万叶：改好了再给你可点击的版本，截图看不出取消后发生什么。\n陈禾：下午三点我有二十分钟，可以再走一次。\n万叶：好，这次一起看窄窗口和英文长地址。": "Chen He: I tried the email prototype. The recipient is shortened to a name.\nCaspian: I will show the full address, subject and body in the confirmation area.\nChen He: Yes. Also keep the body after cancellation; I just lost two sentences.\nCaspian: That is a bug. The draft belongs to the editor and should survive closing the dialog.\nChen He: Label the button Send this email. Confirm action is too abstract.\nCaspian: I will send a clickable version after the fix; a screenshot cannot show what happens after cancellation.\nChen He: I have twenty minutes at three this afternoon to try it again.\nCaspian: Great. Let us check a narrow window and a long email address too."
+    },
+    "demo-story-source-qiu": {
+      "验收前先修会丢内容的问题": "Fixing lost content before acceptance",
+      "邱原：十月八日之前还剩哪些会挡住用户的事？\n万叶：取消确认会丢草稿，还有继续任务时文件被外部改过的冲突提示。\n邱原：这两个先修。还有几处颜色和间距可以晚一点。\n万叶：我今天接草稿恢复，沈川明天给文件版本错误加明确文件名。\n邱原：验收别只看测试通过，再关软件打开走一遍。\n万叶：让徐沐从一个未完成任务开始，自己改一段，再继续。\n邱原：如果还会覆盖内容，邀请时间就往后挪。\n万叶：同意。我在进度页标清这两个阻塞项，不再用总体完成百分比。": "Qiu Yuan: What could still block users before October 8?\nCaspian: Cancellation can lose a draft, and resume needs a conflict message when a file has changed externally.\nQiu Yuan: Fix those first. A few color and spacing changes can wait.\nCaspian: I will handle draft recovery today. Shen Chuan will include the affected filename in version errors tomorrow.\nQiu Yuan: Do not stop at passing tests. Close and reopen the app and walk through it.\nCaspian: Xu Mu can start with an unfinished task, edit a paragraph, then resume.\nQiu Yuan: If it can still overwrite content, move the invitation date.\nCaspian: Agreed. I will show those two blockers in the progress note instead of an overall completion percentage."
+    },
+    "demo-story-source-han": {
+      "把内测资料使用范围写清楚": "Clarifying how pilot materials will be used",
+      "万叶：韩知，邀请草稿里写会记录使用过程，这句话是不是太泛？\n韩知：是。录屏、访谈笔记和任务资料分别写，人可以不同意录屏。\n万叶：任务资料只用他主动选择的几份，不需要整个文件夹。\n韩知：这点写在开始前，也说明如何移除已经选的资料。\n万叶：回访里展示样例时，用户名和原始文件名也不直接带出来。\n韩知：好。保留时间还没定就别编一个，先在内部定清楚。\n万叶：我把待定项单独留在草稿里，明天和吴桐一起核对。\n韩知：最后发出前给我看一遍正文和附件，单看一句话不够。": "Caspian: Han Zhi, the draft says we record the session. Is that too broad?\nHan Zhi: Yes. Separate screen recording, interview notes and task materials. People can decline recording.\nCaspian: We only need the documents they select, not the whole folder.\nHan Zhi: Say that before they start, including how to remove selected materials.\nCaspian: Examples in the follow-up will not expose usernames or original filenames.\nHan Zhi: Good. Do not invent a retention period. Agree on it internally first.\nCaspian: I will leave that as an open item and review it with Wu Tong tomorrow.\nHan Zhi: Show me the full message and attachments before sending; one sentence is not enough."
+    },
+    "demo-story-source-pilot": {
+      "先验证完整任务，再增加工具": "Testing a complete task before adding tools",
+      "乔宁：今天把首轮范围落下来：澄清、执行状态、中断后继续。\n梁秋：五次访谈里三个人在任务停下后不知道该怎么办，原话我已整理。\n何舟：评测按完整任务记结果，不只统计模型有没有回答。\n万叶：我把入口改成带自己的任务来，先只选需要的资料。\n徐沐：十月八日先测保存、中断、重启和版本冲突，有阻塞就不放行。\n吴桐：名单先留八位，另外三位还没约齐。邀请保持草稿。\n乔宁：十月十二日作为计划日期写进安排，验收之后再确认。\n万叶：收到，范围、原话和阻塞项都放进同一个项目，周五一起看。": "Qiao Ning: Let us settle the first round: clarification, execution status and resuming interrupted work.\nLiang Qiu: Three of five interviewees did not know what to do after a task stopped. I have collected their comments.\nHe Zhou: Evaluation will track complete tasks, not merely whether the model answered.\nCaspian: The entry now asks people to bring their own task and select only the necessary materials.\nXu Mu: On October 8 we will test saving, interruption, restart and version conflicts. Blockers will hold the release.\nWu Tong: The list stays at eight. Three interviews are still being arranged, and invitations remain drafts.\nQiao Ning: Put October 12 in the plan and confirm it after acceptance.\nCaspian: Understood. Scope, source comments and blockers are in one project for Friday review."
+    },
+    "demo-story-source-recovery": {
+      "保留用户修改，再继续任务": "Keeping user edits when a task resumes",
+      "徐沐：复现了：保存一半时退出，重开以后标题显示完成，文件其实不完整。\n沈川：最后一条事件是写入中，我会让服务重启后明确标成中断。\n叶澄：前端只读状态字段，不能因为最后一句回复像结论就显示完成。\n万叶：编辑区也保留本地草稿，重新打开时让用户先看到自己的版本。\n徐沐：另一条：我停下后自己改文件，再点继续，旧版本不应该盖回来。\n沈川：请求带版本号，不一致就返回具体文件和冲突原因。\n叶澄：我接一个查看差异入口，关闭后草稿还在。\n万叶：这两条修好后从重启再跑一遍，记录实际留下的内容。": "Xu Mu: Reproduced: quit during saving, reopen, and the title says complete even though the file is incomplete.\nShen Chuan: The last event says writing. I will mark it interrupted after the service restarts.\nYe Cheng: The UI should read the status field; a concluding sentence does not mean the task is complete.\nCaspian: The editor will keep the local draft and show the user their version after reopening.\nXu Mu: Another case: I edit the file after stopping and then resume. The older version must not overwrite it.\nShen Chuan: The request will carry a version number. A mismatch returns the file and the conflict reason.\nYe Cheng: I will add a comparison view and keep the draft when it closes.\nCaspian: Once fixed, run both cases from restart and record what content actually remains."
+    },
+    "demo-story-source-privacy": {
+      "把录屏选择放在开始之前": "Putting recording choices before the session",
+      "韩知：使用说明第一页先讲三件事：会记什么、谁会看、怎么移除。\n唐悦：我把录屏选择放在开始前，默认不替用户勾选。\n梁秋：拒绝录屏也能访谈，我改成做文字笔记，不要让人以为必须同意。\n万叶：资料选择只显示勾选过的文件，撤掉选择后就不继续带进任务。\n韩知：保留多久还在讨论，草稿写待确认，不写成已经生效的承诺。\n唐悦：弹窗里就放操作和范围，长说明用展开阅读。\n梁秋：回访引用原话之前，我会再检查名字和文件名。\n万叶：今天先完成草稿，最终邀请和附件一起交韩知核对。": "Han Zhi: The first page should explain what is recorded, who can see it and how to remove it.\nTang Yue: I will put recording choices before the start, with nothing preselected.\nLiang Qiu: People can still participate without recording. I can take notes instead.\nCaspian: Only selected files will appear in the task context. Deselecting one removes it from subsequent work.\nHan Zhi: Retention is still being discussed. Mark it pending rather than making an active promise.\nTang Yue: The dialog will show the action and scope, with the longer explanation available to expand.\nLiang Qiu: I will check names and filenames before using interview quotes in the follow-up.\nCaspian: I will finish the draft today and have Han Zhi review the complete invitation and attachments."
+    },
+    "demo-story-source-design": {
+      "长内容和窄窗口都实际点一次": "Trying long content in a narrow window",
+      "陈禾：宽屏看起来没问题，缩到小窗口后保存按钮掉到下面了。\n叶澄：我让标题和操作固定在顶部，正文自己滚动。\n唐悦：长地址可以换行，别只留一个看不完整的省略号。\n万叶：我再放一段英文长标题测试，中文也看同样的宽度。\n陈禾：取消确认之后，刚编辑的内容这次留下来了。\n叶澄：侧栏关掉后焦点也回到原按钮，键盘可以接着走。\n唐悦：剩下空状态的说明有点长，保留一个动作就行。\n万叶：好，改完用这组长内容再验收，不再换短文案截图。": "Chen He: It looks fine on a wide screen, but the Save button slips below the viewport in a small window.\nYe Cheng: I will keep the title and actions at the top and scroll the content separately.\nTang Yue: Long addresses can wrap; an ellipsis hides information the user needs.\nCaspian: I will test a long English title and the Chinese version at the same width.\nChen He: The edited content survives cancelling confirmation this time.\nYe Cheng: Closing the side panel now returns focus to the original button, so keyboard navigation can continue.\nTang Yue: The empty-state explanation is still long. Keep one clear action.\nCaspian: Agreed. We will check again using this long content rather than short text for the screenshot."
+    },
+    "demo-story-source-cost": {
+      "两千元预算先跑小批量": "Starting with a small batch within CNY 2,000",
+      "何舟：先跑十条完整任务。每条保留输入范围、工具调用和最后一步。\n万叶：预算上限两千元，记录里分开写估算和实际账单。\n邱原：失败重试也算进调用量，不能只报成功那一次的成本。\n何舟：明白。模型判断错误和工具超时我分成两类。\n万叶：工具超时以后有没有重复写文件，也一起检查。\n邱原：如果小批量里已经看到同一类错误，先修再扩大样本。\n何舟：周四四点看十条记录，先不做大而全的排行榜。\n万叶：我准备一页结果：完成条件、失败位置、实际调用量和下一步。": "He Zhou: Let us start with ten complete tasks, keeping input scope, tool calls and the last completed step.\nCaspian: The cap is CNY 2,000. Estimates and actual bills should be separate.\nQiu Yuan: Retries count too. Do not report only the successful attempt.\nHe Zhou: Understood. I will separate model decision errors from tool timeouts.\nCaspian: Also check whether a timeout leads to writing the same file twice.\nQiu Yuan: If the small batch reveals repeated errors, fix them before expanding the sample.\nHe Zhou: We will review the ten records at four on Thursday, before attempting a broad ranking.\nCaspian: I will prepare one page with completion criteria, failure points, actual usage and the next step."
+    },
+    "demo-story-source-alumni": {
+      "国庆回杭州，十月再约上海": "Hangzhou for the holiday, Shanghai later",
+      "许安：万叶二号回杭州的话，学校附近那家面馆还开着。\n万叶：先和家里吃饭，晚上有没有空要看车次，别先替我订位。\n宋岚：我这次留上海，等你十月中旬过来再吃。\n许安：还是以前你们两个点太多，最后都让我收尾。\n万叶：这次一人一碗就好。许安，工作台试用后给我留三条最不顺的地方。\n许安：可以，但吃饭时别开评审会。\n宋岚：同意。上海那天我想沿苏州河走，电脑最多看十分钟。\n万叶：成交。日期定下来再说，先别把休息日排满。": "Xu An: If Caspian comes back on the second, the noodle shop near campus is still open.\nCaspian: Family lunch comes first. Evening plans depend on the train, so do not reserve for me yet.\nSong Lan: I am staying in Shanghai this holiday. We can eat when you visit in mid-October.\nXu An: You two used to order too much and leave me to finish it.\nCaspian: One bowl each this time. Xu An, after trying the workbench, leave me the three most awkward parts.\nXu An: Sure, but no review meeting over dinner.\nSong Lan: Agreed. In Shanghai I want a walk by Suzhou Creek, with ten minutes of laptop time at most.\nCaspian: Deal. We will settle the dates later and leave some of the day open."
+    },
+    "demo-story-source-family": {
+      "回家那天下午留给家人": "Keeping the afternoon at home for family",
+      "杜晴：二号中午回来吃饭的话，提前一天告诉我们就行。\n万叶：车次还没定，想中午到。我会把那天下午空出来。\n万建明：那做片儿川，不摆一大桌。雪菜和笋我到时去买。\n万晴：我也回家。报名页面画完了，但先放新歌给你听。\n万叶：新歌优先。原型饭后看十分钟，下午我们出去走走。\n杜晴：阳台的桂花开了，回来了先看看，别进门就找充电器。\n万建明：车次定了把到站时间告诉我，不急着赶最早一班。\n万叶：好，一号确认以后发到群里。先按家常饭准备就行。": "Du Qing: If you are back for lunch on the second, let us know the day before.\nCaspian: I have not booked the train yet. I hope to arrive around lunch and keep the afternoon free.\nWan Jianming: Then I will make pian-er-chuan, not a huge spread. I will buy the greens and bamboo shoots then.\nWan Qing: I am coming home too. The signup prototype is done, but first I want to play you a new song.\nCaspian: Music first. Ten minutes for the prototype after lunch, then a walk.\nDu Qing: The osmanthus on the balcony is blooming. Look at it before you start hunting for a charger.\nWan Jianming: Tell me the arrival time once you choose a train. No need to take the earliest one.\nCaspian: Okay, I will confirm in the group on the first. A simple meal is all we need."
+    },
+    "demo-story-source-running": {
+      "六公里也可以改成散步": "Six kilometers, or a walk",
+      "魏禾：这周还是周日下午四点，奥森南门，六公里慢慢跑？\n万叶：可以。我这周坐太久，跑不动就走一段。\n周芮：我只跑三公里，后半程在出口等你们。\n高远：我带小相机，结束后拍两张，跑步时不举着。\n魏禾：停下来会凉，带件薄外套。下雨就改散步。\n万叶：工作消息我先收尾，跑的时候手机放包里。\n周芮：跑完去上次那家面馆？我记得还有番茄鸡蛋面。\n魏禾：就那家。出门前群里再确认天气，不临时拼配速。": "Wei He: Same plan this week: Sunday at four, south gate, six easy kilometers?\nCaspian: Yes. I have been sitting too much this week; I may walk part of it.\nZhou Rui: I will do three kilometers and meet you at the exit.\nGao Yuan: I will bring a small camera for a couple of photos afterward, not during the run.\nWei He: Bring a light jacket for afterward. If it rains, we can switch to a walk.\nCaspian: I will wrap up work messages first and leave my phone in my bag while running.\nZhou Rui: Same noodle place afterward? I remember they have tomato and egg noodles.\nWei He: That one. We will check the weather in the group before leaving, with no last-minute pace challenge."
+    },
+    "demo-story-source-photos": {
+      "先选片，再决定相册顺序": "Choosing photographs before sequencing the album",
+      "万叶：先选了十二张，车窗倒影想放开头，海边那张放结尾。\n高远：中间两张建筑太像，留有路人经过的那张，会更有呼吸。\n宋岚：吃早餐那张也留着，旅行不只有景点。\n万叶：同意。我先不统一套滤镜，阴天和傍晚就让它们不一样。\n高远：封面一张就够，别同时塞日期、地点和一段感想。\n宋岚：最后一页可以留一句路上随手写的，不用总结旅行的意义。\n万叶：我写的是下次少排两个地方，沿着路多走一会儿。\n高远：这句就很好。先做小样，打印之前我们再看一次顺序。": "Caspian: I have selected twelve. The train-window reflection could open the album and the coast could close it.\nGao Yuan: The two building shots are similar. Keep the one with a passerby; it feels more alive.\nSong Lan: Keep the breakfast photo too. A trip is more than landmarks.\nCaspian: Agreed. I will keep the cloudy and evening colors different rather than apply one filter.\nGao Yuan: One photo is enough for the cover. It does not need the date, place and a paragraph all at once.\nSong Lan: The last page could hold a line you wrote on the train. No need for a grand conclusion.\nCaspian: I wrote: next time, plan two fewer stops and spend more time walking.\nGao Yuan: That works. Make a small draft and we will check the sequence before printing."
+    }
+  },
+  "events": {
+    "event-idea": {
+      "把内测范围缩到一个完整任务": "Narrowing the pilot to one complete task",
+      "和乔宁看完五次访谈，决定先做好需求澄清、执行状态和中断后继续。工具数量放到下一轮。": "After reviewing five interviews with Qiao Ning, we chose clarification, execution status and recovery first. More tools can wait for the next round.",
+      "北京": "Beijing"
+    },
+    "event-chat": {
+      "许安答应试一试新工作台": "Xu An agreed to try the new workbench",
+      "让他按自己的任务直接用，再看看哪里说不清。也说好国庆回杭州找时间吃面。": "He will use his own task and point out what is unclear. We also plan to find time for noodles in Hangzhou during the holiday."
+    },
+    "event-review": {
+      "给自己的协作习惯留一份说明": "Writing down how I like to collaborate",
+      "短一点、具体一点。重要判断有依据，上午留完整时间，晚上记得合上电脑。": "Keep it short and concrete. Support important judgments, protect an uninterrupted morning and remember to close the laptop at night."
+    },
+    "demo-v2-event-lu": {
+      "和陆老师聊工作，也聊读书": "Talking about work and books with Professor Lu",
+      "把一次任务从头到尾看明白，比列出一长串功能更有用。也记下陆老师推荐的书，国庆带回杭州。": "Understanding one task from start to finish is more useful than listing features. I also noted his book recommendation to take back to Hangzhou."
+    },
+    "demo-v2-event-song": {
+      "约国庆后在上海见面": "Planning to meet in Shanghai after the holiday",
+      "宋岚十月中旬在上海，先把见面的周末留出来。聊到工作时，两人都决定少追一个热点，多看一次真实使用。": "Song Lan will be in Shanghai in mid-October, so we are keeping a weekend open. We agreed to follow fewer trends and observe more real use."
+    },
+    "demo-v2-event-he": {
+      "评测先看失败在哪里": "Looking at where evaluations fail",
+      "第一轮只跑小批量真实任务，保留失败样例和调用量。周四一起看任务究竟停在模型判断还是工具返回。": "Start with a small batch of real tasks and keep failed examples and usage records. On Thursday we will check whether tasks stop at model decisions or tool responses."
+    },
+    "demo-v2-event-xu": {
+      "把中断发生的时刻测清楚": "Testing exactly when interruption happens",
+      "徐沐会分别在文件保存前后中断任务，再重启本机服务。用户改过文件后的继续操作也加入了验收。": "Xu Mu will interrupt before and after file saving and restart the local service. Resuming after a user edit is part of acceptance too."
+    },
+    "demo-v2-event-tang": {
+      "午休时一起走了一遍确认弹窗": "Trying the confirmation dialog over lunch",
+      "将“是否继续”改成具体动作、对象与内容；回来后用发送邮件的原型走了一遍。": "Replace a vague Continue question with the exact action, recipient and content. We tested the email prototype after returning."
+    },
+    "demo-v2-event-shen": {
+      "对齐任务状态与文件版本": "Aligning task state and file versions",
+      "状态用接口字段传递，前端不从回复文字里猜。文件版本冲突和服务中断分别保留可读原因。": "The interface should read explicit state fields rather than infer from prose. File conflicts and service interruptions each keep a readable reason."
+    },
+    "demo-v2-event-zhao": {
+      "和高中班主任说说近况": "Catching up with my high school teacher",
+      "赵老师问起北京的生活，也提醒万叶别把假期塞满。国庆如果时间合适，回杭州见面喝茶。": "Zhao Xu asked about life in Beijing and reminded me not to fill the holiday. We may meet for tea in Hangzhou if there is time."
+    },
+    "demo-v2-event-wu": {
+      "敲定第一批内测回访的安排": "Arranging the first pilot follow-ups",
+      "八位候选用户中五位已完成访谈，另外三位还在约时间。吴桐整理回复情况，先看大家自己的任务能否完成。": "Five of eight candidates have been interviewed; the other three are being scheduled. Wu Tong is tracking replies, focusing on whether people can finish their own tasks."
+    },
+    "demo-v2-event-ye": {
+      "一起把成果编辑区做顺": "Making the artifact editor easier to use",
+      "保留输入草稿、切换文件不丢内容，长会话也不抢滚动位置。小窗口下再走一遍实际操作。": "Keep drafts, preserve content when switching files and avoid pulling readers to the end of long chats. Try the actual flow again in a small window."
+    },
+    "demo-v2-event-liang": {
+      "五次访谈里重复出现的停顿": "The same pause across five interviews",
+      "三位受访者在任务失败后不知道从哪一步继续。下一轮回访重点观察他们怎么修改要求、查看结果和再次开始。": "Three participants did not know where to resume after failure. The next follow-up will observe how they change requirements, inspect results and start again."
+    },
+    "demo-v2-event-wei": {
+      "周日四点，奥森见": "Sunday at four in Olympic Forest Park",
+      "周日下午去奥森跑六公里，状态不好就缩短。跑完吃面，手机尽量放进腰包。": "Run six kilometers on Sunday afternoon, or shorten it if tired. Have noodles afterward and keep the phone in the running bag."
+    },
+    "demo-v2-event-du": {
+      "国庆回杭州，先吃一顿家常饭": "A simple meal at home in Hangzhou",
+      "初步打算十月二日中午到家，车次还没定。母亲想做饭，万叶想把那天下午留给家人。": "I hope to arrive around lunch on October 2, but the train is not set. Mum wants to cook, and I want to keep the afternoon for family."
+    },
+    "demo-v2-event-lin": {
+      "和父亲约一碗片儿川": "Planning pian-er-chuan with Dad",
+      "回家吃面，不安排正式工作演示。父亲关心产品做错之后能不能让人改，也把这当成普通人的使用问题。": "Go home for noodles, without a formal work demo. Dad asked whether people can correct the product when it makes a mistake."
+    },
+    "demo-v2-event-jiang": {
+      "和妹妹看校园活动报名原型": "Reviewing my sister’s campus signup prototype",
+      "万晴先画了活动列表、报名和确认结果的流程，准备找两位同学试一遍，再决定要不要加聊天功能。": "Wan Qing drew the event list, registration and confirmation flow. She will ask two classmates to try it before deciding whether to add chat."
+    },
+    "demo-v2-event-zhou": {
+      "处理出租屋漏水和续租": "Handling a leaking sink and lease renewal",
+      "厨房水槽下有一点渗水，先拍照给房东并约维修。续租条款等修好以后再逐项核对。": "There is a small leak under the kitchen sink. Send the landlord a photo and arrange a repair, then review the renewal terms afterward."
+    },
+    "demo-v2-event-gao": {
+      "从青岛照片里挑十二张": "Choosing twelve photos from Qingdao",
+      "留下阴天的海、街边衣服和车窗倒影，整理成一本小相册。下次旅行留更多走路的空档。": "Keep the overcast sea, clothes by the street and reflections in train windows for a small album. Leave more walking time on the next trip."
+    },
+    "demo-v2-event-scope": {
+      "内测先做好中断后继续": "Getting interrupted tasks to resume for the pilot",
+      "把更多工具接入放到下一轮，先看用户能否找到上一次停下的位置。": "Further integrations can wait. First check whether people can find where their last task stopped.",
+      "北京": "Beijing"
+    },
+    "demo-v2-event-quiet": {
+      "给周日留出一段慢跑时间": "Leaving time for a Sunday run",
+      "奥森南门，下午四点。跑六公里或者走一会儿，结束后吃面。": "South gate of Olympic Forest Park at four. Run six kilometers or walk for a while, then get noodles.",
+      "北京奥林匹克森林公园": "Olympic Forest Park, Beijing"
+    },
+    "demo-v2-event-permission": {
+      "把内测使用说明缩成一页": "Reducing the pilot instructions to one page",
+      "请用户带自己的任务来，告诉他们在哪里看结果、哪里反馈问题。": "Ask people to bring their own task and explain where to see results and leave feedback.",
+      "北京": "Beijing"
+    },
+    "demo-story-event-qiao": {
+      "内测邀请前再看一次范围": "A final scope check before pilot invitations",
+      "乔宁和万叶确认首轮只验证一个任务的澄清、执行状态和中断恢复；工具扩展等用户反馈后再定。": "Qiao Ning and Caspian agreed to test clarification, execution status and recovery within one task. Further integrations will follow user feedback."
+    },
+    "demo-story-event-chen": {
+      "确认前先看清具体内容": "Seeing the exact content before confirming",
+      "陈禾通过实际原型检查邮件确认，要求显示完整收件人与正文，并在取消后保留编辑内容。": "Chen He tested the email confirmation prototype. It should show the full recipient and message, and retain edits after cancellation."
+    },
+    "demo-story-event-qiu": {
+      "验收前先修会丢内容的问题": "Fixing lost content before acceptance",
+      "邱原与万叶将草稿丢失和版本覆盖列为阻塞项，外观微调放到核心流程之后。": "Qiu Yuan and Caspian made lost drafts and overwritten versions blockers. Visual refinements will follow the core workflow."
+    },
+    "demo-story-event-han": {
+      "把内测资料使用范围写清楚": "Clarifying how pilot materials will be used",
+      "韩知建议邀请说明写明录屏选择、选定资料的使用范围和删除入口；发送前还需核对最终版本。": "Han Zhi recommended clear recording choices, a defined scope for selected materials and a deletion entry. The final invitation still needs review before sending."
+    },
+    "demo-story-event-pilot": {
+      "先验证完整任务，再增加工具": "Testing a complete task before adding tools",
+      "内测小组保留八位候选名单，五位已访谈；以十月八日核心流程验收作为邀请的前提。": "The pilot group retained eight candidates, with five interviewed. Invitations depend on the core workflow check on October 8."
+    },
+    "demo-story-event-recovery": {
+      "保留用户修改，再继续任务": "Keeping user edits when a task resumes",
+      "联调确定中断恢复须保留草稿和最后完成步骤；文件版本冲突时先展示差异，不覆盖用户修改。": "The team agreed to keep drafts and the last completed step. A version conflict should show differences before any user edit is overwritten."
+    },
+    "demo-story-event-privacy": {
+      "把录屏选择放在开始之前": "Putting recording choices before the session",
+      "访谈说明拆分录屏、笔记和任务资料，用户可只提供选定文档；具体保留时间仍待内部确认。": "The study note separates recording, notes and task materials. Participants can provide selected documents; the retention period is still pending internal agreement."
+    },
+    "demo-story-event-design": {
+      "长内容和窄窗口都实际点一次": "Trying long content in a narrow window",
+      "设计与前端共同检查长标题、取消后草稿、焦点返回和英文地址换行，评审以实际操作为准。": "Design and frontend reviewed long titles, draft retention, focus return and email wrapping through actual interaction."
+    },
+    "demo-story-event-cost": {
+      "两千元预算先跑小批量": "Starting with a small batch within CNY 2,000",
+      "评测小组先跑十条完整任务，分别记录调用量、失败原因和重试成本；两千元是预算上限，尚非实际支出。": "The evaluation group will start with ten complete tasks and record usage, failures and retry costs. CNY 2,000 is the budget cap, not actual spending."
+    },
+    "demo-story-event-alumni": {
+      "国庆回杭州，十月再约上海": "Hangzhou for the holiday, Shanghai later",
+      "许安、宋岚和万叶聊起国庆安排；杭州吃面的时间等车次确认，上海见面也还未定日。": "Xu An, Song Lan and Caspian discussed the holiday. Noodles in Hangzhou await the train plan, and the Shanghai visit has no fixed date yet."
+    },
+    "demo-story-event-family": {
+      "回家那天下午留给家人": "Keeping the afternoon at home for family",
+      "家人初步按十月二日中午准备，车次仍待确认；万叶想吃片儿川，妹妹的课程原型饭后再看。": "The family is tentatively planning lunch on October 2, pending the train. Caspian requested pian-er-chuan noodles; his sister’s prototype can wait until after the meal."
+    },
+    "demo-story-event-running": {
+      "六公里也可以改成散步": "Six kilometers, or a walk",
+      "跑步伙伴约周日下午四点在奥森南门见，按精力跑或走；出门前再看天气，跑后一起吃面。": "The group planned to meet at the south gate at four on Sunday, run or walk according to energy, check the weather before leaving and have noodles afterward."
+    },
+    "demo-story-event-photos": {
+      "先选片，再决定相册顺序": "Choosing photographs before sequencing the album",
+      "高远、宋岚和万叶讨论青岛旅行相册：先留十二张，保留车窗与阴天海边的日常感，暂不追求统一滤镜。": "Gao Yuan, Song Lan and Caspian discussed a twelve-photo Qingdao album, keeping the train reflections and overcast coast without forcing one filter."
+    }
+  },
+  "agents": {
+    "agent-planner": {
+      "项目规划师": "Project planner",
+      "把目标拆成可执行的小步": "Turn goals into practical steps",
+      "先给今天最值得做的一步，再给简短计划。结合用户已确认的时间和预算，缺少条件时说明具体缺口。": "Start with the most useful step for today, then a short plan. Use confirmed time and budget constraints and name any missing conditions."
+    },
+    "agent-reviewer": {
+      "质量评审员": "Quality reviewer",
+      "检查结果、依据和遗漏": "Check results, evidence and omissions",
+      "检查草稿或结果与目标是否一致，指出具体问题和修改建议。依据不足时明确说明，不把推测写成事实。": "Check whether a draft or result meets the goal. Identify specific issues and changes. State when evidence is insufficient and keep inference separate from fact."
+    },
+    "demo-v2-agent-writer": {
+      "写作编辑": "Writing editor",
+      "把想法写成清楚、自然的文字": "Turn ideas into clear, natural writing",
+      "先看文字写给谁、要说明什么。保留用户原意，给出可直接修改的草稿。发送前由用户确认。": "Start with the audience and purpose. Preserve the user’s meaning and produce an editable draft. The user confirms before sending."
+    },
+    "demo-v2-agent-researcher": {
+      "研究分析师": "Research analyst",
+      "查资料、找依据、整理问题": "Find sources, evidence and useful questions",
+      "优先阅读已选资料，再补必要来源。区分资料中的说法和自己的判断，结论能回到出处。": "Read selected material first and add sources when needed. Distinguish source claims from interpretation and link conclusions back to evidence."
+    },
+    "demo-v2-agent-budget": {
+      "预算分析师": "Budget analyst",
+      "整理费用与时间安排": "Plan costs and time",
+      "区分预算、报价和实际支出，算清必要成本，超出上限时给出可行调整。": "Separate budgets, quotes and actual spending. Calculate necessary costs and suggest feasible changes when a plan exceeds its limit."
+    },
+    "demo-v2-agent-care": {
+      "生活规划师": "Life planner",
+      "安排生活中的大小事情": "Arrange everyday plans",
+      "结合用户的时间、精力和偏好安排日程，给休息、朋友与家人留出位置。不要替用户作承诺。": "Use the user’s time, energy and preferences, leaving room for rest, friends and family. Do not make commitments on the user’s behalf."
+    }
+  },
+  "agentRooms": {
+    "demo-v2-room-planner": {
+      "和项目规划师商量": "Talk with the project planner",
+      "本地演示会话；连接模型后可继续处理自己的任务。": "A local sample conversation. Use your own space to continue with a connected model."
+    },
+    "demo-v2-room-writer": {
+      "和写作编辑写草稿": "Draft with the writing editor",
+      "本地演示会话；连接模型后可继续处理自己的任务。": "A local sample conversation. Use your own space to continue with a connected model."
+    },
+    "demo-v2-room-studio": {
+      "Kimi 工作台内测小组": "Kimi workbench pilot group",
+      "本地演示会话；连接模型后可继续处理自己的任务。": "A local sample conversation. Use your own space to continue with a connected model."
+    },
+    "demo-v2-room-balance": {
+      "安排国庆与本周生活": "Plan the holiday and the week",
+      "本地演示会话；连接模型后可继续处理自己的任务。": "A local sample conversation. Use your own space to continue with a connected model."
+    }
+  },
+  "conversations": {
+    "demo-story-chat-qiao": {
+      "乔宁": "Qiao Ning",
+      "邀请发出前，我想再删一次范围。现在首页同时讲六种能力，有点散。": "Before invitations go out, I want one more scope cut. The home page presents six capabilities and feels scattered.",
+      "那入口只保留带一件自己的任务来，后面跟着澄清和结果。": "Then the entry can simply ask people to bring one real task, followed by clarification and a result.",
+      "中断以后能知道做到哪里，这件事留在首轮。": "Keep showing where a task stopped in the first round.",
+      "保留。更多工具的介绍先收起来，避免大家以为都已经接通。": "Agreed. I will put the extra integrations aside so people do not assume they are all connected.",
+      "梁秋说三个人问过同一个问题，这个取舍有依据。": "Liang Qiu heard the same question from three participants. That supports the decision.",
+      "我把原话连到范围说明里。十月八日先和徐沐验收，再决定能不能邀请。": "I will link their exact comments in the scope note. We will check the flow with Xu Mu on October 8 before deciding whether to invite people.",
+      "好，十月十二日仍是计划日期，别在邀请草稿里写成已经确定。": "Good. October 12 is still planned; the invitation draft should not call it confirmed.",
+      "记下了。今天先改入口和范围页，下午给你看。": "Noted. I will update the entry and scope page today and show you this afternoon."
+    },
+    "demo-story-chat-chen": {
+      "陈禾": "Chen He",
+      "我刚按了一遍发送邮件的原型，收件人被缩成了一个名字。": "I tried the email prototype. The recipient is shortened to a name.",
+      "我展开成完整地址，主题和正文也直接放在确认区。": "I will show the full address, subject and body in the confirmation area.",
+      "可以。取消以后不要清掉正文，我刚写的两句就丢了。": "Yes. Also keep the body after cancellation; I just lost two sentences.",
+      "这个确实有问题，草稿应该跟编辑区走，不能跟弹窗一起销毁。": "That is a bug. The draft belongs to the editor and should survive closing the dialog.",
+      "按钮写发送这封邮件就够，不要写确认执行操作。": "Label the button Send this email. Confirm action is too abstract.",
+      "改好了再给你可点击的版本，截图看不出取消后发生什么。": "I will send a clickable version after the fix; a screenshot cannot show what happens after cancellation.",
+      "下午三点我有二十分钟，可以再走一次。": "I have twenty minutes at three this afternoon to try it again.",
+      "好，这次一起看窄窗口和英文长地址。": "Great. Let us check a narrow window and a long email address too."
+    },
+    "demo-story-chat-qiu": {
+      "邱原": "Qiu Yuan",
+      "十月八日之前还剩哪些会挡住用户的事？": "What could still block users before October 8?",
+      "取消确认会丢草稿，还有继续任务时文件被外部改过的冲突提示。": "Cancellation can lose a draft, and resume needs a conflict message when a file has changed externally.",
+      "这两个先修。还有几处颜色和间距可以晚一点。": "Fix those first. A few color and spacing changes can wait.",
+      "我今天接草稿恢复，沈川明天给文件版本错误加明确文件名。": "I will handle draft recovery today. Shen Chuan will include the affected filename in version errors tomorrow.",
+      "验收别只看测试通过，再关软件打开走一遍。": "Do not stop at passing tests. Close and reopen the app and walk through it.",
+      "让徐沐从一个未完成任务开始，自己改一段，再继续。": "Xu Mu can start with an unfinished task, edit a paragraph, then resume.",
+      "如果还会覆盖内容，邀请时间就往后挪。": "If it can still overwrite content, move the invitation date.",
+      "同意。我在进度页标清这两个阻塞项，不再用总体完成百分比。": "Agreed. I will show those two blockers in the progress note instead of an overall completion percentage."
+    },
+    "demo-story-chat-han": {
+      "韩知": "Han Zhi",
+      "韩知，邀请草稿里写会记录使用过程，这句话是不是太泛？": "Han Zhi, the draft says we record the session. Is that too broad?",
+      "是。录屏、访谈笔记和任务资料分别写，人可以不同意录屏。": "Yes. Separate screen recording, interview notes and task materials. People can decline recording.",
+      "任务资料只用他主动选择的几份，不需要整个文件夹。": "We only need the documents they select, not the whole folder.",
+      "这点写在开始前，也说明如何移除已经选的资料。": "Say that before they start, including how to remove selected materials.",
+      "回访里展示样例时，用户名和原始文件名也不直接带出来。": "Examples in the follow-up will not expose usernames or original filenames.",
+      "好。保留时间还没定就别编一个，先在内部定清楚。": "Good. Do not invent a retention period. Agree on it internally first.",
+      "我把待定项单独留在草稿里，明天和吴桐一起核对。": "I will leave that as an open item and review it with Wu Tong tomorrow.",
+      "最后发出前给我看一遍正文和附件，单看一句话不够。": "Show me the full message and attachments before sending; one sentence is not enough."
+    },
+    "demo-story-chat-pilot": {
+      "工作台首轮内测": "Workbench pilot",
+      "今天把首轮范围落下来：澄清、执行状态、中断后继续。": "Let us settle the first round: clarification, execution status and resuming interrupted work.",
+      "五次访谈里三个人在任务停下后不知道该怎么办，原话我已整理。": "Three of five interviewees did not know what to do after a task stopped. I have collected their comments.",
+      "评测按完整任务记结果，不只统计模型有没有回答。": "Evaluation will track complete tasks, not merely whether the model answered.",
+      "我把入口改成带自己的任务来，先只选需要的资料。": "The entry now asks people to bring their own task and select only the necessary materials.",
+      "十月八日先测保存、中断、重启和版本冲突，有阻塞就不放行。": "On October 8 we will test saving, interruption, restart and version conflicts. Blockers will hold the release.",
+      "名单先留八位，另外三位还没约齐。邀请保持草稿。": "The list stays at eight. Three interviews are still being arranged, and invitations remain drafts.",
+      "十月十二日作为计划日期写进安排，验收之后再确认。": "Put October 12 in the plan and confirm it after acceptance.",
+      "收到，范围、原话和阻塞项都放进同一个项目，周五一起看。": "Understood. Scope, source comments and blockers are in one project for Friday review."
+    },
+    "demo-story-chat-recovery": {
+      "中断恢复联调": "Recovery integration",
+      "复现了：保存一半时退出，重开以后标题显示完成，文件其实不完整。": "Reproduced: quit during saving, reopen, and the title says complete even though the file is incomplete.",
+      "最后一条事件是写入中，我会让服务重启后明确标成中断。": "The last event says writing. I will mark it interrupted after the service restarts.",
+      "前端只读状态字段，不能因为最后一句回复像结论就显示完成。": "The UI should read the status field; a concluding sentence does not mean the task is complete.",
+      "编辑区也保留本地草稿，重新打开时让用户先看到自己的版本。": "The editor will keep the local draft and show the user their version after reopening.",
+      "另一条：我停下后自己改文件，再点继续，旧版本不应该盖回来。": "Another case: I edit the file after stopping and then resume. The older version must not overwrite it.",
+      "请求带版本号，不一致就返回具体文件和冲突原因。": "The request will carry a version number. A mismatch returns the file and the conflict reason.",
+      "我接一个查看差异入口，关闭后草稿还在。": "I will add a comparison view and keep the draft when it closes.",
+      "这两条修好后从重启再跑一遍，记录实际留下的内容。": "Once fixed, run both cases from restart and record what content actually remains."
+    },
+    "demo-story-chat-privacy": {
+      "内测资料与授权": "Pilot data and consent",
+      "使用说明第一页先讲三件事：会记什么、谁会看、怎么移除。": "The first page should explain what is recorded, who can see it and how to remove it.",
+      "我把录屏选择放在开始前，默认不替用户勾选。": "I will put recording choices before the start, with nothing preselected.",
+      "拒绝录屏也能访谈，我改成做文字笔记，不要让人以为必须同意。": "People can still participate without recording. I can take notes instead.",
+      "资料选择只显示勾选过的文件，撤掉选择后就不继续带进任务。": "Only selected files will appear in the task context. Deselecting one removes it from subsequent work.",
+      "保留多久还在讨论，草稿写待确认，不写成已经生效的承诺。": "Retention is still being discussed. Mark it pending rather than making an active promise.",
+      "弹窗里就放操作和范围，长说明用展开阅读。": "The dialog will show the action and scope, with the longer explanation available to expand.",
+      "回访引用原话之前，我会再检查名字和文件名。": "I will check names and filenames before using interview quotes in the follow-up.",
+      "今天先完成草稿，最终邀请和附件一起交韩知核对。": "I will finish the draft today and have Han Zhi review the complete invitation and attachments."
+    },
+    "demo-story-chat-design": {
+      "工作台交互走查": "Workbench design review",
+      "宽屏看起来没问题，缩到小窗口后保存按钮掉到下面了。": "It looks fine on a wide screen, but the Save button slips below the viewport in a small window.",
+      "我让标题和操作固定在顶部，正文自己滚动。": "I will keep the title and actions at the top and scroll the content separately.",
+      "长地址可以换行，别只留一个看不完整的省略号。": "Long addresses can wrap; an ellipsis hides information the user needs.",
+      "我再放一段英文长标题测试，中文也看同样的宽度。": "I will test a long English title and the Chinese version at the same width.",
+      "取消确认之后，刚编辑的内容这次留下来了。": "The edited content survives cancelling confirmation this time.",
+      "侧栏关掉后焦点也回到原按钮，键盘可以接着走。": "Closing the side panel now returns focus to the original button, so keyboard navigation can continue.",
+      "剩下空状态的说明有点长，保留一个动作就行。": "The empty-state explanation is still long. Keep one clear action.",
+      "好，改完用这组长内容再验收，不再换短文案截图。": "Agreed. We will check again using this long content rather than short text for the screenshot."
+    },
+    "demo-story-chat-cost": {
+      "模型评测与预算": "Model evaluation and budget",
+      "先跑十条完整任务。每条保留输入范围、工具调用和最后一步。": "Let us start with ten complete tasks, keeping input scope, tool calls and the last completed step.",
+      "预算上限两千元，记录里分开写估算和实际账单。": "The cap is CNY 2,000. Estimates and actual bills should be separate.",
+      "失败重试也算进调用量，不能只报成功那一次的成本。": "Retries count too. Do not report only the successful attempt.",
+      "明白。模型判断错误和工具超时我分成两类。": "Understood. I will separate model decision errors from tool timeouts.",
+      "工具超时以后有没有重复写文件，也一起检查。": "Also check whether a timeout leads to writing the same file twice.",
+      "如果小批量里已经看到同一类错误，先修再扩大样本。": "If the small batch reveals repeated errors, fix them before expanding the sample.",
+      "周四四点看十条记录，先不做大而全的排行榜。": "We will review the ten records at four on Thursday, before attempting a broad ranking.",
+      "我准备一页结果：完成条件、失败位置、实际调用量和下一步。": "I will prepare one page with completion criteria, failure points, actual usage and the next step."
+    },
+    "demo-story-chat-alumni": {
+      "浙大老同学": "Zhejiang University friends",
+      "万叶二号回杭州的话，学校附近那家面馆还开着。": "If Caspian comes back on the second, the noodle shop near campus is still open.",
+      "先和家里吃饭，晚上有没有空要看车次，别先替我订位。": "Family lunch comes first. Evening plans depend on the train, so do not reserve for me yet.",
+      "我这次留上海，等你十月中旬过来再吃。": "I am staying in Shanghai this holiday. We can eat when you visit in mid-October.",
+      "还是以前你们两个点太多，最后都让我收尾。": "You two used to order too much and leave me to finish it.",
+      "这次一人一碗就好。许安，工作台试用后给我留三条最不顺的地方。": "One bowl each this time. Xu An, after trying the workbench, leave me the three most awkward parts.",
+      "可以，但吃饭时别开评审会。": "Sure, but no review meeting over dinner.",
+      "同意。上海那天我想沿苏州河走，电脑最多看十分钟。": "Agreed. In Shanghai I want a walk by Suzhou Creek, with ten minutes of laptop time at most.",
+      "成交。日期定下来再说，先别把休息日排满。": "Deal. We will settle the dates later and leave some of the day open."
+    },
+    "demo-story-chat-family": {
+      "家里的饭桌": "Family table",
+      "二号中午回来吃饭的话，提前一天告诉我们就行。": "If you are back for lunch on the second, let us know the day before.",
+      "车次还没定，想中午到。我会把那天下午空出来。": "I have not booked the train yet. I hope to arrive around lunch and keep the afternoon free.",
+      "那做片儿川，不摆一大桌。雪菜和笋我到时去买。": "Then I will make pian-er-chuan, not a huge spread. I will buy the greens and bamboo shoots then.",
+      "我也回家。报名页面画完了，但先放新歌给你听。": "I am coming home too. The signup prototype is done, but first I want to play you a new song.",
+      "新歌优先。原型饭后看十分钟，下午我们出去走走。": "Music first. Ten minutes for the prototype after lunch, then a walk.",
+      "阳台的桂花开了，回来了先看看，别进门就找充电器。": "The osmanthus on the balcony is blooming. Look at it before you start hunting for a charger.",
+      "车次定了把到站时间告诉我，不急着赶最早一班。": "Tell me the arrival time once you choose a train. No need to take the earliest one.",
+      "好，一号确认以后发到群里。先按家常饭准备就行。": "Okay, I will confirm in the group on the first. A simple meal is all we need."
+    },
+    "demo-story-chat-running": {
+      "周日奥森慢跑": "Sunday Olympic Forest Park run",
+      "这周还是周日下午四点，奥森南门，六公里慢慢跑？": "Same plan this week: Sunday at four, south gate, six easy kilometers?",
+      "可以。我这周坐太久，跑不动就走一段。": "Yes. I have been sitting too much this week; I may walk part of it.",
+      "我只跑三公里，后半程在出口等你们。": "I will do three kilometers and meet you at the exit.",
+      "我带小相机，结束后拍两张，跑步时不举着。": "I will bring a small camera for a couple of photos afterward, not during the run.",
+      "停下来会凉，带件薄外套。下雨就改散步。": "Bring a light jacket for afterward. If it rains, we can switch to a walk.",
+      "工作消息我先收尾，跑的时候手机放包里。": "I will wrap up work messages first and leave my phone in my bag while running.",
+      "跑完去上次那家面馆？我记得还有番茄鸡蛋面。": "Same noodle place afterward? I remember they have tomato and egg noodles.",
+      "就那家。出门前群里再确认天气，不临时拼配速。": "That one. We will check the weather in the group before leaving, with no last-minute pace challenge."
+    },
+    "demo-story-chat-photos": {
+      "青岛十二张": "Twelve photos of Qingdao",
+      "先选了十二张，车窗倒影想放开头，海边那张放结尾。": "I have selected twelve. The train-window reflection could open the album and the coast could close it.",
+      "中间两张建筑太像，留有路人经过的那张，会更有呼吸。": "The two building shots are similar. Keep the one with a passerby; it feels more alive.",
+      "吃早餐那张也留着，旅行不只有景点。": "Keep the breakfast photo too. A trip is more than landmarks.",
+      "同意。我先不统一套滤镜，阴天和傍晚就让它们不一样。": "Agreed. I will keep the cloudy and evening colors different rather than apply one filter.",
+      "封面一张就够，别同时塞日期、地点和一段感想。": "One photo is enough for the cover. It does not need the date, place and a paragraph all at once.",
+      "最后一页可以留一句路上随手写的，不用总结旅行的意义。": "The last page could hold a line you wrote on the train. No need for a grand conclusion.",
+      "我写的是下次少排两个地方，沿着路多走一会儿。": "I wrote: next time, plan two fewer stops and spend more time walking.",
+      "这句就很好。先做小样，打印之前我们再看一次顺序。": "That works. Make a small draft and we will check the sequence before printing."
+    }
+  }
+}

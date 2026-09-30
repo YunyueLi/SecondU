@@ -2,7 +2,9 @@ node_modules/
 dist/
 .hither/
 .local/
+.secondu-examples/
 .env*
 out/
 *.log
 .DS_Store
+*.tsbuildinfo

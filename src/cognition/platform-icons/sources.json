@@ -1,0 +1,100 @@
+[
+  {
+    "platform": "wechat",
+    "source": "https://raw.githubusercontent.com/lobehub/lobe-ui/e7fa3d91cc524569edc98da27877ff10aac5a8d7/src/icons/WeChat/components/Color.tsx",
+    "license": "MIT",
+    "sourceSha256": "c7143e35a7843ca760655a9dedf68659f9a942e129f70ce85013c9b6f2be59aa",
+    "assetSha256": "74b48b442dd068688bba7d5d7654e74cd037fadea55c3bcc6629122fa2919f44",
+    "adaptation": "Static SVG extracted from the Color component; paths and colors unchanged."
+  },
+  {
+    "platform": "qq",
+    "source": "https://raw.githubusercontent.com/lobehub/lobe-ui/e7fa3d91cc524569edc98da27877ff10aac5a8d7/src/icons/QQ/components/Color.tsx",
+    "license": "MIT",
+    "sourceSha256": "ae73c76571f5c13310eaacd7cef58412760855b9dfb5f66b42eafbc225185892",
+    "assetSha256": "c0118242146804b40f186ecbeed95e7f28098da25527077f3790a733b182d631",
+    "adaptation": "Static SVG extracted from the Color component; paths and colors unchanged."
+  },
+  {
+    "platform": "feishu",
+    "source": "https://raw.githubusercontent.com/lobehub/lobe-ui/e7fa3d91cc524569edc98da27877ff10aac5a8d7/src/icons/Lark/components/Color.tsx",
+    "license": "MIT",
+    "sourceSha256": "280cd3969e6688dc4506a16c27cad9b740a5f86ac689c78f8c6b3875caec4b60",
+    "assetSha256": "55fd6fa3aff112f1c2ffdf39a2944b42dd0f50a1db4f394d3f7b82a6d51d8edf",
+    "adaptation": "Static SVG extracted from the Color component; paths and colors unchanged."
+  },
+  {
+    "platform": "dingtalk",
+    "source": "https://raw.githubusercontent.com/lobehub/lobe-ui/e7fa3d91cc524569edc98da27877ff10aac5a8d7/src/icons/DingTalk/components/Color.tsx",
+    "license": "MIT",
+    "sourceSha256": "052e9bcc272090a5659be6b7c4ee2d8b0e14dc27af5b257ebf998274b671e844",
+    "assetSha256": "601457d94ee28c0d81fca0e51c8d4c43cbd5082035133c73795c3ddfbcd64628",
+    "adaptation": "Static SVG extracted from the Color component; paths and colors unchanged."
+  },
+  {
+    "platform": "slack",
+    "source": "https://raw.githubusercontent.com/lobehub/lobe-ui/e7fa3d91cc524569edc98da27877ff10aac5a8d7/src/icons/Slack/components/Color.tsx",
+    "license": "MIT",
+    "sourceSha256": "3eafd31bec5ec9602d32ce58c154b361ea5434266a67aff291c4cf2f9a9d5dc5",
+    "assetSha256": "759fef4ef82c0e8a5e09ea5639bc6e35ee44b5731ef10fc84ed84267e3dd176f",
+    "adaptation": "Static SVG extracted from the Color component; paths and colors unchanged."
+  },
+  {
+    "platform": "teams",
+    "source": "https://raw.githubusercontent.com/lobehub/lobe-ui/e7fa3d91cc524569edc98da27877ff10aac5a8d7/src/icons/MicrosoftTeams/components/Color.tsx",
+    "license": "MIT",
+    "sourceSha256": "89e7f1b1e50eebe16680e5478be8a294f5bee44484127acd67cb4ca5dd28c4ad",
+    "assetSha256": "3b6c16d8aca3438fd2ff59d1a932cc4415fe96f85b03159a35517f412bfd0b54",
+    "adaptation": "Static SVG extracted from the Color component; paths and colors unchanged."
+  },
+  {
+    "platform": "telegram",
+    "source": "https://raw.githubusercontent.com/lobehub/lobe-ui/e7fa3d91cc524569edc98da27877ff10aac5a8d7/src/icons/Telegram/components/Color.tsx",
+    "license": "MIT",
+    "sourceSha256": "635b827bf134dafe7a741d38d69bd4bbc101d401759f193574f2fd0920acde30",
+    "assetSha256": "696cd7b8a02ea38d01f68bd81c645f2ac5247dc5c77aef817cb6f782360c5cb3",
+    "adaptation": "Static SVG extracted from the Color component; paths and colors unchanged."
+  },
+  {
+    "platform": "discord",
+    "source": "https://raw.githubusercontent.com/lobehub/lobe-ui/e7fa3d91cc524569edc98da27877ff10aac5a8d7/src/icons/Discord/components/Color.tsx",
+    "license": "MIT",
+    "sourceSha256": "7c3e33f1186a4f88470db830130a8ec367b893599ffd2c79ee5e26b4bef6b381",
+    "assetSha256": "15472f3b73e7b79af1d2e62b210fdd3a1e6c8a7a0c7cc44002ba1ad9a0623cc9",
+    "adaptation": "Static SVG extracted from the Color component; paths and colors unchanged."
+  },
+  {
+    "platform": "line",
+    "source": "https://raw.githubusercontent.com/lobehub/lobe-ui/e7fa3d91cc524569edc98da27877ff10aac5a8d7/src/icons/Line/components/Color.tsx",
+    "license": "MIT",
+    "sourceSha256": "eb0cca0642b809c7924dcd566ceb37c4294ca4700be9166ee78bd2ac2e8fe500",
+    "assetSha256": "db4751e7f88d882234b9cefc52728f7e3271ba2b4a195b9e61ac0fa9e7280c47",
+    "adaptation": "Static SVG extracted from the Color component; paths and colors unchanged."
+  },
+  {
+    "platform": "imessage",
+    "source": "https://raw.githubusercontent.com/lobehub/lobe-ui/e7fa3d91cc524569edc98da27877ff10aac5a8d7/src/icons/IMessage/components/Color.tsx",
+    "license": "MIT",
+    "sourceSha256": "9fef826cae38605dc53d62c04b26a38d6209a3d68b2b5067640a3c39d5650a53",
+    "assetSha256": "b14bc3b866f33ce6475e685654c5f2de603a406be53e3a7937a10c169cb938f0",
+    "adaptation": "Static SVG extracted from the Color component; paths and colors unchanged."
+  },
+  {
+    "platform": "whatsapp",
+    "source": "https://raw.githubusercontent.com/lobehub/lobe-ui/e7fa3d91cc524569edc98da27877ff10aac5a8d7/src/icons/WhatsApp/components/Color.tsx",
+    "license": "MIT",
+    "sourceSha256": "d3a2f397a2ffeacbc55f2714a0541f9ce569dfbe6959fd298a1625a9ade93dbb",
+    "assetSha256": "16d4930ccb85db6d5744896f389f1456ea8e6dfd8839979975a4e1b34adcd189",
+    "adaptation": "Static SVG extracted from the Color component; paths and colors unchanged."
+  },
+  {
+    "platform": "wecom",
+    "source": "https://github.com/Arcticons-Team/Arcticons/blob/8866512cc4edbc2650a6478c6264d88db778fe8d/icons/black/wecom.svg",
+    "author": "Arcticons contributors",
+    "license": "CC-BY-SA-4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "sourceSha256": "a7296303f0e0351a0c635eca4dcc74288f32e932bd255f7feb7530bd9b46962d",
+    "assetSha256": "718bbb6ed075c6bcd25e0ea98edc7b8b501875337879484dd4fb28ab072e37c9",
+    "adaptation": "Retained path geometry; colorized the source outline and four workplace petals in WeCom brand colors, adjusted outer stroke for 24px legibility; removed XML and local IDs."
+  }
+]

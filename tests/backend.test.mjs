@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtempSync, rmSync, readFileSync, statSync, symlinkSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, rmSync, readFileSync, readdirSync, statSync, symlinkSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
 import http from 'node:http';
@@ -22,7 +22,7 @@ async function approveDemo(f,task){await f.api(`tasks/${task.id}/run`,{});const 
 
 test('fictional seed, source preservation, cognition revisions and SQLite restart persistence',async t=>{
   const f=await fixture(t);let b=(await f.api('bootstrap')).value;
-  assert.equal(b.profile.demo,true);assert.ok(b.sources.every(s=>s.demo));assert.equal(b.people.length,4);
+  assert.equal(b.profile.demo,true);assert.ok(b.sources.every(s=>s.demo));assert.ok(b.people.length>=20);
   const source=(await f.api('sources',{title:'自建来源',kind:'note',text:'  原始文本\n'})).value;
   assert.equal(source.demo,false);assert.equal(source.text,'  原始文本\n');
   const fact=(await f.api('facts',{kind:'constraint',statement:'每周投入一小时',sourceIds:[source.id],status:'candidate'})).value;
@@ -63,12 +63,12 @@ test('localhost origin, Host, and JSON guards reject cross-site mutations',async
 });
 
 test('demo approval produces real files, rejects stale versions, and correction changes the next result',async t=>{
-  const f=await fixture(t);const task=(await f.api('tasks',{prompt:'给我社区声音展计划',mode:'demo',contextFactIds:['fact-budget'],agentIds:['agent-planner','agent-reviewer']})).value;
+  const f=await fixture(t);const task=(await f.api('tasks',{prompt:'整理 Agent 工作台的内测上线计划，先给今天最值得做的一步',mode:'demo',contextFactIds:['fact-budget'],agentIds:['agent-planner','agent-reviewer']})).value;
   const done=await approveDemo(f,task);assert.equal(done.artifactIds.length,2);assert.equal(done.events.filter(e=>e.type==='agent_completed').length,2);
   const a=f.app.store.get('artifacts',done.artifactIds[0]);assert.match(a.content,/2000/);assert.match(a.content,/没有调用语言模型/);assert.equal(readFileSync(f.app.store.artifactPath(a),'utf8'),a.content);
   const edited=await f.api(`artifacts/${a.id}`,{content:'用户自己写的文稿\n',baseVersion:1},'PUT');assert.equal(edited.value.version,2);assert.equal(edited.value.content,'用户自己写的文稿\n');
   assert.equal((await f.api(`artifacts/${a.id}`,{content:'冲突',baseVersion:1},'PUT')).status,409);
-  await f.api('facts/fact-budget',{statement:'首期预算最多 500 元。',baseVersion:1,reason:'纠正预算'},'PUT');
+  await f.api('facts/fact-budget',{statement:'Agent 工作台本轮内测的模型调用预算最多 500 元。',baseVersion:1,reason:'纠正预算'},'PUT');
   await f.api(`tasks/${task.id}/message`,{content:'请把今天要做的事情放在最前面。'});
   const waiting=await until(()=>f.app.store.get('tasks',task.id),t=>t.status==='awaiting_approval');await f.api(`tasks/${task.id}/approval`,{approvalId:waiting.approvals.at(-1).id,decision:'approve'});
   await until(()=>f.app.store.get('tasks',task.id),t=>t.status==='completed');const updated=f.app.store.get('artifacts',a.id);
@@ -114,7 +114,7 @@ test('live adapter events, per-agent work and question state persist without a m
   const calls=[];const f=await fixture(t,{runCodex:async args=>{calls.push(args);args.onEvent({type:'runtime.thread',label:'线程已建立',detail:`thread-${calls.length}`});if(calls.length===1){const decision=await args.onApproval({title:'测试工具',description:'隔离 fixture，不执行外部操作'});assert.equal(decision,'approve');}return {text:`fixture-output-${calls.length}`,threadId:`thread-${calls.length}`};}});
   await f.api('settings/provider',{apiKey:'fake-test-key'},'PUT');const task=(await f.api('tasks',{prompt:'验证接线',mode:'live',agentIds:['agent-planner','agent-reviewer'],contextFactIds:['fact-clear']})).value;
   await f.api(`tasks/${task.id}/run`,{});const pending=await until(()=>f.app.store.get('tasks',task.id),t=>t.status==='awaiting_approval');await f.api(`tasks/${task.id}/approval`,{approvalId:pending.approvals[0].id,decision:'approve'});
-  const result=await until(()=>f.app.store.get('tasks',task.id),t=>t.status==='completed');assert.equal(calls.length,2);assert.match(calls[0].prompt,/语言简短/);assert.match(calls[1].prompt,/fixture-output-1/);assert.equal(result.artifactIds.length,2);assert.equal(result.threadId,'thread-2');assert.ok(!JSON.stringify(result).includes('fake-test-key'));
+  const result=await until(()=>f.app.store.get('tasks',task.id),t=>t.status==='completed');assert.equal(calls.length,2);assert.match(calls[0].prompt,/语言简短/);assert.match(calls[1].prompt,/fixture-output-1/);assert.equal(result.artifactIds.length,0);assert.equal(result.messages.filter(m=>m.role==='assistant').length,2);assert.equal(result.threadId,'thread-2');assert.ok(!JSON.stringify(result).includes('fake-test-key'));
 });
 
 test('interactive questions preserve their thread, then resume explicitly after the user answers',async t=>{
@@ -128,4 +128,42 @@ test('cancel waits for the execution adapter to finish cleanup before returning 
   let stopped=false,entered=false;const f=await fixture(t,{runCodex:async({signal})=>{entered=true;await new Promise(resolve=>signal.addEventListener('abort',()=>setTimeout(()=>{stopped=true;resolve();},40),{once:true}));throw Object.assign(new Error('stopped'),{name:'AbortError'});}});
   await f.api('settings/provider',{apiKey:'fake-local-fixture'},'PUT');const task=(await f.api('tasks',{prompt:'等候取消',mode:'live'})).value;
   await f.api(`tasks/${task.id}/run`,{});await until(()=>entered,Boolean);const result=await f.api(`tasks/${task.id}/cancel`,{});assert.equal(stopped,true);assert.equal(result.value.status,'cancelled');assert.equal(f.app.runner.active.has(task.id),false);
+});
+
+
+test('live text replies stay in messages without artifacts or file approvals, including resumed replies',async t=>{
+  let capturedPrompt;
+  const f=await fixture(t,{runCodex:async({prompt})=>{capturedPrompt=prompt;return {text:'Hello! What would you like to work on?'};}});
+  await f.api('settings/provider',{apiKey:'fake-local-fixture'},'PUT');
+  const task=(await f.api('tasks',{prompt:'hello',mode:'live'})).value;
+  await f.api(`tasks/${task.id}/run`,{});
+  await until(()=>f.app.runner.active.has(task.id),value=>!value);
+  const first=f.app.store.require('tasks',task.id);
+  assert.equal(first.status,'completed');assert.deepEqual(first.artifactIds,[]);assert.deepEqual(first.approvals,[]);
+  assert.equal(first.messages.at(-1).content,'Hello! What would you like to work on?');
+  assert.deepEqual(readdirSync(f.app.store.taskWorkspace(task.id)),[]);
+  assert.match(capturedPrompt,/普通建议直接在对话中回复，无需创建文件/);
+  await f.api(`tasks/${task.id}/message`,{content:'Can we discuss the idea first?'});
+  await until(()=>f.app.runner.active.has(task.id),value=>!value);
+  const resumed=f.app.store.require('tasks',task.id);
+  assert.equal(resumed.messages.filter(message=>message.role==='assistant').length,2);
+  assert.deepEqual(resumed.artifactIds,[]);assert.equal(f.app.store.list('artifacts').length,0);
+  assert.deepEqual(readdirSync(f.app.store.taskWorkspace(task.id)),[]);
+});
+
+test('live execution collects actual workspace files without replacing them with reply text or rewriting historical files',async t=>{
+  const fileText='Actual document created by the execution fixture.';
+  const f=await fixture(t,{runCodex:async({workspace})=>{writeFileSync(path.join(workspace,'result-1.md'),fileText);writeFileSync(path.join(workspace,'notes.txt'),'Actual notes.');return {text:'I created the requested document and notes.'};}});
+  await f.api('settings/provider',{apiKey:'fake-local-fixture'},'PUT');
+  const task=(await f.api('tasks',{prompt:'Create a document and notes.',mode:'live'})).value;
+  const legacy=(await f.api('artifacts',{taskId:task.id,name:'result-2.md',content:'Existing historical content.'})).value;
+  await f.api(`tasks/${task.id}/run`,{});await until(()=>f.app.runner.active.has(task.id),value=>!value);
+  const done=f.app.store.require('tasks',task.id),files=done.artifactIds.map(id=>f.app.store.require('artifacts',id));
+  assert.equal(done.status,'completed');assert.equal(files.length,3);
+  assert.equal(files.find(file=>file.name==='result-1.md').content,fileText);
+  assert.equal(files.find(file=>file.name==='notes.txt').content,'Actual notes.');
+  assert.deepEqual(f.app.store.require('artifacts',legacy.id),legacy);
+  assert.equal(readFileSync(f.app.store.artifactPath(legacy),'utf8'),'Existing historical content.');
+  assert.equal(done.messages.at(-1).content,'I created the requested document and notes.');
+  assert.equal(done.events.filter(event=>event.type==='artifact_saved').length,3,'one preexisting and two actual newly written files');
 });

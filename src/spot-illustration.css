@@ -1,0 +1,9 @@
+.spot-illustration { display:block;width:88px;height:88px;object-fit:contain;flex-shrink:0;user-select:none;pointer-events:none; }
+.spot-field-heading { display:grid;grid-template-columns:minmax(0,1fr) 66px;gap:20px;align-items:center; }
+.spot-field-heading>.spot-illustration { width:66px;height:66px; }
+.spot-field-heading>.form-field { min-width:0;margin:0; }
+.project-chat-empty>.spot-illustration { width:120px;height:120px;margin:-12px 0 18px; }
+.automations-intro { display:flex;align-items:center;gap:22px;min-width:0; }
+.automations-intro>.spot-illustration { width:92px;height:92px; }
+.automations-intro>div { min-width:0; }
+@media(max-width:600px){.spot-field-heading{grid-template-columns:minmax(0,1fr) 54px;gap:12px}.spot-field-heading>.spot-illustration{width:54px;height:54px}.project-chat-empty>.spot-illustration{width:104px;height:104px}.automations-intro{gap:16px}.automations-intro>.spot-illustration{width:72px;height:72px}}

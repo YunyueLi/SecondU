@@ -1,0 +1,20 @@
+[
+  {
+    "slug": "figma",
+    "source": "https://static.figma.com/app/icon/2/favicon.svg",
+    "file": "figma.svg",
+    "license": "Brand asset; rights retained by provider"
+  },
+  {
+    "slug": "huggingface",
+    "source": "https://huggingface.co/front/assets/huggingface_logo-noborder.svg",
+    "file": "huggingface.svg",
+    "license": "Brand asset; rights retained by provider"
+  },
+  {
+    "slug": "context7",
+    "source": "https://context7.com/favicon.ico",
+    "file": "context7.ico",
+    "license": "Brand asset; rights retained by provider"
+  }
+]

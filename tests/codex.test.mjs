@@ -6,6 +6,7 @@ import { mkdtemp, mkdir, rm, realpath, writeFile, readFile } from 'node:fs/promi
 import os from 'node:os';
 import path from 'node:path';
 import { AppServerTransport, probeCodex, runCodex } from '../server/codex.mjs';
+import { HITHER_BASE_INSTRUCTIONS, HITHER_DEVELOPER_INSTRUCTIONS } from '../server/identity.mjs';
 
 const settings = { provider: 'custom', model: 'fixture-model', baseUrl: 'https://models.example.test/v1', api: 'responses', reasoningEffort: 'medium' };
 const secret = 'fixture-secret-do-not-record';
@@ -77,6 +78,13 @@ async function fixtureRun(t, behavior = {}, overrides = {}) {
   return { promise, events, get transport() { return transport; }, options };
 }
 
+test('image-only input reaches the fixed Codex UserInput image contract with original bytes',async t=>{
+  const url='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGP4z8DwHwAFAAH/iZk9HQAAAABJRU5ErkJggg==';
+  const run=await fixtureRun(t,{}, {prompt:'',images:[{type:'image',url}]});await run.promise;
+  assert.deepEqual(run.transport.calls.find(call=>call.method==='turn/start').params.input,[{type:'image',url}]);
+  assert.ok(!JSON.stringify(run.events).includes('base64'),'image bytes must not become activity log text');
+});
+
 test('starts one real-protocol turn with isolated settings, bounded permissions, and no credential arguments', async t => {
   const run = await fixtureRun(t);
   assert.deepEqual(await run.promise, { text: '真实协议的测试夹具；不是模型运行结果。', threadId: 'thread-fixture' });
@@ -84,6 +92,8 @@ test('starts one real-protocol turn with isolated settings, bounded permissions,
   assert.deepEqual(transport.calls.map(call => call.method), ['initialize', 'initialized', 'config/read', 'thread/start', 'turn/start']);
   assert.equal(transport.options.env.HITHER_PROVIDER_API_KEY, secret);
   assert.equal(transport.options.env.OPENAI_API_KEY, undefined);
+  assert.equal(transport.options.env.NO_PROXY, 'localhost,127.0.0.1,::1');
+  assert.equal(transport.options.env.no_proxy, transport.options.env.NO_PROXY);
   assert.equal(transport.options.args.join(' ').includes(secret), false);
   assert.ok(transport.options.args.includes('shell_environment_policy.inherit="none"'));
   assert.ok(transport.options.args.includes('default_permissions="hither"'));
@@ -91,6 +101,10 @@ test('starts one real-protocol turn with isolated settings, bounded permissions,
   assert.equal(start.approvalPolicy, 'on-request');
   assert.equal(start.approvalsReviewer, 'user');
   assert.equal(start.sandbox, undefined, 'must not replace the restricted named profile with legacy host-readable sandbox');
+  assert.equal(start.baseInstructions, HITHER_BASE_INSTRUCTIONS);
+  assert.equal(start.developerInstructions, HITHER_DEVELOPER_INSTRUCTIONS);
+  assert.match(start.baseInstructions,/个人 Agent.*数字分身/);
+  assert.match(start.developerInstructions,/没有后台跨应用采集/);
   assert.equal(transport.closed, true);
   assert.equal(run.events.at(-1).type, 'runtime.completed');
 });
@@ -100,6 +114,37 @@ test('resumes exactly the supplied thread without silently starting a new conver
   assert.equal((await run.promise).threadId, 'existing-thread');
   assert.ok(run.transport.calls.some(call => call.method === 'thread/resume' && call.params.threadId === 'existing-thread'));
   assert.ok(!run.transport.calls.some(call => call.method === 'thread/start'));
+  const resumed=run.transport.calls.find(call=>call.method==='thread/resume').params;
+  assert.equal(resumed.baseInstructions,HITHER_BASE_INSTRUCTIONS,'resumed history must not retain the old generic coding identity');
+  assert.equal(resumed.developerInstructions,HITHER_DEVELOPER_INSTRUCTIONS);
+});
+
+test('dynamic tools use the installed experimental schema and handle a call exactly once',async t=>{
+  const definitions=[{type:'function',name:'hither_fixture',description:'Read selected source',inputSchema:{type:'object'}}];
+  let calls=0;
+  const run=await fixtureRun(t,{
+    start:transport=>{
+      transport.serverRequest('item/tool/call',{callId:'one-call',tool:'hither_fixture',arguments:{id:'source'}},101);
+      transport.serverRequest('item/tool/call',{callId:'one-call',tool:'hither_fixture',arguments:{id:'source'}},102);
+    },
+    response:(id,_result,transport)=>{if(id===101)transport.complete();},
+  },{dynamicTools:definitions,onDynamicTool:async params=>{calls++;assert.deepEqual(params.arguments,{id:'source'});return {success:true,contentItems:[{type:'inputText',text:'selected source'}]};}});
+  await run.promise;
+  assert.equal(calls,1);assert.equal(run.transport.responses.find(r=>r.id===102).result.success,false);
+  assert.deepEqual(run.transport.calls.find(c=>c.method==='thread/start').params.dynamicTools,definitions);
+  assert.equal(run.transport.calls.find(c=>c.method==='initialize').params.capabilities.experimentalApi,true);
+  const resumed=await fixtureRun(t,{}, {threadId:'resumed-with-tools',dynamicTools:definitions});await resumed.promise;
+  assert.equal(Object.hasOwn(resumed.transport.calls.find(c=>c.method==='thread/resume').params,'dynamicTools'),false);
+});
+
+test('runtime plan events retain the actual schema status and ignore unrelated threads',async t=>{
+  const plan=[{step:'Read selected resources',status:'inProgress'},{step:'Produce answer',status:'pending'}];
+  const run=await fixtureRun(t,{start:transport=>{
+    transport.notification('turn/plan/updated',{threadId:'unrelated',plan:[{step:'unrelated',status:'inProgress'}]});
+    transport.notification('turn/plan/updated',{explanation:'Use source evidence',plan});transport.complete();
+  }});await run.promise;
+  const events=run.events.filter(e=>e.type==='runtime.plan');assert.equal(events.length,1);assert.equal(events[0].label,'Read selected resources');
+  assert.deepEqual(JSON.parse(events[0].detail),{explanation:'Use source evidence',plan});
 });
 
 for (const [decision, protocol] of [['approve', 'accept'], ['reject', 'decline']]) {
@@ -305,6 +350,7 @@ test('installed runtime accepts the complete adapter configuration; cancellation
   const calls = [];
   await assert.rejects(runCodex({ ...directories, apiKey: secret,
     settings: { ...settings, baseUrl: 'http://127.0.0.1:1/v1' }, prompt: 'This prompt must not be executed.', signal: controller.signal,
+    dynamicTools: [{type:'function',name:'hither_local_fixture',description:'Offline connector schema fixture',inputSchema:{type:'object',properties:{}}}],
     onEvent: async event => {
       events.push(event);
       if (event.type === 'runtime.thread') {
@@ -325,4 +371,16 @@ test('installed runtime accepts the complete adapter configuration; cancellation
   assert.ok(events.some(event => event.type === 'runtime.thread'));
   assert.ok(!calls.includes('turn/start'));
   assert.equal(transport.closed, true);
+});
+
+test('only completed public reasoning summaries become activity events; raw or encrypted reasoning never does',async t=>{
+  const run=await fixtureRun(t,{start(transport){
+    transport.notification('item/started',{item:{id:'thinking-start',type:'reasoning',summary:['not completed'],raw_content:'private-start'}});
+    transport.notification('item/completed',{item:{id:'thinking-raw',type:'reasoning',raw_content:'private-raw',encrypted_content:'encrypted-payload'}});
+    transport.notification('item/completed',{item:{id:'thinking-public',type:'reasoning',summary:['Checking the supplied sources.',{text:'Comparing the stated constraints.'},{other:'not text'}],raw_content:'private-full-chain',encrypted_content:'private-encrypted'}});
+    transport.complete('Finished');
+  }});
+  await run.promise;
+  const summaries=run.events.filter(event=>event.type==='runtime.reasoning_summary');assert.equal(summaries.length,1);assert.equal(summaries[0].label,'思考摘要');assert.equal(summaries[0].detail,'Checking the supplied sources.\n\nComparing the stated constraints.');
+  assert.doesNotMatch(JSON.stringify(run.events),/private-|encrypted-payload|not completed|not text/);
 });

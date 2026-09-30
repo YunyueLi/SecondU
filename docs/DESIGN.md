@@ -1,5 +1,5 @@
 ---
-name: Hither Desktop
+name: SecondU Desktop
 description: 以可追溯个人认知推进具体任务的本机桌面工作台
 colors:
   surface: "var(--color-surface)"
@@ -12,7 +12,7 @@ colors:
 typography:
   page-title:
     fontFamily: "var(--font-sans)"
-    fontSize: "28px"
+    fontSize: "24px"
     fontWeight: 600
     lineHeight: 1.35
   welcome:
@@ -26,16 +26,16 @@ typography:
     lineHeight: 1.75
   section-title:
     fontFamily: "var(--font-sans)"
-    fontSize: "18px"
+    fontSize: "16px"
   label:
     fontFamily: "var(--font-sans)"
-    fontSize: "13px"
+    fontSize: "14px"
   caption:
     fontFamily: "var(--font-sans)"
-    fontSize: "12px"
+    fontSize: "13px"
   meta:
     fontFamily: "var(--font-sans)"
-    fontSize: "11px"
+    fontSize: "12px"
   composer:
     fontFamily: "var(--font-sans)"
     fontSize: "15px"
@@ -56,13 +56,13 @@ spacing:
   step-8: "48px"
 ---
 
-# Hither 桌面设计规范
+# SecondU 桌面设计规范
 
 ## Overview
 
 **让个人背景、正在进行的工作和可编辑成果始终有清楚的位置。** 界面采用中性底色、克制导航与适合连续阅读的正文；信息层级依靠排版、留白、分隔和交互状态建立。任务以连续对话推进，资料按其自身结构呈现。已有的绿色拼贴风格不再作为设计方向。
 
-本规范服务于“成熟桌面应用”的质量目标，不构成“已经达到 ChatGPT 全部体验或可访问性水准”的结论。Hither 直接依赖 **OpenAI 官方公开的 `@openai/apps-sdk-ui` 0.2.2**。该包为 Apps SDK 应用提供设计 tokens、React 组件和工具；不能称作 ChatGPT 内部桌面应用的全量组件库，也不能据视觉相近暗示官方从属关系。
+本规范服务于“成熟桌面应用”的质量目标，不构成“已经达到 ChatGPT 全部体验或可访问性水准”的结论。SecondU 直接依赖 **OpenAI 官方公开的 `@openai/apps-sdk-ui` 0.2.2**。该包为 Apps SDK 应用提供设计 tokens、React 组件和工具；不能称作 ChatGPT 内部桌面应用的全量组件库，也不能据视觉相近暗示官方从属关系。
 
 ### 来源与状态的解释
 
@@ -104,7 +104,7 @@ spacing:
 
 统一使用 `var(--font-sans)`；代码、路径和源码编辑使用 `var(--font-mono)`。官方包当前 sans 栈以系统 sans、Apple 系统字体、Segoe UI、Noto Sans 等回退，mono 栈以系统等宽字体回退。不要宣称已完整复用 ChatGPT 私有字体，也不要为某个业务页另换装饰字体。
 
-实际产品字号入口为 `--hither-font-body: 14px`、`--hither-font-label: 13px`、`--hither-font-caption: 12px`、`--hither-font-meta: 11px`、`--hither-font-page-title: 28px`、`--hither-font-section-title: 18px`。新增相同角色直接使用这些变量；欢迎标题、正文内标题和输入字号等少量特殊角色仍按下表处理。
+实际产品字号入口为 `--hither-font-body: 14px`、`--hither-font-label: 14px`、`--hither-font-caption: 13px`、`--hither-font-meta: 12px`、`--hither-font-page-title: 24px`、`--hither-font-section-title: 16px`。新增相同角色直接使用这些变量；欢迎标题、正文内标题和输入字号等少量特殊角色仍按下表处理。
 
 | 用途 | 当前主要取值 | 应用规则 |
 |---|---|---|
@@ -185,11 +185,11 @@ spacing:
 | 层次 | 当前基础 | 新增规则 |
 |---|---|---|
 | 公开基础组件 | 直接导入官方 Button/ButtonLink、Input、Textarea、Select、Checkbox、Switch、SegmentedControl、Badge、Alert、EmptyMessage、Indicator、Markdown、TextLink、Icon 等 | 先查安装版本的导出和 props；不因截图相似手写替代控件。依赖包含某组件不等于应用已接入它。 |
-| Hither 通用组合 | `TaskBadge`、`ErrorNotice`、`Busy`、`Empty`、`PageHeading`、`Field`、`RichText`、`Dialog` | 跨页面复用，避免复制一份焦点、错误或空状态逻辑。 |
-| Hither 业务展示组件 | [TaskApproval](../src/design-system/TaskApproval.tsx)、[ArtifactCard](../src/design-system/ArtifactCard.tsx)、[SourcePill](../src/design-system/SourcePill.tsx) | 任务审批、成果入口和来源入口已抽为纯 UI 组件；业务页面与组件目录必须引用同一实现。请求、授权和持久化由外部回调负责，组件展示状态本身不是执行成功证据。 |
+| SecondU 通用组合 | `TaskBadge`、`ErrorNotice`、`Busy`、`Empty`、`PageHeading`、`Field`、`RichText`、`Dialog` | 跨页面复用，避免复制一份焦点、错误或空状态逻辑。 |
+| SecondU 业务展示组件 | [TaskApproval](../src/design-system/TaskApproval.tsx)、[ArtifactCard](../src/design-system/ArtifactCard.tsx)、[SourcePill](../src/design-system/SourcePill.tsx) | 任务审批、成果入口和来源入口已抽为纯 UI 组件；业务页面与组件目录必须引用同一实现。请求、授权和持久化由外部回调负责，组件展示状态本身不是执行成功证据。 |
 | 业务组合 | Composer、审批、认知条目与来源、记录对话、时间轴、关系图、二维码预览、成果编辑 | 使用相同 token 与基础控件；按业务行为规定状态和完成条件。 |
 
-`Dialog` 当前是 Hither 自有 portal 与焦点管理组合，内部使用官方按钮；关系图是自有 SVG；时间轴和业务布局是自有实现。不能将这些都标作 SDK 官方现成组件。组件目录应呈现应用实际采用的组件和业务状态，不能以组件个数宣称“全量”或“完整兼容”。
+`Dialog` 当前是 SecondU 自有 portal 与焦点管理组合，内部使用官方按钮；关系图是自有 SVG；时间轴和业务布局是自有实现。不能将这些都标作 SDK 官方现成组件。组件目录应呈现应用实际采用的组件和业务状态，不能以组件个数宣称“全量”或“完整兼容”。
 
 ### 通用状态矩阵
 
@@ -259,3 +259,10 @@ spacing:
 | 原生窗口 | 拖动区与窗口按钮、最小窗口、焦点切换、重启恢复、离线字体与资源 | 历史原生记录见 ACCEPTANCE；本轮改动不能自动继承全部通过结论。 |
 
 本规范的完成条件是“规则有来源、实现对应清楚、待验收明确”。对外描述产品成熟度时，必须引用实际验收覆盖与未完成边界，不能引用本文件的目标句替代证据。
+
+
+## 2026-09-30 可读性修正
+
+用户明确指出分类、子导航、筛选和表头偏浅、偏细，要求参照 ChatGPT 改善整套界面的可读性。保留官方 SDK 字体与控件；产品文字角色调整为正文/标签14px、说明13px、元信息12px，用户字号设置继续生效，元信息下限12px。自动化表头采用13px/500/正文色，正文与标签不以低透明度区分。主库资料不参与第三方视觉审查。
+
+颜色沿用 SDK 的灰阶：浅色次要正文使用 gray-600，元信息使用 gray-500；深色分别使用 gray-800/gray-700。不是修改厂商包。导航、表头、表单和内容区域分别实测计算值，控件的禁用状态仍保留。将多页9–11px固定说明文字替换为元信息token，避免用户缩放时仍固定得很小。最终宽窄屏、暗色对比和拥挤状态随本轮验收记录更新，不用本条设计说明代替结果。

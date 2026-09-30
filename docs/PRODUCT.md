@@ -1,6 +1,6 @@
 # Desktop goal
 
-Hither (working name) is a personal agent grounded in inspectable, correctable personal cognition. The desktop must connect source evidence to personal understanding, to reasoned task execution, to editable artifacts and feedback. Evidence, inference, confirmed fact and task state are distinct.
+SecondU is a personal agent grounded in inspectable, correctable personal cognition. The desktop must connect source evidence to personal understanding, to reasoned task execution, to editable artifacts and feedback. Evidence, inference, confirmed fact and task state are distinct.
 
 Desktop scope: assistant/task workspace, social conversation browser, life timeline, interactive relationship graph with accessible list, self-understanding and active life/goals, evidence import/correction, agent creation and QR profile exchange, collaborative agent roles, local automations, BYOK settings, current computer status, artifact editing/version history, export and actual component catalogue. No dead navigation or fake execution statuses. Native desktop wrapper after browser acceptance. Phone/glasses are documented shared-task protocol interfaces, not implemented hardware.
 

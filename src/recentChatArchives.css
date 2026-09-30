@@ -1,0 +1,7 @@
+.recent-archives-dialog { width:min(560px,calc(100vw - 32px)); }
+.recent-archives-list { max-height:min(420px,60vh);overflow:auto;margin-top:14px; }
+.recent-archive-row { display:flex;gap:8px;align-items:center;padding:4px 0;border-bottom:1px solid var(--color-border-subtle); }
+.recent-archive-row:last-child { border-bottom:0; }
+.recent-archive-title { min-width:0;flex:1;height:auto;min-height:36px;padding:8px;text-align:left;justify-content:flex-start;font-size:14px; }
+.recent-archive-title>span { white-space:normal;overflow-wrap:anywhere;justify-content:flex-start; }
+.recent-archives-empty { padding:24px 8px;color:var(--color-text-secondary);text-align:center;font-size:14px; }

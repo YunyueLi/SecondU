@@ -1,0 +1,83 @@
+{
+  "date": "2026-09-30",
+  "license": "CC0-1.0",
+  "project": "https://github.com/simple-icons/simple-icons",
+  "icons": [
+    {
+      "slug": "gmail",
+      "source": "https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/gmail.svg"
+    },
+    {
+      "slug": "googledrive",
+      "source": "https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/googledrive.svg"
+    },
+    {
+      "slug": "googlecalendar",
+      "source": "https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/googlecalendar.svg"
+    },
+    {
+      "slug": "notion",
+      "source": "https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/notion.svg"
+    },
+    {
+      "slug": "slack",
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "slug": "github",
+      "source": "https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/github.svg"
+    },
+    {
+      "slug": "linear",
+      "source": "https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/linear.svg"
+    },
+    {
+      "slug": "atlassian",
+      "source": "https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/atlassian.svg"
+    },
+    {
+      "slug": "asana",
+      "source": "https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/asana.svg"
+    },
+    {
+      "slug": "figma",
+      "source": "https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/figma.svg"
+    },
+    {
+      "slug": "canva",
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "slug": "miro",
+      "source": "https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/miro.svg"
+    },
+    {
+      "slug": "hubspot",
+      "source": "https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/hubspot.svg"
+    },
+    {
+      "slug": "stripe",
+      "source": "https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/stripe.svg"
+    },
+    {
+      "slug": "huggingface",
+      "source": "https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/huggingface.svg"
+    },
+    {
+      "slug": "googledocs",
+      "source": "https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/googledocs.svg"
+    },
+    {
+      "slug": "googlesheets",
+      "source": "https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/googlesheets.svg"
+    },
+    {
+      "slug": "googleslides",
+      "source": "https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/googleslides.svg"
+    },
+    {
+      "slug": "googlechat",
+      "source": "https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/googlechat.svg"
+    }
+  ]
+}

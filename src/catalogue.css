@@ -1,6 +1,6 @@
 .ui-catalogue{max-width:1240px;font-size:var(--hither-font-body,14px);line-height:1.65}
 .ui-catalogue .page-heading{margin-bottom:16px}
-.ui-catalogue .page-heading h1{font-size:var(--hither-font-page-title,28px)}
+.ui-catalogue .page-heading h1{font-size:var(--hither-font-page-title,24px)}
 .ui-catalogue-intro{display:flex;align-items:flex-start;gap:10px;max-width:780px;margin-bottom:36px;color:var(--color-text-secondary);font-size:var(--hither-font-caption,12px);line-height:1.75}
 .ui-catalogue-intro>span{flex-shrink:0;margin-top:2px}
 .ui-catalogue-layout{display:grid;grid-template-columns:160px minmax(0,1fr);gap:36px;align-items:start}
@@ -16,7 +16,7 @@
 .ui-catalogue-content{min-width:0}
 .ui-catalogue-section{margin-bottom:44px;scroll-margin-top:24px}
 .ui-catalogue-section>header{display:flex;align-items:baseline;justify-content:space-between;gap:24px;padding-bottom:18px;border-bottom:1px solid var(--color-border)}
-.ui-catalogue-section>header h2{font-size:var(--hither-font-section-title,18px);line-height:1.5;font-weight:600;letter-spacing:-.015em;scroll-margin-top:26px}
+.ui-catalogue-section>header h2{font-size:var(--hither-font-section-title,16px);line-height:1.5;font-weight:600;letter-spacing:-.015em;scroll-margin-top:26px}
 .ui-catalogue-section>header h2:focus{outline:none}
 .ui-catalogue-section>header p{font-size:12px;color:var(--color-text-secondary);line-height:1.75;margin-top:6px;max-width:64ch}
 .ui-catalogue-section>header>span{font-size:12px;color:var(--color-text-secondary);white-space:nowrap;font-variant-numeric:tabular-nums}
@@ -48,10 +48,10 @@
 .ui-type-scale>div{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 12px;align-items:baseline}
 .ui-type-scale>div>span{grid-column:1/-1;color:var(--color-text-secondary);font-size:11px}
 .ui-type-scale small{font-size:11px;color:var(--color-text-secondary);font-variant-numeric:tabular-nums}
-.ui-type-title{font-size:28px;line-height:36px;letter-spacing:-.025em;font-weight:600}
-.ui-type-section{font-size:18px;line-height:27px;font-weight:550}
-.ui-type-scale p{font-size:14px;line-height:24px;max-width:55ch}
-.ui-type-scale p.ui-muted{line-height:18px}
+.ui-type-title{font-size:var(--hither-font-page-title);line-height:1.35;letter-spacing:-.025em;font-weight:600}
+.ui-type-section{font-size:var(--hither-font-section-title);line-height:1.5;font-weight:550}
+.ui-type-scale p{font-size:var(--hither-font-body);line-height:24px;max-width:55ch}
+.ui-type-scale p.ui-muted{font-size:var(--hither-font-caption);line-height:1.5}
 .ui-space-scale{display:flex;align-items:flex-end;gap:20px;flex-wrap:wrap;padding:8px 0}
 .ui-space-scale>div{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
 .ui-space-scale span{display:block;height:6px;background:var(--color-text);border-radius:2px;opacity:.8}
@@ -114,7 +114,12 @@
 .ui-catalogue .approval-history{font-size:13px;padding:14px;border:1px solid var(--color-border-subtle);border-radius:12px}
 .ui-catalogue .source-pill{max-width:100%}
 .ui-catalogue button:focus-visible,.ui-catalogue a:focus-visible{outline:2px solid var(--color-text);outline-offset:3px}
-@media(max-width:1250px){.ui-catalogue-layout{grid-template-columns:144px minmax(0,1fr);gap:26px}.ui-spec{grid-template-columns:136px minmax(0,1fr);gap:20px}.ui-type-title{font-size:28px;line-height:36px}.ui-type-scale small{grid-column:1/-1}.ui-icon-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:16px 10px}.ui-icon-grid>div{flex-direction:column;align-items:flex-start;gap:5px}.ui-business-panel>header{gap:10px}.ui-space-scale{gap:14px}}
-@media(max-width:1000px){.ui-catalogue-layout{grid-template-columns:1fr;gap:24px}.ui-catalogue-nav{position:static;display:grid;grid-template-columns:180px minmax(0,1fr);gap:14px;align-items:center}.ui-catalogue-nav nav{flex-direction:row;overflow-x:auto;margin:0;gap:3px}.ui-catalogue-nav nav>a{flex-shrink:0;gap:8px;padding:9px 10px}.ui-nav-help{display:none}.ui-spec{grid-template-columns:160px minmax(0,1fr);gap:24px}.ui-type-title{font-size:28px;line-height:36px}.ui-catalogue-intro{margin-bottom:24px}}
-@media(max-width:720px){.ui-catalogue-nav{display:block}.ui-catalogue-nav nav{margin-top:12px}.ui-spec{grid-template-columns:1fr;gap:18px;padding:24px 0}.ui-spec-label>p{max-width:none;margin-top:6px}.ui-spec-label h3{display:inline;margin-right:9px}.ui-spec-label>span{display:inline}.ui-type-title{font-size:28px;line-height:36px}.ui-color-grid{gap:18px 12px}.ui-catalogue-section>header{gap:12px}.ui-catalogue-section>header p{font-size:12px}.ui-catalogue-intro{display:block}.ui-catalogue-intro>p{margin-top:8px}.ui-demo-toolbar{align-items:flex-start}.ui-business-panel{padding:15px}.ui-business-panel>header{flex-wrap:wrap}.ui-catalogue .page-heading{gap:14px}.ui-catalogue .page-heading h1{font-size:28px}.ui-setting-row{align-items:flex-start;gap:14px}.ui-catalogue .ui-spec-example input,.ui-catalogue .ui-spec-example textarea{font-size:14px}}
+@media(max-width:1250px){.ui-catalogue-layout{grid-template-columns:144px minmax(0,1fr);gap:26px}.ui-spec{grid-template-columns:136px minmax(0,1fr);gap:20px}.ui-type-title{font-size:var(--hither-font-page-title);line-height:1.35}.ui-type-scale small{grid-column:1/-1}.ui-icon-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:16px 10px}.ui-icon-grid>div{flex-direction:column;align-items:flex-start;gap:5px}.ui-business-panel>header{gap:10px}.ui-space-scale{gap:14px}}
+@media(max-width:1000px){.ui-catalogue-layout{grid-template-columns:1fr;gap:24px}.ui-catalogue-nav{position:static;display:grid;grid-template-columns:180px minmax(0,1fr);gap:14px;align-items:center}.ui-catalogue-nav nav{flex-direction:row;overflow-x:auto;margin:0;gap:3px}.ui-catalogue-nav nav>a{flex-shrink:0;gap:8px;padding:9px 10px}.ui-nav-help{display:none}.ui-spec{grid-template-columns:160px minmax(0,1fr);gap:24px}.ui-type-title{font-size:var(--hither-font-page-title);line-height:1.35}.ui-catalogue-intro{margin-bottom:24px}}
+@media(max-width:720px){.ui-catalogue-nav{display:block}.ui-catalogue-nav nav{margin-top:12px}.ui-spec{grid-template-columns:1fr;gap:18px;padding:24px 0}.ui-spec-label>p{max-width:none;margin-top:6px}.ui-spec-label h3{display:inline;margin-right:9px}.ui-spec-label>span{display:inline}.ui-type-title{font-size:var(--hither-font-page-title);line-height:1.35}.ui-color-grid{gap:18px 12px}.ui-catalogue-section>header{gap:12px}.ui-catalogue-section>header p{font-size:12px}.ui-catalogue-intro{display:block}.ui-catalogue-intro>p{margin-top:8px}.ui-demo-toolbar{align-items:flex-start}.ui-business-panel{padding:15px}.ui-business-panel>header{flex-wrap:wrap}.ui-catalogue .page-heading{gap:14px}.ui-catalogue .page-heading h1{font-size:var(--hither-font-page-title-compact)}.ui-setting-row{align-items:flex-start;gap:14px}.ui-catalogue .ui-spec-example input,.ui-catalogue .ui-spec-example textarea{font-size:14px}}
 @media(prefers-reduced-motion:reduce){.ui-catalogue *{scroll-behavior:auto!important}}
+
+.catalogue-graph-example{display:grid;gap:16px;min-width:0;width:100%}.catalogue-graph-example>[role=group]{width:fit-content}.catalogue-graph-stage{height:550px;min-width:0;border:1px solid var(--color-border-subtle);border-radius:12px;overflow:hidden}.catalogue-graph-stage .network-workspace{min-height:0}
+
+/* Product examples render the same components as their working surfaces. */
+.ui-type-caption{font-size:13px;line-height:20px}.catalogue-badge-stage{min-height:420px;padding:0 16px 12px}.catalogue-composer-stage{min-width:0;width:100%}.catalogue-composer-stage .composer{width:100%;max-width:none;margin:0}.catalogue-illustrations{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}.catalogue-illustrations figure{display:flex;flex-direction:column;align-items:center;gap:8px;margin:0}.catalogue-illustrations .spot-illustration{width:88px;height:88px;max-width:100%}.catalogue-illustrations figcaption{font-size:12px;text-align:center;color:var(--color-text-secondary)}.ui-spec:has(.catalogue-composer-stage),.ui-spec:has(.catalogue-graph-example){grid-template-columns:minmax(0,1fr);gap:18px}.ui-spec:has(.catalogue-composer-stage)>.ui-spec-label>p,.ui-spec:has(.catalogue-graph-example)>.ui-spec-label>p{max-width:65ch}@media(max-width:620px){.catalogue-illustrations{grid-template-columns:repeat(2,minmax(0,1fr))}.catalogue-badge-stage{min-height:350px;padding-inline:0}}

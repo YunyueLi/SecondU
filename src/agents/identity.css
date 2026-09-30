@@ -1,0 +1,80 @@
+/* Real front and back surfaces share one fixed 3:4 portrait card. */
+.ag-pass-overlay { background:rgb(22 23 24 / .20);backdrop-filter:blur(8px);padding:32px 24px;overflow-y:auto;align-items:safe center; }
+.ag-pass-dialog { width:300px;max-width:calc(100vw - 76px);flex-shrink:0;overflow:visible;color:var(--color-text);outline:none; }
+.ag-pass-tools { display:flex;align-items:center;justify-content:space-between;margin-bottom:3px;color:var(--color-text-secondary); }
+.ag-pass-tools>span { font-size:11px; }.ag-pass-tools>div { display:flex;gap:1px; }.ag-pass-tools button { width:28px;height:28px; }.ag-pass-tools svg { width:15px;height:15px; }
+.ag-pass-stage { position:relative;padding-top:54px;perspective:1100px;overflow:visible; }
+.ag-pass-swing { transform-origin:50% -54px; }
+.ag-pass-tilt { position:relative;transform:rotateX(var(--badge-x,0deg)) rotateY(var(--badge-y,0deg)) rotateZ(var(--badge-z,0deg));transform-origin:50% -54px;transition:transform .28s ease-out; }
+.ag-pass-lanyard { position:absolute;left:calc(50% - 16px);top:-54px;height:61px;width:32px;background:#171819;border-left:3px solid #28292b;border-right:3px solid #28292b;z-index:2;transform:translateZ(2px); }
+.ag-pass-lanyard::before { content:'';position:absolute;inset:0 3px;border-inline:1px dashed #555;opacity:.55; }
+.ag-pass-lanyard::after { content:'';position:absolute;width:44px;height:10px;left:-9px;bottom:-3px;border:3px solid #262728;border-radius:10px; }
+.ag-pass-card { position:relative;aspect-ratio:3/4;transform-style:preserve-3d;transition:transform .6s cubic-bezier(.2,.7,.2,1); }
+.ag-pass-card.is-flipped { transform:rotateY(180deg); }
+.ag-pass-face { position:absolute;inset:0;display:flex;flex-direction:column;padding:27px 15px 15px;border:1px solid #dbddd9;border-radius:15px;color:#1f2121;background:linear-gradient(165deg,#f0f1ed,white 52%);box-shadow:0 18px 28px -17px #17181965,inset 0 1px #fff;backface-visibility:hidden;-webkit-backface-visibility:hidden; }
+.ag-pass-face-back { transform:rotateY(180deg); }
+.ag-pass-slot { position:absolute;top:7px;left:calc(50% - 18px);width:36px;height:6px;border-radius:4px;background:white;box-shadow:inset 0 1px 1px #ddd; }
+.ag-pass-strip { display:flex;align-items:center;background:#101111;color:#fafaf8;border-radius:7px;height:29px;min-height:29px;padding:4px 9px;font-size:12px; }
+.ag-pass-strip>span { white-space:normal;overflow-wrap:anywhere; }
+.ag-pass-front { display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;flex:1;padding:30px 0 19px;min-height:0; }
+.ag-pass-front>.ag-avatar { flex-shrink:0;border:1px solid #e5e6e2;background:white;border-radius:8px; }
+.ag-pass-front h2 { font-size:16px;font-weight:550;letter-spacing:-.02em;line-height:1.5;margin:15px 0 0;overflow-wrap:anywhere; }
+.ag-pass-front p { margin:13px 0 0;font-size:12px;line-height:1.7;color:#777c74;overflow:auto;overflow-wrap:anywhere; }
+.ag-pass-face>footer { display:flex;align-items:center;justify-content:space-between;gap:10px;border-top:1px dashed #c7cac3;padding-top:14px;margin-top:0; }
+.ag-pass-brand { display:flex;gap:5px;align-items:center;font-size:20px;font-weight:600;letter-spacing:-.06em; }.ag-pass-brand svg { width:23px;height:23px; }
+.ag-pass-face>footer>button { border:0;border-radius:6px;background:#1b1c1c;color:white;font-size:10px;padding:5px 8px; }
+.ag-pass-face-back>header { display:flex;align-items:center;gap:12px;margin:0 0 15px; }
+.ag-pass-face-back>header>button { width:24px;height:24px;font-size:24px;font-weight:300;line-height:1;background:none;border:0;padding:0; }
+.ag-pass-face-back h2 { font-size:13px;font-weight:550;flex:1;text-align:center;padding-right:36px;margin:0; }
+.ag-pass-reading { overflow:auto;min-height:0;overscroll-behavior:contain; }
+.ag-pass-reading>p { font-size:13px;line-height:1.85;white-space:pre-wrap;overflow-wrap:anywhere;margin:0; }
+.ag-pass-reading>small { display:block;font-size:10px;line-height:1.6;color:#777;margin-top:15px;overflow-wrap:anywhere; }
+.ag-pass-task { display:block;width:100%;text-align:left;font-size:12px;line-height:1.6;padding:12px 0;background:none;border:0;border-bottom:1px solid #e8e8e4; }.ag-pass-task>span:first-child { display:block;margin-bottom:5px; }
+.ag-pass-meta { display:flex;justify-content:space-between;gap:14px;padding:17px 2px 13px; }
+.ag-pass-meta>button { display:flex;align-items:center;gap:5px;min-width:0;color:var(--color-text-secondary);font-size:10px;background:none;border:0;padding:0; }
+.ag-pass-meta>button>span { max-width:145px;white-space:normal;overflow-wrap:anywhere; }.ag-pass-meta>button>svg { width:13px;height:13px; }
+.ag-pass-actions { display:flex;gap:8px; }.ag-pass-actions>button { flex:1;font-size:11px; }.ag-pass-actions svg { width:15px;height:15px; }
+@keyframes badge-arrive { 0% { transform:translateY(-38px) rotate(-5deg);opacity:0; } 48% { transform:translateY(0) rotate(2deg);opacity:1; } 73% { transform:rotate(-.8deg); } 100% { transform:rotate(0); } }
+@media(prefers-reduced-motion:no-preference) { html:not([data-motion=reduced]) .ag-pass-swing { animation:badge-arrive .9s cubic-bezier(.2,.65,.3,1); } }
+@media(prefers-reduced-motion:reduce) { .ag-pass-card,.ag-pass-tilt { transition:none; } }
+html[data-motion=reduced] .ag-pass-card,html[data-motion=reduced] .ag-pass-tilt { transition:none; }
+@media(max-height:700px) { .ag-pass-overlay { align-items:flex-start; }.ag-pass-dialog { width:270px; } }
+.app-dialog.ag-editor-dialog { width:min(530px,calc(100vw - 32px));padding:24px; }
+.ag-editor-dialog .ag-form { gap:20px; }.ag-editor-tabs { display:flex;gap:20px;border-bottom:1px solid var(--color-border-subtle); }.ag-editor-tabs button { padding:0 0 10px;font-size:12px;background:transparent;border:0;color:var(--color-text-secondary);border-bottom:2px solid transparent; }.ag-editor-tabs button[aria-pressed=true] { color:var(--color-text);border-color:var(--color-text);font-weight:500; }
+.ag-editor-panel { display:flex;flex-direction:column;gap:18px; }.ag-editor-panel[hidden] {display:none;}.ag-editor-avatar-row { display:flex;align-items:center;gap:13px;margin-bottom:2px; }.ag-editor-avatar-row>div { flex:1;min-width:0; }.ag-editor-avatar-row strong { display:block;font-size:14px;font-weight:500; }.ag-editor-avatar-row>div>span { display:block;font-size:11px;color:var(--color-text-secondary);margin-top:5px; }.ag-editor-avatar-row>button { font-size:11px; }.ag-editor-avatar-preview { width:56px;height:56px;border-radius:12px;object-fit:cover; }
+.ag-editor-dialog .ag-avatar-picker { background:var(--color-surface-secondary);padding:13px;border-radius:10px; }.ag-editor-dialog .field-label { font-size:12px; }.ag-editor-dialog input,.ag-editor-dialog textarea { font-size:13px;line-height:1.7; }.ag-editor-count { margin-top:-14px;align-self:flex-end;font-size:10px;color:var(--color-text-tertiary); }.ag-editor-dialog .ag-form-actions { border-top:1px solid var(--color-border-subtle);padding-top:16px; }
+
+.ag-pass-resources { display:flex;width:100%;align-items:center;justify-content:space-between;padding:9px 2px;margin:0 0 12px;border:0;border-bottom:1px solid rgb(80 80 80 / .15);background:transparent;font-size:11px;color:var(--color-text-primary);cursor:pointer; }
+.ag-pass-resources>span { display:flex;align-items:center;gap:7px; }.ag-pass-resources small { font-size:9px;border:1px solid currentColor;border-radius:4px;padding:0 4px;color:var(--color-text-secondary); }.ag-pass-resources svg { width:13px;height:13px; }
+
+.ag-pass-brand .hither-wordmark{width:82px;height:21px}
+.ag-twin-avatar{display:grid;place-items:center;background:#ebe5f3!important;color:#70548f;border-color:#d4c7e4!important}
+.ag-twin-avatar>.hither-mark{width:72%;height:72%}
+.is-self-pass .ag-pass-face{background:linear-gradient(148deg,#f4f0fa,#fff 68%);border-color:#cec1df;box-shadow:0 18px 28px -17px #5f487c65,inset 0 1px #fff}
+.is-self-pass .ag-pass-strip{background:#76608f;color:#fff;justify-content:space-between}
+.is-self-pass .ag-pass-strip>strong{font-size:9px;font-weight:450;padding:2px 5px;border:1px solid #b6a6ca;border-radius:4px}
+.is-self-pass .ag-pass-front{position:relative}
+.is-self-pass .ag-pass-front::after{content:'';position:absolute;right:3px;top:34px;width:64px;height:100px;border:1px solid #d8cbe5;border-top:0;border-radius:0 0 44px 44px;box-shadow:12px 0 0 -1px #f4eff9;pointer-events:none;opacity:.6}
+.is-self-pass .ag-pass-front h2{font-size:24px;letter-spacing:-.7px}
+.ag-pass-owner{font-size:10px;color:#877790;margin-top:9px}
+.is-self-pass .ag-pass-lanyard{background:#6a557f;border-color:#806994}
+.is-self-pass .ag-pass-lanyard::before{border-color:#b8a7ca}
+.is-self-pass .ag-pass-lanyard::after{border-color:#7c668d}
+.app-dialog.ag-resources-panel-dialog{width:min(670px,calc(100vw - 32px));padding:24px}
+@media(max-width:520px){.app-dialog.ag-resources-panel-dialog{padding:20px 16px}}
+.ag-pass-tools>span,.ag-pass-meta>button,.ag-pass-resources{font-size:12px;color:var(--color-text-secondary)}
+.ag-pass-actions>button{font-size:12px}
+.ag-pass-front p{color:#545a51}
+.ag-pass-owner{color:#685575;font-size:11px}
+.dialog-overlay .app-dialog.ag-resources-panel-dialog{display:flex;flex-direction:column;overflow:hidden;padding:0}
+.ag-resources-panel-dialog>header{flex-shrink:0;margin:0;padding:19px 22px 16px;border-bottom:1px solid var(--color-border-subtle);background:var(--color-surface)}
+.ag-resources-panel-dialog>.agent-resources{min-height:0;overflow:auto;overscroll-behavior:contain;padding:20px 22px 24px}
+@media(max-width:520px){.ag-resources-panel-dialog>header{padding-inline:16px}.ag-resources-panel-dialog>.agent-resources{padding:18px 16px 22px}}
+
+/* Fixed front-face rows keep every avatar and footer aligned for one- or two-line copy. */
+.ag-pass-stage{--badge-avatar-size:84px;--badge-title-row:36px;--badge-copy-row:44px;--badge-owner-row:23px;--badge-row-gap:4px}
+.ag-pass-front{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:var(--badge-avatar-size) var(--badge-title-row) var(--badge-copy-row) var(--badge-owner-row);gap:var(--badge-row-gap);align-content:end;justify-content:stretch}
+.ag-pass-front>.ag-avatar{grid-row:1;width:var(--badge-avatar-size)!important;height:var(--badge-avatar-size)!important}
+.ag-pass-front h2{grid-row:2;align-self:center;margin:0;max-height:100%;overflow:hidden;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical}
+.ag-pass-front p{grid-row:3;margin:0;align-self:start;line-height:20px;max-height:40px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.ag-pass-front .ag-pass-owner{grid-row:4;align-self:start;margin:0;line-height:18px;white-space:nowrap}
