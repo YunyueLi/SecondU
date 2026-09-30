@@ -1,7 +1,7 @@
 const { app, BrowserWindow, dialog, shell, Menu, ipcMain, desktopCapturer, systemPreferences, nativeTheme } = require('electron');
 const { installScreenShare } = require('./screen-share.cjs');
 const { installDirectoryPicker } = require('./directory-picker.cjs');
-const { startupHtml, readStartupAppearance, RETRY_URL } = require('./startup.cjs');
+const { writeStartupDocument, readStartupAppearance, RETRY_URL } = require('./startup.cjs');
 const { spawn } = require('node:child_process');
 const path = require('node:path');
 const fs = require('node:fs');
@@ -101,8 +101,9 @@ function openWindow() {
 }
 async function showStartup(error = '') {
   if (!mainWindow || mainWindow.isDestroyed()) return;
-  startupUrl = 'data:text/html;charset=utf-8,' + encodeURIComponent(startupHtml(ROOT, {...startupAppearance(),error}));
-  await mainWindow.loadURL(startupUrl);
+  const document = writeStartupDocument(ROOT,userData,{...startupAppearance(),error});
+  startupUrl = document.url;
+  await mainWindow.loadFile(document.file);
 }
 function startWindow() {
   if (startupAttempt) return startupAttempt;
