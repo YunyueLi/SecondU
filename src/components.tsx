@@ -1,3 +1,4 @@
+import './design-system/settings-type-scale.css';
 import { t, getLocale } from './i18n';
 import React, { useEffect, useRef, useId } from 'react';
 import { createPortal } from 'react-dom';
@@ -13,6 +14,7 @@ import { CloseBold } from '@openai/apps-sdk-ui/components/Icon';
 import { LinkChip } from './composer/LinkChip';
 import { remarkHitherLinks } from './composer/remarkLinks';
 import { StartupScreen } from './StartupScreen';
+import { ThemeDecoration, decorationForIllustration, type ThemeDecorationKind } from './themes/ThemeDecoration';
 
 export const taskLabels: Record<TaskStatus, string> = { get queued() { return t("准备开始", "Ready"); }, get running() { return t("进行中", "Running"); }, get needs_input() { return t("等你补充", "Needs input"); }, get awaiting_approval() { return t("等你确认", "Needs approval"); }, get completed() { return t("已完成", "Completed"); }, get failed() { return t("未完成", "Failed"); }, get cancelled() { return t("已停止", "Stopped"); }, get interrupted() { return t("已中断", "Interrupted"); } };
 export function TaskBadge({ status }: { status: TaskStatus }) {
@@ -21,7 +23,16 @@ export function TaskBadge({ status }: { status: TaskStatus }) {
 export function ErrorNotice({ error }: { error?: string | null }) { return error ? <Alert color="danger" variant="soft" title={t("操作未完成", "Action failed")} description={error} /> : null; }
 export function Busy({ label = t("正在加载", "Loading") }: { label?: string }) { return <div className="busy-state" role="status"><LoadingIndicator /><span>{label}</span></div>; }
 export function Empty({ title, description, action }: { title: string; description?: string; action?: React.ReactNode }) { return <EmptyMessage fill="none"><EmptyMessage.Title>{title}</EmptyMessage.Title>{description && <EmptyMessage.Description>{description}</EmptyMessage.Description>}{action && <EmptyMessage.ActionRow>{action}</EmptyMessage.ActionRow>}</EmptyMessage>; }
-export function PageHeading({ title, description, action }: { title: string; description?: string; action?: React.ReactNode }) { return <div className="page-heading"><div><h1>{title}</h1>{description && <p>{description}</p>}</div>{action}</div>; }
+export function PageHeading({ title, description, compactDescription, illustration, decoration, action, className = '' }: { title: React.ReactNode; description?: React.ReactNode; compactDescription?: string; illustration?: string; decoration?: ThemeDecorationKind; action?: React.ReactNode; className?: string }) {
+  const artwork = decoration || decorationForIllustration(illustration);
+  return <header className={`page-heading ${illustration || artwork ? 'has-illustration' : ''} ${className}`}>
+    <div className="page-heading-intro">{artwork ? <ThemeDecoration kind={artwork} className="page-heading-art"/> : illustration && <img className="page-heading-art" src={illustration} alt="" aria-hidden="true" draggable={false} />}<div className="page-heading-copy"><h1>{title}</h1>{description && <p><span className={compactDescription ? 'page-description-full' : undefined}>{description}</span>{compactDescription && <span className="page-description-compact">{compactDescription}</span>}</p>}</div></div>
+    {action && <div className="page-heading-actions">{action}</div>}
+  </header>;
+}
+export function PageToolbar({children,className='',label}:{children:React.ReactNode;className?:string;label?:string}) {
+  return <div className={`page-toolbar ${className}`} role="group" aria-label={label}>{children}</div>;
+}
 const contentComponents = {
   a: ({href,children}: React.AnchorHTMLAttributes<HTMLAnchorElement>) => <LinkChip href={href}>{children}</LinkChip>,
   img: ({src,alt}: React.ImgHTMLAttributes<HTMLImageElement>) => <TextLink as="a" href={typeof src==='string'?src:undefined} target="_blank" rel="noopener noreferrer">{alt || t("查看图片", "View image")}</TextLink>,
@@ -38,6 +49,10 @@ export function Dialog({ title, children, onClose, className = '' }: { title: st
     const focusable = () => Array.from(ref.current?.querySelectorAll<HTMLElement>('button:not(:disabled), a[href], input:not(:disabled), textarea:not(:disabled), select:not(:disabled), summary, [tabindex]') || []).filter(el => el.tabIndex >= 0 && el.getClientRects().length > 0 && !el.closest('[inert]'));
     (focusable()[0] || ref.current)?.focus();
     const keys = (event: KeyboardEvent) => {
+      // Settings can open a second dialog. Only the topmost dialog owns Escape
+      // and the focus loop; closing a child must leave its parent open.
+      const dialogs = [...document.querySelectorAll<HTMLElement>('.app-dialog[role="dialog"]')].filter(element => element.getClientRects().length > 0);
+      if (dialogs.at(-1) !== ref.current) return;
       // Official Select menus are portalled beside this modal. Let their own
       // keyboard handler close the menu before closing the surrounding form.
       const menuOpen = [...document.querySelectorAll('[data-radix-popper-content-wrapper]')].some(el => el.querySelector('[data-state="open"]'));

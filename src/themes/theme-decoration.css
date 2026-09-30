@@ -1,0 +1,31 @@
+:root { --theme-decoration-atlas: url('/art/themes/pencil-atlas-v1.png'); }
+:root[data-atmosphere='plain'] { --theme-decoration-atlas: url('/art/themes/plain-atlas-v1.png'); }
+:root[data-atmosphere='tidal'] { --theme-decoration-atlas: url('/art/themes/tidal-atlas-v1.png'); }
+:root[data-atmosphere='night'] { --theme-decoration-atlas: url('/art/themes/night-atlas-v1.png'); }
+/* Custom welcome photos use the quiet neutral set for small page decorations. */
+:root[data-atmosphere='custom'] { --theme-decoration-atlas: url('/art/themes/plain-atlas-v1.png'); }
+.theme-decoration {
+  display: none;
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  background-position: var(--decoration-x) var(--decoration-y);
+  background-size: 300% 300%;
+  background-repeat: no-repeat;
+  /* Keep incidental paint at neighbouring cell edges out of these tiny sprites. */
+  clip-path: inset(5%);
+}
+:root[data-decorative-artwork='true'] .theme-decoration {
+  display: inline-block;
+  background-image: var(--theme-decoration-atlas);
+}
+.portrait-heading-identity { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 2px; }
+.portrait-heading-identity strong { color: var(--color-text-primary); font-weight: 500; }
+.portrait-heading-summary { display: block; padding: 0; max-width: 76ch; text-align: left; font: inherit; color: inherit; }
+button.portrait-heading-summary { cursor: pointer; }
+button.portrait-heading-summary:hover { color: var(--color-text-primary); }
+.inbox-list-heading:has(.theme-decoration) { gap: 10px; }
+.inbox-list-heading:has(.theme-decoration) h1 { flex: 1; }
+@media (max-width: 760px) {
+  .theme-decoration { width: 40px; height: 40px; }
+}

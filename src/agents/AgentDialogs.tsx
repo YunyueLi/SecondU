@@ -21,6 +21,7 @@ import { encodeCard, type AgentCard } from '../cognition/qr';
 import { decodeAgentQR, parseAgentImport, type AgentImportPreview } from './qrImport';
 import './source-agent.css';
 import QRCode from 'qrcode';
+import { AgentSharingDialog } from './AgentSharingDialog';
 
 export function AgentEditor({ agent, data, onClose, onSaved }: { agent?:AgentProfile; data:Bootstrap; onClose:()=>void; onSaved:(agent:AgentProfile)=>Promise<void> }) {
   const [section,setSection]=useState<'identity'|'instructions'|'model'>('identity');const [avatarOpen,setAvatarOpen]=useState(false);
@@ -47,23 +48,15 @@ export function AgentEditor({ agent, data, onClose, onSaved }: { agent?:AgentPro
   </form></Dialog>;
 }
 
-export function RoomEditor({ data, room, initialAgentId, initialKind, onClose, onSaved }: {data:Bootstrap;room?:AgentRoom;initialAgentId?:string;initialKind?:'direct'|'group';onClose:()=>void;onSaved:(room:AgentRoom)=>Promise<void>}) {
-  const [kind,setKind]=useState<'direct'|'group'>(room?.kind||initialKind||'direct'); const [title,setTitle]=useState(room?.title||''); const [ids,setIds]=useState<string[]>(room?.agentIds||(initialAgentId?[initialAgentId]:[])); const mode=room?.mode||'live'; const [busy,setBusy]=useState(false);const [error,setError]=useState('');
-  const [projectId,setProjectId]=useState<string|undefined>(room?.projectId);const [savedId,setSavedId]=useState(room?.id);
-  const projectLocked=!!room&&data.tasks.find(task=>task.id===room.taskIds.at(-1))?.status==='interrupted';
-  const valid=kind==='direct'?ids.length===1:ids.length>=2&&ids.length<=12;
-  function choose(id:string){setIds(previous=>kind==='direct'?[id]:previous.includes(id)?previous.filter(value=>value!==id):previous.length<12?[...previous,id]:previous);}
-  return <Dialog title={room?t("会话设置", "Chat settings"):t("新的会话", "New chat")} onClose={()=>{if(!busy)onClose();}}><form className="ag-form" onSubmit={async event=>{event.preventDefault();if(!valid||busy||data.profile.demo)return;setBusy(true);setError('');try{const result=await write<AgentRoom>(savedId?`/agent-rooms/${savedId}`:'/agent-rooms',{title:title.trim()||undefined,kind,agentIds:ids,mode,projectId:projectId||null},savedId?'PUT':'POST');setSavedId(result.id);await onSaved(result);}catch(err){setError(messageOf(err));}finally{setBusy(false);}}}><fieldset disabled={busy} style={{display:'contents'}}>
-    {!room&&<SegmentedControl value={kind} onChange={value=>{setKind(value);if(value==='direct')setIds(ids.slice(0,1));}} aria-label={t("会话类型", "Chat type")}><SegmentedControl.Option value="direct">{t("私聊", "Direct chat")}</SegmentedControl.Option><SegmentedControl.Option value="group">{t("群聊", "Group chat")}</SegmentedControl.Option></SegmentedControl>}
-    {(kind==='group'||room)&&<Field label={t("会话名称", "Chat name")}><Input value={title} onChange={e=>setTitle(e.target.value)} placeholder={kind==='group'?t("这次一起做什么？", "What are we working on?"):t("会话名称", "Chat name")} size="lg" maxLength={120}/></Field>}
-    <fieldset className="ag-member-field"><legend>{kind==='direct'?t("选择一位助理", "Choose an agent"):t("选择群聊成员", "Choose group members")}</legend>{kind==='group'&&<p>{t('选择 2 至 12 位','Choose 2–12 agents')}</p>}<div className="ag-member-choices">{data.agents.map(agent=><div className={`ag-member-choice ${ids.includes(agent.id)?'is-selected':''}`} key={agent.id}><AgentAvatar agent={agent} size={34}/><Checkbox checked={ids.includes(agent.id)} onCheckedChange={()=>choose(agent.id)} label={<span><strong>{agent.name}</strong><small>{agent.role}</small></span>}/></div>)}</div><small>{t(`已选 ${ids.length} 位`, `${ids.length} selected`)}</small></fieldset>
-    <Field label={t("所属项目", "Project")} hint={projectLocked?t("中断的任务继续沿用原项目，请新建会话使用另一项目。", "This interrupted task keeps its project. Start a new chat to use another project."):undefined}><ProjectPicker data={data} value={projectId} onChange={setProjectId} disabled={projectLocked}/></Field><ErrorNotice error={error}/><div className="ag-form-actions"><Button color="secondary" variant="ghost" onClick={onClose}>{t("取消", "Cancel")}</Button><Button color="primary" type="submit" loading={busy} disabled={!valid||data.profile.demo}>{room?t("保存会话", "Save chat"):t("开始会话", "Start a chat")}</Button></div>
-  </fieldset></form></Dialog>;
-}
+export { RoomEditor } from './RoomEditor';
 
 function publicCard(agent:AgentProfile):AgentCard{return {name:agent.name,role:agent.role,instructions:agent.instructions,...(agent.sourceUrl?{sourceUrl:agent.sourceUrl}:{})};}
 
-export function AgentCardDialog({ agent, onClose, onImported }: {agent?:AgentProfile;onClose:()=>void;onImported:(agent:AgentProfile)=>Promise<void>}) {
+export function AgentCardDialog({ agent, data, onClose, onImported }: {agent?:AgentProfile;data:Bootstrap;onClose:()=>void;onImported:(agent:AgentProfile)=>Promise<void>}) {
+  return agent?<AgentSharingDialog agent={agent} data={data} onClose={onClose}/>:<AgentImportDialog onClose={onClose} onImported={onImported}/>;
+}
+
+function AgentImportDialog({ agent, onClose, onImported }: {agent?:AgentProfile;onClose:()=>void;onImported:(agent:AgentProfile)=>Promise<void>}) {
   const [qr,setQR]=useState('');const [pasted,setPasted]=useState('');const [preview,setPreview]=useState<AgentImportPreview>();const [busy,setBusy]=useState(false);const [error,setError]=useState('');
   const [sourceName,setSourceName]=useState('');const [sourceRole,setSourceRole]=useState('');const [sourceInstructions,setSourceInstructions]=useState('');const [created,setCreated]=useState<AgentProfile>();
   const [pasteOpen,setPasteOpen]=useState(false);const [dragging,setDragging]=useState(false);const [filename,setFilename]=useState('');const readSequence=useRef(0);const fileInput=useRef<HTMLInputElement>(null);
@@ -106,7 +99,7 @@ export function AgentCardDialog({ agent, onClose, onImported }: {agent?:AgentPro
           <Button color="secondary" variant="outline" loading={busy} disabled={busy} onClick={()=>fileInput.current?.click()}><FileUpload/>{t('选择图片','Choose image')}</Button>
         </div>
         <div className="ag-card-paste"><Button color="secondary" variant="ghost" size="sm" disabled={busy} onClick={()=>setPasteOpen(value=>!value)} aria-expanded={pasteOpen}>{t('也可以粘贴链接或名片','Or paste a link or agent card')}<ChevronDown/></Button>{pasteOpen&&<form onSubmit={event=>{event.preventDefault();if(pasted.trim())readPasted();}}><Input variant="soft" size="md" aria-label={t('网站链接或助理名片','Website link or agent card')} value={pasted} disabled={busy} onChange={event=>{setPasted(event.target.value);setError('');}} placeholder="https://example.com"/><Button color="primary" type="submit" uniform disabled={!pasted.trim()||busy} aria-label={t('查看预览','Preview')}><ArrowRight/></Button></form>}</div>
-      </>:<form className="ag-card-preview" onSubmit={event=>{event.preventDefault();void addAgent();}}>
+      </>:preview.kind==='delegation'?<div className="ag-card-preview"><Badge color="secondary" variant="outline" size="sm">{t('受限分身授权','Limited delegate access')}</Badge><h3>{t('连接到本人发布的能力','Connect to the owner’s published capability')}</h3><p className="ag-muted">{t('此二维码提供可撤销的调用授权，使用范围由本人设置。当前链接只能在运行 SecondU 的这台设备上使用。','This QR grants revocable access within the owner’s scope. This link works only on the device running SecondU.')}</p><div className="ag-card-preview-actions"><Button color="secondary" variant="ghost" onClick={chooseAnother}>{t('重新选择','Choose another')}</Button><a href={preview.url} target="_blank" rel="noopener noreferrer" className="ag-card-download">{t('打开接收页','Open recipient page')}<ArrowRight/></a></div></div>:<form className="ag-card-preview" onSubmit={event=>{event.preventDefault();void addAgent();}}>
         {card?<>
           <Badge color="secondary" variant="outline" size="sm">{t('待你确认','Review before adding')}</Badge><div className="ag-card-preview-person"><AgentAvatar agent={{id:`card:${card.name}`,name:card.name}} size={48}/><div><h3>{card.name}</h3><p>{card.role}</p></div></div>
           <details open><summary>{t('工作说明','Instructions')}</summary><p>{card.instructions}</p></details>

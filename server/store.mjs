@@ -4,16 +4,20 @@ import { mkdirSync, chmodSync, readFileSync, writeFileSync, renameSync, existsSy
 import path from 'node:path';
 import { randomUUID } from 'node:crypto';
 import { createSeed } from './seed.mjs';
+import { createUSSeed } from './demo-us.mjs';
 import { applyDemoExpansion } from './demo-expansion.mjs';
 import { applyDemoLifeTimeline } from './demo-life.mjs';
+import { applyDemoNames } from './demo-names.mjs';
 import { applyLegacyReplyClassification } from './artifact-provenance.mjs';
 import { runnableProject } from './projects.mjs';
 import { initializeGoalLists } from './goal-lists.mjs';
+import { artifactBytes } from './artifact-content.mjs';
 
 export const collections = ['projects','sources','facts','people','relationships','events','conversations','goals','goalLists','agents','agentRooms','tasks','artifacts','automations'];
 export const now = () => new Date().toISOString();
 export const id = prefix => `${prefix}-${randomUUID()}`;
-export class HttpError extends Error { constructor(status, message, code = 'invalid_request') { super(message); this.status = status; this.code = code; } }
+import { HttpError } from './http-error.mjs';
+export { HttpError } from './http-error.mjs';
 export function atomicWrite(file, content, mode = 0o600) {
   const tmp = `${file}.${randomUUID()}.tmp`;
   try { writeFileSync(tmp, content, { mode }); chmodSync(tmp,mode); renameSync(tmp,file); }
@@ -21,7 +25,7 @@ export function atomicWrite(file, content, mode = 0o600) {
 }
 
 export class Store {
-  constructor(directory, { seed = true, protectedDataDirectory } = {}) {
+  constructor(directory, { seed = true, seedLocale = 'zh-CN', protectedDataDirectory } = {}) {
     mkdirSync(directory, { recursive: true, mode: 0o700 });
     this.directory = realpathSync(directory); chmodSync(this.directory, 0o700);
     // Child spaces must protect the enclosing app data, not just their own database.
@@ -32,7 +36,7 @@ export class Store {
     this.db.exec('PRAGMA journal_mode=WAL; PRAGMA foreign_keys=ON; CREATE TABLE IF NOT EXISTS entities (collection TEXT NOT NULL, id TEXT NOT NULL, data TEXT NOT NULL, PRIMARY KEY(collection,id));');
     if (!this.get('meta','initialized')) {
       this.transaction(() => {
-        const data = createSeed();
+        const data = seedLocale === 'en' ? createUSSeed(now()) : createSeed();
         for (const key of collections) for (const value of seed ? data[key]??[] : []) this.put(key, value);
         this.put('meta', { id: 'profile', value: seed ? data.profile : { name: `我的 ${brand.name}`, description: '', demo: false } });
         this.put('meta', { id: 'settings', value: data.settings });
@@ -40,8 +44,11 @@ export class Store {
       });
     }
     this.recoverCredentialChange();
-    applyDemoExpansion(this,now());
-    applyDemoLifeTimeline(this,now());
+    if(this.meta('profile').demoLocale !== 'en') {
+      applyDemoExpansion(this,now());
+      applyDemoLifeTimeline(this,now());
+      applyDemoNames(this);
+    }
     initializeGoalLists(this,now());
     this.migrateConnections();
     applyLegacyReplyClassification(this,now());
@@ -131,7 +138,7 @@ export class Store {
   writeArtifact(artifact) {
     const file=this.artifactPath(artifact);
     const mode=this.require('tasks',artifact.taskId).projectId&&existsSync(file)?lstatSync(file).mode&0o777:0o600;
-    atomicWrite(file,artifact.content,mode);return this.put('artifacts',artifact);
+    atomicWrite(file,artifactBytes(artifact).data,mode);return this.put('artifacts',artifact);
   }
   close() { this.db.close(); }
 }

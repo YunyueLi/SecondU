@@ -24,15 +24,21 @@ function assertReferences(store){
 }
 test('new demo is a coherent fictional product-engineer life with family, teachers, colleagues and usable conversations',t=>{
  const store=new Store(directory(t));t.after(()=>store.close());
- assert.match(store.meta('profile').description,/2016.*2020.*2023.*月之暗面/);assert.equal(store.meta('profile').demo,true);
- assert.equal(store.meta('profile').name,'万叶');assert.equal(store.meta('profile').englishName,'Caspian');
+ assert.match(store.meta('profile').description,/2016.*2020.*月之暗面/);assert.equal(store.meta('profile').demo,true);
+ assert.equal(store.meta('profile').name,'万叶');assert.equal(store.meta('profile').englishName,undefined);assert.equal(store.meta('profile').demoLocale,'zh-CN');
  assert.equal(store.list('people').filter(person=>person.portrait?.entries.length).length,22);
  assert.equal(store.settings().provider,'moonshot');assert.equal(store.settings().model,'kimi-k3');
  assert.equal(store.list('people').length,22);assert.ok(store.list('relationships').length>=30);assert.ok(store.list('conversations').reduce((sum,item)=>sum+item.messages.length,0)>=140);
  for(const role of ['母亲','父亲','妹妹','大学导师','高中班主任','同事，算法工程师','同事，测试工程师','同事，产品运营'])assert.ok(store.list('people').some(person=>person.role===role),role);
  assert.ok(store.list('events').some(event=>event.date==='2016-09'&&event.endDate==='2020-06'));
- assert.ok(store.list('events').some(event=>event.date==='2023-03'&&event.title.includes('产品工程师')));
- assert.ok(store.list('events').some(event=>event.date==='2026-07'&&event.description.includes('尚未正式上线')));
+ assert.ok(store.list('events').some(event=>event.date==='2023-03'&&event.title.includes('产品工程')));
+ const workbench=store.require('events','demo-life-v3-workbench');
+ assert.equal(workbench.date,'2026-07');assert.equal(workbench.scope,'milestone');assert.equal(workbench.category,'career');
+ assert.match(workbench.description,/暂定.*10\s*月\s*12\s*日.*8\s*人.*试用/,'the trial remains a proposed future date, not a completed July event');
+ assert.match(workbench.description,/3\s*人.*(?:还没|尚未|未)回复/,'three participant replies are still outstanding');
+ assert.match(workbench.description,/具体时段.*(?:没有定|没定|未定|待定|未确认)/,'no exact trial time has been confirmed');
+ assert.deepEqual(workbench.sourceIds,['demo-life-v3-biography']);
+ assert.ok(store.require('sources',workbench.sourceIds[0]).text.includes(workbench.description),'the milestone preserves its source wording and uncertainty');
  for(const source of store.list('sources')){assert.equal(source.demo,true);assert.doesNotMatch(source.text,/虚构示例|以下.*全部虚构/);}
  assert.doesNotMatch(JSON.stringify(collections.map(collection=>store.list(collection).map(({history,...item})=>item))),/声音展|音频协作者|社区志愿者|两段声音|南川|青禾|远山智能|林遥/);
  assert.equal(store.list('tasks').length,0);assert.equal(store.list('automations').length,0);assertReferences(store);
@@ -44,7 +50,7 @@ test('both archived defaults migrate without changing task prompts, model config
   const connection={...f.store.connection(),name:'用户已经配置的模型',provider:'custom',model:'keep-exact-model',baseUrl:'https://example.test/v1',api:'responses'};f.store.put('modelConnections',connection);f.store.close();
   const upgraded=new Store(f.root);assert.match(upgraded.meta('profile').description,/月之暗面/);assert.deepEqual(upgraded.get('tasks',task.id),task);assert.deepEqual(upgraded.get('sources',imported.id),imported);assert.deepEqual(upgraded.connection(),connection);
   assert.doesNotMatch(JSON.stringify(['sources','people','relationships','events','conversations','goals'].map(c=>upgraded.list(c))),/声音展|音频协作者|社区志愿者|两段声音|南川|青禾|远山智能|林遥/);
-  const fact=upgraded.get('facts','fact-budget');assert.equal(fact.version,2);assert.match(fact.history[0].statement,/声音展/);assert.match(fact.history[1].statement,/Agent 工作台/);
+  const fact=upgraded.get('facts','fact-budget');assert.equal(fact.version,2);assert.match(fact.history[0].statement,/声音展/);assert.match(fact.history[1].statement,/工作台.*2000.*680/);
   assertReferences(upgraded);const snapshot=Object.fromEntries(collections.map(c=>[c,upgraded.list(c)])),migration=upgraded.meta('demo-engineer-v4');assert.ok(migration.updated.length>70);upgraded.close();
   const again=new Store(f.root);assert.deepEqual(Object.fromEntries(collections.map(c=>[c,again.list(c)])),snapshot);assert.deepEqual(again.meta('demo-engineer-v4'),migration);again.close();
  }
@@ -80,7 +86,7 @@ test('verified early FactRevision schema is recognized even after the first cons
  for(const fact of baseline.preFactRevisionSchema.facts)f.store.put('facts',materialize(fact));
  f.store.setMeta('demo-engineer-v4',{version:4,appliedAt:stamp,updated:[],added:[],preserved:[]});f.store.close();
  const upgraded=new Store(f.root);
- assert.match(upgraded.get('facts','fact-budget').statement,/Agent 工作台/);
+ assert.match(upgraded.get('facts','fact-budget').statement,/工作台.*2000.*680/);
  assert.doesNotMatch(JSON.stringify(['sources','people','relationships','events','conversations','goals'].map(c=>upgraded.list(c))),/声音展|音频协作者|社区志愿者|两段声音|南川|青禾|远山智能|林遥/);
  assert.equal(upgraded.meta('demo-engineer-v4').matcherVersion,4);assert.deepEqual(upgraded.meta('demo-engineer-v4').preservedReasons,{});
  const before=upgraded.meta('demo-engineer-v4');upgraded.close();const again=new Store(f.root);assert.deepEqual(again.meta('demo-engineer-v4'),before);again.close();
@@ -92,11 +98,11 @@ function previousEngineer(t,variant='fresh'){
  store.setMeta('profile',materialize(data.profile));store.setMeta('demo-migrations',{versions:[2,4],appliedAt:stamp});store.setMeta('demo-life-v3',{appliedAt:stamp});store.setMeta('demo-engineer-v4',{version:4,matcherVersion:2});store.setMeta('demo-person-portraits-v1',{appliedAt:stamp});
  return {root,store};
 }
-test('all installed engineer fixture variants upgrade to Caspian with coherent portraits, goals and source links',t=>{
+test('all installed engineer fixture variants upgrade to the Chinese persona with coherent portraits, goals and source links',t=>{
  for(const {variant} of engineerBaseline.installed){
   const f=previousEngineer(t,variant);f.store.close();const s=new Store(f.root);
-  assert.equal(s.meta('profile').name,'万叶',variant);assert.equal(s.meta('profile').englishName,'Caspian');
-  assert.equal(s.get('people','person-self').name,'万叶');assert.equal(s.get('people','demo-v2-person-jiang').name,'万晴');
+  assert.equal(s.meta('profile').name,'万叶',variant);assert.equal(s.meta('profile').englishName,undefined);assert.equal(s.meta('profile').demoLocale,'zh-CN');
+  assert.equal(s.get('people','person-self').name,'万叶');assert.equal(s.get('people','demo-v2-person-jiang').name,'万婷婷');
   assert.equal(s.list('people').filter(row=>row.portrait?.entries.length).length,22);
   for(const person of s.list('people')){
    assert.doesNotMatch(JSON.stringify(person),/南川|青禾|远山智能|林遥|虚构示例/);

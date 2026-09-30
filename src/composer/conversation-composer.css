@@ -1,0 +1,44 @@
+/* Additional actions inherit the established white input and inset tool layer. */
+.composer .composer-approval-picker{gap:4px;padding-inline:6px;min-width:0;font-size:12px;color:var(--color-text-secondary)}
+.composer-approval-picker svg{width:15px;height:15px;flex:none}
+.composer-leading{width:max-content}
+.composer-context-bar .composer-approval-picker{margin-left:auto}
+.composer-main-layer>.ag-reply-reference{grid-column:1/-1;grid-row:1;margin:3px 0 8px}
+.composer-main-layer:has(>.ag-reply-reference):has(>.attachment-drafts)>.ag-reply-reference{grid-row:2}
+.composer-main-layer:has(>.ag-reply-reference):has(>.attachment-drafts)>.composer-input{grid-row:3}
+.composer-main-layer:has(>.ag-reply-reference):has(>.attachment-drafts)>.composer-leading,.composer-main-layer:has(>.ag-reply-reference):has(>.attachment-drafts)>.composer-trailing{grid-row:4}
+.execution-mode-option{min-height:48px;padding-block:6px;align-items:center}
+.execution-mode-option strong{display:block;font-size:13px;font-weight:500;line-height:20px}
+.execution-mode-option small{display:block;margin-top:2px;font-size:11px;font-weight:400;line-height:16px;color:var(--color-text-secondary);white-space:normal}
+.composer-context-usage{width:30px;height:32px;flex:none}
+.composer-context-usage svg{width:22px;height:22px}
+.context-usage-track{stroke:var(--color-border);stroke-width:2.3}
+.context-usage-fill{stroke:var(--color-text-secondary);stroke-width:2.3;stroke-linecap:round;transition:stroke-dasharray .25s ease-out}
+.context-usage-popover{max-width:calc(100vw - 24px);padding:16px;border-radius:16px;background:color-mix(in srgb,var(--color-surface) 92%,transparent);backdrop-filter:blur(16px);box-shadow:0 8px 28px rgb(0 0 0 / .12)}
+.context-usage-popover[data-state=open]{animation:context-usage-enter .16s ease-out}
+.context-usage-popover header{display:flex;justify-content:space-between;gap:16px;font-size:13px;line-height:20px}
+.context-usage-popover header strong{font-weight:500}
+.context-usage-popover p,.context-usage-popover footer{font-size:12px;line-height:18px;color:var(--color-text-secondary);margin:9px 0 0}
+.context-usage-popover dl{margin:14px 0 0;display:grid;gap:6px;font-size:12px}
+.context-usage-popover dl>div{display:flex;justify-content:space-between;gap:12px}
+.context-usage-popover dt{color:var(--color-text-secondary)}
+.context-usage-popover dd{margin:0;font-variant-numeric:tabular-nums}
+.context-usage-popover footer{margin-top:14px;font-size:11px;color:var(--color-text-tertiary)}
+@keyframes context-usage-enter{from{opacity:.5;filter:blur(2px);transform:translateY(3px) scale(.98)}to{opacity:1;filter:blur(0);transform:none}}
+@media(max-width:600px){.composer-leading .composer-approval-label{display:none}.composer-leading .composer-approval-picker{padding-inline:3px}.composer-context-usage{width:28px}.composer .composer-model-picker{min-width:0}.composer .composer-model-name{overflow:hidden;text-overflow:ellipsis;max-width:76px}}
+@media(prefers-reduced-motion:reduce){.context-usage-popover[data-state=open]{animation:none}.context-usage-fill{transition:none}}
+[data-motion=reduced] .context-usage-popover[data-state=open]{animation:none}
+[data-motion=reduced] .context-usage-fill{transition:none}
+
+.execution-permission-menu{max-width:calc(100vw - 24px)}
+.execution-permission-heading{padding:5px 10px 7px;font-size:12px;font-weight:400;color:var(--color-text-tertiary)}
+.execution-mode-option>div{gap:8px;align-items:center}
+.execution-mode-option>div>div:first-child{display:none}
+.execution-mode-icon{display:grid;place-items:center;width:22px;height:24px;flex:none;color:var(--color-text-secondary)}
+.execution-mode-icon svg{width:18px;height:18px}
+.execution-mode-copy{display:block;flex:1;min-width:0}
+.execution-mode-check{display:grid;place-items:center;width:17px;height:20px;flex:none}
+.execution-mode-check svg{width:17px;height:17px}
+.execution-mode-option.permission-full,.execution-mode-option.permission-full small,.execution-mode-option.permission-full .execution-mode-icon,.composer .composer-approval-picker.permission-full{color:var(--color-text-warning,#b55216)}
+.execution-default-option{min-height:40px;padding-block:4px}
+.execution-default-option strong,.execution-default-option small{font-size:12px}

@@ -2,10 +2,11 @@ import {useId,useState,type ClipboardEvent,type RefObject} from 'react';
 import type {AgentProfile,AgentRoomMessage} from '../../shared/contracts';
 import {Textarea} from '@openai/apps-sdk-ui/components/Textarea';
 import {Button} from '@openai/apps-sdk-ui/components/Button';
-import {CloseBold} from '@openai/apps-sdk-ui/components/Icon';
+import {CloseBold,Reply} from '@openai/apps-sdk-ui/components/Icon';
 import {shouldSend} from '../appearance';
 import {t} from '../i18n';
 import {mentionQuery,type InlineMention} from './mentionQuery';
+import {plainTextPreview} from './preview';
 import './room-mentions.css';
 
 export function RoomComposerInput({value,onChange,members,onMention,inputRef,disabled,locked,label,placeholder,onSend,onPaste}:{value:string;onChange:(value:string)=>void;members:AgentProfile[];onMention:(value:string,mention:InlineMention)=>void;inputRef:RefObject<HTMLTextAreaElement|null>;disabled:boolean;locked:boolean;label:string;placeholder:string;onSend:()=>void;onPaste?:(event:ClipboardEvent<HTMLTextAreaElement>)=>void}){
@@ -33,6 +34,6 @@ export function RoomComposerInput({value,onChange,members,onMention,inputRef,dis
 
 export function ReplyReference({message,author,onOpen,onClear}:{message:AgentRoomMessage;author:string;onOpen:()=>void;onClear?:()=>void}){
   const firstParagraph=message.content.trim().split(/\n\s*\n/)[0];
-  const excerpt=firstParagraph.slice(0,180)||(message.attachmentIds?.length?t('附件','Attachment'):'');
-  return <div className="ag-reply-reference"><button type="button" onClick={onOpen}><strong>{t(`引用 ${author}`,`Reply to ${author}`)}</strong><span>{excerpt}</span>{firstParagraph.length>180&&<small>{t("引用片段，点击查看原消息","Excerpt. Open the original message")}</small>}</button>{onClear&&<Button type="button" size="sm" color="secondary" variant="ghost" uniform aria-label={t('取消引用','Cancel reply')} onClick={onClear}><CloseBold/></Button>}</div>;
+  const excerpt=Array.from(plainTextPreview(firstParagraph,Infinity)).slice(0,180).join('')||(message.attachmentIds?.length?t('附件','Attachment'):'');
+  return <div className="ag-reply-reference"><button type="button" onClick={onOpen} aria-label={t(`回复 ${author}，查看原消息：${excerpt}`,`Reply to ${author}. View original message: ${excerpt}`)} title={excerpt}><Reply/><strong>{author}</strong><span>{excerpt}</span></button>{onClear&&<Button type="button" size="sm" color="secondary" variant="ghost" uniform aria-label={t('取消引用','Cancel reply')} onClick={onClear}><CloseBold/></Button>}</div>;
 }

@@ -231,11 +231,38 @@
 
 
 
-.ag-directory-toolbar{display:flex;align-items:center;gap:12px;width:100%;max-width:1240px;margin:0 auto 16px;flex-shrink:0}
-.ag-directory-toolbar>[role=radiogroup]{flex-shrink:0}.ag-directory-toolbar>div:has(input){flex:1;min-width:130px;max-width:280px;margin-left:auto}
+.ag-directory-toolbar{display:flex;align-items:center;flex-wrap:nowrap;gap:8px;width:100%;max-width:1240px;margin:0 auto 16px;flex-shrink:0;overflow-x:auto;scrollbar-width:thin;padding-bottom:2px}
+.ag-directory-toolbar>[role=radiogroup]{flex-shrink:0}.ag-directory-toolbar>div:has(input){flex:1;min-width:115px;max-width:280px;margin-left:auto}
 .ag-directory-toolbar>[role=button]{width:auto;min-width:100px;font-size:13px;flex-shrink:0}.ag-directory-toolbar>button{flex-shrink:0;font-size:13px}
 .ag-directory-groups{display:flex;flex-direction:column;padding:6px;gap:2px;max-height:380px;overflow:auto}
 .ag-directory-groups>a{display:flex;align-items:center;gap:9px;padding:10px 8px;border-radius:7px;font-size:13px;color:var(--color-text);text-decoration:none}
 .ag-directory-groups>a:hover{background:var(--color-surface-secondary)}.ag-directory-groups>a>svg{width:17px;height:17px;flex-shrink:0}.ag-directory-groups>button{justify-content:flex-start}
 @media(max-width:850px){.ag-directory-toolbar{gap:8px}.ag-directory-toolbar>div:has(input){max-width:none;min-width:110px}.ag-directory-toolbar>button{padding-inline:5px}}
-@media(max-width:700px){.ag-directory-toolbar{flex-wrap:wrap;gap:10px;margin-bottom:13px}.ag-directory-toolbar>div:has(input){order:3;flex:1 1 180px;max-width:none;margin:0}.ag-directory-toolbar>[role=button]{order:4;flex:0 0 auto}}
+@media(max-width:700px){.ag-directory-toolbar{gap:8px;margin-bottom:13px}.ag-directory-toolbar>div:has(input){flex:1 0 150px;max-width:200px;margin:0}.ag-directory-toolbar>[role=button]{flex:0 0 auto}}
+
+
+/* Future experiences share one stable directory viewport. */
+.ag-future-tab-label{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.ag-future-tab-label>svg{width:16px;height:16px;flex-shrink:0}
+.ag-future-tab-label.is-market>svg{color:var(--color-text-secondary)}
+.ag-future-tab-label.is-dating>svg{color:#bb456e}
+.ag-future-tab-label>small{font-size:10px;font-weight:500;line-height:16px;padding:0 4px;border-radius:4px;color:var(--color-text-secondary);background:var(--color-surface-tertiary)}
+.ag-future-shell{display:flex;flex-direction:column;width:100%;max-width:1240px;margin:0 auto;flex:1;min-width:0;min-height:0}
+.ag-future-viewport{flex:1;min-width:0;min-height:0;overflow-y:auto;overflow-x:hidden;scrollbar-gutter:stable;padding:0 0 32px}
+.ag-future-loading{margin:30px 0;color:var(--color-text-secondary);font-size:14px}
+@media(max-width:700px){.ag-directory-view-tabs{max-width:100%;overflow-x:auto}.ag-directory-view-tabs [role=radio]{font-size:12px;white-space:nowrap;padding-inline:9px}.ag-future-tab-label{gap:4px}.ag-future-tab-label>svg{width:14px;height:14px}.ag-future-viewport{padding-bottom:24px}}
+
+/* Keep navigation and filters on one scrollable line at narrow widths. */
+.ag-directory-view-navigation{display:flex;align-items:center;justify-content:space-between;gap:8px;flex:0 0 auto;width:auto;min-width:0;padding-block:0}
+.ag-directory-view-navigation>.ag-directory-view-tabs{width:max-content;max-width:none;min-width:0;flex:0 0 auto}.ag-directory-view-navigation>button{flex-shrink:0;margin-left:auto;white-space:nowrap;font-size:13px}
+.ag-directory-toolbar>.ag-directory-view-navigation{margin:0}.ag-future-shell>.ag-directory-toolbar{margin-bottom:12px}
+.ag-directory-toolbar>.ag-directory-view-navigation+div{margin-left:0}
+@media(max-width:700px){.ag-directory-view-navigation>.ag-directory-view-tabs{display:flex;width:max-content;max-width:none;flex:0 0 auto}.ag-directory-view-tabs [role=radio]{justify-content:center;min-height:32px}.ag-directory-view-navigation{overflow:visible}}
+
+.ag-directory-toolbar>.expert-domain-picker{flex:1 0 150px;min-width:150px;max-width:420px}
+.ag-directory-toolbar>.expert-view-modes{flex:0 0 auto}
+.ag-directory-toolbar .expert-domain-controls button{flex-shrink:0}
+
+.ag-directory-intro.page-heading{flex-direction:row}
+.ag-directory-toolbar.expert-directory-toolbar{flex-wrap:nowrap}
+.ag-directory-view-tabs [role=radio]{font-size:13px;padding-inline:8px;white-space:nowrap}

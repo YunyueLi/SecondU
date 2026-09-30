@@ -1,0 +1,5 @@
+.local-spaces-dialog{width:min(480px,calc(100vw - 32px))}
+.local-spaces-dialog .settings-example-entry{margin:0;padding:0;border:0;gap:20px}
+.local-spaces-dialog .settings-example-entry>div:first-child{flex-basis:100%}
+.local-spaces-dialog .settings-example-entry p{margin:0}
+.local-spaces-dialog .settings-previous-space{padding-top:12px;border-top:1px solid var(--color-border-subtle)}

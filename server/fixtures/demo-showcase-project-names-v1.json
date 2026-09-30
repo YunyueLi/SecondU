@@ -1,0 +1,30 @@
+[
+  {
+    "collection": "projects",
+    "id": "demo-showcase-project-workbench",
+    "field": "name",
+    "from": "Kimi 工作台发布",
+    "to": "Kimi 工作台"
+  },
+  {
+    "collection": "projects",
+    "id": "demo-showcase-project-hangzhou",
+    "field": "name",
+    "from": "回杭州，陪家人慢一点",
+    "to": "杭州行程"
+  },
+  {
+    "collection": "projects",
+    "id": "demo-showcase-project-fieldnotes",
+    "field": "name",
+    "from": "把产品做出来，也讲清楚",
+    "to": "个人作品集"
+  },
+  {
+    "collection": "projects",
+    "id": "demo-showcase-project-next-quarter",
+    "field": "name",
+    "from": "下一季的个人计划",
+    "to": "季度计划"
+  }
+]

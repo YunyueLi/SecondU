@@ -16,18 +16,19 @@ function ConnectionTriggerView(option: ConnectionOption) {
 }
 
 /** Shared by settings and the assistant editor; the inherited value stays caller-owned. */
-export function ConnectionSelect({ id, value, onChange, connections, defaultConnection, inheritValue = 'inherit', disabled, loading }: {
+export function ConnectionSelect({ id, value, onChange, connections, defaultConnection, inheritValue = 'inherit', includeInherit = true, disabled, loading }: {
   id?: string;
   value: string;
   onChange: (value: string) => void;
   connections: ModelConnection[];
   defaultConnection?: ModelConnection;
   inheritValue?: string;
+  includeInherit?: boolean;
   disabled?: boolean;
   loading?: boolean;
 }) {
   const options: ConnectionOption[] = [
-    { value: inheritValue, label: t('跟随默认连接', 'Use default connection'), model: defaultConnection?.model || t('尚未设置默认连接', 'No default connection') },
+    ...(includeInherit ? [{ value: inheritValue, label: t('跟随默认连接', 'Use default connection'), model: defaultConnection?.model || t('尚未设置默认连接', 'No default connection') }] : []),
     ...connections.map(connection => ({ value: connection.id, label: connection.name, provider: connection.provider, model: `${connection.model}${connection.hasKey ? '' : t('（需添加密钥）', ' (key required)')}` })),
   ];
   return <Select<ConnectionOption> id={id} value={value} options={options} onChange={option => onChange(option.value)} disabled={disabled} loading={loading} size="md" block={false} align="start" alignOffset={0} triggerClassName="model-compact-select model-connection-select" listWidth="auto" listMinWidth={220} listMaxWidth={300} OptionView={ConnectionOptionView} TriggerView={ConnectionTriggerView} searchPlaceholder={t('查找连接', 'Find a connection')} />;

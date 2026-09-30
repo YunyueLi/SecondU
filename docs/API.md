@@ -2,10 +2,10 @@
 
 Default local API: 127.0.0.1:58645. JSON. GET bootstrap returns `Bootstrap` from shared/contracts.ts, never secrets. Errors use `{error: string, code?: string}` with a non-2xx status. All writes persist before responding. Frontend refreshes bootstrap after mutations and polls active tasks. Backend implementation may add fields but coordinate breaking changes.
 
-- `GET /api/health` application identity and version; `GET /api/bootstrap`
+- `GET /api/health` -> `{application, version, status:'ok', spaceId, revision}`; `GET /api/bootstrap`
 - `POST /api/tasks` CreateTask -> Task (create queued; separate run). `GET /api/tasks/:id` -> Task
 - `POST /api/tasks/:id/run` -> Task. `POST /api/tasks/:id/message` `{content}` -> Task (continues/steers with user correction). `POST /api/tasks/:id/cancel` -> Task. `POST /api/tasks/:id/approval` `{approvalId, decision:'approve'|'reject'}` -> Task.
-- `PUT /api/artifacts/:id` `{content,baseVersion}` -> Artifact; 409 on stale version. `GET /api/artifacts/:id/download` attachment.
+- `PUT /api/artifacts/:id` `{content,baseVersion}` -> Artifact; 409 on stale version or a binary artifact. `GET /api/artifacts/:id/download` returns the saved file bytes with the correct binary MIME type, or UTF-8 text for a text artifact.
 - `POST /api/sources` `{title,kind,text}` -> Source. Import is evidence, not confirmed fact.
 - `POST /api/facts` `{kind,statement,sourceIds,status}` -> Fact. `PUT /api/facts/:id` `{statement,status,reason,baseVersion}` -> Fact. Preserve revisions; 409 on conflict. User explicitly confirming a candidate can set confirmed; a model cannot.
 - Preference facts may explicitly carry `preferenceDomain: 'work' | 'taste' | 'general'`. Other kinds reject that field. Omitting it on an edit preserves the existing category; changing the kind away from preference removes it. Revision snapshots retain each explicit category. Old uncategorized preferences stay general; the profile does not infer this category from words in the statement.
@@ -20,6 +20,24 @@ Runtime: genuine Codex app-server with configurable provider adapters. Productio
 
 Initial seed is fictional: 万叶 (Caspian), a product engineer working on Kimi, with coherent professional and personal records, conversations, milestones, preferences and goals. Authored task examples are already-completed narratives, not simulated running work. No real private identity or messages are used.
 
+## Local runtime identity and PDF delivery
+
+`GET /api/health` returns a process-start `revision`: SHA-256 of ordered `server/` and `shared/` runtime source contents, the package's `name/version/type`, and `dist/index.html` containing Vite's asset hashes. It excludes absolute installation paths, user data, logs and packaging-only metadata. Identical checkout/package contents produce the same revision. Editing files does not change the value advertised by an already-running process. This identifies the runtime build; it is not an authentication credential or a model-execution result.
+
+Native startup reuses a listener only when `status`, `application`, `version`, `spaceId` and `revision` all match the expected build and data directory. A listener with a missing/older revision is left running; startup chooses another free port in 58645–58649. The same check is required before accepting a newly spawned backend as ready.
+
+PDF artifacts retain their real `encoding:'data-url'`, `mime`, `size` and content bytes. The download endpoint returns those original bytes. The UI renders one selected page through bundled PDF.js 6.3.289, with local worker, fonts, CMaps, ICC and decoder resources; it does not rely on a browser PDF plugin. PDF editing is disabled. Missing data, invalid documents and password-protected files have explicit states. JavaScript workers (`.mjs`) must be served as `text/javascript` and WebAssembly (`.wasm`) as `application/wasm`, including packaged production serving.
+
+### Local Office previews
+
+DOCX, XLSX and PPTX artifacts use the same binary storage and original-download contract. The collector preserves their exact bytes and inspects decompressed XML for credentials before saving. Each file remains limited to 8 MiB, with a 24 MiB collection budget per run. Office files are read-only in the application.
+
+`GET /api/artifacts/:id/preview?version=N` converts the selected stored Office version to real `application/pdf` bytes on this computer. Omitting `version` selects the current version. Responses use `Cache-Control: private, no-store`; conversion caching is in memory, scoped to the local data space and keyed by source bytes plus MIME. The converter discovers an installed LibreOffice; it neither installs software nor uploads documents.
+
+Errors include `503 office_preview_unavailable` (no converter), `503 office_preview_busy`, `504 office_preview_timeout`, `422 office_preview_failed`, `400 office_unsafe_content`, `400 office_preview_type`, `400 invalid_artifact_version` and `404 artifact_version_missing`. Original downloads remain available when conversion is unavailable or a valid document contains unsupported external relationships or embedded objects. Invalid ZIP structures, macro-enabled packages and extension/content mismatches are rejected before storage.
+
+Each conversion uses a private temporary profile with macros, active content and links disabled, a 20-second timeout and cleanup. Package entries are validated in memory and never extracted using document-provided paths. Preview rejects external relationships, OLE/embedded packages and active data-loading structures before launching LibreOffice. This is content validation, not an operating-system network sandbox. Legacy DOC/XLS/PPT, encrypted packages and arbitrary complex Office fidelity are outside this implementation.
+
 ## Personal context and task feedback
 
 - Task creation and idle `PUT /api/tasks/:id` accept optional `contextRequest: {domain: 'auto'|'personal'|'project', purpose: 'auto'|'assistance'|'writing'|'planning'|'decision'|'relationship'|'verification', budgetChars: 4000..40000}`. Defaults are auto/auto/20000. Changing this request clears the previous model-thread binding.
@@ -30,3 +48,31 @@ Initial seed is fictional: 万叶 (Caspian), a product engineer working on Kimi,
 - `GET /api/tasks/:id/feedback` lists task feedback; `GET /api/task-feedback/:id` returns a full snapshot with the current fact status/version. Full records are included in local export, not every bootstrap response. Referenced sources, facts, original tasks and artifacts cannot be deleted while a feedback record depends on them.
 - Confirmation remains a separate explicit user action through the existing fact revision endpoint. Future enabled tasks recall the confirmed revision only within its saved scope. This proves persistence and scoped retrieval, not model-quality improvement, automatic retraining or source re-analysis.
 - `Bootstrap.executionPolicy` reports `showcase` or `personal` for production entrypoints. The standalone server resolves it from the initial profile; child spaces use a fixed policy independent of later profile edits.
+
+## Development review and canonical documents
+
+- `GET /api/development/review` returns `DevelopmentReview` from `shared/development-review-types.ts`: tracked review stages, iterations, capabilities, scoped evidence, boundaries and the current canonical document index. Content is reread on every request from the application's own product directory.
+- `GET /api/development/documents?path=DEVELOPMENT.md` returns `{path,title,content,revision,updatedAt,bytes}`. The path must exactly match the fixed `DEVELOPMENT_DOCUMENTS` allowlist. Unknown, absolute or traversal paths receive 404; symbolic links and unavailable/oversized files are rejected. No runtime log, credential, database or private source is exposed.
+- Both endpoints are local, read-only and use `Cache-Control: no-store`. `revision` is a SHA-256 content revision; `updatedAt` is a filesystem modification time, not the fetch time. Repeated unchanged reads keep the same revision, while a same-mtime content edit still changes it.
+- The structured summary is maintained in `docs/review.json`; canonical Markdown retains the detailed record. Referenced documents, status values and evidence IDs are validated before returning the review. The reader never treats a partial or failed check as a complete release.
+- `source.kind` distinguishes workspace files from files shipped in an application package. A packaged application reads its own `docs/` copy, so later workspace updates require a new package. The endpoints do not fetch or upload records externally. Child spaces use the same product documents; they do not contribute personal data to this response.
+
+### Optional lead-based teams
+
+`POST /api/agent-rooms` and idle `PUT /api/agent-rooms/:id` accept `team: {leadAgentId}` for group rooms. The lead must be a selected room member. Omitted configuration keeps ordinary group behavior; explicit `team: null` removes it. Existing update restrictions while a room has a pending task still apply. Room messages snapshot the configuration and selected member IDs into the new task; later room edits do not rewrite historical execution.
+
+Existing task/bootstrap responses expose `Task.team` and `Task.teamRuns` (see `shared/team-run-types.ts`). A run has an ID, lead ID, actual status/timestamps and nodes. Each node records its parent, lead/worker kind, selected expert, role, objective, actual status, result/error, and timestamps. Results are redacted and bounded to 16,000 characters; `resultTruncated` and `resultOriginalChars` disclose whether the stored/tool-returned text is an excerpt and its pre-truncation, post-redaction length. Continuations append a run; old runs remain inspectable. No separate team polling endpoint is needed.
+
+Only live execution supports teams. Lead dispatch uses structured runtime tools `team_delegate({agentId, task})`, `team_status({})`, and `team_wait({nodeIds})`; these are runtime tools, not public HTTP control endpoints. Membership, maximum 8 nodes and maximum 4 concurrent workers are host-enforced. Workers receive no delegation tools and share the task's approval policy and cancellation signal. Unsupported lead protocols reject before room/task creation (`team_provider_unsupported`); selected unavailable specialists produce failed nodes without invoking their model. Existing Responses, Chat Completions and Messages adapters remain eligible regardless of provider name. Fixtures verify protocol handling, not real cloud-model capability.
+
+### Editing an already-sent user message
+
+`POST /api/tasks/:id/revise` accepts `{requestId, messageId, content, run?: boolean}`. `requestId` is an 8–100 character identifier containing letters, digits, `_` or `-`. The message must belong to that task and be a user message. Returns `201 {task, room?, reused, startError?: {code, message}}`; repeat requests with identical input return the same persisted branch without executing again. Reusing an identifier with different input returns `409 revision_request_conflict`. Retry a saved draft with the existing task `/run` endpoint.
+
+The original task's messages, replies and artifacts stay intact. `Task.forkedFrom: {taskId,messageId}` and the source task's `revisionTaskIds` link the versions. A new task contains only history preceding the edited message and the changed user message. It does not copy later replies, runtime thread IDs, prior approvals, team runs or artifact IDs. For room conversations, a separately saved room contains the earlier message prefix and `AgentRoom.forkedFrom: {roomId,messageId}`. Original room history stays unchanged.
+
+The branch retains selected task configuration and fixes approval mode to the stricter of the source's current effective policy and its last resolved policy. Callers cannot inject a new project, model, permissions or credentials into this endpoint. Running/pending-approval tasks, active rooms, remote tasks, cross-task messages and credential-bearing copied content reject before creation. Demo records permit a saved editing preview but cannot run, and showcase execution policy remains enforced. An accepted branch whose startup fails stays saved with `startError`, so retry never requires duplicating the branch. Project-backed branches still address the same selected project directory; saved conversation history is versioned, not an automatic filesystem snapshot.
+
+### Saved artifact downloads
+
+`GET /api/artifacts/:id/download?version=N` downloads the exact saved revision, including original image, PDF or Office bytes. Omit `version` for the latest saved revision. The response includes `X-Artifact-Version`; historical metadata is taken from that revision. A repeated, empty, non-integer, non-canonical or unsafe version returns `400`; a missing revision returns `404`. Space isolation applies to every revision. The editor's title, preview and download follow the selected saved revision. Unsaved text stays a draft; downloading does not save or export it.

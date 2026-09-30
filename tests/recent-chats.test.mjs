@@ -16,6 +16,14 @@ test('ordinary completed replies have no task outcome label in recent chats',()=
   assert.equal(recentChatStatus(reply,data([],[],[{taskId:'another',classification:'artifact'}])),undefined);
 });
 
+test('saved example revisions have no waiting-to-run label while executable drafts keep theirs',()=>{
+  const revision=task('example-revision',{mode:'demo',status:'queued',forkedFrom:{taskId:'original',messageId:'question'}});
+  assert.equal(recentChatStatus(revision,data()),undefined);
+  assert.equal(recentChatStatus({...revision,mode:'live'},data()),'queued');
+  assert.equal(recentChatStatus({...revision,forkedFrom:undefined},data()),'queued');
+  assert.equal(recentChatStatus({...revision,status:'failed'},data()),'failed','real error states remain visible');
+});
+
 test('archiving hides the list entry but preserves room messages, tasks and full titles for restore',()=>{
   const fullTitle='用户确认的完整对话名称，单行展示但完整名称仍保留供查看';
   const child=task('child'),standalone=task('standalone',{title:fullTitle,archived:true});
@@ -33,4 +41,19 @@ test('project chats remain findable in search and all archived chats can be rest
   assert.deepEqual(recentChatEntries(fixture,''),[]);
   assert.deepEqual(recentChatEntries(fixture,'project').map(entry=>entry.id),['project']);
   assert.deepEqual(recentChatEntries(fixture,'',true).map(entry=>entry.id),['archived project']);
+});
+
+test('example workspaces expose project conversations once without hiding all authored chats',()=>{
+  const direct=room('direct',{kind:'direct',projectId:'project',taskIds:['direct-child']}),group=room('group',{kind:'group',projectId:'project',taskIds:['group-child']});
+  const fixture={...data([task('direct-child',{projectId:'project'}),task('group-child',{projectId:'project'}),task('standalone',{projectId:'project'})],[direct,group]),profile:{demo:true}};
+  assert.deepEqual(recentChatEntries(fixture,'').map(entry=>entry.id),['direct','group','standalone']);
+  assert.deepEqual(recentChatEntries(fixture,'group').map(entry=>entry.id),['group']);
+  assert.equal(fixture.tasks.length,3,'presentation does not manufacture or replace execution records');
+});
+
+test('example project visibility preserves archival and does not spill into personal demo history',()=>{
+  const fixture={...data([task('old-example',{projectId:'project',mode:'demo'}),task('archived-example',{projectId:'project',archived:true,mode:'demo'})]),profile:{demo:false}};
+  assert.deepEqual(recentChatEntries(fixture,''),[]);
+  assert.deepEqual(recentChatEntries({...fixture,profile:{demo:true}},'').map(entry=>entry.id),['old-example']);
+  assert.deepEqual(recentChatEntries({...fixture,profile:{demo:true}},'',true).map(entry=>entry.id),['archived-example']);
 });

@@ -1,11 +1,14 @@
 import path from 'node:path';
 import { existsSync, lstatSync, mkdirSync, realpathSync } from 'node:fs';
 import { HttpError } from './store.mjs';
-export const ENGINEER_SPACE='demo-engineer-v4';
+export const ENGINEER_SPACE='demo-cn-v1';
+export const LEGACY_ENGINEER_SPACE='demo-engineer-v4';
+export const US_SPACE='demo-us-v1';
+export const isExampleSpace=space=>[ENGINEER_SPACE,US_SPACE,LEGACY_ENGINEER_SPACE].includes(space);
 export const PERSONAL_SPACE='personal';
 // Fixed app-owned names only. A request never supplies a filesystem path.
 export function localSpaceDirectory(root,space,{create=false}={}) {
-  if(![ENGINEER_SPACE,PERSONAL_SPACE].includes(space))throw new HttpError(404,'空间不存在','space_not_found');
+  if(![ENGINEER_SPACE,US_SPACE,LEGACY_ENGINEER_SPACE,PERSONAL_SPACE].includes(space))throw new HttpError(404,'空间不存在','space_not_found');
   const base=realpathSync(root),parent=path.join(base,'spaces'),directory=path.join(parent,space);
   for(const candidate of [parent,directory]){
     if(!existsSync(candidate)){if(!create)return undefined;mkdirSync(candidate,{mode:0o700});}

@@ -1,5 +1,6 @@
+import { runtimePolicy, contextUsageFromRuntime } from './execution-settings.mjs';
 import brand from '../shared/brand.json' with {type:'json'};
-import { providerHeaders } from './connections.mjs';
+import { providerHeaders } from './provider-headers.mjs';
 import { HITHER_BASE_INSTRUCTIONS, HITHER_DEVELOPER_INSTRUCTIONS } from './identity.mjs';
 import { EventEmitter } from 'node:events';
 import { spawn, execFile } from 'node:child_process';
@@ -8,7 +9,7 @@ import { mkdir, realpath } from 'node:fs/promises';
 import { accessSync, constants, statSync } from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
-import { inlineImage, ATTACHMENT_COUNT, MULTIMODAL_REQUEST_LIMIT } from './attachments.mjs';
+import { inlineImage, ATTACHMENT_COUNT, MULTIMODAL_REQUEST_LIMIT } from './attachment-input.mjs';
 
 const execFileAsync = promisify(execFile);
 const MAX_MESSAGE_BYTES = MULTIMODAL_REQUEST_LIMIT;
@@ -219,9 +220,10 @@ function providerConfig(settings) {
  * Provider compatibility is not established by a successful local RPC handshake.
  */
 export async function runCodex({ workspace, settings, apiKey, prompt='', images=[], threadId,
-  onEvent = () => {}, onApproval, signal, codexHome, dynamicTools = [], onDynamicTool,
+  onEvent = () => {}, onApproval, signal, codexHome, approvalMode = 'ask', dynamicTools = [], onDynamicTool, allowSubagents = true,
   transportFactory = options => new AppServerTransport(options), requestTimeoutMs = 20_000 } = {}) {
   if (signal?.aborted) throw cancelledError();
+  const policy = runtimePolicy(approvalMode);
   const provider = providerConfig(settings);
   if (typeof apiKey !== 'string' || !apiKey.trim()) throw runtimeError('请先配置模型 API Key。', 'MISSING_API_KEY');
   if(!Array.isArray(images)||images.length>ATTACHMENT_COUNT)throw runtimeError('每轮最多输入 6 张图片。','INVALID_IMAGE_INPUT');
@@ -237,14 +239,17 @@ export async function runCodex({ workspace, settings, apiKey, prompt='', images=
     throw runtimeError('运行时状态目录与任务工作目录必须相互独立。', 'INVALID_WORKSPACE');
   }
   const config = {
+    ...(allowSubagents ? {} : {'features.multi_agent':false,'features.multi_agent_v2':false}),
     model_provider: 'hither', model: settings.model.trim(),
     'model_providers.hither': provider,
-    approval_policy: 'on-request', approvals_reviewer: 'user',
+    approval_policy: policy.approvalPolicy, approvals_reviewer: policy.approvalsReviewer,
     // The legacy workspace-write policy allows reads across the whole host.
     // This named profile instead permits minimal OS reads and this directory only.
-    default_permissions: 'hither',
-    'permissions.hither.filesystem': { ':minimal': 'read', [workspace]: 'write' },
-    'permissions.hither.network.enabled': false,
+    ...(approvalMode === 'full' ? { sandbox_mode: 'danger-full-access' } : {
+      default_permissions: 'hither',
+      'permissions.hither.filesystem': { ':minimal': 'read', [workspace]: 'write' },
+      'permissions.hither.network.enabled': false,
+    }),
     'shell_environment_policy.inherit': 'none',
     'shell_environment_policy.set': { PATH: process.env.PATH || '/usr/bin:/bin', HOME: workspace },
     allow_login_shell: false, project_doc_max_bytes: 0,
@@ -267,6 +272,7 @@ export async function runCodex({ workspace, settings, apiKey, prompt='', images=
   const stopped = deferred();
   const messages = new Map();
   const items = new Map();
+  const childThreads = new Set();
   const declaredTools = new Set(dynamicTools.map(tool => tool.name));
   const handledToolCalls = new Set();
   let currentThread = threadId;
@@ -289,9 +295,37 @@ export async function runCodex({ workspace, settings, apiKey, prompt='', images=
   if (signal?.aborted) abort();
   transport.on('failure', error => { if (!finishing) stop(error); });
   transport.on('notification', ({ method, params = {} }) => {
+    // Native Codex delegation is runtime evidence. Preserve its bounded IDs and
+    // states before the root-turn filter, without treating child replies as the
+    // root result or silently granting child tool requests new permissions.
+    const nativeItem=params.item;
+    const bounded=value=>typeof value==='string'?value.slice(0,1000):null;
+    const nativeDetail=value=>{
+      const trim=(part,limit)=>typeof part==='string'?part.slice(0,limit):Array.isArray(part)?part.map(item=>trim(item,limit)):part&&typeof part==='object'?Object.fromEntries(Object.entries(part).map(([key,item])=>[key,trim(item,limit)])):part;
+      let detail=JSON.stringify(value);
+      for(let limit=512;detail.length>14000&&limit>=16;limit/=2)detail=JSON.stringify({...trim(value,limit),truncated:true});
+      return detail;
+    };
+    if(['item/started','item/completed'].includes(method)&&nativeItem&&['collabAgentToolCall','subAgentActivity'].includes(nativeItem.type)&&(!params.threadId||params.threadId===currentThread||childThreads.has(params.threadId))) {
+      if(nativeItem.type==='collabAgentToolCall'){
+        for(const thread of nativeItem.receiverThreadIds??[])if(typeof thread==='string'&&childThreads.size<64)childThreads.add(thread);
+        emit({type:'runtime.collaboration',label:method==='item/started'?'Codex 开始协作操作':'Codex 协作操作已返回',detail:nativeDetail({itemId:bounded(nativeItem.id),tool:bounded(nativeItem.tool),status:bounded(nativeItem.status),senderThreadId:bounded(nativeItem.senderThreadId),receiverThreadIds:(nativeItem.receiverThreadIds??[]).slice(0,8).map(bounded),prompt:bounded(nativeItem.prompt),model:bounded(nativeItem.model),reasoningEffort:bounded(nativeItem.reasoningEffort),agentsStates:Object.fromEntries(Object.entries(nativeItem.agentsStates??{}).slice(0,8).map(([key,state])=>[key.slice(0,128),{status:String(state?.status??'unknown').slice(0,40),message:typeof state?.message==='string'?state.message.slice(0,400):null}])),omittedAgents:Math.max(0,Object.keys(nativeItem.agentsStates??{}).length-8)})});
+      }else {if(typeof nativeItem.agentThreadId==='string'&&childThreads.size<64)childThreads.add(nativeItem.agentThreadId);emit({type:'runtime.subagent_activity',label:'Codex 子任务状态已更新',detail:nativeDetail({itemId:bounded(nativeItem.id),kind:bounded(nativeItem.kind),agentThreadId:bounded(nativeItem.agentThreadId),agentPath:bounded(nativeItem.agentPath)})});}
+    }
     if (params.threadId && currentThread && params.threadId !== currentThread) return;
     if (params.turnId && currentTurn && params.turnId !== currentTurn) return;
     if (method === 'turn/started') currentTurn = params.turn?.id;
+    if (method === 'item/autoApprovalReview/started' || method === 'item/autoApprovalReview/completed') {
+      const review = params.review;
+      if (review && ['inProgress', 'approved', 'denied', 'timedOut', 'aborted'].includes(review.status)) emit({
+        type: 'runtime.auto_review', label: ({inProgress:'正在自动审查操作',approved:'自动审查已批准',denied:'自动审查已拒绝',timedOut:'自动审查超时',aborted:'自动审查已中止'})[review.status],
+        detail: JSON.stringify({reviewId:params.reviewId,status:review.status,riskLevel:review.riskLevel??null,rationale:review.rationale??null}),
+      });
+    }
+    if (method === 'thread/tokenUsage/updated') {
+      const usage = contextUsageFromRuntime(params.tokenUsage);
+      if (usage) emit({ type: 'runtime.usage', label: '运行时用量已更新', usage });
+    }
     if (method === 'turn/plan/updated' && Array.isArray(params.plan)) {
       emit({ type: 'runtime.plan', label: params.plan.find(step => step.status === 'inProgress')?.step || '任务计划',
         detail: JSON.stringify({ explanation: params.explanation ?? null, plan: params.plan }) });
@@ -376,7 +410,7 @@ export async function runCodex({ workspace, settings, apiKey, prompt='', images=
       // A grantRoot widens the session; an incomplete or enormous request cannot be reviewed faithfully.
       const reviewable = !params.grantRoot && details && details.length <= 65_536 && (command ? !!params.command : !!item?.changes?.length);
       let decision = 'reject';
-      if (reviewable && onApproval) {
+      if (reviewable && onApproval && approvalMode !== 'full') {
         await emit({ type: 'runtime.approval', label: '等待本次操作审批', detail: params.reason || (command ? '本机命令需要确认。' : '文件修改需要确认。') });
         decision = await Promise.race([Promise.resolve().then(() => onApproval({
           id: `codex-${currentThread}-${params.turnId || currentTurn}-${String(id)}`,
@@ -393,17 +427,24 @@ export async function runCodex({ workspace, settings, apiKey, prompt='', images=
   });
   try {
     await emit({ type: 'runtime.connecting', label: '正在连接本机运行时' });
-    await request('initialize', { clientInfo, capabilities: { experimentalApi: dynamicTools.length > 0 } });
+    await request('initialize', { clientInfo, capabilities: { experimentalApi: dynamicTools.length > 0 || approvalMode === 'auto' } });
     transport.notify('initialized');
     const effective = (await request('config/read', { includeLayers: false })).config;
+    if (!allowSubagents && (effective?.features?.multi_agent !== false || effective?.features?.multi_agent_v2 !== false)) {
+      throw runtimeError('本机 Codex 未确认禁用专家的再次委派，已停止本轮团队执行。', 'CODEX_TEAM_BOUNDARY_UNSUPPORTED');
+    }
     const fs = effective?.permissions?.hither?.filesystem;
-    if (effective?.default_permissions !== 'hither' || fs?.[':minimal'] !== 'read' || fs?.[workspace] !== 'write'
+    if (effective?.approval_policy !== policy.approvalPolicy || effective?.approvals_reviewer !== policy.approvalsReviewer) {
+      throw runtimeError('本机 Codex 未确认所选审批策略，已停止运行；没有改用更宽松的策略。', 'CODEX_APPROVAL_POLICY_UNSUPPORTED');
+    }
+    if (approvalMode === 'full' ? effective?.sandbox_mode !== 'danger-full-access' || effective?.default_permissions != null : effective?.default_permissions !== 'hither' || fs?.[':minimal'] !== 'read' || fs?.[workspace] !== 'write'
       || Object.entries(fs || {}).some(([key, value]) => value != null && ![':minimal', workspace].includes(key))
       || effective?.permissions?.hither?.network?.enabled !== false) {
       throw runtimeError('本机 Codex 未确认任务目录权限配置，已停止运行。请升级到支持命名权限配置的版本。', 'CODEX_SANDBOX_UNSUPPORTED');
     }
     const threadParams = { cwd: workspace, model: settings.model.trim(), modelProvider: 'hither',
-      approvalPolicy: 'on-request', approvalsReviewer: 'user',
+      approvalPolicy: policy.approvalPolicy, approvalsReviewer: policy.approvalsReviewer,
+      ...(approvalMode === 'full' ? { sandbox: 'danger-full-access' } : {}),
       baseInstructions: HITHER_BASE_INSTRUCTIONS, developerInstructions: HITHER_DEVELOPER_INSTRUCTIONS };
     // Dynamic tool definitions are persisted by app-server and restored on resume.
     // ThreadResumeParams deliberately has no dynamicTools field in this schema.
@@ -414,7 +455,8 @@ export async function runCodex({ workspace, settings, apiKey, prompt='', images=
     const turn = await request('turn/start', { threadId: currentThread, cwd: workspace,
       input: [...(prompt.trim()?[{type:'text',text:prompt,text_elements:[]}]:[]),...imageInput], model: settings.model.trim(),
       ...(['low', 'medium', 'high', 'max'].includes(settings.reasoningEffort) ? { effort: settings.reasoningEffort } : {}),
-      approvalPolicy: 'on-request', approvalsReviewer: 'user' });
+      approvalPolicy: policy.approvalPolicy, approvalsReviewer: policy.approvalsReviewer,
+      ...(approvalMode === 'full' ? { sandboxPolicy: { type: 'dangerFullAccess' } } : {}) });
     currentTurn = turn.turn?.id || currentTurn;
     if (!currentTurn) throw runtimeError('Codex 未返回执行轮次标识。', 'CODEX_PROTOCOL_ERROR');
     await Promise.race([done.promise, stopped.promise]);

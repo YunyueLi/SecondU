@@ -6,9 +6,10 @@ import { ArrowRight, CloseBold, Edit } from '@openai/apps-sdk-ui/components/Icon
 import { t } from '../i18n';
 import { PortraitView } from './PortraitView';
 import { displayRole } from './display';
+import { UserAvatar } from '../UserAvatar';
 
 type Props = {
-  person?: Person; people: Person[]; relationships: Relationship[]; focused?: string; readOnly: boolean;
+  person?: Person; people: Person[]; relationships: Relationship[]; focused?: string; readOnly: boolean; isSelf?: (id:string)=>boolean;
   refs: (ids:string[], compact?:boolean)=>ReactNode;
   onClose:()=>void; onSelect:(id:string)=>void; onFocus:()=>void;
   onEditPerson:(person:Person)=>void; onEditRelationship:(relationship:Relationship)=>void;
@@ -23,7 +24,7 @@ export function PersonInspector(props:Props) {
   </aside>;
 }
 
-function PersonContent({person,people,relationships,focused,readOnly,refs,onSelect,onFocus,onEditPerson,onEditRelationship}:Props&{person:Person}){
+function PersonContent({person,people,relationships,focused,readOnly,isSelf,refs,onSelect,onFocus,onEditPerson,onEditRelationship}:Props&{person:Person}){
   const [tab,setTab]=useState('overview');
   const [expanded,setExpanded]=useState(false);
   const related=relationships.filter(r=>r.from===person.id||r.to===person.id);
@@ -34,9 +35,9 @@ function PersonContent({person,people,relationships,focused,readOnly,refs,onSele
   const sourceIds=[...new Set([...person.sourceIds,...entries.flatMap(entry=>entry.sourceIds),...related.flatMap(relation=>relation.sourceIds)])];
   return <>
     <div className="person-inspector-summary">
-      <div className="person-inspector-identity"><span className="person-inspector-avatar">{person.name[0]}</span><div><h2>{person.name}</h2><p>{displayRole(person.role)}</p></div>{!readOnly&&<Button uniform size="sm" color="secondary" variant="ghost" aria-label={t('编辑人物资料','Edit person profile')} title={t('编辑资料','Edit profile')} onClick={()=>onEditPerson(person)}><Edit/></Button>}</div>
+      <div className="person-inspector-identity">{isSelf?.(person.id)?<UserAvatar size={40}/>:<span className="person-inspector-avatar">{person.name[0]}</span>}<div><h2>{person.name}</h2><p>{displayRole(person.role)}</p></div>{!readOnly&&<Button uniform size="sm" color="secondary" variant="ghost" aria-label={t('编辑人物资料','Edit person profile')} title={t('编辑资料','Edit profile')} onClick={()=>onEditPerson(person)}><Edit/></Button>}</div>
       <Button color="secondary" variant="ghost" size="sm" className="person-inspector-focus" onClick={onFocus}>{focused===person.id?t('查看全图','View full graph'):t('聚焦关系','Focus relationships')}<ArrowRight/></Button>
-      <SegmentedControl value={tab} onChange={setTab} aria-label={t('人物资料视图','Person detail view')}><SegmentedControl.Option value="overview">{t('概览','Overview')}</SegmentedControl.Option><SegmentedControl.Option value="relations">{t('关系','Relations')} <small>{related.length}</small></SegmentedControl.Option><SegmentedControl.Option value="sources">{t('来源','Sources')} <small>{sourceIds.length}</small></SegmentedControl.Option></SegmentedControl>
+      <SegmentedControl className="person-inspector-tabs" block size="md" gutterSize="xs" value={tab} onChange={setTab} aria-label={t('人物资料视图','Person detail view')}><SegmentedControl.Option value="overview">{t('概览','Overview')}</SegmentedControl.Option><SegmentedControl.Option value="relations">{t('关系','Relations')} <small>{related.length}</small></SegmentedControl.Option><SegmentedControl.Option value="sources">{t('来源','Sources')} <small>{sourceIds.length}</small></SegmentedControl.Option></SegmentedControl>
     </div>
     <div className="person-inspector-content" key={tab}>
       {tab==='overview'?<>
@@ -45,7 +46,7 @@ function PersonContent({person,people,relationships,focused,readOnly,refs,onSele
         {!person.description&&!entries.length&&<p className="person-inspector-empty">{t('还没有人物简介。','No profile notes yet.')}</p>}
       </>:tab==='relations'?<>
         <div className="person-connection-list">{related.map(relation=>{const other=people.find(p=>p.id===(relation.from===person.id?relation.to:relation.from));return <article className="person-connection" key={relation.id}>
-          <div className="person-connection-heading"><button onClick={()=>other&&onSelect(other.id)} disabled={!other}><span className="person-connection-avatar">{other?.name[0]||'?'}</span><span>{other?.name||t('未知人物','Unknown person')}</span><ArrowRight/></button><span className="person-connection-label">{relation.label}</span></div>
+          <div className="person-connection-heading"><button onClick={()=>other&&onSelect(other.id)} disabled={!other}>{other&&isSelf?.(other.id)?<UserAvatar size={25}/>:<span className="person-connection-avatar">{other?.name[0]||'?'}</span>}<span>{other?.name||t('未知人物','Unknown person')}</span><ArrowRight/></button><span className="person-connection-label">{relation.label}</span></div>
           <details className="person-connection-details"><summary>{t('关系详情','Details')}<ArrowRight/></summary><div>{relation.description&&<p>{relation.description}</p>}<div className="person-connection-foot">{refs(relation.sourceIds,true)}{!readOnly&&<Button uniform color="secondary" variant="ghost" size="sm" aria-label={t(`编辑与${other?.name||'此人'}的关系`,`Edit relationship with ${other?.name||'this person'}`)} title={t('编辑关系','Edit relationship')} onClick={()=>onEditRelationship(relation)}><Edit/></Button>}</div></div></details>
         </article>;})}</div>
         {!related.length&&<p className="person-inspector-empty">{t('还没有记录相关人物。','No connections recorded yet.')}</p>}

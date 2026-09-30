@@ -1,0 +1,7 @@
+.reply-feedback-dialog{max-width:480px}
+.reply-feedback-dialog form{display:flex;flex-direction:column;gap:20px}
+.reply-feedback-reasons{display:flex;flex-wrap:wrap;gap:8px}
+.reply-feedback-reasons button{font-size:var(--hither-font-caption)}
+.reply-feedback-dialog footer{display:flex;justify-content:flex-end;gap:8px}
+.reply-feedback-error{font-size:var(--hither-font-caption);color:var(--color-text-danger);max-width:260px;line-height:1.5}
+.message-actions button[aria-pressed=true],.ag-message-actions button[aria-pressed=true]{color:var(--color-text)}

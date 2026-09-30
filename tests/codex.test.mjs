@@ -6,6 +6,7 @@ import { mkdtemp, mkdir, rm, realpath, writeFile, readFile } from 'node:fs/promi
 import os from 'node:os';
 import path from 'node:path';
 import { AppServerTransport, probeCodex, runCodex } from '../server/codex.mjs';
+import { TEAM_TOOLS } from '../server/team-runs.mjs';
 import { HITHER_BASE_INSTRUCTIONS, HITHER_DEVELOPER_INSTRUCTIONS } from '../server/identity.mjs';
 
 const settings = { provider: 'custom', model: 'fixture-model', baseUrl: 'https://models.example.test/v1', api: 'responses', reasoningEffort: 'medium' };
@@ -31,7 +32,7 @@ class FixtureTransport extends EventEmitter {
       if (answer !== undefined) return answer;
     }
     if (method === 'initialize') return { userAgent: 'hither/fixture' };
-    if (method === 'config/read') return { config: { default_permissions: 'hither', permissions: { hither: {
+    if (method === 'config/read') return { config: { features: {multi_agent:!this.options.args.includes('features.multi_agent=false'),multi_agent_v2:!this.options.args.includes('features.multi_agent_v2=false')}, approval_policy: 'on-request', approvals_reviewer: 'user', default_permissions: 'hither', permissions: { hither: {
       filesystem: { ':minimal': 'read', [this.options.cwd]: 'write' }, network: { enabled: false },
     } } } };
     if (method === 'thread/start' || method === 'thread/resume') return { thread: { id: params.threadId || 'thread-fixture' } };
@@ -247,7 +248,7 @@ test('unsupported interactive input stops truthfully instead of inventing an ans
 });
 
 test('fails closed before creating a thread if installed runtime does not confirm restricted permissions', async t => {
-  const run = await fixtureRun(t, { request: method => method === 'config/read' ? { config: {} } : undefined });
+  const run = await fixtureRun(t, { request: method => method === 'config/read' ? { config: {approval_policy:'on-request',approvals_reviewer:'user'} } : undefined });
   await assert.rejects(run.promise, { code: 'CODEX_SANDBOX_UNSUPPORTED' });
   assert.equal(run.transport.calls.some(call => call.method === 'thread/start'), false);
 });
@@ -317,7 +318,7 @@ test('installed runtime initializes with an isolated home without starting a mod
   assert.equal(probe.available, true);
   const transport = new AppServerTransport({ cwd: workspace,
     env: { PATH: process.env.PATH, HOME: codexHome, CODEX_HOME: codexHome },
-    args: ['-c', 'analytics.enabled=false', '-c', 'default_permissions="hither"',
+    args: ['-c', 'features.multi_agent=false', '-c', 'features.multi_agent_v2=false', '-c', 'analytics.enabled=false', '-c', 'default_permissions="hither"',
       '-c', `permissions.hither.filesystem={":minimal"="read",${JSON.stringify(workspace)}="write"}`,
       '-c', 'permissions.hither.network.enabled=false'],
   });
@@ -329,6 +330,8 @@ test('installed runtime initializes with an isolated home without starting a mod
   assert.equal(config.default_permissions, 'hither');
   assert.equal(config.permissions.hither.filesystem[workspace], 'write');
   assert.equal(config.permissions.hither.network.enabled, false);
+  assert.equal(config.features.multi_agent, false);
+  assert.equal(config.features.multi_agent_v2, false);
   const outside = path.join(path.dirname(workspace), 'outside.txt');
   await writeFile(outside, 'boundary-test');
   const insideFile = path.join(workspace, 'inside.txt');
@@ -350,7 +353,7 @@ test('installed runtime accepts the complete adapter configuration; cancellation
   const calls = [];
   await assert.rejects(runCodex({ ...directories, apiKey: secret,
     settings: { ...settings, baseUrl: 'http://127.0.0.1:1/v1' }, prompt: 'This prompt must not be executed.', signal: controller.signal,
-    dynamicTools: [{type:'function',name:'hither_local_fixture',description:'Offline connector schema fixture',inputSchema:{type:'object',properties:{}}}],
+    allowSubagents:false, dynamicTools: [...TEAM_TOOLS,{type:'function',name:'hither_local_fixture',description:'Offline connector schema fixture',inputSchema:{type:'object',properties:{}}}],
     onEvent: async event => {
       events.push(event);
       if (event.type === 'runtime.thread') {
@@ -383,4 +386,71 @@ test('only completed public reasoning summaries become activity events; raw or e
   await run.promise;
   const summaries=run.events.filter(event=>event.type==='runtime.reasoning_summary');assert.equal(summaries.length,1);assert.equal(summaries[0].label,'思考摘要');assert.equal(summaries[0].detail,'Checking the supplied sources.\n\nComparing the stated constraints.');
   assert.doesNotMatch(JSON.stringify(run.events),/private-|encrypted-payload|not completed|not text/);
+});
+
+for (const mode of ['auto', 'full']) test(`user-selected ${mode} policy reaches configuration, thread and turn without weakening the other policy`, async t => {
+  const policy=mode==='full'?'never':'on-request',reviewer=mode==='auto'?'auto_review':'user';
+  const run=await fixtureRun(t,{request:(method,_params,tr)=>method==='config/read'?{config:{approval_policy:policy,approvals_reviewer:reviewer,...(mode==='full'?{sandbox_mode:'danger-full-access',default_permissions:null}:{default_permissions:'hither',permissions:{hither:{filesystem:{':minimal':'read',[tr.options.cwd]:'write'},network:{enabled:false}}}})}}:undefined},{approvalMode:mode});
+  await run.promise;
+  assert.ok(run.transport.options.args.includes(`approval_policy="${policy}"`));
+  for(const method of ['thread/start','turn/start']){const params=run.transport.calls.find(call=>call.method===method).params;assert.equal(params.approvalPolicy,policy);assert.equal(params.approvalsReviewer,reviewer);}
+  const thread=run.transport.calls.find(call=>call.method==='thread/start').params,turn=run.transport.calls.find(call=>call.method==='turn/start').params;
+  if(mode==='full'){assert.equal(thread.sandbox,'danger-full-access');assert.deepEqual(turn.sandboxPolicy,{type:'dangerFullAccess'});assert.ok(!run.transport.options.args.some(arg=>arg.startsWith('permissions.hither')));}
+  else{assert.equal(thread.sandbox,undefined);assert.equal(turn.sandboxPolicy,undefined);assert.ok(run.transport.options.args.includes('permissions.hither.network.enabled=false'));}
+});
+
+test('an unsupported auto reviewer stops before a thread starts, without silently granting access', async t=>{
+ const run=await fixtureRun(t,{}, {approvalMode:'auto'});await assert.rejects(run.promise,{code:'CODEX_APPROVAL_POLICY_UNSUPPORTED'});assert.equal(run.transport.calls.some(call=>call.method==='thread/start'),false);
+});
+
+test('usage comes from the active runtime last measurement, distinct from cumulative totals',async t=>{
+ const run=await fixtureRun(t,{start:tr=>{
+  tr.notification('thread/tokenUsage/updated',{threadId:'another-thread',tokenUsage:{last:{totalTokens:999999},total:{totalTokens:999999},modelContextWindow:1000000}});
+  tr.notification('thread/tokenUsage/updated',{tokenUsage:{last:{totalTokens:1400},total:{inputTokens:8000,outputTokens:900,totalTokens:8900},modelContextWindow:100000}});
+  tr.notification('thread/tokenUsage/updated',{tokenUsage:{last:{totalTokens:500},total:{inputTokens:8300,outputTokens:1000,totalTokens:9300},modelContextWindow:null}});
+  tr.complete();
+ }});await run.promise;const usage=run.events.filter(event=>event.type==='runtime.usage');assert.equal(usage.length,2);assert.equal(usage[0].usage.usedTokens,1400);assert.equal(usage[0].usage.totalTokens,8900);assert.equal(usage[1].usage.usedTokens,500);assert.equal(usage[1].usage.contextWindow,null);assert.equal(usage[1].usage.source,'runtime');
+});
+
+test('auto review denial remains a denial event; it never becomes a client approval',async t=>{
+ const run=await fixtureRun(t,{start:tr=>{tr.notification('item/autoApprovalReview/completed',{reviewId:'review-1',review:{status:'denied',riskLevel:'high',rationale:'Outside the requested scope.'}});tr.complete();}});await run.promise;assert.equal(run.transport.responses.length,0);assert.equal(JSON.parse(run.events.find(event=>event.type==='runtime.auto_review').detail).status,'denied');
+});
+
+for(const mode of ['auto','full'])test(`installed runtime confirms ${mode} and its filesystem boundary before any model call`,{skip:process.env.HITHER_TEST_REAL_CODEX!=='1'},async t=>{
+ const directories=await taskDirectories(t),controller=new AbortController();let transport;const calls=[];
+ const outside=path.join(path.dirname(directories.workspace),'outside-policy.txt');await writeFile(outside,'temporary boundary fixture');
+ await assert.rejects(runCodex({...directories,approvalMode:mode,apiKey:secret,settings:{...settings,baseUrl:'http://127.0.0.1:1/v1'},prompt:'Do not execute this prompt.',signal:controller.signal,
+  onEvent:async event=>{if(event.type==='runtime.thread'){
+   const result=await transport.request('command/exec',{command:['/bin/cat',outside],cwd:directories.workspace,timeoutMs:3000});
+   if(mode==='full'){assert.equal(result.exitCode,0);assert.equal(result.stdout,'temporary boundary fixture');}else assert.notEqual(result.exitCode,0);
+   controller.abort();
+  }},
+  transportFactory:options=>{transport=new AppServerTransport(options);const request=transport.request.bind(transport);transport.request=(method,...args)=>{calls.push(method);return request(method,...args);};return transport;},
+ }),{code:'CANCELLED'});
+ assert.equal(calls.includes('turn/start'),false);assert.equal(transport.closed,true);
+});
+
+test('team runtime requires confirmed disabled native delegation before starting a model',async t=>{
+  const allowed=await fixtureRun(t,{}, {allowSubagents:false});await allowed.promise;
+  assert.ok(allowed.transport.options.args.includes('features.multi_agent=false'));
+  assert.ok(allowed.transport.options.args.includes('features.multi_agent_v2=false'));
+  const denied=await fixtureRun(t,{request:(method,_params,tr)=>method==='config/read'?{config:{features:{multi_agent:true,multi_agent_v2:false},approval_policy:'on-request',approvals_reviewer:'user',default_permissions:'hither',permissions:{hither:{filesystem:{':minimal':'read',[tr.options.cwd]:'write'},network:{enabled:false}}}}}:undefined},{allowSubagents:false});
+  await assert.rejects(denied.promise,{code:'CODEX_TEAM_BOUNDARY_UNSUPPORTED'});
+  assert.ok(!denied.transport.calls.some(call=>call.method==='turn/start'));
+});
+
+test('native collaboration events preserve actual child states without replacing the parent answer',async t=>{
+ const run=await fixtureRun(t,{start:tr=>{
+  tr.notification('item/started',{item:{id:'spawn',type:'collabAgentToolCall',tool:'spawnAgent',status:'inProgress',senderThreadId:'thread-fixture',receiverThreadIds:['child-thread'],prompt:'Check evidence',agentsStates:{'child-thread':{status:'running',message:null}}}});
+  tr.notification('item/completed',{threadId:'child-thread',turnId:'child-turn',item:{id:'activity',type:'subAgentActivity',kind:'completed',agentThreadId:'child-thread',agentPath:'/root/reviewer'}});
+  tr.notification('item/completed',{threadId:'unrelated-thread',item:{id:'unrelated',type:'subAgentActivity',kind:'completed',agentThreadId:'unrelated-thread'}});
+  tr.notification('item/completed',{threadId:'child-thread',item:{id:'child-answer',type:'agentMessage',phase:'final_answer',text:'Must not become root answer'}});
+  tr.notification('item/completed',{item:{id:'wait',type:'collabAgentToolCall',tool:'wait',status:'completed',senderThreadId:'thread-fixture',receiverThreadIds:['child-thread'],prompt:'x'.repeat(10000),agentsStates:{'child-thread':{status:'completed',message:'a'.repeat(10000)+secret}}}});
+  tr.complete('Root verified summary');
+ }});
+ assert.equal((await run.promise).text,'Root verified summary');
+ const collab=run.events.filter(e=>e.type==='runtime.collaboration').map(e=>JSON.parse(e.detail));
+ assert.equal(collab.length,2);assert.equal(collab[0].agentsStates['child-thread'].status,'running');assert.equal(collab[1].agentsStates['child-thread'].status,'completed');assert.ok(JSON.stringify(collab).length<8000);
+ const activity=run.events.filter(e=>e.type==='runtime.subagent_activity');assert.equal(activity.length,1);assert.equal(JSON.parse(activity[0].detail).kind,'completed');
+ assert.ok(!JSON.stringify(run.events).includes(secret));
 });

@@ -41,3 +41,19 @@ test('cancel clears queued work and an old confirmation cannot resume the task',
 test('queued duplicate confirmations clear on reconnect without another write',()=>{
  let s=action(draft(),'review');s=action(s,'approve');s=action(s,'network',{device:'phone',online:false});s=action(s,'approve');s=action(s,'network',{device:'phone',online:true});assert.equal(s.writes.length,1);assert.equal(s.queued,undefined);
 });
+test('voice and image originals remain attached through desktop editing and phone approval',()=>{
+ let s=action(initial(),'dictate',{text:'Three friends will try the product on Friday.',noisy:false});
+ const taskId=s.taskId,voice={...s.inputs[0]};
+ s=action(s,'advance');s=action(s,'capability',{capability:'camera',enabled:true});s=action(s,'observe');
+ s=action(s,'capture',{text:'Whiteboard: leave ten minutes for feedback.'});
+ assert.equal(s.inputs.length,2);assert.equal(s.inputs[0].content,voice.content);assert.equal(s.inputs[0].capturedAt,voice.capturedAt);
+ assert.equal(s.inputs[1].kind,'image');assert(s.inputs[1].capturedAt>s.inputs[0].capturedAt);
+ assert.equal(s.inputs.every(input=>!input.confirmed),true);
+ s=action(s,'clarify',{answer:'Prepare a private session plan using both sources.'});
+ assert.equal(s.inputs.every(input=>input.confirmed),true);const sources=structuredClone(s.inputs);
+ s=action(s,'prepare',{content:'Three participants; ten minutes for feedback.'});
+ s=action(s,'revise',{content:'Three participants; five preparation days; ten minutes for feedback.'});
+ s=action(s,'review');s=action(s,'approve');
+ assert.equal(s.taskId,taskId);assert.equal(s.status,'complete');assert.deepEqual(s.inputs,sources);
+ assert.equal(s.writes.length,1);assert.match(s.writes[0].content,/five preparation days/);
+});

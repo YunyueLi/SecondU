@@ -8,6 +8,9 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const brand = JSON.parse(await readFile(path.join(root,'shared/brand.json'),'utf8'));
 if (process.platform !== 'darwin') throw new Error('This packaging script targets macOS. npm run desktop works on other Electron platforms.');
 await access(path.join(root, 'dist/index.html'));
+// Electron 44 downloads its native runtime on first use, not during npm ci.
+// Run its checksum-verifying installer so a clean checkout can package directly.
+execFileSync(process.execPath, [path.join(root, 'node_modules/electron/install.js')], { stdio: 'inherit' });
 const deliverable = path.join(root, `out/${brand.desktop.bundleName}.app`);
 const output = path.join(root, `.local/package-${Date.now()}/${brand.desktop.bundleName}.app`);
 await mkdir(path.dirname(output), { recursive: true });
@@ -15,7 +18,7 @@ await cp(path.join(root, 'node_modules/electron/dist/Electron.app'), output, { r
 const resources = path.join(output, 'Contents/Resources');
 const packaged = path.join(resources, 'app');
 await mkdir(packaged, { recursive: true });
-for (const name of ['dist', 'server', 'desktop', 'shared', 'docs', 'README.md', 'LICENSE']) {
+for (const name of ['dist', 'server', 'desktop', 'shared', 'docs', 'README.md', 'README.zh-CN.md', 'QUICKSTART.md', 'CONTRIBUTING.md', 'SECURITY.md', 'CHANGELOG.md', 'THIRD_PARTY_NOTICES.md', 'LICENSE']) {
   await cp(path.join(root, name), path.join(packaged, name), { recursive: true });
 }
 await writeFile(path.join(packaged, 'package.json'), JSON.stringify({ name: brand.compatibility.applicationId, productName: brand.name, [brand.compatibility.packagedFlag]: true, version: '0.1.0', type: 'module', main: 'desktop/main.cjs' }, null, 2));

@@ -19,15 +19,20 @@ function imageMime(data){
 export function saveAgentAvatar(store,agentId,body){
   const agent=store.require('agents',agentId);
   if(!body||Object.keys(body).some(key=>key!=='dataUrl')||typeof body.dataUrl!=='string')throw new HttpError(400,'头像内容无效','invalid_avatar');
-  if(body.dataUrl.length>Math.ceil(AVATAR_LIMIT/3)*4+40)throw new HttpError(413,'头像图片不能超过 3 MB','avatar_too_large');
-  const match=/^data:(image\/(?:png|jpeg|webp));base64,([A-Za-z0-9+/]*={0,2})$/.exec(body.dataUrl);
+  return store.put('agents',{...agent,avatarImage:saveAvatarImage(store,body.dataUrl)});
+}
+
+export function saveAvatarImage(store,dataUrl){
+  if(typeof dataUrl!=='string')throw new HttpError(400,'头像内容无效','invalid_avatar');
+  if(dataUrl.length>Math.ceil(AVATAR_LIMIT/3)*4+40)throw new HttpError(413,'头像图片不能超过 3 MB','avatar_too_large');
+  const match=/^data:(image\/(?:png|jpeg|webp));base64,([A-Za-z0-9+/]*={0,2})$/.exec(dataUrl);
   if(!match||!match[2]||match[2].length%4!==0)throw new HttpError(400,'请选择 PNG、JPEG 或 WebP 图片','invalid_avatar');
   const mime=match[1],data=Buffer.from(match[2],'base64');
   if(data.length>AVATAR_LIMIT)throw new HttpError(413,'头像图片不能超过 3 MB','avatar_too_large');
   if(data.toString('base64')!==match[2]||imageMime(data)!==mime)throw new HttpError(400,'头像格式与图片内容不一致','invalid_avatar');
   const file=`${randomUUID()}.${extensions[mime]}`;
   writeFileSync(path.join(avatarDirectory(store),file),data,{flag:'wx',mode:0o600});
-  return store.put('agents',{...agent,avatarImage:`/api/avatars/${file}`});
+  return `/api/avatars/${file}`;
 }
 
 export function getAvatar(store,file){

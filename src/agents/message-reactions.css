@@ -1,0 +1,9 @@
+.message-reactions{display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap}
+.message-reactions .message-reaction-chip{display:inline-flex;align-items:center;justify-content:center;gap:5px;width:auto!important;height:25px!important;min-width:36px;padding:2px 7px!important;background:var(--color-surface-secondary);border:1px solid var(--color-border);border-radius:14px;font-size:14px}
+.message-reaction-chip>small{font-size:11px;font-variant-numeric:tabular-nums;color:var(--color-text-secondary)}
+.message-reaction-picker{padding:7px!important}
+.message-reaction-picker>div{display:flex;gap:3px}
+.message-reaction-picker button{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:9px;font-size:22px}
+.message-reaction-picker button:hover,.message-reaction-picker button[aria-pressed=true]{background:var(--color-surface-secondary)}
+.message-reaction-picker button:focus-visible,.message-reaction-chip:focus-visible{outline:2px solid var(--color-ring);outline-offset:2px}
+.message-reaction-picker p,.message-reactions>small{font-size:12px;color:var(--color-text-danger);line-height:1.5}

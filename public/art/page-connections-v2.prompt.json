@@ -1,0 +1,15 @@
+{
+  "asset": "page-connections-v2.png",
+  "created": "2026-09-30",
+  "generator": "built-in image_gen",
+  "use_case": "stylized-concept",
+  "transparent_background": true,
+  "intended_display": {
+    "width": 84,
+    "height": 84
+  },
+  "prompt": "Use case: stylized-concept. Asset type: one original fine-art editorial spot illustration on a truly transparent alpha background for an app page heading, intended to be displayed at 84 by 84 pixels. Square canvas. A single complete composition, not an atlas or multiple variants. Design it as a small collectible handmade artwork, with tactile paper grain, softly modelled form, delicate matte oil-paint brushwork and restrained natural light. A strong clear silhouette with only a few substantial forms, confident proportions, ample transparent breathing room and no cropped elements. The composition should occupy roughly the center 80 percent of the square. Quiet, intelligent, contemporary art direction rather than a stock software icon. No letters, writing, numbers, readable text, watermarks, logos, scenery or a surrounding background. Absolutely no blue leaf branches, golden sun discs, red ribbon decoration, calendars, badges, or decorative repeated motif formula. Keep genuine transparent empty space, no background wash or shadow rectangle.\nCreate a small sculptural network of exactly three irregular smooth ceramic forms, connected by a beautifully woven soft cord. The forms feel like tiny abstract river-worn pebbles with one open hole each, in quiet sage green, pale mineral blue and chalk. A single deep slate-blue woven cord passes through their holes and creates one elegant loose knot between them. Give each form a different shape: rounded arch, soft pebble and short oval. Arrange them in a light open triangular relationship with clear transparent gaps, not a stack. The sculpture feels emotionally connected and delicately balanced. Matte ceramic forms are illustrated with subtle hand-painted oil texture, and the cord has visible but restrained fiber texture. No people, no portrait cards, no paper badges, no circle behind it, no foliage or ribbon. The intertwined structure itself conveys human connections.",
+  "source": "public/art/page-connections-v2.png",
+  "source_kind": "repository copy of generated output",
+  "source_sha256": "0668ff8c5aceebe7e82b1d3a398a28625503dcb56bcda745328563983a6f65fa"
+}

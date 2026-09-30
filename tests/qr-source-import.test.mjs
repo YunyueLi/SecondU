@@ -45,6 +45,11 @@ test('a real shared-agent QR preserves source provenance and imports only public
  assert.deepEqual(parseAgentImport(JSON.stringify(card)),{kind:'card',card});
 });
 
+test('a limited delegate QR opens its capability without importing instructions or making network requests',()=>{
+ const url='http://127.0.0.1:58000/share/delegation-12345678-abcd-1234-abcd-123456789012#access='+ 'x'.repeat(43);
+ const result=fromQR(url);assert.equal(result.preview.kind,'delegation');assert.equal(result.preview.url,url);assert.equal('instructions' in result.preview,false);assert.equal('sourceUrl' in result.preview,false);
+});
+
 test('source parsing normalizes the visible host and rejects executable or credential-bearing URLs',()=>{
  assert.deepEqual(parseAgentImport('https://例子.测试/地点'),{kind:'source',hostname:'xn--fsqu00a.xn--0zwm56d',sourceUrl:'https://xn--fsqu00a.xn--0zwm56d/%E5%9C%B0%E7%82%B9'});
  assert.equal(normalizeAgentSourceUrl('HTTP://Example.COM/care'),'http://example.com/care');

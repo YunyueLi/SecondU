@@ -1,11 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createSeed} from '../server/seed.mjs';
-import {createDemoExpansion} from '../server/demo-expansion.mjs';
+import archived from '../server/fixtures/demo-zh-before-v1.json' with {type:'json'};
+const createSeed=()=>structuredClone(archived.seed);
+const createDemoExpansion=()=>structuredClone(archived.expansion);
 import translations from '../shared/demo-cognition-translations.json' with {type:'json'};
 const chinese=/[\u3400-\u9fff]/;
 function translated(collection,id,value,field){if(!chinese.test(value||''))return;const result=translations[collection]?.[id]?.[value];assert.equal(typeof result,'string',`Missing English: ${collection}/${id}/${field}`);assert.ok(result.trim());assert.doesNotMatch(result,chinese);assert.doesNotMatch(result,/ · /);return result;}
-test('authored facts, feedback history, goals and relationships have complete English display text',()=>{
+test('archived facts, feedback history, goals and relationships have complete English display text',()=>{
  const seed=createSeed('2026-09-30T00:00:00Z'),extra=createDemoExpansion('2026-09-30T00:00:00Z');
  assert.equal(Object.keys(translations.facts).length,6);assert.equal(Object.keys(translations.goals).length,8);assert.equal(Object.keys(translations.relationships).length,35);
  for(const fact of seed.facts){translated('facts',fact.id,fact.statement,'statement');for(const version of fact.history){translated('facts',fact.id,version.statement,'history.statement');translated('facts',fact.id,version.reason,'history.reason');}}

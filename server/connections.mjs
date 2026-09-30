@@ -4,9 +4,8 @@ import { modelIdIssue } from '../shared/model-validation.mjs';
 import { providerIds } from '../shared/provider-presets.mjs';
 import { providerIdentity, validateTextResponse, validateMessagesTextResponse, anthropicHeaders, safeProviderText, providerErrorDetail, readProviderTestJson } from './provider-test.mjs';
 
-export function providerHeaders(settings) {
-  return settings.provider==='openrouter' && settings.appTitle ? {'X-OpenRouter-Title':settings.appTitle} : {};
-}
+import { providerHeaders } from './provider-headers.mjs';
+export { providerHeaders } from './provider-headers.mjs';
 export function validateConnectionModel(settings) {
   const issue=modelIdIssue(settings.provider,settings.model);
   if(issue)throw new HttpError(400,settings.provider==='openrouter'?'OpenRouter 需要填写完整模型 ID 或 preset（如 openrouter/free），不能填写平台名称。请从官方模型目录复制；不会自动替换你保存的模型。':'请填写具体模型 ID，不能填写厂商或产品名称。','invalid_model_id');
@@ -50,7 +49,7 @@ export function validateChatResponse(result) {
   if(choice?.finish_reason!=='stop'||choice?.message?.role!=='assistant'||typeof choice.message.content!=='string'||!choice.message.content.trim())return {ok:false,message:'HTTP 请求成功，但未收到完整且非空的 Chat Completions 文本输出，文本连接测试未通过。'};
   return {ok:true,message:'已完成一次非空文本响应。Chat Completions 转接的工具调用和实际模型能力仍需单独验收。'};
 }
-export async function testConnection(store,connectionId,{defaultId,cleanError=String}={}) {
+export async function testConnection(store,connectionId,{defaultId,cleanError=String,fetchImpl=fetch}={}) {
   const settings=store.connection(connectionId),key=store.getKey(settings);
   validateConnectionModel(settings);
   const secrets=[key,...Object.values(store.getKeys())];
@@ -59,7 +58,7 @@ export async function testConnection(store,connectionId,{defaultId,cleanError=St
   try {
     const chat=settings.api==='chat_completions',messages=settings.api==='messages';
     const body=messages?{model:settings.model,messages:[{role:'user',content:'Reply with OK.'}],max_tokens:1024,stream:false}:chat?{model:settings.model,messages:[{role:'user',content:'Reply with OK.'}],max_tokens:64,stream:false}:{model:settings.model,input:'Reply with OK.',max_output_tokens:64,store:false,stream:false};
-    const response=await fetch(settings.baseUrl.replace(/\/+$/,'')+(messages?'/messages':chat?'/chat/completions':'/responses'),{method:'POST',headers:{...(messages?anthropicHeaders(key):{Authorization:`Bearer ${key}`}), 'Content-Type':'application/json',...providerHeaders(settings)},body:JSON.stringify(body),signal:AbortSignal.timeout(20000),redirect:'error'});
+    const response=await fetchImpl(settings.baseUrl.replace(/\/+$/,'')+(messages?'/messages':chat?'/chat/completions':'/responses'),{method:'POST',headers:{...(messages?anthropicHeaders(key):{Authorization:`Bearer ${key}`}), 'Content-Type':'application/json',...providerHeaders(settings)},body:JSON.stringify(body),signal:AbortSignal.timeout(20000),redirect:'error'});
     const payload=await readProviderTestJson(response),detail=providerErrorDetail(payload,[...secrets,...Object.values(store.getKeys())]);
     if(!response.ok||payload?.error)outcome={ok:false,message:cleanError(`提供方返回 HTTP ${response.status}。${detail?` ${detail}。`:''}连接测试未通过；请核对模型、地址和密钥。`)};
     else outcome=(messages?validateMessagesTextResponse:chat?validateChatResponse:validateTextResponse)(payload);

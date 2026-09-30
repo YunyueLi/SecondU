@@ -101,8 +101,8 @@
 .model-option-logo { display:flex; align-items:center; justify-content:center; width:18px; flex-shrink:0; }
 .model-option-logo>svg { width:18px; height:18px; }
 .model-connection-option strong,.model-connection-option small { display:block; font-weight:400;     white-space:normal;overflow-wrap:anywhere;}
-.model-connection-option strong { font-size:12px; }
-.model-connection-option small { font-size:var(--hither-font-meta); margin-top:3px; color:var(--color-text-secondary); }
+.model-connection-option strong { font-size:14px; }
+.model-connection-option small { font-size:13px; margin-top:3px; color:var(--color-text-secondary); }
 .model-connection-trigger { display:flex; align-items:center; justify-content:center; gap:8px; min-width:0; max-width:100%; }
 .model-connection-trigger>span:last-child { min-width:0; font-size:12px; line-height:1.5; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .model-connection-trigger>svg { width:15px; height:15px; flex-shrink:0; }

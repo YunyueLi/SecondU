@@ -1,0 +1,81 @@
+/* The personal profile has its own reading scale; other cognition pages are untouched. */
+.personal-overview .portrait-title{display:flex;align-items:center;gap:10px}
+.personal-overview .portrait-title>:last-child:not(:first-child){font-size:11px;letter-spacing:0;font-weight:400;flex-shrink:0}
+.personal-overview .portrait-layout{display:grid;grid-template-columns:minmax(0,1.9fr) minmax(250px,1fr);gap:32px;align-items:start}
+.personal-overview .portrait-main,.personal-overview .portrait-context,.personal-overview .portrait-detail{min-width:0}
+.personal-overview h2{margin:0;font-size:16px;line-height:22px;font-weight:550}
+.personal-overview h3{margin:0;color:var(--color-text-secondary);font-size:13px;line-height:20px;font-weight:500}
+.personal-overview .section-heading{margin-bottom:10px;min-height:28px;gap:10px}
+.personal-overview .section-link{font-size:13px}
+.personal-overview .portrait-fact-group{display:grid;grid-template-columns:86px minmax(0,1fr);column-gap:16px;align-items:start}
+.personal-overview .portrait-fact-group>h3{grid-column:1;grid-row:1 / span 3;padding-top:9px}
+.personal-overview .portrait-fact-group>:not(h3){grid-column:2}
+.personal-overview .portrait-fact-group+.portrait-fact-group{margin-top:8px;padding-top:8px;border-top:1px solid var(--color-border-subtle)}
+.personal-overview .portrait-capabilities{margin-top:12px;padding-top:12px;border-top:1px solid var(--color-border-subtle)}
+.personal-overview .portrait-fact-list{min-width:0}
+.personal-overview .portrait-fact-row{display:flex;width:100%;align-items:flex-start;gap:10px;padding:8px 6px;margin-inline:-6px;border-radius:6px;text-align:left;color:var(--color-text-primary);cursor:pointer}
+.personal-overview .portrait-fact-row+.portrait-fact-row{border-top:1px solid var(--color-border-subtle);border-top-left-radius:0;border-top-right-radius:0}
+.personal-overview .portrait-fact-copy{flex:1;min-width:0}
+.personal-overview .portrait-fact-text{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere;font-size:14px;line-height:22px}
+.personal-overview .portrait-fact-copy>small{display:block;font-size:12px;line-height:18px;color:var(--color-text-secondary);margin-top:3px}
+.personal-overview .portrait-fact-row>svg{flex-shrink:0;width:13px;height:13px;margin-top:5px;color:var(--color-text-secondary);opacity:.45}
+.personal-overview .portrait-fact-row:hover,.personal-overview .portrait-fact-row.is-selected{background:var(--color-background-secondary)}
+.personal-overview .portrait-more{display:inline-flex;width:fit-content;min-height:30px;align-items:center;gap:5px;margin:2px 0 0;padding:3px 0;color:var(--color-text-secondary);font-size:13px;line-height:20px;text-align:left;cursor:pointer}
+.personal-overview .portrait-more:hover{color:var(--color-text-primary)}
+.personal-overview .portrait-more svg{width:13px;height:13px;flex-shrink:0}
+.personal-overview .portrait-more[aria-expanded='true'] svg{transform:rotate(180deg)}
+.personal-overview .portrait-biography,.personal-overview .portrait-understandings{border-top:1px solid var(--color-border-subtle);padding-top:20px;margin-top:20px}
+.personal-overview .portrait-career{list-style:none;margin:0;padding:0}
+.personal-overview .portrait-career>li{display:grid;grid-template-columns:82px minmax(0,1fr);gap:16px}
+.personal-overview .portrait-career time{padding-top:9px;color:var(--color-text-secondary);font-size:13px;line-height:20px;font-variant-numeric:tabular-nums}
+.personal-overview .portrait-career button{position:relative;display:flex;align-items:baseline;gap:8px;width:100%;padding:8px 0 10px 18px;border-left:1px solid var(--color-border);text-align:left;cursor:pointer}
+.personal-overview .portrait-career button:before{content:'';position:absolute;top:17px;left:-3px;width:5px;height:5px;border-radius:50%;background:var(--color-text-secondary)}
+.personal-overview .portrait-career strong{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;flex:1;font-size:14px;line-height:22px;font-weight:400;overflow-wrap:anywhere}
+.personal-overview .portrait-career svg{width:13px;height:13px;flex-shrink:0;color:var(--color-text-secondary);opacity:.45}
+.personal-overview .portrait-career button:hover strong{text-decoration:underline;text-underline-offset:3px}
+.personal-overview .portrait-understandings{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px}
+.personal-overview .portrait-preference-group+.portrait-preference-group{margin-top:12px}
+.personal-overview .portrait-context,.personal-overview .portrait-detail{border-left:1px solid var(--color-border-subtle);padding-left:24px}
+.personal-overview .portrait-relation-group+.portrait-relation-group{margin-top:16px}
+.personal-overview .portrait-relation-group>h3{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:3px}
+.personal-overview .portrait-relation-group>h3>span{font-size:12px;font-weight:400;font-variant-numeric:tabular-nums}
+.personal-overview .portrait-person-row{display:flex;align-items:center;gap:9px;width:100%;min-width:0;padding:7px 4px;margin-inline:-4px;border-radius:6px;text-align:left;cursor:pointer}
+.personal-overview .portrait-person-avatar{display:grid;place-items:center;width:30px;height:30px;flex:0 0 30px;border-radius:50%;background:var(--color-background-secondary);color:var(--color-text-secondary);font-size:13px}
+.personal-overview .portrait-person-row>span:nth-child(2){flex:1;min-width:0}
+.personal-overview .portrait-person-row strong{display:block;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:14px;line-height:20px;font-weight:500}
+.personal-overview .portrait-person-row small{display:block;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:12px;line-height:18px;color:var(--color-text-secondary)}
+.personal-overview .portrait-person-row>svg{width:13px;height:13px;flex-shrink:0;color:var(--color-text-secondary);opacity:.4}
+.personal-overview .portrait-person-row:hover{background:var(--color-background-secondary)}
+.personal-overview .portrait-circumstances{padding-top:20px;margin-top:20px;border-top:1px solid var(--color-border-subtle)}
+.personal-overview .portrait-circumstances .portrait-fact-text{font-size:13px;line-height:21px}
+.personal-overview .portrait-current-goals{margin-top:16px}
+.personal-overview .portrait-current-goals>a{display:flex;align-items:baseline;gap:7px;padding:7px 0;font-size:13px;line-height:20px}
+.personal-overview .portrait-current-goals>a>span{flex:1;min-width:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.personal-overview .portrait-current-goals time{flex-shrink:0;font-size:12px;color:var(--color-text-secondary);font-variant-numeric:tabular-nums}
+.personal-overview .portrait-current-goals svg{width:13px;height:13px;flex-shrink:0;color:var(--color-text-secondary)}
+.personal-overview .portrait-unresolved{margin-top:20px;padding-top:10px;border-top:1px solid var(--color-border-subtle)}
+.personal-overview .portrait-unresolved>summary{display:flex;align-items:center;gap:8px;min-height:36px;list-style:none;cursor:pointer;font-size:13px;color:var(--color-text-secondary)}
+.personal-overview .portrait-unresolved>summary::-webkit-details-marker{display:none}
+.personal-overview .portrait-unresolved>summary>svg{width:14px;height:14px;margin-left:auto}
+.personal-overview .portrait-unresolved[open]>summary>svg{transform:rotate(180deg)}
+.personal-overview .portrait-missing{margin:8px 0;color:var(--color-text-secondary);font-size:13px;line-height:21px}
+.personal-overview .portrait-detail{position:sticky;top:20px;scroll-margin-top:24px}
+.personal-overview .portrait-detail>header{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}
+.personal-overview .portrait-detail>h3{font-size:16px;line-height:24px;color:var(--color-text-primary)}
+.personal-overview .portrait-detail p{font-size:14px;line-height:24px;white-space:pre-wrap;overflow-wrap:anywhere;margin:12px 0}
+.personal-overview .portrait-detail .portrait-detail-statement{margin-top:0}
+.personal-overview .portrait-detail-meta{display:flex;flex-wrap:wrap;align-items:center;gap:7px;color:var(--color-text-secondary);font-size:12px;line-height:18px;margin:12px 0}
+.personal-overview .portrait-detail-actions{display:flex;flex-wrap:wrap;gap:5px;margin-top:16px}
+.personal-overview .portrait-event-people{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.personal-overview .portrait-event-people button{display:flex;align-items:center;gap:6px;font-size:13px;padding:5px}
+.personal-overview .portrait-event-people svg{width:13px;height:13px}
+.personal-overview .portrait-person-detail{display:flex;align-items:center;gap:10px}
+.personal-overview .portrait-person-detail h3{color:var(--color-text-primary);font-size:16px;line-height:22px}
+.personal-overview .portrait-person-detail small{color:var(--color-text-secondary);font-size:13px;line-height:20px}
+.personal-overview .portrait-person-entries{margin-top:16px;border-top:1px solid var(--color-border-subtle)}
+.personal-overview .portrait-detail-link,.personal-overview .portrait-add-source{display:flex;align-items:center;gap:8px;font-size:13px;margin-top:16px}
+.personal-overview .portrait-detail-link svg,.personal-overview .portrait-add-source svg{width:14px;height:14px}
+.personal-overview :is(button,a,summary):focus-visible{outline:2px solid var(--color-text-primary);outline-offset:3px}
+@media(max-width:1100px){.personal-overview .portrait-layout{grid-template-columns:minmax(0,1.7fr) minmax(230px,1fr);gap:24px}.personal-overview .portrait-context,.personal-overview .portrait-detail{padding-left:20px}.personal-overview .portrait-fact-group{grid-template-columns:72px minmax(0,1fr);gap:10px}.personal-overview .portrait-understandings{grid-template-columns:minmax(0,1fr);gap:20px}}
+@media(max-width:800px){.personal-overview .portrait-layout{grid-template-columns:minmax(0,1fr);gap:24px}.personal-overview .portrait-context,.personal-overview .portrait-detail{border-left:0;padding-left:0;border-top:1px solid var(--color-border-subtle);padding-top:20px}.personal-overview .portrait-context{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px}.personal-overview .portrait-circumstances{margin:0;padding:0;border:0}.personal-overview .portrait-understandings{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+@media(max-width:540px){.personal-overview .portrait-fact-group{display:block}.personal-overview .portrait-fact-group>h3{padding-top:0}.personal-overview .portrait-understandings,.personal-overview .portrait-context{grid-template-columns:minmax(0,1fr);gap:20px}.personal-overview .portrait-circumstances{padding-top:20px;border-top:1px solid var(--color-border-subtle)}.personal-overview .portrait-career>li{grid-template-columns:74px minmax(0,1fr);gap:10px}.personal-overview .portrait-career time{font-size:12px}}

@@ -1,0 +1,15 @@
+{
+  "asset": "page-sources-v2.png",
+  "created": "2026-09-30",
+  "generator": "built-in image_gen",
+  "use_case": "stylized-concept",
+  "transparent_background": true,
+  "intended_display": {
+    "width": 84,
+    "height": 84
+  },
+  "prompt": "Use case: stylized-concept. Asset type: one original fine-art editorial spot illustration on a truly transparent alpha background for an app page heading, intended to be displayed at 84 by 84 pixels. Square canvas. A single complete composition, not an atlas or multiple variants. Design it as a small collectible handmade artwork, with tactile paper grain, softly modelled form, delicate matte oil-paint brushwork and restrained natural light. A strong clear silhouette with only a few substantial forms, confident proportions, ample transparent breathing room and no cropped elements. The composition should occupy roughly the center 80 percent of the square. Quiet, intelligent, contemporary art direction rather than a stock software icon. No letters, writing, numbers, readable text, watermarks, logos, scenery or a surrounding background. Absolutely no blue leaf branches, golden sun discs, red ribbon decoration, calendars, badges, or decorative repeated motif formula. Keep genuine transparent empty space, no background wash or shadow rectangle.\nCreate an open sculptural archival box of folded handmade board, matte coral-ochre on its outer walls and warm chalk inside. Three distinct sheets rise partly out of the box at different heights: one frosted translucent pale smoke-blue vellum sheet, one warm ivory textured document and one thin muted gray-blue card. The paper corners tilt in different directions like a carefully curated small paper sculpture. The box has a simple wide low trapezoid silhouette with a subtle lid folded back; the sheets are large and blank, without marks. Palette: burnt coral, muted ochre, warm gray and translucent smoke blue. Strong asymmetrical composition, light filtering through the vellum. No folders with tabs, no leaves, no discs, no ribbons, no text or pictograms. Convey gathered evidence through the different materials.",
+  "source": "public/art/page-sources-v2.png",
+  "source_kind": "repository copy of generated output",
+  "source_sha256": "57413c4b65a2f6fa27a0b241a0d8d01b771b231b0ce4dcb23f66bbd73dbb862b"
+}

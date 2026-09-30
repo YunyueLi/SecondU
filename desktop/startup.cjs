@@ -34,4 +34,24 @@ function writeStartupDocument(root,directory,options={}){
   fs.writeFileSync(file,startupHtml(root,options),{mode:0o600});
   return {file,url:pathToFileURL(file).href};
 }
-module.exports={startupHtml,writeStartupDocument,readStartupAppearance,RETRY_URL};
+function initialWindowBounds(workArea){
+  const width=Math.min(1440,Math.max(320,workArea.width-48));
+  const height=Math.min(960,Math.max(320,workArea.height-48));
+  return {width,height,minWidth:Math.min(900,width),minHeight:Math.min(640,height),x:Math.round(workArea.x+(workArea.width-width)/2),y:Math.round(workArea.y+(workArea.height-height)/2)};
+}
+function backendIdentityMatches(value,expected){
+  return Boolean(value&&expected&&typeof expected.revision==='string'&&expected.revision.length>0&&
+    value.status==='ok'&&value.application===expected.application&&value.version===expected.version&&
+    value.spaceId===expected.spaceId&&value.revision===expected.revision);
+}
+async function selectBackendPort(ports,probe,expected){
+  let available;
+  for(const port of ports){
+    const state=await probe(port);
+    if(backendIdentityMatches(state.value,expected))return {port,reuse:true};
+    // Unknown, old and unrelated listeners stay running and keep their own port.
+    if(!state.occupied&&available===undefined)available=port;
+  }
+  return available===undefined?undefined:{port:available,reuse:false};
+}
+module.exports={startupHtml,writeStartupDocument,initialWindowBounds,readStartupAppearance,backendIdentityMatches,selectBackendPort,RETRY_URL};

@@ -9,6 +9,8 @@
   --hither-font-section-title: calc(var(--hither-font-body) + 2px);
   --hither-font-modal-title: calc(var(--hither-font-body) + 4px);
   --hither-font-form: var(--hither-font-label);
+  --hither-font-settings-title: calc(var(--hither-font-body) + 3px);
+  --hither-font-settings-heading: calc(var(--hither-font-body) + 4px);
   --hither-space-1: 4px;
   --hither-space-2: 8px;
   --hither-space-3: 12px;

@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "generator": "built-in image_gen",
+  "asset": "fictional-portraits-v1.png",
+  "requestedAt": "2026-09-30T09:01:03.256Z",
+  "transparent_background": false,
+  "width": 1536,
+  "height": 1024,
+  "pngColorType": 2,
+  "layout": {
+    "columns": 3,
+    "rows": 2,
+    "order": "row-major"
+  },
+  "content": "Six entirely fictional adult portraits for the earlier Agent network prototype.",
+  "status": "Historical prototype asset. Current market uses Agent badges and Dating uses the separate oil-painting illustration.",
+  "provenance": {
+    "generationSession": "01a0f00c-2941-7013-bb8f-06818a6796f1",
+    "generationOutput": "exec-b996c48d-923a-4bf2-a70f-2004e9eb7159.png",
+    "sha256": "a09c22d361a618758f21c44309bf743714daa0c3ef91a7152490871145da9a25",
+    "verification": "Prompt recovered verbatim from the original image_gen call. Asset bytes exactly match the generated output; copied without cropping or editing."
+  },
+  "prompt": "Use case: photorealistic-natural. Asset type: a single portrait atlas image for fictional adult profiles in a local product prototype. Create ONE clean photographic contact sheet, exactly 3 columns by 2 rows with no margins, no gaps, no dividing lines and no text. Every cell must be exactly the same size and show one clearly fictional adult, waist-up, face centered in its cell, plenty of headroom, candid warmth and authentic skin texture, natural documentary lifestyle photography, muted neutral daylight. Cell top-left: East Asian woman age 31, black bob hair, olive overshirt, light pottery studio. Top-middle: East Asian man age 33, short black hair, round glasses, cream tee, quiet bookshop. Top-right: white woman age 30, brown wavy shoulder-length hair, blue linen shirt, outdoor cafe. Bottom-left: East Asian woman age 29, long black hair tied loosely back, muted rust cardigan, green urban park. Bottom-middle: Black man age 32, short curls, navy sweater, sunny community workshop. Bottom-right: white man age 34, short brown hair, light stubble, moss green shirt, riverside path. Equal face scales across all six cells. Each scene fills its own rectangular cell. Do not merge backgrounds across cell boundaries. No hands near faces, no phones, no brand logos, no text, no app interface, no badges, no symbols, no watermarks. This is an original image of entirely fictional people, not based on any reference or real identifiable person."
+}

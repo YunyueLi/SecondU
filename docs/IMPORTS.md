@@ -86,7 +86,7 @@ Instagram 原生导出按 `sender_name` 和参与人名称建立文件身份，`
 - Slack 的消息 ID 使用完整 `ts` 字符串，时间转换不改变 ID。原生数组通常不含频道 ID，需要在界面填写稳定 `conversationId`，避免同日期不同频道误合并。可选 `users` 只用作名称映射；未提供时显示平台用户 ID。线程与编辑字段完整保留于来源，不把旧内容覆写成新事实。
 - Telegram 从 Desktop 导出的 `date_unixtime` 读取时间；`text` 字符串或文字片段数组合成可读正文。可见参与者只包含文件中的发送人。附件/服务事件没有正文时明确标注，原字段仍在来源。
 - 飞书解析 `message_id/chat_id/sender.id/create_time/msg_type/body.content`。正文只直接显示 `text` 类型，其他类型提示查看来源；`has_more` 提示还存在后续页。这里读取的是用户保存的 JSON，不是产品连接飞书获取记录。
-- 16 个平台选项代表来源标记与上述文件支持范围，不等于 16 个账号连接。图标全部本地提供；微信、QQ、飞书、企业微信、钉钉、Slack、Teams、Telegram、Discord 等已使用各自品牌图形，Signal 等保留对应本地图标。新增彩色 SVG 的固定版本、摘要、改编说明与许可见 `src/cognition/platform-icons/sources.json`，原有资源说明见 `public/icons/platforms/expanded-sources.json`。Lobe UI 资源按 MIT 保留许可，企业微信图形依据 Arcticons 的 CC-BY-SA-4.0 资源改编并保留署名及同许可说明。
+- 18 个来源选项代表来源标记与上述文件支持范围，不等于账号连接。邮件和短信接受规范 JSON 文件，分别显示邮件与短信标识；不读取邮箱或手机，也不假定已具备发送能力。图标全部本地提供；微信、QQ、飞书、企业微信、钉钉、Slack、Teams、Telegram、Discord 等已使用各自品牌图形，Signal 等保留对应本地图标。新增彩色 SVG 的固定版本、摘要、改编说明与许可见 `src/cognition/platform-icons/sources.json`，原有资源说明见 `public/icons/platforms/expanded-sources.json`。Lobe UI 资源按 MIT 保留许可，企业微信图形依据 Arcticons 的 CC-BY-SA-4.0 资源改编并保留署名及同许可说明。
 
 格式参考于 2026-09-29 读取： [Slack 官方导出说明](https://slack.com/help/articles/220556107-How-to-read-Slack-data-exports)、[Telegram Desktop 官方 JSON 导出代码](https://github.com/telegramdesktop/tdesktop/blob/dev/Telegram/SourceFiles/export/output/export_output_json.cpp)、[飞书官方消息结构](https://github.com/larksuite/oapi-sdk-python/blob/v2_main/lark_oapi/api/im/v1/model/message.py)及[分页响应结构](https://github.com/larksuite/oapi-sdk-python/blob/v2_main/lark_oapi/api/im/v1/model/list_message_response_body.py)。飞书网页正文未被工具读取，字段核对使用官方 SDK 源码。实现有定向 fixture 测试，真实账号与私人导出不在本次验收范围。
 

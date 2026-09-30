@@ -1,6 +1,7 @@
 import { ImConnections, ConversationReply } from '../communications/ImConnections';
 import { plainTextPreview } from '../agents/preview';
 import { t, getLocale } from '../i18n';
+import { UserAvatar } from '../UserAvatar';
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
 import type { Bootstrap, Conversation, Person, Relationship } from '../../shared/contracts';
@@ -10,12 +11,16 @@ import { PlatformFilter } from './PlatformFilter';
 import { Badge } from '@openai/apps-sdk-ui/components/Badge';
 import { Search, Group, FileUpload, SidebarRight, CloseBold, ArrowLeft, Edit } from '@openai/apps-sdk-ui/components/Icon';
 import { Empty } from '../components';
+import { ThemeDecoration } from '../themes/ThemeDecoration';
 import { PortraitView } from './PortraitView';
 import { PersonForm, RelationshipForm } from './RecordForms';
-import { ConversationFileImport, platformLabels } from './ConversationFileImport';
+import { ConversationFileImport } from './ConversationFileImport';
+import { platformLabels } from './PlatformSelect';
 import { displayRole } from './display';
 import { PlatformIcon, PlatformOption } from './PlatformIcon';
 import { useInboxResize } from './useInboxResize';
+import { api } from '../api';
+import { PERSONAL_SPACE } from '../space';
 import './explorer.css';
 import './inbox-resize.css';
 
@@ -42,7 +47,7 @@ export function ConversationInbox({ data, refs, onRefresh }: Props) {
   const [editingPerson, setEditingPerson] = useState<Person>();
   const [editingRelationship,setEditingRelationship]=useState<Relationship>();
   const [importing, setImporting] = useState(false);
-  const [connecting,setConnecting]=useState(false);
+  const [connecting,setConnecting]=useState(()=>!data.profile.demo&&location.hash==='#conversations/connect');
   const [connectionRefresh,setConnectionRefresh]=useState(0);
   const [visibleCount, setVisibleCount] = useState(100);
   const root = useRef<HTMLDivElement>(null);
@@ -98,10 +103,11 @@ export function ConversationInbox({ data, refs, onRefresh }: Props) {
     return item.personIds.map(id => people.get(id)).find(person => person && !selfIds.has(person.id))?.name[0] || '?';
   }
   function select(id: string) { setSelected(id); setThreadOpen(true); }
+  async function openConnections() { setConnecting(true); }
 
   return <div ref={root} style={{ '--inbox-list-width': `${resize.width}px` } as CSSProperties} className={`inbox-workspace inbox-reading resizable-inbox ${resize.dragging ? 'is-resizing' : ''} ${compact ? 'is-compact' : ''} ${detailsOpen ? 'has-details' : ''} ${threadOpen ? 'is-thread-open' : ''}`}>
     <aside className="inbox-list-pane" aria-label={t("联系人会话", "Contact conversations")}>
-      <div className="inbox-list-heading"><h1>{t("聊天记录", "Chat history")}</h1><Button color="secondary" variant="ghost" uniform size="lg" title={t("导入外部记录", "Import records")} aria-label={t("导入外部记录", "Import records")} onClick={() => setImporting(true)}><FileUpload /></Button></div>
+      <div className="inbox-list-heading"><ThemeDecoration kind="conversations"/><h1>{t("聊天记录", "Chat history")}</h1><Button color="secondary" variant="ghost" uniform size="lg" title={t("导入外部记录", "Import records")} aria-label={t("导入外部记录", "Import records")} onClick={() => setImporting(true)}><FileUpload /></Button></div>
       <div className="inbox-search"><Input size="lg" variant="soft" startAdornment={<Search />} aria-label={t("搜索联系人和消息", "Search contacts and messages")} placeholder={t("搜索联系人和消息", "Search contacts and messages")} value={query} onChange={event => setQuery(event.target.value)} /></div>
       <div className="inbox-platform-filter"><PlatformFilter label={t('筛选聊天平台','Filter chat platforms')} value={platform} onChange={setPlatform} options={[{value:'all',label:t('所有平台','All platforms')},...Object.entries(platformLabels()).filter(([value])=>data.conversations.some(item=>(item.platform||'generic')===value)).map(([value,label])=>({value,label}))]}/><span aria-label={t(`${conversations.length} 个会话`, `${conversations.length} conversations`)}>{conversations.length}</span></div>
       <nav className="inbox-conversations" aria-label={t("会话列表", "Conversation list")}>{conversations.map(item => <Button key={item.id} color="secondary" variant="ghost" pill={false} className="inbox-conversation" title={item.title} aria-label={item.title} selected={conversation?.id === item.id} aria-current={conversation?.id === item.id ? 'page' : undefined} onClick={() => select(item.id)}>
@@ -112,7 +118,7 @@ export function ConversationInbox({ data, refs, onRefresh }: Props) {
     <div className="inbox-pane-resizer" role="separator" aria-orientation="vertical" aria-label={t('调整联系人列表宽度', 'Resize conversation list')} aria-valuemin={resize.minWidth} aria-valuemax={resize.maxWidth} aria-valuenow={resize.width} aria-valuetext={t(`${resize.width} 像素`, `${resize.width} pixels`)} tabIndex={containerWidth > 620 ? 0 : -1} title={t('拖动调整宽度，双击恢复默认', 'Drag to resize. Double-click to reset.')} {...resize.separatorProps} />
     <section className="inbox-thread" aria-label={conversation?.title || t("对话记录", "Conversation records")}>
       {conversation ? <>
-        <header className="inbox-thread-heading"><Button color="secondary" variant="ghost" uniform size="lg" className="inbox-back" aria-label={t("返回会话列表", "Back to conversations")} onClick={() => setThreadOpen(false)}><ArrowLeft /></Button><span className={`inbox-avatar ${conversation.kind === 'group' ? 'is-group' : ''}`}>{avatar(conversation)}</span><div><h2>{conversation.title}</h2><p><span className="platform-option"><PlatformIcon platform={conversation.platform || 'generic'}/>{platformName}</span><span>{conversation.kind === 'group' ? t(`${participants.length} 位参与者`, `${participants.length} participants`) : participants.map(person => person.name).join(t('、', ', '))}</span></p></div><Button color="secondary" variant="ghost" uniform size="lg" aria-label={detailsOpen ? t("收起会话资料", "Hide conversation details") : t("查看会话资料", "Show conversation details")} title={t("会话资料", "Conversation details")} aria-expanded={detailsOpen} onClick={() => setDetailsOpen(!detailsOpen)}><SidebarRight /></Button></header>
+        <header className="inbox-thread-heading"><Button color="secondary" variant="ghost" uniform size="lg" className="inbox-back" aria-label={t("返回会话列表", "Back to conversations")} onClick={() => setThreadOpen(false)}><ArrowLeft /></Button><span className={`inbox-avatar ${conversation.kind === 'group' ? 'is-group' : ''}`}>{avatar(conversation)}</span><div><h2>{conversation.title}</h2><p><PlatformOption value={conversation.platform || 'generic'} label={platformName}/><span>{conversation.kind === 'group' ? t(`${participants.length} 位参与者`, `${participants.length} participants`) : participants.map(person => person.name).join(t('、', ', '))}</span></p></div><Button color="secondary" variant="ghost" uniform size="lg" aria-label={detailsOpen ? t("收起会话资料", "Hide conversation details") : t("查看会话资料", "Show conversation details")} title={t("会话资料", "Conversation details")} aria-expanded={detailsOpen} onClick={() => setDetailsOpen(!detailsOpen)}><SidebarRight /></Button></header>
         <div className="inbox-messages" ref={messageList}>
           {matchingMessages.length > 0 && <p className="inbox-search-match-count">{t("找到", "Found ")}{matchingMessages.length} {t("条相关消息", " matching messages")}</p>}
           {browsedMessages.length > visibleCount && <div className="inbox-load-earlier"><Button color="secondary" variant="ghost" size="sm" onClick={() => { const element = messageList.current; if (element) scrollAnchor.current = { height: element.scrollHeight, top: element.scrollTop }; setVisibleCount(count => count + 100); }}>{t("加载更早的记录", "Load earlier messages")}</Button></div>}
@@ -120,21 +126,21 @@ export function ConversationInbox({ data, refs, onRefresh }: Props) {
             const isSelf = selfIds.has(message.senderId), sender = people.get(message.senderId);
             const newDay = !index || dayKey(visibleMessages[index - 1].time) !== dayKey(message.time);
             const messageSources = message.sourceIds?.length ? message.sourceIds : [message.sourceId];
-            return <div className="inbox-message-group" key={message.id}>{newDay && <div className="inbox-day"><time dateTime={message.time}>{Number.isFinite(Date.parse(message.time)) ? new Date(message.time).toLocaleDateString(getLocale(), { year: 'numeric', month: 'long', day: 'numeric', weekday: 'short' }) : message.time}</time></div>}<article className={`inbox-message ${isSelf ? 'is-self' : ''}`}><span className="inbox-message-avatar">{sender?.name[0] || '?'}</span><div className="inbox-message-content"><div className="inbox-message-meta"><strong>{sender?.name || t("未知联系人", "Unknown contact")}</strong><time dateTime={message.time}>{clock(message.time)}</time></div><p><Highlight text={message.content} query={query} /></p>{refs(messageSources, true)}</div></article></div>;
+            return <div className="inbox-message-group" key={message.id}>{newDay && <div className="inbox-day"><time dateTime={message.time}>{Number.isFinite(Date.parse(message.time)) ? new Date(message.time).toLocaleDateString(getLocale(), { year: 'numeric', month: 'long', day: 'numeric', weekday: 'short' }) : message.time}</time></div>}<article className={`inbox-message ${isSelf ? 'is-self' : ''}`}>{isSelf?<UserAvatar size={28} className="user-avatar--message"/>:<span className="inbox-message-avatar">{sender?.name[0] || '?'}</span>}<div className="inbox-message-content"><div className="inbox-message-meta"><strong>{sender?.name || t("未知联系人", "Unknown contact")}</strong><time dateTime={message.time}>{clock(message.time)}</time></div><p><Highlight text={message.content} query={query} /></p>{refs(messageSources, true)}</div></article></div>;
           })}
           {!messages.length && <Empty title={t("这个会话还没有消息", "No messages in this conversation")} action={<Button color="secondary" variant="outline" onClick={() => setImporting(true)}>{t("导入记录", "Import records")}</Button>} />}
         </div>
-        <ConversationReply key={conversation.id} conversationId={conversation.id} refreshKey={connectionRefresh} onConnect={()=>setConnecting(true)}/>
+        <ConversationReply key={conversation.id} conversationId={conversation.id} refreshKey={connectionRefresh} readOnly={!!(data.profile.demo||conversation.demo)} onConnect={openConnections}/>
       </> : <div className="inbox-empty"><Empty title={t("把重要的交流留在一起", "No conversations yet")} description={t("导入微信、Slack、飞书等平台的记录文件，浏览原始消息和联系人画像。", "Import exported records to browse original messages and contact context.")} action={<Button color="primary" onClick={() => setImporting(true)}><FileUpload />{t("导入外部记录", "Import records")}</Button>} /></div>}
     </section>
     {detailsOpen && conversation && <aside className="inbox-details" aria-label={t("会话资料", "Conversation details")}><header><h2>{t("会话资料", "Conversation details")}</h2><Button color="secondary" variant="ghost" uniform size="sm" aria-label={t("关闭会话资料", "Close conversation details")} onClick={() => setDetailsOpen(false)}><CloseBold /></Button></header>
-      <section className="inbox-detail-section"><h3>{t("参与者", "Participants")}</h3><div className="inbox-participants">{participants.map(person => <Button color="secondary" variant="ghost" size="sm" key={person.id} selected={person.id === contact?.id} onClick={() => setContactId(person.id)}><span className="inbox-person-initial">{person.name[0]}</span>{person.name}</Button>)}</div></section>
+      <section className="inbox-detail-section"><h3>{t("参与者", "Participants")}</h3><div className="inbox-participants">{participants.map(person => <Button color="secondary" variant="ghost" size="sm" key={person.id} selected={person.id === contact?.id} onClick={() => setContactId(person.id)}>{selfIds.has(person.id)?<UserAvatar size={21}/>:<span className="inbox-person-initial">{person.name[0]}</span>}{person.name}</Button>)}</div></section>
       {contact && <section className="inbox-contact-profile"><div className="inbox-contact-title"><h3>{contact.name}</h3><Button color="secondary" variant="ghost" uniform size="sm" aria-label={t(`编辑${contact.name}资料`, `Edit ${contact.name}`)} title={t("编辑资料", "Edit profile")} onClick={() => setEditingPerson(contact)}><Edit /></Button></div><p className="inbox-contact-role">{displayRole(contact.role)}</p><p>{contact.description || t("尚未补充联系人背景。", "No contact context added yet.")}</p>{refs(contact.sourceIds, true)}<PortraitView person={contact} refs={refs} relationships={related}/></section>}
       {related.length > 0 && <section className="inbox-detail-section"><h3>{t("已知关系", "Known relationships")}</h3><div className="inbox-known-relations">{related.map(relation => { const other = people.get(relation.from === contact?.id ? relation.to : relation.from); return <article key={relation.id}><div><strong>{other?.name || t("未知人物", "Unknown person")}</strong><span>{relation.label}</span><Button size="sm" uniform color="secondary" variant="ghost" aria-label={t(`编辑与${other?.name||'此人'}的关系`,`Edit relationship with ${other?.name||'this person'}`)} onClick={()=>setEditingRelationship(relation)}><Edit/></Button></div><p>{relation.description}</p>{refs(relation.sourceIds,true)}</article>; })}</div></section>}
       <section className="inbox-detail-section"><h3>{t("记录来源", "Record sources")}</h3><div className="inbox-source-summary"><span className="platform-option"><PlatformIcon platform={conversation.platform || 'generic'}/>{platformName}</span><span>{messages.length} {t("条消息", " messages")}</span>{conversation.demo && <Badge color="secondary" variant="outline" size="sm">{t("虚构示例", "Fictional sample")}</Badge>}</div>{refs(sourceIds)}<Button color="secondary" variant="outline" size="sm" onClick={() => setImporting(true)}><FileUpload />{t("导入更多记录", "Import more records")}</Button></section>
     </aside>}
     {importing && <ConversationFileImport onConnect={()=>{setImporting(false);setConnecting(true);}} onClose={() => setImporting(false)} onSaved={onRefresh} onImported={result => { if (result.conversationIds[0]) { setQuery(''); setPlatform('all'); select(result.conversationIds[0]); } }} />}
-    {connecting&&<ImConnections onClose={()=>{setConnecting(false);setConnectionRefresh(value=>value+1);}} onSaved={onRefresh} onImported={result=>{if(result.conversationIds[0]){setQuery('');setPlatform('all');select(result.conversationIds[0]);}setConnectionRefresh(value=>value+1);}}/>}
+    {connecting&&<ImConnections onClose={()=>{setConnecting(false);if(location.hash==='#conversations/connect')location.hash='conversations';setConnectionRefresh(value=>value+1);}} onSaved={onRefresh} onImported={result=>{if(result.conversationIds[0]){setQuery('');setPlatform('all');select(result.conversationIds[0]);}setConnectionRefresh(value=>value+1);}}/>}
     {editingRelationship&&<RelationshipForm relationship={editingRelationship} data={data} onClose={()=>setEditingRelationship(undefined)} onSaved={onRefresh}/>}
     {editingPerson && <PersonForm person={editingPerson} data={data} onClose={() => setEditingPerson(undefined)} onSaved={onRefresh} />}
   </div>;

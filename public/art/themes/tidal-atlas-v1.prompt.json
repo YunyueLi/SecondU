@@ -1,0 +1,27 @@
+{
+  "theme": "tidal",
+  "name": "潮汐之间",
+  "version": 1,
+  "generator": "built-in image_gen",
+  "transparent_background": true,
+  "asset": "tidal-atlas-v1.png",
+  "width": 1254,
+  "height": 1254,
+  "pngColorType": 6,
+  "layout": {
+    "columns": 3,
+    "rows": 3,
+    "order": [
+      "profile",
+      "now",
+      "conversations",
+      "timeline",
+      "relationships",
+      "sources",
+      "agents",
+      "library",
+      "automations"
+    ]
+  },
+  "prompt": "Use case: stylized-concept.\nAsset type: a production transparent PNG sprite atlas for very small decorative app heading illustrations. Create ONE SQUARE 1536 x 1536 image with a mathematically regular invisible 3 by 3 grid. Nine separate original still-life oil painting vignettes, one centred in each 512 x 512 cell. No frames, no visible grid, no labels. Every object must fit inside the central 70% of its cell, leaving at least 15% clear transparent margin on every side. No object, shadow, decoration, or brush stroke may cross a cell boundary. True transparent alpha everywhere outside the painted objects; absolutely no canvas rectangle, white background, checkerboard drawing, surface plane, horizon, or scenery.\nTheme: 潮汐之间. Sea blue, muted teal, chalk white, sand, tiny warm coral highlights. Airy ocean material palette.\nStyle: tasteful contemporary small oil-painted still lives, visible soft bristle brush texture on the objects, quiet handmade material, subtle irregular contours, restrained composition, softly lit. Cohesive brushwork and material across all nine vignettes. Recognizable even at 48 pixels. Each cell contains only its listed simple small object grouping; no tiny extra decoration.\nRead the positions row-major. Top row, left to right: 1 personal profile: one smooth porcelain cameo with a little scallop shell; 2 life now: a calm wave curled around a small beach pebble and ceramic cup; 3 chat history: two pale seashells gently facing each other.\nMiddle row, left to right: 4 timeline: three tide-worn stones arranged as a quiet sequence; 5 relationships: a three-branched fragment of sea coral connecting three smooth pearls; 6 source records: a folded nautical blue sheet of blank paper and one tiny shell.\nBottom row, left to right: 7 specialist agents: three little smooth stone cairns with distinct silhouettes; 8 library: two blank clothbound blue books beside a white conch; 9 automation: a tiny weathered brass tide-clock with a plain unmarked face and a pebble.\nConstraints: exactly nine equally sized and evenly centred cell illustrations. No words, numbers, letters, logos, symbols resembling UI buttons, watermarks or fabricated text. Keep generous empty transparent space and genuinely transparent cut-out edges. No photorealism, no glossy 3D render, no outline icon look, no emoji, no busy scene."
+}

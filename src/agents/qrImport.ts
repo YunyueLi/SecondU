@@ -1,10 +1,12 @@
 import jsQR from 'jsqr';
+import { parseDelegationLink } from '../../shared/delegation.mjs';
 import { t } from '../i18n.ts';
 import { decodeCard, validateCardSource, type AgentCard } from '../cognition/qr.ts';
 
-export type AgentImportPreview={kind:'card';card:AgentCard}|{kind:'source';sourceUrl:string;hostname:string};
+export type AgentImportPreview={kind:'card';card:AgentCard}|{kind:'source';sourceUrl:string;hostname:string}|{kind:'delegation';name:string;url:string;id:string;hostname:string};
 export function parseAgentImport(text:string):AgentImportPreview {
   const value=text.trim();
+  const delegation=parseDelegationLink(value);if(delegation)return delegation;
   if(value.startsWith('{')||/^hither:/i.test(value))return {kind:'card',card:decodeCard(value)};
   const sourceUrl=validateCardSource(value);
   return {kind:'source',sourceUrl,hostname:new URL(sourceUrl).hostname};

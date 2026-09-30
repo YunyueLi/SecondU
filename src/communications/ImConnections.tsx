@@ -1,15 +1,18 @@
-import { useEffect, useState } from 'react';
+import {ExampleExecutionNotice} from '../ExampleExecutionNotice';
+import { useEffect, useId, useState } from 'react';
 import { Button } from '@openai/apps-sdk-ui/components/Button';
 import { Input } from '@openai/apps-sdk-ui/components/Input';
 import { Select } from '@openai/apps-sdk-ui/components/Select';
 import { Textarea } from '@openai/apps-sdk-ui/components/Textarea';
-import { ArrowLeft, Plus, Reload, CheckCircle } from '@openai/apps-sdk-ui/components/Icon';
+import { ArrowLeft, ArrowUp, Lock, Plus, Reload, CheckCircle } from '@openai/apps-sdk-ui/components/Icon';
 import { Dialog, Field, ErrorNotice } from '../components';
 import { api, write, messageOf } from '../api';
 import { t, getLocale } from '../i18n';
 import type { ImConnection, ImDraft } from '../../shared/im';
 import type { ChatImportPreview, ChatImportResult, ChatImportPlatform } from '../../shared/contracts';
-import { platformLabels } from '../cognition/ConversationFileImport';
+import { PlatformSelect } from '../cognition/PlatformSelect';
+import { ComposerSurface } from '../composer/ComposerSurface';
+import { ComposerTools } from '../composer/ComposerTools';
 import './im.css';
 const channelOptions=[['slack','Slack'],['discord','Discord'],['telegram','Telegram'],['whatsapp','WhatsApp'],['signal','Signal'],['imessage','iMessage'],['msteams','Microsoft Teams'],['googlechat','Google Chat'],['matrix','Matrix'],['mattermost','Mattermost']].map(([value,label])=>({value,label}));
 const statusLabel=(connection:ImConnection)=>connection.status==='ready'?t('已连接','Connected'):connection.status==='untested'?t('尚未检查','Not checked'):t('需要连接','Needs connection');
@@ -30,11 +33,28 @@ export function ImReply({connection,onConnected}:{connection:ImConnection;onConn
   </div>;
 }
 
-export function ConversationReply({conversationId,refreshKey,onConnect}:{conversationId:string;refreshKey:number;onConnect:()=>void}){
-  const [connection,setConnection]=useState<ImConnection>(),[error,setError]=useState('');
-  useEffect(()=>{let cancelled=false;setConnection(undefined);setError('');api<ImConnection[]>('/im-connections').then(values=>{if(!cancelled)setConnection(values.find(c=>c.conversationId===conversationId));}).catch(err=>{if(!cancelled)setError(messageOf(err));});return()=>{cancelled=true;};},[conversationId,refreshKey]);
-  if(error)return <div className="im-reply"><ErrorNotice error={error}/></div>;
-  return connection?<ImReply key={connection.id} connection={connection} onConnected={onConnect}/>:<div className="im-history-footer"><span>{t('历史记录','Imported history')}</span><Button color="secondary" variant="ghost" size="sm" onClick={onConnect}>{t('连接通信工具以接收和回复','Connect a messaging tool')}</Button></div>;
+export function ConversationReply({conversationId,refreshKey,readOnly=false,onConnect}:{conversationId:string;refreshKey:number;readOnly?:boolean;onConnect:()=>void|Promise<void>}){
+  const [connection,setConnection]=useState<ImConnection>(),[error,setError]=useState(''),[checking,setChecking]=useState(!readOnly),[opening,setOpening]=useState(false);
+  const hintId=useId();
+  const [previewDraft,setPreviewDraft]=useState(''),[exampleNotice,setExampleNotice]=useState(false);
+  useEffect(()=>{
+    let cancelled=false;setConnection(undefined);setError('');setChecking(!readOnly);
+    if(readOnly)return;
+    api<ImConnection[]>('/im-connections').then(values=>{if(!cancelled)setConnection(values.find(c=>c.conversationId===conversationId));}).catch(err=>{if(!cancelled)setError(messageOf(err));}).finally(()=>{if(!cancelled)setChecking(false);});
+    return()=>{cancelled=true;};
+  },[conversationId,refreshKey,readOnly]);
+  async function connect(){setOpening(true);setError('');try{await onConnect();}catch(err){setError(messageOf(err));}finally{setOpening(false);}}
+  if(!readOnly&&connection?.status==='ready'&&connection.canSend)return <ImReply key={connection.id} connection={connection} onConnected={()=>void connect()}/>;
+  const hint=readOnly?t('示例会话可编辑草稿与连接配置，发送时需要进入个人空间。','Edit a draft and connection settings here; sending requires your personal workspace.'):checking?t('正在检查通信连接…','Checking messaging connection…'):connection?t('当前连接暂时无法发送，请检查连接。','Sending is unavailable. Check this connection.'):t('连接通信工具后，即可在这里接收和回复消息。','Connect a messaging tool to receive and reply here.');
+  return <div className="im-conversation-composer">{exampleNotice&&<ExampleExecutionNotice onClose={()=>setExampleNotice(false)}/>}
+    <div className="im-composer-hint" id={hintId}><Lock aria-hidden="true"/><p>{hint}</p>{!checking&&<Button type="button" color="secondary" variant="ghost" size="sm" loading={opening} disabled={opening} onClick={()=>void connect()}>{readOnly?t('配置连接','Configure connection'):connection?t('管理连接','Manage connection'):t('连接通信工具','Connect messaging')}</Button>}</div>
+    <ComposerSurface compact aria-label={t('会话回复','Conversation reply')} aria-describedby={hintId} onSubmit={event=>{event.preventDefault();if(readOnly&&previewDraft.trim())setExampleNotice(true);}}>
+      <div className="composer-leading"><ComposerTools disabled onAttach={()=>{}}/></div>
+      <div className="composer-input"><Textarea variant="soft" rows={1} disabled={!readOnly} value={previewDraft} onChange={event=>setPreviewDraft(event.target.value)} aria-label={t('回复消息','Reply to conversation')} aria-describedby={hintId} placeholder={t('回复消息','Reply to conversation')}/></div>
+      <div className="composer-trailing"><Button type="submit" color="primary" uniform disabled={!readOnly||!previewDraft.trim()} aria-label={t('发送消息','Send message')}><ArrowUp/></Button></div>
+    </ComposerSurface>
+    <ErrorNotice error={error}/>
+  </div>;
 }
 
 export function ImConnections({onClose,onImported,onSaved}:{onClose:()=>void;onImported:(result:ChatImportResult)=>void;onSaved:()=>Promise<void>}){
@@ -53,7 +73,7 @@ export function ImConnections({onClose,onImported,onSaved}:{onClose:()=>void;onI
     {!adding&&<div className="im-switch"><Select size="sm" aria-label={t('选择通信连接','Select connection')} value={selected||''} options={connections.map(c=>({value:c.id,label:c.name}))} onChange={option=>{setSelected(option.value);setPreview(undefined);setNotice('');}}/><Button color="secondary" variant="ghost" size="sm" disabled={busy} onClick={()=>{setAdding(true);setEditing(undefined);setName('');setTarget('');setPreview(undefined);}}><Plus/>{t('添加','Add')}</Button></div>}
     {adding?<div className="im-form"><Field label={t('通过什么连接','Connect through')}><Select value={adapter} options={[{value:'openclaw',label:'OpenClaw'},{value:'hither-cli',label:t('其他本机 CLI','Other local CLI')}]} onChange={option=>{setAdapter(option.value as typeof adapter);setCommand(option.value==='openclaw'?'openclaw':'');setChannel(option.value==='openclaw'?'slack':'');}}/></Field>
       <Field label={t('连接名称','Connection name')}><Input aria-label={t('连接名称','Connection name')} value={name} onChange={event=>setName(event.target.value)} placeholder={t('例如：项目讨论','For example: Project chat')}/></Field>
-      <Field label={t('通信平台','Channel')}>{adapter==='openclaw'?<Select value={channel} options={channelOptions} onChange={option=>setChannel(option.value)}/>:<><Input aria-label={t('CLI 渠道标识','CLI channel ID')} value={channel} onChange={event=>setChannel(event.target.value)} placeholder="wechat"/><Select value={platform} options={Object.entries(platformLabels()).map(([value,label])=>({value,label}))} onChange={option=>setPlatform(option.value as ChatImportPlatform)}/></>}</Field>
+      <Field label={t('通信平台','Channel')}>{adapter==='openclaw'?<PlatformSelect value={channel} options={channelOptions} disabled={busy} onChange={setChannel}/>:<><Input aria-label={t('CLI 渠道标识','CLI channel ID')} value={channel} onChange={event=>setChannel(event.target.value)} placeholder="wechat"/><PlatformSelect value={platform} disabled={busy} onChange={value=>setPlatform(value as ChatImportPlatform)}/></>}</Field>
       <div className="im-field-pair"><Field label={t('工具中的账号','Account in the tool')}><Input aria-label={t('通信账号标识','Messaging account ID')} value={account} onChange={event=>setAccount(event.target.value)} placeholder="default"/></Field><Field label={t('会话或收件人标识','Conversation or recipient ID')}><Input aria-label={t('通信目标标识','Messaging target ID')} value={target} onChange={event=>setTarget(event.target.value)} placeholder={channel==='slack'?'channel:C0123456789':channel==='discord'?'channel:123456789':t('原工具中的准确标识','Exact ID in the tool')}/></Field></div>
       <details open={adapter==='hither-cli'}><summary>{t('本机工具设置','Local tool settings')}</summary><Field label={t('可执行文件路径','Executable path')} hint={t('直接运行可执行文件；不接受整段命令或 shell 脚本。','An executable path, not a command line.')}><Input aria-label={t('通信工具路径','Messaging executable')} value={command} onChange={event=>setCommand(event.target.value)} placeholder="/opt/homebrew/bin/openclaw"/></Field><Field label={t('本人在平台中的用户 ID（可选）','Your platform user ID (optional)')}><Input aria-label={t('本人平台用户标识','Your platform user ID')} value={selfId} onChange={event=>setSelfId(event.target.value)}/></Field></details>
       <p className="im-help">{adapter==='openclaw'?t('可用能力以检查结果为准。当前已适配 Slack、Discord 的最近消息读取；其他列出的渠道支持发送接入。','Capabilities depend on the account check. Recent-message reading is adapted for Slack and Discord; other listed channels support sending.'):t('可接入实现 hither.im.v1 协议的可执行程序。它通过标准输入接收 JSON，返回能力、消息或发送回执；登录凭据由原工具保管。','Use an executable implementing hither.im.v1. It accepts JSON on stdin and returns capabilities, messages or receipts. The tool manages its credentials.')}</p>

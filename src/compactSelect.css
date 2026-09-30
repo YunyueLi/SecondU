@@ -1,0 +1,6 @@
+/* Follow the option labels, their selection marker, and the SDK's own padding. */
+[data-radix-popper-content-wrapper] > [role="dialog"]:has(.compact-select-option) {
+  width:max-content;
+  min-width:var(--radix-popover-trigger-width);
+  max-width:min(var(--radix-popover-content-available-width),calc(100vw - 32px));
+}

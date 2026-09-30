@@ -1,0 +1,13 @@
+{
+  "asset": "twin-badge-v1.png",
+  "created": "2026-09-30",
+  "generator": "built-in image_gen",
+  "use_case": "stylized-concept",
+  "transparent_background": true,
+  "intended_display": {
+    "width": 90,
+    "height": 130
+  },
+  "description": "Two overlapping abstract side profiles, painted in cream and pale lavender oil paint, representing a person and their digital twin. Transparent background.",
+  "prompt": "Use case: stylized-concept.\nAsset type: transparent-background fine-art accent for a small vertical digital-twin identity card, intended to be displayed at only 90 x 130 pixels on a muted lavender card. Portrait composition, approximately 9:13 ratio, with generous transparent margin.\n\nCreate an exquisitely restrained painterly motif of two softly overlapping abstract human side-profile forms, representing a person and their digital twin quietly alongside one another. Treat them as two light, organic, sculptural areas of oil paint rather than detailed heads or portraits. A graceful forehead-nose-chin suggestion is enough; no eyes, facial detail, hair strands or realism. The two forms should be closely related but slightly offset, their gentle layered overlap expressing connection. Preserve a clear, immediately readable silhouette at very small size.\n\nMedium: creamy opaque oil paint with a few delicate raised brush ridges, scumbled edges and a subtle tactile finish. Refined contemporary gallery sensibility, serene, airy, quietly beautiful. Limit the number of shapes and brushstrokes. The front form is warm ivory cream, the second is pale cool lavender with a little muted mauve shadow at the overlap. Soft highlights and restrained depth, with naturally feathered painted edges. Do not put the motif in a circle, badge, medallion or frame.\n\nComposition: one compact vertical motif, balanced in the center, the two forms occupying roughly the middle 65 percent of the canvas. It should look like a small artwork applied to the card, not a logo or a software icon. Actual transparent alpha background with no surrounding painted rectangle, no background wash and no hard outer box. All empty space must be transparent.\n\nAvoid: realistic people or photographs, intricate facial details, line drawing, vector icon style, flat corporate illustration, emoji, stock avatar, robots, circuit boards, brains, a heart icon, flowers, plants, sparkles, ornamentation, letters, text, signature, watermark, logo, frame, checkerboard pattern. Generate only the transparent painted motif."
+}

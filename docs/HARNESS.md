@@ -44,3 +44,59 @@ SecondU 是用户的个人 Agent，也是产品中所说的数字分身：依据
 实际结果：上述五个文件合跑 37 项，35 通过、2 个本机可选项跳过；随后启用本机检查单独运行 `codex.test.mjs`，20/20 通过，其中包含真实 app-server 接受完整配置与身份指令，以及模型请求开始前中断。后一次包含前一次已过的协议测试，不应相加声称为 57 个独立测试。模型端回答内容仅由夹具提供，不能称为真实提供方输出验收。
 
 2026-09-30 对上述说明作当前代码核对，补齐数字分身每轮刷新、空闲模型切换和显式连接器边界。前述 37／20 项仍是对应批次的历史结果；数字分身配置与选择器的定向证据在 `tests/digital-twin-mode.test.mjs`、`tests/task-config.test.mjs`、`tests/context-selection.test.mjs`，连接器真实本机链路结果由 [CONNECTORS](CONNECTORS.md) 单独登记。不得将文档更新当作新增真实云模型验收。
+
+## 按需团队执行（2026-09-30）
+
+群聊默认继续使用已有回应规则。只有显式保存 `team: {leadAgentId}` 的群聊才进入负责人调度：宿主先启动指定负责人，负责人可以自行回答，也可通过 `team_delegate` 选择当前团队中的专家、明确分派任务，再用 `team_wait` 收齐结果。没有实际派发就没有专家执行节点；只在负责人收齐全部已派发节点后，才能把该轮标记完成。专家失败会保留为 failed，负责人可以报告已收齐的部分结果，不能把失败节点改成成功。
+
+执行仍由 Codex app-server 承担，模型供应商独立于调度。现有 Responses、Chat Completions、Anthropic Messages 适配均保留；不会仅因 Kimi 等厂商名称禁用。连接缺少密钥或协议不受支持时明确报错，没有演示回退。未派发专家无需预先调用模型或验证密钥。
+
+宿主限制每轮最多 8 个节点（含负责人）、最多 4 位专家同时执行。每位专家是临时执行节点，复用已选专家的身份与模型连接；不创建新的持久 Agent。专家在独立任务目录执行，接收明确分派文字、本轮选中的认知、附件和连接器，不自动复制或共享原项目目录。当前交付是有长度边界的文本结果；专家工作目录的文件不会自动合并进负责人项目，也不声称具备共享仓库合并能力。
+
+负责人和专家沿用用户选定的审批策略；MCP 等已有逐次审批仍然生效。宿主只给负责人三个团队工具，且通过运行时配置禁用原生再次委派；先用 `config/read` 确认 `multi_agent` 与 `multi_agent_v2` 均关闭再启动。取消会传播至所有活跃专家、拒绝未决审批并等待运行时结束；失败负责人同样收停专家。重启保留旧执行树并标记未结束节点 interrupted，不自动重放。
+
+持久记录在任务的 `teamRuns` 中，包含父节点、角色、分工、真实状态、结果／错误和时间。结果先脱敏再保留前 16,000 字符；工具响应与执行图通过 `resultTruncated`、`resultOriginalChars` 明确节选与脱敏后的原长度，负责人不能假定节选包含完整结论。普通 Codex 任务的原生 `collabAgentToolCall`、`subAgentActivity` 另记为活动事件；其子线程回复不替换负责人最终回复，也不自动变成已配置团队。记录这些通知不等于开放原生子线程的额外工具审批。
+
+对应检查是 [`team-runs.test.mjs`](../tests/team-runs.test.mjs) 与 [`codex.test.mjs`](../tests/codex.test.mjs)：覆盖派发和收齐、角色白名单、并发／总量上限、并行审批、失败、取消、重启、Kimi／Anthropic 注入式适配，以及原生协作通知。2026-09-30 本机 Codex `0.158.0-alpha.2.1` 接受团队动态工具和禁用再次委派的配置，实际任务目录读写边界通过；在 `turn/start` 前中止，没有调用真实付费模型。模型自主分工质量、真实提供方工具调用及最终桌面执行图仍需分别验收。
+
+## PDF 与桌面构建握手（2026-09-30）
+
+### Office 原件与本机预览
+
+DOCX／XLSX／PPTX 以真实字节保存、收集和下载，选定历史版本可通过本机 LibreOffice 转为 PDF，再交给同一阅读器。没有安装转换器时明确显示不可用，原件仍可下载，不自动安装或上传第三方。
+
+ZIP 容器检查覆盖路径、重复成员、CRC、压缩与解压大小、宏类型和主文档类型；收集前检查解压后的内容是否含凭据。预览另拒绝外部关系、嵌入对象及主动加载数据的结构，转换使用临时独立 profile、禁用宏／链接、20 秒超时与清理。这些是文件内容与进程边界，不声称有操作系统级网络沙箱。
+
+2026-09-30 [`office-artifacts.test.mjs`](../tests/office-artifacts.test.mjs) 定向检查 7 项通过，1 项本机转换按环境开关运行；另在已安装 LibreOffice 上实际完成三种合成 OOXML 转换。随后用 python-docx、openpyxl 和 python-pptx 生成标准库文件，三份原件均转换为真实 PDF，覆盖合法的包内根路径引用。隔离验收服务的三种原件逐字节下载一致，DOCX 两个历史版本产生不同 PDF。这里只使用明确标示的合成文档，不读取私人文件；复杂文档保真与新版桌面包验收另行登记。
+
+[`PdfPreview`](../src/artifacts/PdfPreview.tsx) 使用本地 PDF.js 单页画布，支持翻页、适宽、缩放和错误重试；切换文件或退出时取消绘制并销毁加载任务／worker。输入字节复制后交给 worker，保留原始下载内容。大页绘制上限为 16 MP，PDF 阅读器延迟加载。仅凭文件名、说明文字或通过 PDF 头检测不能宣称渲染成功。
+
+本轮 `artifact-format.test.mjs` 与 `artifact-pdf.test.mjs` 合跑 8 项通过，覆盖两页不同尺寸 PDF 的真实解析、文字读取、非空画布像素、原始字节保留和损坏文件拒绝；TypeScript 与生产构建通过。旧生产服务曾因 `.mjs` MIME 不正确而阻止 worker，已修正。2026-09-30 根任务在 58646 新服务实屏确认本地合成单页 PDF 的 1/1 页画布和文字正常显示，原始字节下载也已通过。此浏览器结果仅覆盖该预设 PDF，不代表任意 PDF 保真或新版原生包已验收。
+
+[`runtime-revision.mjs`](../server/runtime-revision.mjs) 在后台启动时固定构建指纹；[`desktop/main.cjs`](../desktop/main.cjs) 按应用、版本、资料空间和指纹完整握手。旧服务不被终止、不被冒充为新构建。`startup.test.mjs` 与 `runtime-revision.test.mjs` 合跑 10 项通过，包括真实 HTTP 健康响应、旧 listener 保持运行、开发／打包同内容同指纹、代码和前端入口变化，以及私人资料不参与指纹。新包是否实际使用对应服务仍需启动后核对。
+
+完成打包并打开应用后，可在项目根目录运行以下只读检查。它输出实际包路径和每个候选端口的匹配状态；只读取包文件、资料目录路径及健康响应，不读取资料内容、不关闭进程。`matches` 证明该端口的握手信息匹配，窗口实际加载地址仍需单独核对。
+
+```sh
+node --input-type=module <<'NODE'
+import fs from 'node:fs';
+import path from 'node:path';
+import os from 'node:os';
+import { createHash } from 'node:crypto';
+import { pathToFileURL } from 'node:url';
+const packagedRoot = fs.realpathSync('out/SecondU.app/Contents/Resources/app');
+const manifest = JSON.parse(fs.readFileSync(path.join(packagedRoot, 'package.json'), 'utf8'));
+const { computeRuntimeRevision } = await import(pathToFileURL(path.join(packagedRoot, 'server/runtime-revision.mjs')).href);
+const revision = computeRuntimeRevision(packagedRoot);
+const dataDir = process.env.HITHER_DATA_DIR || path.join(os.homedir(), 'Library/Application Support/Hither/data');
+const spaceId = fs.existsSync(dataDir) ? createHash('sha256').update(fs.realpathSync(dataDir)).digest('hex').slice(0, 24) : null;
+console.log({ packagedRoot, expectedRevision: revision, expectedSpaceId: spaceId });
+for (const port of [58645, 58646, 58647, 58648, 58649]) {
+  try {
+    const health = await (await fetch(`http://127.0.0.1:${port}/api/health`, { signal: AbortSignal.timeout(800) })).json();
+    const matches = health.status === 'ok' && health.application === manifest.name && health.version === manifest.version && health.revision === revision && spaceId !== null && health.spaceId === spaceId;
+    console.log({ port, matches, revision: health.revision, spaceId: health.spaceId });
+  } catch { console.log({ port, matches: false, health: 'unavailable' }); }
+}
+NODE
+```

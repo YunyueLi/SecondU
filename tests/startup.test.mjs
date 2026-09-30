@@ -6,7 +6,7 @@ import path from 'node:path';
 import {createRequire} from 'node:module';
 import {DatabaseSync} from 'node:sqlite';
 const require=createRequire(import.meta.url);
-const {startupHtml,writeStartupDocument,readStartupAppearance,RETRY_URL}=require('../desktop/startup.cjs');
+const {startupHtml,writeStartupDocument,initialWindowBounds,readStartupAppearance,backendIdentityMatches,selectBackendPort,RETRY_URL}=require('../desktop/startup.cjs');
 const root=path.resolve(import.meta.dirname,'..');
 test('native bootstrap reads only the personal appearance without creating or migrating data',()=>{
  const directory=mkdtempSync(path.join(os.tmpdir(),'secondu-startup-'));
@@ -41,4 +41,33 @@ test('native artwork is loaded from a local document instead of an oversized nav
   writeStartupDocument(root,directory,{error:'A local service error'});
   assert.ok(readFileSync(document.file,'utf8').includes('A local service error'));
  }finally{rmSync(directory,{recursive:true,force:true});}
+});
+test('initial native window fits laptop and secondary display work areas',()=>{
+ for(const workArea of [{x:0,y:25,width:1200,height:898},{x:-1920,y:25,width:1920,height:1055},{x:0,y:25,width:800,height:575}]){
+  const b=initialWindowBounds(workArea);
+  assert.ok(b.x>=workArea.x+24&&b.y>=workArea.y+24);
+  assert.ok(b.x+b.width<=workArea.x+workArea.width-24);
+  assert.ok(b.y+b.height<=workArea.y+workArea.height-24);
+  assert.ok(b.minWidth<=b.width&&b.minHeight<=b.height);
+  assert.ok(b.width<=1440&&b.height<=960);
+ }
+});
+test('native backend handshake requires the same revision, application, version and data space',()=>{
+ const expected={application:'hither-desktop',version:'0.1.0',spaceId:'personal-store',revision:'current-build'};
+ const healthy={status:'ok',...expected};
+ assert.equal(backendIdentityMatches(healthy,expected),true);
+ for(const change of [{revision:undefined},{revision:'older-build'},{spaceId:'another-store'},{application:'another-app'},{version:'0.0.9'},{status:'error'}])assert.equal(backendIdentityMatches({...healthy,...change},expected),false);
+ assert.equal(backendIdentityMatches({...healthy,revision:undefined},{...expected,revision:undefined}),false);
+});
+test('an old backend keeps its port while native startup selects a free port',async()=>{
+ const expected={application:'hither-desktop',version:'0.1.0',spaceId:'same-store',revision:'new-build'};
+ const probed=[];
+ const states=new Map([[58645,{occupied:true,value:{status:'ok',...expected,revision:undefined}}],[58646,{occupied:true,value:{status:'ok',...expected,revision:'old-build'}}],[58647,{occupied:false}],[58648,{occupied:true}]]);
+ assert.deepEqual(await selectBackendPort([...states.keys()],async port=>{probed.push(port);return states.get(port);},expected),{port:58647,reuse:false});
+ assert.deepEqual(probed,[58645,58646,58647,58648]);
+ assert.equal(states.get(58645).occupied,true);
+ assert.equal(states.get(58646).occupied,true);
+ states.set(58648,{occupied:true,value:{status:'ok',...expected}});
+ assert.deepEqual(await selectBackendPort([...states.keys()],async port=>states.get(port),expected),{port:58648,reuse:true});
+ assert.equal(await selectBackendPort([58645,58646],async port=>states.get(port),expected),undefined);
 });

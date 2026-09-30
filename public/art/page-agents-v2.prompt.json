@@ -1,0 +1,15 @@
+{
+  "asset": "page-agents-v2.png",
+  "created": "2026-09-30",
+  "generator": "built-in image_gen",
+  "use_case": "stylized-concept",
+  "transparent_background": true,
+  "intended_display": {
+    "width": 84,
+    "height": 84
+  },
+  "prompt": "Use case: stylized-concept. Asset type: one original fine-art editorial spot illustration on a truly transparent alpha background for an app page heading, intended to be displayed at 84 by 84 pixels. Square canvas. A single complete composition, not an atlas or multiple variants. Design it as a small collectible handmade artwork, with tactile paper grain, softly modelled form, delicate matte oil-paint brushwork and restrained natural light. A strong clear silhouette with only a few substantial forms, confident proportions, ample transparent breathing room and no cropped elements. The composition should occupy roughly the center 80 percent of the square. Quiet, intelligent, contemporary art direction rather than a stock software icon. No letters, writing, numbers, readable text, watermarks, logos, scenery or a surrounding background. Absolutely no blue leaf branches, golden sun discs, red ribbon decoration, calendars, badges, or decorative repeated motif formula. Keep genuine transparent empty space, no background wash or shadow rectangle.\nCreate an abstract collaborative sculpture of two complementary upright forms meeting to support one slender horizontal paper plane between them. One form is a rounded tall slate-indigo arch with an open curved cutout; the other is a shorter soft lilac-gray folded geometric form leaning inward. The pale warm-white paper plane bridges their gestures with a slight upward bend, so the forms appear to be making or holding something together. Strong quiet tension and carefully balanced negative space. The forms have matte painted clay and thick paper surfaces with delicate oil-brush texture. Palette: smoky lilac, deep muted indigo, warm porcelain white, a tiny desaturated mauve joint. No literal human faces, no people silhouettes, no badge or lanyard, no robot, no tools, no gears or leaves. It should feel like collaborative intelligence represented by a beautiful small modern sculpture.",
+  "source": "public/art/page-agents-v2.png",
+  "source_kind": "repository copy of generated output",
+  "source_sha256": "b065e6e4d991299c866567fb4b94e0b333f275f8c008f05dddc118277dbd39cb"
+}

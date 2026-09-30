@@ -1,5 +1,5 @@
 /** Platforms are labels for saved records; they never imply a connected account. */
-export const timelinePlatforms = ['hither','wechat','wecom','qq','feishu','dingtalk','slack','teams','telegram','discord','signal','line','messenger','imessage','instagram','whatsapp','xiaohongshu','weibo','photos','notes','other'];
+export const timelinePlatforms = ['hither','wechat','wecom','qq','feishu','dingtalk','slack','teams','telegram','discord','signal','line','messenger','imessage','instagram','whatsapp','email','sms','xiaohongshu','weibo','photos','notes','other'];
 
 function localDate(timestamp) {
   const date = new Date(timestamp);

@@ -1,0 +1,16 @@
+{
+  "asset": "page-library-v1.png",
+  "created": "2026-09-30",
+  "generator": "built-in image_gen",
+  "use_case": "style-transfer",
+  "reference": "paper-rhythm.png",
+  "transparent_background": true,
+  "intended_display": {
+    "width": 84,
+    "height": 84
+  },
+  "prompt": "Use case: style-transfer. Asset type: one standalone transparent page-heading spot illustration, intended to be displayed at 84 by 84 pixels. Use the supplied paper-rhythm illustration only as the precise art-direction reference. Create a new sister illustration with a different main subject. Match its hand-crafted layered paper construction, delicate oil-paint and colored-pencil surface grain, soft dimensional folded edges, restrained warm light, ivory cream paper, a few deep cobalt blue paper leaves, one muted golden circular paper accent, and a small vermilion ribbon accent. Keep the same refined editorial craft aesthetic and limited palette; avoid glossy 3D, vector icons, photography, excessive scenery or decoration.\nComposition: a square canvas with a single coherent compact arrangement centered within it, occupying about 85 percent of canvas width and height with an even transparent safety margin. Strong recognizable silhouette and only a few large forms that remain clear at 84 pixels. All elements belong to this one scene. Truly transparent alpha background, including between separate pieces; no opaque backdrop, no ground rectangle, no checkerboard baked into image. No text, no letters, no numbers, no writing, no watermark. Never make a sprite sheet, grid, atlas, collection or multiple alternatives.\nMain subject: one open cream book with broad layered blank pages, accompanied by a tidy small stack of two loose paper sheets tucked behind it. A very small vermilion bookmark ribbon, a muted golden circular paper accent and a restrained deep-blue paper leaf complete the arrangement. This represents a personal library of organized knowledge and created documents. Keep the silhouette visually different from a closed file folder: the wide open book is central and dominant. No text or symbols. The book has a deep cobalt-blue cloth cover, lying open in a low and wide position with fanned page edges; the loose sheets are tucked behind its upper-left side. Use the golden circle only as a small accent. Make this distinct from an upright life journal with a long ribbon.",
+  "source": "public/art/page-library-v1.png",
+  "source_kind": "repository copy of generated output",
+  "source_sha256": "ba5cc9e26f2d87d7c79d913e35c39a6c5756b2318d5298b171d2ec3bd248ef8a"
+}

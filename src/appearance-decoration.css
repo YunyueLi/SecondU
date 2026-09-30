@@ -1,0 +1,11 @@
+/* Page decoration has its own preference; the welcome artwork keeps its atmosphere. */
+:root .page-heading {
+  --page-heading-art: 48px;
+  --page-heading-gap: 14px;
+}
+:root .page-heading.page-heading { min-height: 0; }
+:root:not([data-decorative-artwork=true]) .page-heading .page-heading-art { display: none; }
+:root:not([data-decorative-artwork=true]) .page-heading .page-heading-actions { margin-left: 0; }
+@media (max-width: 760px) {
+  :root .page-heading { --page-heading-art: 40px; --page-heading-gap: 12px; }
+}

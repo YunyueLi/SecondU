@@ -7,6 +7,34 @@ import cognition from './demo-cognition-translations.json' with {type:'json'};
 const dictionaries={};
 for(const source of [core,life,conversations,showcase,agents,cognition])for(const [collection,records] of Object.entries(source)){dictionaries[collection]??={};for(const [id,entries] of Object.entries(records))dictionaries[collection][id]={...(dictionaries[collection][id]||{}),...entries};}
 export const demoTranslationEntries=dictionaries;
+const demoRoomIntroIds=new Map(['planner','writer','studio','balance'].map(key=>[`demo-v2-room-${key}`,`demo-v2-room-intro-${key}`]));
+const authoredRoomNotices=new Set([
+ '这是虚构示例会话。发送后会运行明确标注的本地流程演示，结果与审批关联到真实本地任务；尚未运行模型。',
+ '这是虚构示例会话。发送后运行本地流程演示，不调用模型；新任务及其结果会保存在本机。',
+ '本地演示会话；连接模型后可继续处理自己的任务。',
+]);
+const roomNotice=locale=>locale==='en'
+ ?'You can edit this example and its settings. Switch to your own space to run tasks.'
+ :'可以修改示例内容与配置。实际执行任务时，请切换到自己的空间。';
+function isAuthoredRoomNotice(room,message){
+ return room?.demo===true&&room.mode==='demo'&&demoRoomIntroIds.has(room.id)
+  &&message?.id===demoRoomIntroIds.get(room.id)&&message.role==='system'&&message.demo===true
+  &&authoredRoomNotices.has(message.content);
+}
+function currentDemoRoomNotices(data,locale){
+ if(!Array.isArray(data.agentRooms))return data;
+ let changed=false;
+ const agentRooms=data.agentRooms.map(room=>{
+  if(!Array.isArray(room.messages))return room;
+  let roomChanged=false;
+  const messages=room.messages.map(message=>{
+   if(!isAuthoredRoomNotice(room,message)||message.content===roomNotice(locale))return message;
+   changed=true;roomChanged=true;return {...message,content:roomNotice(locale)};
+  });
+  return roomChanged?{...room,messages}:room;
+ });
+ return changed?{...data,agentRooms}:data;
+}
 const opaque=new Set(['id','kind','status','type','mode','platform','date','startDate','endDate','dueDate','createdAt','updatedAt','recordedAt','time','path','url','filePath','directory','avatarSeed','avatarStyle','connectionId','catalogId']);
 function project(value,entries,key=''){
  if(opaque.has(key)||/(?:Id|Ids)$/.test(key))return value;
@@ -17,7 +45,9 @@ function project(value,entries,key=''){
 }
 /** Display-only projection of authored sample text. Imported and edited text has no matching entry. */
 export function localizeDemoBootstrap(data,locale){
- if(locale!=='en'||!data?.profile?.demo)return data;
+ if(data?.profile?.demo!==true)return data;
+ data=currentDemoRoomNotices(data,locale);
+ if(locale!=='en')return data;
  const result={...data};
  for(const [collection,records] of Object.entries(dictionaries)){
   if(collection==='profile'){result.profile=project(data.profile,records.profile||{});continue;}
@@ -52,6 +82,14 @@ function restoreFields(value,original,entries,key=''){
 }
 /** Restore submitted fields only; the original record is never merged into a patch. */
 export function canonicalDemoValue(collection,id,value,locale='en',originalRecord){
+ if(collection==='agentRooms'&&Array.isArray(value?.messages)&&Array.isArray(originalRecord?.messages)){
+  const originals=new Map(originalRecord.messages.map(message=>[message.id,message]));
+  value={...value,messages:value.messages.map(message=>{
+   const original=originals.get(message.id);
+   return isAuthoredRoomNotice(originalRecord,original)&&message.role==='system'&&message.demo===true&&message.content===roomNotice(locale)
+    ?{...message,content:original.content}:message;
+  })};
+ }
  if(locale!=='en')return value;
  const pairs=dictionaries[collection]?.[id];if(!pairs)return value;
  if(originalRecord!==undefined)return restoreFields(value,originalRecord,pairs);

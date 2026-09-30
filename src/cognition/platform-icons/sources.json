@@ -96,5 +96,47 @@
     "sourceSha256": "a7296303f0e0351a0c635eca4dcc74288f32e932bd255f7feb7530bd9b46962d",
     "assetSha256": "718bbb6ed075c6bcd25e0ea98edc7b8b501875337879484dd4fb28ab072e37c9",
     "adaptation": "Retained path geometry; colorized the source outline and four workplace petals in WeCom brand colors, adjusted outer stroke for 24px legibility; removed XML and local IDs."
+  },
+  {
+    "platform": "googlechat",
+    "source": "https://raw.githubusercontent.com/simple-icons/simple-icons/d4e6ba93e48f178898707f0145ec285f28b64b38/icons/googlechat.svg",
+    "upstreamSource": "https://support.google.com/chat/answer/9455386",
+    "repository": "https://github.com/simple-icons/simple-icons",
+    "commit": "d4e6ba93e48f178898707f0145ec285f28b64b38",
+    "author": "Simple Icons contributors",
+    "license": "CC0-1.0",
+    "licenseUrl": "https://github.com/simple-icons/simple-icons/blob/d4e6ba93e48f178898707f0145ec285f28b64b38/LICENSE.md",
+    "licenseFile": "../../../public/icons/platforms/Simple-Icons-LICENSE.txt",
+    "sourceSha256": "6efc8b1cdb5860037d7d102bf6e77357cf04e45fd1a296be200141e3192111fa",
+    "assetSha256": "784f85daec18e10da339d589992be39f9bbe70db577ab166141d453c69172f53",
+    "adaptation": "Original Simple Icons path geometry and viewBox retained; only an explicit fill using the catalogued brand color #34A853 was added."
+  },
+  {
+    "platform": "matrix",
+    "source": "https://raw.githubusercontent.com/simple-icons/simple-icons/d4e6ba93e48f178898707f0145ec285f28b64b38/icons/matrix.svg",
+    "upstreamSource": "https://matrix.org",
+    "repository": "https://github.com/simple-icons/simple-icons",
+    "commit": "d4e6ba93e48f178898707f0145ec285f28b64b38",
+    "author": "Simple Icons contributors",
+    "license": "CC0-1.0",
+    "licenseUrl": "https://github.com/simple-icons/simple-icons/blob/d4e6ba93e48f178898707f0145ec285f28b64b38/LICENSE.md",
+    "licenseFile": "../../../public/icons/platforms/Simple-Icons-LICENSE.txt",
+    "sourceSha256": "07e6a16f5437fb0e7704c15b97bd50f46f3fa8968e022af2b9f2395fe0419d72",
+    "assetSha256": "a4b199b21f8ac8def0d5e6c20432e554b7bb45425064956d15f08ba815f784e2",
+    "adaptation": "Original Simple Icons path geometry and viewBox retained; only an explicit fill using the catalogued brand color #000000 was added."
+  },
+  {
+    "platform": "mattermost",
+    "source": "https://raw.githubusercontent.com/simple-icons/simple-icons/d4e6ba93e48f178898707f0145ec285f28b64b38/icons/mattermost.svg",
+    "upstreamSource": "https://www.mattermost.org/brand-guidelines/",
+    "repository": "https://github.com/simple-icons/simple-icons",
+    "commit": "d4e6ba93e48f178898707f0145ec285f28b64b38",
+    "author": "Simple Icons contributors",
+    "license": "CC0-1.0",
+    "licenseUrl": "https://github.com/simple-icons/simple-icons/blob/d4e6ba93e48f178898707f0145ec285f28b64b38/LICENSE.md",
+    "licenseFile": "../../../public/icons/platforms/Simple-Icons-LICENSE.txt",
+    "sourceSha256": "eb0c39d9be0cd4463c484199f672b5e99de37c0ae91ef26678efb95111283df8",
+    "assetSha256": "647b8210deb8bedac4c625e67fadeedccc77e2ca64cbf7245d6b6267f80976c2",
+    "adaptation": "Original Simple Icons path geometry and viewBox retained; only an explicit fill using the catalogued brand color #0058CC was added."
   }
 ]

@@ -10,7 +10,6 @@
   outline: none;
   -webkit-app-region: no-drag;
 }
-.desktop-mode > .sidebar-resize-handle { top: 30px; }
 .sidebar-resize-handle::after {
   content: '';
   position: absolute;
@@ -24,7 +23,6 @@
 .sidebar-resize-handle:focus-visible::after,
 .sidebar-resize-handle[data-resizing='true']::after { opacity: .65; }
 .app-shell:has(> .sidebar-resize-handle[data-resizing='true']) * { cursor: col-resize !important; user-select: none !important; }
-.app-shell:has(> .sidebar-resize-handle[data-resizing='true']) > .desktop-drag-region { -webkit-app-region: no-drag; }
 @media (min-width: 801px) {
   .app-shell:has(> .sidebar-resize-handle[data-resizing='true']) > .app-sidebar { transition: none; }
 }

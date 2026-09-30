@@ -1,0 +1,33 @@
+name: Bug report
+description: Report reproducible behavior using synthetic data.
+title: '[Bug] '
+body:
+  - type: markdown
+    attributes:
+      value: 'Do not attach credentials, personal conversations, your data directory or private runtime logs. For vulnerabilities, follow SECURITY.md.'
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened?
+      description: Describe actual and expected behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduce with fictional data
+      description: List the steps and a minimal synthetic example. Include a safe screenshot if useful.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      placeholder: 'Commit; OS; Node version; browser or native package; personal or example space. Do not include keys or sensitive paths.'
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Relevant error and checks
+      description: Copy the exact error after removing sensitive information. State which checks ran and which did not.

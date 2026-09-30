@@ -1,0 +1,23 @@
+[
+  {
+    "file": "workspace.png",
+    "title": "工作台首页",
+    "alt": "SecondU 示例空间首页，展示任务输入与个人背景开关。",
+    "caption": "示例空间的工作台首页：从一条任务开始，按需选择模型、个人背景与操作权限。",
+    "fictional": true
+  },
+  {
+    "file": "team-execution.png",
+    "title": "真实团队进展",
+    "alt": "合成算术任务的真实团队记录：负责人和一位核对员均已完成。",
+    "caption": "合成算术的真实最小团队验收：负责人、1 位核对员与持久结果，仅覆盖该验收范围。",
+    "fictional": true
+  },
+  {
+    "file": "development.png",
+    "title": "构建过程",
+    "alt": "SecondU 构建过程页面，展示按提交记录整理的阶段路径和评审入口。",
+    "caption": "实际构建记录：产品判断、代码迭代与验证边界可以逐项查看，并随项目继续更新。",
+    "fictional": true
+  }
+]

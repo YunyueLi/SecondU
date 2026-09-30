@@ -7,8 +7,10 @@ import {Store,collections} from '../server/store.mjs';
 import {localizeDemoBootstrap,canonicalDemoValue} from '../shared/demo-localization.mjs';
 import {buildGraphFilterIndex} from '../shared/graph-filtering.mjs';
 import v5 from '../server/fixtures/demo-baseline-v5.json' with {type:'json'};
+import archived from '../server/fixtures/demo-zh-before-v1.json' with {type:'json'};
 const stamp='2026-09-30T10:00:00.000Z';
 function fixture(t,options){const root=mkdtempSync(path.join(tmpdir(),'secondu-localization-'));t.after(()=>rmSync(root,{recursive:true,force:true}));const store=new Store(root,options);return {root,store};}
+function archivedFixture(t){const f=fixture(t,{seed:false});for(const c of collections)for(const item of archived.installed[0][c]??[])f.store.put(c,item);f.store.setMeta('profile',archived.installed[0].profile);return f;}
 const snapshot=store=>({profile:store.meta('profile'),...Object.fromEntries(collections.map(c=>[c,store.list(c)]))});
 const cjk=/[\u3400-\u9fff]/u;
 function displayStrings(value,key='',parent=''){
@@ -17,8 +19,8 @@ function displayStrings(value,key='',parent=''){
  if(value&&typeof value==='object')return Object.entries(value).flatMap(([k,v])=>displayStrings(v,k,parent));
  return [];
 }
-test('thirty conversations cover all contacts and preserve bilingual relationships, dates, senders and evidence',t=>{
- const {store}=fixture(t);t.after(()=>store.close());const zh=snapshot(store),en=localizeDemoBootstrap(zh,'en');
+test('archived thirty conversations cover all contacts and preserve bilingual relationships, dates, senders and evidence',t=>{
+ const {store}=archivedFixture(t);t.after(()=>store.close());const zh=snapshot(store),en=localizeDemoBootstrap(zh,'en');
  assert.equal(zh.people.length,22);assert.equal(zh.conversations.length,30);assert.equal(zh.conversations.flatMap(c=>c.messages).length,268);
  for(const p of zh.people.filter(p=>p.id!=='person-self'))assert.ok(zh.conversations.some(c=>c.kind==='direct'&&c.personIds.includes(p.id)),p.id);
  for(const c of en.conversations){const original=zh.conversations.find(x=>x.id===c.id);assert.deepEqual(c.personIds,original.personIds);assert.equal(c.messages.length,original.messages.length);for(let n=0;n<c.messages.length;n++){const m=c.messages[n];assert.equal(m.senderId,original.messages[n].senderId);assert.equal(m.sourceId,original.messages[n].sourceId);assert.equal(m.time,original.messages[n].time);assert.ok(c.personIds.includes(m.senderId));assert.equal(cjk.test(m.content),false,m.content);assert.ok(en.sources.find(s=>s.id===m.sourceId)?.text.includes(m.content),m.id);}}
@@ -28,8 +30,8 @@ test('thirty conversations cover all contacts and preserve bilingual relationshi
   const values=c==='profile'?[en.profile]:en[c];for(const record of values)for(const [key,value] of displayStrings(record))if(!['reason','history'].includes(key))assert.equal(cjk.test(value),false,`${c} ${record.id||''} ${key}: ${value}`);
  }
 });
-test('sample translation is display-only and reverses unchanged fields without rewriting user edits',t=>{
- const {store}=fixture(t);t.after(()=>store.close());const zh=snapshot(store),before=structuredClone(zh),en=localizeDemoBootstrap(zh,'en');assert.deepEqual(zh,before);assert.equal(localizeDemoBootstrap(zh,'zh-CN'),zh);
+test('legacy sample translation is display-only and reverses unchanged fields without rewriting user edits',t=>{
+ const {store}=archivedFixture(t);t.after(()=>store.close());const zh=snapshot(store),before=structuredClone(zh),en=localizeDemoBootstrap(zh,'en');assert.deepEqual(zh,before);const chinese=localizeDemoBootstrap(zh,'zh-CN');assert.equal(chinese.profile,zh.profile);assert.equal(chinese.people,zh.people);assert.deepEqual(zh,before);
  const personal={...zh,profile:{...zh.profile,demo:false}};assert.equal(localizeDemoBootstrap(personal,'en'),personal);
  const modified={...zh,people:zh.people.map(p=>p.id==='person-self'?{...p,description:'用户亲自修改的描述'}:p)};assert.equal(localizeDemoBootstrap(modified,'en').people.find(p=>p.id==='person-self').description,'用户亲自修改的描述');
  const englishPerson=en.people.find(p=>p.id==='person-self');assert.deepEqual(canonicalDemoValue('people',englishPerson.id,englishPerson),zh.people.find(p=>p.id===englishPerson.id));assert.equal(canonicalDemoValue('people',englishPerson.id,{description:'My own new wording'}).description,'My own new wording');

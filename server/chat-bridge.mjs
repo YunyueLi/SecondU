@@ -3,9 +3,9 @@
 import http from 'node:http';
 import { once } from 'node:events';
 import { randomUUID, createHash } from 'node:crypto';
-import { providerHeaders } from './connections.mjs';
+import { providerHeaders } from './provider-headers.mjs';
 import { anthropicHeaders } from './provider-test.mjs';
-import { inlineImage, MULTIMODAL_REQUEST_LIMIT } from './attachments.mjs';
+import { inlineImage, MULTIMODAL_REQUEST_LIMIT } from './attachment-input.mjs';
 import { usesDefaultReasoning } from '../shared/provider-presets.mjs';
 
 function unsupported(message){return Object.assign(new Error(`Chat Completions 转接不支持：${message}。请改用原生 Responses 连接。`),{status:400,code:'unsupported_chat_bridge'});}
@@ -80,7 +80,8 @@ export function fromChatResponse(result,aliases,reasoningByCall=new Map()){
   }
   if(!output.length)throw Object.assign(new Error('模型返回空响应，未生成文本或工具调用。'),{status:502});
   const response={id:`resp_${randomUUID()}`,object:'response',status:'completed',output};
-  if(result.usage)response.usage={input_tokens:result.usage.prompt_tokens??0,output_tokens:result.usage.completion_tokens??0,total_tokens:result.usage.total_tokens??0,input_tokens_details:null,output_tokens_details:null};
+  const usage=result.usage;
+  if([usage?.prompt_tokens,usage?.completion_tokens].every(value=>Number.isSafeInteger(value)&&value>=0)){const input=usage.prompt_tokens,out=usage.completion_tokens;response.usage={input_tokens:input,output_tokens:out,total_tokens:Number.isSafeInteger(usage.total_tokens)&&usage.total_tokens>=0?usage.total_tokens:input+out,input_tokens_details:null,output_tokens_details:null};}
   return response;
 }
 
@@ -148,7 +149,8 @@ export function fromMessagesResponse(result,aliases,turns=new Map(),request) {
   if(!output.length||((result.stop_reason==='tool_use')!==(calls.length>0)))throw invalid('Anthropic 返回空响应，或停止原因与工具调用不一致。');
   if(calls.length){if(!request)throw invalid('缺少工具轮次请求上下文。');const cached={content:result.content,signature:messagesSignature(request)};const bytes=[...new Set(turns.values()),cached].reduce((total,turn)=>total+Buffer.byteLength(JSON.stringify(turn.content)),0);if(turns.size+calls.length>256||bytes>16*1024*1024)throw invalid('Anthropic 本轮工具历史达到内存限额，请结束本轮后继续。');for(const call of calls)turns.set(call.id,cached);}
   const response={id:`resp_${randomUUID()}`,object:'response',status:'completed',output};
-  if(result.usage){const input=(result.usage.input_tokens??0)+(result.usage.cache_creation_input_tokens??0)+(result.usage.cache_read_input_tokens??0),out=result.usage.output_tokens??0;response.usage={input_tokens:input,output_tokens:out,total_tokens:input+out,input_tokens_details:null,output_tokens_details:null};}
+  const usage=result.usage;
+  if([usage?.input_tokens,usage?.output_tokens,usage?.cache_creation_input_tokens??0,usage?.cache_read_input_tokens??0].every(value=>Number.isSafeInteger(value)&&value>=0)){const input=usage.input_tokens+(usage.cache_creation_input_tokens??0)+(usage.cache_read_input_tokens??0),out=usage.output_tokens;response.usage={input_tokens:input,output_tokens:out,total_tokens:input+out,input_tokens_details:null,output_tokens_details:null};}
   return response;
 }
 

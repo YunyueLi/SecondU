@@ -1,0 +1,11 @@
+.catalogue-settings-example{display:flex;flex-direction:column;gap:16px;min-width:0}
+.catalogue-settings-surface{border:1px solid var(--color-border-subtle);border-radius:12px;background:var(--color-surface);overflow:hidden}
+.catalogue-settings-surface>header{display:flex;align-items:baseline;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--color-border-subtle)}
+.catalogue-settings-surface>header h3{margin:0;font-size:var(--hither-font-settings-title);font-weight:550;line-height:1.35}
+.catalogue-settings-surface>header>span,.catalogue-settings-content small{font-size:var(--hither-font-meta);color:var(--color-text-secondary);font-weight:400}
+.catalogue-settings-content{display:flex;flex-direction:column;gap:16px;padding:22px;min-width:0}
+.catalogue-settings-content p,.catalogue-settings-content h4{margin:0}
+.catalogue-settings-content .form-field{margin:0}
+.catalogue-settings-surface>footer{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:8px;padding:14px 22px;border-top:1px solid var(--color-border-subtle)}
+.catalogue-settings-surface>footer>span{margin-right:auto}
+@media(max-width:480px){.catalogue-settings-content{padding:18px}.catalogue-settings-surface>header,.catalogue-settings-surface>footer{padding-inline:18px}.catalogue-settings-surface>footer>span{flex-basis:100%}}

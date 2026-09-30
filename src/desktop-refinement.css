@@ -39,7 +39,6 @@
 .sidebar-collapsed .nav-item>span>span,.sidebar-collapsed .new-task-button>span>span { display:none; }
 .sidebar-collapsed .profile-trigger { padding:6px; width:45px; }
 .sidebar-collapsed .sidebar-bottom { width:45px; }
-.desktop-mode.sidebar-collapsed .desktop-drag-region { background:linear-gradient(to right,var(--color-surface-secondary) 64px,var(--color-surface) 64px); }
 .app-topbar { height:52px; min-height:52px; padding:0 28px; }
 .topbar-title { font-weight:500; color:var(--color-text-secondary); }
 .immersive-main { overflow:hidden; }
@@ -363,16 +362,8 @@ html,body,#root{width:100%;height:100%;min-height:0;overflow:hidden;overscroll-b
 .is-home .composer-main-layer{display:grid;grid-template-columns:36px minmax(0,1fr) auto;align-items:center;gap:6px;min-height:56px;padding:8px;border:1px solid color-mix(in srgb,var(--color-border) 38%,transparent);border-radius:30px;background:var(--color-surface);box-shadow:0 3px 13px rgb(0 0 0 / .045);position:relative;z-index:1}
 .is-home .composer-main-layer:focus-within{border-color:color-mix(in srgb,var(--color-border) 38%,transparent);outline:none;box-shadow:0 3px 13px rgb(0 0 0 / .045)}
 .is-home .composer.is-expanded .composer-main-layer{padding:10px 12px;border-radius:24px}
-.is-home .composer>.composer-context-bar{display:flex;align-items:center;gap:2px;flex-wrap:wrap;min-height:58px;width:calc(100% - 28px);margin:-10px 14px 0;padding:18px 14px 10px;border-radius:0 0 16px 16px;background:color-mix(in srgb,var(--color-text) 5%,var(--color-surface));position:relative;z-index:0}
-.is-home .composer>.composer-context-bar button{font-size:13px;padding-inline:7px}
-@media(max-width:520px){.is-home .composer-main-layer{gap:3px;padding:7px}.is-home .composer>.composer-context-bar{gap:0;padding-inline:6px;margin-inline:10px;width:calc(100% - 20px)}.is-home .composer>.composer-context-bar button{font-size:12px;padding-inline:5px}.is-home .composer.is-expanded .composer-main-layer{padding-inline:10px}}
+@media(max-width:520px){.is-home .composer-main-layer{gap:3px;padding:7px}.is-home .composer.is-expanded .composer-main-layer{padding-inline:10px}}
 
-/* Project and adjacent tools share the same text and icon scale. */
-.is-home .composer>.composer-context-bar{font-size:13px;font-weight:400}
-.is-home .composer>.composer-context-bar button,.is-home .composer>.composer-context-bar .project-picker select{font-size:inherit;font-weight:400;line-height:20px}
-.is-home .composer>.composer-context-bar .project-picker{gap:6px;min-height:30px;padding-inline:7px}
-.is-home .composer>.composer-context-bar .project-picker svg,.is-home .composer>.composer-context-bar button svg{width:18px;height:18px}
-@media(max-width:520px){.is-home .composer>.composer-context-bar{font-size:12px}.is-home .composer>.composer-context-bar .project-picker{padding-inline:5px}}
 
 /* All composer context tools use the same button and type scale. */
 .composer>.composer-context-bar>button,.composer>.composer-context-bar .project-picker{height:32px;min-height:32px;font-size:13px;font-weight:400;line-height:20px;border-radius:8px;padding-inline:7px}

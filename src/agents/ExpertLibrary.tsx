@@ -2,21 +2,17 @@ import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import type { AgentProfile, Bootstrap } from '../../shared/contracts';
 import { Button } from '@openai/apps-sdk-ui/components/Button';
 import { Input } from '@openai/apps-sdk-ui/components/Input';
-import { Textarea } from '@openai/apps-sdk-ui/components/Textarea';
-import { Select } from '@openai/apps-sdk-ui/components/Select';
 import { ExpertDomainPicker } from './ExpertDomainPicker';
-import { Plus, ArrowRight, ArrowLeft, Search } from '@openai/apps-sdk-ui/components/Icon';
-import { Dialog, ErrorNotice, Field } from '../components';
-import { write, messageOf } from '../api';
+import { ArrowRight, ArrowLeft, Search } from '@openai/apps-sdk-ui/components/Icon';
 import { getLocale, t } from '../i18n';
 import { AgentAvatar, AgentBadgeStage } from './AgentIdentity';
-import { EXPERT_CATEGORIES, EXPERT_TEMPLATES, expertDraft, expertText, existingExpert, recommendExperts, expertShelf, filterExperts, type ExpertRecommendation, type ExpertReason } from './expertTemplates';
+import { EXPERT_CATEGORIES, expertText, existingExpert, recommendExperts, expertShelf, filterExperts, type ExpertRecommendation } from './expertTemplates';
+import { ExpertPreview } from './ExpertPreview';
 import './experts.css';
 
-type Props={navigation:ReactNode;data:Bootstrap;onCreated:(agent:AgentProfile)=>Promise<void>;onOpen:(agent:AgentProfile)=>void};
-const reasonKind=(reason:ExpertReason)=>reason.kind==='goal'?t('当前目标','Active goal'):reason.kind==='fact'?t('已确认背景','Confirmed context'):t('个人介绍','Profile');
+type Props={navigation:ReactNode;data:Bootstrap;onCreated:(agent:AgentProfile)=>Promise<void>;onOpen:(agent:AgentProfile)=>void;onRefresh:()=>Promise<void>};
 
-export function ExpertLibrary({navigation,data,onCreated,onOpen}:Props){
+export function ExpertLibrary({navigation,data,onCreated,onOpen,onRefresh}:Props){
   const results=useRef<HTMLDivElement>(null),stage=useRef<HTMLElement>(null);
   const [preview,setPreview]=useState<ExpertRecommendation>();
   const [query,setQuery]=useState(''),[category,setCategory]=useState('all'),[view,setView]=useState('suggested'),[selectedId,setSelectedId]=useState('');
@@ -58,25 +54,4 @@ export function ExpertLibrary({navigation,data,onCreated,onOpen}:Props){
     </div>
     {preview&&<ExpertPreview key={preview.template.id} item={preview} avatarStyle={avatarStyle} onClose={()=>setPreview(undefined)} onCreated={async agent=>{await onCreated(agent);setPreview(undefined);}}/>}
   </div>;
-}
-
-function ExpertPreview({item,avatarStyle,onClose,onCreated}:{item:ExpertRecommendation;avatarStyle:AgentProfile['avatarStyle'];onClose:()=>void;onCreated:(agent:AgentProfile)=>Promise<void>}){
-  const {template}=item;
-  const [name,setName]=useState(expertText(template.name,getLocale()));const [focusId,setFocusId]=useState(item.focusId);
-  const [busy,setBusy]=useState(false);const [error,setError]=useState('');const [created,setCreated]=useState<AgentProfile>();const [answer,setAnswer]=useState('');
-  const focus=template.focuses.find(option=>option.id===focusId)||template.focuses[0];
-  const draft=expertDraft(template,getLocale(),name,focusId,answer);
-  async function add(){if(busy)return;setBusy(true);setError('');try{const agent=created||await write<AgentProfile>('/agents',draft);setCreated(agent);await onCreated(agent);}catch(err){setError(messageOf(err));}finally{setBusy(false);}}
-  return <Dialog title={t('添加专家','Add an expert')} className="expert-preview-dialog" onClose={()=>{if(!busy)onClose();}}><div className="expert-preview">
-    <div className="expert-preview-heading"><AgentAvatar agent={{id:`expert-${template.id}`,name,avatarStyle}} size={44}/><div><h3>{expertText(template.name,getLocale())}</h3><p>{expertText(template.description,getLocale())}</p></div></div>
-    {!!item.reasons.length&&<section className="expert-context"><h3>{t('推荐依据','Why this fits')}</h3>{item.reasons.map(reason=><div key={`${reason.kind}-${reason.id}`}><span>{reasonKind(reason)}{reason.demo?t('（示例）',' (sample)'):''}</span><p>{reason.text}</p></div>)}</section>}
-    <section className="expert-adjustment"><h3>{t('为你调整','Make it yours')}</h3>
-      <Field label={t('工作重点','Working focus')}><Select size="md" aria-label={t('专家工作重点','Expert working focus')} value={focusId} disabled={busy||!!created} onChange={option=>setFocusId(option.value)} options={template.focuses.map(option=>({value:option.id,label:expertText(option.title,getLocale())}))}/></Field><p className="expert-focus-detail">{expertText(focus.instruction,getLocale())}</p>
-      <Field label={expertText(template.question,getLocale())} hint={t('选填，会保存在角色说明中。','Optional. Saved in the role instructions.')}><Textarea size="md" rows={2} value={answer} onChange={event=>setAnswer(event.target.value)} maxLength={600} disabled={busy||!!created} aria-label={t('个性化设置','Personalization')} placeholder={t('写下希望这位助理记住的工作偏好','Add a working preference for this agent')}/></Field>
-      <Field label={t('助理名称','Agent name')}><Input size="md" value={name} disabled={busy||!!created} onChange={event=>setName(event.target.value)} maxLength={200} aria-label={t('专家名称','Expert name')}/></Field>
-    </section>
-    <details className="expert-saved-instructions"><summary>{t('角色说明','Role instructions')}</summary><p>{draft.instructions}</p></details>
-    <ErrorNotice error={error}/>{created&&error&&<p className="expert-privacy-note">{t('已添加，点击下方按钮打开。','Added. Use the button below to open it.')}</p>}
-    <div className="expert-preview-actions"><Button color="secondary" variant="ghost" size="md" disabled={busy} onClick={onClose}>{t('取消','Cancel')}</Button><Button color="primary" size="md" loading={busy} disabled={!name.trim()} onClick={()=>void add()}><Plus/>{created?t('打开已添加的助理','Open added agent'):t('添加到我的 Agent','Add to my agents')}</Button></div>
-  </div></Dialog>;
 }

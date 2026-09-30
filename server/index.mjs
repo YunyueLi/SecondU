@@ -1,3 +1,7 @@
+import {reviseTaskMessage} from './message-revisions.mjs';
+import { approvalMode, executionSettings, saveExecutionSettings } from './execution-settings.mjs';
+import { createDevelopmentReader } from './development-review.mjs';
+import { ensureUSDemoFiles } from './demo-us.mjs';
 import { ensureDemoShowcase } from './demo-showcase.mjs';
 import { resolveExecutionPolicy, guardExecutionRoute } from './execution-policy.mjs';
 import { normalizeContextRequest, personalContextFor } from './personal-context.mjs';
@@ -18,14 +22,23 @@ import { publicProject, listProjectFiles } from './projects.mjs';
 import { chooseProjectDirectory } from './directory-picker.mjs';
 import { createEntity, createTask, assertDeletable, text, choice, bool, refs, addEvent } from './domain.mjs';
 import { TaskRunner } from './runner.mjs';
+import { saveTaskReaction } from './task-reactions.mjs';
+import { saveRoomReaction } from './room-reactions.mjs';
+import { artifactBytes, artifactAtVersion, binaryArtifactMime, isBinaryArtifact, BINARY_ARTIFACT_JSON_LIMIT } from './artifact-content.mjs';
+import { createOfficePreviewer } from './office-preview.mjs';
+import { runtimeRevision } from './runtime-revision.mjs';
 import { codexCommand } from './codex.mjs';
 import { saveConnection, setDefaultConnection, deleteConnection, testConnection } from './connections.mjs';
+import { catalogueSettings, discoverModels } from './model-catalogue.mjs';
+import { DelegationService } from './delegation.mjs';
+import { RemoteComputerService } from './remote/service.mjs';
+import { RemoteTaskBridge } from './remote/task-bridge.mjs';
 import { createRoom, roomTask } from './rooms.mjs';
 import { previewChatImport, commitChatImport } from './imports.mjs';
 import { dailyActivity, previewActivityImport, commitActivityImport } from './daily-activity.mjs';
 import { runtimeCapabilities, taskTrace } from './runtime-observation.mjs';
 import { saveAgentAvatar, getAvatar, batchAvatarStyle, defaultAgentAvatarStyle } from './avatars.mjs';
-import { ENGINEER_SPACE, PERSONAL_SPACE, localSpaceDirectory } from './demo-space.mjs';
+import { ENGINEER_SPACE, LEGACY_ENGINEER_SPACE, US_SPACE, isExampleSpace, PERSONAL_SPACE, localSpaceDirectory } from './demo-space.mjs';
 import { getAppearance, saveAppearance, getArtwork, getArtworkInfo, saveArtwork } from './local-appearance.mjs';
 import { saveAttachment, getAttachment, publicAttachment, ATTACHMENT_LIMIT } from './attachments.mjs';
 
@@ -43,24 +56,33 @@ async function readJson(req,maxBytes=2*1024*1024){
 }
 function detectCodex(){try{const version=execFileSync(codexCommand(),['--version'],{encoding:'utf8',timeout:5000,stdio:['ignore','pipe','ignore']}).trim();return version.startsWith('codex-cli ')?{codexAvailable:true,codexVersion:version}:{codexAvailable:false};}catch{return {codexAvailable:false};}}
 
-export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJECT,'.hither'),seed=true,runCodex,runImCli,runResourceCli,scheduler=true,computerInfo,chooseDirectory=chooseProjectDirectory,distDir=path.join(PROJECT,'dist'),executionPolicy,_allowDemoSpace=true,_parentPort,_protectedDataDirectory}={}) {
-  const store=new Store(dataDir,{seed,protectedDataDirectory:_protectedDataDirectory});
+export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJECT,'.hither'),seed=true,seedLocale='zh-CN',runCodex,runImCli,runResourceCli,scheduler=true,computerInfo,chooseDirectory=chooseProjectDirectory,distDir=path.join(PROJECT,'dist'),executionPolicy,modelFetch=fetch,remoteTransport,developmentRoot=PROJECT,officePreviewOptions,_allowDemoSpace=true,_parentPort,_protectedDataDirectory}={}) {
+  const store=new Store(dataDir,{seed,seedLocale,protectedDataDirectory:_protectedDataDirectory});
   const policy=resolveExecutionPolicy(executionPolicy,store.meta('profile'));
-  if(policy==='showcase')ensureDemoShowcase(store);
+  if(policy==='showcase') {
+    if(store.meta('profile').demoLocale==='en')ensureUSDemoFiles(store);
+    else ensureDemoShowcase(store);
+  }
   const spaceId=createHash('sha256').update(path.resolve(store.directory)).digest('hex').slice(0,24);
   const connectors=new ConnectorService(store,{blockedPorts:()=>[58644,58645,server?.address()?.port,_parentPort?.()]});
   const im=new ImCliService(store,{runCli:runImCli});
   const resources=new AgentResourcesService(store,{im,runCli:runResourceCli});
   const runner=new TaskRunner(store,{runCodex,scheduler,connectors,executionPolicy:policy});
+  const delegations=new DelegationService(store,{executionPolicy:policy});
+  const remoteTasks=new RemoteTaskBridge(store);
+  const remoteComputers=new RemoteComputerService(store,{executionPolicy:policy,...(remoteTransport?{transport:remoteTransport}:{}),onRunChanged:run=>remoteTasks.sync(run)});
+  const development=createDevelopmentReader({projectRoot:developmentRoot});
+  const previewOffice=createOfficePreviewer(store,officePreviewOptions);
+  remoteTasks.connect(remoteComputers);
   const computer={id:'local',name:os.hostname(),platform:process.platform,status:'online',workspace:store.workspace,...(computerInfo??detectCodex())};
-  const bootstrap=()=>({version:VERSION,...(policy?{executionPolicy:policy}:{}),connectors:connectors.list(),attachments:store.list('attachments').map(publicAttachment),defaultAgentAvatarStyle:defaultAgentAvatarStyle(store),dailyActivities:dailyActivity(store),profile:store.meta('profile'),...Object.fromEntries(collections.map(c=>[c,c==='projects'?store.list(c).map(project=>publicProject(project,store.protectedDataDirectory)):store.list(c)])),settings:store.settings(),modelConnections:store.connectionList(),defaultConnectionId:store.defaultConnectionId(),computer});
+  const bootstrap=()=>({version:VERSION,executionSettings:executionSettings(store),...(policy?{executionPolicy:policy}:{}),connectors:connectors.list(),attachments:store.list('attachments').map(publicAttachment),defaultAgentAvatarStyle:defaultAgentAvatarStyle(store),dailyActivities:dailyActivity(store),profile:store.meta('profile'),...Object.fromEntries(collections.map(c=>[c,c==='projects'?store.list(c).map(project=>publicProject(project,store.protectedDataDirectory)):store.list(c)])),settings:store.settings(),modelConnections:store.connectionList(),defaultConnectionId:store.defaultConnectionId(),computer});
   let server;
   const childApps=new Map();
   function localApp(space,create=false){
     if(childApps.has(space))return childApps.get(space);
     const directory=localSpaceDirectory(store.directory,space,{create});
     if(!directory||(!create&&!existsSync(path.join(directory,'hither.sqlite'))))throw new HttpError(404,'尚未创建此空间，请从设置进入。','space_missing');
-    const app=createApp({dataDir:directory,seed:space===ENGINEER_SPACE,executionPolicy:space===ENGINEER_SPACE?'showcase':'personal',runCodex,runImCli,runResourceCli,scheduler,chooseDirectory,computerInfo:{codexAvailable:computer.codexAvailable,codexVersion:computer.codexVersion},distDir,_allowDemoSpace:false,_parentPort:()=>server.address()?.port,_protectedDataDirectory:store.protectedDataDirectory});
+    const app=createApp({dataDir:directory,seed:isExampleSpace(space),seedLocale:space===US_SPACE?'en':'zh-CN',executionPolicy:isExampleSpace(space)?'showcase':'personal',runCodex,runImCli,runResourceCli,scheduler,chooseDirectory,computerInfo:{codexAvailable:computer.codexAvailable,codexVersion:computer.codexVersion},distDir,modelFetch,remoteTransport,developmentRoot,officePreviewOptions,_allowDemoSpace:false,_parentPort:()=>server.address()?.port,_protectedDataDirectory:store.protectedDataDirectory});
     childApps.set(space,app);return app;
   }
   function guard(req) {
@@ -75,11 +97,11 @@ export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJEC
     const url=new URL(req.url,'http://127.0.0.1');let parts;try{parts=url.pathname.split('/').filter(Boolean).map(decodeURIComponent);}catch{throw new HttpError(400,'路径格式无效');}
     if(parts[0]==='api'&&parts[1]==='spaces'){
       if(!_allowDemoSpace)throw new HttpError(404,'接口不存在','not_found');
-      if(parts.length===2&&req.method==='GET')return respond(res,200,{spaces:[{id:'main',name:store.meta('profile').name,kind:'original'},...[{id:PERSONAL_SPACE,name:'我的真实空间',kind:'personal'},{id:ENGINEER_SPACE,name:'产品工程师示例',kind:'fictional'}].map(space=>{const dir=localSpaceDirectory(store.directory,space.id);return {...space,exists:!!dir&&existsSync(path.join(dir,'hither.sqlite'))};})]});
-      if(![ENGINEER_SPACE,PERSONAL_SPACE].includes(parts[2]))throw new HttpError(404,'空间不存在','space_not_found');
+      if(parts.length===2&&req.method==='GET')return respond(res,200,{spaces:[{id:'main',name:store.meta('profile').name,kind:'original'},...[{id:PERSONAL_SPACE,name:'我的真实空间',kind:'personal'},{id:ENGINEER_SPACE,name:'万叶的工作与生活',kind:'fictional'},{id:US_SPACE,name:'Caspian’s work and life',kind:'fictional'},{id:LEGACY_ENGINEER_SPACE,name:'旧版中文示例',kind:'legacy'}].map(space=>{const dir=localSpaceDirectory(store.directory,space.id);return {...space,exists:!!dir&&existsSync(path.join(dir,'hither.sqlite'))};})]});
+      if(![ENGINEER_SPACE,US_SPACE,LEGACY_ENGINEER_SPACE,PERSONAL_SPACE].includes(parts[2]))throw new HttpError(404,'空间不存在','space_not_found');
       if(parts.length===3&&req.method==='POST'){
         await readJson(req);const app=localApp(parts[2],true);
-        return respond(res,200,{id:parts[2],name:parts[2]===PERSONAL_SPACE?'我的真实空间':'产品工程师示例',href:`/?space=${parts[2]}`,profile:app.store.meta('profile')});
+        return respond(res,200,{id:parts[2],name:parts[2]===PERSONAL_SPACE?'我的真实空间':parts[2]===US_SPACE?'Caspian’s work and life':parts[2]===LEGACY_ENGINEER_SPACE?'旧版中文示例':'万叶的工作与生活',href:`/?space=${parts[2]}`,profile:app.store.meta('profile')});
       }
       if(parts.length>=4){
         const app=localApp(parts[2]);req.url='/api/'+parts.slice(3).map(encodeURIComponent).join('/')+url.search;
@@ -92,15 +114,27 @@ export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJEC
       const requested=path.resolve(distDir,'.'+url.pathname);if(requested!==distDir&&!requested.startsWith(distDir+path.sep))throw new HttpError(403,'路径超出范围');
       let file=existsSync(requested)&&statSync(requested).isFile()?requested:path.join(distDir,'index.html');
       if(!existsSync(file))return respond(res,200,{name:'Hither',message:'后端已启动。开发界面位于 http://127.0.0.1:58644；构建后可在此打开桌面界面。'});
-      const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.svg':'image/svg+xml','.png':'image/png','.woff2':'font/woff2','.json':'application/json'}[path.extname(file)]??'application/octet-stream';
+      const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.mjs':'text/javascript; charset=utf-8','.wasm':'application/wasm','.css':'text/css; charset=utf-8','.svg':'image/svg+xml','.png':'image/png','.woff2':'font/woff2','.json':'application/json'}[path.extname(file)]??'application/octet-stream';
       const data=readFileSync(file);res.writeHead(200,{'Content-Type':mime,'Cache-Control':'no-cache','X-Content-Type-Options':'nosniff'});return res.end(req.method==='HEAD'?undefined:data);
     }
     const [,resource,key,action]=parts,method=req.method;
+    if(resource==='development'){
+      if(method!=='GET')throw new HttpError(405,'构建记录仅支持本机读取。','development_read_only');
+      if(parts.length===3&&key==='review')return respond(res,200,development.review());
+      if(parts.length===3&&key==='documents')return respond(res,200,development.document(url.searchParams.get('path')));
+      throw new HttpError(404,'构建记录接口不存在。','not_found');
+    }
     const avatarUpload=resource==='agents'&&action==='avatar'&&method==='POST';
+    const profileUpload=resource==='profile'&&method==='PUT';
     const artworkUpload=resource==='settings'&&key==='artwork'&&parts.length===3&&method==='PUT';
+    const binaryArtifactUpload=resource==='artifacts'&&!key&&method==='POST';
     const attachmentUpload=resource==='attachments'&&!key&&parts.length===2&&method==='POST';
-    const body=['POST','PUT','PATCH','DELETE'].includes(method)?await readJson(req,attachmentUpload?Math.ceil(ATTACHMENT_LIMIT/3)*4+4096:artworkUpload?12*1024*1024:avatarUpload?4*1024*1024+4096:2*1024*1024):{};
+    const body=['POST','PUT','PATCH','DELETE'].includes(method)?await readJson(req,binaryArtifactUpload?BINARY_ARTIFACT_JSON_LIMIT:attachmentUpload?Math.ceil(ATTACHMENT_LIMIT/3)*4+4096:artworkUpload?12*1024*1024:(avatarUpload||profileUpload)?4*1024*1024+4096:2*1024*1024):{};
+    if(profileUpload&&!Object.hasOwn(body,'avatarDataUrl')&&Buffer.byteLength(JSON.stringify(body))>2*1024*1024)throw new HttpError(413,'请求内容过大','body_too_large');
     guardExecutionRoute(policy,{resource,key,action,operation:parts[4],method,body},store);
+    if(resource==='computers')return respond(res,200,await remoteComputers.owner(method,parts.slice(2),body));
+    if(resource==='delegations')return respond(res,200,await delegations.owner(method,parts.slice(2),body));
+    if(resource==='model-catalogue'&&parts.length===2&&method==='POST')return respond(res,200,await discoverModels(catalogueSettings(body),body.apiKey,{fetchImpl:modelFetch}));
     if(resource==='attachments'){
       if(attachmentUpload)return respond(res,201,saveAttachment(store,body));
       if(key&&parts.length===3&&['GET','HEAD'].includes(method)){
@@ -112,7 +146,7 @@ export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJEC
     }
     if(resource==='avatars'&&key&&['GET','HEAD'].includes(method)){const image=getAvatar(store,key);res.writeHead(200,{'Content-Type':image.mime,'Content-Length':image.bytes,'Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff'});return res.end(method==='HEAD'?undefined:image.data);}
     if(avatarUpload)return respond(res,200,saveAgentAvatar(store,key,body));
-    if(resource==='health'&&method==='GET')return respond(res,200,{application:'hither-desktop',version:VERSION,status:'ok',spaceId});
+    if(resource==='health'&&method==='GET')return respond(res,200,{application:'hither-desktop',version:VERSION,revision:runtimeRevision,status:'ok',spaceId});
     if(resource==='bootstrap'&&method==='GET')return respond(res,200,bootstrap());
     if(resource==='daily-activity'&&method==='GET')return respond(res,200,dailyActivity(store));
     if(resource==='imports'&&key==='activity'&&method==='POST'){
@@ -184,11 +218,16 @@ export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJEC
       throw new HttpError(405,'连接器不支持该操作。');
     }
     if(resource==='agent-rooms'){
+      if(method==='PUT'&&key&&action==='reactions'&&parts.length===4)return respond(res,200,saveRoomReaction(store,key,body));
       if(method==='GET'&&!action)return respond(res,200,key?store.require('agentRooms',key):store.list('agentRooms'));
       if(method==='POST'&&!key)return respond(res,201,createRoom(store,body));
       if(method==='PUT'&&key&&!action)return respond(res,200,createRoom(store,body,store.require('agentRooms',key)));
       if(method==='POST'&&['messages','tasks'].includes(action))return respond(res,201,roomTask(store,runner,key,body,{send:action==='messages'}));
       throw new HttpError(405,'会话历史保留，不支持该操作。');
+    }
+    if(resource==='settings'&&key==='execution'&&parts.length===3){
+      if(method==='GET')return respond(res,200,executionSettings(store));
+      if(method==='PUT')return respond(res,200,saveExecutionSettings(store,body));
     }
     if(resource==='settings'&&key==='appearance'&&parts.length===3){
       if(method==='GET')return respond(res,200,getAppearance(store));
@@ -212,21 +251,29 @@ export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJEC
       if(method==='PUT'&&key&&!action)return respond(res,200,saveConnection(store,body,store.connection(key)));
       if(method==='DELETE'&&key&&!action)return respond(res,200,deleteConnection(store,key,runner));
       if(method==='POST'&&action==='default')return respond(res,200,setDefaultConnection(store,key));
-      if(method==='POST'&&action==='test'){const result=await testConnection(store,key,{cleanError:message=>runner.cleanError(message)});return respond(res,result.status,result.value);}
+      if(method==='GET'&&action==='models'){const connection=store.connection(key),apiKey=store.getKey(connection);return respond(res,200,await discoverModels(connection,apiKey,{fetchImpl:modelFetch}));}
+      if(method==='POST'&&action==='test'){const result=await testConnection(store,key,{cleanError:message=>runner.cleanError(message),fetchImpl:modelFetch});return respond(res,result.status,result.value);}
       throw new HttpError(405,'模型连接不支持该操作');
     }
     if(resource==='settings'&&key==='provider') {
       if(method==='GET'&&!action)return respond(res,200,store.settings());
       if(method==='PUT'&&!action)return respond(res,200,saveConnection(store,body,store.connection()));
-      if(action==='test'&&method==='POST'){const defaultId=store.defaultConnectionId(),result=await testConnection(store,defaultId,{defaultId,cleanError:message=>runner.cleanError(message)});return respond(res,result.status,result.value);}
+      if(action==='test'&&method==='POST'){const defaultId=store.defaultConnectionId(),result=await testConnection(store,defaultId,{defaultId,cleanError:message=>runner.cleanError(message),fetchImpl:modelFetch});return respond(res,result.status,result.value);}
     }
     if(resource==='task-feedback'&&key&&method==='GET')return respond(res,200,feedbackRecord(store,key));
     if(resource==='tasks') {
+      if(key&&store.get('tasks',key)?.remoteExecution){
+        if(method==='GET'&&action==='remote')return respond(res,200,{run:remoteTasks.runForTask(key)});
+        if(method==='POST'&&['approval','cancel','poll'].includes(action))return respond(res,200,await remoteTasks.control(key,action,body));
+        if(method==='PUT'&&!action&&Object.keys(body).some(field=>!['title','archived'].includes(field)))throw new HttpError(409,'远端任务保留启动时的配置，请从电脑设置创建新任务。','remote_task_config_fixed');
+      }
       if(method==='GET'&&action==='context')return respond(res,200,personalContextFor(store,store.require('tasks',key)));
       if(method==='GET'&&action==='feedback')return respond(res,200,taskFeedback(store,key));
       if(method==='POST'&&action==='feedback')return respond(res,201,saveTaskFeedback(store,key,body));
+      if(method==='PUT'&&action==='reaction')return respond(res,200,saveTaskReaction(store,key,body));
       if(method==='GET'&&action==='trace')return respond(res,200,taskTrace(store.require('tasks',key)));
       if(method==='POST'&&!key)return respond(res,201,createTask(store,body));
+      if(method==='POST'&&action==='revise')return respond(res,201,reviseTaskMessage(store,runner,key,body));
       if(method==='POST'&&action==='run')return respond(res,200,runner.start(key));
       if(method==='POST'&&action==='message')return respond(res,200,runner.message(key,body.content,body.attachmentIds));
       if(method==='POST'&&action==='cancel')return respond(res,200,await runner.cancel(key));
@@ -235,7 +282,8 @@ export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJEC
         const task=store.require('tasks',key);
         if(runner.active.has(key)||['running','awaiting_approval'].includes(task.status))throw new HttpError(409,'请先停止任务再编辑其配置','task_active');
         if(Object.hasOwn(body,'projectId')&&body.projectId!==task.projectId)throw new HttpError(409,'已有任务不能更换项目，请在目标项目新建对话。','task_project_fixed');
-        const oldRuntimeConfig=JSON.stringify([task.mode,task.connectionId,task.digitalTwinEnabled,task.connectorIds??[],task.contextRequest]);
+        const oldRuntimeConfig=JSON.stringify([task.mode,task.connectionId,task.digitalTwinEnabled,task.connectorIds??[],task.contextRequest,task.approvalMode]);
+        if(Object.hasOwn(body,'approvalMode'))task.approvalMode=approvalMode(body.approvalMode,{nullable:true});
         if(body.archived!==undefined)task.archived=bool(body.archived,'archived');
         if(body.title!==undefined)task.title=text(body.title,'title',300);
         if(body.contextRequest!==undefined)task.contextRequest=normalizeContextRequest(body.contextRequest);
@@ -248,11 +296,11 @@ export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJEC
         }
         if(body.digitalTwinEnabled!==undefined)task.digitalTwinEnabled=bool(body.digitalTwinEnabled,'digitalTwinEnabled');
         if(body.connectorIds!==undefined)task.connectorIds=connectorSelection(store,body.connectorIds);
-        const runtimeChanged=oldRuntimeConfig!==JSON.stringify([task.mode,task.connectionId,task.digitalTwinEnabled,task.connectorIds??[],task.contextRequest]);
+        const runtimeChanged=oldRuntimeConfig!==JSON.stringify([task.mode,task.connectionId,task.digitalTwinEnabled,task.connectorIds??[],task.contextRequest,task.approvalMode]);
         task.updatedAt=now();
         store.transaction(()=>{
           if(runtimeChanged){
-            delete task.threadId;
+            delete task.threadId;delete task.contextUsage;
             for(const record of store.list('runtime'))if(record.id.startsWith(`${task.id}:`))store.delete('runtime',record.id);
           }
           store.put('tasks',task);
@@ -276,9 +324,10 @@ export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJEC
       if(method==='POST'&&!key||method==='PUT'&&key){const project=createEntity(store,'projects',body,key?store.require('projects',key):undefined);store.put('projects',project);return respond(res,method==='POST'?201:200,publicProject(project,store.protectedDataDirectory));}
     }
     if(resource==='artifacts'){
-      if(method==='PUT'&&key&&!action){const old=store.require('artifacts',key);if(runner.active.has(old.taskId)&&store.require('tasks',old.taskId).mode==='live')throw new HttpError(409,'请先中断模型执行，再编辑这份产物，避免模型同时写入。','task_active');if(body.baseVersion!==old.version)throw new HttpError(409,'文件已被更新，请刷新后再保存','version_conflict');if(store.require('tasks',old.taskId).projectId){runner.ensureProjectReady(store.require('tasks',old.taskId));const file=store.artifactPath(old);if(!existsSync(file)||readFileSync(file,'utf8')!==old.content)throw new HttpError(409,'项目文件已在其他位置修改，请先核对当前文件，不能覆盖。','version_conflict');if([...runner.active.keys()].some(id=>store.require('tasks',id).projectId===store.require('tasks',old.taskId).projectId))throw new HttpError(409,'项目正在执行任务，请先中断后再编辑文件。','project_active');}text(body.content,'content',1024*1024,false);const content=body.content,version=old.version+1,stamp=now();const artifact={...old,classification:'artifact',origin:{kind:'user'},content,version,updatedAt:stamp,versions:[...old.versions,{version,content,createdAt:stamp,author:'用户'}]};store.writeArtifact(artifact);runner.event(old.taskId,'artifact_edited',`用户编辑了 ${old.name}`,`版本 ${version}`);return respond(res,200,artifact);}
-      if(method==='POST'&&!key){const task=store.require('tasks',body.taskId);if(runner.active.has(task.id))throw new HttpError(409,'执行中暂不能新增同名产物');runner.ensureProjectReady(task);const name=text(body.name,'name',200);text(body.content??'','content',1024*1024,false);const content=body.content??'';if(store.list('artifacts').some(a=>a.taskId===task.id&&a.name===name))throw new HttpError(409,'同名产物已存在');return respond(res,201,runner.saveArtifact(task.id,name,content,'用户'));}
-      if(method==='GET'&&action==='download'){const artifact=store.require('artifacts',key);res.writeHead(200,{'Content-Type':'text/plain; charset=utf-8','Content-Disposition':`attachment; filename*=UTF-8''${encodeURIComponent(artifact.name)}`,'X-Content-Type-Options':'nosniff','Cache-Control':'no-store'});return res.end(artifact.content);}
+      if(method==='GET'&&action==='preview'&&parts.length===4){const data=await previewOffice(key,url.searchParams.get('version'));res.writeHead(200,{'Content-Type':'application/pdf','Content-Length':data.length,'Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff','Cross-Origin-Resource-Policy':'same-origin'});return res.end(data);}
+      if(method==='PUT'&&key&&!action){const old=store.require('artifacts',key);if(isBinaryArtifact(old))throw new HttpError(409,'图片、PDF 和 Office 产物只读，请在原任务中生成新版本。','binary_artifact_read_only');if(runner.active.has(old.taskId)&&store.require('tasks',old.taskId).mode==='live')throw new HttpError(409,'请先中断模型执行，再编辑这份产物，避免模型同时写入。','task_active');if(body.baseVersion!==old.version)throw new HttpError(409,'文件已被更新，请刷新后再保存','version_conflict');if(store.require('tasks',old.taskId).projectId){runner.ensureProjectReady(store.require('tasks',old.taskId));const file=store.artifactPath(old);if(!existsSync(file)||readFileSync(file,'utf8')!==old.content)throw new HttpError(409,'项目文件已在其他位置修改，请先核对当前文件，不能覆盖。','version_conflict');if([...runner.active.keys()].some(id=>store.require('tasks',id).projectId===store.require('tasks',old.taskId).projectId))throw new HttpError(409,'项目正在执行任务，请先中断后再编辑文件。','project_active');}text(body.content,'content',1024*1024,false);const content=body.content,version=old.version+1,stamp=now();const artifact={...old,classification:'artifact',origin:{kind:'user'},content,version,updatedAt:stamp,versions:[...old.versions,{version,content,createdAt:stamp,author:'用户'}]};store.writeArtifact(artifact);runner.event(old.taskId,'artifact_edited',`用户编辑了 ${old.name}`,`版本 ${version}`);return respond(res,200,artifact);}
+      if(method==='POST'&&!key){const task=store.require('tasks',body.taskId);if(runner.active.has(task.id))throw new HttpError(409,'执行中暂不能新增同名产物');runner.ensureProjectReady(task);const name=text(body.name,'name',200);text(body.content??'','content',binaryArtifactMime(name)?BINARY_ARTIFACT_JSON_LIMIT:1024*1024,false);const content=body.content??'';if(store.list('artifacts').some(a=>a.taskId===task.id&&a.name===name))throw new HttpError(409,'同名产物已存在');return respond(res,201,runner.saveArtifact(task.id,name,content,'用户'));}
+      if(method==='GET'&&action==='download'){if(url.searchParams.getAll('version').length>1)throw new HttpError(400,'请指定唯一产物版本。','invalid_artifact_version');const artifact=artifactAtVersion(store.require('artifacts',key),url.searchParams.get('version')),{data,mime}=artifactBytes(artifact);res.writeHead(200,{'Content-Type':mime,'Content-Length':data.length,'Content-Disposition':`attachment; filename*=UTF-8''${encodeURIComponent(artifact.name)}`,'X-Artifact-Version':String(artifact.version),'X-Content-Type-Options':'nosniff','Cache-Control':'no-store'});return res.end(data);}
     }
     if(resource==='automations'&&method==='POST'&&action==='run')return respond(res,200,runner.runAutomation(key));
     if(collections.includes(resource) && resource!=='agentRooms' && !action){
@@ -302,7 +351,7 @@ export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJEC
   const handleRequest=(req,res)=>route(req,res).catch(error=>{if(!res.headersSent)respond(res,error.status??500,{error:runner.cleanError(error.status?error.message:'本机服务遇到错误，请检查运行日志。'),code:error.code??'internal_error'});if(!error.status)console.error('[hither]',runner.cleanError(error.stack??error.message));});
   server=http.createServer(handleRequest);
   server.requestTimeout=30000;server.headersTimeout=10000;
-  return {server,store,runner,connectors,bootstrap,handleRequest,async close(){for(const app of childApps.values())await app.close();connectors.close();await runner.close();if(server.listening)await new Promise(resolve=>server.close(resolve));store.close();}};
+  return {server,store,runner,connectors,delegations,remoteComputers,remoteTasks,bootstrap,handleRequest,async close(){for(const app of childApps.values())await app.close();connectors.close();remoteComputers.close();await runner.close();await delegations.close();if(server.listening)await new Promise(resolve=>server.close(resolve));store.close();}};
 }
 
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){

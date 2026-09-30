@@ -1,3 +1,4 @@
+import { approvalMode, executionSettings } from './execution-settings.mjs';
 import { normalizeContextRequest } from './personal-context.mjs';
 import { connectorSelection } from './connectors.mjs';
 import { updatePersonPortrait, portraitSourceIds } from './person-portrait.mjs';
@@ -76,7 +77,7 @@ export function createTask(store, body) {
   const connectorIds=body.connectorIds===undefined?undefined:connectorSelection(store,body.connectorIds);
   const contextRequest=body.contextRequest===undefined?undefined:normalizeContextRequest(body.contextRequest);
   const title=body.title!==undefined?text(body.title,'title',300):chatTitle(prompt,prompt?'新对话':store.require('attachments',attachmentIds[0]).name);
-  return store.put('tasks',{...(contextRequest?{contextRequest}:{}),...(digitalTwinEnabled===undefined?{}:{digitalTwinEnabled}),...(connectorIds===undefined?{}:{connectorIds}),...(projectId?{projectId}:{}),...(connectionId?{connectionId}:{}),id:id('task'),title,prompt,agentIds:refs(store,body.agentIds??[],'agents','agentIds'),contextFactIds:refs(store,body.contextFactIds??[],'facts','contextFactIds'),mode:choice(body.mode,['live','demo'],'mode'),status:'queued',createdAt:stamp,updatedAt:stamp,messages:[{id:id('message'),role:'user',content:prompt,...(attachmentIds.length?{attachmentIds}:{}),createdAt:stamp}],events:[{id:id('event'),type:'created',label:body.mode==='demo'?'本地流程演示已建立':'任务已建立',createdAt:stamp}],artifactIds:[],approvals:[]});
+  return store.put('tasks',{approvalMode:body.approvalMode===undefined?executionSettings(store).approvalMode:approvalMode(body.approvalMode,{nullable:true}),...(contextRequest?{contextRequest}:{}),...(digitalTwinEnabled===undefined?{}:{digitalTwinEnabled}),...(connectorIds===undefined?{}:{connectorIds}),...(projectId?{projectId}:{}),...(connectionId?{connectionId}:{}),id:id('task'),title,prompt,agentIds:refs(store,body.agentIds??[],'agents','agentIds'),contextFactIds:refs(store,body.contextFactIds??[],'facts','contextFactIds'),mode:choice(body.mode,['live','demo'],'mode'),status:'queued',createdAt:stamp,updatedAt:stamp,messages:[{id:id('message'),role:'user',content:prompt,...(attachmentIds.length?{attachmentIds}:{}),createdAt:stamp}],events:[{id:id('event'),type:'created',label:body.mode==='demo'?'本地流程演示已建立':'任务已建立',createdAt:stamp}],artifactIds:[],approvals:[]});
 }
 export function assertDeletable(store,collection,key) {
   const targets=[];
@@ -88,6 +89,8 @@ export function assertDeletable(store,collection,key) {
   if(collection==='people') for(const c of ['relationships','events','conversations']) if(store.list(c).some(e=>e.from===key||e.to===key||e.personIds?.includes(key)))targets.push(c);
   if(collection==='facts' && store.list('tasks').some(t=>t.contextFactIds.includes(key)))targets.push('tasks');
   if(collection==='agents') for(const c of ['tasks','automations','agentRooms'])if(store.list(c).some(e=>e.agentIds.includes(key)))targets.push(c);
+  if(collection==='tasks' && store.list('tasks').some(task=>task.forkedFrom?.taskId===key||task.revisionTaskIds?.includes(key)))targets.push('taskRevisions');
+  if(collection==='tasks' && store.list('remoteRuns').some(run=>run.taskId===key))targets.push('remoteRuns');
   if(collection==='tasks' && store.list('agentRooms').some(room=>room.taskIds.includes(key)))targets.push('agentRooms');
   if(collection==='attachments' && store.list('events').some(event=>event.attachmentIds?.includes(key)))targets.push('events');
   if(['sources','facts','tasks','artifacts'].includes(collection)&&store.list('taskFeedback').some(record=>collection==='sources'?record.sourceId===key:collection==='facts'?record.factId===key:collection==='tasks'?record.taskId===key:record.original.artifact?.id===key||record.adoption?.artifact?.id===key))targets.push('taskFeedback');

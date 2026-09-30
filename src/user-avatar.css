@@ -1,0 +1,16 @@
+.user-avatar{display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;width:var(--user-avatar-size,32px);height:var(--user-avatar-size,32px);overflow:hidden;border-radius:50%;background:#ede8f6;vertical-align:middle}
+.user-avatar>img{display:block;width:100%;height:100%;object-fit:contain;pointer-events:none}
+.user-avatar.has-custom-image>img{object-fit:cover}
+.user-avatar--portrait{--user-avatar-size:54px}
+.user-avatar--message{margin-top:24px}
+.settings-profile-heading{display:flex;align-items:center;gap:14px;margin-bottom:24px}
+.settings-profile-heading>.settings-panel-heading{margin-bottom:0}
+[data-theme="dark"] .user-avatar{background:#393344}
+@media(max-width:600px){.user-avatar--portrait{--user-avatar-size:44px}}
+
+.settings-avatar-editor{display:flex;align-items:center;gap:18px;margin:24px 0 28px}
+.settings-avatar-editor>div{min-width:0}
+.settings-avatar-editor strong{display:block;font-size:14px;font-weight:600}
+.settings-avatar-actions{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-top:9px}
+.settings-avatar-editor p{margin:8px 0 0;font-size:12px;line-height:1.5;color:var(--text-secondary)}
+@media(max-width:600px){.settings-avatar-editor{gap:14px;align-items:flex-start}.settings-avatar-editor>.user-avatar{--user-avatar-size:52px!important}}

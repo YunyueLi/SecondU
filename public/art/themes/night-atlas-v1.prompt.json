@@ -1,0 +1,27 @@
+{
+  "theme": "night",
+  "name": "月下远行",
+  "version": 1,
+  "generator": "built-in image_gen",
+  "transparent_background": true,
+  "asset": "night-atlas-v1.png",
+  "width": 1254,
+  "height": 1254,
+  "pngColorType": 6,
+  "layout": {
+    "columns": 3,
+    "rows": 3,
+    "order": [
+      "profile",
+      "now",
+      "conversations",
+      "timeline",
+      "relationships",
+      "sources",
+      "agents",
+      "library",
+      "automations"
+    ]
+  },
+  "prompt": "Use case: stylized-concept.\nAsset type: a production transparent PNG sprite atlas for very small decorative app heading illustrations. Create ONE SQUARE 1536 x 1536 image with a mathematically regular invisible 3 by 3 grid. Nine separate original still-life oil painting vignettes, one centred in each 512 x 512 cell. No frames, no visible grid, no labels. Every object must fit inside the central 70% of its cell, leaving at least 15% clear transparent margin on every side. No object, shadow, decoration, or brush stroke may cross a cell boundary. True transparent alpha everywhere outside the painted objects; absolutely no canvas rectangle, white background, checkerboard drawing, surface plane, horizon, or scenery.\nTheme: 月下远行. Deep muted indigo, smoky violet, pearl white, moonlit slate, very restrained antique silver. Legible dark-mode accents.\nStyle: tasteful contemporary small oil-painted still lives, visible soft bristle brush texture on the objects, quiet handmade material, subtle irregular contours, restrained composition, softly lit. Cohesive brushwork and material across all nine vignettes. Recognizable even at 48 pixels. Each cell contains only its listed simple small object grouping; no tiny extra decoration.\nRead the positions row-major. Top row, left to right: 1 personal profile: an ivory ceramic cameo beside a slender crescent moon; 2 life now: a little glazed blue cup with a moonlike pale pebble; 3 chat history: two folded indigo letters and one tiny pearl star.\nMiddle row, left to right: 4 timeline: three pearl moons in successive crescent-to-full shapes; 5 relationships: a sparse constellation of three pearl stars joined with very fine silver threads; 6 source records: a folded blank indigo chart with a small pale moonstone.\nBottom row, left to right: 7 specialist agents: three handmade indigo and pearl ceramic busts; 8 library: two midnight blue blank books with a little silver crescent; 9 automation: a tiny moonlit compass object with an unmarked ceramic face.\nConstraints: exactly nine equally sized and evenly centred cell illustrations. No words, numbers, letters, logos, symbols resembling UI buttons, watermarks or fabricated text. Keep generous empty transparent space and genuinely transparent cut-out edges. No photorealism, no glossy 3D render, no outline icon look, no emoji, no busy scene."
+}

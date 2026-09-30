@@ -9,7 +9,7 @@ import {parsePortraitDraft} from '../src/cognition/portrait.ts';
 import {createSeed} from '../server/seed.mjs';
 import {createDemoExpansion} from '../server/demo-expansion.mjs';
 import {createDemoLife} from '../server/demo-life.mjs';
-import {applyDemoPortraits} from '../server/demo-portraits.mjs';
+import {applyDemoPortraits,DEMO_PORTRAIT_MARKER} from '../server/demo-portraits.mjs';
 function fixture(t){const directory=mkdtempSync(path.join(os.tmpdir(),'hither-portrait-'));const store=new Store(directory,{seed:false});t.after(()=>{store.close();rmSync(directory,{recursive:true,force:true});});store.put('sources',{id:'source-a',title:'Fictional source',text:'fixture',kind:'note',demo:true,createdAt:new Date().toISOString()});return {store,directory};}
 const entry=(patch={})=>({id:'entry-a',kind:'preference',statement:'Prefers written agendas',status:'candidate',privacy:'private',sourceIds:['source-a'],...patch});
 const body=(entries=[entry()])=>({name:'Fictional contact',role:'Colleague',description:'Known context',sourceIds:[],portrait:{schema:'hither.person.v1',entries}});
@@ -52,8 +52,8 @@ test('fictional self, work, family and friend portraits have inspectable evidenc
  }
  const self=store.require('people','person-self');assert.equal(new Set(self.portrait.entries.map(row=>row.kind)).size,7);assert.ok(self.portrait.entries.some(row=>row.status==='inferred'));assert.ok(self.portrait.entries.some(row=>row.kind==='goal'&&row.status==='candidate'));
  assert.equal(store.list('facts').length,0,'contact portraits must not create personal facts');
- const before=store.list('people'),report=store.meta('demo-person-portraits-v2');applyDemoPortraits(store,data,stamp);assert.deepEqual(store.list('people'),before);
- const reopened=new Store(directory,{seed:false});assert.deepEqual(reopened.list('people'),before);assert.deepEqual(reopened.meta('demo-person-portraits-v2'),report);reopened.close();
+ const before=store.list('people'),report=store.meta(DEMO_PORTRAIT_MARKER);applyDemoPortraits(store,data,stamp);assert.deepEqual(store.list('people'),before);
+ const reopened=new Store(directory,{seed:false});assert.deepEqual(reopened.list('people'),before);assert.deepEqual(reopened.meta(DEMO_PORTRAIT_MARKER),report);reopened.close();
 });
 
 test('portrait fixture upgrades preserve edited contacts, edited evidence, existing portraits and deletions',t=>{
@@ -61,13 +61,14 @@ test('portrait fixture upgrades preserve edited contacts, edited evidence, exist
  const modified={...store.require('people','person-qiao'),description:'User corrected this contact'};store.put('people',modified);
  const customized=createEntity(store,'people',{portrait:body().portrait,basePortraitVersion:0},store.require('people','person-chen'));store.put('people',customized);
  const changedSource={...store.require('sources','demo-v2-source-chat-du'),text:'User corrected this source'};store.put('sources',changedSource);
- const mother=store.require('people','demo-v2-person-du');store.delete('people','demo-v2-person-lin');
+ const mother=store.require('people','demo-v2-person-du'),self=store.require('people','person-self');store.delete('people','demo-v2-person-lin');
  applyDemoPortraits(store,data,stamp);
  assert.deepEqual(store.require('people','person-qiao'),modified);assert.deepEqual(store.require('people','person-chen'),customized);assert.deepEqual(store.require('people',mother.id),mother);assert.deepEqual(store.require('sources',changedSource.id),changedSource);assert.equal(store.get('people','demo-v2-person-lin'),undefined);
- assert.ok(store.require('people','person-self').portrait);
+ assert.deepEqual(store.require('people','person-self'),self,'a portrait citing corrected evidence must be preserved');
+ assert.ok(store.require('people','person-xuan').portrait,'unaffected contacts still receive their authored portraits');
 });
 
 test('formal spaces never receive authored portrait examples',t=>{
  const {store}=fixture(t),{data,stamp}=installPreviousDemo(store);store.setMeta('profile',{name:'Personal space',description:'',demo:false});const before=store.list('people');
- applyDemoPortraits(store,data,stamp);assert.deepEqual(store.list('people'),before);assert.equal(store.get('meta','demo-person-portraits-v2'),undefined);
+ applyDemoPortraits(store,data,stamp);assert.deepEqual(store.list('people'),before);assert.equal(store.get('meta',DEMO_PORTRAIT_MARKER),undefined);
 });

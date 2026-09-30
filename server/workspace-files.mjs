@@ -2,7 +2,7 @@ import { readdirSync, lstatSync } from 'node:fs';
 import path from 'node:path';
 const skipDirectories=new Set(['node_modules','vendor','dist','build','coverage','__pycache__','target']);
 const secretName=/(?:^|[._-])(?:credentials?|secrets?|passwords?|tokens?|api[-_]?keys?|private[-_]?keys?)(?:[._-]|$)|^id_(?:rsa|dsa|ecdsa|ed25519)(?:\.|$)/i;
-const allowed=/\.(md|txt|html|json|csv|js|jsx|mjs|ts|tsx|py|css|yaml|yml|toml|sql|rs|go|java|c|cpp|h)$/i;
+const allowed=/\.(md|txt|html|json|csv|tsv|svg|js|jsx|mjs|ts|tsx|py|css|yaml|yml|toml|sql|rs|go|java|c|cpp|h|png|jpe?g|gif|webp|pdf|docx|xlsx|pptx)$/i;
 export function visibleWorkspaceEntry(name) {return !name.startsWith('.')&&!skipDirectories.has(name)&&!secretName.test(name)&&!/[\\\x00-\x1f]/.test(name)&&! /\.(?:pem|key|p12|pfx|keystore)$/i.test(name);}
 export function eligibleWorkspaceName(name) {return name.split('/').every(visibleWorkspaceEntry)&&allowed.test(name);}
 export function sensitiveWorkspaceContent(content,secrets=[]) {

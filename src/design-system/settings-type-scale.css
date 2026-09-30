@@ -1,0 +1,12 @@
+/* Settings is the baseline for configuration surfaces. This opt-in class uses
+   the existing product scale; it never changes global or inherited font tokens. */
+.settings-type-scale{font-size:var(--hither-font-body);line-height:1.7}
+.app-dialog.settings-type-scale>header h2{font-size:var(--hither-font-settings-title);font-weight:550;line-height:1.35}
+.settings-type-scale .form-field .field-label{font-size:var(--hither-font-label);font-weight:500;line-height:1.5}
+.settings-type-scale .form-field .field-hint{font-size:var(--hither-font-caption);line-height:1.7}
+.settings-type-scale :is(input,textarea,button,[role=combobox]){font-size:var(--hither-font-form)}
+.settings-type-scale [role=radio]{font-size:var(--hither-font-label);white-space:nowrap}
+.settings-type-scale .model-connection-trigger>span:last-child{font-size:var(--hither-font-form)}
+.settings-type-scale .settings-type-heading{font-size:var(--hither-font-settings-heading);font-weight:550;line-height:1.4}
+.settings-type-scale .settings-type-support{font-size:var(--hither-font-caption);line-height:1.7;color:var(--color-text-secondary)}
+.settings-type-scale .settings-type-meta{font-size:var(--hither-font-meta);line-height:1.6;color:var(--color-text-secondary)}

@@ -5,25 +5,6 @@
 .expert-empty p{font-size:12px;color:var(--color-text-secondary);line-height:1.7;margin:8px 0 14px}
 .expert-boundary{border-left:2px solid var(--color-border);padding-left:12px}
 .expert-boundary p{margin:4px 0 0;font-size:var(--hither-font-caption);line-height:1.7;color:var(--color-text-secondary)}
-.expert-preview textarea{font-size:var(--hither-font-label)}
-.app-dialog.expert-preview-dialog { width:min(560px,calc(100vw - 32px)); }
-.expert-preview { display:flex;flex-direction:column;gap:18px; }
-.expert-preview-heading { display:flex;align-items:flex-start;gap:12px; }
-.expert-preview-heading>div { min-width:0; }
-.expert-preview h3 { font-size:var(--hither-font-body);font-weight:550;line-height:1.6; }
-.expert-preview-heading p,.expert-adjustment>p { margin:5px 0 0;font-size:var(--hither-font-caption);line-height:1.7;color:var(--color-text-secondary); }
-.expert-context { padding:14px 16px;background:var(--color-surface-secondary);border-radius:10px; }
-.expert-context>div { margin-top:10px; }
-.expert-context>div>span { color:var(--color-text-tertiary);font-size:var(--hither-font-meta); }
-.expert-context p { margin:3px 0 0;font-size:var(--hither-font-caption);line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere;max-height:110px;overflow:auto; }
-.expert-adjustment .form-field { margin:14px 0 0;gap:6px; }
-.expert-preview :is(input,button,[role=combobox]) { font-size:var(--hither-font-label); }
-.expert-adjustment .expert-focus-detail { font-size:var(--hither-font-caption);margin-top:8px; }
-.expert-saved-instructions { padding:12px 0;border-top:1px solid var(--color-border-subtle);border-bottom:1px solid var(--color-border-subtle); }
-.expert-saved-instructions summary { font-size:var(--hither-font-caption);cursor:pointer; }
-.expert-saved-instructions p { font-size:var(--hither-font-caption);line-height:1.75;white-space:pre-wrap;color:var(--color-text-secondary);margin:10px 0 0;max-height:160px;overflow:auto; }
-.expert-privacy-note,.expert-connection-note { font-size:var(--hither-font-meta);line-height:1.7;color:var(--color-text-tertiary);margin:0; }
-.expert-preview-actions { display:flex;justify-content:flex-end;align-items:center;gap:8px; }
 .expert-bulk-style { padding:16px;display:flex;flex-direction:column;gap:12px; }
 .expert-bulk-style>header { display:flex;align-items:center;justify-content:space-between;gap:10px; }
 .expert-bulk-style>header strong { font-size:var(--hither-font-label);font-weight:550; }
@@ -38,7 +19,7 @@
 .expert-bulk-credit a { text-decoration:underline;text-underline-offset:2px; }
 .expert-bulk-style>footer { display:flex;align-items:center;justify-content:flex-end;gap:10px; }
 .expert-bulk-style>footer>span { flex:1;font-size:var(--hither-font-meta);line-height:1.6;color:var(--color-text-secondary); }
-@media(max-width:650px){.ag-directory-tabs{flex-wrap:wrap;gap:8px}.expert-preview-dialog .expert-preview{gap:15px}}
+@media(max-width:650px){.ag-directory-tabs{flex-wrap:wrap;gap:8px}}
 /* The reference's browsing structure: compact roster, one physical badge, member navigation. */
 .expert-badge-browser{display:grid;flex:1;min-height:0;overflow:hidden;grid-template-columns:minmax(235px,.82fr) minmax(300px,1.18fr);gap:20px;width:100%;max-width:1240px;margin:0 auto;padding-bottom:24px}
 .expert-choice-panel{display:flex;flex-direction:column;min-width:0;min-height:0}
@@ -142,7 +123,7 @@ html:not([data-motion=reduced]) .expert-showcase-stage .ag-pass-swing{animation:
 
 /* Tabs, search and filters share one toolbar; only narrow screens wrap it. */
 .expert-library-shell{display:flex;flex-direction:column;flex:1;min-height:0;width:100%;max-width:1240px;margin:0 auto;overflow:hidden}
-.expert-directory-toolbar{gap:12px;margin-bottom:18px}
+.expert-directory-toolbar{column-gap:12px;row-gap:12px;margin-bottom:16px}
 .expert-directory-toolbar>div:has(input){min-width:160px;max-width:none;flex:1;margin-left:auto}
 .expert-directory-toolbar .expert-view-modes{flex:0 0 auto}.expert-directory-toolbar .expert-view-modes>div{gap:12px}.expert-directory-toolbar .expert-view-modes button{font-size:12px;white-space:nowrap}
 .expert-directory-toolbar .expert-all-domains{height:30px;min-height:30px;padding-inline:5px;font-size:12px;white-space:nowrap}.expert-directory-toolbar .expert-all-domains svg{width:12px;height:12px}
@@ -172,4 +153,6 @@ html:not([data-motion=reduced]) .expert-showcase-stage .ag-pass-swing{animation:
 .expert-showcase-stage .ag-pass-owner{font-size:10px;line-height:18px;margin:0}
 @media(max-width:850px){.expert-showcase-stage .ag-pass-stage{--badge-avatar-size:56px;--badge-title-row:26px;--badge-copy-row:38px;--badge-owner-row:18px;--badge-row-gap:3px}.expert-showcase-stage .ag-pass-front p{font-size:11px;line-height:18px;max-height:36px}}
 @media(max-width:700px){.expert-directory-toolbar{gap:9px}.expert-directory-toolbar .expert-domain-trigger{order:0;margin:0}.expert-directory-toolbar .expert-view-modes{order:4;margin-left:0}.expert-directory-toolbar>div:has(input){order:3;min-width:170px;flex:1}.expert-directory-toolbar>button:last-child:not(.expert-domain-trigger){order:5;margin-left:auto}.saved-agent-browser .expert-directory-toolbar>[role=button]{order:4;min-width:96px}.expert-showcase-stage .ag-pass-stage{--badge-avatar-size:51px;--badge-title-row:25px;--badge-copy-row:35px;--badge-owner-row:17px;--badge-row-gap:3px}.expert-showcase-stage .ag-pass-front p{font-size:11px;line-height:17px;max-height:34px}.expert-showcase-stage .ag-pass-owner{font-size:9px;line-height:16px}.saved-agent-actions>button{font-size:11px}.expert-domain-popover section>div{grid-template-columns:repeat(3,minmax(0,1fr))}.expert-domain-popover button{font-size:11px;gap:5px}.expert-domain-popover button>svg{width:15px;height:15px}}
-@media(max-width:700px){.saved-agent-browser .ag-directory-toolbar>button:last-child:not(.expert-domain-trigger){order:0;margin-left:auto;width:28px;min-width:28px;padding:0;font-size:0}.saved-agent-browser .ag-directory-toolbar>button:last-child:not(.expert-domain-trigger) svg{width:17px;height:17px}}
+@media(max-width:700px){.saved-agent-browser .ag-directory-toolbar>button:last-child:not(.expert-domain-trigger){order:5;margin-left:auto;flex:none;width:auto;min-width:0;padding:4px 7px;font-size:12px}.saved-agent-browser .ag-directory-toolbar>button:last-child:not(.expert-domain-trigger) svg{width:17px;height:17px}}
+
+.expert-directory-toolbar{row-gap:12px;margin-bottom:16px}

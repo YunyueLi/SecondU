@@ -1,0 +1,10 @@
+.remote-task-workspace{height:100%;min-height:0;display:flex;flex-direction:column}
+.remote-task-scroll{min-height:0;flex:1;overflow:auto;overscroll-behavior:contain}
+.remote-task-reading{width:min(800px,100%);margin-inline:auto;padding:30px 24px 50px}
+.remote-task-location{display:flex;gap:9px;align-items:center;margin-bottom:26px;color:var(--color-text-secondary);font-size:var(--hither-font-caption)}
+.remote-task-location>svg{width:17px;height:17px}
+.remote-task-location>a{margin-left:auto}
+.remote-task-request{display:flex;justify-content:flex-end;margin-bottom:28px}
+.remote-task-request>p{max-width:85%;margin:0;padding:12px 17px;border-radius:18px;background:var(--color-background-secondary);font-size:var(--hither-font-label);line-height:1.75;white-space:pre-wrap;overflow-wrap:anywhere}
+.remote-task-footer{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 24px;border-top:1px solid var(--color-border-subtle);font-size:var(--hither-font-caption);color:var(--color-text-secondary)}
+@media(max-width:650px){.remote-task-reading{padding:20px 16px 36px}.remote-task-footer{padding:12px 16px;flex-wrap:wrap}.remote-task-request>p{max-width:95%}}

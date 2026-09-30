@@ -208,7 +208,7 @@ input:focus-visible, textarea:focus-visible { outline: none; }
 .approval-card details { font-size: var(--hither-font-caption); margin-top: 12px; color: var(--color-text-secondary); }
 .approval-card pre, .approval-history pre { white-space: pre-wrap; overflow-wrap: anywhere; max-height: 180px; overflow: auto; font-size: var(--hither-font-meta); padding: 14px; background: var(--color-surface-secondary); border-radius: var(--hither-radius-control); margin-top: 10px; }
 .approval-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 20px; }
-.approval-history { color: var(--color-text-secondary); font-size: var(--hither-font-caption); border-bottom: 1px solid var(--color-border-subtle); }
+.approval-history { color: var(--color-text-secondary); font-size: var(--hither-font-caption); border:0; }
 .approval-history summary { display: flex; gap: 9px; align-items: center; list-style: none; padding: 12px 0; }
 .approval-history summary svg { width: 14px; height: 14px; }
 .approval-history summary span { flex: 1; }
@@ -219,13 +219,16 @@ input:focus-visible, textarea:focus-visible { outline: none; }
 .task-artifacts h3 { font-size: var(--hither-font-caption); font-weight: 500; color: var(--color-text-secondary); margin-bottom: 12px; letter-spacing: 0; }
 .artifact-message-card { display: block; width: 100%; padding: 16px; height: auto; margin-top: 10px; border-radius: var(--hither-radius-panel); }
 .artifact-message-card>span { justify-content: flex-start; gap: 12px; }
-.artifact-message-card span>span { flex: 1; text-align: left; }
+.artifact-message-card>span>.artifact-card-copy { flex: 1; text-align: left; }
 .artifact-message-card strong { display: block; font-size: var(--hither-font-label); font-weight: 500; }
 .artifact-message-card small { display: block; font-size: var(--hither-font-meta); font-weight: 400; color: var(--color-text-secondary); margin-top: 5px; }
 .task-artifact-pane { width: clamp(400px,43%,640px); flex-shrink: 0; border-left: 1px solid var(--color-border-subtle); background: var(--color-surface); height: 100%; overflow: auto; }
 .with-artifact .task-thread { padding-left: 28px; padding-right: 28px; }
 .with-artifact .composer-wrap { padding-left: 22px; padding-right: 22px; }
 .missing-task { position: absolute; inset: 0; background: var(--color-surface); display: grid; place-items: center; }
+
+.inline-metadata { display: inline-flex; max-width: 100%; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; vertical-align: baseline; }
+.inline-metadata > span { min-width: 0; overflow-wrap: anywhere; }
 
 /* Artifact chrome is compact; the document owns the page. */
 .artifact-page { max-width: 1150px; margin: 0 auto; padding: 16px 36px 40px; }
@@ -255,8 +258,10 @@ input:focus-visible, textarea:focus-visible { outline: none; }
 .document-markdown blockquote { font-size: var(--hither-font-caption); color: var(--color-text-secondary); margin: 18px 0 24px; }
 .compact .document-markdown h1 { font-size: 22px; }
 .artifact-editor>[role=alert] { margin: 12px 20px; }
-.history-picker { padding: 14px 22px; display: flex; gap: 10px; align-items: center; border-bottom: 1px solid var(--color-border-subtle); }
-.history-picker>div:first-child { flex: 1; }
+.history-picker { padding: 14px 22px; display: flex; flex-wrap: wrap; gap: 8px 10px; align-items: center; border-bottom: 1px solid var(--color-border-subtle); }
+.artifact-version-select { flex: 1 1 240px; min-width: 0; max-width: 100%; }
+.artifact-version-select > * { width: 100%; min-width: 0; max-width: 100%; }
+.history-picker .artifact-history-edit { flex: 0 0 auto; max-width: 100%; margin-left: auto; white-space: normal; }
 .editor-footnote { font-size: 10px; color: var(--color-text-secondary); padding: 12px 24px; border-top: 1px solid var(--color-border-subtle); }
 .artifact-list { border-top: 1px solid var(--color-border-subtle); }
 .artifact-list-item { width: 100%; height: auto; padding: 20px 12px; border-bottom: 1px solid var(--color-border-subtle); border-radius: 0; }
@@ -278,10 +283,6 @@ input:focus-visible, textarea:focus-visible { outline: none; }
 .dialog-overlay .app-dialog { position: relative; display: block; outline: none; margin: auto; }
 [data-radix-popper-content-wrapper] { z-index: 90 !important; }
 .evidence-detail { white-space: pre-wrap; overflow-wrap: anywhere; max-height: 220px; overflow: auto; font-size: var(--hither-font-meta); background: var(--color-surface-secondary); padding: 12px; border-radius: var(--hither-radius-control); }
-.desktop-mode { padding-top: 30px; }
-.desktop-drag-region { position: fixed; top: 0; left: 0; right: 0; height: 30px; background: linear-gradient(to right,var(--color-surface-secondary) 0 var(--hither-sidebar-width),var(--color-surface) var(--hither-sidebar-width)); z-index: 60; -webkit-app-region: drag; }
-.desktop-mode.sidebar-collapsed .desktop-drag-region { background: var(--color-surface); }
-.desktop-mode .app-sidebar { height: 100%; }
 @keyframes soft-pulse { 50% { opacity: .35; } }
 @media (min-width: 1600px) { .assistant-welcome { padding-top: 110px; } }
 @media (max-width: 1200px) {
@@ -324,8 +325,6 @@ input:focus-visible, textarea:focus-visible { outline: none; }
   .history-picker { flex-wrap: wrap; }
   .automation-title { gap: 11px; }
   .automation-title h2 { font-size: 16px; }
-  .desktop-mode .app-sidebar { top: 30px; height: calc(100% - 30px); }
-  .desktop-drag-region { background: var(--color-surface); }
 }
 @media (max-width: 560px) {
   .assistant-welcome { padding: 34px 20px 28px; }
@@ -361,7 +360,7 @@ input:focus-visible, textarea:focus-visible { outline: none; }
 .messages { gap:26px; }
 .message-author { margin-bottom:8px; }
 
-.sidebar-explore{justify-content:flex-start!important;gap:8px!important;margin:4px 8px 6px;font-size:12px!important;color:var(--color-text-secondary)!important}.sidebar-explore svg{width:16px;height:16px;flex-shrink:0}.sidebar-collapsed .sidebar-explore{margin:4px auto}
+.sidebar-explore{justify-content:center!important;gap:7px!important;width:calc(100% - 16px);margin:4px 8px 6px;font-size:12px!important;font-weight:400!important;color:var(--color-text-tertiary)!important}.sidebar-explore svg{width:16px;height:16px;flex-shrink:0}.sidebar-collapsed .sidebar-explore{margin:4px auto}
 .hither-wordmark{display:inline-block;width:105px;height:26px;flex-shrink:0;background:currentColor;mask-position:center;mask-size:contain;mask-repeat:no-repeat;-webkit-mask-position:center;-webkit-mask-size:contain;-webkit-mask-repeat:no-repeat;vertical-align:middle}
 /* Child navigation keeps the same readable weight and icon rhythm as the main rail. */
 .sub-navigation{padding-left:18px;gap:2px}

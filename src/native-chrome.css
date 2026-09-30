@@ -1,0 +1,37 @@
+/* The macOS controls reserve space in navigation, not above every column. */
+.app-shell.desktop-mode {
+  --native-titlebar-height:56px;
+  --native-controls-height:44px;
+  --native-controls-width:96px;
+  --native-rail-width:96px;
+  padding-top:0;
+}
+.app-shell.desktop-mode[data-window-fullscreen=true] {
+  --native-controls-height:16px;
+  --native-controls-width:0px;
+  --native-rail-width:64px;
+}
+.app-shell.desktop-mode .app-sidebar {
+  position:relative;
+  padding-top:var(--native-controls-height);
+  height:100%;
+}
+.app-shell.desktop-mode.sidebar-collapsed .app-sidebar { width:var(--native-rail-width); }
+.desktop-sidebar-drag { position:absolute;inset:0 0 auto;height:var(--native-controls-height);-webkit-app-region:drag; }
+.app-shell.desktop-mode :is(.conversation-header,.workbench-panel-bar,.ag-room-header,.app-topbar) {
+  height:var(--native-titlebar-height);
+  min-height:var(--native-titlebar-height);
+  -webkit-app-region:drag;
+}
+.app-shell.desktop-mode :is(.sidebar-brand,.page-heading,.ag-hub-header,.graph-lab>header) { -webkit-app-region:drag; }
+.app-shell.desktop-mode :is(button,a,input,textarea,select,summary,[role=button],[role=tab],[role=separator],[contenteditable=true],.workbench-resize) { -webkit-app-region:no-drag; }
+.app-shell.desktop-mode .workbench-panel-tabs { min-width:0;overflow-x:auto;scrollbar-width:none; }
+.app-shell.desktop-mode .workbench-panel-tabs button { flex-shrink:0; }
+.app-shell.desktop-mode:has([data-resizing=true]) :is(.desktop-sidebar-drag,.sidebar-brand,.conversation-header,.workbench-panel-bar,.ag-room-header) { -webkit-app-region:no-drag; }
+/* When navigation is an overlay, only the leftmost header clears the controls. */
+@media(max-width:800px) {
+  .app-shell.desktop-mode .app-sidebar { position:fixed;top:0;height:100%; }
+  .app-shell.desktop-mode :is(.conversation-header,.ag-room-header,.app-topbar) { padding-left:max(14px,calc(var(--native-controls-width) + 8px)); }
+  .app-shell.desktop-mode .workbench-surface[data-overlay=true] .workbench-panel-bar { padding-left:max(12px,calc(var(--native-controls-width) - 100vw + var(--workbench-width) + 8px)); }
+  .app-shell.desktop-mode .workbench-surface[data-fullscreen=true] .workbench-panel-bar { padding-left:max(12px,calc(var(--native-controls-width) + 8px)); }
+}

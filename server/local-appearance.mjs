@@ -2,9 +2,10 @@ import { createHash } from 'node:crypto';
 import { HttpError } from './store.mjs';
 
 export const ARTWORK_LIMIT = 8 * 1024 * 1024;
-export const defaultAppearance = Object.freeze({ theme:'system', atmosphere:'plain', accent:'blue', opacity:96, fontSize:14, motion:'system', sendKey:'enter', language:'zh-CN' });
+export const defaultAppearance = Object.freeze({ theme:'system', atmosphere:'pencil', decorativeArtwork:false, accent:'blue', opacity:96, fontSize:14, motion:'system', sendKey:'enter', language:'zh-CN' });
 const options = {
   theme:['light','dark','system'], atmosphere:['plain','pencil','tidal','night','custom'],
+  decorativeArtwork:[true,false],
   accent:['graphite','blue','violet','green'], motion:['system','reduced'], sendKey:['enter','modifier'], language:['zh-CN','en'],
 };
 const ranges = { opacity:[70,100], fontSize:[12,18] };

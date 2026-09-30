@@ -51,7 +51,7 @@ function loadClient(search='?space=demo-engineer-v4'){
 }
 const response=value=>new Response(JSON.stringify(value));
 
-test('API caches the raw bootstrap and sends only submitted fields when editing an English sample',async()=>{
+test('API submits English sample edits verbatim and does not reverse translate personal text',async()=>{
  const client=loadClient();client.setLocale('en');let sent;
  client.respond(async(url,init)=>{
   if(url.endsWith('/bootstrap'))return response(fixture());
@@ -61,9 +61,9 @@ test('API caches the raw bootstrap and sends only submitted fields when editing 
  const translated=english(data).agents[0];
  data.agents[0].name='Mutation of a returned view';
  await client.write('/agents/agent-planner',{name:translated.name,role:translated.role,instructions:'New instructions'},'PUT');
- assert.deepEqual(sent,{url:'/api/spaces/demo-engineer-v4/agents/agent-planner',body:{name:planner.name,role:planner.role,instructions:'New instructions'}});
+ assert.deepEqual(sent,{url:'/api/spaces/demo-engineer-v4/agents/agent-planner',body:{name:translated.name,role:translated.role,instructions:'New instructions'}});
  await client.write('/profile',{name:'Caspian',description:'Edited introduction'},'PUT');
- assert.deepEqual(sent.body,{name:'万叶',description:'Edited introduction'});
+ assert.deepEqual(sent.body,{name:'Caspian',description:'Edited introduction'});
  // A field not present in the raw record cannot be reverse translated by coincidence.
  await client.write('/agents/agent-planner',{note:translated.role},'PATCH');
  assert.deepEqual(sent.body,{note:translated.role});
@@ -78,7 +78,7 @@ test('personal, original, Chinese and uncached writes keep the submitted text ve
  await client.write('/agents/agent-planner',payload,'PUT');assert.deepEqual(sent,payload);
  await client.api('/bootstrap');
  await client.api('/bootstrap',{},true);
- await client.write('/agents/agent-planner',{name:'Project planner'},'PUT');assert.equal(sent.name,planner.name);
+ await client.write('/agents/agent-planner',{name:'Project planner'},'PUT');assert.equal(sent.name,'Project planner');
  client.location.search='?space=personal';
  await client.write('/agents/agent-planner',payload,'PUT');assert.deepEqual(sent,payload);
  client.location.search='';
@@ -88,14 +88,14 @@ test('personal, original, Chinese and uncached writes keep the submitted text ve
  client.setLocale('en');await client.write('/agents',payload);assert.deepEqual(sent,payload);
 });
 
-test('a delayed bootstrap cannot replace a newer original snapshot',async()=>{
+test('bootstrap response order never changes the text submitted by the user',async()=>{
  const client=loadClient();client.setLocale('en');const pending=[];let sent;
  client.respond((url,init)=>url.endsWith('/bootstrap')?new Promise(resolve=>pending.push(resolve)):(sent=JSON.parse(init.body),Promise.resolve(response({ok:true}))));
  const old=client.api('/bootstrap'),latest=client.api('/bootstrap');
  pending[1](response({...fixture(),agents:[{...planner,name:'项目规划师'}]}));await latest;
  pending[0](response(fixture()));await old;
  await client.write('/agents/agent-planner',{name:'Project planner'},'PUT');
- assert.equal(sent.name,'项目规划师');
+ assert.equal(sent.name,'Project planner');
  // A successful refresh of a non-demo profile must not retain a previous sample snapshot.
  const refreshed=client.api('/bootstrap');pending[2](response({profile:{demo:false},agents:[]}));await refreshed;
  await client.write('/agents/agent-planner',{name:'Project planner'},'PUT');assert.equal(sent.name,'Project planner');

@@ -36,11 +36,11 @@
     },
     "demo-v2-goal-samples": {
       "完成工作台核心流程验收": "Verify the core Workbench flow",
-      "和徐沐、叶澄检查澄清、执行、中断、继续与文件版本冲突。": "With Xu Mu and Ye Cheng, check clarification, execution, interruption, resuming work, and file version conflicts."
+      "和徐静、叶涛检查澄清、执行、中断、继续与文件版本冲突。": "With Xu Jing and Ye Tao, check clarification, execution, interruption, resuming work, and file version conflicts."
     },
     "demo-v2-goal-permission": {
       "整理访谈结论，约齐首轮内测用户": "Summarize the interviews and schedule all pilot participants",
-      "整理五次访谈的原话与观察，和吴桐确认另外三位受访者的时间。": "Organize the original comments and observations from five interviews. Confirm the other three participants’ availability with Wu Tong."
+      "整理五次访谈的原话与观察，和吴婷确认另外三位受访者的时间。": "Organize the original comments and observations from five interviews. Confirm the other three participants’ availability with Wu Ting."
     },
     "demo-v2-goal-interactive": {
       "规划下一轮工具接入": "Plan the next round of tool integrations",
@@ -66,7 +66,7 @@
     },
     "rel-qiao": {
       "同事": "Colleague",
-      "共同整理访谈和内测反馈，乔宁负责范围取舍，万叶把方案做成可试用的版本。": "They organize interview findings and pilot feedback together. Qiao Ning decides what to include, and Caspian turns the plans into a version people can try."
+      "共同整理访谈和内测反馈，张敏负责范围取舍，万叶把方案做成可试用的版本。": "They organize interview findings and pilot feedback together. Zhang Min decides what to include, and Caspian turns the plans into a version people can try."
     },
     "rel-chen": {
       "同事": "Colleague",
@@ -74,7 +74,7 @@
     },
     "demo-v2-rel-self-lu": {
       "导师": "Mentor",
-      "浙江大学软件工程教师，指导过万叶的毕业项目。毕业后偶尔聊职业选择，也关心他有没有好好休息。": "A software engineering teacher at Zhejiang University who advised Caspian’s graduation project. They occasionally discuss career choices, and Lu Tang also checks that he is getting enough rest."
+      "浙江大学软件工程教师，指导过万叶的毕业项目。毕业后偶尔聊职业选择，也关心他有没有好好休息。": "A software engineering teacher at Zhejiang University who advised Caspian’s graduation project. They occasionally discuss career choices, and Liu Jianguo also checks that he is getting enough rest."
     },
     "demo-v2-rel-self-song": {
       "长期朋友与同学": "Long-term friend and classmate",
@@ -98,7 +98,7 @@
     },
     "demo-v2-rel-self-zhao": {
       "老师": "Teacher",
-      "万叶在杭州读高中时的班主任，教数学。节假日偶尔联系，关心他的工作和生活。": "Caspian’s high school homeroom and mathematics teacher in Hangzhou. They occasionally talk around holidays, and Zhao Xu asks about his work and life."
+      "万叶在杭州读高中时的班主任，教数学。节假日偶尔联系，关心他的工作和生活。": "Caspian’s high school homeroom and mathematics teacher in Hangzhou. They occasionally talk around holidays, and Zhao Jianjun asks about his work and life."
     },
     "demo-v2-rel-self-zhou": {
       "高中同学与长期朋友": "High school classmate and long-term friend",
@@ -146,59 +146,59 @@
     },
     "demo-v2-rel-lu-du": {
       "模型与工具接口": "Model and tool interfaces",
-      "何舟与沈川：模型与工具接口。": "He Zhou and Shen Chuan: model and tool interfaces."
+      "何志强与沈杰：模型与工具接口。": "He Zhiqiang and Shen Jie: model and tool interfaces."
     },
     "demo-v2-rel-song-liang": {
       "技术交流": "Technical discussions",
-      "何舟与高远：技术交流。": "He Zhou and Gao Yuan: technical discussions."
+      "何志强与高远：技术交流。": "He Zhiqiang and Gao Yuan: technical discussions."
     },
     "demo-v2-rel-he-ye": {
       "失败恢复测试": "Failure recovery testing",
-      "徐沐与沈川：失败恢复测试。": "Xu Mu and Shen Chuan: failure recovery testing."
+      "徐静与沈杰：失败恢复测试。": "Xu Jing and Shen Jie: failure recovery testing."
     },
     "demo-v2-rel-xu-zhao": {
       "界面验收": "Interface verification",
-      "徐沐与叶澄：界面验收。": "Xu Mu and Ye Cheng: interface verification."
+      "徐静与叶涛：界面验收。": "Xu Jing and Ye Tao: interface verification."
     },
     "demo-v2-rel-tang-han": {
       "交互实现": "Interaction implementation",
-      "唐悦与叶澄：交互实现。": "Tang Yue and Ye Cheng: interaction implementation."
+      "唐丽与叶涛：交互实现。": "Tang Li and Ye Tao: interaction implementation."
     },
     "demo-v2-rel-shen-song": {
       "授权界面评审": "Authorization interface review",
-      "唐悦与韩知：授权界面评审。": "Tang Yue and Han Zhi: authorization interface review."
+      "唐丽与韩晓梅：授权界面评审。": "Tang Li and Han Xiaomei: authorization interface review."
     },
     "demo-v2-rel-wu-he": {
       "内测回访": "Pilot follow-up interviews",
-      "吴桐与梁秋：内测回访。": "Wu Tong and Liang Qiu: pilot follow-up interviews."
+      "吴婷与梁佳：内测回访。": "Wu Ting and Liang Jia: pilot follow-up interviews."
     },
     "demo-v2-rel-gao-xu": {
       "访谈说明核对": "Interview information review",
-      "吴桐与韩知：访谈说明核对。": "Wu Tong and Han Zhi: interview information review."
+      "吴婷与韩晓梅：访谈说明核对。": "Wu Ting and Han Xiaomei: interview information review."
     },
     "demo-v2-rel-ye-liang": {
       "工程交付": "Engineering delivery",
-      "邱原与沈川：工程交付。": "Qiu Yuan and Shen Chuan: engineering delivery."
+      "邱志明与沈杰：工程交付。": "Qiu Zhiming and Shen Jie: engineering delivery."
     },
     "demo-v2-rel-qiu-wu": {
       "评测与质量": "Evaluation and quality",
-      "邱原与何舟：评测与质量。": "Qiu Yuan and He Zhou: evaluation and quality."
+      "邱志明与何志强：评测与质量。": "Qiu Zhiming and He Zhiqiang: evaluation and quality."
     },
     "demo-v2-rel-wei-lin": {
       "夫妻": "Married couple",
-      "杜晴与万建明：夫妻。": "Du Qing and Wan Jianming: married couple."
+      "杜秀英与万建明：夫妻。": "Du Xiuying and Wan Jianming: married couple."
     },
     "demo-v2-rel-zhou-lu": {
       "母女": "Mother and daughter",
-      "杜晴与万晴：母女。": "Du Qing and Wan Qing: mother and daughter."
+      "杜秀英与万婷婷：母女。": "Du Xiuying and Wan Tingting: mother and daughter."
     },
     "demo-v2-rel-lin-jiang": {
       "父女": "Father and daughter",
-      "万建明与万晴：父女。": "Wan Jianming and Wan Qing: father and daughter."
+      "万建明与万婷婷：父女。": "Wan Jianming and Wan Tingting: father and daughter."
     },
     "demo-v2-rel-song-zhou": {
       "朋友": "Friends",
-      "宋岚与周芮：朋友。": "Song Lan and Zhou Rui: friends."
+      "李娜与周琳：朋友。": "Li Na and Zhou Lin: friends."
     }
   },
   "goalLists": {

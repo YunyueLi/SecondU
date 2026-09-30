@@ -6,12 +6,12 @@ import vm from 'node:vm';
 import ts from 'typescript';
 
 const require = createRequire(import.meta.url);
-function loadClient() {
+function loadClient(search='') {
   const i18nExports = {};
   const compile = file => ts.transpileModule(readFileSync(new URL(file, import.meta.url), 'utf8'), {compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText;
   vm.runInNewContext(compile('../src/i18n.ts'), {exports:i18nExports,require});
   const spaceExports = {};
-  vm.runInNewContext(compile('../src/space.ts'), {exports:spaceExports,URL,URLSearchParams});
+  vm.runInNewContext(compile('../src/space.ts'), {exports:spaceExports,URL,URLSearchParams,location:{search}});
   const exports = {};
   let fetchResult;
   vm.runInNewContext(compile('../src/api.ts'), {
@@ -60,4 +60,21 @@ test('unreadable responses, network errors, and known field errors have actionab
   await assert.rejects(client.api('/bootstrap'),error=>error.message==='The local service returned an unreadable response. Please try again.');
   assert.equal(client.messageOf(new TypeError('Failed to fetch')),'Could not reach the local service. Make sure the app is running, then try again.');
   assert.equal(client.messageOf(new client.APIError('title 无效或过长',400)),'title is invalid or too long.');
+});
+
+test('binary preview requests retain workspace, exact version and cancellation without parsing file bytes as JSON', async()=>{
+  const client=loadClient('?space=demo-cn-v1'),controller=new AbortController();
+  const bytes=Buffer.from('%PDF-1.4\nactual local preview\n%%EOF');
+  client.respond((url,init)=>{
+    assert.equal(url,'/api/spaces/demo-cn-v1/artifacts/office-a/preview?version=2');
+    assert.equal(init.signal,controller.signal);
+    assert.equal(init.cache,'no-store');
+    assert.equal(init.headers.Accept,'application/pdf');
+    return new Response(bytes,{headers:{'Content-Type':'application/pdf'}});
+  });
+  assert.deepEqual(Buffer.from(await client.getArrayBuffer('/artifacts/office-a/preview?version=2','application/pdf',controller.signal)),bytes);
+  client.respond(new Response(JSON.stringify({error:'Local converter unavailable',code:'office_preview_unavailable'}),{status:503,headers:{'Content-Type':'application/json'}}));
+  await assert.rejects(client.getArrayBuffer('/artifacts/office-a/preview?version=2','application/pdf'),error=>error.status===503&&error.code==='office_preview_unavailable');
+  client.respond(new Response('{}',{headers:{'Content-Type':'application/json'}}));
+  await assert.rejects(client.getArrayBuffer('/artifacts/office-a/preview?version=2','application/pdf'),error=>error.code==='preview_format_invalid');
 });

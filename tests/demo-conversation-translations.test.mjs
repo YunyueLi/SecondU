@@ -1,7 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createSeed} from '../server/seed.mjs';
-import {createDemoExpansion} from '../server/demo-expansion.mjs';
+import archived from '../server/fixtures/demo-zh-before-v1.json' with {type:'json'};
+const createSeed=()=>structuredClone(archived.seed);
+const createDemoExpansion=()=>structuredClone(archived.expansion);
 import translations from '../shared/demo-conversation-translations.json' with {type:'json'};
 const chinese=/[\u3400-\u9fff]/;
 function translated(dictionary,value,where){const result=dictionary?.[value];assert.equal(typeof result,'string',`Missing translation: ${where}`);assert.ok(result.trim(),where);assert.doesNotMatch(result,chinese,where);assert.doesNotMatch(result,/ · /,where);return result;}

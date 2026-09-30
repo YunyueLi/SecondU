@@ -4,14 +4,15 @@ export type SimStatus='idle'|'clarifying'|'ready'|'review'|'complete'|'cancelled
 export type SimCapability='audio'|'camera'|'display';
 export type SimApproval={eventId:string;taskId:string;revision:number;expires:number;content:string};
 export type SimEvent={id:number;device:SimDevice;code:string;revision:number;detail?:string};
-export type SimState={session:number;taskId:string;revision:number;clock:number;status:SimStatus;online:Record<SimDevice,boolean>;capabilities:Record<SimCapability,boolean>;brief:string;answer:string;source?:'voice'|'camera';candidate:boolean;noisy:boolean;observing:boolean;speaking:boolean;draft:string;review?:SimApproval;queued?:SimApproval;lastSent?:SimApproval;processed:string[];writes:{eventId:string;revision:number;content:string}[];events:SimEvent[];notice?:string;sequence:number};
+export type SimInput={id:string;kind:'voice'|'image';content:string;device:SimDevice;capturedAt:number;revision:number;confirmed:boolean};
+export type SimState={session:number;taskId:string;revision:number;clock:number;status:SimStatus;online:Record<SimDevice,boolean>;capabilities:Record<SimCapability,boolean>;brief:string;answer:string;source?:'voice'|'camera';candidate:boolean;noisy:boolean;observing:boolean;speaking:boolean;draft:string;review?:SimApproval;queued?:SimApproval;lastSent?:SimApproval;processed:string[];writes:{eventId:string;revision:number;content:string}[];events:SimEvent[];inputs:SimInput[];notice?:string;sequence:number};
 export type SimAction=
  |{type:'reset'}|{type:'capability';capability:SimCapability;enabled:boolean}|{type:'network';device:SimDevice;online:boolean}
  |{type:'dictate';text:string;noisy:boolean}|{type:'observe'}|{type:'capture';text:string}|{type:'dismissObservation'}
  |{type:'clarify';answer:string}|{type:'prepare';content:string}|{type:'revise';content:string}|{type:'review'}
  |{type:'approve'}|{type:'replay'}|{type:'advance'}|{type:'stopSpeaking'}|{type:'speak'}|{type:'interrupt'}|{type:'cancel'};
 
-export function initialDeviceSimulation(session=1):SimState{return {session,taskId:`dev-task-${String(session).padStart(3,'0')}`,revision:0,clock:0,status:'idle',online:{glasses:true,desktop:true,phone:true},capabilities:{audio:true,camera:false,display:true},brief:'',answer:'',candidate:false,noisy:false,observing:false,speaking:false,draft:'',processed:[],writes:[],events:[],sequence:0};}
+export function initialDeviceSimulation(session=1):SimState{return {session,taskId:`dev-task-${String(session).padStart(3,'0')}`,revision:0,clock:0,status:'idle',online:{glasses:true,desktop:true,phone:true},capabilities:{audio:true,camera:false,display:true},brief:'',answer:'',candidate:false,noisy:false,observing:false,speaking:false,draft:'',processed:[],writes:[],events:[],inputs:[],sequence:0};}
 function event(state:SimState,device:SimDevice,code:string,detail?:string):SimState{const id=state.sequence+1;return {...state,notice:code,sequence:id,events:[...state.events,{id,device,code,detail,revision:state.revision}]};}
 function approvePacket(state:SimState,packet:SimApproval):SimState{
  if(state.processed.includes(packet.eventId))return event({...state,queued:undefined},'phone','duplicate');
@@ -29,7 +30,8 @@ function receive(state:SimState,text:string,source:'voice'|'camera',noisy=false)
  if(source==='voice'&&!state.capabilities.audio)return event(state,'glasses','noAudio');
  if(source==='camera'&&!state.capabilities.camera)return event(state,'glasses','noCamera');
  if(!text.trim())return event(state,'glasses','emptyInput');
- return event({...state,brief:text.trim(),answer:'',source,candidate:true,noisy,observing:false,status:'clarifying',speaking:state.capabilities.audio,revision:state.revision+1},'glasses',noisy?'noise':'captured');
+ const input:SimInput={id:`${state.taskId}-source-${state.sequence+1}`,kind:source==='voice'?'voice':'image',content:text.trim(),device:'glasses',capturedAt:state.clock,revision:state.revision+1,confirmed:false};
+ return event({...state,brief:text.trim(),answer:'',source,candidate:true,noisy,observing:false,status:'clarifying',speaking:state.capabilities.audio,revision:state.revision+1,inputs:[...state.inputs,input]},'glasses',noisy?'noise':'captured');
 }
 export function deviceSimulationReducer(state:SimState,action:SimAction):SimState{
  switch(action.type){
@@ -47,7 +49,7 @@ export function deviceSimulationReducer(state:SimState,action:SimAction):SimStat
    if(state.status!=='clarifying')return state;
    if(!state.online.glasses)return event(state,'glasses','offlineInput');
    if(!action.answer.trim())return event(state,'glasses','emptyAnswer');
-   return event({...state,answer:action.answer.trim(),noisy:false,status:'ready',speaking:state.capabilities.audio,revision:state.revision+1},'glasses','clarified');
+   return event({...state,answer:action.answer.trim(),noisy:false,status:'ready',speaking:state.capabilities.audio,revision:state.revision+1,inputs:state.inputs.map(input=>({...input,confirmed:true}))},'glasses','clarified');
   case 'prepare':
    if(state.status!=='ready')return event(state,'desktop','needsClarification');
    if(!state.online.desktop)return event(state,'desktop','desktopOffline');

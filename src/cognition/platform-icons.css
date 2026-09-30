@@ -7,3 +7,5 @@ i.platform-icon>img,i.platform-icon>svg,i.platform-icon>.platform-icon-mask { di
 [role=option] .platform-option>i.platform-icon { width:18px;height:18px; }
 .platform-icon.platform-signal { color:#3A76F0; }
 .platform-icon.platform-messenger { color:#0099FF; }
+
+:root.dark .platform-matrix img, [data-theme="dark"] .platform-matrix img { filter:invert(1); }

@@ -1,0 +1,252 @@
+{
+  "stamp": "2026-09-01T00:00:00.000Z",
+  "agentRooms": [
+    {
+      "id": "demo-v2-room-planner",
+      "title": "和项目规划师商量",
+      "kind": "direct",
+      "agentIds": [
+        "agent-planner"
+      ],
+      "mode": "demo",
+      "createdAt": "2026-09-01T00:00:00.000Z",
+      "updatedAt": "2026-09-01T00:00:00.000Z",
+      "demo": true,
+      "taskIds": [],
+      "messages": [
+        {
+          "id": "demo-v2-room-intro-planner",
+          "role": "system",
+          "content": "本地演示会话；连接模型后可继续处理自己的任务。",
+          "createdAt": "2026-09-01T00:00:00.000Z",
+          "demo": true
+        }
+      ]
+    },
+    {
+      "id": "demo-v2-room-writer",
+      "title": "和写作编辑写草稿",
+      "kind": "direct",
+      "agentIds": [
+        "demo-v2-agent-writer"
+      ],
+      "mode": "demo",
+      "createdAt": "2026-09-01T00:00:00.000Z",
+      "updatedAt": "2026-09-01T00:00:00.000Z",
+      "demo": true,
+      "taskIds": [],
+      "messages": [
+        {
+          "id": "demo-v2-room-intro-writer",
+          "role": "system",
+          "content": "本地演示会话；连接模型后可继续处理自己的任务。",
+          "createdAt": "2026-09-01T00:00:00.000Z",
+          "demo": true
+        }
+      ]
+    },
+    {
+      "id": "demo-v2-room-studio",
+      "title": "Kimi 工作台内测小组",
+      "kind": "group",
+      "agentIds": [
+        "agent-planner",
+        "agent-reviewer",
+        "demo-v2-agent-writer"
+      ],
+      "mode": "demo",
+      "createdAt": "2026-09-01T00:00:00.000Z",
+      "updatedAt": "2026-09-01T00:00:00.000Z",
+      "demo": true,
+      "taskIds": [],
+      "messages": [
+        {
+          "id": "demo-v2-room-intro-studio",
+          "role": "system",
+          "content": "本地演示会话；连接模型后可继续处理自己的任务。",
+          "createdAt": "2026-09-01T00:00:00.000Z",
+          "demo": true
+        }
+      ]
+    },
+    {
+      "id": "demo-v2-room-balance",
+      "title": "安排国庆与本周生活",
+      "kind": "group",
+      "agentIds": [
+        "demo-v2-agent-budget",
+        "demo-v2-agent-care"
+      ],
+      "mode": "demo",
+      "createdAt": "2026-09-01T00:00:00.000Z",
+      "updatedAt": "2026-09-01T00:00:00.000Z",
+      "demo": true,
+      "taskIds": [],
+      "messages": [
+        {
+          "id": "demo-v2-room-intro-balance",
+          "role": "system",
+          "content": "本地演示会话；连接模型后可继续处理自己的任务。",
+          "createdAt": "2026-09-01T00:00:00.000Z",
+          "demo": true
+        }
+      ]
+    },
+    {
+      "id": "demo-showcase-room-review",
+      "title": "上线前的最后一轮评审",
+      "kind": "group",
+      "agentIds": [
+        "agent-planner",
+        "agent-reviewer"
+      ],
+      "projectId": "demo-showcase-project-workbench",
+      "mode": "demo",
+      "digitalTwinEnabled": true,
+      "createdAt": "2026-09-29T07:10:00.000Z",
+      "updatedAt": "2026-09-29T07:15:00.000Z",
+      "messages": [
+        {
+          "id": "demo-showcase-room-review-m0",
+          "role": "user",
+          "content": "帮我评审两天发布计划。规划师压缩范围，评审员专门找不能发布的理由。",
+          "createdAt": "2026-09-29T07:10:00.000Z",
+          "demo": true
+        },
+        {
+          "id": "demo-showcase-room-review-m1",
+          "role": "assistant",
+          "content": "把来源追溯限制为“从关键判断回到一条来源”，先不做跨来源自动合并。省下来的时间给成果保存和恢复。",
+          "createdAt": "2026-09-29T07:11:00.000Z",
+          "agentId": "agent-planner",
+          "demo": true
+        },
+        {
+          "id": "demo-showcase-room-review-m2",
+          "role": "assistant",
+          "content": "我反对仅凭页面显示“已保存”就通过。验收要关闭应用后重开，并核对修订内容和版本号；否则保存状态只是界面承诺。",
+          "createdAt": "2026-09-29T07:12:00.000Z",
+          "agentId": "agent-reviewer",
+          "demo": true
+        },
+        {
+          "id": "demo-showcase-room-review-m3",
+          "role": "user",
+          "content": "接受这个门槛。时间不够就延后发布，不要删验收。",
+          "createdAt": "2026-09-29T07:13:00.000Z",
+          "demo": true
+        },
+        {
+          "id": "demo-showcase-room-review-m4",
+          "role": "assistant",
+          "content": "计划已收敛：三个用户结果、一位验收负责人、两个连续开发窗口。评审只看保存、恢复、追溯是否完整走通。",
+          "createdAt": "2026-09-29T07:14:00.000Z",
+          "agentId": "agent-planner",
+          "demo": true
+        },
+        {
+          "id": "demo-showcase-room-review-m5",
+          "role": "assistant",
+          "content": "我会用三类反例检查：数据丢失、重复执行、来源失效。每项需要可重现步骤；没有证据的部分标为待验证。",
+          "createdAt": "2026-09-29T07:15:00.000Z",
+          "agentId": "agent-reviewer",
+          "demo": true
+        }
+      ],
+      "taskIds": [],
+      "demo": true
+    }
+  ],
+  "agents": [
+    {
+      "id": "agent-planner",
+      "name": "项目规划师",
+      "role": "把目标拆成可执行的小步",
+      "instructions": "先给今天最值得做的一步，再给简短计划。结合用户已确认的时间和预算，缺少条件时说明具体缺口。"
+    },
+    {
+      "id": "agent-reviewer",
+      "name": "质量评审员",
+      "role": "检查结果、依据和遗漏",
+      "instructions": "检查草稿或结果与目标是否一致，指出具体问题和修改建议。依据不足时明确说明，不把推测写成事实。"
+    },
+    {
+      "id": "demo-v2-agent-writer",
+      "name": "写作编辑",
+      "role": "把想法写成清楚、自然的文字",
+      "instructions": "先看文字写给谁、要说明什么。保留用户原意，给出可直接修改的草稿。发送前由用户确认。"
+    },
+    {
+      "id": "demo-v2-agent-researcher",
+      "name": "研究分析师",
+      "role": "查资料、找依据、整理问题",
+      "instructions": "优先阅读已选资料，再补必要来源。区分资料中的说法和自己的判断，结论能回到出处。"
+    },
+    {
+      "id": "demo-v2-agent-budget",
+      "name": "预算分析师",
+      "role": "整理费用与时间安排",
+      "instructions": "区分预算、报价和实际支出，算清必要成本，超出上限时给出可行调整。"
+    },
+    {
+      "id": "demo-v2-agent-care",
+      "name": "生活规划师",
+      "role": "安排生活中的大小事情",
+      "instructions": "结合用户的时间、精力和偏好安排日程，给休息、朋友与家人留出位置。不要替用户作承诺。"
+    }
+  ],
+  "projects": [
+    {
+      "id": "demo-showcase-project-workbench",
+      "name": "Kimi 工作台",
+      "description": "从用户访谈、原型到小范围发布。把反馈、取舍和交付放在同一个项目里。",
+      "kind": "local",
+      "archived": false,
+      "createdAt": "2026-09-30T02:15:00.000Z",
+      "updatedAt": "2026-09-30T02:15:00.000Z",
+      "execution": {
+        "status": "ready"
+      },
+      "showcaseFolder": "workbench"
+    },
+    {
+      "id": "demo-showcase-project-hangzhou",
+      "name": "杭州行程",
+      "description": "四天假期，留出真正相处的时间。行程、家庭偏好和临时变化一起考虑。",
+      "kind": "local",
+      "archived": false,
+      "createdAt": "2026-09-30T02:15:00.000Z",
+      "updatedAt": "2026-09-30T02:15:00.000Z",
+      "execution": {
+        "status": "ready"
+      },
+      "showcaseFolder": "hangzhou"
+    },
+    {
+      "id": "demo-showcase-project-fieldnotes",
+      "name": "个人作品集",
+      "description": "把产品实践整理成能演示、能复盘、能被别人理解的作品。",
+      "kind": "local",
+      "archived": false,
+      "createdAt": "2026-09-30T02:15:00.000Z",
+      "updatedAt": "2026-09-30T02:15:00.000Z",
+      "execution": {
+        "status": "ready"
+      },
+      "showcaseFolder": "fieldnotes"
+    },
+    {
+      "id": "demo-showcase-project-next-quarter",
+      "name": "季度计划",
+      "description": "连接工作、学习与生活，减少并行目标，让重要的事持续前进。",
+      "kind": "local",
+      "archived": false,
+      "createdAt": "2026-09-30T02:15:00.000Z",
+      "updatedAt": "2026-09-30T02:15:00.000Z",
+      "execution": {
+        "status": "ready"
+      },
+      "showcaseFolder": "next-quarter"
+    }
+  ]
+}

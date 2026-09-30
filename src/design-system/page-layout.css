@@ -1,0 +1,33 @@
+:root{--page-content-width:1240px;--page-padding-inline:36px;--page-padding-top:28px;--page-heading-art:84px;--page-heading-gap:20px;--page-section-gap:24px}
+.page-content,.cognition-workspace:not(.is-immersive),.automations-workspace,.library-workspace,.project-workspace{width:100%;max-width:var(--page-content-width);margin:0 auto;padding:var(--page-padding-top) var(--page-padding-inline) 40px}
+.cognition-workspace .cog-reading-page{max-width:none}
+.ag-directory.is-discover{padding:var(--page-padding-top) var(--page-padding-inline) 0}
+.network-workspace .network-header{padding:var(--page-padding-top) max(var(--page-padding-inline),calc((100% - var(--page-content-width))/2 + var(--page-padding-inline))) 16px}
+.page-heading.page-heading{display:flex;align-items:center;justify-content:space-between;gap:20px;width:100%;min-height:var(--page-heading-art);margin:0 0 var(--page-section-gap);padding:0;flex-shrink:0}
+.page-heading .page-heading-intro{display:flex;align-items:center;gap:var(--page-heading-gap);min-width:0;flex:1}
+.page-heading .page-heading-art{display:block;width:var(--page-heading-art);height:var(--page-heading-art);object-fit:contain;flex-shrink:0}
+.page-heading .page-heading-copy{min-width:0}
+.page-heading.page-heading h1{font-size:24px;font-weight:550;line-height:32px;letter-spacing:-.02em;margin:0;color:var(--color-text-primary)}
+.page-heading.page-heading p{font-size:14px;font-weight:400;line-height:22px;color:var(--color-text-secondary);margin:6px 0 0;max-width:none}
+.page-description-compact{display:none}
+.page-heading-actions{display:flex;gap:8px;align-items:center;flex-shrink:0}
+.page-heading-actions>.network-toolbar{margin:0;position:static}
+.automations-toolbar,.life-timeline-toolbar,.library-tabs{margin-bottom:var(--page-section-gap)}
+.library-header{margin:0 0 16px;justify-content:flex-end}
+.library-tools{flex:1;justify-content:flex-end}
+.library-tools>div:has(input){margin-left:auto}
+@media(max-width:1080px){:root{--page-padding-inline:28px;--page-heading-art:76px;--page-heading-gap:18px}.page-heading.page-heading h1{font-size:23px;line-height:30px}.page-heading.page-heading p{font-size:13px}.page-heading .ag-directory-actions{gap:4px}.page-heading .ag-directory-actions button{padding-inline:9px;font-size:12px}}
+@media(max-width:760px){:root{--page-padding-inline:20px;--page-padding-top:22px;--page-heading-art:64px;--page-heading-gap:14px;--page-section-gap:20px}.page-heading.page-heading{flex-wrap:wrap;row-gap:14px}.page-heading .page-heading-intro{flex-basis:100%}.page-heading.page-heading h1{font-size:22px;line-height:29px}.page-heading.page-heading p{font-size:13px;line-height:20px;margin-top:4px}.page-heading-actions{margin-left:calc(var(--page-heading-art) + var(--page-heading-gap))}.page-description-full{display:none}.page-description-compact{display:inline}.library-tools{flex-wrap:wrap}.library-tools>div:has(input){flex:1;min-width:130px}}
+@media(max-width:420px){:root{--page-padding-inline:16px;--page-heading-art:56px;--page-heading-gap:12px}.page-heading.page-heading h1{font-size:21px;line-height:28px}.page-heading.page-heading p{font-size:12px;line-height:19px}.page-heading-actions{margin-left:0}.page-heading .ag-directory-actions{gap:5px}}
+.page-toolbar.page-toolbar{display:flex;flex-direction:row;align-items:center;gap:12px;flex-wrap:nowrap;min-width:0;width:100%;margin:0 0 var(--page-section-gap);overflow-x:auto;scrollbar-width:thin;padding-bottom:2px}
+.page-toolbar>*{flex-shrink:0}
+.page-toolbar button,.page-toolbar label{white-space:nowrap}
+.page-toolbar .library-tabs{margin:0;gap:2px;flex:none}
+.page-toolbar .library-count{display:none}
+.page-toolbar .library-tools{display:flex;flex-wrap:nowrap;flex:1;min-width:280px;gap:6px}
+.page-toolbar .library-tools>div:has(input){width:clamp(150px,20vw,240px);min-width:150px;flex:1;max-width:260px}
+.page-toolbar .network-search{max-width:none;flex:1;min-width:200px}
+.network-header .network-filter-bar{margin-bottom:0;gap:8px}
+.page-toolbar .network-source-filter,.page-toolbar .network-relationship-select{margin:0;max-width:170px;flex:none}
+.page-toolbar.automations-toolbar>div:last-child{flex:1;min-width:160px;max-width:300px;margin-left:auto}
+@media(max-width:760px){.page-toolbar.page-toolbar{gap:8px;margin-bottom:20px}.page-toolbar .library-tools{min-width:240px}.page-toolbar .library-tabs button{padding-inline:10px}.page-toolbar .network-search{min-width:190px;flex-basis:auto}.page-toolbar.automations-toolbar>div:last-child{min-width:150px}.network-header .network-filter-bar{margin-bottom:0}}

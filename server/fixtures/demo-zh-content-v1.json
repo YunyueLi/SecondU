@@ -1,0 +1,5089 @@
+{
+  "seed": {
+    "profile": {
+      "name": "万叶",
+      "description": "杭州人，2016 年到 2020 年在浙江大学读软件工程，现在住北京海淀，在月之暗面做产品工程师。最近忙着准备工作台内测，也在操心国庆回家的车票、出租屋漏水和一册拖了一个月的青岛照片。周日通常去奥森慢跑。",
+      "demo": true,
+      "demoLocale": "zh-CN",
+      "exampleTaskIds": [
+        "demo-showcase-task-family",
+        "demo-showcase-task-demo-story",
+        "demo-showcase-task-weekly"
+      ]
+    },
+    "sources": [
+      {
+        "id": "source-exhibition",
+        "title": "讨论假期前的工作台修改",
+        "text": "9 月 28 日 15:00，万叶和张敏、陈伟在飞书开了半小时会。\n\n张敏：首轮先找八个人。梁佳已访谈五人，另外三人吴婷还在联系。十月十二日先留作试用日期，十月八日回来再决定要不要发邀请。\n陈伟：现在用户关掉文件预览后找不到刚才那份文稿；有人还把“重新开始”当成了继续。先改这两处。\n万叶：我和沈杰先查文稿保存，叶涛改入口。九月三十日下午三点给大家看修改，假期不约会。\n\n费用：本轮模型调用最多 2000 元，由万叶每两天查一次用量。九月二十九日账单累计 680 元；之后尚未跑下一批。\n\n名单和访谈是小范围试用准备，尚未向八人发出正式邀请。",
+        "kind": "note",
+        "createdAt": "__DEMO_STAMP__",
+        "demo": true
+      },
+      {
+        "id": "source-chat",
+        "title": "和王磊约国庆吃饭",
+        "text": "万叶：我二号回杭州，车票还在看。三号下午你有空没？想去学校那边吃碗面。\n王磊：下午两点以后可以，我上午陪我妈去复查。还是紫金港那边？\n万叶：对，先约三点，地方我到家再找。你别特意空一天，两小时差不多。\n王磊：行，到了微信我。电脑就别带了，上回吃面吃成你产品发布会。\n\n补记：王磊是 2016 年在浙江大学认识的同学，现在住杭州、在阿里云做后端。十月三日下午三点暂约，具体面馆未定。",
+        "kind": "conversation",
+        "createdAt": "2026-09-28T08:00:00.000Z",
+        "demo": true
+      },
+      {
+        "id": "source-feedback",
+        "title": "告诉助手我的日程和消息习惯",
+        "text": "叫我万叶就行。日程先看已经答应别人的时间，别把每个空档都填满。长消息可以先给我一句结论；涉及数字，把怎么算的放在旁边。替我写给同事或朋友的话要像平时聊天，少用“赋能”“闭环”。帮我拟好消息先留草稿，我会自己看一遍。工作日上午九点到十一点尽量不排会，节假日没有提前说好的事就别替我安排加班。",
+        "kind": "feedback",
+        "createdAt": "__DEMO_STAMP__",
+        "demo": true
+      }
+    ],
+    "facts": [
+      {
+        "id": "fact-clear",
+        "kind": "preference",
+        "statement": "建议先说结论；费用写出算法，替人拟消息用日常说话的语气。",
+        "status": "confirmed",
+        "sourceIds": [
+          "source-feedback"
+        ],
+        "updatedAt": "__DEMO_STAMP__",
+        "version": 1,
+        "history": [
+          {
+            "version": 1,
+            "kind": "preference",
+            "statement": "建议先说结论；费用写出算法，替人拟消息用日常说话的语气。",
+            "status": "confirmed",
+            "sourceIds": [
+              "source-feedback"
+            ],
+            "reason": "据对应的会话或本人说明整理",
+            "recordedAt": "__DEMO_STAMP__"
+          }
+        ]
+      },
+      {
+        "id": "fact-budget",
+        "kind": "constraint",
+        "statement": "工作台这轮模型调用预算上限为 2000 元；截至 2026 年 9 月 29 日累计支出 680 元。",
+        "status": "confirmed",
+        "sourceIds": [
+          "source-exhibition"
+        ],
+        "updatedAt": "__DEMO_STAMP__",
+        "version": 1,
+        "history": [
+          {
+            "version": 1,
+            "kind": "constraint",
+            "statement": "工作台这轮模型调用预算上限为 2000 元；截至 2026 年 9 月 29 日累计支出 680 元。",
+            "status": "confirmed",
+            "sourceIds": [
+              "source-exhibition"
+            ],
+            "reason": "据对应的会话或本人说明整理",
+            "recordedAt": "__DEMO_STAMP__"
+          }
+        ]
+      },
+      {
+        "id": "fact-time",
+        "kind": "constraint",
+        "statement": "工作日上午九点到十一点尽量不排会；没有提前约好的事不安排节假日加班。",
+        "status": "confirmed",
+        "sourceIds": [
+          "source-feedback"
+        ],
+        "updatedAt": "__DEMO_STAMP__",
+        "version": 1,
+        "history": [
+          {
+            "version": 1,
+            "kind": "constraint",
+            "statement": "工作日上午九点到十一点尽量不排会；没有提前约好的事不安排节假日加班。",
+            "status": "confirmed",
+            "sourceIds": [
+              "source-feedback"
+            ],
+            "reason": "据对应的会话或本人说明整理",
+            "recordedAt": "__DEMO_STAMP__"
+          }
+        ]
+      },
+      {
+        "id": "fact-consent",
+        "kind": "value",
+        "statement": "写给别人的消息先留草稿，万叶看过后再决定是否发送。",
+        "status": "confirmed",
+        "sourceIds": [
+          "source-feedback"
+        ],
+        "updatedAt": "__DEMO_STAMP__",
+        "version": 1,
+        "history": [
+          {
+            "version": 1,
+            "kind": "value",
+            "statement": "写给别人的消息先留草稿，万叶看过后再决定是否发送。",
+            "status": "confirmed",
+            "sourceIds": [
+              "source-feedback"
+            ],
+            "reason": "据对应的会话或本人说明整理",
+            "recordedAt": "__DEMO_STAMP__"
+          }
+        ]
+      },
+      {
+        "id": "fact-small",
+        "kind": "preference",
+        "statement": "在假期安排上，万叶倾向于只约一两件事，给家人和休息留空。",
+        "status": "inferred",
+        "sourceIds": [
+          "source-chat",
+          "source-feedback"
+        ],
+        "updatedAt": "__DEMO_STAMP__",
+        "version": 1,
+        "history": [
+          {
+            "version": 1,
+            "kind": "preference",
+            "statement": "在假期安排上，万叶倾向于只约一两件事，给家人和休息留空。",
+            "status": "inferred",
+            "sourceIds": [
+              "source-chat",
+              "source-feedback"
+            ],
+            "reason": "据对应的会话或本人说明整理",
+            "recordedAt": "__DEMO_STAMP__"
+          }
+        ]
+      },
+      {
+        "id": "fact-identity",
+        "kind": "identity",
+        "statement": "万叶是杭州人，在北京月之暗面做产品工程师，参与工作台内测试用准备。",
+        "status": "confirmed",
+        "sourceIds": [
+          "source-exhibition",
+          "demo-life-v3-biography"
+        ],
+        "updatedAt": "__DEMO_STAMP__",
+        "version": 1,
+        "history": [
+          {
+            "version": 1,
+            "kind": "identity",
+            "statement": "万叶是杭州人，在北京月之暗面做产品工程师，参与工作台内测试用准备。",
+            "status": "confirmed",
+            "sourceIds": [
+              "source-exhibition",
+              "demo-life-v3-biography"
+            ],
+            "reason": "据对应的会话或本人说明整理",
+            "recordedAt": "__DEMO_STAMP__"
+          }
+        ]
+      }
+    ],
+    "people": [
+      {
+        "id": "person-self",
+        "name": "万叶",
+        "role": "我",
+        "description": "杭州人，浙江大学软件工程 2020 届毕业生。现居北京海淀，在月之暗面做产品工程师。父母住杭州，妹妹万婷婷在杭州读大学；周日常和魏鹏去奥森跑步。",
+        "sourceIds": [
+          "source-exhibition",
+          "demo-life-v3-biography"
+        ]
+      },
+      {
+        "id": "person-xuan",
+        "name": "王磊",
+        "role": "大学同学，朋友",
+        "description": "大学同学，在杭州做阿里云后端。十月三日暂约下午三点吃面；上午要陪母亲复查，希望见面时不聊一整场工作。",
+        "sourceIds": [
+          "source-chat"
+        ]
+      },
+      {
+        "id": "person-qiao",
+        "name": "张敏",
+        "role": "同事，产品经理",
+        "description": "工作上的搭档，做产品经理。九月二十八日一起缩了首轮试用范围，负责和万叶对齐节后的安排。午饭常约同一家面馆。",
+        "sourceIds": [
+          "source-exhibition"
+        ]
+      },
+      {
+        "id": "person-chen",
+        "name": "陈伟",
+        "role": "同事，产品设计师",
+        "description": "同组产品设计师，住昌平，每天坐地铁来。评审喜欢拿真实文件试一遍，九月发现关闭预览后不好找回文稿。",
+        "sourceIds": [
+          "source-exhibition"
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "id": "rel-xuan",
+        "from": "person-self",
+        "to": "person-xuan",
+        "label": "长期朋友与同学",
+        "description": "大学同学，在杭州做阿里云后端。十月三日暂约下午三点吃面；上午要陪母亲复查，希望见面时不聊一整场工作。",
+        "sourceIds": [
+          "source-chat"
+        ]
+      },
+      {
+        "id": "rel-qiao",
+        "from": "person-self",
+        "to": "person-qiao",
+        "label": "同事",
+        "description": "工作上的搭档，做产品经理。九月二十八日一起缩了首轮试用范围，负责和万叶对齐节后的安排。午饭常约同一家面馆。",
+        "sourceIds": [
+          "source-exhibition"
+        ]
+      },
+      {
+        "id": "rel-chen",
+        "from": "person-self",
+        "to": "person-chen",
+        "label": "同事",
+        "description": "同组产品设计师，住昌平，每天坐地铁来。评审喜欢拿真实文件试一遍，九月发现关闭预览后不好找回文稿。",
+        "sourceIds": [
+          "source-exhibition"
+        ]
+      }
+    ],
+    "events": [
+      {
+        "id": "event-idea",
+        "date": "2026-09-28",
+        "title": "讨论假期前的工作台修改",
+        "description": "下午和张敏、陈伟开了半小时会。假期前先处理文稿保存、文件查找和按钮说明，约好 9 月 30 日 15:00 再看修改后的版本。",
+        "category": "career",
+        "scope": "note",
+        "personIds": [
+          "person-self",
+          "person-qiao"
+        ],
+        "sourceIds": [
+          "source-exhibition"
+        ],
+        "platform": "notes",
+        "location": "北京"
+      },
+      {
+        "id": "event-chat",
+        "date": "2026-09-28",
+        "title": "和王磊约国庆吃饭",
+        "description": "暂定 10 月 3 日 15:00 在紫金港附近和王磊吃面。他上午要陪母亲复查，14:00 以后有空。具体去哪家面馆还没选。",
+        "category": "relationship",
+        "scope": "note",
+        "personIds": [
+          "person-self",
+          "person-xuan"
+        ],
+        "sourceIds": [
+          "source-chat"
+        ],
+        "platform": "wechat"
+      },
+      {
+        "id": "event-review",
+        "date": "2026-09-29",
+        "title": "告诉助手我的日程和消息习惯",
+        "description": "给助手补了几条要求：写好的消息先留作草稿，工作日上午尽量不排会。假期先看已经答应家人和朋友的安排，不用把空闲时间都填满。",
+        "category": "personal_note",
+        "scope": "note",
+        "personIds": [
+          "person-self"
+        ],
+        "sourceIds": [
+          "source-feedback"
+        ],
+        "platform": "notes"
+      }
+    ],
+    "conversations": [
+      {
+        "id": "conversation-xuan",
+        "title": "王磊",
+        "personIds": [
+          "person-self",
+          "person-xuan"
+        ],
+        "kind": "direct",
+        "platform": "wechat",
+        "accountId": "fictional-demo",
+        "demo": true,
+        "messages": [
+          {
+            "id": "msg-1",
+            "senderId": "person-self",
+            "content": "我二号回杭州，车票还在看。三号下午你有空没？想去学校那边吃碗面。",
+            "time": "2026-09-28T08:00:00.000Z",
+            "sourceId": "source-chat"
+          },
+          {
+            "id": "msg-2",
+            "senderId": "person-xuan",
+            "content": "下午两点以后可以，我上午陪我妈去复查。还是紫金港那边？",
+            "time": "2026-09-28T08:01:00.000Z",
+            "sourceId": "source-chat"
+          },
+          {
+            "id": "msg-3",
+            "senderId": "person-self",
+            "content": "对，先约三点，地方我到家再找。你别特意空一天，两小时差不多。",
+            "time": "2026-09-28T08:02:00.000Z",
+            "sourceId": "source-chat"
+          },
+          {
+            "id": "msg-4",
+            "senderId": "person-xuan",
+            "content": "行，到了微信我。电脑就别带了，上回吃面吃成你产品发布会。",
+            "time": "2026-09-28T08:03:00.000Z",
+            "sourceId": "source-chat"
+          }
+        ]
+      }
+    ],
+    "goals": [
+      {
+        "id": "goal-exhibition",
+        "title": "准备 10 月 12 日的第一轮试用",
+        "description": "吴婷继续联系三位候选者；10 月 8 日回来看修改是否可用，再发正式邀请。模型调用总额不超过 2000 元。",
+        "status": "active",
+        "dueDate": "2026-10-12",
+        "listId": "goal-list-work",
+        "sourceIds": [
+          "source-exhibition"
+        ]
+      },
+      {
+        "id": "goal-rest",
+        "title": "上午先做完最难的一件事",
+        "description": "九点到十一点尽量不排会；当天已有的评审不硬挪，下午另留一段时间。",
+        "status": "active",
+        "listId": "goal-list-work",
+        "sourceIds": [
+          "source-chat"
+        ]
+      }
+    ],
+    "agents": [
+      {
+        "id": "agent-planner",
+        "name": "项目规划师",
+        "role": "把目标拆成可执行的小步",
+        "instructions": "先给今天最值得做的一步，再给简短计划。结合用户已确认的时间和预算，缺少条件时说明具体缺口。",
+        "createdAt": "__DEMO_STAMP__"
+      },
+      {
+        "id": "agent-reviewer",
+        "name": "质量评审员",
+        "role": "检查结果、依据和遗漏",
+        "instructions": "检查草稿或结果与目标是否一致，指出具体问题和修改建议。依据不足时明确说明，不把推测写成事实。",
+        "createdAt": "__DEMO_STAMP__"
+      }
+    ],
+    "tasks": [],
+    "artifacts": [],
+    "automations": [],
+    "settings": {
+      "provider": "moonshot",
+      "model": "kimi-k3",
+      "baseUrl": "https://api.moonshot.cn/v1",
+      "api": "chat_completions",
+      "hasKey": false,
+      "reasoningEffort": "max"
+    }
+  },
+  "expansion": {
+    "sources": [
+      {
+        "id": "demo-v2-source-chat-lu",
+        "title": "和刘老师约国庆见面",
+        "kind": "conversation",
+        "text": "万叶：刘老师好，国庆我回杭州。上回您提的那本《江村经济》看了一半，有两段想当面请教。您这几天在学校吗？\n刘建国：万叶，你好。我四日下午在杭州，别的几天要去绍兴看父母。书不着急看完，带着来也可以。\n万叶：那四号下午两点左右可以吗？我住家里，去紫金港比较方便。\n刘建国：可以，东门外找个能坐的地方就好。具体店名三号再定，我不太喝冰的。\n万叶：好的，我找茶馆。毕业项目那批同学最近有人联系您吗？\n刘建国：王磊上个月发过消息，说工作调了组。你们还有联系吧？\n万叶：有，三号约他吃面。他又说不准我带电脑。\n刘建国：他说得对。你每次见面总想给人看最新做的东西，偶尔也聊点别的。\n万叶：被您看出来了。这次真不带，书可以带吧。\n刘建国：书可以。三号联系我就行，路上顺利。",
+        "createdAt": "2026-09-21T08:00:00.000Z",
+        "demo": true
+      },
+      {
+        "id": "demo-v2-source-chat-song",
+        "title": "准备李娜的生日照片",
+        "kind": "conversation",
+        "text": "万叶：你生日快到了，十八号是在上海还是回杭州？\n李娜：上海。今年不组大局，约两个人吃火锅算了。你要过来吗？\n万叶：十月中旬现在还说不准。我先问一句，有没有想要的？别又让我猜。\n李娜：真的别买摆件，我这房间快没地儿了。青岛早餐店那张合照你能洗一张给我吗？\n万叶：可以，你手里那个豆浆杯都没放下那张？\n李娜：对，就那张，看着像我们真出去玩了一趟，不像在拍宣传片。\n万叶：我找原图，洗六寸够不够？\n李娜：六寸就行，不用相框。我回头把工作室地址发你，家里白天没人。\n万叶：记下了，我十号前弄好。生日当天没赶上就视频。\n李娜：好，卡片少写两句煽情的，署个名就够了。",
+        "createdAt": "2026-09-22T08:00:00.000Z",
+        "demo": true
+      },
+      {
+        "id": "demo-v2-source-chat-he",
+        "title": "核对重复调用的费用",
+        "kind": "conversation",
+        "text": "万叶：你昨晚那张表里有四条任务编号重复，我先没把费用填进周报。\n何志强：我看到了，是超时后又点了一遍。有些其实已经返回，前端没显示。\n万叶：那成功次数得去重，账单还是两次都付了对吧？\n何志强：对，调用费不能去掉。我给你分两列：做成几条，实际付了多少。\n万叶：这批先别加了，帮我把那四个编号标出来。\n何志强：A07、A12、A18、A21。我把两次调用时间放在同一行了。\n万叶：收到了。明天下午四点我们看一下，别开大会，十分钟够。\n何志强：可以，我还想看一下是不是工具返回慢，不一定全是模型卡了。\n万叶：那下一批先十条，等这个原因查清再跑剩下的。\n何志强：行，先停在这里。表里备注我也补了。",
+        "createdAt": "2026-09-23T08:00:00.000Z",
+        "demo": true
+      },
+      {
+        "id": "demo-v2-source-chat-xu",
+        "title": "排查报价单保存后内容丢失",
+        "kind": "conversation",
+        "text": "万叶：你今天能再帮我看一下那个文件预览吗？我把入口挪回列表右边了。\n徐静：刚看了。入口好找了，但我把配送日期改成周三，关掉再开又变回周二。\n万叶：你点了右上角的保存吗？\n徐静：点了，而且出现绿色“已保存”。我录了一段，发这条下面。\n万叶：收到，我先查这个。你那份文件先别继续改，免得新版本又把字盖掉。\n徐静：好。还有，没保存就切走时应该提醒一下，我第一次根本不知道会丢。\n万叶：我会把未保存的内容留下来，重新打开还能接着改。\n徐静：修完给我，我就用这份报价单再走一遍，不换成空白文档。\n万叶：明天午饭前给你。今天先别帮我看颜色和间距了。\n徐静：行，先保住字再说。",
+        "createdAt": "2026-09-24T08:00:00.000Z",
+        "demo": true
+      },
+      {
+        "id": "demo-v2-source-chat-tang",
+        "title": "和唐丽买咖啡，顺便看录屏",
+        "kind": "conversation",
+        "text": "万叶：下楼买咖啡吗？我今天到现在还没离开椅子。\n唐丽：走啊，我正想买。你等我存一下文件。\n万叶：还是楼下那家？我有一张两杯减八块的券。\n唐丽：可以，我要热拿铁，不加糖。这回别顺手给我点冰的。\n万叶：记住了。顺便给你看下徐静录的那段，二十秒。\n唐丽：行，别把电脑搬下去，手机能看就手机看。\n万叶：她关掉文件以后，刚写的那行不见了。我想让未保存的内容继续留着。\n唐丽：先留着。按钮的字也改一下，现在“关闭”看不出会不会保存。\n万叶：下午我改完再给你，你两点有空吗？\n唐丽：两点可以，半小时后我有会，咱们就看这一处。",
+        "createdAt": "2026-09-24T08:00:00.000Z",
+        "demo": true
+      },
+      {
+        "id": "demo-v2-source-chat-shen",
+        "title": "和沈杰确认假期的服务安排",
+        "kind": "conversation",
+        "text": "万叶：你国庆哪几天不方便？我把值班说明写一下，省得群里一直艾特你。\n沈杰：二到四号回老家，网不太行。一号晚上和五号下午能看消息。\n万叶：那我把新批量任务停到八号。已有任务如果只是慢，不直接找你。\n沈杰：行。真有服务挂了，先看状态页，再发任务编号和时间给我，别只发“又不行了”。\n万叶：哈哈记住了。日志那页入口还是右上角？\n沈杰：对。你点任务标题旁边的三个点，复制诊断信息就行。\n万叶：我把这个写进交接。徐静报的保存问题我今天自己修完。\n沈杰：有冲突的那块我下午补完，六点前发你分支。\n万叶：好，六点之后不追你。回家路上别看代码了。\n沈杰：谢了，你也少带点工作回去。",
+        "createdAt": "2026-09-25T08:00:00.000Z",
+        "demo": true
+      },
+      {
+        "id": "demo-v2-source-chat-zhao",
+        "title": "收到赵老师的新号码",
+        "kind": "conversation",
+        "text": "万叶：赵老师您好，我是万叶。收到您的新号码了，我存一下。\n赵建军：万叶好。微信还没弄好，先发短信。你国庆回杭州吗？\n万叶：二号回，五号走。要是您有空，想过去看看。\n赵建军：四号陪外孙去他爷爷奶奶家，其他几天还没定。你先陪自己爸妈。\n万叶：好的，不急着这次。您膝盖最近好点了吗？\n赵建军：好多了，就是不太爬楼。现在每天小区里走一圈。\n万叶：那挺好。您照片发朋友圈我都看到了，菜种得比我妈还多。\n赵建军：你妈那是花养得好。我这个阳台只有菜能活。\n万叶：哈哈，回去跟她说。等您微信装好再聊。\n赵建军：好，坐车当心行李，到家给父母报个平安。",
+        "createdAt": "2026-09-26T08:00:00.000Z",
+        "demo": true
+      },
+      {
+        "id": "demo-v2-source-chat-wu",
+        "title": "和吴婷核对试用名单",
+        "kind": "conversation",
+        "text": "万叶：名单我看了，现在到底有几个人定了时间？\n吴婷：时间一个还没定。五个人说愿意试，另外三个没回。表里的绿色只是“有意向”。\n万叶：我刚差点把绿色都算成约好了。那标题改成意向人数吧。\n吴婷：改了。每个人你要聊多久？\n万叶：先半小时。别约连着三场，我中间得记几笔。\n吴婷：那两场之间隔十五分钟。我想十月九日再问具体时间，你那时版本能拿出来吗？\n万叶：八号下午看完再给你准话，先别发安装包。\n吴婷：好。这回我给大家一份虚构的会议记录，不让人专门找私人文件。\n万叶：这样准备省事。邀请先写短一点，说明大概做什么就够了。\n吴婷：我放草稿里了，八号你看完我们再发。",
+        "createdAt": "2026-09-26T08:00:00.000Z",
+        "demo": true
+      },
+      {
+        "id": "demo-v2-source-chat-ye",
+        "title": "和叶涛修改文件列表",
+        "kind": "conversation",
+        "text": "万叶：你那个文件列表能不能别只露前六个字？三份都叫“会议记录”，根本分不清。\n叶涛：我让它最多显示两行，日期也放出来。你那边有最长的文件名吗？\n万叶：有，“九月客户回访第二轮补充意见整理版”，发你了。\n叶涛：够长。小窗口也放得下，右边的按钮我挪下面了。\n万叶：好，我下午接保存状态。午饭出去吗？\n叶涛：出去，十二点楼下。我今天不想再吃外卖了。\n万叶：面馆？我想点牛肉面。\n叶涛：可以。我那碗别放香菜，老板上次忘了。\n万叶：你自己点吧，我替人点餐老记错。\n叶涛：也是。十二点门口见，先不带电脑。",
+        "createdAt": "2026-09-27T08:00:00.000Z",
+        "demo": true
+      },
+      {
+        "id": "demo-v2-source-chat-liang",
+        "title": "和梁佳核对访谈里的两种需求",
+        "kind": "conversation",
+        "text": "梁佳：访谈整理好了，有两段建议你听原声，我在文档里标黄了。\n万叶：哪两段？我下午先听。\n梁佳：第二位说“昨天做一半，今天又得重新解释”；第四位说“我就想找昨天那份结果”。\n万叶：一个要继续干，一个只是找文件，对吧。\n梁佳：对，我不想把两个都写成“缺恢复按钮”。\n万叶：明白。下次让他们先找昨天的东西，再看要不要接着做。\n梁佳：还有一件：五个人里只有三个人真的用过，另外两个看的视频。\n万叶：那我汇报时分开写。那十九条反馈能对应到人吗？\n梁佳：目前还不能，有人重复报过，得去重。\n万叶：行，先保留原条目，不拿它算百分比。",
+        "createdAt": "2026-09-27T08:00:00.000Z",
+        "demo": true
+      },
+      {
+        "id": "demo-v2-source-chat-wei",
+        "title": "和魏鹏约周日跑步",
+        "kind": "conversation",
+        "text": "万叶：周日跑不跑？我这礼拜只动了一次。\n魏鹏：跑啊，四点南园南门。你别再导航到北园去了。\n万叶：那回走错多跑了两公里。今天先说好，五公里就收。\n魏鹏：行，我也不想跑长的。最近鞋有点磨脚。\n万叶：新鞋？那慢点，我也不追配速。\n魏鹏：对。跑完去吃面？\n万叶：可以，我跑前不吃太多，结束肯定饿。\n魏鹏：你带件薄外套，太阳下去风挺大。\n万叶：好。要下雨就在群里取消，别为了打卡硬出门。\n魏鹏：没问题，周日下午出门前再确认。",
+        "createdAt": "2026-09-25T08:00:00.000Z",
+        "demo": true
+      },
+      {
+        "id": "demo-v2-source-chat-du",
+        "title": "和妈妈确认回杭州的安排",
+        "kind": "conversation",
+        "text": "万叶：妈，我二号回去，想买中午到的车。还没抢到合适的。\n杜秀英：晚一点也没事，不要一大早赶。你一个人行李少带点。\n万叶：要不要从北京带点什么？\n杜秀英：不要了，上次的点心还没吃完。人回来就行。\n万叶：那我想吃片儿川，跟爸说一声。\n杜秀英：他说可以，雪菜家里有，肉和笋提前一天去买。\n万叶：你们别摆一桌，我下车要是累了想先睡会儿。\n杜秀英：知道，就煮面。婷婷二号晚上也回来。\n万叶：好，我一号把到站时间发群里。\n杜秀英：行，车定了再说。衣服带件外套，晚上凉。",
+        "createdAt": "2026-09-26T08:00:00.000Z",
+        "demo": true
+      },
+      {
+        "id": "demo-v2-source-chat-lin",
+        "title": "和爸爸商量回家后的安排",
+        "kind": "conversation",
+        "text": "万叶：爸，给你看了件外套，五百左右，你要不要？\n万建明：不要，我柜子里还有两件没怎么穿。你别花这个钱。\n万叶：好，那我空手回。二号中午还是片儿川。\n万建明：这个有。你到杭州东还是城站？\n万叶：想买到杭州东的，票还没定。我自己坐地铁回，不用来接。\n万建明：好，提着箱子慢点。到家先吃饭，下午睡一觉。\n万叶：吃完出去走走也行，不过我不想去人挤人的地方。\n万建明：就在小区边河道走，都是平的。你妈也不愿意往西湖挤。\n万叶：那就附近走一圈，四十分钟差不多。\n万建明：行，累了就回来，不用按点走满。",
+        "createdAt": "2026-09-27T08:00:00.000Z",
+        "demo": true
+      },
+      {
+        "id": "demo-v2-source-chat-jiang",
+        "title": "帮妹妹补摄影活动的报名说明",
+        "kind": "conversation",
+        "text": "万婷婷：哥，帮我看一下摄影社报名这段，怎么总有人问一样的问题。\n万叶：发来，我先看你到底写了什么。\n万婷婷：“十月十六日下午，西操场集合，手机摄影入门，欢迎报名。”我觉得挺清楚了啊。\n万叶：几点到几点？下雨去哪？要带相机吗？\n万婷婷：14:00 到 16:00，只带手机就行。下雨改学生活动中心 204。\n万叶：这些都放进去。还有人数和报名截止时间呢？\n万婷婷：最多二十人，十号晚上八点截止。名单十一号在群里发。\n万叶：那别只写“欢迎报名”，把这几项先写全。留一个联系人，别人不用到处找。\n万婷婷：联系人就我，大家已经在微信社群里。我今晚改，国庆回家再给你看。\n万叶：行。二十个人满了就提示候补，别收到三十份又挨个解释。",
+        "createdAt": "2026-09-28T08:00:00.000Z",
+        "demo": true
+      },
+      {
+        "id": "demo-v2-source-chat-zhou",
+        "title": "约好维修师傅上门修水槽",
+        "kind": "conversation",
+        "text": "万叶：水槽下面又湿了，刚拿出锅的时候摸了一手水。\n周琳：拍给房东了没？先别自己拆，拍清楚接口和下面那滩水。\n万叶：拍了。他约了师傅明晚七点来，我得准时下班。\n周琳：那你提前把柜子里的锅都拿出来，垫块旧毛巾。\n万叶：好。这个房子十一月底到期，我还有点犹豫续不续。\n周琳：你现在通勤二十分钟，先别因为一个水槽决定搬家。看他这次怎么修。\n万叶：也是。涨不涨房租还没问。\n周琳：修好再问，别把两件事混在一条消息里。我上次就是聊乱了。\n万叶：记住了。节后你来吃饭吧，我终于学会煎鱼不粘锅了。\n周琳：可以，我带水果。先把水槽修好，不想帮你洗锅洗到一脚水。",
+        "createdAt": "2026-09-29T08:00:00.000Z",
+        "demo": true
+      },
+      {
+        "id": "demo-v2-source-chat-gao",
+        "title": "和高远挑青岛相册的照片",
+        "kind": "conversation",
+        "text": "万叶：我把青岛那批文件名列出来了，十二张能装下吗？\n高远：能。你先别修图，一修又要一晚上。早餐那张肯定留，李娜说过想要。\n万叶：她生日十八号，我得十号前洗出来寄。店里十二张三十六，十八张五十四。\n高远：就十二张，别为了多六张又纠结一周。\n万叶：车窗倒影、阴天海边、早餐合照这三张先锁定。建筑那两张太像了。\n高远：建筑留有人经过的那张。另一张空街你上回已经拍过类似的。\n万叶：封面我想用车窗那张，不加标题，背面写青岛和日期。\n高远：可以。别把所有照片都调成同一个黄颜色，海本来就是灰的。\n万叶：哈哈知道。今晚先给你排个顺序，不会说已经下单。\n高远：发来吧。我十点前能看，之后要早睡。",
+        "createdAt": "2026-09-29T08:00:00.000Z",
+        "demo": true
+      },
+      {
+        "id": "demo-v2-source-community",
+        "title": "万叶的亲友与同事",
+        "kind": "note",
+        "demo": true,
+        "createdAt": "__DEMO_STAMP__",
+        "text": "万叶住北京海淀，在月之暗面做产品工程。父母与妹妹在杭州。下面这些人来自通讯录和对应的聊天记录。\n\n刘建国，大学导师：浙江大学软件工程教师，指导过万叶的毕业项目。十月四日下午在杭州，暂约东门附近喝茶，不喝冰的；具体店名三号再定。\n李娜，大学同学，朋友：浙江大学同学，在上海做内容产品。十月十八日生日，不想收摆件，想要青岛早餐店那张六寸合照；寄工作室，地址待发。\n何志强，同事，算法工程师：同组算法工程师。九月核对出四条因超时重复的调用，成功次数和账单分开统计；下一批先跑十条。\n徐静，同事，测试工程师：测试工程师。用真实长度的报价单测到配送日期被旧文稿盖回去，报错通常附操作视频。\n唐丽，同事，交互设计师：交互设计师，也是经常一起买咖啡的同事。九月二十四日提过要热拿铁、不加糖。\n沈杰，同事，后端工程师：后端工程师，和万叶配合排查文件覆盖问题。十月二日至四日回老家，网络不稳定，非紧急事情节后再处理。\n赵建军，高中班主任：杭州高中时的班主任，教数学。最近换手机暂时用短信联系，不太爬楼；十月四日要陪外孙。\n周琳，高中同学，朋友：高中同学，现在同住北京，做用户体验研究。搬家时帮看过合同，知道万叶租约十一月底到期。\n吴婷，同事，产品运营：产品运营，整理试用名单。八名候选者中五人有意向、三人未回复，具体时间未定；准备每场半小时。\n高远，朋友，摄影伙伴：北京的数据工程师和摄影伙伴。常在摄影 Discord 群交流，八月与万叶、李娜去青岛；喜欢先选片再修图。\n叶涛，同事，前端工程师：前端工程师，和万叶改工作台文件列表。午饭常去楼下面馆，不吃香菜。\n梁佳，同事，用户研究员：用户研究员，完成了五次访谈。提醒万叶区分“找昨天的文稿”和“继续没做完的任务”，先听原话再概括。\n邱志明，同事，工程负责人：工程负责人。九月底要求放假前只修已列的三个问题，不继续追加工具接入；知道万叶三十号晚上约了水槽维修。\n魏鹏，朋友，跑步伙伴：朋友、跑步伙伴。通常周日 16:00 在奥森南园南门见，最近新鞋磨脚，先慢跑五公里。\n杜秀英，母亲：母亲，住杭州，喜欢种花。二号等万叶回家吃面，不用带礼物；希望他到家先休息。\n万婷婷，妹妹：妹妹，在杭州读大学，负责摄影社招新。十月十六日有手机摄影活动，二十个名额，十号晚八点截止报名。\n万建明，父亲：父亲，住杭州，喜欢做饭和散步。不要五百元的新外套，想在家煮片儿川，饭后在小区旁河道走一圈。\n韩晓梅，同事，隐私与法务：同事，负责隐私与法务。最近帮着改试用邀请，建议默认记笔记、需要录屏时再询问。\n\n已知的联系：\n何志强与沈杰：模型与工具接口。\n何志强与高远：技术交流。\n徐静与沈杰：失败恢复测试。\n徐静与叶涛：界面验收。\n唐丽与叶涛：交互实现。\n唐丽与韩晓梅：授权界面评审。\n吴婷与梁佳：内测回访。\n吴婷与韩晓梅：访谈说明核对。\n邱志明与沈杰：工程交付。\n邱志明与何志强：评测与质量。\n杜秀英与万建明：夫妻。\n杜秀英与万婷婷：母女。\n万建明与万婷婷：父女。\n李娜与周琳：朋友。\n\n王磊，大学同学，朋友：大学同学，在杭州做阿里云后端。十月三日暂约下午三点吃面；上午要陪母亲复查，希望见面时不聊一整场工作。\n张敏，同事，产品经理：工作上的搭档，做产品经理。九月二十八日一起缩了首轮试用范围，负责和万叶对齐节后的安排。午饭常约同一家面馆。\n陈伟，同事，产品设计师：同组产品设计师，住昌平，每天坐地铁来。评审喜欢拿真实文件试一遍，九月发现关闭预览后不好找回文稿。"
+      }
+    ],
+    "people": [
+      {
+        "id": "demo-v2-person-lu",
+        "name": "刘建国",
+        "role": "大学导师",
+        "description": "浙江大学软件工程教师，指导过万叶的毕业项目。十月四日下午在杭州，暂约东门附近喝茶，不喝冰的；具体店名三号再定。",
+        "sourceIds": [
+          "demo-v2-source-community",
+          "demo-v2-source-chat-lu"
+        ]
+      },
+      {
+        "id": "demo-v2-person-song",
+        "name": "李娜",
+        "role": "大学同学，朋友",
+        "description": "浙江大学同学，在上海做内容产品。十月十八日生日，不想收摆件，想要青岛早餐店那张六寸合照；寄工作室，地址待发。",
+        "sourceIds": [
+          "demo-v2-source-community",
+          "demo-v2-source-chat-song"
+        ]
+      },
+      {
+        "id": "demo-v2-person-he",
+        "name": "何志强",
+        "role": "同事，算法工程师",
+        "description": "同组算法工程师。九月核对出四条因超时重复的调用，成功次数和账单分开统计；下一批先跑十条。",
+        "sourceIds": [
+          "demo-v2-source-community",
+          "demo-v2-source-chat-he"
+        ]
+      },
+      {
+        "id": "demo-v2-person-xu",
+        "name": "徐静",
+        "role": "同事，测试工程师",
+        "description": "测试工程师。用真实长度的报价单测到配送日期被旧文稿盖回去，报错通常附操作视频。",
+        "sourceIds": [
+          "demo-v2-source-community",
+          "demo-v2-source-chat-xu"
+        ]
+      },
+      {
+        "id": "demo-v2-person-tang",
+        "name": "唐丽",
+        "role": "同事，交互设计师",
+        "description": "交互设计师，也是经常一起买咖啡的同事。九月二十四日提过要热拿铁、不加糖。",
+        "sourceIds": [
+          "demo-v2-source-community",
+          "demo-v2-source-chat-tang"
+        ]
+      },
+      {
+        "id": "demo-v2-person-shen",
+        "name": "沈杰",
+        "role": "同事，后端工程师",
+        "description": "后端工程师，和万叶配合排查文件覆盖问题。十月二日至四日回老家，网络不稳定，非紧急事情节后再处理。",
+        "sourceIds": [
+          "demo-v2-source-community",
+          "demo-v2-source-chat-shen"
+        ]
+      },
+      {
+        "id": "demo-v2-person-zhao",
+        "name": "赵建军",
+        "role": "高中班主任",
+        "description": "杭州高中时的班主任，教数学。最近换手机暂时用短信联系，不太爬楼；十月四日要陪外孙。",
+        "sourceIds": [
+          "demo-v2-source-community",
+          "demo-v2-source-chat-zhao"
+        ]
+      },
+      {
+        "id": "demo-v2-person-zhou",
+        "name": "周琳",
+        "role": "高中同学，朋友",
+        "description": "高中同学，现在同住北京，做用户体验研究。搬家时帮看过合同，知道万叶租约十一月底到期。",
+        "sourceIds": [
+          "demo-v2-source-community",
+          "demo-v2-source-chat-zhou"
+        ]
+      },
+      {
+        "id": "demo-v2-person-wu",
+        "name": "吴婷",
+        "role": "同事，产品运营",
+        "description": "产品运营，整理试用名单。八名候选者中五人有意向、三人未回复，具体时间未定；准备每场半小时。",
+        "sourceIds": [
+          "demo-v2-source-community",
+          "demo-v2-source-chat-wu"
+        ]
+      },
+      {
+        "id": "demo-v2-person-gao",
+        "name": "高远",
+        "role": "朋友，摄影伙伴",
+        "description": "北京的数据工程师和摄影伙伴。常在摄影 Discord 群交流，八月与万叶、李娜去青岛；喜欢先选片再修图。",
+        "sourceIds": [
+          "demo-v2-source-community",
+          "demo-v2-source-chat-gao"
+        ]
+      },
+      {
+        "id": "demo-v2-person-ye",
+        "name": "叶涛",
+        "role": "同事，前端工程师",
+        "description": "前端工程师，和万叶改工作台文件列表。午饭常去楼下面馆，不吃香菜。",
+        "sourceIds": [
+          "demo-v2-source-community",
+          "demo-v2-source-chat-ye"
+        ]
+      },
+      {
+        "id": "demo-v2-person-liang",
+        "name": "梁佳",
+        "role": "同事，用户研究员",
+        "description": "用户研究员，完成了五次访谈。提醒万叶区分“找昨天的文稿”和“继续没做完的任务”，先听原话再概括。",
+        "sourceIds": [
+          "demo-v2-source-community",
+          "demo-v2-source-chat-liang"
+        ]
+      },
+      {
+        "id": "demo-v2-person-qiu",
+        "name": "邱志明",
+        "role": "同事，工程负责人",
+        "description": "工程负责人。九月底要求放假前只修已列的三个问题，不继续追加工具接入；知道万叶三十号晚上约了水槽维修。",
+        "sourceIds": [
+          "demo-v2-source-community"
+        ]
+      },
+      {
+        "id": "demo-v2-person-wei",
+        "name": "魏鹏",
+        "role": "朋友，跑步伙伴",
+        "description": "朋友、跑步伙伴。通常周日 16:00 在奥森南园南门见，最近新鞋磨脚，先慢跑五公里。",
+        "sourceIds": [
+          "demo-v2-source-community",
+          "demo-v2-source-chat-wei"
+        ]
+      },
+      {
+        "id": "demo-v2-person-du",
+        "name": "杜秀英",
+        "role": "母亲",
+        "description": "母亲，住杭州，喜欢种花。二号等万叶回家吃面，不用带礼物；希望他到家先休息。",
+        "sourceIds": [
+          "demo-v2-source-community",
+          "demo-v2-source-chat-du"
+        ]
+      },
+      {
+        "id": "demo-v2-person-jiang",
+        "name": "万婷婷",
+        "role": "妹妹",
+        "description": "妹妹，在杭州读大学，负责摄影社招新。十月十六日有手机摄影活动，二十个名额，十号晚八点截止报名。",
+        "sourceIds": [
+          "demo-v2-source-community",
+          "demo-v2-source-chat-jiang"
+        ]
+      },
+      {
+        "id": "demo-v2-person-lin",
+        "name": "万建明",
+        "role": "父亲",
+        "description": "父亲，住杭州，喜欢做饭和散步。不要五百元的新外套，想在家煮片儿川，饭后在小区旁河道走一圈。",
+        "sourceIds": [
+          "demo-v2-source-community",
+          "demo-v2-source-chat-lin"
+        ]
+      },
+      {
+        "id": "demo-v2-person-han",
+        "name": "韩晓梅",
+        "role": "同事，隐私与法务",
+        "description": "同事，负责隐私与法务。最近帮着改试用邀请，建议默认记笔记、需要录屏时再询问。",
+        "sourceIds": [
+          "demo-v2-source-community"
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "id": "demo-v2-rel-self-lu",
+        "from": "person-self",
+        "to": "demo-v2-person-lu",
+        "label": "导师",
+        "description": "浙江大学软件工程教师，指导过万叶的毕业项目。十月四日下午在杭州，暂约东门附近喝茶，不喝冰的；具体店名三号再定。",
+        "sourceIds": [
+          "demo-v2-source-community"
+        ]
+      },
+      {
+        "id": "demo-v2-rel-self-song",
+        "from": "person-self",
+        "to": "demo-v2-person-song",
+        "label": "长期朋友与同学",
+        "description": "浙江大学同学，在上海做内容产品。十月十八日生日，不想收摆件，想要青岛早餐店那张六寸合照；寄工作室，地址待发。",
+        "sourceIds": [
+          "demo-v2-source-community"
+        ]
+      },
+      {
+        "id": "demo-v2-rel-self-he",
+        "from": "person-self",
+        "to": "demo-v2-person-he",
+        "label": "同事",
+        "description": "同组算法工程师。九月核对出四条因超时重复的调用，成功次数和账单分开统计；下一批先跑十条。",
+        "sourceIds": [
+          "demo-v2-source-community"
+        ]
+      },
+      {
+        "id": "demo-v2-rel-self-xu",
+        "from": "person-self",
+        "to": "demo-v2-person-xu",
+        "label": "同事",
+        "description": "测试工程师。用真实长度的报价单测到配送日期被旧文稿盖回去，报错通常附操作视频。",
+        "sourceIds": [
+          "demo-v2-source-community"
+        ]
+      },
+      {
+        "id": "demo-v2-rel-self-tang",
+        "from": "person-self",
+        "to": "demo-v2-person-tang",
+        "label": "同事",
+        "description": "交互设计师，也是经常一起买咖啡的同事。九月二十四日提过要热拿铁、不加糖。",
+        "sourceIds": [
+          "demo-v2-source-community"
+        ]
+      },
+      {
+        "id": "demo-v2-rel-self-shen",
+        "from": "person-self",
+        "to": "demo-v2-person-shen",
+        "label": "同事",
+        "description": "后端工程师，和万叶配合排查文件覆盖问题。十月二日至四日回老家，网络不稳定，非紧急事情节后再处理。",
+        "sourceIds": [
+          "demo-v2-source-community"
+        ]
+      },
+      {
+        "id": "demo-v2-rel-self-zhao",
+        "from": "person-self",
+        "to": "demo-v2-person-zhao",
+        "label": "老师",
+        "description": "杭州高中时的班主任，教数学。最近换手机暂时用短信联系，不太爬楼；十月四日要陪外孙。",
+        "sourceIds": [
+          "demo-v2-source-community"
+        ]
+      },
+      {
+        "id": "demo-v2-rel-self-zhou",
+        "from": "person-self",
+        "to": "demo-v2-person-zhou",
+        "label": "高中同学与长期朋友",
+        "description": "高中同学，现在同住北京，做用户体验研究。搬家时帮看过合同，知道万叶租约十一月底到期。",
+        "sourceIds": [
+          "demo-v2-source-community"
+        ]
+      },
+      {
+        "id": "demo-v2-rel-self-wu",
+        "from": "person-self",
+        "to": "demo-v2-person-wu",
+        "label": "同事",
+        "description": "产品运营，整理试用名单。八名候选者中五人有意向、三人未回复，具体时间未定；准备每场半小时。",
+        "sourceIds": [
+          "demo-v2-source-community"
+        ]
+      },
+      {
+        "id": "demo-v2-rel-self-gao",
+        "from": "person-self",
+        "to": "demo-v2-person-gao",
+        "label": "朋友",
+        "description": "北京的数据工程师和摄影伙伴。常在摄影 Discord 群交流，八月与万叶、李娜去青岛；喜欢先选片再修图。",
+        "sourceIds": [
+          "demo-v2-source-community"
+        ]
+      },
+      {
+        "id": "demo-v2-rel-self-ye",
+        "from": "person-self",
+        "to": "demo-v2-person-ye",
+        "label": "同事",
+        "description": "前端工程师，和万叶改工作台文件列表。午饭常去楼下面馆，不吃香菜。",
+        "sourceIds": [
+          "demo-v2-source-community"
+        ]
+      },
+      {
+        "id": "demo-v2-rel-self-liang",
+        "from": "person-self",
+        "to": "demo-v2-person-liang",
+        "label": "同事",
+        "description": "用户研究员，完成了五次访谈。提醒万叶区分“找昨天的文稿”和“继续没做完的任务”，先听原话再概括。",
+        "sourceIds": [
+          "demo-v2-source-community"
+        ]
+      },
+      {
+        "id": "demo-v2-rel-self-qiu",
+        "from": "person-self",
+        "to": "demo-v2-person-qiu",
+        "label": "同事",
+        "description": "工程负责人。九月底要求放假前只修已列的三个问题，不继续追加工具接入；知道万叶三十号晚上约了水槽维修。",
+        "sourceIds": [
+          "demo-v2-source-community"
+        ]
+      },
+      {
+        "id": "demo-v2-rel-self-wei",
+        "from": "person-self",
+        "to": "demo-v2-person-wei",
+        "label": "朋友",
+        "description": "朋友、跑步伙伴。通常周日 16:00 在奥森南园南门见，最近新鞋磨脚，先慢跑五公里。",
+        "sourceIds": [
+          "demo-v2-source-community"
+        ]
+      },
+      {
+        "id": "demo-v2-rel-self-du",
+        "from": "person-self",
+        "to": "demo-v2-person-du",
+        "label": "母亲",
+        "description": "母亲，住杭州，喜欢种花。二号等万叶回家吃面，不用带礼物；希望他到家先休息。",
+        "sourceIds": [
+          "demo-v2-source-community"
+        ]
+      },
+      {
+        "id": "demo-v2-rel-self-jiang",
+        "from": "person-self",
+        "to": "demo-v2-person-jiang",
+        "label": "妹妹",
+        "description": "妹妹，在杭州读大学，负责摄影社招新。十月十六日有手机摄影活动，二十个名额，十号晚八点截止报名。",
+        "sourceIds": [
+          "demo-v2-source-community"
+        ]
+      },
+      {
+        "id": "demo-v2-rel-self-lin",
+        "from": "person-self",
+        "to": "demo-v2-person-lin",
+        "label": "父亲",
+        "description": "父亲，住杭州，喜欢做饭和散步。不要五百元的新外套，想在家煮片儿川，饭后在小区旁河道走一圈。",
+        "sourceIds": [
+          "demo-v2-source-community"
+        ]
+      },
+      {
+        "id": "demo-v2-rel-self-han",
+        "from": "person-self",
+        "to": "demo-v2-person-han",
+        "label": "同事",
+        "description": "同事，负责隐私与法务。最近帮着改试用邀请，建议默认记笔记、需要录屏时再询问。",
+        "sourceIds": [
+          "demo-v2-source-community"
+        ]
+      },
+      {
+        "id": "demo-v2-rel-lu-du",
+        "from": "demo-v2-person-he",
+        "to": "demo-v2-person-shen",
+        "label": "模型与工具接口",
+        "description": "何志强与沈杰：模型与工具接口。",
+        "sourceIds": [
+          "demo-v2-source-community"
+        ]
+      },
+      {
+        "id": "demo-v2-rel-song-liang",
+        "from": "demo-v2-person-he",
+        "to": "demo-v2-person-gao",
+        "label": "技术交流",
+        "description": "何志强与高远：技术交流。",
+        "sourceIds": [
+          "demo-v2-source-community"
+        ]
+      },
+      {
+        "id": "demo-v2-rel-he-ye",
+        "from": "demo-v2-person-xu",
+        "to": "demo-v2-person-shen",
+        "label": "失败恢复测试",
+        "description": "徐静与沈杰：失败恢复测试。",
+        "sourceIds": [
+          "demo-v2-source-community"
+        ]
+      },
+      {
+        "id": "demo-v2-rel-xu-zhao",
+        "from": "demo-v2-person-xu",
+        "to": "demo-v2-person-ye",
+        "label": "界面验收",
+        "description": "徐静与叶涛：界面验收。",
+        "sourceIds": [
+          "demo-v2-source-community"
+        ]
+      },
+      {
+        "id": "demo-v2-rel-tang-han",
+        "from": "demo-v2-person-tang",
+        "to": "demo-v2-person-ye",
+        "label": "交互实现",
+        "description": "唐丽与叶涛：交互实现。",
+        "sourceIds": [
+          "demo-v2-source-community"
+        ]
+      },
+      {
+        "id": "demo-v2-rel-shen-song",
+        "from": "demo-v2-person-tang",
+        "to": "demo-v2-person-han",
+        "label": "授权界面评审",
+        "description": "唐丽与韩晓梅：授权界面评审。",
+        "sourceIds": [
+          "demo-v2-source-community"
+        ]
+      },
+      {
+        "id": "demo-v2-rel-wu-he",
+        "from": "demo-v2-person-wu",
+        "to": "demo-v2-person-liang",
+        "label": "内测回访",
+        "description": "吴婷与梁佳：内测回访。",
+        "sourceIds": [
+          "demo-v2-source-community"
+        ]
+      },
+      {
+        "id": "demo-v2-rel-gao-xu",
+        "from": "demo-v2-person-wu",
+        "to": "demo-v2-person-han",
+        "label": "访谈说明核对",
+        "description": "吴婷与韩晓梅：访谈说明核对。",
+        "sourceIds": [
+          "demo-v2-source-community"
+        ]
+      },
+      {
+        "id": "demo-v2-rel-ye-liang",
+        "from": "demo-v2-person-qiu",
+        "to": "demo-v2-person-shen",
+        "label": "工程交付",
+        "description": "邱志明与沈杰：工程交付。",
+        "sourceIds": [
+          "demo-v2-source-community"
+        ]
+      },
+      {
+        "id": "demo-v2-rel-qiu-wu",
+        "from": "demo-v2-person-qiu",
+        "to": "demo-v2-person-he",
+        "label": "评测与质量",
+        "description": "邱志明与何志强：评测与质量。",
+        "sourceIds": [
+          "demo-v2-source-community"
+        ]
+      },
+      {
+        "id": "demo-v2-rel-wei-lin",
+        "from": "demo-v2-person-du",
+        "to": "demo-v2-person-lin",
+        "label": "夫妻",
+        "description": "杜秀英与万建明：夫妻。",
+        "sourceIds": [
+          "demo-v2-source-community"
+        ]
+      },
+      {
+        "id": "demo-v2-rel-zhou-lu",
+        "from": "demo-v2-person-du",
+        "to": "demo-v2-person-jiang",
+        "label": "母女",
+        "description": "杜秀英与万婷婷：母女。",
+        "sourceIds": [
+          "demo-v2-source-community"
+        ]
+      },
+      {
+        "id": "demo-v2-rel-lin-jiang",
+        "from": "demo-v2-person-lin",
+        "to": "demo-v2-person-jiang",
+        "label": "父女",
+        "description": "万建明与万婷婷：父女。",
+        "sourceIds": [
+          "demo-v2-source-community"
+        ]
+      },
+      {
+        "id": "demo-v2-rel-song-zhou",
+        "from": "demo-v2-person-song",
+        "to": "demo-v2-person-zhou",
+        "label": "朋友",
+        "description": "李娜与周琳：朋友。",
+        "sourceIds": [
+          "demo-v2-source-community"
+        ]
+      }
+    ],
+    "events": [
+      {
+        "id": "demo-v2-event-lu",
+        "date": "2026-09-21",
+        "title": "和刘老师约国庆见面",
+        "description": "给刘老师回了邮件，暂约 10 月 4 日下午在紫金港东门附近喝茶。他那天下午在杭州，具体店名等 10 月 3 日再确认。",
+        "category": "relationship",
+        "scope": "note",
+        "personIds": [
+          "person-self",
+          "demo-v2-person-lu"
+        ],
+        "sourceIds": [
+          "demo-v2-source-chat-lu"
+        ],
+        "platform": "email"
+      },
+      {
+        "id": "demo-v2-event-song",
+        "date": "2026-09-22",
+        "title": "准备李娜的生日照片",
+        "description": "李娜 10 月 18 日过生日，想要青岛早餐店的那张合照，不想收摆件。我答应找原图，洗好后寄到她的工作室；地址还在等她发。",
+        "category": "relationship",
+        "scope": "note",
+        "personIds": [
+          "person-self",
+          "demo-v2-person-song"
+        ],
+        "sourceIds": [
+          "demo-v2-source-chat-song"
+        ],
+        "platform": "wechat"
+      },
+      {
+        "id": "demo-v2-event-he",
+        "date": "2026-09-23",
+        "title": "核对重复调用的费用",
+        "description": "何志强查到 4 条任务在超时重试时被重复调用。成功的任务数需要去重，实际账单仍包含两次调用的费用。先核对这 4 个编号，下一批只跑 10 条。",
+        "category": "career",
+        "scope": "note",
+        "personIds": [
+          "person-self",
+          "demo-v2-person-he"
+        ],
+        "sourceIds": [
+          "demo-v2-source-chat-he"
+        ],
+        "platform": "feishu"
+      },
+      {
+        "id": "demo-v2-event-xu",
+        "date": "2026-09-24",
+        "title": "排查报价单保存后内容丢失",
+        "description": "徐静把报价单里的配送日期从周二改成周三，点过保存，重新打开却又变回旧文字。我答应先查这个问题，9 月 25 日午饭前给她新版本再试。",
+        "category": "career",
+        "scope": "note",
+        "personIds": [
+          "person-self",
+          "demo-v2-person-xu"
+        ],
+        "sourceIds": [
+          "demo-v2-source-chat-xu"
+        ],
+        "platform": "feishu"
+      },
+      {
+        "id": "demo-v2-event-tang",
+        "date": "2026-09-24",
+        "title": "和唐丽买咖啡，顺便看录屏",
+        "description": "中午约唐丽下楼买咖啡，想趁等取餐时给她看一段 20 秒的录屏。她 14:30 有会，我们另外约了 14:00 看修改，只讨论文件关闭和保存的问题。",
+        "category": "career",
+        "scope": "note",
+        "personIds": [
+          "person-self",
+          "demo-v2-person-tang"
+        ],
+        "sourceIds": [
+          "demo-v2-source-chat-tang"
+        ],
+        "platform": "feishu"
+      },
+      {
+        "id": "demo-v2-event-shen",
+        "date": "2026-09-25",
+        "title": "和沈杰确认假期的服务安排",
+        "description": "沈杰 10 月 2 日至 4 日回老家，网络不太稳定。国庆期间先不跑新的批量任务，非阻塞问题等 10 月 8 日回来再处理。",
+        "category": "career",
+        "scope": "note",
+        "personIds": [
+          "person-self",
+          "demo-v2-person-shen"
+        ],
+        "sourceIds": [
+          "demo-v2-source-chat-shen"
+        ],
+        "platform": "feishu"
+      },
+      {
+        "id": "demo-v2-event-zhao",
+        "date": "2026-09-26",
+        "title": "收到赵老师的新号码",
+        "description": "赵老师换了手机，微信还没登录，先用短信问我国庆是否回杭州。他 10 月 4 日要陪外孙，见面的事以后再约，这次不用专程过去。",
+        "category": "relationship",
+        "scope": "note",
+        "personIds": [
+          "person-self",
+          "demo-v2-person-zhao"
+        ],
+        "sourceIds": [
+          "demo-v2-source-chat-zhao"
+        ],
+        "platform": "sms"
+      },
+      {
+        "id": "demo-v2-event-wu",
+        "date": "2026-09-26",
+        "title": "和吴婷核对试用名单",
+        "description": "8 名候选人中，5 人说愿意试，3 人还没回复，具体时间都没定。我和吴婷商量每场约 30 分钟，等 10 月 9 日再联系大家确认时段。",
+        "category": "career",
+        "scope": "note",
+        "personIds": [
+          "person-self",
+          "demo-v2-person-wu"
+        ],
+        "sourceIds": [
+          "demo-v2-source-chat-wu"
+        ],
+        "platform": "feishu"
+      },
+      {
+        "id": "demo-v2-event-ye",
+        "date": "2026-09-27",
+        "title": "和叶涛修改文件列表",
+        "description": "叶涛把窄窗口里的文件名改成最多显示两行，也补了日期。我午饭后接着处理保存状态。我们约了 12:00 去楼下吃面。",
+        "category": "career",
+        "scope": "note",
+        "personIds": [
+          "person-self",
+          "demo-v2-person-ye"
+        ],
+        "sourceIds": [
+          "demo-v2-source-chat-ye"
+        ],
+        "platform": "feishu"
+      },
+      {
+        "id": "demo-v2-event-liang",
+        "date": "2026-09-27",
+        "title": "和梁佳核对访谈里的两种需求",
+        "description": "梁佳提醒我，有人想找回昨天的文稿，有人想继续没做完的任务，这两件事要分开看。下次回访先让对方找文件，再问是否需要接着做。",
+        "category": "career",
+        "scope": "note",
+        "personIds": [
+          "person-self",
+          "demo-v2-person-liang"
+        ],
+        "sourceIds": [
+          "demo-v2-source-chat-liang"
+        ],
+        "platform": "feishu"
+      },
+      {
+        "id": "demo-v2-event-wei",
+        "date": "2026-09-25",
+        "title": "和魏鹏约周日跑步",
+        "description": "和魏鹏约了 9 月 27 日 16:00 在奥森南园南门见。这次跑 5 公里，不追配速；如果下雨，就在群里取消。",
+        "category": "life",
+        "scope": "note",
+        "personIds": [
+          "person-self",
+          "demo-v2-person-wei"
+        ],
+        "sourceIds": [
+          "demo-v2-source-chat-wei"
+        ],
+        "platform": "wechat"
+      },
+      {
+        "id": "demo-v2-event-du",
+        "date": "2026-09-26",
+        "title": "和妈妈确认回杭州的安排",
+        "description": "妈妈说家里吃的够了，不用再带礼物。我想买 10 月 2 日中午到杭州的车票，目前还没买到合适的，答应 10 月 1 日把到站时间发到家人群里。",
+        "category": "family",
+        "scope": "note",
+        "personIds": [
+          "person-self",
+          "demo-v2-person-du"
+        ],
+        "sourceIds": [
+          "demo-v2-source-chat-du"
+        ],
+        "platform": "wechat"
+      },
+      {
+        "id": "demo-v2-event-lin",
+        "date": "2026-09-27",
+        "title": "和爸爸商量回家后的安排",
+        "description": "爸爸说不用买那件约 500 元的外套。如果 10 月 2 日中午到家，就一起吃片儿川。饭后想走走的话，去小区旁的河边平路就好。",
+        "category": "family",
+        "scope": "note",
+        "personIds": [
+          "person-self",
+          "demo-v2-person-lin"
+        ],
+        "sourceIds": [
+          "demo-v2-source-chat-lin"
+        ],
+        "platform": "wechat"
+      },
+      {
+        "id": "demo-v2-event-jiang",
+        "date": "2026-09-28",
+        "title": "帮妹妹补摄影活动的报名说明",
+        "description": "妹妹在准备摄影社 10 月 16 日的手机摄影活动，名额是 20 人。报名页还缺结束时间和雨天地点，这些要补上；报名到 10 月 10 日结束。",
+        "category": "family",
+        "scope": "note",
+        "personIds": [
+          "person-self",
+          "demo-v2-person-jiang"
+        ],
+        "sourceIds": [
+          "demo-v2-source-chat-jiang"
+        ],
+        "platform": "wechat"
+      },
+      {
+        "id": "demo-v2-event-zhou",
+        "date": "2026-09-29",
+        "title": "约好维修师傅上门修水槽",
+        "description": "周琳让我把水槽漏水的照片发给房东。房东已经约了师傅 9 月 30 日 19:00 上门，那天我下班后要直接回家。11 月底是否续租，等这次修好后再谈。",
+        "category": "life",
+        "scope": "note",
+        "personIds": [
+          "person-self",
+          "demo-v2-person-zhou"
+        ],
+        "sourceIds": [
+          "demo-v2-source-chat-zhou"
+        ],
+        "platform": "wechat"
+      },
+      {
+        "id": "demo-v2-event-gao",
+        "date": "2026-09-29",
+        "title": "和高远挑青岛相册的照片",
+        "description": "和高远在 Discord 上讨论选片，先按 12 张做相册，不加页。打印店的报价是 12 张六寸照片 36 元、18 张 54 元。李娜的生日照片要在 10 月 10 日前挑好。",
+        "category": "life",
+        "scope": "note",
+        "personIds": [
+          "person-self",
+          "demo-v2-person-gao"
+        ],
+        "sourceIds": [
+          "demo-v2-source-chat-gao"
+        ],
+        "platform": "discord"
+      },
+      {
+        "id": "demo-v2-event-scope",
+        "date": "2026-09-29",
+        "title": "确认明天下午的版本演示",
+        "description": "张敏约了 9 月 30 日 15:00 看版本，预计 20 分钟。当天 19:00 维修师傅要来修水槽，我得准时下班回家。",
+        "category": "career",
+        "scope": "note",
+        "personIds": [
+          "person-self"
+        ],
+        "sourceIds": [
+          "demo-story-source-qiao",
+          "demo-v2-source-chat-zhou"
+        ],
+        "platform": "notes",
+        "location": "北京"
+      },
+      {
+        "id": "demo-v2-event-quiet",
+        "date": "2026-09-25",
+        "title": "记下周日奥森跑步的时间",
+        "description": "9 月 27 日 16:00 在奥森南园南门集合，计划跑 5 公里。下雨的话，就在群里取消。",
+        "category": "life",
+        "scope": "note",
+        "personIds": [
+          "person-self"
+        ],
+        "sourceIds": [
+          "demo-v2-source-chat-wei"
+        ],
+        "platform": "notes",
+        "location": "北京奥林匹克森林公园"
+      },
+      {
+        "id": "demo-v2-event-permission",
+        "date": "2026-09-29",
+        "title": "把试用邀请留到节后确认",
+        "description": "吴婷先整理候选人的意向和空闲时间。我们 10 月 8 日看完版本，再决定是否发邀请，10 月 9 日联系具体时段。",
+        "category": "career",
+        "scope": "note",
+        "personIds": [
+          "person-self"
+        ],
+        "sourceIds": [
+          "demo-v2-source-chat-wu"
+        ],
+        "platform": "notes",
+        "location": "北京"
+      }
+    ],
+    "conversations": [
+      {
+        "id": "demo-v2-chat-lu",
+        "title": "刘建国｜邮件",
+        "kind": "direct",
+        "personIds": [
+          "person-self",
+          "demo-v2-person-lu"
+        ],
+        "platform": "email",
+        "accountId": "fictional-demo",
+        "demo": true,
+        "messages": [
+          {
+            "id": "demo-v2-message-lu-1",
+            "senderId": "person-self",
+            "content": "刘老师好，国庆我回杭州。上回您提的那本《江村经济》看了一半，有两段想当面请教。您这几天在学校吗？",
+            "time": "2026-09-21T08:00:00.000Z",
+            "sourceId": "demo-v2-source-chat-lu"
+          },
+          {
+            "id": "demo-v2-message-lu-2",
+            "senderId": "demo-v2-person-lu",
+            "content": "万叶，你好。我四日下午在杭州，别的几天要去绍兴看父母。书不着急看完，带着来也可以。",
+            "time": "2026-09-21T08:01:00.000Z",
+            "sourceId": "demo-v2-source-chat-lu"
+          },
+          {
+            "id": "demo-v2-message-lu-3",
+            "senderId": "person-self",
+            "content": "那四号下午两点左右可以吗？我住家里，去紫金港比较方便。",
+            "time": "2026-09-21T08:02:00.000Z",
+            "sourceId": "demo-v2-source-chat-lu"
+          },
+          {
+            "id": "demo-v2-message-lu-4",
+            "senderId": "demo-v2-person-lu",
+            "content": "可以，东门外找个能坐的地方就好。具体店名三号再定，我不太喝冰的。",
+            "time": "2026-09-21T08:03:00.000Z",
+            "sourceId": "demo-v2-source-chat-lu"
+          },
+          {
+            "id": "demo-v2-message-lu-5",
+            "senderId": "person-self",
+            "content": "好的，我找茶馆。毕业项目那批同学最近有人联系您吗？",
+            "time": "2026-09-21T08:04:00.000Z",
+            "sourceId": "demo-v2-source-chat-lu"
+          },
+          {
+            "id": "demo-v2-message-lu-6",
+            "senderId": "demo-v2-person-lu",
+            "content": "王磊上个月发过消息，说工作调了组。你们还有联系吧？",
+            "time": "2026-09-21T08:05:00.000Z",
+            "sourceId": "demo-v2-source-chat-lu"
+          },
+          {
+            "id": "demo-v2-message-lu-7",
+            "senderId": "person-self",
+            "content": "有，三号约他吃面。他又说不准我带电脑。",
+            "time": "2026-09-21T08:06:00.000Z",
+            "sourceId": "demo-v2-source-chat-lu"
+          },
+          {
+            "id": "demo-v2-message-lu-8",
+            "senderId": "demo-v2-person-lu",
+            "content": "他说得对。你每次见面总想给人看最新做的东西，偶尔也聊点别的。",
+            "time": "2026-09-21T08:07:00.000Z",
+            "sourceId": "demo-v2-source-chat-lu"
+          },
+          {
+            "id": "demo-v2-message-lu-9",
+            "senderId": "person-self",
+            "content": "被您看出来了。这次真不带，书可以带吧。",
+            "time": "2026-09-21T08:08:00.000Z",
+            "sourceId": "demo-v2-source-chat-lu"
+          },
+          {
+            "id": "demo-v2-message-lu-10",
+            "senderId": "demo-v2-person-lu",
+            "content": "书可以。三号联系我就行，路上顺利。",
+            "time": "2026-09-21T08:09:00.000Z",
+            "sourceId": "demo-v2-source-chat-lu"
+          }
+        ]
+      },
+      {
+        "id": "demo-v2-chat-song",
+        "title": "李娜",
+        "kind": "direct",
+        "personIds": [
+          "person-self",
+          "demo-v2-person-song"
+        ],
+        "platform": "wechat",
+        "accountId": "fictional-demo",
+        "demo": true,
+        "messages": [
+          {
+            "id": "demo-v2-message-song-1",
+            "senderId": "person-self",
+            "content": "你生日快到了，十八号是在上海还是回杭州？",
+            "time": "2026-09-22T08:00:00.000Z",
+            "sourceId": "demo-v2-source-chat-song"
+          },
+          {
+            "id": "demo-v2-message-song-2",
+            "senderId": "demo-v2-person-song",
+            "content": "上海。今年不组大局，约两个人吃火锅算了。你要过来吗？",
+            "time": "2026-09-22T08:01:00.000Z",
+            "sourceId": "demo-v2-source-chat-song"
+          },
+          {
+            "id": "demo-v2-message-song-3",
+            "senderId": "person-self",
+            "content": "十月中旬现在还说不准。我先问一句，有没有想要的？别又让我猜。",
+            "time": "2026-09-22T08:02:00.000Z",
+            "sourceId": "demo-v2-source-chat-song"
+          },
+          {
+            "id": "demo-v2-message-song-4",
+            "senderId": "demo-v2-person-song",
+            "content": "真的别买摆件，我这房间快没地儿了。青岛早餐店那张合照你能洗一张给我吗？",
+            "time": "2026-09-22T08:03:00.000Z",
+            "sourceId": "demo-v2-source-chat-song"
+          },
+          {
+            "id": "demo-v2-message-song-5",
+            "senderId": "person-self",
+            "content": "可以，你手里那个豆浆杯都没放下那张？",
+            "time": "2026-09-22T08:04:00.000Z",
+            "sourceId": "demo-v2-source-chat-song"
+          },
+          {
+            "id": "demo-v2-message-song-6",
+            "senderId": "demo-v2-person-song",
+            "content": "对，就那张，看着像我们真出去玩了一趟，不像在拍宣传片。",
+            "time": "2026-09-22T08:05:00.000Z",
+            "sourceId": "demo-v2-source-chat-song"
+          },
+          {
+            "id": "demo-v2-message-song-7",
+            "senderId": "person-self",
+            "content": "我找原图，洗六寸够不够？",
+            "time": "2026-09-22T08:06:00.000Z",
+            "sourceId": "demo-v2-source-chat-song"
+          },
+          {
+            "id": "demo-v2-message-song-8",
+            "senderId": "demo-v2-person-song",
+            "content": "六寸就行，不用相框。我回头把工作室地址发你，家里白天没人。",
+            "time": "2026-09-22T08:07:00.000Z",
+            "sourceId": "demo-v2-source-chat-song"
+          },
+          {
+            "id": "demo-v2-message-song-9",
+            "senderId": "person-self",
+            "content": "记下了，我十号前弄好。生日当天没赶上就视频。",
+            "time": "2026-09-22T08:08:00.000Z",
+            "sourceId": "demo-v2-source-chat-song"
+          },
+          {
+            "id": "demo-v2-message-song-10",
+            "senderId": "demo-v2-person-song",
+            "content": "好，卡片少写两句煽情的，署个名就够了。",
+            "time": "2026-09-22T08:09:00.000Z",
+            "sourceId": "demo-v2-source-chat-song"
+          }
+        ]
+      },
+      {
+        "id": "demo-v2-chat-he",
+        "title": "何志强",
+        "kind": "direct",
+        "personIds": [
+          "person-self",
+          "demo-v2-person-he"
+        ],
+        "platform": "feishu",
+        "accountId": "fictional-demo",
+        "demo": true,
+        "messages": [
+          {
+            "id": "demo-v2-message-he-1",
+            "senderId": "person-self",
+            "content": "你昨晚那张表里有四条任务编号重复，我先没把费用填进周报。",
+            "time": "2026-09-23T08:00:00.000Z",
+            "sourceId": "demo-v2-source-chat-he"
+          },
+          {
+            "id": "demo-v2-message-he-2",
+            "senderId": "demo-v2-person-he",
+            "content": "我看到了，是超时后又点了一遍。有些其实已经返回，前端没显示。",
+            "time": "2026-09-23T08:01:00.000Z",
+            "sourceId": "demo-v2-source-chat-he"
+          },
+          {
+            "id": "demo-v2-message-he-3",
+            "senderId": "person-self",
+            "content": "那成功次数得去重，账单还是两次都付了对吧？",
+            "time": "2026-09-23T08:02:00.000Z",
+            "sourceId": "demo-v2-source-chat-he"
+          },
+          {
+            "id": "demo-v2-message-he-4",
+            "senderId": "demo-v2-person-he",
+            "content": "对，调用费不能去掉。我给你分两列：做成几条，实际付了多少。",
+            "time": "2026-09-23T08:03:00.000Z",
+            "sourceId": "demo-v2-source-chat-he"
+          },
+          {
+            "id": "demo-v2-message-he-5",
+            "senderId": "person-self",
+            "content": "这批先别加了，帮我把那四个编号标出来。",
+            "time": "2026-09-23T08:04:00.000Z",
+            "sourceId": "demo-v2-source-chat-he"
+          },
+          {
+            "id": "demo-v2-message-he-6",
+            "senderId": "demo-v2-person-he",
+            "content": "A07、A12、A18、A21。我把两次调用时间放在同一行了。",
+            "time": "2026-09-23T08:05:00.000Z",
+            "sourceId": "demo-v2-source-chat-he"
+          },
+          {
+            "id": "demo-v2-message-he-7",
+            "senderId": "person-self",
+            "content": "收到了。明天下午四点我们看一下，别开大会，十分钟够。",
+            "time": "2026-09-23T08:06:00.000Z",
+            "sourceId": "demo-v2-source-chat-he"
+          },
+          {
+            "id": "demo-v2-message-he-8",
+            "senderId": "demo-v2-person-he",
+            "content": "可以，我还想看一下是不是工具返回慢，不一定全是模型卡了。",
+            "time": "2026-09-23T08:07:00.000Z",
+            "sourceId": "demo-v2-source-chat-he"
+          },
+          {
+            "id": "demo-v2-message-he-9",
+            "senderId": "person-self",
+            "content": "那下一批先十条，等这个原因查清再跑剩下的。",
+            "time": "2026-09-23T08:08:00.000Z",
+            "sourceId": "demo-v2-source-chat-he"
+          },
+          {
+            "id": "demo-v2-message-he-10",
+            "senderId": "demo-v2-person-he",
+            "content": "行，先停在这里。表里备注我也补了。",
+            "time": "2026-09-23T08:09:00.000Z",
+            "sourceId": "demo-v2-source-chat-he"
+          }
+        ]
+      },
+      {
+        "id": "demo-v2-chat-xu",
+        "title": "徐静",
+        "kind": "direct",
+        "personIds": [
+          "person-self",
+          "demo-v2-person-xu"
+        ],
+        "platform": "feishu",
+        "accountId": "fictional-demo",
+        "demo": true,
+        "messages": [
+          {
+            "id": "demo-v2-message-xu-1",
+            "senderId": "person-self",
+            "content": "你今天能再帮我看一下那个文件预览吗？我把入口挪回列表右边了。",
+            "time": "2026-09-24T08:00:00.000Z",
+            "sourceId": "demo-v2-source-chat-xu"
+          },
+          {
+            "id": "demo-v2-message-xu-2",
+            "senderId": "demo-v2-person-xu",
+            "content": "刚看了。入口好找了，但我把配送日期改成周三，关掉再开又变回周二。",
+            "time": "2026-09-24T08:01:00.000Z",
+            "sourceId": "demo-v2-source-chat-xu"
+          },
+          {
+            "id": "demo-v2-message-xu-3",
+            "senderId": "person-self",
+            "content": "你点了右上角的保存吗？",
+            "time": "2026-09-24T08:02:00.000Z",
+            "sourceId": "demo-v2-source-chat-xu"
+          },
+          {
+            "id": "demo-v2-message-xu-4",
+            "senderId": "demo-v2-person-xu",
+            "content": "点了，而且出现绿色“已保存”。我录了一段，发这条下面。",
+            "time": "2026-09-24T08:03:00.000Z",
+            "sourceId": "demo-v2-source-chat-xu"
+          },
+          {
+            "id": "demo-v2-message-xu-5",
+            "senderId": "person-self",
+            "content": "收到，我先查这个。你那份文件先别继续改，免得新版本又把字盖掉。",
+            "time": "2026-09-24T08:04:00.000Z",
+            "sourceId": "demo-v2-source-chat-xu"
+          },
+          {
+            "id": "demo-v2-message-xu-6",
+            "senderId": "demo-v2-person-xu",
+            "content": "好。还有，没保存就切走时应该提醒一下，我第一次根本不知道会丢。",
+            "time": "2026-09-24T08:05:00.000Z",
+            "sourceId": "demo-v2-source-chat-xu"
+          },
+          {
+            "id": "demo-v2-message-xu-7",
+            "senderId": "person-self",
+            "content": "我会把未保存的内容留下来，重新打开还能接着改。",
+            "time": "2026-09-24T08:06:00.000Z",
+            "sourceId": "demo-v2-source-chat-xu"
+          },
+          {
+            "id": "demo-v2-message-xu-8",
+            "senderId": "demo-v2-person-xu",
+            "content": "修完给我，我就用这份报价单再走一遍，不换成空白文档。",
+            "time": "2026-09-24T08:07:00.000Z",
+            "sourceId": "demo-v2-source-chat-xu"
+          },
+          {
+            "id": "demo-v2-message-xu-9",
+            "senderId": "person-self",
+            "content": "明天午饭前给你。今天先别帮我看颜色和间距了。",
+            "time": "2026-09-24T08:08:00.000Z",
+            "sourceId": "demo-v2-source-chat-xu"
+          },
+          {
+            "id": "demo-v2-message-xu-10",
+            "senderId": "demo-v2-person-xu",
+            "content": "行，先保住字再说。",
+            "time": "2026-09-24T08:09:00.000Z",
+            "sourceId": "demo-v2-source-chat-xu"
+          }
+        ]
+      },
+      {
+        "id": "demo-v2-chat-tang",
+        "title": "唐丽",
+        "kind": "direct",
+        "personIds": [
+          "person-self",
+          "demo-v2-person-tang"
+        ],
+        "platform": "feishu",
+        "accountId": "fictional-demo",
+        "demo": true,
+        "messages": [
+          {
+            "id": "demo-v2-message-tang-1",
+            "senderId": "person-self",
+            "content": "下楼买咖啡吗？我今天到现在还没离开椅子。",
+            "time": "2026-09-24T08:00:00.000Z",
+            "sourceId": "demo-v2-source-chat-tang"
+          },
+          {
+            "id": "demo-v2-message-tang-2",
+            "senderId": "demo-v2-person-tang",
+            "content": "走啊，我正想买。你等我存一下文件。",
+            "time": "2026-09-24T08:01:00.000Z",
+            "sourceId": "demo-v2-source-chat-tang"
+          },
+          {
+            "id": "demo-v2-message-tang-3",
+            "senderId": "person-self",
+            "content": "还是楼下那家？我有一张两杯减八块的券。",
+            "time": "2026-09-24T08:02:00.000Z",
+            "sourceId": "demo-v2-source-chat-tang"
+          },
+          {
+            "id": "demo-v2-message-tang-4",
+            "senderId": "demo-v2-person-tang",
+            "content": "可以，我要热拿铁，不加糖。这回别顺手给我点冰的。",
+            "time": "2026-09-24T08:03:00.000Z",
+            "sourceId": "demo-v2-source-chat-tang"
+          },
+          {
+            "id": "demo-v2-message-tang-5",
+            "senderId": "person-self",
+            "content": "记住了。顺便给你看下徐静录的那段，二十秒。",
+            "time": "2026-09-24T08:04:00.000Z",
+            "sourceId": "demo-v2-source-chat-tang"
+          },
+          {
+            "id": "demo-v2-message-tang-6",
+            "senderId": "demo-v2-person-tang",
+            "content": "行，别把电脑搬下去，手机能看就手机看。",
+            "time": "2026-09-24T08:05:00.000Z",
+            "sourceId": "demo-v2-source-chat-tang"
+          },
+          {
+            "id": "demo-v2-message-tang-7",
+            "senderId": "person-self",
+            "content": "她关掉文件以后，刚写的那行不见了。我想让未保存的内容继续留着。",
+            "time": "2026-09-24T08:06:00.000Z",
+            "sourceId": "demo-v2-source-chat-tang"
+          },
+          {
+            "id": "demo-v2-message-tang-8",
+            "senderId": "demo-v2-person-tang",
+            "content": "先留着。按钮的字也改一下，现在“关闭”看不出会不会保存。",
+            "time": "2026-09-24T08:07:00.000Z",
+            "sourceId": "demo-v2-source-chat-tang"
+          },
+          {
+            "id": "demo-v2-message-tang-9",
+            "senderId": "person-self",
+            "content": "下午我改完再给你，你两点有空吗？",
+            "time": "2026-09-24T08:08:00.000Z",
+            "sourceId": "demo-v2-source-chat-tang"
+          },
+          {
+            "id": "demo-v2-message-tang-10",
+            "senderId": "demo-v2-person-tang",
+            "content": "两点可以，半小时后我有会，咱们就看这一处。",
+            "time": "2026-09-24T08:09:00.000Z",
+            "sourceId": "demo-v2-source-chat-tang"
+          }
+        ]
+      },
+      {
+        "id": "demo-v2-chat-shen",
+        "title": "沈杰",
+        "kind": "direct",
+        "personIds": [
+          "person-self",
+          "demo-v2-person-shen"
+        ],
+        "platform": "feishu",
+        "accountId": "fictional-demo",
+        "demo": true,
+        "messages": [
+          {
+            "id": "demo-v2-message-shen-1",
+            "senderId": "person-self",
+            "content": "你国庆哪几天不方便？我把值班说明写一下，省得群里一直艾特你。",
+            "time": "2026-09-25T08:00:00.000Z",
+            "sourceId": "demo-v2-source-chat-shen"
+          },
+          {
+            "id": "demo-v2-message-shen-2",
+            "senderId": "demo-v2-person-shen",
+            "content": "二到四号回老家，网不太行。一号晚上和五号下午能看消息。",
+            "time": "2026-09-25T08:01:00.000Z",
+            "sourceId": "demo-v2-source-chat-shen"
+          },
+          {
+            "id": "demo-v2-message-shen-3",
+            "senderId": "person-self",
+            "content": "那我把新批量任务停到八号。已有任务如果只是慢，不直接找你。",
+            "time": "2026-09-25T08:02:00.000Z",
+            "sourceId": "demo-v2-source-chat-shen"
+          },
+          {
+            "id": "demo-v2-message-shen-4",
+            "senderId": "demo-v2-person-shen",
+            "content": "行。真有服务挂了，先看状态页，再发任务编号和时间给我，别只发“又不行了”。",
+            "time": "2026-09-25T08:03:00.000Z",
+            "sourceId": "demo-v2-source-chat-shen"
+          },
+          {
+            "id": "demo-v2-message-shen-5",
+            "senderId": "person-self",
+            "content": "哈哈记住了。日志那页入口还是右上角？",
+            "time": "2026-09-25T08:04:00.000Z",
+            "sourceId": "demo-v2-source-chat-shen"
+          },
+          {
+            "id": "demo-v2-message-shen-6",
+            "senderId": "demo-v2-person-shen",
+            "content": "对。你点任务标题旁边的三个点，复制诊断信息就行。",
+            "time": "2026-09-25T08:05:00.000Z",
+            "sourceId": "demo-v2-source-chat-shen"
+          },
+          {
+            "id": "demo-v2-message-shen-7",
+            "senderId": "person-self",
+            "content": "我把这个写进交接。徐静报的保存问题我今天自己修完。",
+            "time": "2026-09-25T08:06:00.000Z",
+            "sourceId": "demo-v2-source-chat-shen"
+          },
+          {
+            "id": "demo-v2-message-shen-8",
+            "senderId": "demo-v2-person-shen",
+            "content": "有冲突的那块我下午补完，六点前发你分支。",
+            "time": "2026-09-25T08:07:00.000Z",
+            "sourceId": "demo-v2-source-chat-shen"
+          },
+          {
+            "id": "demo-v2-message-shen-9",
+            "senderId": "person-self",
+            "content": "好，六点之后不追你。回家路上别看代码了。",
+            "time": "2026-09-25T08:08:00.000Z",
+            "sourceId": "demo-v2-source-chat-shen"
+          },
+          {
+            "id": "demo-v2-message-shen-10",
+            "senderId": "demo-v2-person-shen",
+            "content": "谢了，你也少带点工作回去。",
+            "time": "2026-09-25T08:09:00.000Z",
+            "sourceId": "demo-v2-source-chat-shen"
+          }
+        ]
+      },
+      {
+        "id": "demo-v2-chat-zhao",
+        "title": "赵建军",
+        "kind": "direct",
+        "personIds": [
+          "person-self",
+          "demo-v2-person-zhao"
+        ],
+        "platform": "sms",
+        "accountId": "fictional-demo",
+        "demo": true,
+        "messages": [
+          {
+            "id": "demo-v2-message-zhao-1",
+            "senderId": "person-self",
+            "content": "赵老师您好，我是万叶。收到您的新号码了，我存一下。",
+            "time": "2026-09-26T08:00:00.000Z",
+            "sourceId": "demo-v2-source-chat-zhao"
+          },
+          {
+            "id": "demo-v2-message-zhao-2",
+            "senderId": "demo-v2-person-zhao",
+            "content": "万叶好。微信还没弄好，先发短信。你国庆回杭州吗？",
+            "time": "2026-09-26T08:01:00.000Z",
+            "sourceId": "demo-v2-source-chat-zhao"
+          },
+          {
+            "id": "demo-v2-message-zhao-3",
+            "senderId": "person-self",
+            "content": "二号回，五号走。要是您有空，想过去看看。",
+            "time": "2026-09-26T08:02:00.000Z",
+            "sourceId": "demo-v2-source-chat-zhao"
+          },
+          {
+            "id": "demo-v2-message-zhao-4",
+            "senderId": "demo-v2-person-zhao",
+            "content": "四号陪外孙去他爷爷奶奶家，其他几天还没定。你先陪自己爸妈。",
+            "time": "2026-09-26T08:03:00.000Z",
+            "sourceId": "demo-v2-source-chat-zhao"
+          },
+          {
+            "id": "demo-v2-message-zhao-5",
+            "senderId": "person-self",
+            "content": "好的，不急着这次。您膝盖最近好点了吗？",
+            "time": "2026-09-26T08:04:00.000Z",
+            "sourceId": "demo-v2-source-chat-zhao"
+          },
+          {
+            "id": "demo-v2-message-zhao-6",
+            "senderId": "demo-v2-person-zhao",
+            "content": "好多了，就是不太爬楼。现在每天小区里走一圈。",
+            "time": "2026-09-26T08:05:00.000Z",
+            "sourceId": "demo-v2-source-chat-zhao"
+          },
+          {
+            "id": "demo-v2-message-zhao-7",
+            "senderId": "person-self",
+            "content": "那挺好。您照片发朋友圈我都看到了，菜种得比我妈还多。",
+            "time": "2026-09-26T08:06:00.000Z",
+            "sourceId": "demo-v2-source-chat-zhao"
+          },
+          {
+            "id": "demo-v2-message-zhao-8",
+            "senderId": "demo-v2-person-zhao",
+            "content": "你妈那是花养得好。我这个阳台只有菜能活。",
+            "time": "2026-09-26T08:07:00.000Z",
+            "sourceId": "demo-v2-source-chat-zhao"
+          },
+          {
+            "id": "demo-v2-message-zhao-9",
+            "senderId": "person-self",
+            "content": "哈哈，回去跟她说。等您微信装好再聊。",
+            "time": "2026-09-26T08:08:00.000Z",
+            "sourceId": "demo-v2-source-chat-zhao"
+          },
+          {
+            "id": "demo-v2-message-zhao-10",
+            "senderId": "demo-v2-person-zhao",
+            "content": "好，坐车当心行李，到家给父母报个平安。",
+            "time": "2026-09-26T08:09:00.000Z",
+            "sourceId": "demo-v2-source-chat-zhao"
+          }
+        ]
+      },
+      {
+        "id": "demo-v2-chat-wu",
+        "title": "吴婷",
+        "kind": "direct",
+        "personIds": [
+          "person-self",
+          "demo-v2-person-wu"
+        ],
+        "platform": "feishu",
+        "accountId": "fictional-demo",
+        "demo": true,
+        "messages": [
+          {
+            "id": "demo-v2-message-wu-1",
+            "senderId": "person-self",
+            "content": "名单我看了，现在到底有几个人定了时间？",
+            "time": "2026-09-26T08:00:00.000Z",
+            "sourceId": "demo-v2-source-chat-wu"
+          },
+          {
+            "id": "demo-v2-message-wu-2",
+            "senderId": "demo-v2-person-wu",
+            "content": "时间一个还没定。五个人说愿意试，另外三个没回。表里的绿色只是“有意向”。",
+            "time": "2026-09-26T08:01:00.000Z",
+            "sourceId": "demo-v2-source-chat-wu"
+          },
+          {
+            "id": "demo-v2-message-wu-3",
+            "senderId": "person-self",
+            "content": "我刚差点把绿色都算成约好了。那标题改成意向人数吧。",
+            "time": "2026-09-26T08:02:00.000Z",
+            "sourceId": "demo-v2-source-chat-wu"
+          },
+          {
+            "id": "demo-v2-message-wu-4",
+            "senderId": "demo-v2-person-wu",
+            "content": "改了。每个人你要聊多久？",
+            "time": "2026-09-26T08:03:00.000Z",
+            "sourceId": "demo-v2-source-chat-wu"
+          },
+          {
+            "id": "demo-v2-message-wu-5",
+            "senderId": "person-self",
+            "content": "先半小时。别约连着三场，我中间得记几笔。",
+            "time": "2026-09-26T08:04:00.000Z",
+            "sourceId": "demo-v2-source-chat-wu"
+          },
+          {
+            "id": "demo-v2-message-wu-6",
+            "senderId": "demo-v2-person-wu",
+            "content": "那两场之间隔十五分钟。我想十月九日再问具体时间，你那时版本能拿出来吗？",
+            "time": "2026-09-26T08:05:00.000Z",
+            "sourceId": "demo-v2-source-chat-wu"
+          },
+          {
+            "id": "demo-v2-message-wu-7",
+            "senderId": "person-self",
+            "content": "八号下午看完再给你准话，先别发安装包。",
+            "time": "2026-09-26T08:06:00.000Z",
+            "sourceId": "demo-v2-source-chat-wu"
+          },
+          {
+            "id": "demo-v2-message-wu-8",
+            "senderId": "demo-v2-person-wu",
+            "content": "好。这回我给大家一份虚构的会议记录，不让人专门找私人文件。",
+            "time": "2026-09-26T08:07:00.000Z",
+            "sourceId": "demo-v2-source-chat-wu"
+          },
+          {
+            "id": "demo-v2-message-wu-9",
+            "senderId": "person-self",
+            "content": "这样准备省事。邀请先写短一点，说明大概做什么就够了。",
+            "time": "2026-09-26T08:08:00.000Z",
+            "sourceId": "demo-v2-source-chat-wu"
+          },
+          {
+            "id": "demo-v2-message-wu-10",
+            "senderId": "demo-v2-person-wu",
+            "content": "我放草稿里了，八号你看完我们再发。",
+            "time": "2026-09-26T08:09:00.000Z",
+            "sourceId": "demo-v2-source-chat-wu"
+          }
+        ]
+      },
+      {
+        "id": "demo-v2-chat-ye",
+        "title": "叶涛",
+        "kind": "direct",
+        "personIds": [
+          "person-self",
+          "demo-v2-person-ye"
+        ],
+        "platform": "feishu",
+        "accountId": "fictional-demo",
+        "demo": true,
+        "messages": [
+          {
+            "id": "demo-v2-message-ye-1",
+            "senderId": "person-self",
+            "content": "你那个文件列表能不能别只露前六个字？三份都叫“会议记录”，根本分不清。",
+            "time": "2026-09-27T08:00:00.000Z",
+            "sourceId": "demo-v2-source-chat-ye"
+          },
+          {
+            "id": "demo-v2-message-ye-2",
+            "senderId": "demo-v2-person-ye",
+            "content": "我让它最多显示两行，日期也放出来。你那边有最长的文件名吗？",
+            "time": "2026-09-27T08:01:00.000Z",
+            "sourceId": "demo-v2-source-chat-ye"
+          },
+          {
+            "id": "demo-v2-message-ye-3",
+            "senderId": "person-self",
+            "content": "有，“九月客户回访第二轮补充意见整理版”，发你了。",
+            "time": "2026-09-27T08:02:00.000Z",
+            "sourceId": "demo-v2-source-chat-ye"
+          },
+          {
+            "id": "demo-v2-message-ye-4",
+            "senderId": "demo-v2-person-ye",
+            "content": "够长。小窗口也放得下，右边的按钮我挪下面了。",
+            "time": "2026-09-27T08:03:00.000Z",
+            "sourceId": "demo-v2-source-chat-ye"
+          },
+          {
+            "id": "demo-v2-message-ye-5",
+            "senderId": "person-self",
+            "content": "好，我下午接保存状态。午饭出去吗？",
+            "time": "2026-09-27T08:04:00.000Z",
+            "sourceId": "demo-v2-source-chat-ye"
+          },
+          {
+            "id": "demo-v2-message-ye-6",
+            "senderId": "demo-v2-person-ye",
+            "content": "出去，十二点楼下。我今天不想再吃外卖了。",
+            "time": "2026-09-27T08:05:00.000Z",
+            "sourceId": "demo-v2-source-chat-ye"
+          },
+          {
+            "id": "demo-v2-message-ye-7",
+            "senderId": "person-self",
+            "content": "面馆？我想点牛肉面。",
+            "time": "2026-09-27T08:06:00.000Z",
+            "sourceId": "demo-v2-source-chat-ye"
+          },
+          {
+            "id": "demo-v2-message-ye-8",
+            "senderId": "demo-v2-person-ye",
+            "content": "可以。我那碗别放香菜，老板上次忘了。",
+            "time": "2026-09-27T08:07:00.000Z",
+            "sourceId": "demo-v2-source-chat-ye"
+          },
+          {
+            "id": "demo-v2-message-ye-9",
+            "senderId": "person-self",
+            "content": "你自己点吧，我替人点餐老记错。",
+            "time": "2026-09-27T08:08:00.000Z",
+            "sourceId": "demo-v2-source-chat-ye"
+          },
+          {
+            "id": "demo-v2-message-ye-10",
+            "senderId": "demo-v2-person-ye",
+            "content": "也是。十二点门口见，先不带电脑。",
+            "time": "2026-09-27T08:09:00.000Z",
+            "sourceId": "demo-v2-source-chat-ye"
+          }
+        ]
+      },
+      {
+        "id": "demo-v2-chat-liang",
+        "title": "梁佳",
+        "kind": "direct",
+        "personIds": [
+          "person-self",
+          "demo-v2-person-liang"
+        ],
+        "platform": "feishu",
+        "accountId": "fictional-demo",
+        "demo": true,
+        "messages": [
+          {
+            "id": "demo-v2-message-liang-1",
+            "senderId": "demo-v2-person-liang",
+            "content": "访谈整理好了，有两段建议你听原声，我在文档里标黄了。",
+            "time": "2026-09-27T08:00:00.000Z",
+            "sourceId": "demo-v2-source-chat-liang"
+          },
+          {
+            "id": "demo-v2-message-liang-2",
+            "senderId": "person-self",
+            "content": "哪两段？我下午先听。",
+            "time": "2026-09-27T08:01:00.000Z",
+            "sourceId": "demo-v2-source-chat-liang"
+          },
+          {
+            "id": "demo-v2-message-liang-3",
+            "senderId": "demo-v2-person-liang",
+            "content": "第二位说“昨天做一半，今天又得重新解释”；第四位说“我就想找昨天那份结果”。",
+            "time": "2026-09-27T08:02:00.000Z",
+            "sourceId": "demo-v2-source-chat-liang"
+          },
+          {
+            "id": "demo-v2-message-liang-4",
+            "senderId": "person-self",
+            "content": "一个要继续干，一个只是找文件，对吧。",
+            "time": "2026-09-27T08:03:00.000Z",
+            "sourceId": "demo-v2-source-chat-liang"
+          },
+          {
+            "id": "demo-v2-message-liang-5",
+            "senderId": "demo-v2-person-liang",
+            "content": "对，我不想把两个都写成“缺恢复按钮”。",
+            "time": "2026-09-27T08:04:00.000Z",
+            "sourceId": "demo-v2-source-chat-liang"
+          },
+          {
+            "id": "demo-v2-message-liang-6",
+            "senderId": "person-self",
+            "content": "明白。下次让他们先找昨天的东西，再看要不要接着做。",
+            "time": "2026-09-27T08:05:00.000Z",
+            "sourceId": "demo-v2-source-chat-liang"
+          },
+          {
+            "id": "demo-v2-message-liang-7",
+            "senderId": "demo-v2-person-liang",
+            "content": "还有一件：五个人里只有三个人真的用过，另外两个看的视频。",
+            "time": "2026-09-27T08:06:00.000Z",
+            "sourceId": "demo-v2-source-chat-liang"
+          },
+          {
+            "id": "demo-v2-message-liang-8",
+            "senderId": "person-self",
+            "content": "那我汇报时分开写。那十九条反馈能对应到人吗？",
+            "time": "2026-09-27T08:07:00.000Z",
+            "sourceId": "demo-v2-source-chat-liang"
+          },
+          {
+            "id": "demo-v2-message-liang-9",
+            "senderId": "demo-v2-person-liang",
+            "content": "目前还不能，有人重复报过，得去重。",
+            "time": "2026-09-27T08:08:00.000Z",
+            "sourceId": "demo-v2-source-chat-liang"
+          },
+          {
+            "id": "demo-v2-message-liang-10",
+            "senderId": "person-self",
+            "content": "行，先保留原条目，不拿它算百分比。",
+            "time": "2026-09-27T08:09:00.000Z",
+            "sourceId": "demo-v2-source-chat-liang"
+          }
+        ]
+      },
+      {
+        "id": "demo-v2-chat-wei",
+        "title": "魏鹏",
+        "kind": "direct",
+        "personIds": [
+          "person-self",
+          "demo-v2-person-wei"
+        ],
+        "platform": "wechat",
+        "accountId": "fictional-demo",
+        "demo": true,
+        "messages": [
+          {
+            "id": "demo-v2-message-wei-1",
+            "senderId": "person-self",
+            "content": "周日跑不跑？我这礼拜只动了一次。",
+            "time": "2026-09-25T08:00:00.000Z",
+            "sourceId": "demo-v2-source-chat-wei"
+          },
+          {
+            "id": "demo-v2-message-wei-2",
+            "senderId": "demo-v2-person-wei",
+            "content": "跑啊，四点南园南门。你别再导航到北园去了。",
+            "time": "2026-09-25T08:01:00.000Z",
+            "sourceId": "demo-v2-source-chat-wei"
+          },
+          {
+            "id": "demo-v2-message-wei-3",
+            "senderId": "person-self",
+            "content": "那回走错多跑了两公里。今天先说好，五公里就收。",
+            "time": "2026-09-25T08:02:00.000Z",
+            "sourceId": "demo-v2-source-chat-wei"
+          },
+          {
+            "id": "demo-v2-message-wei-4",
+            "senderId": "demo-v2-person-wei",
+            "content": "行，我也不想跑长的。最近鞋有点磨脚。",
+            "time": "2026-09-25T08:03:00.000Z",
+            "sourceId": "demo-v2-source-chat-wei"
+          },
+          {
+            "id": "demo-v2-message-wei-5",
+            "senderId": "person-self",
+            "content": "新鞋？那慢点，我也不追配速。",
+            "time": "2026-09-25T08:04:00.000Z",
+            "sourceId": "demo-v2-source-chat-wei"
+          },
+          {
+            "id": "demo-v2-message-wei-6",
+            "senderId": "demo-v2-person-wei",
+            "content": "对。跑完去吃面？",
+            "time": "2026-09-25T08:05:00.000Z",
+            "sourceId": "demo-v2-source-chat-wei"
+          },
+          {
+            "id": "demo-v2-message-wei-7",
+            "senderId": "person-self",
+            "content": "可以，我跑前不吃太多，结束肯定饿。",
+            "time": "2026-09-25T08:06:00.000Z",
+            "sourceId": "demo-v2-source-chat-wei"
+          },
+          {
+            "id": "demo-v2-message-wei-8",
+            "senderId": "demo-v2-person-wei",
+            "content": "你带件薄外套，太阳下去风挺大。",
+            "time": "2026-09-25T08:07:00.000Z",
+            "sourceId": "demo-v2-source-chat-wei"
+          },
+          {
+            "id": "demo-v2-message-wei-9",
+            "senderId": "person-self",
+            "content": "好。要下雨就在群里取消，别为了打卡硬出门。",
+            "time": "2026-09-25T08:08:00.000Z",
+            "sourceId": "demo-v2-source-chat-wei"
+          },
+          {
+            "id": "demo-v2-message-wei-10",
+            "senderId": "demo-v2-person-wei",
+            "content": "没问题，周日下午出门前再确认。",
+            "time": "2026-09-25T08:09:00.000Z",
+            "sourceId": "demo-v2-source-chat-wei"
+          }
+        ]
+      },
+      {
+        "id": "demo-v2-chat-du",
+        "title": "杜秀英",
+        "kind": "direct",
+        "personIds": [
+          "person-self",
+          "demo-v2-person-du"
+        ],
+        "platform": "wechat",
+        "accountId": "fictional-demo",
+        "demo": true,
+        "messages": [
+          {
+            "id": "demo-v2-message-du-1",
+            "senderId": "person-self",
+            "content": "妈，我二号回去，想买中午到的车。还没抢到合适的。",
+            "time": "2026-09-26T08:00:00.000Z",
+            "sourceId": "demo-v2-source-chat-du"
+          },
+          {
+            "id": "demo-v2-message-du-2",
+            "senderId": "demo-v2-person-du",
+            "content": "晚一点也没事，不要一大早赶。你一个人行李少带点。",
+            "time": "2026-09-26T08:01:00.000Z",
+            "sourceId": "demo-v2-source-chat-du"
+          },
+          {
+            "id": "demo-v2-message-du-3",
+            "senderId": "person-self",
+            "content": "要不要从北京带点什么？",
+            "time": "2026-09-26T08:02:00.000Z",
+            "sourceId": "demo-v2-source-chat-du"
+          },
+          {
+            "id": "demo-v2-message-du-4",
+            "senderId": "demo-v2-person-du",
+            "content": "不要了，上次的点心还没吃完。人回来就行。",
+            "time": "2026-09-26T08:03:00.000Z",
+            "sourceId": "demo-v2-source-chat-du"
+          },
+          {
+            "id": "demo-v2-message-du-5",
+            "senderId": "person-self",
+            "content": "那我想吃片儿川，跟爸说一声。",
+            "time": "2026-09-26T08:04:00.000Z",
+            "sourceId": "demo-v2-source-chat-du"
+          },
+          {
+            "id": "demo-v2-message-du-6",
+            "senderId": "demo-v2-person-du",
+            "content": "他说可以，雪菜家里有，肉和笋提前一天去买。",
+            "time": "2026-09-26T08:05:00.000Z",
+            "sourceId": "demo-v2-source-chat-du"
+          },
+          {
+            "id": "demo-v2-message-du-7",
+            "senderId": "person-self",
+            "content": "你们别摆一桌，我下车要是累了想先睡会儿。",
+            "time": "2026-09-26T08:06:00.000Z",
+            "sourceId": "demo-v2-source-chat-du"
+          },
+          {
+            "id": "demo-v2-message-du-8",
+            "senderId": "demo-v2-person-du",
+            "content": "知道，就煮面。婷婷二号晚上也回来。",
+            "time": "2026-09-26T08:07:00.000Z",
+            "sourceId": "demo-v2-source-chat-du"
+          },
+          {
+            "id": "demo-v2-message-du-9",
+            "senderId": "person-self",
+            "content": "好，我一号把到站时间发群里。",
+            "time": "2026-09-26T08:08:00.000Z",
+            "sourceId": "demo-v2-source-chat-du"
+          },
+          {
+            "id": "demo-v2-message-du-10",
+            "senderId": "demo-v2-person-du",
+            "content": "行，车定了再说。衣服带件外套，晚上凉。",
+            "time": "2026-09-26T08:09:00.000Z",
+            "sourceId": "demo-v2-source-chat-du"
+          }
+        ]
+      },
+      {
+        "id": "demo-v2-chat-lin",
+        "title": "万建明",
+        "kind": "direct",
+        "personIds": [
+          "person-self",
+          "demo-v2-person-lin"
+        ],
+        "platform": "wechat",
+        "accountId": "fictional-demo",
+        "demo": true,
+        "messages": [
+          {
+            "id": "demo-v2-message-lin-1",
+            "senderId": "person-self",
+            "content": "爸，给你看了件外套，五百左右，你要不要？",
+            "time": "2026-09-27T08:00:00.000Z",
+            "sourceId": "demo-v2-source-chat-lin"
+          },
+          {
+            "id": "demo-v2-message-lin-2",
+            "senderId": "demo-v2-person-lin",
+            "content": "不要，我柜子里还有两件没怎么穿。你别花这个钱。",
+            "time": "2026-09-27T08:01:00.000Z",
+            "sourceId": "demo-v2-source-chat-lin"
+          },
+          {
+            "id": "demo-v2-message-lin-3",
+            "senderId": "person-self",
+            "content": "好，那我空手回。二号中午还是片儿川。",
+            "time": "2026-09-27T08:02:00.000Z",
+            "sourceId": "demo-v2-source-chat-lin"
+          },
+          {
+            "id": "demo-v2-message-lin-4",
+            "senderId": "demo-v2-person-lin",
+            "content": "这个有。你到杭州东还是城站？",
+            "time": "2026-09-27T08:03:00.000Z",
+            "sourceId": "demo-v2-source-chat-lin"
+          },
+          {
+            "id": "demo-v2-message-lin-5",
+            "senderId": "person-self",
+            "content": "想买到杭州东的，票还没定。我自己坐地铁回，不用来接。",
+            "time": "2026-09-27T08:04:00.000Z",
+            "sourceId": "demo-v2-source-chat-lin"
+          },
+          {
+            "id": "demo-v2-message-lin-6",
+            "senderId": "demo-v2-person-lin",
+            "content": "好，提着箱子慢点。到家先吃饭，下午睡一觉。",
+            "time": "2026-09-27T08:05:00.000Z",
+            "sourceId": "demo-v2-source-chat-lin"
+          },
+          {
+            "id": "demo-v2-message-lin-7",
+            "senderId": "person-self",
+            "content": "吃完出去走走也行，不过我不想去人挤人的地方。",
+            "time": "2026-09-27T08:06:00.000Z",
+            "sourceId": "demo-v2-source-chat-lin"
+          },
+          {
+            "id": "demo-v2-message-lin-8",
+            "senderId": "demo-v2-person-lin",
+            "content": "就在小区边河道走，都是平的。你妈也不愿意往西湖挤。",
+            "time": "2026-09-27T08:07:00.000Z",
+            "sourceId": "demo-v2-source-chat-lin"
+          },
+          {
+            "id": "demo-v2-message-lin-9",
+            "senderId": "person-self",
+            "content": "那就附近走一圈，四十分钟差不多。",
+            "time": "2026-09-27T08:08:00.000Z",
+            "sourceId": "demo-v2-source-chat-lin"
+          },
+          {
+            "id": "demo-v2-message-lin-10",
+            "senderId": "demo-v2-person-lin",
+            "content": "行，累了就回来，不用按点走满。",
+            "time": "2026-09-27T08:09:00.000Z",
+            "sourceId": "demo-v2-source-chat-lin"
+          }
+        ]
+      },
+      {
+        "id": "demo-v2-chat-jiang",
+        "title": "万婷婷",
+        "kind": "direct",
+        "personIds": [
+          "person-self",
+          "demo-v2-person-jiang"
+        ],
+        "platform": "wechat",
+        "accountId": "fictional-demo",
+        "demo": true,
+        "messages": [
+          {
+            "id": "demo-v2-message-jiang-1",
+            "senderId": "demo-v2-person-jiang",
+            "content": "哥，帮我看一下摄影社报名这段，怎么总有人问一样的问题。",
+            "time": "2026-09-28T08:00:00.000Z",
+            "sourceId": "demo-v2-source-chat-jiang"
+          },
+          {
+            "id": "demo-v2-message-jiang-2",
+            "senderId": "person-self",
+            "content": "发来，我先看你到底写了什么。",
+            "time": "2026-09-28T08:01:00.000Z",
+            "sourceId": "demo-v2-source-chat-jiang"
+          },
+          {
+            "id": "demo-v2-message-jiang-3",
+            "senderId": "demo-v2-person-jiang",
+            "content": "“十月十六日下午，西操场集合，手机摄影入门，欢迎报名。”我觉得挺清楚了啊。",
+            "time": "2026-09-28T08:02:00.000Z",
+            "sourceId": "demo-v2-source-chat-jiang"
+          },
+          {
+            "id": "demo-v2-message-jiang-4",
+            "senderId": "person-self",
+            "content": "几点到几点？下雨去哪？要带相机吗？",
+            "time": "2026-09-28T08:03:00.000Z",
+            "sourceId": "demo-v2-source-chat-jiang"
+          },
+          {
+            "id": "demo-v2-message-jiang-5",
+            "senderId": "demo-v2-person-jiang",
+            "content": "14:00 到 16:00，只带手机就行。下雨改学生活动中心 204。",
+            "time": "2026-09-28T08:04:00.000Z",
+            "sourceId": "demo-v2-source-chat-jiang"
+          },
+          {
+            "id": "demo-v2-message-jiang-6",
+            "senderId": "person-self",
+            "content": "这些都放进去。还有人数和报名截止时间呢？",
+            "time": "2026-09-28T08:05:00.000Z",
+            "sourceId": "demo-v2-source-chat-jiang"
+          },
+          {
+            "id": "demo-v2-message-jiang-7",
+            "senderId": "demo-v2-person-jiang",
+            "content": "最多二十人，十号晚上八点截止。名单十一号在群里发。",
+            "time": "2026-09-28T08:06:00.000Z",
+            "sourceId": "demo-v2-source-chat-jiang"
+          },
+          {
+            "id": "demo-v2-message-jiang-8",
+            "senderId": "person-self",
+            "content": "那别只写“欢迎报名”，把这几项先写全。留一个联系人，别人不用到处找。",
+            "time": "2026-09-28T08:07:00.000Z",
+            "sourceId": "demo-v2-source-chat-jiang"
+          },
+          {
+            "id": "demo-v2-message-jiang-9",
+            "senderId": "demo-v2-person-jiang",
+            "content": "联系人就我，大家已经在微信社群里。我今晚改，国庆回家再给你看。",
+            "time": "2026-09-28T08:08:00.000Z",
+            "sourceId": "demo-v2-source-chat-jiang"
+          },
+          {
+            "id": "demo-v2-message-jiang-10",
+            "senderId": "person-self",
+            "content": "行。二十个人满了就提示候补，别收到三十份又挨个解释。",
+            "time": "2026-09-28T08:09:00.000Z",
+            "sourceId": "demo-v2-source-chat-jiang"
+          }
+        ]
+      },
+      {
+        "id": "demo-v2-chat-zhou",
+        "title": "周琳",
+        "kind": "direct",
+        "personIds": [
+          "person-self",
+          "demo-v2-person-zhou"
+        ],
+        "platform": "wechat",
+        "accountId": "fictional-demo",
+        "demo": true,
+        "messages": [
+          {
+            "id": "demo-v2-message-zhou-1",
+            "senderId": "person-self",
+            "content": "水槽下面又湿了，刚拿出锅的时候摸了一手水。",
+            "time": "2026-09-29T08:00:00.000Z",
+            "sourceId": "demo-v2-source-chat-zhou"
+          },
+          {
+            "id": "demo-v2-message-zhou-2",
+            "senderId": "demo-v2-person-zhou",
+            "content": "拍给房东了没？先别自己拆，拍清楚接口和下面那滩水。",
+            "time": "2026-09-29T08:01:00.000Z",
+            "sourceId": "demo-v2-source-chat-zhou"
+          },
+          {
+            "id": "demo-v2-message-zhou-3",
+            "senderId": "person-self",
+            "content": "拍了。他约了师傅明晚七点来，我得准时下班。",
+            "time": "2026-09-29T08:02:00.000Z",
+            "sourceId": "demo-v2-source-chat-zhou"
+          },
+          {
+            "id": "demo-v2-message-zhou-4",
+            "senderId": "demo-v2-person-zhou",
+            "content": "那你提前把柜子里的锅都拿出来，垫块旧毛巾。",
+            "time": "2026-09-29T08:03:00.000Z",
+            "sourceId": "demo-v2-source-chat-zhou"
+          },
+          {
+            "id": "demo-v2-message-zhou-5",
+            "senderId": "person-self",
+            "content": "好。这个房子十一月底到期，我还有点犹豫续不续。",
+            "time": "2026-09-29T08:04:00.000Z",
+            "sourceId": "demo-v2-source-chat-zhou"
+          },
+          {
+            "id": "demo-v2-message-zhou-6",
+            "senderId": "demo-v2-person-zhou",
+            "content": "你现在通勤二十分钟，先别因为一个水槽决定搬家。看他这次怎么修。",
+            "time": "2026-09-29T08:05:00.000Z",
+            "sourceId": "demo-v2-source-chat-zhou"
+          },
+          {
+            "id": "demo-v2-message-zhou-7",
+            "senderId": "person-self",
+            "content": "也是。涨不涨房租还没问。",
+            "time": "2026-09-29T08:06:00.000Z",
+            "sourceId": "demo-v2-source-chat-zhou"
+          },
+          {
+            "id": "demo-v2-message-zhou-8",
+            "senderId": "demo-v2-person-zhou",
+            "content": "修好再问，别把两件事混在一条消息里。我上次就是聊乱了。",
+            "time": "2026-09-29T08:07:00.000Z",
+            "sourceId": "demo-v2-source-chat-zhou"
+          },
+          {
+            "id": "demo-v2-message-zhou-9",
+            "senderId": "person-self",
+            "content": "记住了。节后你来吃饭吧，我终于学会煎鱼不粘锅了。",
+            "time": "2026-09-29T08:08:00.000Z",
+            "sourceId": "demo-v2-source-chat-zhou"
+          },
+          {
+            "id": "demo-v2-message-zhou-10",
+            "senderId": "demo-v2-person-zhou",
+            "content": "可以，我带水果。先把水槽修好，不想帮你洗锅洗到一脚水。",
+            "time": "2026-09-29T08:09:00.000Z",
+            "sourceId": "demo-v2-source-chat-zhou"
+          }
+        ]
+      },
+      {
+        "id": "demo-v2-chat-gao",
+        "title": "高远｜摄影群私聊",
+        "kind": "direct",
+        "personIds": [
+          "person-self",
+          "demo-v2-person-gao"
+        ],
+        "platform": "discord",
+        "accountId": "fictional-demo",
+        "demo": true,
+        "messages": [
+          {
+            "id": "demo-v2-message-gao-1",
+            "senderId": "person-self",
+            "content": "我把青岛那批文件名列出来了，十二张能装下吗？",
+            "time": "2026-09-29T08:00:00.000Z",
+            "sourceId": "demo-v2-source-chat-gao"
+          },
+          {
+            "id": "demo-v2-message-gao-2",
+            "senderId": "demo-v2-person-gao",
+            "content": "能。你先别修图，一修又要一晚上。早餐那张肯定留，李娜说过想要。",
+            "time": "2026-09-29T08:01:00.000Z",
+            "sourceId": "demo-v2-source-chat-gao"
+          },
+          {
+            "id": "demo-v2-message-gao-3",
+            "senderId": "person-self",
+            "content": "她生日十八号，我得十号前洗出来寄。店里十二张三十六，十八张五十四。",
+            "time": "2026-09-29T08:02:00.000Z",
+            "sourceId": "demo-v2-source-chat-gao"
+          },
+          {
+            "id": "demo-v2-message-gao-4",
+            "senderId": "demo-v2-person-gao",
+            "content": "就十二张，别为了多六张又纠结一周。",
+            "time": "2026-09-29T08:03:00.000Z",
+            "sourceId": "demo-v2-source-chat-gao"
+          },
+          {
+            "id": "demo-v2-message-gao-5",
+            "senderId": "person-self",
+            "content": "车窗倒影、阴天海边、早餐合照这三张先锁定。建筑那两张太像了。",
+            "time": "2026-09-29T08:04:00.000Z",
+            "sourceId": "demo-v2-source-chat-gao"
+          },
+          {
+            "id": "demo-v2-message-gao-6",
+            "senderId": "demo-v2-person-gao",
+            "content": "建筑留有人经过的那张。另一张空街你上回已经拍过类似的。",
+            "time": "2026-09-29T08:05:00.000Z",
+            "sourceId": "demo-v2-source-chat-gao"
+          },
+          {
+            "id": "demo-v2-message-gao-7",
+            "senderId": "person-self",
+            "content": "封面我想用车窗那张，不加标题，背面写青岛和日期。",
+            "time": "2026-09-29T08:06:00.000Z",
+            "sourceId": "demo-v2-source-chat-gao"
+          },
+          {
+            "id": "demo-v2-message-gao-8",
+            "senderId": "demo-v2-person-gao",
+            "content": "可以。别把所有照片都调成同一个黄颜色，海本来就是灰的。",
+            "time": "2026-09-29T08:07:00.000Z",
+            "sourceId": "demo-v2-source-chat-gao"
+          },
+          {
+            "id": "demo-v2-message-gao-9",
+            "senderId": "person-self",
+            "content": "哈哈知道。今晚先给你排个顺序，不会说已经下单。",
+            "time": "2026-09-29T08:08:00.000Z",
+            "sourceId": "demo-v2-source-chat-gao"
+          },
+          {
+            "id": "demo-v2-message-gao-10",
+            "senderId": "demo-v2-person-gao",
+            "content": "发来吧。我十点前能看，之后要早睡。",
+            "time": "2026-09-29T08:09:00.000Z",
+            "sourceId": "demo-v2-source-chat-gao"
+          }
+        ]
+      }
+    ],
+    "goals": [
+      {
+        "id": "demo-v2-goal-samples",
+        "title": "改好文稿保存和文件列表",
+        "description": "三十号下午三点给张敏看。沿用徐静那份报价单，确认日期不会被旧版本盖回去。",
+        "status": "active",
+        "dueDate": "2026-09-30",
+        "listId": "goal-list-work",
+        "sourceIds": [
+          "demo-story-source-qiao",
+          "demo-v2-source-chat-xu"
+        ]
+      },
+      {
+        "id": "demo-v2-goal-permission",
+        "title": "节后联系试用的具体时间",
+        "description": "吴婷先留八人名单；十月八日看完版本，再联系五位有意向的人和三位未回复者。",
+        "status": "active",
+        "dueDate": "2026-10-09",
+        "listId": "goal-list-work",
+        "sourceIds": [
+          "demo-v2-source-chat-wu"
+        ]
+      },
+      {
+        "id": "demo-v2-goal-interactive",
+        "title": "节后再看工具接入的建议",
+        "description": "假期前不往当前版本里增加，十月八日回来再看反馈。",
+        "status": "paused",
+        "listId": "goal-list-work",
+        "sourceIds": [
+          "demo-story-source-qiu"
+        ]
+      },
+      {
+        "id": "demo-v2-goal-rest",
+        "title": "买好回杭州的车票",
+        "description": "计划十月二日中午到杭州东、五日晚间返京。车次未定，一号要把到站时间发家里。",
+        "status": "active",
+        "dueDate": "2026-10-01",
+        "listId": "goal-list-personal",
+        "sourceIds": [
+          "demo-v2-source-chat-du",
+          "demo-v2-source-chat-lin"
+        ]
+      },
+      {
+        "id": "demo-v2-goal-photos",
+        "title": "把青岛照片选好，给李娜洗一张",
+        "description": "相册选十二张，生日照用早餐合照，另洗六寸。十月十日前准备好，地址等李娜发。",
+        "status": "active",
+        "listId": "goal-list-personal",
+        "sourceIds": [
+          "demo-v2-source-chat-song",
+          "demo-story-source-photos"
+        ],
+        "dueDate": "2026-10-10"
+      },
+      {
+        "id": "demo-v2-goal-home",
+        "title": "三十号晚上在家等维修师傅",
+        "description": "师傅 19:00 上门。提前腾空水槽下柜子、垫旧毛巾，修完试水。",
+        "status": "active",
+        "listId": "goal-list-personal",
+        "sourceIds": [
+          "demo-v2-source-chat-zhou"
+        ],
+        "dueDate": "2026-09-30"
+      }
+    ],
+    "agents": [
+      {
+        "id": "demo-v2-agent-writer",
+        "name": "写作编辑",
+        "role": "把想法写成清楚、自然的文字",
+        "instructions": "先看文字写给谁、要说明什么。保留用户原意，给出可直接修改的草稿。发送前由用户确认。",
+        "createdAt": "__DEMO_STAMP__"
+      },
+      {
+        "id": "demo-v2-agent-researcher",
+        "name": "研究分析师",
+        "role": "查资料、找依据、整理问题",
+        "instructions": "优先阅读已选资料，再补必要来源。区分资料中的说法和自己的判断，结论能回到出处。",
+        "createdAt": "__DEMO_STAMP__"
+      },
+      {
+        "id": "demo-v2-agent-budget",
+        "name": "预算分析师",
+        "role": "整理费用与时间安排",
+        "instructions": "区分预算、报价和实际支出，算清必要成本，超出上限时给出可行调整。",
+        "createdAt": "__DEMO_STAMP__"
+      },
+      {
+        "id": "demo-v2-agent-care",
+        "name": "生活规划师",
+        "role": "安排生活中的大小事情",
+        "instructions": "结合用户的时间、精力和偏好安排日程，给休息、朋友与家人留出位置。不要替用户作承诺。",
+        "createdAt": "__DEMO_STAMP__"
+      }
+    ],
+    "agentRooms": [
+      {
+        "id": "demo-v2-room-planner",
+        "title": "和项目规划师商量",
+        "kind": "direct",
+        "agentIds": [
+          "agent-planner"
+        ],
+        "mode": "demo",
+        "createdAt": "__DEMO_STAMP__",
+        "updatedAt": "__DEMO_STAMP__",
+        "demo": true,
+        "taskIds": [],
+        "messages": [
+          {
+            "id": "demo-v2-room-intro-planner",
+            "role": "system",
+            "content": "本地演示会话；连接模型后可继续处理自己的任务。",
+            "createdAt": "__DEMO_STAMP__",
+            "demo": true
+          }
+        ]
+      },
+      {
+        "id": "demo-v2-room-writer",
+        "title": "和写作编辑写草稿",
+        "kind": "direct",
+        "agentIds": [
+          "demo-v2-agent-writer"
+        ],
+        "mode": "demo",
+        "createdAt": "__DEMO_STAMP__",
+        "updatedAt": "__DEMO_STAMP__",
+        "demo": true,
+        "taskIds": [],
+        "messages": [
+          {
+            "id": "demo-v2-room-intro-writer",
+            "role": "system",
+            "content": "本地演示会话；连接模型后可继续处理自己的任务。",
+            "createdAt": "__DEMO_STAMP__",
+            "demo": true
+          }
+        ]
+      },
+      {
+        "id": "demo-v2-room-studio",
+        "title": "Kimi 工作台内测小组",
+        "kind": "group",
+        "agentIds": [
+          "agent-planner",
+          "agent-reviewer",
+          "demo-v2-agent-writer"
+        ],
+        "mode": "demo",
+        "createdAt": "__DEMO_STAMP__",
+        "updatedAt": "__DEMO_STAMP__",
+        "demo": true,
+        "taskIds": [],
+        "messages": [
+          {
+            "id": "demo-v2-room-intro-studio",
+            "role": "system",
+            "content": "本地演示会话；连接模型后可继续处理自己的任务。",
+            "createdAt": "__DEMO_STAMP__",
+            "demo": true
+          }
+        ]
+      },
+      {
+        "id": "demo-v2-room-balance",
+        "title": "安排国庆与本周生活",
+        "kind": "group",
+        "agentIds": [
+          "demo-v2-agent-budget",
+          "demo-v2-agent-care"
+        ],
+        "mode": "demo",
+        "createdAt": "__DEMO_STAMP__",
+        "updatedAt": "__DEMO_STAMP__",
+        "demo": true,
+        "taskIds": [],
+        "messages": [
+          {
+            "id": "demo-v2-room-intro-balance",
+            "role": "system",
+            "content": "本地演示会话；连接模型后可继续处理自己的任务。",
+            "createdAt": "__DEMO_STAMP__",
+            "demo": true
+          }
+        ]
+      }
+    ]
+  },
+  "life": {
+    "sources": [
+      {
+        "id": "demo-life-v3-biography",
+        "title": "万叶的求学、工作与生活",
+        "kind": "note",
+        "demo": true,
+        "createdAt": "__DEMO_STAMP__",
+        "text": "万叶，杭州人，现居北京海淀。以下是我记下的求学、工作与生活经历。\n\n2016-09 至 2020-06：在浙江大学读软件工程\n2016 年从杭州家里搬到紫金港校区，开始读软件工程。王磊住隔壁寝室，李娜是社团里认识的朋友。大四跟刘建国做校园活动报名系统，2020 年 6 月毕业。\n\n2020-07 至 2023-02：毕业后到北京工作\n2020 年 7 月入职字节跳动，做飞书前端。第一年租在公司附近，周末常坐地铁出去逛。第一次过年买错了方向的火车票，后来总会提前一周和妈妈核对。\n\n2022-03：搬到海淀的出租屋\n2022 年 3 月搬进现在的房子，通勤大约 20 分钟。周琳帮忙看了合同，魏鹏来搬书架。厨房不大，但能做饭；租约每年 11 月底续，最近水槽有些漏水。\n\n2023-03：到月之暗面做产品工程\n2023 年 3 月换到月之暗面，和张敏、陈伟一起做 Kimi。除了前端开发，也开始参加用户访谈、做原型，再根据反馈修改产品。\n\n2024-05：开始和魏鹏一起跑步\n2024 年 5 月体检后开始跑步，第一次去奥森是魏鹏带我的。现在通常约在周日 16:00，南园南门见，跑 5 公里左右。状态不好时就少跑一点。\n\n2025-11：和家人约好周日通电话\n2025 年 11 月，爸妈说有时两周都等不到我的电话。后来和妈妈约了周日 21:00 聊一会儿，忙到赶不上时会提前发消息。\n\n2026-07：接手桌面工作台原型\n2026 年 7 月接手桌面工作台原型，和梁佳做了 5 次访谈。暂定 10 月 12 日请 8 人试用，其中 3 人还没回复，具体时段也没有定。\n\n2026-08-16：和高远、李娜去青岛过周末\n8 月 15 日至 16 日，我和高远坐火车去青岛，李娜从上海过来会合。我们在大学路吃早餐，又沿海边走了一个下午。照片还没洗，答应给李娜寄早餐店的合照。"
+      }
+    ],
+    "events": [
+      {
+        "id": "demo-life-v3-study",
+        "date": "2016-09",
+        "endDate": "2020-06",
+        "title": "在浙江大学读软件工程",
+        "category": "education",
+        "description": "2016 年从杭州家里搬到紫金港校区，开始读软件工程。王磊住隔壁寝室，李娜是社团里认识的朋友。大四跟刘建国做校园活动报名系统，2020 年 6 月毕业。",
+        "scope": "milestone",
+        "personIds": [
+          "person-self",
+          "demo-v2-person-lu",
+          "person-xuan",
+          "demo-v2-person-song"
+        ],
+        "sourceIds": [
+          "demo-life-v3-biography"
+        ],
+        "platform": "notes",
+        "location": "杭州"
+      },
+      {
+        "id": "demo-life-v3-first-job",
+        "date": "2020-07",
+        "endDate": "2023-02",
+        "title": "毕业后到北京工作",
+        "category": "career",
+        "description": "2020 年 7 月入职字节跳动，做飞书前端。第一年租在公司附近，周末常坐地铁出去逛。第一次过年买错了方向的火车票，后来总会提前一周和妈妈核对。",
+        "scope": "milestone",
+        "personIds": [
+          "person-self"
+        ],
+        "sourceIds": [
+          "demo-life-v3-biography"
+        ],
+        "platform": "notes",
+        "location": "北京"
+      },
+      {
+        "id": "demo-life-v3-move",
+        "date": "2022-03",
+        "title": "搬到海淀的出租屋",
+        "category": "life",
+        "description": "2022 年 3 月搬进现在的房子，通勤大约 20 分钟。周琳帮忙看了合同，魏鹏来搬书架。厨房不大，但能做饭；租约每年 11 月底续，最近水槽有些漏水。",
+        "scope": "milestone",
+        "personIds": [
+          "person-self",
+          "demo-v2-person-zhou"
+        ],
+        "sourceIds": [
+          "demo-life-v3-biography"
+        ],
+        "platform": "notes",
+        "location": "北京海淀"
+      },
+      {
+        "id": "demo-life-v3-volunteer",
+        "date": "2023-03",
+        "title": "到月之暗面做产品工程",
+        "category": "career",
+        "description": "2023 年 3 月换到月之暗面，和张敏、陈伟一起做 Kimi。除了前端开发，也开始参加用户访谈、做原型，再根据反馈修改产品。",
+        "scope": "milestone",
+        "personIds": [
+          "person-self",
+          "person-qiao",
+          "person-chen"
+        ],
+        "sourceIds": [
+          "demo-life-v3-biography"
+        ],
+        "platform": "notes",
+        "location": "北京"
+      },
+      {
+        "id": "demo-life-v3-running",
+        "date": "2024-05",
+        "title": "开始和魏鹏一起跑步",
+        "category": "life",
+        "description": "2024 年 5 月体检后开始跑步，第一次去奥森是魏鹏带我的。现在通常约在周日 16:00，南园南门见，跑 5 公里左右。状态不好时就少跑一点。",
+        "scope": "milestone",
+        "personIds": [
+          "person-self",
+          "demo-v2-person-wei"
+        ],
+        "sourceIds": [
+          "demo-life-v3-biography"
+        ],
+        "platform": "notes",
+        "location": "北京奥林匹克森林公园"
+      },
+      {
+        "id": "demo-life-v3-boundaries",
+        "date": "2025-11",
+        "title": "和家人约好周日通电话",
+        "category": "personal_note",
+        "description": "2025 年 11 月，爸妈说有时两周都等不到我的电话。后来和妈妈约了周日 21:00 聊一会儿，忙到赶不上时会提前发消息。",
+        "scope": "milestone",
+        "personIds": [
+          "person-self",
+          "demo-v2-person-du",
+          "demo-v2-person-lin"
+        ],
+        "sourceIds": [
+          "demo-life-v3-biography"
+        ],
+        "platform": "notes",
+        "location": "北京"
+      },
+      {
+        "id": "demo-life-v3-workbench",
+        "date": "2026-07",
+        "title": "接手桌面工作台原型",
+        "category": "career",
+        "description": "2026 年 7 月接手桌面工作台原型，和梁佳做了 5 次访谈。暂定 10 月 12 日请 8 人试用，其中 3 人还没回复，具体时段也没有定。",
+        "scope": "milestone",
+        "personIds": [
+          "person-self",
+          "person-qiao",
+          "demo-v2-person-liang",
+          "demo-v2-person-qiu"
+        ],
+        "sourceIds": [
+          "demo-life-v3-biography"
+        ],
+        "platform": "notes",
+        "location": "北京"
+      },
+      {
+        "id": "demo-life-v3-photo-trip",
+        "date": "2026-08-16",
+        "title": "和高远、李娜去青岛过周末",
+        "category": "life",
+        "description": "8 月 15 日至 16 日，我和高远坐火车去青岛，李娜从上海过来会合。我们在大学路吃早餐，又沿海边走了一个下午。照片还没洗，答应给李娜寄早餐店的合照。",
+        "scope": "milestone",
+        "personIds": [
+          "person-self",
+          "demo-v2-person-gao"
+        ],
+        "sourceIds": [
+          "demo-life-v3-biography"
+        ],
+        "platform": "notes",
+        "location": "青岛"
+      }
+    ]
+  },
+  "stories": {
+    "sources": [
+      {
+        "id": "demo-story-source-qiao",
+        "title": "和张敏确认假期前的演示",
+        "kind": "conversation",
+        "text": "张敏：三十号下午咱们还看版本吗？我想把假期前的事情收一下。\n万叶：看，三点。我就演示保存、找回文稿和按钮说明这三处。\n张敏：二十分钟够不够？四点我得去接孩子。\n万叶：够。模型评测那张表另发你，不在会上逐条念。\n张敏：好。八个用户都约好了没？\n万叶：还没有，五个人说愿意，三个没回，具体时间一个没定。\n张敏：那节后八号看完，再让吴婷联系。别假期里催人。\n万叶：好，我把邀请先放草稿。三十号那个会我来发材料。",
+        "createdAt": "2026-09-28T01:00:00.000Z",
+        "demo": true
+      },
+      {
+        "id": "demo-story-source-chen",
+        "title": "和陈伟检查同名文件的显示",
+        "kind": "conversation",
+        "text": "陈伟：刚试了你的版本，左边三个文件都叫会议记录，我不知道哪个是昨天的。\n万叶：原名后半截有日期，被省略了。我把日期单独显示出来。\n陈伟：可以。最近改过的也标一下，不然我还是会逐个打开。\n万叶：那一行写修改时间，标题最多两行。窄窗口我也看一下。\n陈伟：还有，“完成”那个按钮是保存还是关窗口？\n万叶：实际是保存并关闭，名字写得太省了。我改成保存，关闭单独放。\n陈伟：这样清楚。你改完叫我，我就拿这三个文件再试。\n万叶：下午两点半发你，别换成短标题，不然这个问题看不出来。",
+        "createdAt": "2026-09-28T01:00:00.000Z",
+        "demo": true
+      },
+      {
+        "id": "demo-story-source-qiu",
+        "title": "和邱志明确认假期前的修改范围",
+        "kind": "conversation",
+        "text": "邱志明：今天还有什么没收完？我下午要给组里发放假前的安排。\n万叶：保存丢字还在修，列表标题已改。沈杰下午补文件冲突的报错。\n邱志明：行，先这几个。刚有人提再加两个工具，你别接了。\n万叶：我也怕越加越收不住，放到节后那张表。\n邱志明：三十号给我们看完，你就去赶自己的事，晚上不用再开会。\n万叶：谢谢，我七点约了人来修水槽，真得早点走。\n邱志明：那更别拖。保存还有问题就先不发包，不用硬凑日期。\n万叶：明白，我把哪些能试、哪些还不能写在会前材料里。",
+        "createdAt": "2026-09-29T01:00:00.000Z",
+        "demo": true
+      },
+      {
+        "id": "demo-story-source-han",
+        "title": "请韩晓梅看试用邀请邮件",
+        "kind": "conversation",
+        "text": "万叶：晓梅，邀请里现在写“我们会全程记录操作”，这句看着有点吓人，想请你帮我看一下。\n韩晓梅：你们到底要录屏还是记笔记？先说具体。\n万叶：主要记卡在哪儿，录屏不是必须。材料也准备好了，用一份虚构会议记录。\n韩晓梅：那就写默认做文字笔记。需要录屏时先问本人，不同意也能试。\n万叶：好，不要求大家上传自己的资料。还有“数据用于优化体验”要不要留？\n韩晓梅：太泛了，删掉。写这次记录由万叶和梁佳整理试用问题就够了，保留多久另在说明里定清。\n万叶：那保留时间我先空着，和梁佳定下来再把整封邮件发你看。\n韩晓梅：可以，别只把改过的一句话截给我，我要看上下文。",
+        "createdAt": "2026-09-29T01:00:00.000Z",
+        "demo": true
+      },
+      {
+        "id": "demo-story-source-pilot",
+        "title": "和小组确认节后的试用安排",
+        "kind": "conversation",
+        "text": "张敏：八号回来先看一次版本，能用的话九号再发邀请，大家看这样行吗？\n梁佳：行。我准备一份虚构会议记录，里面故意留一个日期错误，看大家会不会改。\n何志强：我那十条调用明天出费用，暂时不加新批次。\n万叶：我三十号把保存那处给大家看，假期不追新功能。\n徐静：我八号下午有空，就拿现在报过错的那份文件再试。\n吴婷：名单五人有意向、三人未回复，我先不把绿色写成已预约了。\n张敏：每场半小时，中间空十五分钟。万叶别又排成一场接一场。\n万叶：好的，给我留写笔记的时间。邀请和说明都在项目文件夹里，八号一起看。",
+        "createdAt": "2026-09-29T01:00:00.000Z",
+        "demo": true
+      },
+      {
+        "id": "demo-story-source-recovery",
+        "title": "一起排查报价单被旧版本覆盖",
+        "kind": "conversation",
+        "text": "徐静：还是这份报价单：我写了周三，点保存，关掉，再开又是周二。视频在上面。\n沈杰：看日志是上一轮任务最后把旧文件写回来了，我先加版本号检查。\n叶涛：编辑器这里也有问题，接口没返回我就显示了保存成功，我改掉。\n万叶：那这两个分别修，徐静那份原文件留着，别拿空白文档代替。\n徐静：还有没点保存直接关的情况，最好也留住刚写的文字。\n沈杰：版本不一致我会返回具体文件名，不自动覆盖。\n叶涛：我让草稿留在编辑器里，再给两个选择：继续改、看磁盘里的版本。\n万叶：好。明天十一点一起看二十分钟，改完也别把复现视频删了。",
+        "createdAt": "2026-09-29T01:00:00.000Z",
+        "demo": true
+      },
+      {
+        "id": "demo-story-source-privacy",
+        "title": "和同事确认试用记录的说明",
+        "kind": "conversation",
+        "text": "韩晓梅：这版比昨天清楚。第一页写半小时、大概做什么、默认记笔记，别堆一屏条款。\n唐丽：我把录屏选项放在开始前，空着不替人勾。\n梁佳：不同意录屏也能参加，我手写卡点就行。\n万叶：虚构会议记录我打包到示例里，大家不用临时找文件。\n韩晓梅：记录由谁看写清楚，保留时间今天还没定就先不要发。\n唐丽：长说明折起来，但开始前能打开看，我不把它藏到设置里。\n梁佳：我下午问一下保留时间，确定以后回这条。\n万叶：好，邮件留草稿。八号看完版本再发，不赶今天。",
+        "createdAt": "2026-09-29T01:00:00.000Z",
+        "demo": true
+      },
+      {
+        "id": "demo-story-source-design",
+        "title": "检查文件名显示和保存提示",
+        "kind": "conversation",
+        "text": "陈伟：我把窗口缩小了，现在文件名能看全，比前天好多了。\n叶涛：最多两行，修改日期单独一行。侧栏窄的时候按钮往下排。\n唐丽：保存那儿别用一个转圈图标糊弄，我想知道还要不要等。\n万叶：现在保存时写正在保存，返回成功才变成已保存。失败就保留输入。\n陈伟：我刚关掉再开，没保存的那段还在；提示也能看懂。\n叶涛：键盘按 Escape 关侧栏后，光标会回原来的按钮。\n唐丽：剩下那段空白页说明太长了，删到一句就行。\n万叶：好。三点给张敏看的就是这个版本，今天不再换布局。",
+        "createdAt": "2026-09-30T01:00:00.000Z",
+        "demo": true
+      },
+      {
+        "id": "demo-story-source-cost",
+        "title": "和同事核对下一轮试用预算",
+        "kind": "conversation",
+        "text": "何志强：昨晚核对过账单了，累计花了 680 元，4 条重复调用的费用也包含在里面。\n万叶：收到。下一轮按 8 人试用、每人 3 个任务、各跑 2 轮来估，单次调用先按 10 元算。\n邱志明：调试也要算进去。我估计还需要 20 次，每次按 12 元。\n何志强：这样试用预计 480 元，调试预计 240 元，合计 720 元。单次价格目前都是估算。\n万叶：另外留 400 元，遇到失败需要重跑时再用，先不要把预算排满。\n邱志明：总预算 2000 元，减掉已经花的 680 元、计划的 720 元和预留的 400 元，还剩 200 元。\n何志强：我在表里把已支出、计划费用和预留分开了。1800 元是这三项的合计，不是已经花掉的金额。\n万叶：好，实际支出加上已经承诺的费用到 1600 元时，先停下来核对。预留的 400 元是否要用，再看失败的情况。",
+        "createdAt": "2026-09-30T01:00:00.000Z",
+        "demo": true
+      },
+      {
+        "id": "demo-story-source-alumni",
+        "title": "和王磊、李娜聊国庆安排",
+        "kind": "conversation",
+        "text": "王磊：三号下午三点先约着啊，万叶到了再定面馆。\n万叶：行。两点前我还在家吃饭，别约太早。\n李娜：你们吃，我这次不回杭州。十八号生日想安静过，谁都别给我整惊喜。\n王磊：听见没，尤其某人别做个网页发群里。\n万叶：知道了知道了。我给她洗照片，十号前寄。\n王磊：照片可以，祝福别写八百字。\n李娜：早餐那张记得发我一份原图，我也要。\n万叶：晚上找出来发。三号吃面不带电脑，这句你已经说第三遍了。",
+        "createdAt": "2026-09-28T01:00:00.000Z",
+        "demo": true
+      },
+      {
+        "id": "demo-story-source-family",
+        "title": "在家人群里确认回杭州的安排",
+        "kind": "conversation",
+        "text": "杜秀英：你车票定了没？我明天要去菜市场了。\n万叶：还没，想买二号中午到杭州东的。一号我把准确时间发群里。\n万建明：雪菜家里有，我买点肉和笋。就煮面，不用准备一桌。\n万婷婷：我二号晚上回来，白天社团有点事。四号晚上一起吃饭啊。\n万叶：可以。婷婷你报名那段我看过了，时间和雨天地点加上就行。\n杜秀英：回家先把箱子放下，别一进门就开电脑。\n万建明：散步就在河边走走，不去西湖了，国庆人肯定多。\n万叶：听你们的。四号晚上我买菜一起做，别都让爸忙。",
+        "createdAt": "2026-09-29T01:00:00.000Z",
+        "demo": true
+      },
+      {
+        "id": "demo-story-source-running",
+        "title": "和朋友确认奥森跑步的安排",
+        "kind": "conversation",
+        "text": "魏鹏：下午四点南园南门，发个定位，免得有人又去北园。\n万叶：已经收藏了，这次不会错。我五公里就收。\n周琳：我今天只想走三公里，你们跑，我慢慢走。\n高远：那我跟你走一段，带了小相机，跑完再给他们拍。\n魏鹏：可以，结束在南门等，不要各自绕回家。\n万叶：收到，我带水和薄外套。\n周琳：晚饭还是面？我有点想吃番茄鸡蛋面。\n魏鹏：就上次那家，跑完再走过去。下雨的话群里说，别硬跑。",
+        "createdAt": "2026-09-27T01:00:00.000Z",
+        "demo": true
+      },
+      {
+        "id": "demo-story-source-photos",
+        "title": "确定青岛相册的选片和顺序",
+        "kind": "conversation",
+        "text": "万叶：目前十四张，得去掉两张。车窗、早餐合照、灰色海面我先锁了。\n高远：大学路那两张留 008，那张有人经过，009 空的不要。\n李娜：早餐那张别裁掉我的豆浆杯，虽然有点傻。\n万叶：不裁。另一个想去掉 014，跟 012 都是同一段海。\n高远：对，留 012。顺序按到达、街里、海边、回程走就行。\n李娜：我的生日照就用早餐那张，不另修一套。地址等我晚上发。\n万叶：那十二张相册一份，早餐合照另加一张六寸。下单前先看店里会不会自动裁边。\n高远：记得关自动美化，上回把阴天调成了夕阳，完全不是那回事。",
+        "createdAt": "2026-09-30T01:00:00.000Z",
+        "demo": true
+      }
+    ],
+    "conversations": [
+      {
+        "id": "demo-story-chat-qiao",
+        "title": "张敏",
+        "kind": "direct",
+        "personIds": [
+          "person-qiao",
+          "person-self"
+        ],
+        "platform": "feishu",
+        "accountId": "fictional-demo",
+        "demo": true,
+        "messages": [
+          {
+            "id": "demo-story-message-qiao-1",
+            "senderId": "person-qiao",
+            "content": "三十号下午咱们还看版本吗？我想把假期前的事情收一下。",
+            "time": "2026-09-28T01:00:00.000Z",
+            "sourceId": "demo-story-source-qiao"
+          },
+          {
+            "id": "demo-story-message-qiao-2",
+            "senderId": "person-self",
+            "content": "看，三点。我就演示保存、找回文稿和按钮说明这三处。",
+            "time": "2026-09-28T01:01:00.000Z",
+            "sourceId": "demo-story-source-qiao"
+          },
+          {
+            "id": "demo-story-message-qiao-3",
+            "senderId": "person-qiao",
+            "content": "二十分钟够不够？四点我得去接孩子。",
+            "time": "2026-09-28T01:02:00.000Z",
+            "sourceId": "demo-story-source-qiao"
+          },
+          {
+            "id": "demo-story-message-qiao-4",
+            "senderId": "person-self",
+            "content": "够。模型评测那张表另发你，不在会上逐条念。",
+            "time": "2026-09-28T01:03:00.000Z",
+            "sourceId": "demo-story-source-qiao"
+          },
+          {
+            "id": "demo-story-message-qiao-5",
+            "senderId": "person-qiao",
+            "content": "好。八个用户都约好了没？",
+            "time": "2026-09-28T01:04:00.000Z",
+            "sourceId": "demo-story-source-qiao"
+          },
+          {
+            "id": "demo-story-message-qiao-6",
+            "senderId": "person-self",
+            "content": "还没有，五个人说愿意，三个没回，具体时间一个没定。",
+            "time": "2026-09-28T01:05:00.000Z",
+            "sourceId": "demo-story-source-qiao"
+          },
+          {
+            "id": "demo-story-message-qiao-7",
+            "senderId": "person-qiao",
+            "content": "那节后八号看完，再让吴婷联系。别假期里催人。",
+            "time": "2026-09-28T01:06:00.000Z",
+            "sourceId": "demo-story-source-qiao"
+          },
+          {
+            "id": "demo-story-message-qiao-8",
+            "senderId": "person-self",
+            "content": "好，我把邀请先放草稿。三十号那个会我来发材料。",
+            "time": "2026-09-28T01:07:00.000Z",
+            "sourceId": "demo-story-source-qiao"
+          }
+        ]
+      },
+      {
+        "id": "demo-story-chat-chen",
+        "title": "陈伟",
+        "kind": "direct",
+        "personIds": [
+          "person-chen",
+          "person-self"
+        ],
+        "platform": "feishu",
+        "accountId": "fictional-demo",
+        "demo": true,
+        "messages": [
+          {
+            "id": "demo-story-message-chen-1",
+            "senderId": "person-chen",
+            "content": "刚试了你的版本，左边三个文件都叫会议记录，我不知道哪个是昨天的。",
+            "time": "2026-09-28T01:00:00.000Z",
+            "sourceId": "demo-story-source-chen"
+          },
+          {
+            "id": "demo-story-message-chen-2",
+            "senderId": "person-self",
+            "content": "原名后半截有日期，被省略了。我把日期单独显示出来。",
+            "time": "2026-09-28T01:01:00.000Z",
+            "sourceId": "demo-story-source-chen"
+          },
+          {
+            "id": "demo-story-message-chen-3",
+            "senderId": "person-chen",
+            "content": "可以。最近改过的也标一下，不然我还是会逐个打开。",
+            "time": "2026-09-28T01:02:00.000Z",
+            "sourceId": "demo-story-source-chen"
+          },
+          {
+            "id": "demo-story-message-chen-4",
+            "senderId": "person-self",
+            "content": "那一行写修改时间，标题最多两行。窄窗口我也看一下。",
+            "time": "2026-09-28T01:03:00.000Z",
+            "sourceId": "demo-story-source-chen"
+          },
+          {
+            "id": "demo-story-message-chen-5",
+            "senderId": "person-chen",
+            "content": "还有，“完成”那个按钮是保存还是关窗口？",
+            "time": "2026-09-28T01:04:00.000Z",
+            "sourceId": "demo-story-source-chen"
+          },
+          {
+            "id": "demo-story-message-chen-6",
+            "senderId": "person-self",
+            "content": "实际是保存并关闭，名字写得太省了。我改成保存，关闭单独放。",
+            "time": "2026-09-28T01:05:00.000Z",
+            "sourceId": "demo-story-source-chen"
+          },
+          {
+            "id": "demo-story-message-chen-7",
+            "senderId": "person-chen",
+            "content": "这样清楚。你改完叫我，我就拿这三个文件再试。",
+            "time": "2026-09-28T01:06:00.000Z",
+            "sourceId": "demo-story-source-chen"
+          },
+          {
+            "id": "demo-story-message-chen-8",
+            "senderId": "person-self",
+            "content": "下午两点半发你，别换成短标题，不然这个问题看不出来。",
+            "time": "2026-09-28T01:07:00.000Z",
+            "sourceId": "demo-story-source-chen"
+          }
+        ]
+      },
+      {
+        "id": "demo-story-chat-qiu",
+        "title": "邱志明",
+        "kind": "direct",
+        "personIds": [
+          "demo-v2-person-qiu",
+          "person-self"
+        ],
+        "platform": "feishu",
+        "accountId": "fictional-demo",
+        "demo": true,
+        "messages": [
+          {
+            "id": "demo-story-message-qiu-1",
+            "senderId": "demo-v2-person-qiu",
+            "content": "今天还有什么没收完？我下午要给组里发放假前的安排。",
+            "time": "2026-09-29T01:00:00.000Z",
+            "sourceId": "demo-story-source-qiu"
+          },
+          {
+            "id": "demo-story-message-qiu-2",
+            "senderId": "person-self",
+            "content": "保存丢字还在修，列表标题已改。沈杰下午补文件冲突的报错。",
+            "time": "2026-09-29T01:01:00.000Z",
+            "sourceId": "demo-story-source-qiu"
+          },
+          {
+            "id": "demo-story-message-qiu-3",
+            "senderId": "demo-v2-person-qiu",
+            "content": "行，先这几个。刚有人提再加两个工具，你别接了。",
+            "time": "2026-09-29T01:02:00.000Z",
+            "sourceId": "demo-story-source-qiu"
+          },
+          {
+            "id": "demo-story-message-qiu-4",
+            "senderId": "person-self",
+            "content": "我也怕越加越收不住，放到节后那张表。",
+            "time": "2026-09-29T01:03:00.000Z",
+            "sourceId": "demo-story-source-qiu"
+          },
+          {
+            "id": "demo-story-message-qiu-5",
+            "senderId": "demo-v2-person-qiu",
+            "content": "三十号给我们看完，你就去赶自己的事，晚上不用再开会。",
+            "time": "2026-09-29T01:04:00.000Z",
+            "sourceId": "demo-story-source-qiu"
+          },
+          {
+            "id": "demo-story-message-qiu-6",
+            "senderId": "person-self",
+            "content": "谢谢，我七点约了人来修水槽，真得早点走。",
+            "time": "2026-09-29T01:05:00.000Z",
+            "sourceId": "demo-story-source-qiu"
+          },
+          {
+            "id": "demo-story-message-qiu-7",
+            "senderId": "demo-v2-person-qiu",
+            "content": "那更别拖。保存还有问题就先不发包，不用硬凑日期。",
+            "time": "2026-09-29T01:06:00.000Z",
+            "sourceId": "demo-story-source-qiu"
+          },
+          {
+            "id": "demo-story-message-qiu-8",
+            "senderId": "person-self",
+            "content": "明白，我把哪些能试、哪些还不能写在会前材料里。",
+            "time": "2026-09-29T01:07:00.000Z",
+            "sourceId": "demo-story-source-qiu"
+          }
+        ]
+      },
+      {
+        "id": "demo-story-chat-han",
+        "title": "韩晓梅｜邮件",
+        "kind": "direct",
+        "personIds": [
+          "person-self",
+          "demo-v2-person-han"
+        ],
+        "platform": "email",
+        "accountId": "fictional-demo",
+        "demo": true,
+        "messages": [
+          {
+            "id": "demo-story-message-han-1",
+            "senderId": "person-self",
+            "content": "晓梅，邀请里现在写“我们会全程记录操作”，这句看着有点吓人，想请你帮我看一下。",
+            "time": "2026-09-29T01:00:00.000Z",
+            "sourceId": "demo-story-source-han"
+          },
+          {
+            "id": "demo-story-message-han-2",
+            "senderId": "demo-v2-person-han",
+            "content": "你们到底要录屏还是记笔记？先说具体。",
+            "time": "2026-09-29T01:01:00.000Z",
+            "sourceId": "demo-story-source-han"
+          },
+          {
+            "id": "demo-story-message-han-3",
+            "senderId": "person-self",
+            "content": "主要记卡在哪儿，录屏不是必须。材料也准备好了，用一份虚构会议记录。",
+            "time": "2026-09-29T01:02:00.000Z",
+            "sourceId": "demo-story-source-han"
+          },
+          {
+            "id": "demo-story-message-han-4",
+            "senderId": "demo-v2-person-han",
+            "content": "那就写默认做文字笔记。需要录屏时先问本人，不同意也能试。",
+            "time": "2026-09-29T01:03:00.000Z",
+            "sourceId": "demo-story-source-han"
+          },
+          {
+            "id": "demo-story-message-han-5",
+            "senderId": "person-self",
+            "content": "好，不要求大家上传自己的资料。还有“数据用于优化体验”要不要留？",
+            "time": "2026-09-29T01:04:00.000Z",
+            "sourceId": "demo-story-source-han"
+          },
+          {
+            "id": "demo-story-message-han-6",
+            "senderId": "demo-v2-person-han",
+            "content": "太泛了，删掉。写这次记录由万叶和梁佳整理试用问题就够了，保留多久另在说明里定清。",
+            "time": "2026-09-29T01:05:00.000Z",
+            "sourceId": "demo-story-source-han"
+          },
+          {
+            "id": "demo-story-message-han-7",
+            "senderId": "person-self",
+            "content": "那保留时间我先空着，和梁佳定下来再把整封邮件发你看。",
+            "time": "2026-09-29T01:06:00.000Z",
+            "sourceId": "demo-story-source-han"
+          },
+          {
+            "id": "demo-story-message-han-8",
+            "senderId": "demo-v2-person-han",
+            "content": "可以，别只把改过的一句话截给我，我要看上下文。",
+            "time": "2026-09-29T01:07:00.000Z",
+            "sourceId": "demo-story-source-han"
+          }
+        ]
+      },
+      {
+        "id": "demo-story-chat-pilot",
+        "title": "工作台试用准备",
+        "kind": "group",
+        "personIds": [
+          "person-qiao",
+          "demo-v2-person-liang",
+          "demo-v2-person-he",
+          "person-self",
+          "demo-v2-person-xu",
+          "demo-v2-person-wu"
+        ],
+        "platform": "feishu",
+        "accountId": "fictional-demo",
+        "demo": true,
+        "messages": [
+          {
+            "id": "demo-story-message-pilot-1",
+            "senderId": "person-qiao",
+            "content": "八号回来先看一次版本，能用的话九号再发邀请，大家看这样行吗？",
+            "time": "2026-09-29T01:00:00.000Z",
+            "sourceId": "demo-story-source-pilot"
+          },
+          {
+            "id": "demo-story-message-pilot-2",
+            "senderId": "demo-v2-person-liang",
+            "content": "行。我准备一份虚构会议记录，里面故意留一个日期错误，看大家会不会改。",
+            "time": "2026-09-29T01:01:00.000Z",
+            "sourceId": "demo-story-source-pilot"
+          },
+          {
+            "id": "demo-story-message-pilot-3",
+            "senderId": "demo-v2-person-he",
+            "content": "我那十条调用明天出费用，暂时不加新批次。",
+            "time": "2026-09-29T01:02:00.000Z",
+            "sourceId": "demo-story-source-pilot"
+          },
+          {
+            "id": "demo-story-message-pilot-4",
+            "senderId": "person-self",
+            "content": "我三十号把保存那处给大家看，假期不追新功能。",
+            "time": "2026-09-29T01:03:00.000Z",
+            "sourceId": "demo-story-source-pilot"
+          },
+          {
+            "id": "demo-story-message-pilot-5",
+            "senderId": "demo-v2-person-xu",
+            "content": "我八号下午有空，就拿现在报过错的那份文件再试。",
+            "time": "2026-09-29T01:04:00.000Z",
+            "sourceId": "demo-story-source-pilot"
+          },
+          {
+            "id": "demo-story-message-pilot-6",
+            "senderId": "demo-v2-person-wu",
+            "content": "名单五人有意向、三人未回复，我先不把绿色写成已预约了。",
+            "time": "2026-09-29T01:05:00.000Z",
+            "sourceId": "demo-story-source-pilot"
+          },
+          {
+            "id": "demo-story-message-pilot-7",
+            "senderId": "person-qiao",
+            "content": "每场半小时，中间空十五分钟。万叶别又排成一场接一场。",
+            "time": "2026-09-29T01:06:00.000Z",
+            "sourceId": "demo-story-source-pilot"
+          },
+          {
+            "id": "demo-story-message-pilot-8",
+            "senderId": "person-self",
+            "content": "好的，给我留写笔记的时间。邀请和说明都在项目文件夹里，八号一起看。",
+            "time": "2026-09-29T01:07:00.000Z",
+            "sourceId": "demo-story-source-pilot"
+          }
+        ]
+      },
+      {
+        "id": "demo-story-chat-recovery",
+        "title": "工作台开发小群",
+        "kind": "group",
+        "personIds": [
+          "demo-v2-person-xu",
+          "demo-v2-person-shen",
+          "demo-v2-person-ye",
+          "person-self"
+        ],
+        "platform": "feishu",
+        "accountId": "fictional-demo",
+        "demo": true,
+        "messages": [
+          {
+            "id": "demo-story-message-recovery-1",
+            "senderId": "demo-v2-person-xu",
+            "content": "还是这份报价单：我写了周三，点保存，关掉，再开又是周二。视频在上面。",
+            "time": "2026-09-29T01:00:00.000Z",
+            "sourceId": "demo-story-source-recovery"
+          },
+          {
+            "id": "demo-story-message-recovery-2",
+            "senderId": "demo-v2-person-shen",
+            "content": "看日志是上一轮任务最后把旧文件写回来了，我先加版本号检查。",
+            "time": "2026-09-29T01:01:00.000Z",
+            "sourceId": "demo-story-source-recovery"
+          },
+          {
+            "id": "demo-story-message-recovery-3",
+            "senderId": "demo-v2-person-ye",
+            "content": "编辑器这里也有问题，接口没返回我就显示了保存成功，我改掉。",
+            "time": "2026-09-29T01:02:00.000Z",
+            "sourceId": "demo-story-source-recovery"
+          },
+          {
+            "id": "demo-story-message-recovery-4",
+            "senderId": "person-self",
+            "content": "那这两个分别修，徐静那份原文件留着，别拿空白文档代替。",
+            "time": "2026-09-29T01:03:00.000Z",
+            "sourceId": "demo-story-source-recovery"
+          },
+          {
+            "id": "demo-story-message-recovery-5",
+            "senderId": "demo-v2-person-xu",
+            "content": "还有没点保存直接关的情况，最好也留住刚写的文字。",
+            "time": "2026-09-29T01:04:00.000Z",
+            "sourceId": "demo-story-source-recovery"
+          },
+          {
+            "id": "demo-story-message-recovery-6",
+            "senderId": "demo-v2-person-shen",
+            "content": "版本不一致我会返回具体文件名，不自动覆盖。",
+            "time": "2026-09-29T01:05:00.000Z",
+            "sourceId": "demo-story-source-recovery"
+          },
+          {
+            "id": "demo-story-message-recovery-7",
+            "senderId": "demo-v2-person-ye",
+            "content": "我让草稿留在编辑器里，再给两个选择：继续改、看磁盘里的版本。",
+            "time": "2026-09-29T01:06:00.000Z",
+            "sourceId": "demo-story-source-recovery"
+          },
+          {
+            "id": "demo-story-message-recovery-8",
+            "senderId": "person-self",
+            "content": "好。明天十一点一起看二十分钟，改完也别把复现视频删了。",
+            "time": "2026-09-29T01:07:00.000Z",
+            "sourceId": "demo-story-source-recovery"
+          }
+        ]
+      },
+      {
+        "id": "demo-story-chat-privacy",
+        "title": "试用邀请文案",
+        "kind": "group",
+        "personIds": [
+          "demo-v2-person-han",
+          "demo-v2-person-tang",
+          "demo-v2-person-liang",
+          "person-self"
+        ],
+        "platform": "feishu",
+        "accountId": "fictional-demo",
+        "demo": true,
+        "messages": [
+          {
+            "id": "demo-story-message-privacy-1",
+            "senderId": "demo-v2-person-han",
+            "content": "这版比昨天清楚。第一页写半小时、大概做什么、默认记笔记，别堆一屏条款。",
+            "time": "2026-09-29T01:00:00.000Z",
+            "sourceId": "demo-story-source-privacy"
+          },
+          {
+            "id": "demo-story-message-privacy-2",
+            "senderId": "demo-v2-person-tang",
+            "content": "我把录屏选项放在开始前，空着不替人勾。",
+            "time": "2026-09-29T01:01:00.000Z",
+            "sourceId": "demo-story-source-privacy"
+          },
+          {
+            "id": "demo-story-message-privacy-3",
+            "senderId": "demo-v2-person-liang",
+            "content": "不同意录屏也能参加，我手写卡点就行。",
+            "time": "2026-09-29T01:02:00.000Z",
+            "sourceId": "demo-story-source-privacy"
+          },
+          {
+            "id": "demo-story-message-privacy-4",
+            "senderId": "person-self",
+            "content": "虚构会议记录我打包到示例里，大家不用临时找文件。",
+            "time": "2026-09-29T01:03:00.000Z",
+            "sourceId": "demo-story-source-privacy"
+          },
+          {
+            "id": "demo-story-message-privacy-5",
+            "senderId": "demo-v2-person-han",
+            "content": "记录由谁看写清楚，保留时间今天还没定就先不要发。",
+            "time": "2026-09-29T01:04:00.000Z",
+            "sourceId": "demo-story-source-privacy"
+          },
+          {
+            "id": "demo-story-message-privacy-6",
+            "senderId": "demo-v2-person-tang",
+            "content": "长说明折起来，但开始前能打开看，我不把它藏到设置里。",
+            "time": "2026-09-29T01:05:00.000Z",
+            "sourceId": "demo-story-source-privacy"
+          },
+          {
+            "id": "demo-story-message-privacy-7",
+            "senderId": "demo-v2-person-liang",
+            "content": "我下午问一下保留时间，确定以后回这条。",
+            "time": "2026-09-29T01:06:00.000Z",
+            "sourceId": "demo-story-source-privacy"
+          },
+          {
+            "id": "demo-story-message-privacy-8",
+            "senderId": "person-self",
+            "content": "好，邮件留草稿。八号看完版本再发，不赶今天。",
+            "time": "2026-09-29T01:07:00.000Z",
+            "sourceId": "demo-story-source-privacy"
+          }
+        ]
+      },
+      {
+        "id": "demo-story-chat-design",
+        "title": "工作台设计与前端",
+        "kind": "group",
+        "personIds": [
+          "person-chen",
+          "demo-v2-person-ye",
+          "demo-v2-person-tang",
+          "person-self"
+        ],
+        "platform": "feishu",
+        "accountId": "fictional-demo",
+        "demo": true,
+        "messages": [
+          {
+            "id": "demo-story-message-design-1",
+            "senderId": "person-chen",
+            "content": "我把窗口缩小了，现在文件名能看全，比前天好多了。",
+            "time": "2026-09-30T01:00:00.000Z",
+            "sourceId": "demo-story-source-design"
+          },
+          {
+            "id": "demo-story-message-design-2",
+            "senderId": "demo-v2-person-ye",
+            "content": "最多两行，修改日期单独一行。侧栏窄的时候按钮往下排。",
+            "time": "2026-09-30T01:01:00.000Z",
+            "sourceId": "demo-story-source-design"
+          },
+          {
+            "id": "demo-story-message-design-3",
+            "senderId": "demo-v2-person-tang",
+            "content": "保存那儿别用一个转圈图标糊弄，我想知道还要不要等。",
+            "time": "2026-09-30T01:02:00.000Z",
+            "sourceId": "demo-story-source-design"
+          },
+          {
+            "id": "demo-story-message-design-4",
+            "senderId": "person-self",
+            "content": "现在保存时写正在保存，返回成功才变成已保存。失败就保留输入。",
+            "time": "2026-09-30T01:03:00.000Z",
+            "sourceId": "demo-story-source-design"
+          },
+          {
+            "id": "demo-story-message-design-5",
+            "senderId": "person-chen",
+            "content": "我刚关掉再开，没保存的那段还在；提示也能看懂。",
+            "time": "2026-09-30T01:04:00.000Z",
+            "sourceId": "demo-story-source-design"
+          },
+          {
+            "id": "demo-story-message-design-6",
+            "senderId": "demo-v2-person-ye",
+            "content": "键盘按 Escape 关侧栏后，光标会回原来的按钮。",
+            "time": "2026-09-30T01:05:00.000Z",
+            "sourceId": "demo-story-source-design"
+          },
+          {
+            "id": "demo-story-message-design-7",
+            "senderId": "demo-v2-person-tang",
+            "content": "剩下那段空白页说明太长了，删到一句就行。",
+            "time": "2026-09-30T01:06:00.000Z",
+            "sourceId": "demo-story-source-design"
+          },
+          {
+            "id": "demo-story-message-design-8",
+            "senderId": "person-self",
+            "content": "好。三点给张敏看的就是这个版本，今天不再换布局。",
+            "time": "2026-09-30T01:07:00.000Z",
+            "sourceId": "demo-story-source-design"
+          }
+        ]
+      },
+      {
+        "id": "demo-story-chat-cost",
+        "title": "模型用量",
+        "kind": "group",
+        "personIds": [
+          "demo-v2-person-he",
+          "person-self",
+          "demo-v2-person-qiu"
+        ],
+        "platform": "feishu",
+        "accountId": "fictional-demo",
+        "demo": true,
+        "messages": [
+          {
+            "id": "demo-story-message-cost-1",
+            "senderId": "demo-v2-person-he",
+            "content": "昨晚核对过账单了，累计花了 680 元，4 条重复调用的费用也包含在里面。",
+            "time": "2026-09-30T01:00:00.000Z",
+            "sourceId": "demo-story-source-cost"
+          },
+          {
+            "id": "demo-story-message-cost-2",
+            "senderId": "person-self",
+            "content": "收到。下一轮按 8 人试用、每人 3 个任务、各跑 2 轮来估，单次调用先按 10 元算。",
+            "time": "2026-09-30T01:01:00.000Z",
+            "sourceId": "demo-story-source-cost"
+          },
+          {
+            "id": "demo-story-message-cost-3",
+            "senderId": "demo-v2-person-qiu",
+            "content": "调试也要算进去。我估计还需要 20 次，每次按 12 元。",
+            "time": "2026-09-30T01:02:00.000Z",
+            "sourceId": "demo-story-source-cost"
+          },
+          {
+            "id": "demo-story-message-cost-4",
+            "senderId": "demo-v2-person-he",
+            "content": "这样试用预计 480 元，调试预计 240 元，合计 720 元。单次价格目前都是估算。",
+            "time": "2026-09-30T01:03:00.000Z",
+            "sourceId": "demo-story-source-cost"
+          },
+          {
+            "id": "demo-story-message-cost-5",
+            "senderId": "person-self",
+            "content": "另外留 400 元，遇到失败需要重跑时再用，先不要把预算排满。",
+            "time": "2026-09-30T01:04:00.000Z",
+            "sourceId": "demo-story-source-cost"
+          },
+          {
+            "id": "demo-story-message-cost-6",
+            "senderId": "demo-v2-person-qiu",
+            "content": "总预算 2000 元，减掉已经花的 680 元、计划的 720 元和预留的 400 元，还剩 200 元。",
+            "time": "2026-09-30T01:05:00.000Z",
+            "sourceId": "demo-story-source-cost"
+          },
+          {
+            "id": "demo-story-message-cost-7",
+            "senderId": "demo-v2-person-he",
+            "content": "我在表里把已支出、计划费用和预留分开了。1800 元是这三项的合计，不是已经花掉的金额。",
+            "time": "2026-09-30T01:06:00.000Z",
+            "sourceId": "demo-story-source-cost"
+          },
+          {
+            "id": "demo-story-message-cost-8",
+            "senderId": "person-self",
+            "content": "好，实际支出加上已经承诺的费用到 1600 元时，先停下来核对。预留的 400 元是否要用，再看失败的情况。",
+            "time": "2026-09-30T01:07:00.000Z",
+            "sourceId": "demo-story-source-cost"
+          }
+        ]
+      },
+      {
+        "id": "demo-story-chat-alumni",
+        "title": "浙大老同学",
+        "kind": "group",
+        "personIds": [
+          "person-xuan",
+          "person-self",
+          "demo-v2-person-song"
+        ],
+        "platform": "wechat",
+        "accountId": "fictional-demo",
+        "demo": true,
+        "messages": [
+          {
+            "id": "demo-story-message-alumni-1",
+            "senderId": "person-xuan",
+            "content": "三号下午三点先约着啊，万叶到了再定面馆。",
+            "time": "2026-09-28T01:00:00.000Z",
+            "sourceId": "demo-story-source-alumni"
+          },
+          {
+            "id": "demo-story-message-alumni-2",
+            "senderId": "person-self",
+            "content": "行。两点前我还在家吃饭，别约太早。",
+            "time": "2026-09-28T01:01:00.000Z",
+            "sourceId": "demo-story-source-alumni"
+          },
+          {
+            "id": "demo-story-message-alumni-3",
+            "senderId": "demo-v2-person-song",
+            "content": "你们吃，我这次不回杭州。十八号生日想安静过，谁都别给我整惊喜。",
+            "time": "2026-09-28T01:02:00.000Z",
+            "sourceId": "demo-story-source-alumni"
+          },
+          {
+            "id": "demo-story-message-alumni-4",
+            "senderId": "person-xuan",
+            "content": "听见没，尤其某人别做个网页发群里。",
+            "time": "2026-09-28T01:03:00.000Z",
+            "sourceId": "demo-story-source-alumni"
+          },
+          {
+            "id": "demo-story-message-alumni-5",
+            "senderId": "person-self",
+            "content": "知道了知道了。我给她洗照片，十号前寄。",
+            "time": "2026-09-28T01:04:00.000Z",
+            "sourceId": "demo-story-source-alumni"
+          },
+          {
+            "id": "demo-story-message-alumni-6",
+            "senderId": "person-xuan",
+            "content": "照片可以，祝福别写八百字。",
+            "time": "2026-09-28T01:05:00.000Z",
+            "sourceId": "demo-story-source-alumni"
+          },
+          {
+            "id": "demo-story-message-alumni-7",
+            "senderId": "demo-v2-person-song",
+            "content": "早餐那张记得发我一份原图，我也要。",
+            "time": "2026-09-28T01:06:00.000Z",
+            "sourceId": "demo-story-source-alumni"
+          },
+          {
+            "id": "demo-story-message-alumni-8",
+            "senderId": "person-self",
+            "content": "晚上找出来发。三号吃面不带电脑，这句你已经说第三遍了。",
+            "time": "2026-09-28T01:07:00.000Z",
+            "sourceId": "demo-story-source-alumni"
+          }
+        ]
+      },
+      {
+        "id": "demo-story-chat-family",
+        "title": "家里",
+        "kind": "group",
+        "personIds": [
+          "demo-v2-person-du",
+          "person-self",
+          "demo-v2-person-lin",
+          "demo-v2-person-jiang"
+        ],
+        "platform": "wechat",
+        "accountId": "fictional-demo",
+        "demo": true,
+        "messages": [
+          {
+            "id": "demo-story-message-family-1",
+            "senderId": "demo-v2-person-du",
+            "content": "你车票定了没？我明天要去菜市场了。",
+            "time": "2026-09-29T01:00:00.000Z",
+            "sourceId": "demo-story-source-family"
+          },
+          {
+            "id": "demo-story-message-family-2",
+            "senderId": "person-self",
+            "content": "还没，想买二号中午到杭州东的。一号我把准确时间发群里。",
+            "time": "2026-09-29T01:01:00.000Z",
+            "sourceId": "demo-story-source-family"
+          },
+          {
+            "id": "demo-story-message-family-3",
+            "senderId": "demo-v2-person-lin",
+            "content": "雪菜家里有，我买点肉和笋。就煮面，不用准备一桌。",
+            "time": "2026-09-29T01:02:00.000Z",
+            "sourceId": "demo-story-source-family"
+          },
+          {
+            "id": "demo-story-message-family-4",
+            "senderId": "demo-v2-person-jiang",
+            "content": "我二号晚上回来，白天社团有点事。四号晚上一起吃饭啊。",
+            "time": "2026-09-29T01:03:00.000Z",
+            "sourceId": "demo-story-source-family"
+          },
+          {
+            "id": "demo-story-message-family-5",
+            "senderId": "person-self",
+            "content": "可以。婷婷你报名那段我看过了，时间和雨天地点加上就行。",
+            "time": "2026-09-29T01:04:00.000Z",
+            "sourceId": "demo-story-source-family"
+          },
+          {
+            "id": "demo-story-message-family-6",
+            "senderId": "demo-v2-person-du",
+            "content": "回家先把箱子放下，别一进门就开电脑。",
+            "time": "2026-09-29T01:05:00.000Z",
+            "sourceId": "demo-story-source-family"
+          },
+          {
+            "id": "demo-story-message-family-7",
+            "senderId": "demo-v2-person-lin",
+            "content": "散步就在河边走走，不去西湖了，国庆人肯定多。",
+            "time": "2026-09-29T01:06:00.000Z",
+            "sourceId": "demo-story-source-family"
+          },
+          {
+            "id": "demo-story-message-family-8",
+            "senderId": "person-self",
+            "content": "听你们的。四号晚上我买菜一起做，别都让爸忙。",
+            "time": "2026-09-29T01:07:00.000Z",
+            "sourceId": "demo-story-source-family"
+          }
+        ]
+      },
+      {
+        "id": "demo-story-chat-running",
+        "title": "周日奥森跑步",
+        "kind": "group",
+        "personIds": [
+          "demo-v2-person-wei",
+          "person-self",
+          "demo-v2-person-zhou",
+          "demo-v2-person-gao"
+        ],
+        "platform": "wechat",
+        "accountId": "fictional-demo",
+        "demo": true,
+        "messages": [
+          {
+            "id": "demo-story-message-running-1",
+            "senderId": "demo-v2-person-wei",
+            "content": "下午四点南园南门，发个定位，免得有人又去北园。",
+            "time": "2026-09-27T01:00:00.000Z",
+            "sourceId": "demo-story-source-running"
+          },
+          {
+            "id": "demo-story-message-running-2",
+            "senderId": "person-self",
+            "content": "已经收藏了，这次不会错。我五公里就收。",
+            "time": "2026-09-27T01:01:00.000Z",
+            "sourceId": "demo-story-source-running"
+          },
+          {
+            "id": "demo-story-message-running-3",
+            "senderId": "demo-v2-person-zhou",
+            "content": "我今天只想走三公里，你们跑，我慢慢走。",
+            "time": "2026-09-27T01:02:00.000Z",
+            "sourceId": "demo-story-source-running"
+          },
+          {
+            "id": "demo-story-message-running-4",
+            "senderId": "demo-v2-person-gao",
+            "content": "那我跟你走一段，带了小相机，跑完再给他们拍。",
+            "time": "2026-09-27T01:03:00.000Z",
+            "sourceId": "demo-story-source-running"
+          },
+          {
+            "id": "demo-story-message-running-5",
+            "senderId": "demo-v2-person-wei",
+            "content": "可以，结束在南门等，不要各自绕回家。",
+            "time": "2026-09-27T01:04:00.000Z",
+            "sourceId": "demo-story-source-running"
+          },
+          {
+            "id": "demo-story-message-running-6",
+            "senderId": "person-self",
+            "content": "收到，我带水和薄外套。",
+            "time": "2026-09-27T01:05:00.000Z",
+            "sourceId": "demo-story-source-running"
+          },
+          {
+            "id": "demo-story-message-running-7",
+            "senderId": "demo-v2-person-zhou",
+            "content": "晚饭还是面？我有点想吃番茄鸡蛋面。",
+            "time": "2026-09-27T01:06:00.000Z",
+            "sourceId": "demo-story-source-running"
+          },
+          {
+            "id": "demo-story-message-running-8",
+            "senderId": "demo-v2-person-wei",
+            "content": "就上次那家，跑完再走过去。下雨的话群里说，别硬跑。",
+            "time": "2026-09-27T01:07:00.000Z",
+            "sourceId": "demo-story-source-running"
+          }
+        ]
+      },
+      {
+        "id": "demo-story-chat-photos",
+        "title": "青岛十二张",
+        "kind": "group",
+        "personIds": [
+          "person-self",
+          "demo-v2-person-gao",
+          "demo-v2-person-song"
+        ],
+        "platform": "discord",
+        "accountId": "fictional-demo",
+        "demo": true,
+        "messages": [
+          {
+            "id": "demo-story-message-photos-1",
+            "senderId": "person-self",
+            "content": "目前十四张，得去掉两张。车窗、早餐合照、灰色海面我先锁了。",
+            "time": "2026-09-30T01:00:00.000Z",
+            "sourceId": "demo-story-source-photos"
+          },
+          {
+            "id": "demo-story-message-photos-2",
+            "senderId": "demo-v2-person-gao",
+            "content": "大学路那两张留 008，那张有人经过，009 空的不要。",
+            "time": "2026-09-30T01:01:00.000Z",
+            "sourceId": "demo-story-source-photos"
+          },
+          {
+            "id": "demo-story-message-photos-3",
+            "senderId": "demo-v2-person-song",
+            "content": "早餐那张别裁掉我的豆浆杯，虽然有点傻。",
+            "time": "2026-09-30T01:02:00.000Z",
+            "sourceId": "demo-story-source-photos"
+          },
+          {
+            "id": "demo-story-message-photos-4",
+            "senderId": "person-self",
+            "content": "不裁。另一个想去掉 014，跟 012 都是同一段海。",
+            "time": "2026-09-30T01:03:00.000Z",
+            "sourceId": "demo-story-source-photos"
+          },
+          {
+            "id": "demo-story-message-photos-5",
+            "senderId": "demo-v2-person-gao",
+            "content": "对，留 012。顺序按到达、街里、海边、回程走就行。",
+            "time": "2026-09-30T01:04:00.000Z",
+            "sourceId": "demo-story-source-photos"
+          },
+          {
+            "id": "demo-story-message-photos-6",
+            "senderId": "demo-v2-person-song",
+            "content": "我的生日照就用早餐那张，不另修一套。地址等我晚上发。",
+            "time": "2026-09-30T01:05:00.000Z",
+            "sourceId": "demo-story-source-photos"
+          },
+          {
+            "id": "demo-story-message-photos-7",
+            "senderId": "person-self",
+            "content": "那十二张相册一份，早餐合照另加一张六寸。下单前先看店里会不会自动裁边。",
+            "time": "2026-09-30T01:06:00.000Z",
+            "sourceId": "demo-story-source-photos"
+          },
+          {
+            "id": "demo-story-message-photos-8",
+            "senderId": "demo-v2-person-gao",
+            "content": "记得关自动美化，上回把阴天调成了夕阳，完全不是那回事。",
+            "time": "2026-09-30T01:07:00.000Z",
+            "sourceId": "demo-story-source-photos"
+          }
+        ]
+      }
+    ],
+    "events": [
+      {
+        "id": "demo-story-event-qiao",
+        "date": "2026-09-28",
+        "title": "和张敏确认假期前的演示",
+        "description": "和张敏约了 9 月 30 日 15:00 看版本，预计 20 分钟。这次看文稿保存、文件查找和按钮说明，试用邀请留到节后再联系。",
+        "category": "career",
+        "scope": "note",
+        "personIds": [
+          "person-qiao",
+          "person-self"
+        ],
+        "sourceIds": [
+          "demo-story-source-qiao"
+        ],
+        "platform": "feishu"
+      },
+      {
+        "id": "demo-story-event-chen",
+        "date": "2026-09-28",
+        "title": "和陈伟检查同名文件的显示",
+        "description": "陈伟试用时遇到 3 份同名的 9 月会议记录，标题被截断后很难区分。他建议在列表里单独显示最近修改时间，我也会检查窄窗口下的标题。",
+        "category": "career",
+        "scope": "note",
+        "personIds": [
+          "person-chen",
+          "person-self"
+        ],
+        "sourceIds": [
+          "demo-story-source-chen"
+        ],
+        "platform": "feishu"
+      },
+      {
+        "id": "demo-story-event-qiu",
+        "date": "2026-09-29",
+        "title": "和邱志明确认假期前的修改范围",
+        "description": "邱志明让我在 9 月 30 日前先处理已经列出的 3 个问题，新提的工具接入需求节后再看。如果保存后仍会丢字，就先不给候选人发安装包。",
+        "category": "career",
+        "scope": "note",
+        "personIds": [
+          "demo-v2-person-qiu",
+          "person-self"
+        ],
+        "sourceIds": [
+          "demo-story-source-qiu"
+        ],
+        "platform": "feishu"
+      },
+      {
+        "id": "demo-story-event-han",
+        "date": "2026-09-29",
+        "title": "请韩晓梅看试用邀请邮件",
+        "description": "韩晓梅看了邀请草稿，建议把记录方式写清楚：默认做文字笔记，需要录屏时另问本人。首轮用团队准备的虚构会议记录，不要求大家提供私人文件。",
+        "category": "career",
+        "scope": "note",
+        "personIds": [
+          "person-self",
+          "demo-v2-person-han"
+        ],
+        "sourceIds": [
+          "demo-story-source-han"
+        ],
+        "platform": "email"
+      },
+      {
+        "id": "demo-story-event-pilot",
+        "date": "2026-09-29",
+        "title": "和小组确认节后的试用安排",
+        "description": "小组商量好 10 月 8 日下午先看版本，9 日再联系具体时段。每场 30 分钟，中间留 15 分钟记笔记。试用的虚构材料由梁佳准备。",
+        "category": "career",
+        "scope": "note",
+        "personIds": [
+          "person-qiao",
+          "demo-v2-person-liang",
+          "demo-v2-person-he",
+          "person-self",
+          "demo-v2-person-xu",
+          "demo-v2-person-wu"
+        ],
+        "sourceIds": [
+          "demo-story-source-pilot"
+        ],
+        "platform": "feishu"
+      },
+      {
+        "id": "demo-story-event-recovery",
+        "date": "2026-09-29",
+        "title": "一起排查报价单被旧版本覆盖",
+        "description": "徐静的报价单保存后又被旧文件覆盖，配送日期从周三变回了周二。沈杰准备加版本号检查，叶涛修改未保存提示。我会留着徐静的原文件继续复测。",
+        "category": "career",
+        "scope": "note",
+        "personIds": [
+          "demo-v2-person-xu",
+          "demo-v2-person-shen",
+          "demo-v2-person-ye",
+          "person-self"
+        ],
+        "sourceIds": [
+          "demo-story-source-recovery"
+        ],
+        "platform": "feishu"
+      },
+      {
+        "id": "demo-story-event-privacy",
+        "date": "2026-09-29",
+        "title": "和同事确认试用记录的说明",
+        "description": "和韩晓梅、唐丽、梁佳把试用说明整理成一页，写明默认记笔记，录屏需要另问。试用只用选定的虚构材料，随安装包一起准备。",
+        "category": "career",
+        "scope": "note",
+        "personIds": [
+          "demo-v2-person-han",
+          "demo-v2-person-tang",
+          "demo-v2-person-liang",
+          "person-self"
+        ],
+        "sourceIds": [
+          "demo-story-source-privacy"
+        ],
+        "platform": "feishu"
+      },
+      {
+        "id": "demo-story-event-design",
+        "date": "2026-09-30",
+        "title": "检查文件名显示和保存提示",
+        "description": "今天检查了窄窗口里的长文件名，现在能显示两行。保存成功的提示要等接口实际返回；关掉还没保存的文稿后，草稿也能保留下来。",
+        "category": "career",
+        "scope": "note",
+        "personIds": [
+          "person-chen",
+          "demo-v2-person-ye",
+          "demo-v2-person-tang",
+          "person-self"
+        ],
+        "sourceIds": [
+          "demo-story-source-design"
+        ],
+        "platform": "feishu"
+      },
+      {
+        "id": "demo-story-event-cost",
+        "date": "2026-09-30",
+        "title": "和同事核对下一轮试用预算",
+        "description": "和何志强、邱志明核对了用量。截至 9 月 29 日，实际支出是 680 元。下一轮试用预计 480 元，调试预计 240 元，另外留 400 元给失败后的重跑。这些还是计划费用，没有计入已支出。",
+        "category": "career",
+        "scope": "note",
+        "personIds": [
+          "demo-v2-person-he",
+          "person-self",
+          "demo-v2-person-qiu"
+        ],
+        "sourceIds": [
+          "demo-story-source-cost"
+        ],
+        "platform": "feishu"
+      },
+      {
+        "id": "demo-story-event-alumni",
+        "date": "2026-09-28",
+        "title": "和王磊、李娜聊国庆安排",
+        "description": "和王磊暂约 10 月 3 日 15:00 在紫金港附近吃面，面馆等我到杭州再定。李娜这次留在上海过节，我答应在 10 月 10 日前寄出她要的生日照片。",
+        "category": "relationship",
+        "scope": "note",
+        "personIds": [
+          "person-xuan",
+          "person-self",
+          "demo-v2-person-song"
+        ],
+        "sourceIds": [
+          "demo-story-source-alumni"
+        ],
+        "platform": "wechat"
+      },
+      {
+        "id": "demo-story-event-family",
+        "date": "2026-09-29",
+        "title": "在家人群里确认回杭州的安排",
+        "description": "家里先按我 10 月 2 日中午到准备片儿川，车次还没定，10 月 1 日再发准确时间。妹妹 2 日晚上回来，我们约好 4 日晚上四个人在家吃饭，不去西湖。",
+        "category": "life",
+        "scope": "note",
+        "personIds": [
+          "demo-v2-person-du",
+          "person-self",
+          "demo-v2-person-lin",
+          "demo-v2-person-jiang"
+        ],
+        "sourceIds": [
+          "demo-story-source-family"
+        ],
+        "platform": "wechat"
+      },
+      {
+        "id": "demo-story-event-running",
+        "date": "2026-09-27",
+        "title": "和朋友确认奥森跑步的安排",
+        "description": "约了 9 月 27 日 16:00 在奥森南园南门集合。我和魏鹏先跑 5 公里，周琳想走 3 公里，高远带了相机，等跑完再拍照。",
+        "category": "life",
+        "scope": "note",
+        "personIds": [
+          "demo-v2-person-wei",
+          "person-self",
+          "demo-v2-person-zhou",
+          "demo-v2-person-gao"
+        ],
+        "sourceIds": [
+          "demo-story-source-running"
+        ],
+        "platform": "wechat"
+      },
+      {
+        "id": "demo-story-event-photos",
+        "date": "2026-09-30",
+        "title": "确定青岛相册的选片和顺序",
+        "description": "和高远、李娜选好了相册的 12 张照片，保留车窗、早餐合照和灰色海面，去掉重复的建筑照片。李娜的生日照用同一份早餐合照文件，另洗一张六寸的。",
+        "category": "life",
+        "scope": "note",
+        "personIds": [
+          "person-self",
+          "demo-v2-person-gao",
+          "demo-v2-person-song"
+        ],
+        "sourceIds": [
+          "demo-story-source-photos"
+        ],
+        "platform": "discord"
+      }
+    ]
+  },
+  "portraits": {
+    "person-self": [
+      {
+        "kind": "identity",
+        "statement": "万叶，杭州人，现居北京海淀，在月之暗面做产品工程师。",
+        "sourceIds": [
+          "source-exhibition",
+          "demo-life-v3-biography"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "person-self-portrait-1"
+      },
+      {
+        "kind": "background",
+        "statement": "2016年进入浙江大学软件工程专业，2020年6月毕业；王磊是隔壁寝室的同学，李娜是社团认识的朋友。",
+        "sourceIds": [
+          "demo-life-v3-biography"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "person-self-portrait-2"
+      },
+      {
+        "kind": "experience",
+        "statement": "2020年7月去北京做飞书前端，2023年3月换到月之暗面；2022年搬进现在的出租屋。",
+        "sourceIds": [
+          "demo-life-v3-biography"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "person-self-portrait-3"
+      },
+      {
+        "kind": "preference",
+        "statement": "长消息先给结论；费用放算法；给同事和朋友拟消息要像日常说话，先留草稿。",
+        "sourceIds": [
+          "source-feedback"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "person-self-portrait-4"
+      },
+      {
+        "kind": "goal",
+        "statement": "计划10月2日至5日回杭州，车票未买；3日15:00约王磊，4日14:00暂约刘老师，4日晚和家人吃饭。",
+        "sourceIds": [
+          "demo-v2-source-chat-du",
+          "source-chat",
+          "demo-v2-source-chat-lu",
+          "demo-story-source-family"
+        ],
+        "status": "candidate",
+        "privacy": "private",
+        "id": "person-self-portrait-5"
+      },
+      {
+        "kind": "boundary",
+        "statement": "工作台模型调用预算2000元，截至9月29日实际花680元；没有提前约好的事不安排假期加班。",
+        "sourceIds": [
+          "source-exhibition",
+          "source-feedback"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "person-self-portrait-6"
+      },
+      {
+        "kind": "preference",
+        "statement": "周日16:00通常去奥森南园南门跑步；与父母约了周日21:00打电话。",
+        "sourceIds": [
+          "demo-life-v3-biography",
+          "demo-v2-source-chat-wei"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "person-self-portrait-7"
+      },
+      {
+        "kind": "note",
+        "statement": "国庆前多次提出少排活动、按时收工；这一阶段可能更愿意把已答应的事做好，再增加新安排。",
+        "sourceIds": [
+          "source-feedback",
+          "demo-v2-source-chat-zhou",
+          "demo-story-source-family"
+        ],
+        "status": "inferred",
+        "privacy": "private",
+        "id": "person-self-portrait-8"
+      }
+    ],
+    "person-xuan": [
+      {
+        "kind": "background",
+        "statement": "2016年在浙江大学与万叶相识，现在杭州做阿里云后端。",
+        "sourceIds": [
+          "source-chat"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "person-xuan-portrait-1"
+      },
+      {
+        "kind": "goal",
+        "statement": "10月3日15:00暂约紫金港附近吃面；上午陪母亲复查，具体面馆待定。",
+        "sourceIds": [
+          "source-chat"
+        ],
+        "status": "candidate",
+        "privacy": "private",
+        "id": "person-xuan-portrait-2"
+      },
+      {
+        "kind": "preference",
+        "statement": "这次见面希望不带电脑，不把吃饭变成产品讨论。",
+        "sourceIds": [
+          "source-chat"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "person-xuan-portrait-3"
+      }
+    ],
+    "person-qiao": [
+      {
+        "kind": "identity",
+        "statement": "同组产品经理，和万叶一起安排工作台试用。",
+        "sourceIds": [
+          "source-exhibition"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "person-qiao-portrait-1"
+      },
+      {
+        "kind": "goal",
+        "statement": "9月30日15:00看二十分钟版本，16:00要去接孩子。",
+        "sourceIds": [
+          "demo-story-source-qiao"
+        ],
+        "status": "candidate",
+        "privacy": "private",
+        "id": "person-qiao-portrait-2"
+      },
+      {
+        "kind": "note",
+        "statement": "八号看完版本再联系试用者，不在国庆催人。",
+        "sourceIds": [
+          "demo-story-source-qiao"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "person-qiao-portrait-3"
+      }
+    ],
+    "person-chen": [
+      {
+        "kind": "identity",
+        "statement": "同组产品设计师，通勤从昌平坐地铁。",
+        "sourceIds": [
+          "demo-v2-source-community",
+          "source-exhibition"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "person-chen-portrait-1"
+      },
+      {
+        "kind": "experience",
+        "statement": "9月28日指出三份会议记录标题被截断、难以区分，并要求显示日期。",
+        "sourceIds": [
+          "demo-story-source-chen"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "person-chen-portrait-2"
+      },
+      {
+        "kind": "preference",
+        "statement": "想拿原来那三份文件再试，不能用短标题的空文档代替。",
+        "sourceIds": [
+          "demo-story-source-chen"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "person-chen-portrait-3"
+      }
+    ],
+    "demo-v2-person-lu": [
+      {
+        "kind": "background",
+        "statement": "浙江大学软件工程教师，指导过万叶毕业项目。",
+        "sourceIds": [
+          "demo-v2-source-community"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "demo-v2-person-lu-portrait-1"
+      },
+      {
+        "kind": "goal",
+        "statement": "10月4日14:00暂约在紫金港东门附近喝茶，3日再确认店名。",
+        "sourceIds": [
+          "demo-v2-source-chat-lu"
+        ],
+        "status": "candidate",
+        "privacy": "private",
+        "id": "demo-v2-person-lu-portrait-2"
+      },
+      {
+        "kind": "preference",
+        "statement": "不太喝冰的，见面不必准备工作汇报。",
+        "sourceIds": [
+          "demo-v2-source-chat-lu"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "demo-v2-person-lu-portrait-3"
+      }
+    ],
+    "demo-v2-person-song": [
+      {
+        "kind": "background",
+        "statement": "浙大同学，在上海做内容产品，10月18日生日。",
+        "sourceIds": [
+          "demo-v2-source-community",
+          "demo-v2-source-chat-song"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "demo-v2-person-song-portrait-1"
+      },
+      {
+        "kind": "preference",
+        "statement": "不想收摆件或相框，想要青岛早餐店那张六寸合照，豆浆杯要保留。",
+        "sourceIds": [
+          "demo-v2-source-chat-song",
+          "demo-story-source-photos"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "demo-v2-person-song-portrait-2"
+      },
+      {
+        "kind": "goal",
+        "statement": "照片寄工作室，地址尚待发送；万叶想10日前寄出。",
+        "sourceIds": [
+          "demo-v2-source-chat-song"
+        ],
+        "status": "candidate",
+        "privacy": "private",
+        "id": "demo-v2-person-song-portrait-3"
+      }
+    ],
+    "demo-v2-person-he": [
+      {
+        "kind": "identity",
+        "statement": "同组算法工程师，负责模型调用评测。",
+        "sourceIds": [
+          "demo-v2-source-community"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "demo-v2-person-he-portrait-1"
+      },
+      {
+        "kind": "experience",
+        "statement": "核对出A07、A12、A18、A21因超时重复调用；完成次数去重，但两次费用都计入。",
+        "sourceIds": [
+          "demo-v2-source-chat-he"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "demo-v2-person-he-portrait-2"
+      },
+      {
+        "kind": "goal",
+        "statement": "下一批先跑十条，先查清工具返回与模型卡住的区别。",
+        "sourceIds": [
+          "demo-v2-source-chat-he"
+        ],
+        "status": "candidate",
+        "privacy": "private",
+        "id": "demo-v2-person-he-portrait-3"
+      }
+    ],
+    "demo-v2-person-xu": [
+      {
+        "kind": "identity",
+        "statement": "测试工程师，报问题会附原文件和录屏。",
+        "sourceIds": [
+          "demo-v2-source-community",
+          "demo-v2-source-chat-xu"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "demo-v2-person-xu-portrait-1"
+      },
+      {
+        "kind": "experience",
+        "statement": "把报价单配送日期改成周三、保存后重开，又变回周二。",
+        "sourceIds": [
+          "demo-v2-source-chat-xu"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "demo-v2-person-xu-portrait-2"
+      },
+      {
+        "kind": "preference",
+        "statement": "修复后仍用同一份报价单检查，不换成空白文档。",
+        "sourceIds": [
+          "demo-v2-source-chat-xu"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "demo-v2-person-xu-portrait-3"
+      }
+    ],
+    "demo-v2-person-tang": [
+      {
+        "kind": "identity",
+        "statement": "同组交互设计师，常和万叶下楼买咖啡。",
+        "sourceIds": [
+          "demo-v2-source-community"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "demo-v2-person-tang-portrait-1"
+      },
+      {
+        "kind": "preference",
+        "statement": "9月24日点热拿铁、不加糖；这是当次选择，未确认是长期口味。",
+        "sourceIds": [
+          "demo-v2-source-chat-tang"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "demo-v2-person-tang-portrait-2"
+      },
+      {
+        "kind": "goal",
+        "statement": "两点看一处修改，14:30有会，只有半小时。",
+        "sourceIds": [
+          "demo-v2-source-chat-tang"
+        ],
+        "status": "candidate",
+        "privacy": "private",
+        "id": "demo-v2-person-tang-portrait-3"
+      }
+    ],
+    "demo-v2-person-shen": [
+      {
+        "kind": "identity",
+        "statement": "后端工程师，与万叶配合修文件覆盖问题。",
+        "sourceIds": [
+          "demo-v2-source-community"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "demo-v2-person-shen-portrait-1"
+      },
+      {
+        "kind": "boundary",
+        "statement": "10月2日至4日在老家，网络不稳定；非紧急问题节后处理。",
+        "sourceIds": [
+          "demo-v2-source-chat-shen"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "demo-v2-person-shen-portrait-2"
+      },
+      {
+        "kind": "preference",
+        "statement": "服务问题一次给任务编号、发生时间和诊断信息，避免只说“又不行了”。",
+        "sourceIds": [
+          "demo-v2-source-chat-shen"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "demo-v2-person-shen-portrait-3"
+      }
+    ],
+    "demo-v2-person-zhao": [
+      {
+        "kind": "background",
+        "statement": "杭州高中班主任，教数学，最近换手机暂时用短信联系。",
+        "sourceIds": [
+          "demo-v2-source-community",
+          "demo-v2-source-chat-zhao"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "demo-v2-person-zhao-portrait-1"
+      },
+      {
+        "kind": "note",
+        "statement": "最近不太爬楼，每天在小区走一圈；聊天提到的身体情况没有医学判断。",
+        "sourceIds": [
+          "demo-v2-source-chat-zhao"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "demo-v2-person-zhao-portrait-2"
+      },
+      {
+        "kind": "goal",
+        "statement": "10月4日陪外孙，不必这次专程约见。",
+        "sourceIds": [
+          "demo-v2-source-chat-zhao"
+        ],
+        "status": "candidate",
+        "privacy": "private",
+        "id": "demo-v2-person-zhao-portrait-3"
+      }
+    ],
+    "demo-v2-person-zhou": [
+      {
+        "kind": "background",
+        "statement": "高中同学，现在北京做用户体验研究，帮万叶看过租房合同。",
+        "sourceIds": [
+          "demo-v2-source-community",
+          "demo-life-v3-biography"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "demo-v2-person-zhou-portrait-1"
+      },
+      {
+        "kind": "experience",
+        "statement": "提醒先拍水槽接口、找房东维修；别因一次漏水马上决定搬家。",
+        "sourceIds": [
+          "demo-v2-source-chat-zhou"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "demo-v2-person-zhou-portrait-2"
+      },
+      {
+        "kind": "goal",
+        "statement": "节后想到万叶家吃饭，带水果，具体日期未定。",
+        "sourceIds": [
+          "demo-v2-source-chat-zhou"
+        ],
+        "status": "candidate",
+        "privacy": "private",
+        "id": "demo-v2-person-zhou-portrait-3"
+      }
+    ],
+    "demo-v2-person-wu": [
+      {
+        "kind": "identity",
+        "statement": "产品运营，维护试用名单。",
+        "sourceIds": [
+          "demo-v2-source-community"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "demo-v2-person-wu-portrait-1"
+      },
+      {
+        "kind": "goal",
+        "statement": "八名候选者中五人有意向、三人未回复，具体时段零人确认。",
+        "sourceIds": [
+          "demo-v2-source-chat-wu"
+        ],
+        "status": "candidate",
+        "privacy": "private",
+        "id": "demo-v2-person-wu-portrait-2"
+      },
+      {
+        "kind": "preference",
+        "statement": "每场三十分钟，中间隔十五分钟，先给一份准备好的虚构材料。",
+        "sourceIds": [
+          "demo-v2-source-chat-wu"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "demo-v2-person-wu-portrait-3"
+      }
+    ],
+    "demo-v2-person-gao": [
+      {
+        "kind": "identity",
+        "statement": "北京的数据工程师，摄影伙伴，经常在摄影Discord群交流。",
+        "sourceIds": [
+          "demo-v2-source-community"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "demo-v2-person-gao-portrait-1"
+      },
+      {
+        "kind": "experience",
+        "statement": "2026年8月15日至16日与万叶、李娜去青岛。",
+        "sourceIds": [
+          "demo-life-v3-biography"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "demo-v2-person-gao-portrait-2"
+      },
+      {
+        "kind": "preference",
+        "statement": "先选十二张再修图，不强行统一滤镜；这批打印别开自动美化。",
+        "sourceIds": [
+          "demo-v2-source-chat-gao",
+          "demo-story-source-photos"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "demo-v2-person-gao-portrait-3"
+      }
+    ],
+    "demo-v2-person-ye": [
+      {
+        "kind": "identity",
+        "statement": "前端工程师，配合万叶改文件列表和保存状态。",
+        "sourceIds": [
+          "demo-v2-source-community"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "demo-v2-person-ye-portrait-1"
+      },
+      {
+        "kind": "preference",
+        "statement": "不吃香菜，午饭常去楼下面馆。",
+        "sourceIds": [
+          "demo-v2-source-chat-ye"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "demo-v2-person-ye-portrait-2"
+      },
+      {
+        "kind": "experience",
+        "statement": "把长文件名改成最多两行，日期单独显示，在窄窗口下也能区分三份文稿。",
+        "sourceIds": [
+          "demo-v2-source-chat-ye",
+          "demo-story-source-design"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "demo-v2-person-ye-portrait-3"
+      }
+    ],
+    "demo-v2-person-liang": [
+      {
+        "kind": "identity",
+        "statement": "用户研究员，整理了五次访谈原话。",
+        "sourceIds": [
+          "demo-v2-source-community",
+          "demo-v2-source-chat-liang"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "demo-v2-person-liang-portrait-1"
+      },
+      {
+        "kind": "note",
+        "statement": "两位受访者只看过视频；“找昨天的结果”和“继续任务”暂不合并成一个需求。",
+        "sourceIds": [
+          "demo-v2-source-chat-liang"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "demo-v2-person-liang-portrait-2"
+      },
+      {
+        "kind": "goal",
+        "statement": "十九条反馈仍需按人去重，暂不拿来计算总体比例。",
+        "sourceIds": [
+          "demo-v2-source-chat-liang"
+        ],
+        "status": "candidate",
+        "privacy": "private",
+        "id": "demo-v2-person-liang-portrait-3"
+      }
+    ],
+    "demo-v2-person-qiu": [
+      {
+        "kind": "identity",
+        "statement": "工程负责人，安排放假前的工作。",
+        "sourceIds": [
+          "demo-v2-source-community"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "demo-v2-person-qiu-portrait-1"
+      },
+      {
+        "kind": "preference",
+        "statement": "放假前先修已列的三个问题，新工具接入节后再看。",
+        "sourceIds": [
+          "demo-story-source-qiu"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "demo-v2-person-qiu-portrait-2"
+      },
+      {
+        "kind": "note",
+        "statement": "知道万叶三十号19:00有水槽维修，支持按时收工。",
+        "sourceIds": [
+          "demo-story-source-qiu"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "demo-v2-person-qiu-portrait-3"
+      }
+    ],
+    "demo-v2-person-wei": [
+      {
+        "kind": "background",
+        "statement": "北京的朋友和跑步伙伴，2024年5月开始和万叶约奥森。",
+        "sourceIds": [
+          "demo-v2-source-community",
+          "demo-life-v3-biography"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "demo-v2-person-wei-portrait-1"
+      },
+      {
+        "kind": "goal",
+        "statement": "9月27日16:00在南园南门见，先跑五公里，雨天群里取消。",
+        "sourceIds": [
+          "demo-v2-source-chat-wei"
+        ],
+        "status": "candidate",
+        "privacy": "private",
+        "id": "demo-v2-person-wei-portrait-2"
+      },
+      {
+        "kind": "note",
+        "statement": "最近新鞋磨脚，想慢点跑，不追配速。",
+        "sourceIds": [
+          "demo-v2-source-chat-wei"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "demo-v2-person-wei-portrait-3"
+      }
+    ],
+    "demo-v2-person-du": [
+      {
+        "kind": "identity",
+        "statement": "母亲，住杭州，喜欢逛菜市场和种花。",
+        "sourceIds": [
+          "demo-v2-source-community"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "demo-v2-person-du-portrait-1"
+      },
+      {
+        "kind": "preference",
+        "statement": "这次回家不用礼物和一桌菜，先吃面、休息。",
+        "sourceIds": [
+          "demo-v2-source-chat-du"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "demo-v2-person-du-portrait-2"
+      },
+      {
+        "kind": "goal",
+        "statement": "等万叶10月1日发准确车次；婷婷2日晚上也回家。",
+        "sourceIds": [
+          "demo-v2-source-chat-du"
+        ],
+        "status": "candidate",
+        "privacy": "private",
+        "id": "demo-v2-person-du-portrait-3"
+      }
+    ],
+    "demo-v2-person-lin": [
+      {
+        "kind": "identity",
+        "statement": "父亲，住杭州，喜欢做饭、散步和看球。",
+        "sourceIds": [
+          "demo-v2-source-community"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "demo-v2-person-lin-portrait-1"
+      },
+      {
+        "kind": "preference",
+        "statement": "明确不要五百元外套；希望在小区旁河道走平路，不去西湖挤人。",
+        "sourceIds": [
+          "demo-v2-source-chat-lin"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "demo-v2-person-lin-portrait-2"
+      },
+      {
+        "kind": "goal",
+        "statement": "万叶若2日中午到，准备片儿川；到站时间待车票确认。",
+        "sourceIds": [
+          "demo-v2-source-chat-lin"
+        ],
+        "status": "candidate",
+        "privacy": "private",
+        "id": "demo-v2-person-lin-portrait-3"
+      }
+    ],
+    "demo-v2-person-jiang": [
+      {
+        "kind": "identity",
+        "statement": "妹妹，在杭州读大学，负责摄影社活动报名。",
+        "sourceIds": [
+          "demo-v2-source-community"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "demo-v2-person-jiang-portrait-1"
+      },
+      {
+        "kind": "goal",
+        "statement": "10月16日14:00—16:00手机摄影活动，20个名额，10日20:00截止，11日群里发名单。",
+        "sourceIds": [
+          "demo-v2-source-chat-jiang"
+        ],
+        "status": "candidate",
+        "privacy": "private",
+        "id": "demo-v2-person-jiang-portrait-2"
+      },
+      {
+        "kind": "note",
+        "statement": "晴天西操场集合，下雨学生活动中心204，只带手机即可。",
+        "sourceIds": [
+          "demo-v2-source-chat-jiang"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "demo-v2-person-jiang-portrait-3"
+      }
+    ],
+    "demo-v2-person-han": [
+      {
+        "kind": "identity",
+        "statement": "同事，负责隐私与法务，帮团队看试用邀请。",
+        "sourceIds": [
+          "demo-v2-source-community"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "demo-v2-person-han-portrait-1"
+      },
+      {
+        "kind": "preference",
+        "statement": "说明要具体写录屏还是笔记；不录屏也能参加，保留时间未定就先不发。",
+        "sourceIds": [
+          "demo-story-source-han"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "demo-v2-person-han-portrait-2"
+      },
+      {
+        "kind": "note",
+        "statement": "希望看完整邮件和附件，不只看单独改过的一句话。",
+        "sourceIds": [
+          "demo-story-source-han"
+        ],
+        "status": "confirmed",
+        "privacy": "private",
+        "id": "demo-v2-person-han-portrait-3"
+      }
+    ]
+  }
+}

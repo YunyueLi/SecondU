@@ -4,17 +4,18 @@
 @media(max-width:600px){.connector-card{grid-template-columns:34px minmax(0,1fr);gap:10px}.connector-card-actions{grid-column:2}.connector-icon{width:34px;height:34px}.connector-card-bottom{grid-column:1/-1}}
 
 .connector-directory-tabs{display:flex;gap:24px;border-bottom:1px solid var(--color-border-subtle);margin-top:17px}
-.connector-directory-tabs>button{display:flex;align-items:center;gap:7px;background:none;border:0;border-bottom:2px solid transparent;border-radius:0;padding:11px 0 12px;color:var(--color-text-secondary);font-size:var(--hither-font-label,14px);cursor:pointer}
+.connector-directory-tabs>button{display:inline-flex;align-items:baseline;gap:8px;background:none;border:0;border-bottom:2px solid transparent;border-radius:0;padding:11px 0 12px;color:var(--color-text-secondary);font-size:var(--hither-font-label,14px);line-height:20px;cursor:pointer;white-space:nowrap}
 .connector-directory-tabs>button[aria-selected=true]{color:var(--color-text);border-bottom-color:var(--color-text);font-weight:550}
-.connector-directory-tabs>button>span{font-size:var(--hither-font-meta,12px);min-width:18px;text-align:center}
-.connector-directory-filters{display:flex;flex-wrap:wrap;gap:3px;margin:16px 0 20px}
-.connector-directory-filters button{font-size:var(--hither-font-meta,12px);padding-inline:9px}
+.connector-tab-label{line-height:20px}
+.connector-tab-count{font-size:var(--hither-font-caption,13px);line-height:20px;font-weight:400;font-variant-numeric:tabular-nums;color:var(--color-text-secondary)}
+.connector-directory-filters{display:flex;flex-wrap:nowrap;gap:3px;margin:14px 0 16px;overflow-x:auto;scrollbar-width:thin;padding-bottom:2px}
+.connector-directory-filters button{font-size:var(--hither-font-meta,12px);padding-inline:9px;flex:none;white-space:nowrap}
 .connector-service-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.connector-service-card{display:flex;flex-direction:column;gap:12px;min-width:0;text-align:left;padding:17px 16px;background:var(--color-surface);border:1px solid var(--color-border-subtle);border-radius:12px;cursor:pointer;transition:background .12s,border-color .12s}
+.connector-service-card{display:flex;flex-direction:column;gap:8px;min-width:0;text-align:left;padding:12px 14px;background:var(--color-surface);border:1px solid var(--color-border-subtle);border-radius:12px;cursor:pointer;transition:background .12s,border-color .12s}
 .connector-service-card:hover{background:var(--color-surface-secondary);border-color:var(--color-border)}
 .connector-service-card:focus-visible,.connector-directory-tabs>button:focus-visible,.connector-detail-existing button:focus-visible,.connector-local-options button:focus-visible{outline:2px solid var(--color-text);outline-offset:3px}
 .connector-service-card-top{display:flex;align-items:center;gap:12px;min-width:0;width:100%}
-.connector-service-card-top>span:not(.connector-service-icon){display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.connector-service-card-top>span:not(.connector-service-icon){display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
 .connector-service-card-top strong{font-size:var(--hither-font-label,14px);line-height:1.5;font-weight:550;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .connector-service-card-top small{display:flex;align-items:center;gap:4px;color:var(--color-text-secondary);font-size:var(--hither-font-meta,12px);line-height:1.4}
 .connector-service-card-top>svg{width:14px;height:14px;flex-shrink:0;color:var(--color-text-secondary)}
@@ -23,7 +24,7 @@
 .connector-service-icon img,.connector-service-icon svg{width:23px;height:23px;object-fit:contain}
 .connector-service-icon>span{font-weight:650;font-size:20px;letter-spacing:-.05em}
 [data-theme=dark] .connector-service-icon.is-monochrome img,:root.dark .connector-service-icon.is-monochrome img{filter:invert(1)}
-.connector-service-card p{margin:0;color:var(--color-text-secondary);font-size:var(--hither-font-caption,13px);line-height:1.7;min-height:44px}
+.connector-service-card p{margin:0;color:var(--color-text-secondary);font-size:var(--hither-font-caption,13px);line-height:1.7;overflow-wrap:anywhere}
 .connector-local-section{margin-top:27px}.connector-local-section>h3{font-size:var(--hither-font-label,14px);font-weight:550;margin:0 0 12px}
 .connector-local-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 .connector-local-options button{display:flex;align-items:center;gap:12px;min-width:0;padding:15px 13px;border:1px solid var(--color-border-subtle);border-radius:10px;background:none;cursor:pointer;text-align:left}

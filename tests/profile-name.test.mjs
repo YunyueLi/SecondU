@@ -17,8 +17,14 @@ test('optional English name is stored, retained by unrelated profile updates, cl
  assert.equal(saveProfile(store,{englishName:''}).englishName,undefined);assert.equal(store.meta('profile').name,'万叶');
  saveProfile(store,{englishName:'Caspian'});assert.equal(saveProfile(store,{englishName:null}).englishName,undefined);
 });
-test('locale display chooses only an explicit English preference and never modifies canonical evidence',()=>{
- const profile={name:'万叶',englishName:'Caspian',description:'万叶保留在原始记录中'};const before=structuredClone(profile);
+test('only fictional demo profiles use an English display name without modifying canonical evidence',()=>{
+ const profile={name:'万叶',englishName:'Caspian',description:'万叶保留在原始记录中',demo:true};const before=structuredClone(profile);
  assert.equal(displayProfileName(profile,'zh-CN'),'万叶');assert.equal(displayProfileName(profile,'en'),'Caspian');assert.deepEqual(profile,before);
  assert.equal(displayProfileName({name:'真实姓名'},'en'),'真实姓名');assert.equal(displayProfileName({name:'真实姓名',englishName:' '},'en'),'真实姓名');
+});
+test('real profiles retain the original name in every locale even when a legacy English field exists',()=>{
+ const profile={name:'真实姓名',englishName:'Legacy alias',demo:false};const before=structuredClone(profile);
+ for(const locale of ['zh-CN','en','fr'])assert.equal(displayProfileName(profile,locale),'真实姓名');
+ assert.equal(displayProfileName({name:'真实姓名',englishName:'Legacy alias'},'en'),'真实姓名');
+ assert.deepEqual(profile,before);
 });

@@ -1,68 +1,130 @@
+<p align="center"><img src="public/brand/secondu-mark.svg" width="72" height="72" alt="SecondU"></p>
+
 # SecondU
 
-一个运行在自己电脑上的个人 Agent 桌面工作台。核心是把可追溯、可纠正的个人认知用于具体任务，再将执行中的反馈回到认知中。模型和电脑均可由用户自行选择；当前实现先完成本机桌面端。
+**SecondU is an agent product built around a personal digital twin. It continuously develops an understanding of a person’s background, experiences, preferences, goals, relationships and real circumstances, carries that understanding across tasks, applications and devices, proactively helps with work and everyday life, and supports collaboration, social interaction and professional services. Specialist agents, tools and execution environments participate as needed, within the user’s authorization.**
 
-评审可先阅读 [开发过程与迭代记录](docs/DEVELOPMENT.md)，了解从首版到当前工作树的问题、取舍、实际改动与验证边界，再查看各阶段验收证据。
+Three priorities express the product’s value:
 
-## 开始使用
+- Reduce repeated input of personal background and judgments already made.
+- Let complete multimodal context flow continuously across devices and situations.
+- Distribute authorized, appropriately de-identified personal expertise to support agent-to-agent collaboration, social interaction and transactions.
 
-需要 Node.js 22.13 或更新版本。首次安装后运行：
+These priorities do not limit the complete product scope. The [product definition](docs/PRODUCT.md) describes that direction; the runnable prototype’s implementation, actual acceptance and future plans are recorded separately. The complete vision is not a statement that every capability has shipped.
+
+[中文](README.zh-CN.md) · [Quick start](QUICKSTART.md) · [Product walkthrough](docs/PROTOTYPE.md) · [Roadmap](docs/ROADMAP.md) · [Website](https://yunyueli.github.io/SecondU/) · [Development record](docs/DEVELOPMENT.md)
+
+> **Runnable prototype.** The source includes fictional examples and locally testable workflows. It is not a production service or a promise that every provider, remote computer or external account has been verified. Website publication and downloadable releases have their own deployment status.
+
+![SecondU desktop workspace with fictional Chinese example data](website/screenshots/workspace.png)
+
+*The fictional example space. A visible model name is a configuration choice, not a live execution claim.*
+
+## Start with the example
+
+Use Node.js **22.18 or newer**; CI targets Node 22 on Linux and macOS. The runtime minimum is 22.13, but the tests import TypeScript directly and need type stripping enabled on older Node releases.
 
 ```sh
-npm install
+git clone https://github.com/YunyueLi/SecondU.git
+cd SecondU
+npm ci
 npm run build
 npm start
 ```
 
-在浏览器打开 <http://127.0.0.1:58645>。原生桌面窗口运行 `npm run desktop`；macOS 本地应用包通过 `npm run desktop:package` 生成在 `out/SecondU.app`。应用包仅做本地临时签名，尚未进行 Apple 公证或公开分发。
+Open [localhost:58645](http://127.0.0.1:58645) and choose an example space. No model key is needed to browse it. Chinese and English examples have separately authored fictional people, relationships and projects. Your personal space is stored separately.
 
-开发时在两个终端分别运行 `npm run server` 和 `npm run dev`，界面位于 <http://127.0.0.1:58644>。
+The prebuilt macOS bundle targets **Apple Silicon (arm64), macOS 13+**, and includes its Node runtime. Node.js and npm are needed only when running or building from source. Release assets are listed on the [Releases page](https://github.com/YunyueLi/SecondU/releases).
 
-初始空间中的林遥、朋友、对话、经历和社区声音展均为**虚构示例**。这里没有私人数字分身库的原始记录。
+For an Electron window, run `npm run desktop` after building. The Electron 44 desktop requires macOS 13 or newer. macOS packaging is available through `npm run desktop:package`; it produces a locally signed `out/SecondU.app`, without Apple notarization. See [platform requirements and setup](QUICKSTART.md).
 
-## 可以做什么
+## What you can explore
 
-- **理解个人背景**：查看来源、社交对话、人生时间轴、人物关系图、偏好与约束、当前目标；区分已确认、推断和待确认，保留认知修订历史。
-- **推进任务**：选取个人背景和助理角色，创建持久任务，在单聊或群聊内查看过程、编辑成果，确认或拒绝单次操作，途中补充、停止、继续。空闲时可以切换模型和数字分身模式，下一轮采用保存后的设置。
-- **编辑交付**：在对话旁预览成果，保存修改，查看历史版本，下载文件；并发修改通过版本冲突保护。
-- **创建自己的助理**：从 12 类、108 个职责预设中搜索和选择，预览后调整成自己的助理；也可自行创建，或扫描名片与现实场景链接。推荐背景不会自动写入共享名片，用户主动填写的工作说明会被分享。角色数量与工具能力的区别见 [专家库及官方对照口径](docs/revision-02/EXPERT-LIBRARY.md)。
-- **在本机持续工作**：按时间或资料导入事件触发任务。只有本机服务运行时才会执行；睡眠、关机不会假装云端在线。
-- **选择模型**：管理多个模型连接，为助理指定独立连接或继承默认设置。预设包含 Kimi、DeepSeek、OpenAI、OpenRouter、Anthropic、Gemini、Qwen、GLM、豆包、MiniMax，并支持自定义兼容服务；预设入口不代表真实服务已完成验证。协议与限制见 [模型预设](docs/MODEL-PRESETS.md)。
-- **按需连接资料和工具**：本机资料库与项目连接器支持只读搜索和读取；自定义 MCP 可在单次批准后调用工具。连接器按会话选取，停用后不进入新一轮；当前没有第三方账号 OAuth 自动连接。详见 [连接器](docs/CONNECTORS.md)。
-- **统一的组件体系**：直接使用 OpenAI 官方 Apps SDK UI，内置真实组件目录，支持明暗主题。
+| Area | What the product exposes |
+| --- | --- |
+| Personal context | Sources, conversations, a life timeline, relationships, goals and constraints. Confirmed facts, inferences and pending corrections stay distinct. |
+| Conversations | Persistent tasks, quoted replies, reactions and message revision branches. Editing a sent question preserves the original conversation. |
+| Agent teams | Reusable specialist roles, a designated lead and on-demand workers. The execution tree records dispatched work and its state separately from the member list. |
+| Deliverables | Markdown, syntax-highlighted code, CSV/TSV, static HTML/SVG, images and PDF previews. DOCX/XLSX/PPTX use optional local LibreOffice conversion; original bytes and saved versions remain downloadable. |
+| Local work | Project workspaces, model connections, tool approvals and schedules while the local service is running. |
+| Review | An in-app component catalogue, onboarding demonstrations and an updateable development timeline linked to the underlying records. |
 
-## 两种运行方式
+A useful first review: inspect the example person's context, open an existing task, compare two artifact versions, then inspect a team's members and execution tree. The [walkthrough](docs/PROTOTYPE.md) gives a concrete path and a small task for testing real execution.
 
-**本地演示**不调用模型。它用确定性规则生成明确标注的工作稿，实际读取选中的认知版本，实际创建本机文件，并经过同一套审批、任务、成果编辑与持久流程。它用来验证交互和状态，不是模型智能的测评。
+<details>
+<summary>See a team run and the review workspace</summary>
 
-**真实模型**使用已安装的 Codex CLI app-server。缺少密钥时停在“需要模型配置”，不会静默降级为演示。当前验证包含真实 Codex 握手、操作系统沙箱和本地协议服务的工具往返；真实云提供方的回答质量、兼容性、费用和延迟仍需分别验证。
+![A lead and one specialist completing a synthetic arithmetic task](website/screenshots/team-execution.png)
 
-数字分身开启时，每轮重新读取当前已确认的个人认知与个人介绍；关闭后停止注入，并清除旧模型会话绑定。当前自动检索仍是有界的词项匹配与基础身份／偏好选择，尚未实现对人物关系、经历、目标的综合语义检索。手机、眼镜、邮箱、电话和支付页面为明确标记的 Dev 交互，屏幕共享仅在本机预览。
+A real minimal team run using a synthetic arithmetic task: one lead, one checking specialist and persisted results. This demonstrates that narrow execution path, not general team performance.
 
-Codex 可通过 `HITHER_CODEX_BIN` 指定路径，或安装到 `PATH`。每个任务使用独立工作区、独立 Codex 状态目录；不读取现有 Codex 账户登录态、个人技能或其他应用的密钥。
+![An updateable build timeline with implementation and review evidence](website/screenshots/development.png)
 
-## 数据与权限
+The development reader links actual build records and their verification boundaries.
 
-开发版数据默认在项目 `.hither/`，打包应用沿用原有 `~/Library/Application Support/Hither/` 用户数据目录；可用 `HITHER_DATA_DIR` 指定。已有同版本、同一资料目录的本机服务时，桌面窗口复用该服务；目录身份不同则使用 58646–58649 的空闲端口，不混入开发资料。SQLite 保留任务、来源、认知与成果历史，文件落在每个任务自己的工作区。退出原生应用会停止它启动的服务；关闭窗口在 macOS 保持应用后台运行。
+</details>
 
-API 只监听 `127.0.0.1`，拒绝跨站写入。密钥单独保存在权限为 `0600` 的本机文件中，和提供方地址绑定，不出现在前端回读、导出、命令参数或工具子进程环境中。本机明文保存不等于系统钥匙串加密。选中的个人认知及其关联来源的有限摘录，在真实模型执行时会发送给你配置的提供方。
+## How it fits together
 
-认知以状态区分已确认、推断和待确认；任务反馈先保存为候选，不自动成为长期事实。原始来源不会被覆盖。扫描二维码只解析角色资料，不执行其中的内容。单次批准不授予后续操作权限。重启会将未完成的执行标记为中断，并使旧审批失效，不自动重放未知副作用。
+```mermaid
+flowchart LR
+  S[Sources and feedback] --> C[Inspectable personal context]
+  C --> T[Conversation and task]
+  T --> L[Lead agent]
+  L --> W[On-demand specialists]
+  W --> L
+  L --> A[Files and saved versions]
+  T --> R[Codex app-server]
+  R --> P[Configured model and approved tools]
+  A --> F[User review and corrections]
+  F --> C
+```
 
-## 项目资料
+React and the official **OpenAI Apps SDK UI** form the interface. A loopback Node service owns SQLite records, task workspaces and revision history. The installed **Codex CLI app-server** supplies the execution harness. SecondU owns the personal-context assembly, task lifecycle, team orchestration and file experience. [Architecture and evidence](docs/HARNESS.md) · [API](docs/API.md)
 
-- [产品边界与验收目标](docs/PRODUCT.md)
-- [设计来源与采用理由](docs/RESEARCH.md)
-- [桌面设计规范与验收矩阵](docs/DESIGN.md)
-- [接口与实体](docs/API.md)
-- [跨设备协议预留](docs/DEVICES.md)
-- [当前迭代验收记录](docs/revision-02/ACCEPTANCE.md)
-- [首版验收记录](docs/ACCEPTANCE.md)
+## Real execution and current limits
 
-`npm test` 运行状态、持久、权限与运行时测试。`HITHER_TEST_REAL_CODEX=1 npm test` 包含本机 Codex 沙箱验证，不发出付费模型请求。
+Browsing examples does not invoke a model. Real tasks require a local Codex CLI and a model connection configured with your own credentials in personal space. Missing configuration remains visible; the product does not substitute a simulated answer. Provider presets are configuration shortcuts, not compatibility certifications.
 
-产品名称于 2026-09-30 由 Hither 更新为 **SecondU**，可见品牌、字标、欢迎文字与本地应用包同步更新。原品牌素材及源文件备份、兼容标识和回退方法见 [品牌与兼容性](docs/BRANDING.md)。当前未公开发布仓库、应用或私人数据。
+The current evidence includes a small real DeepSeek team run with one delegated specialist; its scope and limitations are recorded in the [prototype notes](docs/PROTOTYPE.md). Automated tests use synthetic data and local protocol fixtures. Those tests do not measure reasoning quality or certify every provider.
 
-## 许可
+- Scheduled work needs the local service to stay online. There is no cloud wakeup while the computer sleeps.
+- Remote-computer transport and persistence have local integration tests; a user's real SSH host still needs independent acceptance.
+- Office previews are read-only local conversions and need LibreOffice. HTML/SVG previews disable scripts and external resources; arbitrary TSX is not executed as a preview.
+- Phone, glasses, marketplace, Dating and some communication/resource surfaces are labelled development examples. They do not establish device synchronization, live calling, payment or external-account connectivity.
+- Native acceptance currently targets macOS. Linux CI covers source build and local tests; Windows and signed distribution are not claimed as verified.
 
-本项目代码采用 MIT。OpenAI Apps SDK UI 采用 MIT；Codex CLI 与 OpenJarvis 采用 Apache-2.0，后者为研究参考，没有捆绑其代码或运行时。第三方依赖各自保留其许可。SecondU 与这些项目无官方从属关系。
+## Data and permissions
+
+Development data lives in ignored `.hither/`; the desktop application retains the compatibility directory `~/Library/Application Support/Hither/`. `HITHER_DATA_DIR` selects another location. The desktop reuses a backend only when its data-space identity **and runtime build fingerprint** match.
+
+The API listens on `127.0.0.1` and rejects cross-site writes. Credentials are saved in a separate local file with restricted permissions; this is **not OS keychain encryption**. Selected context and bounded source excerpts are sent to the model provider when you run a real task. External connectors and remote computers have their own explicit data paths. Read [Security](SECURITY.md) before importing sensitive material or exposing a local service.
+
+The repository and its example fixtures must contain no private digital-twin records, credentials or personal runtime logs. The old **Hither** name remains in internal IDs, environment variables and data paths to preserve existing local state. [Brand compatibility](docs/BRANDING.md)
+
+## Develop and contribute
+
+```sh
+# In separate terminals:
+npm run server
+npm run dev
+
+# Verification:
+npm test
+npm run build
+```
+
+The development UI runs at [localhost:58644](http://127.0.0.1:58644) and proxies to port 58645. [Contributing](CONTRIBUTING.md) explains ownership, visual review and regression expectations. [Testing](docs/TESTING.md) distinguishes fixture tests, installed-runtime checks, provider calls and browser acceptance. CI never needs a model API key.
+
+| Read next | Purpose |
+| --- | --- |
+| [Product walkthrough](docs/PROTOTYPE.md) | Product thesis, review route, verified scope |
+| [Development](docs/DEVELOPMENT.md) / [Iteration](docs/ITERATION.md) | Decisions, corrections and evidence over time |
+| [Design](docs/DESIGN.md) / [Research](docs/RESEARCH.md) | Shared visual language and adopted references |
+| [Harness](docs/HARNESS.md) / [API](docs/API.md) | Implementation and state contracts |
+| [Changelog](CHANGELOG.md) | User-visible changes; unreleased work stays labelled |
+| [Security](SECURITY.md) / [Third-party notices](THIRD_PARTY_NOTICES.md) | Reporting, data boundaries and attribution |
+
+## License
+
+Project code is [MIT licensed](LICENSE). Third-party code, avatar artwork, brand marks and fonts retain their own licenses; see [Third-party notices](THIRD_PARTY_NOTICES.md). SecondU is independent of OpenAI, model providers and the referenced projects.

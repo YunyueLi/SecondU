@@ -22,7 +22,6 @@ export interface ModelPickerProps {
 }
 
 export function ModelPicker({settings,mode,onMode,onSettings,disabled=false,example=false,connections,defaultConnectionId,connectionId,onConnection,agentModels,onAgent}:ModelPickerProps) {
-  if(example||mode==='demo')return <span className="composer-example-label">{t('示例','Example')}</span>;
   const grouped=!!agentModels?.length;
   const selected=connections?.find(connection=>connection.id===(connectionId||defaultConnectionId))||settings;
   const label=grouped?t('按角色模型','Each agent’s model'):selected.model.trim()||t('尚未选择模型','No model selected');
@@ -33,7 +32,7 @@ export function ModelPicker({settings,mode,onMode,onSettings,disabled=false,exam
   const alternatives=connections?.filter(connection=>connection.id!==defaultConnectionId)||[];
   async function choose(next:string){
     if(!grouped&&onConnection){const updated=await onConnection(next==='default'?undefined:next);if(updated===false)return;}
-    await onMode('live');
+    if(!example)await onMode('live');
   }
   const connectionDetail=(connection:ProviderSettings)=>connection.hasKey?connection.model||t('尚未选择模型','No model selected'):t(`${connection.model||'未选择模型'}，待连接`,`${connection.model||'No model selected'} — not connected`);
   return <Menu><Menu.Trigger><Button color="secondary" variant="ghost" size="sm" className="composer-model-picker" disabled={disabled} title={label} aria-label={t(`选择模型，当前${label}`,`Choose model, currently ${label}`)}>

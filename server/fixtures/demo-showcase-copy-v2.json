@@ -1,0 +1,44 @@
+[
+  {
+    "collection": "tasks",
+    "id": "demo-showcase-task-launch",
+    "field": "title",
+    "from": "48 条反馈，下一版只做哪三件事？",
+    "to": "整理用户反馈，确定下一版的三个重点"
+  },
+  {
+    "collection": "tasks",
+    "id": "demo-showcase-task-family",
+    "field": "title",
+    "from": "把“去杭州玩”改成真正陪父母",
+    "to": "安排国庆回杭州陪父母的四天行程"
+  },
+  {
+    "collection": "tasks",
+    "id": "demo-showcase-task-demo-story",
+    "field": "title",
+    "from": "三分钟，让人看到 SecondU 为什么懂我",
+    "to": "准备一段三分钟的 SecondU 功能演示"
+  },
+  {
+    "collection": "tasks",
+    "id": "demo-showcase-task-weekly",
+    "field": "title",
+    "from": "这周别再塞满了，替我留住两个重点",
+    "to": "安排本周工作，优先完成发布和演示"
+  },
+  {
+    "collection": "tasks",
+    "id": "demo-showcase-task-review-brief",
+    "field": "title",
+    "from": "开会前，把大家分歧收敛成一个决定",
+    "to": "整理产品、工程和设计的意见，准备发布评审"
+  },
+  {
+    "collection": "tasks",
+    "id": "demo-showcase-task-personal-letter",
+    "field": "title",
+    "from": "把“最近在忙什么”写得像我",
+    "to": "给老同学写一段近况介绍"
+  }
+]

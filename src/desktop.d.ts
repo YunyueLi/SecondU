@@ -3,6 +3,11 @@ export {};
 declare global {
   interface Window {
     hitherDesktop?: {
+      platform?:string;
+      windowState?:{
+        get:()=>Promise<{platform:string;fullscreen:boolean}>;
+        onChange:(callback:(state:{platform:string;fullscreen:boolean})=>void)=>()=>void;
+      };
       chooseDirectory:()=>Promise<string|null>;
       setLanguage:(language:'zh-CN'|'en')=>Promise<void>;
       screenShare?: {status:()=>Promise<{

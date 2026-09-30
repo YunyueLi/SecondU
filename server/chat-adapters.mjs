@@ -1,5 +1,5 @@
 import {HttpError} from './store.mjs';
-export const chatPlatforms=['wechat','wecom','qq','feishu','dingtalk','slack','teams','telegram','discord','signal','line','messenger','imessage','instagram','whatsapp','generic'];
+export const chatPlatforms=['wechat','wecom','qq','feishu','dingtalk','slack','teams','telegram','discord','signal','line','messenger','imessage','instagram','whatsapp','email','sms','generic'];
 const fail=message=>{throw new HttpError(400,message,'invalid_chat_export');};
 const ident=(value,field)=>{if(!['string','number'].includes(typeof value)||!String(value).trim()||String(value).length>200)fail(`${field} 缺失或无效。`);return String(value);};
 const epoch=(value,unit=1000)=>{if(!/^\d+(?:\.\d+)?$/.test(String(value)))fail('平台消息时间戳无效。');const ms=Number(value)*unit;if(!Number.isFinite(ms)||ms<0||ms>8640000000000000)fail('平台消息时间戳无效。');return new Date(ms).toISOString();};

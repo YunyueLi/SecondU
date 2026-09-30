@@ -14,7 +14,7 @@ import { Slider } from '@openai/apps-sdk-ui/components/Slider';
 import { Menu } from '@openai/apps-sdk-ui/components/Menu';
 import { Search, Plus, Minus, Expand, Settings, UserAdd, SidebarRight, CloseBold, ArrowRight, ChevronDown } from '@openai/apps-sdk-ui/components/Icon';
 import type { Bootstrap, Person, Relationship } from '../../shared/contracts';
-import { Empty } from '../components';
+import { Empty, PageHeading, PageToolbar } from '../components';
 import { PersonForm, RelationshipForm } from './RecordForms';
 import { displayRole } from './display';
 import { PersonInspector } from './PersonInspector';
@@ -171,7 +171,7 @@ if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','+','=','-','Home','Escape'].
 
   return <div className={`network-workspace ${detailsOpen?'has-details':''}`}>
     <header className="network-header">
-      <div className="network-heading"><h1>{t('关系图谱','Relationships')}</h1><span>{t(`${data.people.length.toLocaleString()} 位人物`,`${data.people.length.toLocaleString()} people`)}</span>    <div className="network-toolbar">
+      <PageHeading title={t('关系图谱','Relationships')} description={t('查看人物联系、关系分组与关联记录。','Explore connections, groups and related records.')} compactDescription={t('查看人物联系与关联记录。','Explore people and connections.')} illustration="/art/page-connections-v2.png" action={<div className="network-toolbar">
       {!readOnly&&<Menu><Menu.Trigger><Button color="secondary" variant="ghost" size="sm" uniform aria-label={t('添加人物或关系','Add a person or relationship')} title={t('添加','Add')}><Plus/></Button></Menu.Trigger><Menu.Content align="end" minWidth={180}><Menu.Item onSelect={()=>setPersonForm({})}><UserAdd/>{t('添加人物','Add person')}</Menu.Item><Menu.Item disabled={data.people.length<2} onSelect={()=>setRelationshipForm({})}><Plus/>{t('添加关系','Add relationship')}</Menu.Item></Menu.Content></Menu>}
       {selected&&<Button color="secondary" variant="ghost" size="sm" uniform aria-label={detailsOpen?t('收起人物资料','Hide person details'):t('展开人物资料','Show person details')} title={t('人物资料','Person details')} aria-expanded={detailsOpen} onClick={()=>setDetailsOpen(!detailsOpen)}><SidebarRight/></Button>}
       <Popover open={settingsOpen} onOpenChange={setSettingsOpen}><Popover.Trigger><Button color="secondary" variant="ghost" size="sm" uniform aria-label={t('图谱设置','Graph settings')} title={t('图谱设置','Graph settings')}><Settings/>{(query||filter!=='all'||!showOrphans)&&<span className="network-filter-dot"/>}</Button></Popover.Trigger><Popover.Content align="end" side="bottom" width={300} minWidth="auto"><div className="network-settings">
@@ -181,21 +181,17 @@ if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','+','=','-','Home','Escape'].
         <details><summary>{t('显示','Display')}</summary><div className="network-setting-fields"><Slider label={t('文字显示阈值','Text fade threshold')} value={labelThreshold} min={0} max={2} step={.05} onChange={setLabelThreshold}/><Slider label={t('节点大小','Node size')} value={nodeSize} min={.5} max={2} step={.1} onChange={setNodeSize}/><Slider label={t('连线粗细','Link thickness')} value={linkWidth} min={.3} max={2} step={.1} onChange={setLinkWidth}/><Checkbox label={t('显示关系名称','Show relationship labels')} checked={showLabels} onCheckedChange={setShowLabels}/></div></details>
         <details><summary>{t('力学','Forces')}</summary><div className="network-setting-fields"><Slider label={t('向心力','Center force')} value={forces.center} min={0} max={100} step={1} onChange={center=>setForces(current=>({...current,center}))}/><Slider label={t('排斥力','Repel force')} value={forces.repel} min={0} max={600} step={10} onChange={repel=>setForces(current=>({...current,repel}))}/><Slider label={t('连线引力','Link force')} value={forces.link} min={0} max={100} step={1} onChange={link=>setForces(current=>({...current,link}))}/><Slider label={t('连线距离','Link distance')} value={forces.distance} min={30} max={250} step={5} onChange={distance=>setForces(current=>({...current,distance}))}/></div></details>
       </div></Popover.Content></Popover>
-    </div>
-</div>
-      <div className="network-filter-bar">
+    </div>} />
+      <PageToolbar className="network-filter-bar" label={t('关系图谱筛选','Relationship filters')}>
         <div className="network-search" onBlur={event=>{if(!event.currentTarget.contains(event.relatedTarget as Node|null))setSearchOpen(false);}}>
           <Input variant="outline" size="md" startAdornment={<Search/>} aria-label={t('搜索人物','Search people')} placeholder={t('搜索姓名、角色或背景','Search name, role, or context')} value={query} onFocus={()=>setSearchOpen(true)} onChange={event=>{setQuery(event.target.value);setFocused(undefined);setSearchOpen(true);}} onKeyDown={event=>{if(event.key==='Escape'){setQuery('');setSearchOpen(false);}if(event.key==='Enter'&&matches.length){select(matches[0].id,true);setSearchOpen(false);}}}/>
           {searchOpen&&query.trim()&&<div className="network-search-results" role="list" aria-label={t('匹配人物','Matching people')}><p>{t(`${matches.length} 位匹配人物`,`${matches.length} matching people`)}</p>{matches.slice(0,8).map(record=><button key={record.id} type="button" onClick={()=>{select(record.id,true);setSearchOpen(false);}}><span className="network-search-avatar">{record.name.slice(0,1)}</span><span><strong>{record.name}</strong><small>{displayRole(record.role)}</small></span><ArrowRight/></button>)}{matches.length===0&&<span>{t('试试其他姓名或调整筛选','Try another name or change the filters')}</span>}</div>}
         </div>
         <Menu><Menu.Trigger><Button color="secondary" variant="ghost" size="sm" pill={false} className="network-source-filter" aria-label={t('资料范围','Source scope')}><span>{source==='all'?t('全部人物','All people'):t(graphIndex.sources.find(item=>item.id===source)?.label||'',graphIndex.sources.find(item=>item.id===source)?.labelEn||'')}</span><ChevronDown/></Button></Menu.Trigger><Menu.Content align="end" minWidth={208}><Menu.RadioGroup value={source} onChange={value=>{setSource(value);setFocused(undefined);}}><Menu.RadioItem value="all">{t('全部人物','All people')}<small className="network-menu-count">{data.people.length}</small></Menu.RadioItem>{graphIndex.sources.filter(item=>item.count>0).map(item=><Menu.RadioItem key={item.id} value={item.id}>{t(item.label,item.labelEn)}<small className="network-menu-count">{item.count}</small></Menu.RadioItem>)}</Menu.RadioGroup></Menu.Content></Menu>
         <Menu><Menu.Trigger><Button color="secondary" variant="ghost" size="sm" pill={false} className="network-source-filter network-circle-filter" aria-label={t('人物圈层','People circles')}><span>{circle==='all'?t('所有圈层','All circles'):circle}</span><ChevronDown/></Button></Menu.Trigger><Menu.Content align="end" minWidth={220} maxHeight={320}><Menu.RadioGroup value={circle} onChange={value=>{setCircle(value);setFocused(undefined);}}><Menu.RadioItem value="all">{t('所有圈层','All circles')}</Menu.RadioItem>{graphIndex.circles.map(item=><Menu.RadioItem key={item.id} value={item.id}>{item.label}<small className="network-menu-count">{item.count}</small></Menu.RadioItem>)}</Menu.RadioGroup></Menu.Content></Menu>
-      </div>
-      <div className="network-category-bar" aria-label={t('关系分类','Relationship categories')}>
-        <button type="button" className={category==='all'?'is-active':''} aria-pressed={category==='all'} onClick={()=>{setCategory('all');setFocused(undefined);}}>{t('全部关系','All relationships')}</button>
-        {graphIndex.categories.filter(item=>item.count>0).map(item=><button key={item.id} type="button" className={category===item.id?'is-active':''} aria-pressed={category===item.id} onClick={()=>{setCategory(item.id);setFocused(undefined);}}><i style={{background:item.color}}/>{t(item.label,item.labelEn)}</button>)}
-        {(query||filter!=='all'||category!=='all'||circle!=='all'||source!=='all'||focused||!showOrphans)&&<button type="button" className="network-clear" onClick={clearFilters}>{t('重置','Reset')}</button>}
-      </div>
+        <Select size="md" block={false} value={category} options={[{value:'all',label:t('全部关系','All relationships')},...graphIndex.categories.filter(item=>item.count>0).map(item=>({value:item.id,label:t(item.label,item.labelEn)}))]} onChange={option=>{setCategory(option.value);setFocused(undefined);}} aria-label={t('关系分类','Relationship category')}/>
+        {(query||filter!=='all'||category!=='all'||circle!=='all'||source!=='all'||focused||!showOrphans)&&<Button color="secondary" variant="ghost" size="sm" onClick={clearFilters}>{t('重置','Reset')}</Button>}
+      </PageToolbar>
     </header>
     <div className={`network-body ${detailsOpen?'has-details':''}`}>
       <div className={`network-stage ${settling&&reducedMotion()?'is-settling':''}`} ref={stage}>
@@ -217,7 +213,7 @@ if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','+','=','-','Home','Escape'].
       </div>
 
     </div>
-      {detailsOpen&&<PersonInspector person={person} people={data.people} relationships={data.relationships} focused={focused} readOnly={readOnly} refs={refs} onClose={()=>setDetailsOpen(false)} onSelect={id=>{clearFilters();setFocused(id);select(id,true);}} onFocus={()=>person&&setFocused(focused===person.id?undefined:person.id)} onEditPerson={person=>setPersonForm({person})} onEditRelationship={relationship=>setRelationshipForm({relationship})}/>}
+      {detailsOpen&&<PersonInspector person={person} isSelf={isSelf} people={data.people} relationships={data.relationships} focused={focused} readOnly={readOnly} refs={refs} onClose={()=>setDetailsOpen(false)} onSelect={id=>{clearFilters();setFocused(id);select(id,true);}} onFocus={()=>person&&setFocused(focused===person.id?undefined:person.id)} onEditPerson={person=>setPersonForm({person})} onEditRelationship={relationship=>setRelationshipForm({relationship})}/>}
     {!readOnly&&personForm&&<PersonForm person={personForm.person} data={data} onClose={()=>setPersonForm(undefined)} onSaved={onRefresh}/>}
     {!readOnly&&relationshipForm&&<RelationshipForm relationship={relationshipForm.relationship} data={data} onClose={()=>setRelationshipForm(undefined)} onSaved={onRefresh}/>}
   </div>;

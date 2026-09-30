@@ -1,0 +1,1990 @@
+{
+  "version": 2,
+  "reviewed": {
+    "chineseTimeline": 43,
+    "americanTimeline": 40,
+    "computerActivity": 4
+  },
+  "changes": [
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "event-idea",
+      "field": "title",
+      "from": "假期前先把文稿找不到的问题改掉",
+      "to": "讨论假期前的工作台修改"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "event-idea",
+      "field": "description",
+      "from": "9 月 28 日与张敏、陈伟碰头，留下保存、找回文稿和按钮说明三件事；9 月 30 日下午三点再看。",
+      "to": "下午和张敏、陈伟开了半小时会。假期前先处理文稿保存、文件查找和按钮说明，约好 9 月 30 日 15:00 再看修改后的版本。"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "event-chat",
+      "field": "title",
+      "from": "和王磊暂约三号下午吃面",
+      "to": "和王磊约国庆吃饭"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "event-chat",
+      "field": "description",
+      "from": "王磊上午陪母亲复查，下午两点后有空。先约 15:00 在紫金港附近见，面馆还没选。",
+      "to": "暂定 10 月 3 日 15:00 在紫金港附近和王磊吃面。他上午要陪母亲复查，14:00 以后有空。具体去哪家面馆还没选。"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "event-review",
+      "field": "title",
+      "from": "告诉助手：假期不要替我排满",
+      "to": "告诉助手我的日程和消息习惯"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "event-review",
+      "field": "description",
+      "from": "消息先写成草稿；上午尽量不排会，假期安排以已经答应家人和朋友的时间为先。",
+      "to": "给助手补了几条要求：写好的消息先留作草稿，工作日上午尽量不排会。假期先看已经答应家人和朋友的安排，不用把空闲时间都填满。"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-v2-event-lu",
+      "field": "title",
+      "from": "给刘老师回邮件，问国庆是否方便见面",
+      "to": "和刘老师约国庆见面"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-v2-event-lu",
+      "field": "description",
+      "from": "刘老师十月四日下午在杭州，愿意在紫金港东门附近喝茶；万叶先把时间记下，三号再发消息确认。",
+      "to": "给刘老师回了邮件，暂约 10 月 4 日下午在紫金港东门附近喝茶。他那天下午在杭州，具体店名等 10 月 3 日再确认。"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-v2-event-song",
+      "field": "title",
+      "from": "李娜十八号过生日，想要一张洗出来的照片",
+      "to": "准备李娜的生日照片"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-v2-event-song",
+      "field": "description",
+      "from": "李娜生日是十月十八日，不想收摆件，想要青岛早餐店那张合照。万叶答应找原图，寄到她工作室；地址等她发。",
+      "to": "李娜 10 月 18 日过生日，想要青岛早餐店的那张合照，不想收摆件。我答应找原图，洗好后寄到她的工作室；地址还在等她发。"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-v2-event-he",
+      "field": "title",
+      "from": "下午那批调用有四条重复跑了",
+      "to": "核对重复调用的费用"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-v2-event-he",
+      "field": "description",
+      "from": "何志强发现四条任务因超时重试被重复计入；先核对任务编号，再报这批费用。下一批先跑十条。",
+      "to": "何志强查到 4 条任务在超时重试时被重复调用。成功的任务数需要去重，实际账单仍包含两次调用的费用。先核对这 4 个编号，下一批只跑 10 条。"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-v2-event-xu",
+      "field": "title",
+      "from": "关掉预览后，刚改的那段又没了",
+      "to": "排查报价单保存后内容丢失"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-v2-event-xu",
+      "field": "description",
+      "from": "徐静在报价整理任务里改了配送日期，关掉预览再开后恢复成旧文字；万叶先修这个问题，9 月 25 日午饭前给她新版本。",
+      "to": "徐静把报价单里的配送日期从周二改成周三，点过保存，重新打开却又变回旧文字。我答应先查这个问题，9 月 25 日午饭前给她新版本再试。"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-v2-event-tang",
+      "field": "title",
+      "from": "中午下楼买咖啡",
+      "to": "和唐丽买咖啡，顺便看录屏"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-v2-event-tang",
+      "field": "description",
+      "from": "唐丽想在咖啡店等取餐时看二十秒录屏；她下午两点半有会，只能聊到两点。",
+      "to": "中午约唐丽下楼买咖啡，想趁等取餐时给她看一段 20 秒的录屏。她 14:30 有会，我们另外约了 14:00 看修改，只讨论文件关闭和保存的问题。"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-v2-event-shen",
+      "field": "title",
+      "from": "假期谁看服务，先说好",
+      "to": "和沈杰确认假期的服务安排"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-v2-event-shen",
+      "field": "description",
+      "from": "沈杰十月二日至四日在老家网络不稳定；万叶国庆不跑新批量任务，非阻塞问题等八号回来处理。",
+      "to": "沈杰 10 月 2 日至 4 日回老家，网络不太稳定。国庆期间先不跑新的批量任务，非阻塞问题等 10 月 8 日回来再处理。"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-v2-event-zhao",
+      "field": "title",
+      "from": "赵老师换手机后发来短信",
+      "to": "收到赵老师的新号码"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-v2-event-zhao",
+      "field": "description",
+      "from": "赵老师换手机暂时没登录微信，用短信问万叶是否回杭州；十月四日要陪外孙，不必专程过去。",
+      "to": "赵老师换了手机，微信还没登录，先用短信问我国庆是否回杭州。他 10 月 4 日要陪外孙，见面的事以后再约，这次不用专程过去。"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-v2-event-wu",
+      "field": "title",
+      "from": "八个候选人，时间一个还没定",
+      "to": "和吴婷核对试用名单"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-v2-event-wu",
+      "field": "description",
+      "from": "吴婷手里的八人名单中五人愿意试，三人未回复；万叶希望每次约半小时，十月九日再统一联系具体时段。",
+      "to": "8 名候选人中，5 人说愿意试，3 人还没回复，具体时间都没定。我和吴婷商量每场约 30 分钟，等 10 月 9 日再联系大家确认时段。"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-v2-event-ye",
+      "field": "title",
+      "from": "午饭前把文件名显示全",
+      "to": "和叶涛修改文件列表"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-v2-event-ye",
+      "field": "description",
+      "from": "叶涛在窄窗口下把文件名折成两行，万叶午饭后接保存状态；两人十二点去楼下面馆。",
+      "to": "叶涛把窄窗口里的文件名改成最多显示两行，也补了日期。我午饭后接着处理保存状态。我们约了 12:00 去楼下吃面。"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-v2-event-liang",
+      "field": "title",
+      "from": "两句“找回来”，说的其实不是同一件事",
+      "to": "和梁佳核对访谈里的两种需求"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-v2-event-liang",
+      "field": "description",
+      "from": "梁佳提醒万叶，受访者有人只想找昨天的文稿，有人想接着跑剩下的任务；下次回访把两种情况分开问。",
+      "to": "梁佳提醒我，有人想找回昨天的文稿，有人想继续没做完的任务，这两件事要分开看。下次回访先让对方找文件，再问是否需要接着做。"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-v2-event-wei",
+      "field": "title",
+      "from": "周日约四点，跑五公里就收",
+      "to": "和魏鹏约周日跑步"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-v2-event-wei",
+      "field": "description",
+      "from": "魏鹏与万叶约 9 月 27 日 16:00 奥森南园南门，万叶想跑五公里，不追配速；下雨就在群里取消。",
+      "to": "和魏鹏约了 9 月 27 日 16:00 在奥森南园南门见。这次跑 5 公里，不追配速；如果下雨，就在群里取消。"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-v2-event-du",
+      "field": "title",
+      "from": "妈说回家别买一堆东西",
+      "to": "和妈妈确认回杭州的安排"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-v2-event-du",
+      "field": "description",
+      "from": "杜秀英让万叶不用带礼物，家里够吃；十月二日预计中午到杭州但车票还未买，到站时间一号再发。",
+      "to": "妈妈说家里吃的够了，不用再带礼物。我想买 10 月 2 日中午到杭州的车票，目前还没买到合适的，答应 10 月 1 日把到站时间发到家人群里。"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-v2-event-lin",
+      "field": "title",
+      "from": "父亲不想收礼物，只想一起吃面",
+      "to": "和爸爸商量回家后的安排"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-v2-event-lin",
+      "field": "description",
+      "from": "万建明明确说不用买那件五百元的外套；二号若中午到就做片儿川，散步去小区旁的河边平路。",
+      "to": "爸爸说不用买那件约 500 元的外套。如果 10 月 2 日中午到家，就一起吃片儿川。饭后想走走的话，去小区旁的河边平路就好。"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-v2-event-jiang",
+      "field": "title",
+      "from": "妹妹的摄影社报名页把时间写漏了",
+      "to": "帮妹妹补摄影活动的报名说明"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-v2-event-jiang",
+      "field": "description",
+      "from": "万婷婷为校摄影社准备十月十六日的手机摄影活动。报名页缺结束时间和雨天安排，名额二十人；十月十日前收报名。",
+      "to": "妹妹在准备摄影社 10 月 16 日的手机摄影活动，名额是 20 人。报名页还缺结束时间和雨天地点，这些要补上；报名到 10 月 10 日结束。"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-v2-event-zhou",
+      "field": "title",
+      "from": "修水槽约到周三晚上七点",
+      "to": "约好维修师傅上门修水槽"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-v2-event-zhou",
+      "field": "description",
+      "from": "周琳建议万叶给房东发水槽照片。房东已约维修师傅 9 月 30 日 19:00 上门，万叶下班后要直接回家；漏水修好后再谈十一月底续租。",
+      "to": "周琳让我把水槽漏水的照片发给房东。房东已经约了师傅 9 月 30 日 19:00 上门，那天我下班后要直接回家。11 月底是否续租，等这次修好后再谈。"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-v2-event-gao",
+      "field": "title",
+      "from": "青岛相册先不要加页",
+      "to": "和高远挑青岛相册的照片"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-v2-event-gao",
+      "field": "description",
+      "from": "高远和万叶在摄影 Discord 群里私聊选片。打印店报十二张六寸相纸 36 元，十八张 54 元；十月十日前要把李娜的生日照片挑出来。",
+      "to": "和高远在 Discord 上讨论选片，先按 12 张做相册，不加页。打印店的报价是 12 张六寸照片 36 元、18 张 54 元。李娜的生日照片要在 10 月 10 日前挑好。"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-v2-event-scope",
+      "field": "title",
+      "from": "三十号下午看完修改就收工",
+      "to": "确认明天下午的版本演示"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-v2-event-scope",
+      "field": "description",
+      "from": "张敏约 9 月 30 日 15:00 看二十分钟版本；七点维修师傅上门，万叶要准时回家。",
+      "to": "张敏约了 9 月 30 日 15:00 看版本，预计 20 分钟。当天 19:00 维修师傅要来修水槽，我得准时下班回家。"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-v2-event-quiet",
+      "field": "title",
+      "from": "周日奥森五公里",
+      "to": "记下周日奥森跑步的时间"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-v2-event-quiet",
+      "field": "description",
+      "from": "9 月 27 日 16:00 南园南门，跑五公里；下雨就在群里取消。",
+      "to": "9 月 27 日 16:00 在奥森南园南门集合，计划跑 5 公里。下雨的话，就在群里取消。"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-v2-event-permission",
+      "field": "title",
+      "from": "试用邀请留到节后发",
+      "to": "把试用邀请留到节后确认"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-v2-event-permission",
+      "field": "description",
+      "from": "吴婷先整理意向和空闲时间，八号看完版本，九号再联系具体时段。",
+      "to": "吴婷先整理候选人的意向和空闲时间。我们 10 月 8 日看完版本，再决定是否发邀请，10 月 9 日联系具体时段。"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-life-v3-study",
+      "field": "title",
+      "from": "在浙大读软件工程",
+      "to": "在浙江大学读软件工程"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-life-v3-study",
+      "field": "description",
+      "from": "2016 年从杭州家里搬到紫金港校区。王磊住隔壁寝室，李娜是社团认识的朋友。大四跟刘建国做校园活动报名系统，2020 年 6 月毕业。",
+      "to": "2016 年从杭州家里搬到紫金港校区，开始读软件工程。王磊住隔壁寝室，李娜是社团里认识的朋友。大四跟刘建国做校园活动报名系统，2020 年 6 月毕业。"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-life-v3-first-job",
+      "field": "title",
+      "from": "毕业后去北京工作",
+      "to": "毕业后到北京工作"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-life-v3-first-job",
+      "field": "description",
+      "from": "2020 年 7 月入职字节跳动，做飞书的前端。头一年租在公司附近，周末坐地铁四处逛；第一次过年买错方向的火车票，后来总提前一周和母亲核对。",
+      "to": "2020 年 7 月入职字节跳动，做飞书前端。第一年租在公司附近，周末常坐地铁出去逛。第一次过年买错了方向的火车票，后来总会提前一周和妈妈核对。"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-life-v3-move",
+      "field": "title",
+      "from": "搬到海淀，通勤缩到二十分钟",
+      "to": "搬到海淀的出租屋"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-life-v3-move",
+      "field": "description",
+      "from": "2022 年 3 月搬进现在的出租屋。周琳帮着看合同，魏鹏来搬书架。厨房小但能做饭；合同每年十一月底续，最近水槽开始漏水。",
+      "to": "2022 年 3 月搬进现在的房子，通勤大约 20 分钟。周琳帮忙看了合同，魏鹏来搬书架。厨房不大，但能做饭；租约每年 11 月底续，最近水槽有些漏水。"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-life-v3-volunteer",
+      "field": "title",
+      "from": "换到月之暗面做产品工程",
+      "to": "到月之暗面做产品工程"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-life-v3-volunteer",
+      "field": "description",
+      "from": "2023 年 3 月换工作，开始和张敏、陈伟一起做 Kimi 的产品。工作从写前端扩展到听用户访谈、做原型，再把反馈改进版本里。",
+      "to": "2023 年 3 月换到月之暗面，和张敏、陈伟一起做 Kimi。除了前端开发，也开始参加用户访谈、做原型，再根据反馈修改产品。"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-life-v3-running",
+      "field": "title",
+      "from": "和魏鹏约周日去奥森",
+      "to": "开始和魏鹏一起跑步"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-life-v3-running",
+      "field": "description",
+      "from": "2024 年 5 月体检后开始跑步，魏鹏拉他第一次去奥森。现在通常周日下午四点在南园南门见，跑五公里左右；状态不好就少跑一点。",
+      "to": "2024 年 5 月体检后开始跑步，第一次去奥森是魏鹏带我的。现在通常约在周日 16:00，南园南门见，跑 5 公里左右。状态不好时就少跑一点。"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-life-v3-boundaries",
+      "field": "title",
+      "from": "和家人约定周日晚上打电话",
+      "to": "和家人约好周日通电话"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-life-v3-boundaries",
+      "field": "description",
+      "from": "2025 年 11 月，父母说有时两星期等不到一个电话。后来和母亲约了周日晚上九点聊一会儿；忙到赶不上，会提前发消息。",
+      "to": "2025 年 11 月，爸妈说有时两周都等不到我的电话。后来和妈妈约了周日 21:00 聊一会儿，忙到赶不上时会提前发消息。"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-life-v3-workbench",
+      "field": "title",
+      "from": "开始准备工作台小范围试用",
+      "to": "接手桌面工作台原型"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-life-v3-workbench",
+      "field": "description",
+      "from": "2026 年 7 月接手一个桌面工作台原型，和梁佳做了五次访谈。十月十二日暂定请八个人试用；三人的回复还没收到，具体时段也没定。",
+      "to": "2026 年 7 月接手桌面工作台原型，和梁佳做了 5 次访谈。暂定 10 月 12 日请 8 人试用，其中 3 人还没回复，具体时段也没有定。"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-life-v3-photo-trip",
+      "field": "title",
+      "from": "和高远去青岛过周末",
+      "to": "和高远、李娜去青岛过周末"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-life-v3-photo-trip",
+      "field": "description",
+      "from": "2026 年 8 月 15 日至 16 日，和高远坐火车去青岛，李娜从上海过来会合。在大学路吃早餐，沿海边走了一个下午。照片至今还没洗，答应给李娜寄早餐店的合照。",
+      "to": "8 月 15 日至 16 日，我和高远坐火车去青岛，李娜从上海过来会合。我们在大学路吃早餐，又沿海边走了一个下午。照片还没洗，答应给李娜寄早餐店的合照。"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-story-event-qiao",
+      "field": "title",
+      "from": "三十号下午，只看这三处修改",
+      "to": "和张敏确认假期前的演示"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-story-event-qiao",
+      "field": "description",
+      "from": "张敏把假期前的演示缩为保存文稿、找回文件和按钮说明；九月三十日 15:00 开二十分钟会，节后再联系试用者。",
+      "to": "和张敏约了 9 月 30 日 15:00 看版本，预计 20 分钟。这次看文稿保存、文件查找和按钮说明，试用邀请留到节后再联系。"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-story-event-chen",
+      "field": "title",
+      "from": "三份会议记录，名字不能长一样",
+      "to": "和陈伟检查同名文件的显示"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-story-event-chen",
+      "field": "description",
+      "from": "陈伟让万叶把最近修改时间放进文件列表；九月会议记录三份同名，光看截断标题难以区分。",
+      "to": "陈伟试用时遇到 3 份同名的 9 月会议记录，标题被截断后很难区分。他建议在列表里单独显示最近修改时间，我也会检查窄窗口下的标题。"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-story-event-qiu",
+      "field": "title",
+      "from": "放假前别再往这个版本加东西",
+      "to": "和邱志明确认假期前的修改范围"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-story-event-qiu",
+      "field": "description",
+      "from": "邱志明要求九月三十日只修已列出的三个问题，未排入的接入需求节后再看；若保存仍丢字，停止给候选者发安装包。",
+      "to": "邱志明让我在 9 月 30 日前先处理已经列出的 3 个问题，新提的工具接入需求节后再看。如果保存后仍会丢字，就先不给候选人发安装包。"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-story-event-han",
+      "field": "title",
+      "from": "邀请里删掉“全程录屏”",
+      "to": "请韩晓梅看试用邀请邮件"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-story-event-han",
+      "field": "description",
+      "from": "韩晓梅检查邀请邮件，建议默认只记笔记；愿意录屏的人再单独询问。首轮使用团队准备的虚构会议记录，不收私人文件。",
+      "to": "韩晓梅看了邀请草稿，建议把记录方式写清楚：默认做文字笔记，需要录屏时另问本人。首轮用团队准备的虚构会议记录，不要求大家提供私人文件。"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-story-event-pilot",
+      "field": "title",
+      "from": "八号回来再发邀请",
+      "to": "和小组确认节后的试用安排"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-story-event-pilot",
+      "field": "description",
+      "from": "小组确认十月八日下午先看版本，九日再约具体时段；每场三十分钟，中间留十五分钟。虚构材料由梁佳准备。",
+      "to": "小组商量好 10 月 8 日下午先看版本，9 日再联系具体时段。每场 30 分钟，中间留 15 分钟记笔记。试用的虚构材料由梁佳准备。"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-story-event-recovery",
+      "field": "title",
+      "from": "旧文件把周三又盖回周二了",
+      "to": "一起排查报价单被旧版本覆盖"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-story-event-recovery",
+      "field": "description",
+      "from": "徐静指出报价单日期被旧文件覆盖；沈杰补版本号检查，叶涛处理未保存提示，万叶沿用徐静的原文件复测。",
+      "to": "徐静的报价单保存后又被旧文件覆盖，配送日期从周三变回了周二。沈杰准备加版本号检查，叶涛修改未保存提示。我会留着徐静的原文件继续复测。"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-story-event-privacy",
+      "field": "title",
+      "from": "先问愿不愿意录屏",
+      "to": "和同事确认试用记录的说明"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-story-event-privacy",
+      "field": "description",
+      "from": "韩晓梅、唐丽和梁佳把邀请说明缩到一页：默认记笔记，录屏另问；选定的虚构材料随安装包一起准备。",
+      "to": "和韩晓梅、唐丽、梁佳把试用说明整理成一页，写明默认记笔记，录屏需要另问。试用只用选定的虚构材料，随安装包一起准备。"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-story-event-design",
+      "field": "title",
+      "from": "今天两点半，只看长文件名和保存",
+      "to": "检查文件名显示和保存提示"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-story-event-design",
+      "field": "description",
+      "from": "小窗口下文件名改为两行；保存成功提示要等实际返回，关闭未保存文稿会保留草稿。",
+      "to": "今天检查了窄窗口里的长文件名，现在能显示两行。保存成功的提示要等接口实际返回；关掉还没保存的文稿后，草稿也能保留下来。"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-story-event-cost",
+      "field": "title",
+      "from": "账上六百八，下一批最多七百二",
+      "to": "和同事核对下一轮试用预算"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-story-event-cost",
+      "field": "description",
+      "from": "截至九月二十九日实际支出 680 元。下一批用户试用估 480 元、调试估 240 元，另外留 400 元处理失败重跑；尚未花出的费用分别记录。",
+      "to": "和何志强、邱志明核对了用量。截至 9 月 29 日，实际支出是 680 元。下一轮试用预计 480 元，调试预计 240 元，另外留 400 元给失败后的重跑。这些还是计划费用，没有计入已支出。"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-story-event-alumni",
+      "field": "title",
+      "from": "国庆先吃面，上海下次再约",
+      "to": "和王磊、李娜聊国庆安排"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-story-event-alumni",
+      "field": "description",
+      "from": "王磊和万叶暂约十月三日 15:00 紫金港附近吃面；李娜留上海过节，生日照片十号前寄出。",
+      "to": "和王磊暂约 10 月 3 日 15:00 在紫金港附近吃面，面馆等我到杭州再定。李娜这次留在上海过节，我答应在 10 月 10 日前寄出她要的生日照片。"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-story-event-family",
+      "field": "title",
+      "from": "二号先按中午到，车次一号确认",
+      "to": "在家人群里确认回杭州的安排"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-story-event-family",
+      "field": "description",
+      "from": "家里先按万叶十月二日中午到准备片儿川；妹妹二号晚上回，四号晚上四个人一起在家吃饭，不去西湖挤人。",
+      "to": "家里先按我 10 月 2 日中午到准备片儿川，车次还没定，10 月 1 日再发准确时间。妹妹 2 日晚上回来，我们约好 4 日晚上四个人在家吃饭，不去西湖。"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-story-event-running",
+      "field": "title",
+      "from": "南园南门四点，别又走错",
+      "to": "和朋友确认奥森跑步的安排"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-story-event-running",
+      "field": "description",
+      "from": "9 月 27 日跑友约 16:00 奥森南园南门。魏鹏和万叶先跑五公里，周琳走三公里，高远结束后再拍照。",
+      "to": "约了 9 月 27 日 16:00 在奥森南园南门集合。我和魏鹏先跑 5 公里，周琳想走 3 公里，高远带了相机，等跑完再拍照。"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-story-event-photos",
+      "field": "title",
+      "from": "十二张照片按拍摄顺序排",
+      "to": "确定青岛相册的选片和顺序"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "events",
+      "id": "demo-story-event-photos",
+      "field": "description",
+      "from": "三人确定相册保留车窗、早餐合照和灰色海面，删除重复建筑；李娜生日那张单洗六寸，和相册共用同一批文件。",
+      "to": "和高远、李娜选好了相册的 12 张照片，保留车窗、早餐合照和灰色海面，去掉重复的建筑照片。李娜的生日照用同一份早餐合照文件，另洗一张六寸的。"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "sources",
+      "id": "source-exhibition",
+      "field": "title",
+      "from": "9 月 28 日工作台碰头会",
+      "to": "讨论假期前的工作台修改"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "sources",
+      "id": "source-chat",
+      "field": "title",
+      "from": "9 月 28 日，和王磊约国庆见面",
+      "to": "和王磊约国庆吃饭"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "sources",
+      "id": "source-feedback",
+      "field": "title",
+      "from": "万叶给助手留的几句话",
+      "to": "告诉助手我的日程和消息习惯"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "sources",
+      "id": "demo-v2-source-chat-lu",
+      "field": "title",
+      "from": "给刘老师回邮件，问国庆是否方便见面",
+      "to": "和刘老师约国庆见面"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "sources",
+      "id": "demo-v2-source-chat-song",
+      "field": "title",
+      "from": "李娜十八号过生日，想要一张洗出来的照片",
+      "to": "准备李娜的生日照片"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "sources",
+      "id": "demo-v2-source-chat-he",
+      "field": "title",
+      "from": "下午那批调用有四条重复跑了",
+      "to": "核对重复调用的费用"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "sources",
+      "id": "demo-v2-source-chat-xu",
+      "field": "title",
+      "from": "关掉预览后，刚改的那段又没了",
+      "to": "排查报价单保存后内容丢失"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "sources",
+      "id": "demo-v2-source-chat-tang",
+      "field": "title",
+      "from": "中午下楼买咖啡",
+      "to": "和唐丽买咖啡，顺便看录屏"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "sources",
+      "id": "demo-v2-source-chat-shen",
+      "field": "title",
+      "from": "假期谁看服务，先说好",
+      "to": "和沈杰确认假期的服务安排"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "sources",
+      "id": "demo-v2-source-chat-zhao",
+      "field": "title",
+      "from": "赵老师换手机后发来短信",
+      "to": "收到赵老师的新号码"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "sources",
+      "id": "demo-v2-source-chat-wu",
+      "field": "title",
+      "from": "八个候选人，时间一个还没定",
+      "to": "和吴婷核对试用名单"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "sources",
+      "id": "demo-v2-source-chat-ye",
+      "field": "title",
+      "from": "午饭前把文件名显示全",
+      "to": "和叶涛修改文件列表"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "sources",
+      "id": "demo-v2-source-chat-liang",
+      "field": "title",
+      "from": "两句“找回来”，说的其实不是同一件事",
+      "to": "和梁佳核对访谈里的两种需求"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "sources",
+      "id": "demo-v2-source-chat-wei",
+      "field": "title",
+      "from": "周日约四点，跑五公里就收",
+      "to": "和魏鹏约周日跑步"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "sources",
+      "id": "demo-v2-source-chat-du",
+      "field": "title",
+      "from": "妈说回家别买一堆东西",
+      "to": "和妈妈确认回杭州的安排"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "sources",
+      "id": "demo-v2-source-chat-lin",
+      "field": "title",
+      "from": "父亲不想收礼物，只想一起吃面",
+      "to": "和爸爸商量回家后的安排"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "sources",
+      "id": "demo-v2-source-chat-jiang",
+      "field": "title",
+      "from": "妹妹的摄影社报名页把时间写漏了",
+      "to": "帮妹妹补摄影活动的报名说明"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "sources",
+      "id": "demo-v2-source-chat-zhou",
+      "field": "title",
+      "from": "修水槽约到周三晚上七点",
+      "to": "约好维修师傅上门修水槽"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "sources",
+      "id": "demo-v2-source-chat-gao",
+      "field": "title",
+      "from": "青岛相册先不要加页",
+      "to": "和高远挑青岛相册的照片"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "sources",
+      "id": "demo-story-source-qiao",
+      "field": "title",
+      "from": "三十号下午，只看这三处修改",
+      "to": "和张敏确认假期前的演示"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "sources",
+      "id": "demo-story-source-chen",
+      "field": "title",
+      "from": "三份会议记录，名字不能长一样",
+      "to": "和陈伟检查同名文件的显示"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "sources",
+      "id": "demo-story-source-qiu",
+      "field": "title",
+      "from": "放假前别再往这个版本加东西",
+      "to": "和邱志明确认假期前的修改范围"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "sources",
+      "id": "demo-story-source-han",
+      "field": "title",
+      "from": "邀请里删掉“全程录屏”",
+      "to": "请韩晓梅看试用邀请邮件"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "sources",
+      "id": "demo-story-source-pilot",
+      "field": "title",
+      "from": "八号回来再发邀请",
+      "to": "和小组确认节后的试用安排"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "sources",
+      "id": "demo-story-source-recovery",
+      "field": "title",
+      "from": "旧文件把周三又盖回周二了",
+      "to": "一起排查报价单被旧版本覆盖"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "sources",
+      "id": "demo-story-source-privacy",
+      "field": "title",
+      "from": "先问愿不愿意录屏",
+      "to": "和同事确认试用记录的说明"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "sources",
+      "id": "demo-story-source-design",
+      "field": "title",
+      "from": "今天两点半，只看长文件名和保存",
+      "to": "检查文件名显示和保存提示"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "sources",
+      "id": "demo-story-source-cost",
+      "field": "title",
+      "from": "账上六百八，下一批最多七百二",
+      "to": "和同事核对下一轮试用预算"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "sources",
+      "id": "demo-story-source-alumni",
+      "field": "title",
+      "from": "国庆先吃面，上海下次再约",
+      "to": "和王磊、李娜聊国庆安排"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "sources",
+      "id": "demo-story-source-family",
+      "field": "title",
+      "from": "二号先按中午到，车次一号确认",
+      "to": "在家人群里确认回杭州的安排"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "sources",
+      "id": "demo-story-source-running",
+      "field": "title",
+      "from": "南园南门四点，别又走错",
+      "to": "和朋友确认奥森跑步的安排"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "sources",
+      "id": "demo-story-source-photos",
+      "field": "title",
+      "from": "十二张照片按拍摄顺序排",
+      "to": "确定青岛相册的选片和顺序"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "sources",
+      "id": "demo-life-v3-biography",
+      "field": "text",
+      "from": "万叶，杭州人，现居北京海淀。以下是本人记下的求学、工作与生活时间。\n\n2016-09 至 2020-06：在浙大读软件工程\n2016 年从杭州家里搬到紫金港校区。王磊住隔壁寝室，李娜是社团认识的朋友。大四跟刘建国做校园活动报名系统，2020 年 6 月毕业。\n\n2020-07 至 2023-02：毕业后去北京工作\n2020 年 7 月入职字节跳动，做飞书的前端。头一年租在公司附近，周末坐地铁四处逛；第一次过年买错方向的火车票，后来总提前一周和母亲核对。\n\n2022-03：搬到海淀，通勤缩到二十分钟\n2022 年 3 月搬进现在的出租屋。周琳帮着看合同，魏鹏来搬书架。厨房小但能做饭；合同每年十一月底续，最近水槽开始漏水。\n\n2023-03：换到月之暗面做产品工程\n2023 年 3 月换工作，开始和张敏、陈伟一起做 Kimi 的产品。工作从写前端扩展到听用户访谈、做原型，再把反馈改进版本里。\n\n2024-05：和魏鹏约周日去奥森\n2024 年 5 月体检后开始跑步，魏鹏拉他第一次去奥森。现在通常周日下午四点在南园南门见，跑五公里左右；状态不好就少跑一点。\n\n2025-11：和家人约定周日晚上打电话\n2025 年 11 月，父母说有时两星期等不到一个电话。后来和母亲约了周日晚上九点聊一会儿；忙到赶不上，会提前发消息。\n\n2026-07：开始准备工作台小范围试用\n2026 年 7 月接手一个桌面工作台原型，和梁佳做了五次访谈。十月十二日暂定请八个人试用；三人的回复还没收到，具体时段也没定。\n\n2026-08-16：和高远去青岛过周末\n2026 年 8 月 15 日至 16 日，和高远坐火车去青岛，李娜从上海过来会合。在大学路吃早餐，沿海边走了一个下午。照片至今还没洗，答应给李娜寄早餐店的合照。",
+      "to": "万叶，杭州人，现居北京海淀。以下是我记下的求学、工作与生活经历。\n\n2016-09 至 2020-06：在浙江大学读软件工程\n2016 年从杭州家里搬到紫金港校区，开始读软件工程。王磊住隔壁寝室，李娜是社团里认识的朋友。大四跟刘建国做校园活动报名系统，2020 年 6 月毕业。\n\n2020-07 至 2023-02：毕业后到北京工作\n2020 年 7 月入职字节跳动，做飞书前端。第一年租在公司附近，周末常坐地铁出去逛。第一次过年买错了方向的火车票，后来总会提前一周和妈妈核对。\n\n2022-03：搬到海淀的出租屋\n2022 年 3 月搬进现在的房子，通勤大约 20 分钟。周琳帮忙看了合同，魏鹏来搬书架。厨房不大，但能做饭；租约每年 11 月底续，最近水槽有些漏水。\n\n2023-03：到月之暗面做产品工程\n2023 年 3 月换到月之暗面，和张敏、陈伟一起做 Kimi。除了前端开发，也开始参加用户访谈、做原型，再根据反馈修改产品。\n\n2024-05：开始和魏鹏一起跑步\n2024 年 5 月体检后开始跑步，第一次去奥森是魏鹏带我的。现在通常约在周日 16:00，南园南门见，跑 5 公里左右。状态不好时就少跑一点。\n\n2025-11：和家人约好周日通电话\n2025 年 11 月，爸妈说有时两周都等不到我的电话。后来和妈妈约了周日 21:00 聊一会儿，忙到赶不上时会提前发消息。\n\n2026-07：接手桌面工作台原型\n2026 年 7 月接手桌面工作台原型，和梁佳做了 5 次访谈。暂定 10 月 12 日请 8 人试用，其中 3 人还没回复，具体时段也没有定。\n\n2026-08-16：和高远、李娜去青岛过周末\n8 月 15 日至 16 日，我和高远坐火车去青岛，李娜从上海过来会合。我们在大学路吃早餐，又沿海边走了一个下午。照片还没洗，答应给李娜寄早餐店的合照。"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "conversations",
+      "id": "demo-story-chat-cost",
+      "field": "messages",
+      "from": [
+        {
+          "id": "demo-story-message-cost-1",
+          "senderId": "demo-v2-person-he",
+          "content": "昨晚对完账了，累计六百八。那四条重复调用都算进去了。",
+          "time": "2026-09-30T01:00:00.000Z",
+          "sourceId": "demo-story-source-cost"
+        },
+        {
+          "id": "demo-story-message-cost-2",
+          "senderId": "person-self",
+          "content": "收到。下一批八人，每人三个任务、两轮，先按一次十块估。",
+          "time": "2026-09-30T01:01:00.000Z",
+          "sourceId": "demo-story-source-cost"
+        },
+        {
+          "id": "demo-story-message-cost-3",
+          "senderId": "demo-v2-person-qiu",
+          "content": "调试别漏，我估还要二十次，一次十二块。",
+          "time": "2026-09-30T01:02:00.000Z",
+          "sourceId": "demo-story-source-cost"
+        },
+        {
+          "id": "demo-story-message-cost-4",
+          "senderId": "demo-v2-person-he",
+          "content": "那试用四百八，调试二百四，新计划七百二。价格只是估算。",
+          "time": "2026-09-30T01:03:00.000Z",
+          "sourceId": "demo-story-source-cost"
+        },
+        {
+          "id": "demo-story-message-cost-5",
+          "senderId": "person-self",
+          "content": "再留四百给失败后重跑，别把预算一次排满。",
+          "time": "2026-09-30T01:04:00.000Z",
+          "sourceId": "demo-story-source-cost"
+        },
+        {
+          "id": "demo-story-message-cost-6",
+          "senderId": "demo-v2-person-qiu",
+          "content": "两千里减掉六百八、七百二和四百，还剩两百。",
+          "time": "2026-09-30T01:05:00.000Z",
+          "sourceId": "demo-story-source-cost"
+        },
+        {
+          "id": "demo-story-message-cost-7",
+          "senderId": "demo-v2-person-he",
+          "content": "表里分开了：已花、计划、预留。不会写成已经花了一千八。",
+          "time": "2026-09-30T01:06:00.000Z",
+          "sourceId": "demo-story-source-cost"
+        },
+        {
+          "id": "demo-story-message-cost-8",
+          "senderId": "person-self",
+          "content": "好，实际加已承诺费用到一千六就先停，四百怎么用再看失败情况。",
+          "time": "2026-09-30T01:07:00.000Z",
+          "sourceId": "demo-story-source-cost"
+        }
+      ],
+      "to": [
+        {
+          "id": "demo-story-message-cost-1",
+          "senderId": "demo-v2-person-he",
+          "content": "昨晚核对过账单了，累计花了 680 元，4 条重复调用的费用也包含在里面。",
+          "time": "2026-09-30T01:00:00.000Z",
+          "sourceId": "demo-story-source-cost"
+        },
+        {
+          "id": "demo-story-message-cost-2",
+          "senderId": "person-self",
+          "content": "收到。下一轮按 8 人试用、每人 3 个任务、各跑 2 轮来估，单次调用先按 10 元算。",
+          "time": "2026-09-30T01:01:00.000Z",
+          "sourceId": "demo-story-source-cost"
+        },
+        {
+          "id": "demo-story-message-cost-3",
+          "senderId": "demo-v2-person-qiu",
+          "content": "调试也要算进去。我估计还需要 20 次，每次按 12 元。",
+          "time": "2026-09-30T01:02:00.000Z",
+          "sourceId": "demo-story-source-cost"
+        },
+        {
+          "id": "demo-story-message-cost-4",
+          "senderId": "demo-v2-person-he",
+          "content": "这样试用预计 480 元，调试预计 240 元，合计 720 元。单次价格目前都是估算。",
+          "time": "2026-09-30T01:03:00.000Z",
+          "sourceId": "demo-story-source-cost"
+        },
+        {
+          "id": "demo-story-message-cost-5",
+          "senderId": "person-self",
+          "content": "另外留 400 元，遇到失败需要重跑时再用，先不要把预算排满。",
+          "time": "2026-09-30T01:04:00.000Z",
+          "sourceId": "demo-story-source-cost"
+        },
+        {
+          "id": "demo-story-message-cost-6",
+          "senderId": "demo-v2-person-qiu",
+          "content": "总预算 2000 元，减掉已经花的 680 元、计划的 720 元和预留的 400 元，还剩 200 元。",
+          "time": "2026-09-30T01:05:00.000Z",
+          "sourceId": "demo-story-source-cost"
+        },
+        {
+          "id": "demo-story-message-cost-7",
+          "senderId": "demo-v2-person-he",
+          "content": "我在表里把已支出、计划费用和预留分开了。1800 元是这三项的合计，不是已经花掉的金额。",
+          "time": "2026-09-30T01:06:00.000Z",
+          "sourceId": "demo-story-source-cost"
+        },
+        {
+          "id": "demo-story-message-cost-8",
+          "senderId": "person-self",
+          "content": "好，实际支出加上已经承诺的费用到 1600 元时，先停下来核对。预留的 400 元是否要用，再看失败的情况。",
+          "time": "2026-09-30T01:07:00.000Z",
+          "sourceId": "demo-story-source-cost"
+        }
+      ],
+      "group": "zh-cost-conversation"
+    },
+    {
+      "locale": "zh-CN",
+      "collection": "sources",
+      "id": "demo-story-source-cost",
+      "field": "text",
+      "from": "何志强：昨晚对完账了，累计六百八。那四条重复调用都算进去了。\n万叶：收到。下一批八人，每人三个任务、两轮，先按一次十块估。\n邱志明：调试别漏，我估还要二十次，一次十二块。\n何志强：那试用四百八，调试二百四，新计划七百二。价格只是估算。\n万叶：再留四百给失败后重跑，别把预算一次排满。\n邱志明：两千里减掉六百八、七百二和四百，还剩两百。\n何志强：表里分开了：已花、计划、预留。不会写成已经花了一千八。\n万叶：好，实际加已承诺费用到一千六就先停，四百怎么用再看失败情况。",
+      "to": "何志强：昨晚核对过账单了，累计花了 680 元，4 条重复调用的费用也包含在里面。\n万叶：收到。下一轮按 8 人试用、每人 3 个任务、各跑 2 轮来估，单次调用先按 10 元算。\n邱志明：调试也要算进去。我估计还需要 20 次，每次按 12 元。\n何志强：这样试用预计 480 元，调试预计 240 元，合计 720 元。单次价格目前都是估算。\n万叶：另外留 400 元，遇到失败需要重跑时再用，先不要把预算排满。\n邱志明：总预算 2000 元，减掉已经花的 680 元、计划的 720 元和预留的 400 元，还剩 200 元。\n何志强：我在表里把已支出、计划费用和预留分开了。1800 元是这三项的合计，不是已经花掉的金额。\n万叶：好，实际支出加上已经承诺的费用到 1600 元时，先停下来核对。预留的 400 元是否要用，再看失败的情况。",
+      "group": "zh-cost-conversation"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-mom",
+      "field": "title",
+      "from": "Mom",
+      "to": "Talking with Mom about Dad’s birthday"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-mom",
+      "field": "description",
+      "from": "Good. And tell me one thing you want to eat besides breakfast potatoes.",
+      "to": "Mom and I talked about visiting for Dad’s birthday on the weekend of November 14. We’d like to have dinner at home and walk by the lake if the weather is good. I’m still comparing flights and will send arrival times once I choose one."
+    },
+    {
+      "locale": "en",
+      "collection": "sources",
+      "id": "demo-us-source-chat-mom",
+      "field": "title",
+      "from": "Mom",
+      "to": "Talking with Mom about Dad’s birthday"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-dad",
+      "field": "title",
+      "from": "Dad",
+      "to": "Asking Dad what he’d like for his birthday"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-dad",
+      "field": "description",
+      "from": "You really know how to sell a vacation.",
+      "to": "Dad would like an apple pie and a meal with everyone at home. We talked about cooking and taking a walk by the lake on Saturday. There’s no restaurant reservation to make."
+    },
+    {
+      "locale": "en",
+      "collection": "sources",
+      "id": "demo-us-source-chat-dad",
+      "field": "title",
+      "from": "Dad",
+      "to": "Asking Dad what he’d like for his birthday"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-emma",
+      "field": "title",
+      "from": "Emma",
+      "to": "Comparing travel plans with Emma"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-emma",
+      "field": "description",
+      "from": "I'll leave Sunday lunch optional and build in the drive back. No packed itinerary.",
+      "to": "Emma and Ben can leave Chicago after school on Friday and need to be home by 7 p.m. Sunday. I’m comparing arriving in Chicago on Thursday with flying directly to Madison, with about $600 for travel. Sunday lunch can stay optional."
+    },
+    {
+      "locale": "en",
+      "collection": "sources",
+      "id": "demo-us-source-chat-emma",
+      "field": "title",
+      "from": "Emma",
+      "to": "Comparing travel plans with Emma"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-ben",
+      "field": "title",
+      "from": "Ben",
+      "to": "Planning Friday dinner with Ben"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-ben",
+      "field": "description",
+      "from": "You'll get a small list. I make no promises about whether it has headings.",
+      "to": "Ben offered to drive between Chicago and Madison on Friday and Sunday. I’ll handle chili for Friday dinner, and he’ll bring cornbread. If I arrive Thursday, I can cook in Madison; otherwise we’ll prepare ahead. I still need to send the grocery list."
+    },
+    {
+      "locale": "en",
+      "collection": "sources",
+      "id": "demo-us-source-chat-ben",
+      "field": "title",
+      "from": "Ben",
+      "to": "Planning Friday dinner with Ben"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-dana",
+      "field": "title",
+      "from": "Dana Brooks",
+      "to": "Planning the family check-in review with Dana"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-dana",
+      "field": "description",
+      "from": "I'll lead with the choice and the reason. Screens after that.",
+      "to": "Dana wants the next review to focus on drop-in passes. Staff at Lakeside lose track of children’s names when switching screens. I’ll compare a list that stays visible with an add-another flow, using the same family in both. We have 30 minutes, and Jordan needs a decision before Monday."
+    },
+    {
+      "locale": "en",
+      "collection": "sources",
+      "id": "demo-us-source-chat-dana",
+      "field": "title",
+      "from": "Dana Brooks",
+      "to": "Planning the family check-in review with Dana"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-jordan",
+      "field": "title",
+      "from": "Jordan Miller",
+      "to": "Working through the back button with Jordan"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-jordan",
+      "field": "description",
+      "from": "I'll post the two states before lunch. Feel free to call me if one doesn't make sense.",
+      "to": "Jordan and I agreed that name edits should stay in the form and the receipt should remain read-only. Going back after adding three children should keep all three names. I’ll send the two screen states before lunch so he doesn’t have to guess."
+    },
+    {
+      "locale": "en",
+      "collection": "sources",
+      "id": "demo-us-source-chat-jordan",
+      "field": "title",
+      "from": "Jordan Miller",
+      "to": "Working through the back button with Jordan"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-priya",
+      "field": "title",
+      "from": "Priya Patel",
+      "to": "Reading Priya’s notes from Lakeside"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-priya",
+      "field": "description",
+      "from": "Fair request. 'Family' on the screen, boring database names kept out of it.",
+      "to": "Priya observed 7 family check-ins. In 4 of them, staff wrote names on paper before entering them. The screen shows only one child at a time, and the queue also adds pressure. I’ll keep the family names visible and use “Family” in the interface, without claiming that this solves the whole queue."
+    },
+    {
+      "locale": "en",
+      "collection": "sources",
+      "id": "demo-us-source-chat-priya",
+      "field": "title",
+      "from": "Priya Patel",
+      "to": "Reading Priya’s notes from Lakeside"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-luis",
+      "field": "title",
+      "from": "Luis Rivera",
+      "to": "Drafting an explanation of the pass change"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-luis",
+      "field": "description",
+      "from": "I'll write it around a parent bringing two kids, and send you the draft before Marcus uses it.",
+      "to": "Luis has had the same question from 3 centers. I’ll write an example with a parent and two children: the family list stays visible while adding passes, payment works as before, and the list is only for this visit. Luis will see the draft before Marcus uses it."
+    },
+    {
+      "locale": "en",
+      "collection": "sources",
+      "id": "demo-us-source-chat-luis",
+      "field": "title",
+      "from": "Luis Rivera",
+      "to": "Drafting an explanation of the pass change"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-hannah",
+      "field": "title",
+      "from": "Hannah Davis",
+      "to": "Discussing the design review with Hannah"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-hannah",
+      "field": "description",
+      "from": "I wasn't going to, but now you have successfully removed the temptation.",
+      "to": "Hannah asked me to show what happens at a busy front desk, including what happens when staff go back. I’ll use the same family to compare two options. She also reminded me that I don’t need to spend the evening polishing slide transitions."
+    },
+    {
+      "locale": "en",
+      "collection": "sources",
+      "id": "demo-us-source-chat-hannah",
+      "field": "title",
+      "from": "Hannah Davis",
+      "to": "Discussing the design review with Hannah"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-marcus",
+      "field": "title",
+      "from": "Marcus Brown",
+      "to": "Checking the newsletter wording with Marcus"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-marcus",
+      "field": "description",
+      "from": "Will do. We're aiming for next week's field check, not announcing a date yet.",
+      "to": "Marcus suggested “faster family check-in,” but we haven’t measured the time. We agreed to describe keeping a family’s passes together instead. Luis should review the draft, and it needs to say “for this visit.” We’re preparing for a field check, not announcing a launch date."
+    },
+    {
+      "locale": "en",
+      "collection": "sources",
+      "id": "demo-us-source-chat-marcus",
+      "field": "title",
+      "from": "Marcus Brown",
+      "to": "Checking the newsletter wording with Marcus"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-emily",
+      "field": "title",
+      "from": "Emily Carter",
+      "to": "Reviewing names and error messages with Emily"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-emily",
+      "field": "description",
+      "from": "Tomorrow morning. I'm logging off for rehearsal soon.",
+      "to": "Emily can follow the keyboard order now, but the selected child’s name disappears when the payment panel opens. I’ll keep it above the total and use the name in the error message. She asked for the clickable version tomorrow morning so she can check where focus goes."
+    },
+    {
+      "locale": "en",
+      "collection": "sources",
+      "id": "demo-us-source-chat-emily",
+      "field": "title",
+      "from": "Emily Carter",
+      "to": "Reviewing names and error messages with Emily"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-maya",
+      "field": "title",
+      "from": "Maya Thompson",
+      "to": "Meeting Maya for coffee and photo editing"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-maya",
+      "field": "description",
+      "from": "Deal. Paper photos and coffee. Very advanced workflow.",
+      "to": "Maya and I agreed to meet at Eastside on Sunday at 9:30 a.m., before her noon class. I’ll bring the photo prints so she can help me cut six from the selection. We’re leaving the laptop at home."
+    },
+    {
+      "locale": "en",
+      "collection": "sources",
+      "id": "demo-us-source-chat-maya",
+      "field": "title",
+      "from": "Maya Thompson",
+      "to": "Meeting Maya for coffee and photo editing"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-alex",
+      "field": "title",
+      "from": "Alex Kim",
+      "to": "Arranging a Sunday climb with Alex"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-alex",
+      "field": "description",
+      "from": "Excellent. We have built a very achievable team.",
+      "to": "Alex and I settled on 10:30 a.m. at the climbing gym after my coffee with Maya. His friend Erin may join us. I’m planning a few routes and some time to chat, rather than a long session."
+    },
+    {
+      "locale": "en",
+      "collection": "sources",
+      "id": "demo-us-source-chat-alex",
+      "field": "title",
+      "from": "Alex Kim",
+      "to": "Arranging a Sunday climb with Alex"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-sarah",
+      "field": "title",
+      "from": "Sarah Johnson",
+      "to": "Checking a shelf-assembly time with Sarah"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-sarah",
+      "field": "description",
+      "from": "That would be great. They're heavy after the rain.",
+      "to": "Sarah is fine with me putting the shelf together on Saturday from 2 to 4 p.m. She has an early shift on Sunday and asked for quiet after 8 p.m. I offered to help move the courtyard planters first and put a blanket under the shelf while assembling it."
+    },
+    {
+      "locale": "en",
+      "collection": "sources",
+      "id": "demo-us-source-chat-sarah",
+      "field": "title",
+      "from": "Sarah Johnson",
+      "to": "Checking a shelf-assembly time with Sarah"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-chris",
+      "field": "title",
+      "from": "Chris Martinez",
+      "to": "Planning the bike table with Chris"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-chris",
+      "field": "description",
+      "from": "Six slots. Walk-ins can still ask questions, but we won't promise a repair.",
+      "to": "Chris can help at the repair café on October 17 from 10 a.m. to noon. He needs two tables, a floor pump, and someone on intake. We’re starting with 6 bike appointments. I can cover intake for the first hour; the second hour still needs someone."
+    },
+    {
+      "locale": "en",
+      "collection": "sources",
+      "id": "demo-us-source-chat-chris",
+      "field": "title",
+      "from": "Chris Martinez",
+      "to": "Planning the bike table with Chris"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-olivia",
+      "field": "title",
+      "from": "Olivia Parker",
+      "to": "Confirming the repair café room and budget"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-olivia",
+      "field": "description",
+      "from": "Our total cap is $320. I'll send a simple supply list with who brings what.",
+      "to": "Olivia confirmed the back room for October 17, 10 a.m. to 1 p.m., with everything packed by 1:30. We’ll stop taking new items at noon and keep the doorway clear. The center can contribute $150 toward our $320 budget; I’ll send a supply list showing who brings each item."
+    },
+    {
+      "locale": "en",
+      "collection": "sources",
+      "id": "demo-us-source-chat-olivia",
+      "field": "title",
+      "from": "Olivia Parker",
+      "to": "Confirming the repair café room and budget"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-noah",
+      "field": "title",
+      "from": "Noah Wilson",
+      "to": "Tentatively arranging dinner with Noah"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-noah",
+      "field": "description",
+      "from": "Text me when it's real. I'll pick somewhere near the train so you don't spend the evening in a rideshare.",
+      "to": "I may pass through Chicago on November 12. Noah is free for dinner after 7 p.m. that Thursday and can choose somewhere near the train. I haven’t booked a flight, so we’re keeping the plan tentative."
+    },
+    {
+      "locale": "en",
+      "collection": "sources",
+      "id": "demo-us-source-chat-noah",
+      "field": "title",
+      "from": "Noah Wilson",
+      "to": "Tentatively arranging dinner with Noah"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-rachel",
+      "field": "title",
+      "from": "Rachel Adams",
+      "to": "Getting ready for Thursday’s book group"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-rachel",
+      "field": "description",
+      "from": "I'll finish the last forty pages on the bus. See you Thursday.",
+      "to": "Rachel confirmed the book group for next Thursday at 7 p.m. at the café. Everyone should bring one question. I still have 40 pages to read and plan to finish them on the bus."
+    },
+    {
+      "locale": "en",
+      "collection": "sources",
+      "id": "demo-us-source-chat-rachel",
+      "field": "title",
+      "from": "Rachel Adams",
+      "to": "Getting ready for Thursday’s book group"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-sam",
+      "field": "title",
+      "from": "Sam Taylor",
+      "to": "Planning Wednesday’s rehearsal with Sam"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-sam",
+      "field": "description",
+      "from": "And I'll bring the cable I forgot last time. Putting it in the bag now.",
+      "to": "Sam and I want to work on the new song, especially the section after the second chorus, then record a take. The room is booked from 6:30 to 8:30 p.m. I’ll arrive by 6:20, and I’ve packed the bass cable I forgot last time."
+    },
+    {
+      "locale": "en",
+      "collection": "sources",
+      "id": "demo-us-source-chat-sam",
+      "field": "title",
+      "from": "Sam Taylor",
+      "to": "Planning Wednesday’s rehearsal with Sam"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-grace",
+      "field": "title",
+      "from": "Grace Lee",
+      "to": "Talking through the photo zine with Grace"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-grace",
+      "field": "description",
+      "from": "Happily. Mail me one when it's done.",
+      "to": "I still have 26 photos for a zine meant to contain 12. Grace suggested starting with the bus-window pictures and making a cheap print before more color editing. I agreed to use folded paper and the equipment I already have, then mail her a copy when it’s done."
+    },
+    {
+      "locale": "en",
+      "collection": "sources",
+      "id": "demo-us-source-chat-grace",
+      "field": "title",
+      "from": "Grace Lee",
+      "to": "Talking through the photo zine with Grace"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-matt",
+      "field": "title",
+      "from": "Matt Evans",
+      "to": "Asking Matt about the shelf and window latch"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-matt",
+      "field": "description",
+      "from": "I'll text before I come by.",
+      "to": "Matt is fine with a freestanding shelf by the north wall. If it needs anchors, he wants a photo of the spot first because of the old pipes. He can also check the sticky window latch around 4 p.m. Friday and will text before coming over."
+    },
+    {
+      "locale": "en",
+      "collection": "sources",
+      "id": "demo-us-source-chat-matt",
+      "field": "title",
+      "from": "Matt Evans",
+      "to": "Asking Matt about the shelf and window latch"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-family",
+      "field": "title",
+      "from": "Reed family",
+      "to": "Checking the family’s birthday-weekend plans"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-family",
+      "field": "description",
+      "from": "Sounds good. Really looking forward to it.",
+      "to": "We confirmed November 13–15 for Dad’s birthday weekend. Emma and Ben will drive up after school on Friday. Saturday is for a meal at home and a possible lake walk; they need to leave around 2 p.m. Sunday. I’m still comparing flights."
+    },
+    {
+      "locale": "en",
+      "collection": "sources",
+      "id": "demo-us-source-chat-family",
+      "field": "title",
+      "from": "Reed family",
+      "to": "Checking the family’s birthday-weekend plans"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-repair-team",
+      "field": "title",
+      "from": "October repair café",
+      "to": "Dividing up repair café shifts"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-repair-team",
+      "field": "description",
+      "from": "Adding that, plus a line that a repair isn't guaranteed.",
+      "to": "We have the back room on October 17 from 10 a.m. to 1 p.m. I’ll cover intake from 10 to 11, then Sarah from 11 to noon. Chris can take 6 bike appointments. New items stop at noon and cleanup starts at 12:30. The flyer will ask people to bring the item and explain that a repair isn’t guaranteed."
+    },
+    {
+      "locale": "en",
+      "collection": "sources",
+      "id": "demo-us-source-chat-repair-team",
+      "field": "title",
+      "from": "October repair café",
+      "to": "Dividing up repair café shifts"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-desk-team",
+      "field": "title",
+      "from": "Front-desk pass flow",
+      "to": "Agreeing on the family check-in changes"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-desk-team",
+      "field": "description",
+      "from": "Good. I'll confirm the field visit with the center.",
+      "to": "The team agreed to keep family names on screen and add one child at a time, while leaving payment as it is. Saved families, receipt editing, and a new dashboard are outside this change. Jordan can prepare it for the field check if the copy is final Monday. The staff note will stay a draft until it has been reviewed."
+    },
+    {
+      "locale": "en",
+      "collection": "sources",
+      "id": "demo-us-source-chat-desk-team",
+      "field": "title",
+      "from": "Front-desk pass flow",
+      "to": "Agreeing on the family check-in changes"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-weekend",
+      "field": "title",
+      "from": "Sunday, probably outside",
+      "to": "Making a Sunday coffee and walk plan"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-weekend",
+      "field": "description",
+      "from": "Bring the prints anyway. A bench can be a gallery.",
+      "to": "Maya, Alex, and I agreed to meet outside the café at 10:15 on Sunday, then walk along the river and back. I need to be home by 1 p.m. to call my parents. Maya asked me to bring the photo prints."
+    },
+    {
+      "locale": "en",
+      "collection": "sources",
+      "id": "demo-us-source-chat-weekend",
+      "field": "title",
+      "from": "Sunday, probably outside",
+      "to": "Making a Sunday coffee and walk plan"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-garden",
+      "field": "title",
+      "from": "Courtyard neighbors",
+      "to": "Offering to move the courtyard planters"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-garden",
+      "field": "description",
+      "from": "Rosemary will improve the average.",
+      "to": "Sarah asked for help with the large planters on Saturday. I can help at 1:30, before working on the shelf, and Matt will bring a hand truck. Sarah also offered some spare rosemary."
+    },
+    {
+      "locale": "en",
+      "collection": "sources",
+      "id": "demo-us-source-chat-garden",
+      "field": "title",
+      "from": "Courtyard neighbors",
+      "to": "Offering to move the courtyard planters"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-music",
+      "field": "title",
+      "from": "Wednesday room",
+      "to": "Planning the ending of the new song"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-music",
+      "field": "description",
+      "from": "Bass cable is already packed. A historic first.",
+      "to": "Sam has booked the same room for tomorrow at 6:30 and shared the rough recording. We want to try stopping together after the last four bars. Alex will bring the guitar stand, and my bass cable is already packed."
+    },
+    {
+      "locale": "en",
+      "collection": "sources",
+      "id": "demo-us-source-chat-music",
+      "field": "title",
+      "from": "Wednesday room",
+      "to": "Planning the ending of the new song"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-zine",
+      "field": "title",
+      "from": "Twelve photos, actually twelve",
+      "to": "Choosing the photo order before printing"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-zine",
+      "field": "description",
+      "from": "Friday lunch break. Ten cheap copies, then I can stop calling this a work in progress.",
+      "to": "The selection is down to 12 photos, from the bus window at the start to the empty basketball court at the end. Grace suggested swapping two street scenes, and Maya asked me to keep the blurry bakery window. I plan to print 10 rough copies during Friday’s lunch break."
+    },
+    {
+      "locale": "en",
+      "collection": "sources",
+      "id": "demo-us-source-chat-zine",
+      "field": "title",
+      "from": "Twelve photos, actually twelve",
+      "to": "Choosing the photo order before printing"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-travel-followup",
+      "field": "title",
+      "from": "November trip details",
+      "to": "Comparing the return flights for November"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-travel-followup",
+      "field": "description",
+      "from": "Understood. Still choosing between two return flights; one is cheaper but leaves too little time after the drive.",
+      "to": "A Thursday arrival in Chicago looks best. Noah is free for dinner after 7, and Emma offered their couch before she and Ben drive to Madison around 4:30 Friday. I’m still choosing between two return flights; the cheaper one leaves too little time after the Sunday drive."
+    },
+    {
+      "locale": "en",
+      "collection": "sources",
+      "id": "demo-us-source-chat-travel-followup",
+      "field": "title",
+      "from": "November trip details",
+      "to": "Comparing the return flights for November"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-staff-note",
+      "field": "title",
+      "from": "Staff note wording",
+      "to": "Reviewing the staff note with Luis and Marcus"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-event-chat-staff-note",
+      "field": "description",
+      "from": "This version I can explain over the phone. Much better.",
+      "to": "We clarified that the family list is only for the current visit and clears after payment. Luis added that staff can check the names before charging. Marcus may use the two-child example after the field check, but the date in this draft isn’t a launch date."
+    },
+    {
+      "locale": "en",
+      "collection": "sources",
+      "id": "demo-us-source-chat-staff-note",
+      "field": "title",
+      "from": "Staff note wording",
+      "to": "Reviewing the staff note with Luis and Marcus"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-milestone-madison",
+      "field": "title",
+      "from": "Grew up in Madison",
+      "to": "Growing up in Madison"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-milestone-madison",
+      "field": "description",
+      "from": "Grew up near the public library in Madison, with Linda, Tom, and younger sister Emma.",
+      "to": "I grew up near the public library in Madison with Mom, Dad, and my younger sister Emma."
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-milestone-college",
+      "field": "title",
+      "from": "Studied design in Minneapolis",
+      "to": "Studying design in Minneapolis"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-milestone-college",
+      "field": "description",
+      "from": "Left Wisconsin for college, studied design at the University of Minnesota, and met Noah and Grace through the shared studio.",
+      "to": "I moved from Wisconsin to Minneapolis to study design at the University of Minnesota. Noah and Grace were in the shared studio, and we became friends there."
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-milestone-chicago",
+      "field": "title",
+      "from": "First design job in Chicago",
+      "to": "My first design job in Chicago"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-milestone-chicago",
+      "field": "description",
+      "from": "Joined a small design studio and learned to explain design choices to clients. Enjoyed the team, but the late-night work eventually became a reason to move on.",
+      "to": "I joined a small design studio in Chicago and learned to explain my choices to clients. I liked the team, but the late nights were one reason I eventually moved on."
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-milestone-portland",
+      "field": "title",
+      "from": "Moved to Portland",
+      "to": "Moving to Portland"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-milestone-portland",
+      "field": "description",
+      "from": "Moved west for a product design role at fictional Cedar Loop and rented the upstairs apartment in Matt’s duplex.",
+      "to": "I moved to Portland for a product design job at Cedar Loop and rented the upstairs apartment in Matt’s duplex."
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-milestone-cedar",
+      "field": "title",
+      "from": "Joined Cedar Loop",
+      "to": "Starting at Cedar Loop"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-milestone-cedar",
+      "field": "description",
+      "from": "Started designing booking software for neighborhood recreation centers, working with Dana, Jordan, and Priya.",
+      "to": "I started working with Dana, Jordan, and Priya on booking software for neighborhood recreation centers."
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-milestone-repair",
+      "field": "title",
+      "from": "Started helping at the repair café",
+      "to": "Starting at the repair café"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-milestone-repair",
+      "field": "description",
+      "from": "Volunteered at intake, where small changes to signs and queues helped people reach the right volunteer. Met Chris and Olivia.",
+      "to": "I began volunteering at the repair café and met Chris and Olivia. I helped with intake, signs, and queues so people could find the right volunteer."
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-milestone-music",
+      "field": "title",
+      "from": "Made Wednesday night a music night",
+      "to": "Starting Wednesday band rehearsals"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-milestone-music",
+      "field": "description",
+      "from": "Started rehearsing with Sam and Alex. Kept the weekly slot even when work got busy.",
+      "to": "Sam, Alex, and I started rehearsing on Wednesday nights. I’ve tried to keep that evening free even during busy weeks at work."
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-milestone-bike",
+      "field": "title",
+      "from": "Stopped keeping a car",
+      "to": "Switching to a bike and public transit"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-milestone-bike",
+      "field": "description",
+      "from": "Switched to a bike and transit for daily trips. Visits to family now need a little more planning around flights and shared rides.",
+      "to": "I stopped keeping a car and began using a bike and public transit for everyday trips. Visiting family now takes more planning around flights and shared rides."
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-milestone-zine",
+      "field": "title",
+      "from": "Started a neighborhood photo zine",
+      "to": "Starting a neighborhood photo zine"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-milestone-zine",
+      "field": "description",
+      "from": "Collected photos from ordinary walks and bus rides. Grace and Maya nudged the project toward twelve pictures and a rough print.",
+      "to": "I started putting together photos from walks and bus rides. Grace and Maya encouraged me to choose 12 and make a rough print."
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-milestone-frontdesk",
+      "field": "title",
+      "from": "Watched a busy family check-in",
+      "to": "Visiting Lakeside’s front desk"
+    },
+    {
+      "locale": "en",
+      "collection": "events",
+      "id": "demo-us-milestone-frontdesk",
+      "field": "description",
+      "from": "A visit to Lakeside’s front desk changed the design question from adding a dashboard to keeping family names visible during one visit.",
+      "to": "I watched a busy family check-in at Lakeside. After the visit, I focused on keeping family names visible during the current visit instead of adding a dashboard."
+    },
+    {
+      "locale": "en",
+      "collection": "sources",
+      "id": "demo-us-source-timeline",
+      "field": "title",
+      "from": "A life in a few moves",
+      "to": "A few dates from my life"
+    },
+    {
+      "locale": "en",
+      "collection": "sources",
+      "id": "demo-us-source-timeline",
+      "field": "text",
+      "from": "1995 — Grew up in Madison\nGrew up near the public library in Madison, with Linda, Tom, and younger sister Emma.\n\n2013-09 to 2017-05 — Studied design in Minneapolis\nLeft Wisconsin for college, studied design at the University of Minnesota, and met Noah and Grace through the shared studio.\n\n2017-07 to 2022-04 — First design job in Chicago\nJoined a small design studio and learned to explain design choices to clients. Enjoyed the team, but the late-night work eventually became a reason to move on.\n\n2022-05 — Moved to Portland\nMoved west for a product design role at fictional Cedar Loop and rented the upstairs apartment in Matt’s duplex.\n\n2022-06 — Joined Cedar Loop\nStarted designing booking software for neighborhood recreation centers, working with Dana, Jordan, and Priya.\n\n2023-04 — Started helping at the repair café\nVolunteered at intake, where small changes to signs and queues helped people reach the right volunteer. Met Chris and Olivia.\n\n2024-02 — Made Wednesday night a music night\nStarted rehearsing with Sam and Alex. Kept the weekly slot even when work got busy.\n\n2024-08 — Stopped keeping a car\nSwitched to a bike and transit for daily trips. Visits to family now need a little more planning around flights and shared rides.\n\n2026-08 — Started a neighborhood photo zine\nCollected photos from ordinary walks and bus rides. Grace and Maya nudged the project toward twelve pictures and a rough print.\n\n2026-09-24 — Watched a busy family check-in\nA visit to Lakeside’s front desk changed the design question from adding a dashboard to keeping family names visible during one visit.",
+      "to": "1995 — Growing up in Madison\nI grew up near the public library in Madison with Mom, Dad, and my younger sister Emma.\n\n2013-09 to 2017-05 — Studying design in Minneapolis\nI moved from Wisconsin to Minneapolis to study design at the University of Minnesota. Noah and Grace were in the shared studio, and we became friends there.\n\n2017-07 to 2022-04 — My first design job in Chicago\nI joined a small design studio in Chicago and learned to explain my choices to clients. I liked the team, but the late nights were one reason I eventually moved on.\n\n2022-05 — Moving to Portland\nI moved to Portland for a product design job at Cedar Loop and rented the upstairs apartment in Matt’s duplex.\n\n2022-06 — Starting at Cedar Loop\nI started working with Dana, Jordan, and Priya on booking software for neighborhood recreation centers.\n\n2023-04 — Starting at the repair café\nI began volunteering at the repair café and met Chris and Olivia. I helped with intake, signs, and queues so people could find the right volunteer.\n\n2024-02 — Starting Wednesday band rehearsals\nSam, Alex, and I started rehearsing on Wednesday nights. I’ve tried to keep that evening free even during busy weeks at work.\n\n2024-08 — Switching to a bike and public transit\nI stopped keeping a car and began using a bike and public transit for everyday trips. Visiting family now takes more planning around flights and shared rides.\n\n2026-08 — Starting a neighborhood photo zine\nI started putting together photos from walks and bus rides. Grace and Maya encouraged me to choose 12 and make a rough print.\n\n2026-09-24 — Visiting Lakeside’s front desk\nI watched a busy family check-in at Lakeside. After the visit, I focused on keeping family names visible during the current visit instead of adding a dashboard."
+    }
+  ]
+}

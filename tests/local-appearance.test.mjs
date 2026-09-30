@@ -35,15 +35,26 @@ function largePng(size) {
 test('appearance starts unset, merges partial updates, rejects invalid fields without overwriting',async t=>{
   const f=await fixture(t);
   assert.deepEqual(await f.api('settings/appearance'),{status:200,value:null});
+  assert.equal(defaultAppearance.atmosphere,'pencil');
+  assert.equal(defaultAppearance.decorativeArtwork,false);
   assert.deepEqual((await f.api('settings/appearance',{theme:'dark'})).value,{...defaultAppearance,theme:'dark'});
   const saved=(await f.api('settings/appearance',{accent:'violet',fontSize:16,opacity:78,motion:'reduced',sendKey:'modifier',language:'en'})).value;
   assert.equal(saved.theme,'dark');assert.equal(saved.accent,'violet');assert.equal(saved.opacity,78);
   assert.equal(saved.language,'en');
-  for(const value of [{theme:'sepia'},{atmosphere:'file:///tmp/picture'},{accent:'red'},{opacity:69},{opacity:101},{fontSize:19},{fontSize:'14'},{motion:true},{sendKey:'anything'},{language:'fr'},{language:null},{constructor:1},{unknown:true}]) {
+  for(const value of [{theme:'sepia'},{atmosphere:'file:///tmp/picture'},{decorativeArtwork:'true'},{decorativeArtwork:1},{decorativeArtwork:null},{accent:'red'},{opacity:69},{opacity:101},{fontSize:19},{fontSize:'14'},{motion:true},{sendKey:'anything'},{language:'fr'},{language:null},{constructor:1},{unknown:true}]) {
     assert.equal((await f.api('settings/appearance',value)).status,400);
     assert.deepEqual((await f.api('settings/appearance')).value,saved);
   }
   assert.equal((await f.api('settings/appearance',{},'DELETE')).status,405);
+});
+
+test('paper garden fills an unset atmosphere while explicit atmosphere choices survive later setting changes',async t=>{
+  const f=await fixture(t);
+  assert.equal((await f.api('settings/appearance',{language:'en'})).value.atmosphere,'pencil');
+  for(const atmosphere of ['plain','pencil','tidal','night','custom']){
+    await f.api('settings/appearance',{atmosphere});
+    assert.equal((await f.api('settings/appearance',{fontSize:15})).value.atmosphere,atmosphere);
+  }
 });
 
 test('independent windows preserve each other’s language and theme when saving field patches',async t=>{
@@ -56,6 +67,20 @@ test('independent windows preserve each other’s language and theme when saving
   assert.equal(themed.language,'en');assert.equal(themed.theme,'dark');
   const language=(await f.api('settings/appearance',{language:'zh-CN'})).value;
   assert.equal(language.theme,'dark');assert.equal(language.language,'zh-CN');
+});
+
+test('page decoration is off for existing settings and remains independent of atmosphere changes',async t=>{
+  const f=await fixture(t);
+  f.app.store.setMeta('appearance',{theme:'light',atmosphere:'night'});
+  const migrated=(await f.api('settings/appearance',{fontSize:15})).value;
+  assert.equal(migrated.decorativeArtwork,false);
+  assert.equal(migrated.atmosphere,'night');
+  const enabled=(await f.api('settings/appearance',{decorativeArtwork:true})).value;
+  assert.equal(enabled.decorativeArtwork,true);assert.equal(enabled.atmosphere,'night');
+  const changed=(await f.api('settings/appearance',{atmosphere:'plain',theme:'dark'})).value;
+  assert.equal(changed.decorativeArtwork,true);
+  const disabled=(await f.api('settings/appearance',{decorativeArtwork:false})).value;
+  assert.equal(disabled.decorativeArtwork,false);assert.equal(disabled.atmosphere,'plain');assert.equal(disabled.theme,'dark');
 });
 
 test('artwork validates content, serves exact private bytes and excludes image data from normal exports',async t=>{
@@ -87,7 +112,7 @@ test('appearance and artwork survive Store and HTTP server restarts independentl
   const directory=mkdtempSync(path.join(os.tmpdir(),'hither-appearance-restart-'));
   t.after(()=>rmSync(directory,{recursive:true,force:true}));
   const first=await fixture(t,{dataDir:directory});
-  const appearance=(await first.api('settings/appearance',{theme:'light',atmosphere:'custom',accent:'green',language:'en'})).value;
+  const appearance=(await first.api('settings/appearance',{theme:'light',atmosphere:'custom',decorativeArtwork:true,accent:'green',language:'en'})).value;
   const artwork=(await first.api('settings/artwork',upload(png))).value;
   await first.close();
   const reopened=new Store(directory,{seed:false});

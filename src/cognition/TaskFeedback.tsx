@@ -1,17 +1,54 @@
 import { t } from '../i18n';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '@openai/apps-sdk-ui/components/Button';
 import { Textarea } from '@openai/apps-sdk-ui/components/Textarea';
 import { Select } from '@openai/apps-sdk-ui/components/Select';
+import { Menu } from '@openai/apps-sdk-ui/components/Menu';
+import { ThumbUp, ThumbUpFilled, ThumbDown, ThumbDownFilled, DotsHorizontalMoreMenu, Download, Edit, Chat, Brain } from '@openai/apps-sdk-ui/components/Icon';
 import { Dialog, ErrorNotice, Field, RichText } from '../components';
 import { write, messageOf } from '../api';
-import type { Artifact, Fact, FactKind, PreferenceDomain, Task, TaskFeedbackRecord } from '../../shared/contracts';
+import type { Artifact, Fact, FactKind, PreferenceDomain, Task, TaskFeedbackRecord, TaskMessage, TaskReaction } from '../../shared/contracts';
+import './reply-feedback.css';
 
-export function FeedbackAction({task,messageId,artifacts=[],onRefresh}:{task:Task;messageId:string;artifacts?:Artifact[];onRefresh:()=>Promise<void>}) {
-  const [open,setOpen]=useState(false);
-  if(!task.messages.some(message=>message.id===messageId&&message.role==='assistant'))return null;
+export function FeedbackAction({task,messageId,artifacts=[],onRefresh,onRevise}:{task:Task;messageId:string;artifacts?:Artifact[];onRefresh:()=>Promise<void>;onRevise?:()=>void}) {
+  const message=task.messages.find(message=>message.id===messageId&&message.role==='assistant');
+  const [learningOpen,setLearningOpen]=useState(false),[reasonOpen,setReasonOpen]=useState(false);
+  const [reaction,setReaction]=useState(message?.reaction),[reason,setReason]=useState<TaskReaction['reason']>(message?.reaction?.reason),[comment,setComment]=useState(message?.reaction?.comment??'');
+  const [busy,setBusy]=useState(false),[error,setError]=useState('');
+  useEffect(()=>{setReaction(message?.reaction);},[message?.reaction?.value,message?.reaction?.reason,message?.reaction?.comment,message?.reaction?.updatedAt]);
+  if(!message)return null;
   const active=['queued','running','awaiting_approval'].includes(task.status);
-  return <><Button color="secondary" variant="ghost" size="sm" disabled={active} onClick={()=>setOpen(true)} aria-label={t('记录这条答复的反馈','Save feedback on this reply')}>{t('反馈','Feedback')}</Button>{open&&<TaskFeedback task={task} messageId={messageId} artifacts={artifacts} onRefresh={onRefresh} onClose={()=>setOpen(false)}/>}</>;
+  const save=async(value:TaskReaction['value']|null,detail?:{reason?:TaskReaction['reason'];comment:string})=>{
+    setBusy(true);setError('');
+    try{const result=await write<TaskMessage>(`/tasks/${task.id}/reaction`,{messageId,value,...detail},'PUT');setReaction(result.reaction);await onRefresh();return true;}
+    catch(err){setError(messageOf(err));return false;}finally{setBusy(false);}
+  };
+  const openReason=()=>{setReason(reaction?.reason);setComment(reaction?.comment??'');setError('');setReasonOpen(true);};
+  const down=async()=>{if(reaction?.value==='down'){await save(null);return;}if(await save('down')){setReason(undefined);setComment('');setReasonOpen(true);}};
+  const exportReply=()=>{
+    const blob=new Blob([message.content],{type:'text/plain;charset=utf-8'}),url=URL.createObjectURL(blob),link=document.createElement('a');
+    link.href=url;link.download=`${task.title.replace(/[\\/:*?"<>|\u0000-\u001f]/g,'-').slice(0,80)||'SecondU'}-${messageId.slice(-8)}.txt`;
+    link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+  };
+  const upLabel=reaction?.value==='up'?t('已标记为有帮助，点击撤销','Marked helpful. Click to undo'):t('有帮助','Helpful');
+  const downLabel=reaction?.value==='down'?t('已标记为没有帮助，点击撤销','Marked unhelpful. Click to undo'):t('没有帮助','Not helpful');
+  const reasons:Array<{value:NonNullable<TaskReaction['reason']>;label:string}>=[{value:'not_helpful',label:t('帮助不大','Not useful')},{value:'inaccurate',label:t('事实有误','Inaccurate')},{value:'instructions',label:t('未遵守要求','Missed instructions')},{value:'personal_context',label:t('个人背景用错','Wrong personal context')},{value:'other',label:t('其他','Other')}];
+  return <><Button color="secondary" variant="ghost" uniform size="sm" disabled={active||busy} aria-pressed={reaction?.value==='up'} onClick={()=>void save(reaction?.value==='up'?null:'up')} aria-label={upLabel} title={upLabel}>{reaction?.value==='up'?<ThumbUpFilled/>:<ThumbUp/>}</Button>
+    <Button color="secondary" variant="ghost" uniform size="sm" disabled={active||busy} aria-pressed={reaction?.value==='down'} onClick={()=>void down()} aria-label={downLabel} title={downLabel}>{reaction?.value==='down'?<ThumbDownFilled/>:<ThumbDown/>}</Button>
+    <Menu><Menu.Trigger><Button color="secondary" variant="ghost" uniform size="sm" aria-label={t('更多答复操作','More reply actions')} title={t('更多','More')}><DotsHorizontalMoreMenu/></Button></Menu.Trigger><Menu.Content align="start" minWidth={210}>
+      {onRevise&&<Menu.Item disabled={active||busy} onSelect={onRevise}><Edit/>{t('继续修改','Revise this reply')}</Menu.Item>}
+      <Menu.Item onSelect={exportReply}><Download/>{t('导出这条答复','Export this reply')}</Menu.Item>
+      <Menu.Separator/>
+      <Menu.Item disabled={active||busy} onSelect={openReason}><Chat/>{t('补充反馈','Add feedback')}</Menu.Item>
+      <Menu.Item disabled={active||busy} onSelect={()=>setLearningOpen(true)}><Brain/>{t('纠正个人理解','Correct a personal insight')}</Menu.Item>
+    </Menu.Content></Menu>
+    {error&&!reasonOpen&&<span className="reply-feedback-error" role="alert">{error}</span>}
+    {reasonOpen&&<Dialog title={t('这条答复哪里需要改进？','What could be better?')} className="reply-feedback-dialog" onClose={()=>{if(!busy)setReasonOpen(false);}}><form onSubmit={event=>{event.preventDefault();if(!busy)void save('down',{...(reason?{reason}:{}),comment}).then(saved=>{if(saved)setReasonOpen(false);});}}>
+      <div className="reply-feedback-reasons" role="group" aria-label={t('反馈原因','Feedback reason')}>{reasons.map(option=><Button key={option.value} color="secondary" variant={reason===option.value?'soft':'outline'} size="sm" type="button" aria-pressed={reason===option.value} disabled={busy} onClick={()=>setReason(reason===option.value?undefined:option.value)}>{option.label}</Button>)}</div>
+      <Textarea aria-label={t('补充反馈（可选）','Additional feedback (optional)')} placeholder={t('补充说明（可选）','Add details (optional)')} rows={3} maxLength={5000} value={comment} disabled={busy} onChange={event=>setComment(event.target.value)}/>
+      <ErrorNotice error={error}/><footer><Button color="secondary" variant="ghost" type="button" onClick={()=>setReasonOpen(false)} disabled={busy}>{t('关闭','Close')}</Button><Button color="primary" type="submit" loading={busy}>{t('保存反馈','Save feedback')}</Button></footer>
+    </form></Dialog>}
+    {learningOpen&&<TaskFeedback task={task} messageId={messageId} artifacts={artifacts} onRefresh={onRefresh} onClose={()=>setLearningOpen(false)}/>}</>;
 }
 
 export function TaskFeedback({task,messageId,artifacts=[],feedback='',onRefresh,onClose}:{task:Task;messageId?:string;artifacts?:Artifact[];feedback?:string;onRefresh:()=>Promise<void>;onClose:()=>void}) {

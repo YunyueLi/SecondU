@@ -17,3 +17,13 @@
 @media(max-width:620px){.dialog-overlay .app-dialog.im-connections-dialog{max-height:calc(100dvh - 32px)}.im-connections-dialog>header{padding:18px 18px 14px}.im-connections-dialog>.im-connections{padding:16px 18px 18px}.im-connections-dialog .im-switch{flex-wrap:nowrap}.im-connections-dialog .im-connection-status{gap:10px}.im-connections-dialog .im-status-actions{width:100%;justify-content:flex-start}.im-connections-dialog .im-read-action{gap:10px}.im-connections-dialog .im-actions{flex-wrap:wrap}}
 
 .im-meta-parts{display:inline-flex;align-items:baseline;flex-wrap:wrap;gap:8px}
+
+.im-conversation-composer{flex-shrink:0;min-width:0;padding:12px 24px 18px;border-top:1px solid var(--color-border-subtle);display:flex;flex-direction:column;gap:9px}
+.im-composer-hint{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:3px 6px;color:var(--color-text-secondary);font-size:13px;line-height:20px}
+.im-composer-hint>svg{width:14px;height:14px;flex-shrink:0}
+.im-composer-hint>p{margin:0;min-width:0;overflow-wrap:anywhere}
+.im-composer-hint>button{font-size:13px;min-height:24px;padding:0 3px;color:var(--color-text-primary)}
+.im-conversation-composer .composer{margin:0;background:var(--color-background-secondary);border-color:var(--color-border-subtle);box-shadow:none}
+.im-conversation-composer .composer .composer-input textarea{font-size:14px;color:var(--color-text-secondary);cursor:not-allowed}
+.im-conversation-composer .composer button:disabled{cursor:not-allowed}
+@media(max-width:620px){.im-conversation-composer{padding:10px 14px 14px}.im-composer-hint{justify-content:flex-start;column-gap:5px}.im-composer-hint>p{flex:1 1 220px}.im-composer-hint>button{margin-left:19px}}

@@ -1,0 +1,23 @@
+.model-onboarding{min-width:0;container-type:inline-size}
+.model-onboarding-providers{min-width:0;margin:0;padding:0;border:0}
+.model-onboarding-providers>legend{padding:0;margin-bottom:10px;font-size:var(--hither-font-form,14px);font-weight:500;line-height:1.5}
+.model-onboarding-provider-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:1fr;gap:8px}
+.model-onboarding-provider-grid>.model-onboarding-provider{position:relative;min-width:0;min-height:74px;height:100%;padding:10px 8px;border-radius:9px;font-size:var(--hither-font-form,14px);line-height:18px;font-weight:400;white-space:normal}
+.model-onboarding-provider-content{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;min-width:0;width:100%}
+.model-onboarding-provider-content>span:last-child{max-width:100%;overflow-wrap:anywhere}
+.model-onboarding-provider-grid>.model-onboarding-provider[aria-pressed=true]{box-shadow:inset 0 0 0 1px var(--color-text-primary);background:var(--color-surface-secondary)}
+.model-onboarding-provider-grid .model-onboarding-provider-check{position:absolute;top:5px;right:5px;width:12px;height:12px}
+@container(min-width:310px){.model-onboarding-provider-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@container(min-width:440px){.model-onboarding-provider-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@container(min-width:590px){.model-onboarding-provider-grid{grid-template-columns:repeat(5,minmax(0,1fr))}}
+.model-provider-choice{display:flex;align-items:center;gap:9px;min-width:0;max-width:100%;font-size:var(--hither-font-form,14px)}.model-provider-choice>span:last-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.model-onboarding-select>span{min-width:0}.model-onboarding-select .model-provider-choice{flex:1}
+.model-onboarding-heading{margin-bottom:24px}.model-onboarding-heading h2{font-size:var(--hither-font-label-section,18px);line-height:1.4;font-weight:550;letter-spacing:-.025em}.model-onboarding-heading p{margin-top:8px;color:var(--color-text-secondary);font-size:var(--hither-font-caption,13px);line-height:1.7}
+.model-onboarding-access{display:flex;flex-direction:column;align-items:stretch;gap:20px}.model-onboarding .form-field{margin:0;min-width:0;gap:8px}.model-onboarding .field-label{font-size:var(--hither-font-form,14px)}.model-onboarding input,.model-onboarding-select{font-size:var(--hither-font-form,14px)!important}.model-onboarding .field-hint{font-size:var(--hither-font-caption,13px);line-height:1.6;color:var(--color-text-secondary)}.model-onboarding-access>button{align-self:flex-start;font-size:var(--hither-font-caption,13px)}.model-onboarding-select{width:100%;min-width:0;text-align:left;justify-content:space-between}
+.model-onboarding-model{margin-top:24px}.model-onboarding-model>button{margin:8px 0 0 -8px;font-size:var(--hither-font-caption,13px)}.model-inline-error{font-size:var(--hither-font-caption,13px);line-height:1.6;color:var(--color-text-danger)}
+.model-onboarding-advanced{margin-top:24px;border-top:1px solid var(--color-border-subtle);padding-top:18px;font-size:var(--hither-font-caption,13px)}.model-onboarding-advanced summary{cursor:pointer;color:var(--color-text-secondary)}.model-onboarding-advanced>div{display:grid;gap:18px;padding-top:18px}.model-onboarding-advanced a{color:var(--color-text-primary);text-underline-offset:3px;font-size:var(--hither-font-caption,13px)}
+.model-onboarding-actions{display:flex;align-items:center;flex-wrap:wrap;gap:9px;padding-top:22px;margin-top:24px;border-top:1px solid var(--color-border-subtle)}.model-onboarding-actions button{height:auto;min-height:40px;white-space:normal;font-size:var(--hither-font-form,14px)!important}.model-onboarding .model-feedback:not(:empty){margin:18px 0 0}.model-onboarding .model-saved,.model-onboarding .model-testing-note{font-size:var(--hither-font-caption,13px);line-height:1.7}
+@container(max-width:360px){.model-onboarding-actions{align-items:stretch;flex-direction:column}.model-onboarding-actions>button{width:100%}}
+
+[data-radix-popper-content-wrapper]>[role="dialog"]:has(.model-onboarding-option){width:var(--radix-popover-trigger-width);max-width:min(var(--radix-popover-content-available-width),calc(100vw - 32px))}
+
+.model-onboarding-provider-content>.model-provider-mark{width:24px!important;height:24px!important;flex:0 0 24px}

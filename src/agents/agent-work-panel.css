@@ -1,0 +1,62 @@
+.agent-quick-actions{display:flex;align-items:center;gap:3px;flex-shrink:0;min-width:0;overflow-x:auto;overflow-y:hidden;padding:4px 6px 8px;background:var(--color-surface);scrollbar-width:thin}
+.agent-quick-actions>button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;flex:1 0 44px;min-width:44px;padding:6px 2px;border:0;border-radius:7px;background:transparent;color:var(--color-text-secondary);cursor:pointer}
+.agent-quick-actions>button:hover{background:var(--color-surface-secondary);color:var(--color-text)}
+.agent-quick-actions>button:focus-visible{outline:2px solid var(--color-ring);outline-offset:-2px}
+.agent-quick-actions svg{display:block;width:18px;height:18px;flex:0 0 18px}
+.agent-quick-actions span{display:block;font-size:var(--hither-font-caption,14px);line-height:17px;white-space:nowrap}
+.saved-agent-browser .expert-showcase-stage{overflow:visible}
+@media(min-width:701px) and (max-height:820px){
+  .saved-agent-browser .expert-showcase-header{padding:10px 4px 8px}
+  .saved-agent-browser .expert-showcase-stage{padding:4px 12px 10px}
+  .saved-agent-browser .expert-showcase-stage>.ag-pass-stage{zoom:.95}
+  .saved-agent-browser .agent-quick-actions{padding:2px 6px}
+  .saved-agent-browser .agent-quick-actions>button{padding:3px 2px;gap:2px}
+  .saved-agent-browser .saved-agent-actions{padding:4px 8px 10px}
+  .saved-agent-browser .expert-showcase-switcher{padding:7px 0}
+  .saved-agent-browser .expert-neighbor-strip>button{padding:5px 7px}
+}
+@media(max-width:700px){.saved-agent-browser .expert-badge-browser{grid-template-rows:100px minmax(570px,1fr)}.saved-agent-browser .expert-showcase{min-height:570px}}
+/* Details use the same desktop footprint as Settings. Only their content scrolls. */
+.dialog-overlay .app-dialog.ag-agent-details-dialog{width:min(900px,calc(100vw - 64px));height:min(640px,calc(100dvh - 64px));max-height:calc(100dvh - 64px);display:flex;flex-direction:column;overflow:hidden;padding:22px;border-radius:14px}
+.ag-agent-details-dialog>header{flex-shrink:0;margin-bottom:12px}
+.agent-details-person{display:flex;align-items:center;gap:10px;min-width:0;flex-shrink:0;margin-bottom:18px}
+.agent-details-person>.ag-avatar{flex-shrink:0}.agent-details-person>p{flex:1;min-width:0;margin:0;font-size:var(--hither-font-caption,14px);line-height:1.7;color:var(--color-text-secondary)}.agent-details-person>button{flex-shrink:0}.agent-details-person>button svg{width:16px;height:16px}
+.ag-agent-details-dialog>.agent-details-body{display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden}
+.agent-work-panel{display:flex;flex-direction:column;flex:1;min-width:0;min-height:0;gap:18px}
+.agent-work-tabs{flex-shrink:0;width:100%;font-size:var(--hither-font-label,16px)}.agent-work-tabs [role=radio]{white-space:nowrap}
+.agent-work-content{display:flex;flex-direction:column;flex:1;min-height:0;min-width:0;overflow:hidden}
+.agent-work-content>[hidden]{display:none}
+.agent-work-section{display:flex;flex-direction:column;flex:1;min-width:0;min-height:0;overflow:auto;padding:0 2px 4px;overscroll-behavior:contain}
+.agent-work-resources{padding:0;overflow:hidden}.agent-work-resources>.agent-resources{display:flex;flex-direction:column;flex:1;min-height:0;overflow:auto;padding:0 2px;overscroll-behavior:contain}
+.agent-work-resources .agent-resources-heading{flex-shrink:0;margin-bottom:12px}.agent-work-resources .agent-resource-form{flex:1;min-height:0;overflow:hidden;gap:14px}
+.agent-work-resources .agent-resource-form-title{flex-shrink:0;padding-bottom:10px}
+.agent-work-resources .agent-resource-form>fieldset{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start;gap:28px;flex:1;min-height:0;overflow:auto;padding-right:4px;overscroll-behavior:contain}
+.agent-work-resources .agent-resource-account{display:flex;flex-direction:column;gap:16px;min-width:0}
+.agent-work-resources .agent-resource-policy{min-width:0;border-top:0;border-left:1px solid var(--color-border-subtle);padding:0 0 0 24px;gap:14px}
+.agent-work-resources .agent-resource-pair{gap:12px}.agent-work-resources .agent-resource-actions{flex-shrink:0;padding:12px 0 0;border-top:1px solid var(--color-border-subtle)}
+.agent-work-resources .agent-resource-list{min-height:0}.agent-work-resources .agent-resources-footnote{flex-shrink:0}
+.agent-model-panel{display:flex;flex-direction:column;gap:18px;flex:1;min-width:0;min-height:0}.agent-model-panel .form-field{margin:0;gap:7px}.agent-model-panel .field-label{font-size:var(--hither-font-label,16px)}
+.agent-model-selection{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px;min-width:0;overflow:auto}
+.agent-model-selection>div{min-width:0}.agent-model-selection p,.agent-model-panel>p{margin:12px 0 0;color:var(--color-text-secondary);font-size:var(--hither-font-caption,14px);line-height:1.75}
+.agent-model-current{display:flex;align-items:center;gap:10px;align-self:start;padding:14px 0 14px 24px;border-left:1px solid var(--color-border-subtle)}
+.agent-model-current>.model-provider-mark{width:28px;height:28px;flex:0 0 28px}.agent-model-current>span:not(.model-provider-mark){flex:1;min-width:0}.agent-model-current strong{display:block;font-size:var(--hither-font-label,16px);font-weight:500;overflow-wrap:anywhere}.agent-model-current small{display:block;color:var(--color-text-secondary);font-size:var(--hither-font-caption,14px);line-height:1.6}
+.agent-model-actions{display:flex;align-items:center;gap:4px;flex-wrap:wrap;flex-shrink:0;margin-top:auto;padding-top:12px;border-top:1px solid var(--color-border-subtle)}.agent-model-actions>span{flex:1}.agent-model-actions>button{font-size:var(--hither-font-label,16px)}
+.agent-work-history>button{display:flex;align-items:center;gap:10px;width:100%;min-width:0;text-align:left;padding:15px 0;border:0;border-bottom:1px solid var(--color-border-subtle);background:none;color:var(--color-text);cursor:pointer}
+.agent-work-history>button>span:first-child{flex:1;min-width:0}.agent-work-history strong{display:block;line-height:1.7;font-size:var(--hither-font-label,16px);font-weight:500;overflow-wrap:anywhere}.agent-work-history small{display:block;line-height:1.7;font-size:var(--hither-font-caption,14px);color:var(--color-text-secondary)}.agent-work-history svg{width:15px;height:15px;flex-shrink:0}
+.agent-work-empty{margin:0;padding:24px 0;color:var(--color-text-secondary);font-size:var(--hither-font-label,16px);line-height:1.7}
+@media(max-width:800px){.dialog-overlay .app-dialog.ag-agent-details-dialog{width:calc(100vw - 32px);height:calc(100dvh - 32px);max-height:calc(100dvh - 32px)}.agent-work-resources .agent-resource-form>fieldset{grid-template-columns:minmax(0,1fr);gap:20px}.agent-work-resources .agent-resource-policy{border-left:0;border-top:1px solid var(--color-border-subtle);padding:18px 0 0}.agent-model-selection{grid-template-columns:minmax(0,1fr);gap:18px}.agent-model-current{padding:14px 0;border-left:0;border-block:1px solid var(--color-border-subtle)}}
+@media(max-width:520px){.dialog-overlay .app-dialog.ag-agent-details-dialog{padding:16px}.agent-work-tabs{font-size:var(--hither-font-caption,14px)}.agent-details-person{margin-bottom:16px;gap:8px}.agent-model-actions>button{font-size:var(--hither-font-label,16px)}.agent-model-actions>span{display:none}.agent-model-actions{justify-content:flex-end}.agent-model-actions>button:first-child{margin-right:auto}.agent-quick-actions{padding-inline:2px;gap:2px}}
+
+.ag-agent-details-dialog .model-connection-trigger>span:last-child{font-size:var(--hither-font-label);line-height:1.5}
+.ag-agent-details-dialog .agent-resource-form :is(.field-label,label,.agent-resource-permission>span:first-child){font-size:var(--hither-font-label)}
+.ag-agent-details-dialog .agent-resource-form :is(input,textarea,button){font-size:var(--hither-font-form)}
+.ag-agent-details-dialog .agent-resource-form :is(.agent-resource-hint,.field-hint){font-size:var(--hither-font-caption)}
+
+.ag-agent-details-dialog{font-size:var(--hither-font-body);--control-font-size-md:var(--hither-font-form)}
+.ag-agent-details-dialog .agent-model-selection p{font-size:var(--hither-font-caption);line-height:1.7}
+
+.ag-agent-details-dialog>header h2{font-size:var(--hither-font-settings-title)}
+.ag-agent-details-dialog .agent-details-person>p{font-size:var(--hither-font-caption)}
+
+@media(min-width:701px) and (max-height:760px){.saved-agent-browser .expert-showcase-stage>.ag-pass-stage{zoom:.80}}
+@media(min-width:701px) and (max-height:660px){.saved-agent-browser .expert-showcase{overflow-y:auto}.saved-agent-browser .expert-showcase-stage{flex:0 0 313px;min-height:313px}}

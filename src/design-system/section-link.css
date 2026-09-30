@@ -1,0 +1,6 @@
+.section-link{flex-shrink:0;font-size:var(--hither-font-label);white-space:nowrap}
+.section-link>svg{width:14px;height:14px}
+
+.section-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:32px;margin-bottom:16px}
+.section-heading.section-heading>h2{margin:0;line-height:22px}
+.section-heading>.section-link{margin:0;align-self:center}

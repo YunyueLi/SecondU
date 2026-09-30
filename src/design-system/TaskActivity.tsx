@@ -25,10 +25,17 @@ export function TaskEventDetails({ event }: { event: TaskEvent }) {
 
 export function TaskActivity({ task, agents = [], onEvent }: { task: Task; agents?: AgentProfile[]; onEvent?: (event: TaskEvent)=>void }) {
   const events=visibleTaskEvents(task.events).filter(event=>event.type!=='context'&&event.type!=='evidence');
-  const running=task.status==='running'||task.status==='queued';
-  if (!events.length) return null;
-  return <details className="task-activity" open={running || undefined}>
-    <summary><span className={`activity-status-icon ${running?'is-running':''}`}>{running?<Clock/>:<CheckCircle/>}</span><span>{running?t("正在推进", "In progress"):task.status==='awaiting_approval'?t("等待你的确认", "Waiting for your approval"):t("查看工作过程", "View activity")}</span><ChevronRight className="activity-chevron"/></summary>
+  const running=task.status==='running';
+  const pending=running||task.status==='queued'||task.status==='awaiting_approval';
+  if (!events.length && !pending) return null;
+  const label=task.status==='queued'?t('等待开始','Waiting to start')
+    :task.status==='awaiting_approval'?t('等待你的确认','Waiting for your approval')
+    :running?events.at(-1)?.label||t('正在处理','Working')
+    :task.status==='failed'?t('查看问题','Review issue'):t('查看过程','View activity');
+  const statusIcon=<span className={`activity-status-icon ${running?'is-running':''}`}>{running?<span className="activity-running-dot"/>:<Clock/>}</span>;
+  if(!events.length)return <div className="task-activity task-activity-pending" role="status">{statusIcon}<span>{label}</span></div>;
+  return <details className="task-activity">
+    <summary>{statusIcon}<span className="activity-label" aria-live={pending?'polite':undefined}>{label}</span><ChevronRight className="activity-chevron"/></summary>
     <ol>{events.map((event,index)=>{
       const kind=eventKind(event);const person=agents.find(agent=>agent.id===event.agentId);
       const Icon=kind==='reasoning'?Sparkles:kind==='error'?CloseBold:kind==='tool'?/网页|web|search/i.test(event.label)?Search:/文件|file|document/i.test(event.label)?Document:Code:kind==='context'?User:kind==='approval'?Clock:CheckCircle;

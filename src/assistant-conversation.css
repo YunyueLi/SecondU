@@ -1,0 +1,29 @@
+.assistant-workspace .message-footer{display:flex;align-items:flex-start;flex-wrap:wrap;gap:4px 10px;margin-top:10px}
+.assistant-workspace .message-actions{display:flex;align-items:center;gap:2px;flex:none;min-height:30px}
+.assistant-workspace .message-actions button{width:30px;min-width:30px;height:30px;padding:0;border-radius:7px;color:var(--color-text-secondary)}
+.assistant-workspace .message-actions button:hover{color:var(--color-text)}
+.assistant-workspace .message-actions button svg{width:17px;height:17px}
+.assistant-workspace .message-actions button::before{border-radius:7px}
+.assistant-workspace .message-user{padding:0;background:transparent;border-radius:0}
+.assistant-workspace .message-user-bubble{border-radius:20px 20px 5px 20px;background:var(--color-surface-secondary);padding:13px 19px}
+.assistant-workspace .message-user-actions{justify-content:flex-end;margin-top:4px;opacity:0;transition:opacity 120ms ease}
+.assistant-workspace .message-user:hover .message-user-actions,.assistant-workspace .message-user:focus-within .message-user-actions{opacity:1}
+@media(hover:none){.assistant-workspace .message-user-actions{opacity:1}}
+@media(prefers-reduced-motion:reduce){.assistant-workspace .message-user-actions{transition:none}}
+.assistant-workspace .task-context{flex-basis:100%;max-width:100%;min-width:0;margin:0;border:0;padding:0;font-size:var(--hither-font-caption);color:var(--color-text-secondary)}
+.assistant-workspace .task-context-trigger{display:flex;align-items:center;gap:6px;min-height:30px;line-height:22px;width:fit-content;flex:none;padding:3px 5px;border:0;border-radius:7px;background:transparent;color:var(--color-text-secondary);font:inherit;font-size:var(--hither-font-caption);cursor:pointer}
+.assistant-workspace .task-context-trigger:hover{background:var(--color-surface-secondary);color:var(--color-text)}
+.assistant-workspace .task-context-trigger>svg{width:15px;height:15px;flex:none}
+.assistant-workspace .task-context-trigger>small{font-size:var(--hither-font-meta);font-variant-numeric:tabular-nums}
+.assistant-workspace .task-context-trigger>.context-chevron{width:12px;height:12px;transition:transform 150ms ease}
+.assistant-workspace .task-context-trigger[aria-expanded=true]>.context-chevron{transform:rotate(90deg)}
+.assistant-workspace .task-context ul{list-style:none;padding:0;margin:8px 0;max-height:250px;overflow:auto;overscroll-behavior:contain}
+.assistant-workspace .task-context li{padding:9px 0;line-height:1.7;font-size:var(--hither-font-caption);border-bottom:1px solid var(--color-border-subtle)}
+.assistant-workspace .task-context li small{display:block;font-size:var(--hither-font-meta);line-height:1.7;margin-top:3px}
+.assistant-workspace .message-pending>.message-footer{margin-top:4px}
+.assistant-workspace .task-context-trigger:focus-visible,.assistant-workspace .task-context-review:focus-visible{outline:2px solid var(--color-ring);outline-offset:2px}
+.assistant-workspace .task-context-review{display:inline-flex;align-items:center;gap:4px;min-height:24px;color:var(--color-text-tertiary,var(--color-text-secondary));font-size:var(--hither-font-meta);line-height:1.6;text-decoration:none}
+.assistant-workspace .task-context-review:hover{color:var(--color-text-secondary);text-decoration:underline;text-underline-offset:3px}
+.assistant-workspace .task-context-review>svg{width:12px;height:12px}
+@media(prefers-reduced-motion:reduce){.assistant-workspace .context-chevron{transition:none}}
+[data-motion=reduced] .assistant-workspace .context-chevron{transition:none}

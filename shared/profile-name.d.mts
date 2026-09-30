@@ -1,1 +1,1 @@
-export function displayProfileName(profile:{name:string;englishName?:string},locale?:string):string;
+export function displayProfileName(profile:{name:string;englishName?:string;demo?:boolean},locale?:string):string;

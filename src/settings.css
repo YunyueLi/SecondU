@@ -26,7 +26,7 @@
 .settings-panel[hidden] { display: none; }
 .settings-panel-heading { margin-bottom:20px; }
 .settings-title-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-.settings-panel-heading h2 { font-size:18px; line-height:1.4; font-weight:550; letter-spacing:-.02em; }
+.settings-panel-heading h2 { font-size:var(--hither-font-settings-heading); line-height:1.4; font-weight:550; letter-spacing:-.02em; }
 .settings-panel-heading > p { display:none; }
 .settings-form { display:flex; flex-direction:column; gap:18px; }
 .settings-workspace .form-field { margin:0; gap:6px; min-width:0; }
@@ -83,8 +83,9 @@
   .settings-navigation { width:100%; height:auto; padding:12px 12px 10px; border-right:0; border-bottom:1px solid var(--color-border-subtle); flex-shrink:0; }
   .settings-navigation h1 { display:none; }
   .settings-navigation nav { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:4px; }
-  .settings-workspace .settings-category { width:100%; min-width:0; justify-content:center; padding-inline:8px; }
+  .settings-workspace .settings-category { width:100%; min-width:0; height:auto; min-height:38px; justify-content:center; padding:8px; }
   .settings-category>span { justify-content:center; }
+  .settings-category>span>span { min-width:0; white-space:normal; line-height:1.4; }
   .settings-space-note { display: none; }
   .settings-detail { width:100%; height:auto; flex:1; }
   .settings-panel { padding:24px 22px 28px; }
@@ -101,10 +102,16 @@
   .settings-sample-content { padding: 14px; }
 }
 
+@container (max-width: 330px) {
+  .settings-navigation nav { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .general-preferences .preference-line { align-items:flex-start; gap:10px; }
+  .general-preferences .preference-line>div:first-child { flex-basis:100%; }
+}
+
 /* Overlay geometry and settings typography have one source of truth. */
-.dialog-overlay .settings-dialog { width:min(1200px,calc(100vw - 64px)); height:min(900px,calc(100dvh - 64px)); max-height:calc(100dvh - 64px); padding:0; overflow:hidden; border-radius:14px; }
+.dialog-overlay .settings-dialog { width:min(900px,calc(100vw - 64px)); height:min(640px,calc(100dvh - 64px)); max-height:calc(100dvh - 64px); padding:0; overflow:clip; border-radius:14px; }
 .settings-dialog>header { position:absolute; left:22px; right:12px; top:8px; height:32px; margin:0; z-index:3; }
-.settings-dialog>header h2 { font-size:17px; font-weight:550; }
+.settings-dialog>header h2 { font-size:var(--hither-font-settings-title); font-weight:550; }
 .settings-dialog::before { content:''; position:absolute; left:0; right:0; top:47px; height:1px; background:var(--color-border-subtle); }
 @media(max-width:800px) { .dialog-overlay .settings-dialog { width:calc(100vw - 32px); height:calc(100dvh - 32px); max-height:calc(100dvh - 32px); } }
 .settings-device-summary { border:1px solid var(--color-border-subtle); border-radius:12px; padding:20px; }
@@ -178,6 +185,8 @@
 .settings-workspace .settings-technical dd { min-width:0; }
 @container(max-width:440px) { .settings-panel { padding:22px 18px 26px; } .settings-device-identity { gap:10px; } .settings-workspace .settings-device-identity h3 { font-size:15px; } .settings-technical dl>div { grid-template-columns:76px minmax(0,1fr); gap:12px; } }
 .settings-workspace .connectors-settings { width:100%; }
+.general-preferences { margin-top:0; }
+.general-save-status { margin-top:16px; }
 .settings-workspace .connector-empty-state { padding:18px 0 0; color:var(--color-text-tertiary); font-size:var(--hither-font-caption); }
 .settings-workspace .connector-add-options { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
 .settings-workspace .connector-add-options>button { min-width:0; width:100%; }

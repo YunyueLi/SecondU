@@ -1,0 +1,19 @@
+.message-revision{min-width:0;max-width:100%}
+.message-user:has(>.message-revision[data-editing=true]){width:560px;max-width:100%;padding:0;background:transparent;border-radius:0}
+.ag-conversation .ag-message-user .ag-message-body:has(>.message-revision[data-editing=true]){width:560px}
+.ag-conversation .ag-message-user .ag-message-bubble:has(>.message-revision-editor){padding:0;background:transparent;border-radius:0}
+.message-revision-editor{display:flex;flex-direction:column;gap:6px;width:560px;max-width:100%;min-width:0;box-sizing:border-box;padding:10px 12px;border:1px solid var(--color-border-subtle);border-radius:var(--hither-radius-composer);background:var(--color-surface);box-shadow:0 2px 9px rgb(0 0 0 / .04)}
+.message-revision-editor:focus-within{border-color:var(--color-border)}
+.message-revision-editor>.message-revision-input{background:transparent;box-shadow:none;border:0;border-radius:0}
+.message-revision-editor textarea{width:100%;min-height:76px;max-height:256px;resize:none;font:inherit;font-size:var(--hither-font-body);line-height:24px;padding:6px 2px 10px;box-sizing:border-box;overflow-y:auto}
+.message-revision-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px 12px}
+.message-revision-footer>.message-revision-note{flex:1 1 120px;font-size:var(--hither-font-meta);color:var(--color-text-tertiary)}
+.message-revision-actions{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:6px;margin-left:auto}
+.message-revision-actions button{min-height:30px;font-size:var(--hither-font-caption)}
+.message-revision-note,.message-revision-error{margin:0;font-size:var(--hither-font-caption);line-height:1.6;overflow-wrap:anywhere}
+.message-revision-note{color:var(--color-text-secondary)}
+.message-revision-error{color:var(--color-text-danger)}
+.revision-navigation{display:flex;align-items:center;flex-wrap:wrap;gap:5px 8px;min-width:0;margin:10px 0;font-size:var(--hither-font-caption);line-height:1.5;color:var(--color-text-secondary)}
+.revision-navigation button,.revision-navigation a{display:inline-flex;align-items:center;gap:5px;min-height:28px;max-width:100%;font-size:inherit;overflow-wrap:anywhere}
+.revision-navigation svg{width:14px;height:14px;flex-shrink:0}
+@media(max-width:600px){.message-revision-editor{width:min(560px,100%);padding:9px 11px}.message-revision-editor textarea{min-height:72px}.message-revision-actions{gap:5px}.message-revision-actions button{min-height:32px}.revision-navigation{gap:5px 7px}}

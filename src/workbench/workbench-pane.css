@@ -1,0 +1,15 @@
+/* Both conversation types keep this surface mounted for split, overlay and fullscreen. */
+.workbench-surface{position:relative;width:var(--workbench-width);min-width:0;height:100%;min-height:0;flex:none;background:var(--color-surface);border-left:1px solid var(--color-border-subtle);isolation:isolate}
+.workbench-surface>.workbench-panel{height:100%;min-height:0;overflow:hidden}
+.ag-workspace.ag-chat-only.with-workbench:has(>.workbench-surface){display:flex;position:relative}
+.workbench-surface[data-overlay=true]{position:absolute;z-index:20;inset:0 0 0 auto;max-width:100%;box-shadow:-12px 0 30px -18px rgb(0 0 0 / 25%)}
+.workbench-surface[data-fullscreen=true]{position:absolute;inset:0;z-index:20;width:100%;max-width:100%;height:100%;border:0;box-shadow:none}
+.workbench-resize{position:absolute;z-index:3;top:0;bottom:0;left:-5px;width:10px;cursor:col-resize;touch-action:none;outline:none}
+.workbench-resize::after{content:'';position:absolute;inset:0 4px;background:transparent;transition:background-color 120ms ease}
+.workbench-resize:hover::after,.workbench-resize:focus-visible::after,.workbench-surface[data-resizing=true]>.workbench-resize::after{background:var(--color-text-tertiary)}
+.workbench-resize:focus-visible{box-shadow:inset 0 0 0 1px var(--color-border)}
+.workbench-surface[data-resizing=true]{user-select:none}
+.workbench-panel-actions{display:flex;align-items:center;gap:2px;flex:none}
+.workbench-panel-actions>button{width:32px;min-width:32px;height:32px;padding:0;border-radius:8px;color:var(--color-text-secondary)}
+.workbench-panel-actions svg{width:16px;height:16px}
+@media(prefers-reduced-motion:reduce){.workbench-resize::after{transition:none}}

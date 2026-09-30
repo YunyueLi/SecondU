@@ -1,16 +1,19 @@
-const { app, BrowserWindow, dialog, shell, Menu, ipcMain, desktopCapturer, systemPreferences, nativeTheme } = require('electron');
+const { app, BrowserWindow, dialog, shell, Menu, ipcMain, desktopCapturer, systemPreferences, nativeTheme, screen } = require('electron');
 const { installScreenShare } = require('./screen-share.cjs');
 const { installDirectoryPicker } = require('./directory-picker.cjs');
-const { writeStartupDocument, readStartupAppearance, RETRY_URL } = require('./startup.cjs');
+const { installWindowState } = require('./window-state.cjs');
+const { writeStartupDocument, initialWindowBounds, readStartupAppearance, backendIdentityMatches, selectBackendPort, RETRY_URL } = require('./startup.cjs');
 const { spawn } = require('node:child_process');
 const path = require('node:path');
 const fs = require('node:fs');
 const { createHash } = require('node:crypto');
+const { pathToFileURL } = require('node:url');
 const brand = require('../shared/brand.json');
 
 app.setName(brand.name);
 const ROOT = path.resolve(__dirname, '..');
-const packaged = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8')).hitherPackaged === true;
+const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
+const packaged = manifest.hitherPackaged === true;
 // The visible name must not move existing tasks, browser drafts or credentials.
 const userData = path.join(app.getPath('appData'), brand.compatibility.userDataDirectory);
 fs.mkdirSync(userData, { recursive: true, mode: 0o700 });
@@ -25,6 +28,7 @@ let quitting = false;
 let startupUrl = '';
 let startupAttempt;
 let nativeLanguage='zh-CN';
+let observeWindowState = () => {};
 const nt=(zh,en)=>nativeLanguage==='en'?en:zh;
 function startupAppearance(){return readStartupAppearance(process.env.HITHER_DATA_DIR || (packaged ? path.join(userData,'data') : path.join(ROOT,'.hither')));}
 function setApplicationLanguage(language){
@@ -50,14 +54,12 @@ async function ensureBackend() {
   const dataDir = process.env.HITHER_DATA_DIR || (packaged ? path.join(userData, 'data') : path.join(ROOT, '.hither'));
   fs.mkdirSync(dataDir, { recursive: true, mode: 0o700 });
   const spaceId = createHash('sha256').update(fs.realpathSync(dataDir)).digest('hex').slice(0, 24);
-  let availablePort;
-  for (let candidate = 58645; candidate <= 58649; candidate++) {
-    const state = await health(candidate);
-    if (state.value?.application === 'hither-desktop' && state.value.version === '0.1.0' && state.value.spaceId === spaceId) { port = candidate; origin = `http://127.0.0.1:${port}`; backendReady = true; return; }
-    if (!state.occupied && availablePort === undefined) availablePort = candidate;
-  }
-  if (availablePort === undefined) throw new Error(nt(`本机应用端口 58645–58649 已被占用，请关闭不再使用的 ${brand.name} 实例后重试。`,`Local ports 58645–58649 are in use. Close unused ${brand.name} windows and try again.`));
-  port = availablePort; origin = `http://127.0.0.1:${port}`;
+  const { computeRuntimeRevision } = await import(pathToFileURL(path.join(ROOT,'server/runtime-revision.mjs')).href);
+  const expected = { application: brand.compatibility.applicationId, version: manifest.version, spaceId, revision: computeRuntimeRevision(ROOT) };
+  const selected = await selectBackendPort([58645,58646,58647,58648,58649], health, expected);
+  if (!selected) throw new Error(nt(`本机应用端口 58645–58649 已被占用，请关闭不再使用的 ${brand.name} 实例后重试。`,`Local ports 58645–58649 are in use. Close unused ${brand.name} windows and try again.`));
+  port = selected.port; origin = `http://127.0.0.1:${port}`;
+  if (selected.reuse) { backendReady = true; return; }
   fs.mkdirSync(dataDir, { recursive: true, mode: 0o700 });
   const log = fs.openSync(path.join(dataDir, 'desktop.log'), 'a', 0o600);
   backend = spawn(process.execPath, [path.join(ROOT, 'server/index.mjs')], {
@@ -72,7 +74,7 @@ async function ensureBackend() {
   });
   for (let attempt = 0; attempt < 80; attempt++) {
     const state = await health();
-    if (state.value?.spaceId === spaceId && state.value?.application === 'hither-desktop') { backendReady = true; return; }
+    if (backendIdentityMatches(state.value,expected)) { backendReady = true; return; }
     if (!backend || backend.exitCode !== null) throw new Error(nt(`本机服务无法启动。请检查端口 ${port} 是否被其他程序占用。`,`The local service could not start. Check whether another application is using port ${port}.`));
     await new Promise(resolve => setTimeout(resolve, 150));
   }
@@ -81,11 +83,12 @@ async function ensureBackend() {
 
 function openWindow() {
   mainWindow = new BrowserWindow({
-    width: 1440, height: 960, minWidth: 900, minHeight: 640,
+    ...initialWindowBounds(screen.getDisplayNearestPoint(screen.getCursorScreenPoint()).workArea),
     title: brand.name, icon: path.join(__dirname, 'assets', brand.desktop.iconImage), backgroundColor: (startupAppearance().appearance.theme==='dark'||(startupAppearance().appearance.theme!=='light'&&nativeTheme.shouldUseDarkColors))?'#212121':'#ffffff',
-    titleBarStyle: 'hiddenInset', trafficLightPosition: { x: 16, y: 16 },
+    ...(process.platform === 'darwin' ? { titleBarStyle: 'hiddenInset', trafficLightPosition: { x: 16, y: 16 } } : {}),
     webPreferences: { preload: path.join(__dirname, 'preload.cjs'), nodeIntegration: false, contextIsolation: true, sandbox: true, spellcheck: false },
   });
+  observeWindowState(mainWindow);
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
     if (/^https?:\/\//.test(url)) shell.openExternal(url);
     return { action: 'deny' };
@@ -134,6 +137,7 @@ else {
       if(!mainWindow||event.sender!==mainWindow.webContents||event.senderFrame!==mainWindow.webContents.mainFrame||new URL(event.senderFrame.url).origin!==origin)throw new Error('This frame cannot access screen-sharing status.');
       return screenShare?.getStatus()??{available:false,remoteControl:false};
     });
+    observeWindowState = installWindowState({ ipcMain, getWindow: () => mainWindow, getOrigin: () => origin });
     installDirectoryPicker({ ipcMain, dialog, getWindow: () => mainWindow, getOrigin: () => origin, getLanguage: () => nativeLanguage });
     openWindow();
     void startWindow();

@@ -1,0 +1,568 @@
+{
+  "schemaVersion": 1,
+  "baselineCommit": "fa7baf4",
+  "title": "SecondU 的产品判断、实现与验证",
+  "summary": "从有来源的个人理解出发，连接任务、专家协作、消息分支与原始成果。一次真实 DeepSeek 单专家委派、Office 本机预览和原生工作区交互已有明确范围的验证；最后的界面细节与公开交付继续核对。",
+  "stages": [
+    {
+      "id": "research",
+      "title": "确定产品问题",
+      "summary": "围绕个人认知如何帮助具体任务研究已有产品和执行框架，保留采用与放弃的理由。",
+      "status": "documented",
+      "details": [
+        "固定研究档案，避免重复拆解。",
+        "区分数字分身的持续认知与专家 Agent 的任务能力。"
+      ],
+      "document": "RESEARCH.md"
+    },
+    {
+      "id": "closed-loop",
+      "title": "建立最小闭环",
+      "summary": "把来源、认知、任务审批、成果版本和反馈接起来，并验证重启后的状态保留。",
+      "status": "verified",
+      "details": [
+        "首版可运行版本有实际本地提交。",
+        "历史闭环证据覆盖对应版本，不能自动代表新界面。"
+      ],
+      "document": "ACCEPTANCE.md"
+    },
+    {
+      "id": "product-iteration",
+      "title": "完善真实使用路径",
+      "summary": "从功能入口转向连续任务，补齐项目、Agent 会话、模型配置、独立中英文示例和远端执行。",
+      "status": "partial",
+      "document": "DEVELOPMENT.md"
+    },
+    {
+      "id": "current-review",
+      "title": "按最新反馈修订",
+      "summary": "按页面反馈调整比例、引导和主题；加入可追踪的负责人调度、消息修改版本与多格式成果，让构建过程和交付都能直接审阅。",
+      "status": "in_progress",
+      "document": "ITERATION.md"
+    },
+    {
+      "id": "delivery",
+      "title": "验证并交付本机版本",
+      "summary": "最新包已完成构建、包内实际运行、资源、原件下载和临时签名检查。前一包的主要页面已实屏，最新工牌键盘修复后的窗口与公开发布继续单独核对。",
+      "status": "partial",
+      "document": "DEVELOPMENT.md"
+    }
+  ],
+  "iterations": [
+    {
+      "id": "initial-loop",
+      "date": "2026-09-29",
+      "title": "认知、执行与反馈形成闭环",
+      "summary": "建立本地 SQLite 状态、明确审批、成果版本和有来源的认知反馈；首版提交 50d5e1f。",
+      "status": "verified",
+      "evidence": [
+        "initial-acceptance"
+      ],
+      "document": "DEVELOPMENT.md"
+    },
+    {
+      "id": "visual-system",
+      "date": "2026-09-29",
+      "title": "统一组件与视觉体系",
+      "summary": "使用官方 Apps SDK UI 组件和共用 token，补齐可操作组件目录、主题和不同窗口宽度检查；提交 7d8bc54。",
+      "status": "verified",
+      "evidence": [
+        "visual-baseline"
+      ],
+      "document": "DESIGN.md"
+    },
+    {
+      "id": "context-and-examples",
+      "date": "2026-09-30",
+      "title": "个人认知与独立双语示例",
+      "summary": "扩展个人认知、持续 Agent 会话、项目成果和服务入口。主要实现提交 659d10e，原生启动修复提交 fa7baf4。",
+      "status": "partial",
+      "evidence": [
+        "historical-native"
+      ],
+      "document": "DEVELOPMENT.md"
+    },
+    {
+      "id": "interaction-corrections",
+      "date": "2026-09-30",
+      "title": "按实际页面反馈修正交互",
+      "summary": "保留输入框层次与比例，新增权限和真实用量。1280 宽市场五列、提供方彩条、装饰开关持久化及群聊双向气泡已有局部实屏；引用、权限菜单和整体验收仍在收口。",
+      "status": "partial",
+      "evidence": [
+        "current-browser"
+      ],
+      "document": "ITERATION.md"
+    },
+    {
+      "id": "remote-deployment-fix",
+      "date": "2026-09-30",
+      "title": "修复远端运行组件缺失",
+      "summary": "隔离部署复现新增审批模块漏包，显式补齐固定清单并更新协议夹具。保留失败日志，未扩大权限或延长等待。",
+      "status": "verified",
+      "evidence": [
+        "full-first-run",
+        "remote-regression"
+      ],
+      "document": "DEVELOPMENT.md"
+    },
+    {
+      "id": "example-regression-fix",
+      "date": "2026-09-30",
+      "title": "校正示例检查，保留未确认状态",
+      "summary": "保留现行作者文案，检查暂定试用日期、未回复人数、时段未定和原始来源，替换过时的句式断言。",
+      "status": "verified",
+      "evidence": [
+        "example-regression"
+      ],
+      "document": "DEVELOPMENT.md"
+    },
+    {
+      "id": "review-reader",
+      "date": "2026-09-30",
+      "title": "让构建过程可以持续更新和审阅",
+      "summary": "文档改为本机实时读取，五阶段路径图、最近迭代、证据与原文分层呈现。后端六项及类型检查通过；桌面阶段切换、手动刷新与原文打开已实屏，自动刷新和完整响应式继续验收。",
+      "status": "partial",
+      "evidence": [
+        "review-reader-validation"
+      ],
+      "document": "DEVELOPMENT.md"
+    },
+    {
+      "id": "team-execution",
+      "date": "2026-09-30",
+      "title": "让负责人按需调度专家",
+      "summary": "负责人按需委派现有专家，执行图记录实际节点、审批和结果；协议及边界检查通过。后续一次真实 DeepSeek 单专家文本委派已完成，复杂任务与其他模型仍待验证。",
+      "status": "partial",
+      "evidence": [
+        "team-protocol-validation",
+        "live-team-provider-validation"
+      ],
+      "document": "HARNESS.md"
+    },
+    {
+      "id": "message-branches",
+      "date": "2026-09-30",
+      "title": "修改问题，保留原对话",
+      "summary": "编辑已发送消息创建独立版本，只带此前历史并保留原回答和成果。分支与原版保留、表情刷新和撤回已通过本轮专项实屏，最新协作布局继续验收。",
+      "status": "partial",
+      "evidence": [
+        "revision-reaction-validation",
+        "conversation-browser-validation"
+      ],
+      "document": "API.md"
+    },
+    {
+      "id": "typed-artifacts",
+      "date": "2026-09-30",
+      "title": "把成果变为可读、可下载的文件",
+      "summary": "代码、文档、表格和静态网页分类型展示；图片、PDF 与常见 Office 保留原始字节和历史版本。三种 Office 原件下载、本机 PDF 及 DOCX 历史版本已有专项实屏与字节检查，未扩大为所有格式和模型产出。",
+      "status": "partial",
+      "evidence": [
+        "artifact-format-validation",
+        "office-http-validation",
+        "office-browser-validation"
+      ],
+      "document": "DEVELOPMENT.md"
+    },
+    {
+      "id": "office-original-preview",
+      "date": "2026-09-30",
+      "title": "保留 Office 原件，在本机预览",
+      "summary": "DOCX、XLSX、PPTX 原件和版本保存，本机 LibreOffice 转 PDF。三格式下载字节、实际预览与 DOCX 历史两版已核对；不代表所有 Office 版式或真实模型生成均通过。",
+      "status": "verified",
+      "evidence": [
+        "office-http-validation",
+        "office-browser-validation"
+      ],
+      "document": "DEVELOPMENT.md",
+      "section": "2026-09-30 真实最小团队与交互专项验收"
+    },
+    {
+      "id": "conversation-browser-closeout",
+      "date": "2026-09-30",
+      "title": "修改、回应与背景展开完成实屏核对",
+      "summary": "消息修改保留原版；表情保存、刷新与撤回一致；个人背景展开按钮保持原位。这三条通过，最新画像和协作布局仍继续验收。",
+      "status": "verified",
+      "evidence": [
+        "conversation-browser-validation"
+      ],
+      "document": "ITERATION.md",
+      "section": "2026-09-30 真实团队与消息交互专项"
+    },
+    {
+      "id": "live-team-minimal",
+      "date": "2026-09-30",
+      "title": "跑通一次真实模型委派",
+      "summary": "DeepSeek 实际委派一名核对员，等待返回后汇总 2+2=4；4 次请求、两个完成节点，重开记录一致。只证明本次合成文本最小闭环。",
+      "status": "verified",
+      "evidence": [
+        "live-team-provider-validation"
+      ],
+      "document": "DEVELOPMENT.md",
+      "section": "2026-09-30 真实最小团队与交互专项验收"
+    },
+    {
+      "id": "native-delivery-closeout",
+      "date": "2026-10-01",
+      "title": "统一工牌、消息操作与可调整工作区",
+      "summary": "整张工牌等比缩放，消息编辑移出气泡，成果区展开保留导航。原生工作区拖动、键盘调宽、Escape 后草稿保持和工牌翻面键盘路径已实测；后续界面文案与顶部布局仍需新构建核对。",
+      "status": "partial",
+      "evidence": [
+        "native-layout-validation",
+        "package-runtime-validation",
+        "scoped-visual-model-review",
+        "native-interaction-validation"
+      ],
+      "document": "DEVELOPMENT.md",
+      "section": "2026-10-01 原生交互补充验收"
+    },
+    {
+      "id": "website-interactive-closeout",
+      "date": "2026-10-01",
+      "title": "提供双语官网与可操作的完整产品",
+      "summary": "官网采用原头像粒子、深浅主题和完整产品嵌入，中英文案聚焦场景、动作和结果。深色双语及文件版本路径已有实屏；窄屏与切回路径仍单列待验。",
+      "status": "partial",
+      "evidence": [
+        "website-browser-validation"
+      ],
+      "document": "DEVELOPMENT.md",
+      "section": "2026-10-01 发布前文档与应用包核对"
+    }
+  ],
+  "capabilities": [
+    {
+      "id": "personal-context",
+      "title": "按任务使用个人认知",
+      "summary": "按用途、关联与预算选择已记录资料，保留来源和版本。当前检索不是高精度语义认知质量的证明。",
+      "status": "partial",
+      "document": "HARNESS.md"
+    },
+    {
+      "id": "task-execution",
+      "title": "持续任务与明确审批",
+      "summary": "本机任务、工具过程、权限选择、取消及恢复已接入。真实模型质量与实际外部操作分别验收。",
+      "status": "partial",
+      "document": "HARNESS.md"
+    },
+    {
+      "id": "artifacts",
+      "title": "成果编辑与版本保留",
+      "summary": "代码、Markdown、CSV、静态 HTML/SVG 分类预览；图片、PDF、常见 Office 保存原件和版本。三种 Office 原件与本机 PDF 通过 HTTP 和专项实屏，DOCX 历史版本已核对；格式覆盖与生成路径各自验收。",
+      "status": "partial",
+      "evidence": [
+        "initial-acceptance",
+        "artifact-format-validation",
+        "office-http-validation",
+        "office-browser-validation"
+      ],
+      "document": "PROJECTS.md"
+    },
+    {
+      "id": "message-revisions",
+      "title": "修改消息与保留原版本",
+      "summary": "修改问题建立独立分支，原对话、后续回答和成果保留。接口边界与本轮浏览器分支操作已验；最新协作布局和原生包另行验收。",
+      "status": "partial",
+      "evidence": [
+        "revision-reaction-validation",
+        "conversation-browser-validation"
+      ],
+      "document": "API.md"
+    },
+    {
+      "id": "agents",
+      "title": "专家会话与负责人调度",
+      "summary": "负责人按需委派现有专家，保存实际执行树；一次 DeepSeek 单专家纯文本任务完成委派、等待与汇总。复杂协作质量仍待验证，市场与 Dating 保留示例边界。",
+      "status": "partial",
+      "document": "revision-02/AGENT-DESIGN.md",
+      "evidence": [
+        "team-protocol-validation",
+        "live-team-provider-validation"
+      ]
+    },
+    {
+      "id": "model-and-connectors",
+      "title": "模型与服务连接",
+      "summary": "模型通过 API Key 接入；MCP 连接器有授权和工具边界。目录存在、账号授权、业务执行各自记录。",
+      "status": "partial",
+      "document": "CONNECTORS.md"
+    },
+    {
+      "id": "remote-computers",
+      "title": "远端电脑与断线恢复",
+      "summary": "固定组件部署、持久进程、审批、目录锁、结果与主任务镜像通过本机协议检查；尚无实际 SSH 主机验收。",
+      "status": "partial",
+      "evidence": [
+        "remote-regression"
+      ],
+      "document": "REMOTE-COMPUTERS.md"
+    },
+    {
+      "id": "delegation",
+      "title": "受限分身的本机调用",
+      "summary": "能力快照、按接收者授权、逐次审批、限次与撤回已实现。当前仅本机纯文本调用，不代表远程分发或完整 A2A 互通。",
+      "status": "partial",
+      "document": "DELEGATION.md"
+    },
+    {
+      "id": "devices",
+      "title": "同一任务的跨端体验",
+      "summary": "眼镜记录、电脑改稿和手机确认以可交互 Dev 演示呈现；真实设备传输尚未接入。",
+      "status": "demo",
+      "document": "DEVICE-SIMULATOR.md"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "initial-acceptance",
+      "title": "首版最小闭环",
+      "scope": "提交 50d5e1f 对应的本地版本",
+      "status": "verified",
+      "detail": "42 项通过、0 失败、0 跳过；包含来源、审批、成果版本及重开流程的历史证据。",
+      "document": "ACCEPTANCE.md"
+    },
+    {
+      "id": "visual-baseline",
+      "title": "组件与响应式基线",
+      "scope": "提交 7d8bc54 对应的视觉更新",
+      "status": "verified",
+      "detail": "历史检查 40 通过、0 失败、2 项可选跳过；实屏覆盖主题、菜单、焦点和多个窗口宽度。",
+      "document": "qa/visual-refresh/README.md"
+    },
+    {
+      "id": "historical-native",
+      "title": "历史原生包与启动修复",
+      "scope": "659d10e 与 fa7baf4 对应的本机包",
+      "status": "partial",
+      "detail": "已有封包、签名、包内文件与真实窗口启动证据。该结果不覆盖本批最新界面、英文菜单或退出重开。",
+      "document": "DEVELOPMENT.md"
+    },
+    {
+      "id": "full-first-run",
+      "title": "全套首跑失败记录（已修复）",
+      "scope": "完整接续时的 474 项检查",
+      "status": "failed",
+      "detail": "456 通过、9 失败、9 跳过。8 项远端失败和 1 项示例断言已修正；后续整合批次 482 项中 473 通过、0 失败、9 跳过。此处保留首跑结果。",
+      "document": "DEVELOPMENT.md"
+    },
+    {
+      "id": "full-fixed",
+      "title": "修复后整合检查通过",
+      "scope": "构建记录与最新主题修改之前的工作树",
+      "status": "verified",
+      "detail": "482 项：473 通过、0 失败、9 项可选跳过，耗时约 20.7 秒；同期生产构建通过。后续新增改动需要自己的专项与整合检查。",
+      "document": "DEVELOPMENT.md"
+    },
+    {
+      "id": "remote-regression",
+      "title": "远端修复专项通过",
+      "scope": "隔离本机进程、固定部署与 HTTP 镜像",
+      "status": "verified",
+      "detail": "15 通过、0 失败、0 跳过。新增安装位置模块加载回归；未测试实际网络 SSH 或真实模型。",
+      "document": "DEVELOPMENT.md"
+    },
+    {
+      "id": "example-regression",
+      "title": "示例与迁移保护通过",
+      "scope": "demo-fixture、demo-copy、demo-zh-content",
+      "status": "verified",
+      "detail": "23 通过、0 失败、0 跳过。保留作者当前文案、用户编辑保护以及暂定事项与来源一致性。",
+      "document": "DEVELOPMENT.md"
+    },
+    {
+      "id": "current-browser",
+      "title": "最新界面与引导实屏",
+      "scope": "当前未提交工作树",
+      "status": "partial",
+      "detail": "1280 宽市场五列、提供方彩条及无横向溢出已查；装饰开时 48 px，关闭并刷新后仍隐藏；群聊双向头像和气泡可见。引用、权限新菜单、完整引导和原生包未作整体通过。",
+      "document": "ITERATION.md"
+    },
+    {
+      "id": "review-reader-validation",
+      "title": "构建记录刷新与评审视图",
+      "scope": "本机动态文档与结构化评审接口",
+      "status": "partial",
+      "detail": "后端 6/6 与 TypeScript 检查通过；39 份原文的站内 Markdown 入口无悬空。1280 宽五阶段图、阶段切换、手动刷新检查时间变化、完整原文和目录已实屏。定时/聚焦刷新、章节定位、返回、窄屏及最终包仍待统一验收。",
+      "document": "DEVELOPMENT.md"
+    },
+    {
+      "id": "team-protocol-validation",
+      "title": "团队生命周期与运行策略",
+      "scope": "本机模拟工具调用、持久状态与模型轮次前的运行时检查",
+      "status": "partial",
+      "detail": "按需委派、并发与节点上限、审批拒绝、取消传播、失败与重启不重放均有检查；非首位负责人模型记录与结果节选披露另有断言。此证据属于协议和本机边界，真实最小团队另行登记。",
+      "document": "HARNESS.md"
+    },
+    {
+      "id": "revision-reaction-validation",
+      "title": "消息分支与本地回应",
+      "scope": "新版本接口、持久化、幂等请求与空间边界",
+      "status": "partial",
+      "detail": "只复制编辑点前历史，原回答与成果不覆盖；权限上限、启动失败留稿、请求幂等，以及表情保存/撤销/空间隔离通过专项检查。对应浏览器三项操作另有专项通过记录，原生重开仍待核对。",
+      "document": "API.md"
+    },
+    {
+      "id": "artifact-format-validation",
+      "title": "多格式成果与原始文件",
+      "scope": "格式解析、本机收录、项目边界、历史版本及 HTTP 下载",
+      "status": "partial",
+      "detail": "代码/CSV 解析和五种二进制格式专项通过；类型、尺寸、容量、敏感内容、软链、项目基线及逐字节下载均检查。HTML/SVG 采用静态隔离预览，完整浏览器体验与最终包另行验收。",
+      "document": "DEVELOPMENT.md"
+    },
+    {
+      "id": "current-native",
+      "title": "最新应用包与原生窗口分层核对",
+      "scope": "2026-10-01，37b088 构建的本机运行与原生专项交互",
+      "status": "partial",
+      "detail": "包内运行、资源、原件下载和 ad-hoc 签名通过。真实窗口已验证工牌可见焦点/Return 翻回、工作区键盘/鼠标调宽、展开/Escape 后保留草稿与导航，测试原文已恢复未新增版本。后续文案、工具栏和顶部布局变更需新构建复核；没有 Apple 公证或公开发布结论。",
+      "document": "DEVELOPMENT.md",
+      "section": "2026-10-01 原生交互补充验收"
+    },
+    {
+      "id": "live-team-provider-validation",
+      "title": "真实 DeepSeek 最小委派完成",
+      "scope": "一次全合成算术任务、负责人和一位核对员、仅纯文本",
+      "status": "verified",
+      "detail": "使用已有 deepseek-flash 配置，经实际 app-server 和 TeamCoordinator 调用 team_delegate / team_wait；4 次 HTTP 200，无重试，两个节点完成，重开数据库一致。未读取私人认知或调用外部业务工具；不覆盖复杂协作、文件产出和其他模型。",
+      "document": "DEVELOPMENT.md",
+      "section": "2026-09-30 真实最小团队与交互专项验收"
+    },
+    {
+      "id": "conversation-browser-validation",
+      "title": "消息交互三项实屏通过",
+      "scope": "本轮隔离浏览器的分支、表情和个人背景操作",
+      "status": "verified",
+      "detail": "实际建立消息分支并保留原版；表情保存后刷新仍在、撤回后刷新保持移除；个人背景按钮展开时保留答复操作同行。最新个人画像和协作视图正在修改，本记录不覆盖它们的整体接受或原生包。",
+      "document": "ITERATION.md",
+      "section": "2026-09-30 真实团队与消息交互专项"
+    },
+    {
+      "id": "office-http-validation",
+      "title": "三种 Office 原件与本机 PDF 通过",
+      "scope": "DOCX / XLSX / PPTX 合成文件、HTTP 下载与本机 LibreOffice 转换",
+      "status": "verified",
+      "detail": "格式和请求专项 12/12；三格式原件下载逐字节一致，当前 PDF 均返回成功；DOCX 两个版本生成不同 PDF。另有三份标准库生成文件转换成功。后续浏览器专项另列证据，不代表所有版式或真实模型生成文件通过。",
+      "document": "DEVELOPMENT.md",
+      "section": "2026-09-30 真实最小团队与交互专项验收"
+    },
+    {
+      "id": "office-browser-validation",
+      "title": "三种 Office 与历史版本实屏核对",
+      "scope": "隔离合成 DOCX / XLSX / PPTX 文件及 DOCX 两个保存版本",
+      "status": "verified",
+      "detail": "实际查看本机转换后的三种 PDF 预览，并核对 DOCX 历史版本的标题、内容与对应原件下载；下载字节有独立 HTTP 对照。仅证明这些合成文件，不保证所有 Office 版式或每种会话中的模型生成。",
+      "document": "DEVELOPMENT.md",
+      "section": "2026-10-01 发布前文档与应用包核对"
+    },
+    {
+      "id": "native-layout-validation",
+      "title": "市场、画像与消息工作区原生实屏",
+      "scope": "工牌最终键盘焦点修复之前的 Electron 44.5.1 本机包",
+      "status": "verified",
+      "detail": "虚构示例空间实际核对整张工牌比例、两行画像标题、用户气泡外编辑入口、单层编辑框，以及展开成果仍可操作左侧导航。不把这批截图替代随后键盘修复后的实屏。",
+      "document": "DEVELOPMENT.md",
+      "section": "最新原生窗口复核"
+    },
+    {
+      "id": "package-runtime-validation",
+      "title": "37b088 应用包运行、资源与签名检查",
+      "scope": "运行指纹 37b088453b91f79b6fb493af7bee5dc4c2d2b594d7b440b1094ca359bb341c1e 的 macOS arm64 包",
+      "status": "verified",
+      "detail": "包内 Electron 44.5.1 / Node 24.21.0 / SQLite 3.53.4 在隔离空间运行；health/source 指纹相同，前端入口、PDF worker/WASM、原始 PNG 字节下载与严格 ad-hoc 签名检查通过。该运行检查之后的原生交互另列证据，未经 Apple 公证。",
+      "document": "DEVELOPMENT.md",
+      "section": "2026-10-01 发布前文档与应用包核对"
+    },
+    {
+      "id": "website-browser-validation",
+      "title": "双语深色官网与嵌入文件版本实屏",
+      "scope": "2026-10-01 当前网站的桌面宽度、中文转英文和英文深色嵌入产品",
+      "status": "partial",
+      "detail": "实际查看中英可见文案、深色头像粒子无白盒、SDK 控件和连续四栏页尾。嵌入产品完成 Markdown 编辑→保存第2版112B→返回第1版原文。390px、浅色切回、四个详细页签完整回归和嵌入语言/主题切回尚未覆盖；未声明公开部署。",
+      "document": "DEVELOPMENT.md",
+      "section": "2026-10-01 发布前文档与应用包核对"
+    },
+    {
+      "id": "scoped-visual-model-review",
+      "title": "工牌与消息按钮辅助视觉核对",
+      "scope": "两张虚构示例截图及对应工牌/编辑按钮实现",
+      "status": "verified",
+      "detail": "Kimi K3 紧凑审查正常结束，确认整张工牌比例和内部间距一致、编辑按钮位于气泡外右下。首次因长度上限返回空正文的尝试不计通过。该结论只为两项辅助视觉证据，不是交互或全产品验收。",
+      "document": "DEVELOPMENT.md",
+      "section": "2026-10-01 发布前文档与应用包核对"
+    },
+    {
+      "id": "native-interaction-validation",
+      "title": "原生调宽、草稿保持与工牌键盘交互",
+      "scope": "37b088 构建，独立中文示例空间，1197×875 逻辑窗口",
+      "status": "verified",
+      "detail": "键盘调宽 520→540 px，鼠标拖至 590 px；展开和 Escape 还原保留未保存内容及导航。工牌翻面焦点在可见返回键，Return 翻回后聚焦正面入口。行程恢复原第 2 版，无新增保存。构建页手动刷新检查时间变化。",
+      "document": "DEVELOPMENT.md",
+      "section": "2026-10-01 原生交互补充验收"
+    }
+  ],
+  "boundaries": [
+    {
+      "id": "evidence-scope",
+      "title": "每份证据只证明对应范围",
+      "detail": "代码、单元与协议检查、浏览器、原生包、真实账号和用户认可分别记录；不计算混合范围的完成百分比。",
+      "status": "documented"
+    },
+    {
+      "id": "private-data",
+      "title": "个人资料与产品文档隔离",
+      "detail": "评审接口仅提供固定产品文档和受版本管理的评审摘要，不读取私人原文、API Key、运行数据库或本地日志正文。",
+      "status": "documented"
+    },
+    {
+      "id": "external-services",
+      "title": "真实外部运行仍需专门验收",
+      "detail": "真实 SSH、模型质量、电话、邮箱、付款、社交匹配及第三方 A2A 互通不能由目录或本机夹具证明。",
+      "status": "planned"
+    },
+    {
+      "id": "devices-boundary",
+      "title": "跨端当前为 Dev 演示",
+      "detail": "手机、眼镜与持续屏幕采集的真实授权、传输和设备条件尚未验证。",
+      "status": "demo"
+    },
+    {
+      "id": "delivery-boundary",
+      "title": "本机交付与公开发布分开",
+      "detail": "最新本机包的构建、实际运行和临时签名已通过；前一包主要页面有原生实屏。当前键盘修复后的窗口、官网最新交互、最终提交与公开发布仍分别核对，不预填发布成功。",
+      "status": "in_progress"
+    }
+  ],
+  "milestones": [
+    {
+      "id": "first-desktop",
+      "at": "2026-09-29T12:50:01+08:00",
+      "title": "首个可运行闭环",
+      "detail": "认知、任务、审批与成果连起来，状态可持久保存。",
+      "commit": "50d5e1f",
+      "iteration": "initial-loop"
+    },
+    {
+      "id": "shared-design",
+      "at": "2026-09-29T15:03:44+08:00",
+      "title": "统一视觉与交互",
+      "detail": "共用组件、明暗主题与可操作的设计目录。",
+      "commit": "7d8bc54",
+      "iteration": "visual-system"
+    },
+    {
+      "id": "complete-example",
+      "at": "2026-09-30T13:16:58+08:00",
+      "title": "完整产品体验",
+      "detail": "个人认知、Agent 会话、项目与独立双语示例。",
+      "commit": "659d10e",
+      "iteration": "context-and-examples"
+    },
+    {
+      "id": "native-startup",
+      "at": "2026-09-30T13:28:27+08:00",
+      "title": "修复原生启动",
+      "detail": "修正启动素材读取，重新检查桌面启动路径。",
+      "commit": "fa7baf4",
+      "iteration": "context-and-examples"
+    }
+  ]
+}

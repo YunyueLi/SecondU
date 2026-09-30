@@ -1,0 +1,23 @@
+name: Product or feature proposal
+description: Describe a task that SecondU could handle better.
+title: '[Proposal] '
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: The user task
+      description: What are you trying to do? Where does the current experience fail?
+    validations:
+      required: true
+  - type: textarea
+    id: change
+    attributes:
+      label: Proposed behavior
+      description: Describe a small complete interaction and how you would know it works.
+    validations:
+      required: true
+  - type: textarea
+    id: constraints
+    attributes:
+      label: Alternatives and constraints
+      description: Include data, permission, accessibility or compatibility concerns. Use only fictional examples.

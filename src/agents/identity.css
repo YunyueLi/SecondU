@@ -54,7 +54,7 @@ html[data-motion=reduced] .ag-pass-card,html[data-motion=reduced] .ag-pass-tilt 
 .is-self-pass .ag-pass-strip{background:#76608f;color:#fff;justify-content:space-between}
 .is-self-pass .ag-pass-strip>strong{font-size:9px;font-weight:450;padding:2px 5px;border:1px solid #b6a6ca;border-radius:4px}
 .is-self-pass .ag-pass-front{position:relative}
-.is-self-pass .ag-pass-front::after{content:'';position:absolute;right:3px;top:34px;width:64px;height:100px;border:1px solid #d8cbe5;border-top:0;border-radius:0 0 44px 44px;box-shadow:12px 0 0 -1px #f4eff9;pointer-events:none;opacity:.6}
+.is-self-pass .ag-pass-front::after{content:'';position:absolute;right:0;top:18px;width:38%;aspect-ratio:1043/1508;max-height:72%;background:url('/art/twin-badge-v1.png') center/contain no-repeat;pointer-events:none}
 .is-self-pass .ag-pass-front h2{font-size:24px;letter-spacing:-.7px}
 .ag-pass-owner{font-size:10px;color:#877790;margin-top:9px}
 .is-self-pass .ag-pass-lanyard{background:#6a557f;border-color:#806994}
@@ -71,10 +71,25 @@ html[data-motion=reduced] .ag-pass-card,html[data-motion=reduced] .ag-pass-tilt 
 .ag-resources-panel-dialog>.agent-resources{min-height:0;overflow:auto;overscroll-behavior:contain;padding:20px 22px 24px}
 @media(max-width:520px){.ag-resources-panel-dialog>header{padding-inline:16px}.ag-resources-panel-dialog>.agent-resources{padding:18px 16px 22px}}
 
-/* Fixed front-face rows keep every avatar and footer aligned for one- or two-line copy. */
-.ag-pass-stage{--badge-avatar-size:84px;--badge-title-row:36px;--badge-copy-row:44px;--badge-owner-row:23px;--badge-row-gap:4px}
-.ag-pass-front{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:var(--badge-avatar-size) var(--badge-title-row) var(--badge-copy-row) var(--badge-owner-row);gap:var(--badge-row-gap);align-content:end;justify-content:stretch}
+/* Front rows follow card width, keeping the portrait below the strip at every size. */
+.ag-pass-stage{container-type:inline-size;--badge-avatar-size:clamp(50px,26cqw,78px);--badge-title-row:clamp(25px,11cqw,33px);--badge-copy-row:40px;--badge-owner-row:0px;--badge-row-gap:4px}.ag-pass-stage.is-self-pass{--badge-owner-row:20px}
+.ag-pass-front{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:var(--badge-avatar-size) var(--badge-title-row) var(--badge-copy-row) var(--badge-owner-row);gap:var(--badge-row-gap);align-content:center;justify-content:stretch;padding:clamp(12px,6cqw,18px) 0}
 .ag-pass-front>.ag-avatar{grid-row:1;width:var(--badge-avatar-size)!important;height:var(--badge-avatar-size)!important}
 .ag-pass-front h2{grid-row:2;align-self:center;margin:0;max-height:100%;overflow:hidden;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical}
 .ag-pass-front p{grid-row:3;margin:0;align-self:start;line-height:20px;max-height:40px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 .ag-pass-front .ag-pass-owner{grid-row:4;align-self:start;margin:0;line-height:18px;white-space:nowrap}
+
+.ag-pass-face>footer>button{white-space:nowrap;flex-shrink:0}
+
+@container (max-width:220px){
+ .ag-pass-face{padding:22px 11px 11px;border-radius:12px}
+ .ag-pass-strip{height:24px;min-height:24px;font-size:11px;padding:3px 7px}
+ .ag-pass-front{--badge-avatar-size:48px;--badge-title-row:24px;--badge-copy-row:32px;--badge-owner-row:0px;--badge-row-gap:3px;padding:10px 0}
+ .is-self-pass .ag-pass-front{--badge-owner-row:16px}
+ .ag-pass-front h2{font-size:14px}.ag-pass-front p{font-size:11px;line-height:16px;max-height:32px}
+ .ag-pass-face>footer{padding-top:9px;gap:6px}
+ .ag-pass-brand .hither-wordmark{width:61px;height:18px}.ag-pass-brand>svg{width:18px;height:18px}
+ .ag-pass-face>footer>button{font-size:9px;padding:4px 6px}
+}
+.ag-pass-face>footer .ag-pass-brand{min-width:0;flex:0 1 auto}
+@container (max-width:220px){.ag-pass-brand{gap:4px}.ag-pass-brand .hither-wordmark{width:clamp(42px,27cqw,58px);height:17px}.ag-pass-brand>svg{width:16px;height:16px}.ag-pass-face>footer{gap:8px}.ag-pass-face>footer>button{padding-inline:5px}}

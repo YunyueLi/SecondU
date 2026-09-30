@@ -1,34 +1,47 @@
-/* The guide uses the app's components and tokens. Each preview owns its composition. */
-.dialog-overlay .app-dialog.product-guide-dialog{display:grid;grid-template-rows:52px minmax(0,1fr);width:min(1180px,calc(100vw - 64px));height:min(790px,calc(100dvh - 64px));max-width:1180px;max-height:none;overflow:hidden;padding:0;margin:auto;border-radius:18px}
-.app-dialog.product-guide-dialog>header{height:52px;box-sizing:border-box;margin:0;padding:10px 22px;border-bottom:1px solid var(--color-border-subtle)}
-.app-dialog.product-guide-dialog>header h2{font-size:16px;font-weight:550;line-height:1.5}
-.product-guide{display:grid;grid-template-columns:202px minmax(0,1fr);height:100%;min-height:0;font-size:13px;line-height:1.6;overflow:hidden}
-.guide-chapters{display:flex;flex-direction:column;min-height:0;padding:26px 12px 18px;border-right:1px solid var(--color-border-subtle);overflow:auto}
-.guide-chapters nav{display:flex;flex-direction:column;gap:7px}
-.guide-chapters nav button{display:flex;align-items:center;gap:9px;min-height:41px;padding:9px 10px;border:0;border-radius:8px;background:transparent;color:var(--color-text-secondary);font:inherit;font-size:14px;line-height:1.5;font-weight:400;text-align:left;cursor:pointer}
-.guide-chapters nav button[aria-current=step]{color:var(--color-text);background:var(--color-background-secondary)}
-.guide-chapters nav button>span:nth-child(2){flex:1;min-width:0}
-.guide-chapter-number{font-size:12px;line-height:1.5;font-variant-numeric:tabular-nums;color:var(--color-text-tertiary)}
-.guide-chapters nav svg{width:14px;height:14px;flex:none}
-/* Keep SDK Button padding, line-height, height and inner label alignment untouched. */
+/* The user-selected Manus guide structure: compact navigation, one main film,
+   brief copy and fixed actions. All type and control colors use the app system. */
+.dialog-overlay .app-dialog.product-guide-dialog{display:grid;grid-template-rows:64px minmax(0,1fr);width:min(1160px,calc(100vw - 48px));height:min(760px,calc(100dvh - 48px));max-width:1160px;max-height:none;overflow:hidden;padding:0;margin:auto;border-radius:18px}
+.app-dialog.product-guide-dialog>header{height:64px;box-sizing:border-box;margin:0;padding:16px 26px;border-bottom:1px solid var(--color-border-subtle)}
+.app-dialog.product-guide-dialog>header h2{font-size:18px;font-weight:500;line-height:25px}
+.product-guide{display:grid;grid-template-columns:224px minmax(0,1fr);height:100%;min-height:0;font-size:var(--hither-font-label);line-height:1.6;overflow:hidden}
+.guide-chapters{display:flex;flex-direction:column;min-height:0;padding:16px 12px;border-right:1px solid var(--color-border-subtle);overflow:auto}
+.guide-chapters nav{display:flex;flex-direction:column;gap:4px}
+.guide-chapters nav button{display:flex;align-items:center;gap:10px;min-height:38px;padding:8px 10px;border:0;border-radius:8px;background:transparent;color:var(--color-text);font:inherit;font-size:var(--hither-font-label);line-height:22px;font-weight:400;text-align:left;cursor:pointer}
+.guide-chapters nav button:hover{background:var(--color-surface-secondary)}
+.guide-chapters nav button[aria-current=step]{background:var(--color-surface-secondary);font-weight:500}
+.guide-chapters nav button>span{flex:1;min-width:0}
+.guide-chapters nav .guide-chapter-icon{width:18px;height:18px;flex:none}
+.guide-chapters nav .guide-chapter-check{width:17px;height:17px;color:var(--color-text-success);flex:none;margin-left:auto}
 .guide-chapters>button{margin-top:auto;align-self:flex-start}
-.guide-page{display:grid;grid-template-rows:minmax(0,1fr) 66px;min-height:0;overflow:hidden}
-.guide-page-scroll{display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:14px;min-height:0;overflow:hidden;padding:24px 26px 15px}
-.product-guide-dialog .guide-copy h3{font-size:26px;font-weight:550;letter-spacing:-.6px;line-height:1.4;margin:0 0 9px;text-wrap:balance}
-.guide-copy>p{max-width:690px;color:var(--color-text-secondary);font-size:13px;line-height:1.7;margin:0}
-.guide-preview{display:block;width:100%;height:100%;min-height:0;overflow:hidden;background:transparent}
-.guide-boundary{font-size:11px;color:var(--color-text-secondary);margin:0;max-height:110px;overflow:auto}
-.guide-boundary summary{cursor:pointer;width:fit-content}
-.guide-boundary p{max-width:690px;margin:9px 0;line-height:1.75}
-.guide-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 24px;border-top:1px solid var(--color-border-subtle);background:var(--color-background-primary)}
+.guide-page{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) 64px;min-height:0;overflow:hidden}
+.guide-page-scroll{display:grid;grid-template-rows:auto minmax(0,1fr);gap:16px;min-height:0;overflow-y:auto;overflow-x:hidden;padding:20px 26px 16px}
+.product-guide-dialog .guide-copy h3{font-size:22px;font-weight:500;letter-spacing:-.25px;line-height:30px;margin:0}
+.guide-copy>p{color:var(--color-text-secondary);font-size:var(--hither-font-label);line-height:22px;margin:8px 0 0;max-width:78ch}
+.guide-title-line{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.guide-example-label{flex:none;font-size:var(--hither-font-meta);line-height:20px;padding:0 6px;border-radius:4px;color:var(--color-text-secondary);background:var(--color-surface-secondary)}
+.guide-media-space{min-height:0;container-type:size;display:flex;align-items:center;justify-content:center}
+.guide-preview{position:relative;width:min(100cqw,calc(100cqh * 16 / 9));height:min(100cqh,calc(100cqw * 9 / 16));overflow:hidden;border-radius:12px}
+.guide-current-scope{position:relative;color:var(--color-text-secondary);font-size:var(--hither-font-meta);line-height:19px}
+.guide-current-scope summary{cursor:pointer;width:fit-content}
+.guide-current-scope>p{margin:7px 0 0;line-height:1.65;max-width:90ch}
+.guide-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 26px;border-top:1px solid var(--color-border-subtle);background:var(--color-surface)}
 .guide-footer>div{display:flex;align-items:center;gap:8px}
-.guide-page-count{font-size:11px;color:var(--color-text-tertiary);font-variant-numeric:tabular-nums;margin-right:5px}
+.guide-page-count{font-size:var(--hither-font-meta);color:var(--color-text-tertiary);font-variant-numeric:tabular-nums;margin-right:5px}
 .product-guide button:focus-visible{outline:2px solid var(--color-text);outline-offset:3px}
-.product-guide ::selection{background:var(--color-background-info);color:var(--color-text)}
+.product-guide ::selection{background:var(--color-background-info-soft);color:var(--color-text)}
 
-.guide-chapters nav button[aria-current=step]{font-weight:500}
-.guide-chapters nav .guide-chapter-check{width:15px;height:15px;color:var(--color-text-secondary);flex:none;margin-left:auto}
-@media(max-width:900px){.dialog-overlay .app-dialog.product-guide-dialog{width:calc(100vw - 36px);height:calc(100dvh - 36px)}.product-guide{grid-template-columns:186px minmax(0,1fr)}.guide-chapters{padding:20px 8px 16px}.guide-chapters nav button{font-size:14px;padding:9px 7px;gap:7px}.guide-page-scroll{padding:21px 20px 13px;gap:13px}.product-guide-dialog .guide-copy h3{font-size:23px}.guide-copy>p{font-size:12px}.guide-footer{padding:12px 18px}}
-@media(max-width:650px){.dialog-overlay .app-dialog.product-guide-dialog{width:calc(100vw - 18px);height:calc(100dvh - 20px);grid-template-rows:46px minmax(0,1fr);border-radius:14px}.app-dialog.product-guide-dialog>header{height:46px;padding:8px 14px}.product-guide{grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr)}.guide-chapters{border-right:0;border-bottom:1px solid var(--color-border-subtle);padding:7px 9px;overflow:visible}.guide-chapters nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:2px}.guide-chapters nav button{font-size:11px;padding:5px 4px;gap:4px;min-height:30px;line-height:1.35}.guide-chapter-number{font-size:10px}.guide-chapters>button{display:none}.guide-chapters nav .guide-chapter-check{width:11px;height:11px}.guide-page{grid-template-rows:minmax(0,1fr) 59px}.guide-page-scroll{padding:17px 13px 11px;gap:11px}.product-guide-dialog .guide-copy h3{font-size:21px}.guide-copy>p{font-size:11px;line-height:1.6}.guide-footer{padding:10px 12px;gap:6px}.guide-footer>button{max-width:50%;font-size:11px}.guide-footer>div{gap:5px}.guide-page-count{display:none}.guide-boundary{font-size:10px}}
 
-.guide-preview{position:relative}.guide-preview-label{position:absolute;z-index:4;right:13px;top:10px;font-size:var(--hither-font-meta,12px);color:var(--color-text-secondary);background:var(--color-surface);border:1px solid var(--color-border-subtle);border-radius:6px;padding:3px 8px;pointer-events:none}
+
+
+
+
+
+
+
+
+
+
+@media(max-width:1000px){.product-guide{grid-template-columns:208px minmax(0,1fr)}.guide-chapters{padding:16px 8px}.guide-chapters nav button{gap:8px;padding-inline:8px}.guide-page-scroll{padding:22px;gap:12px}.guide-footer{padding-inline:22px}}
+@media(max-width:650px){.dialog-overlay .app-dialog.product-guide-dialog{width:calc(100vw - 16px);height:min(620px,calc(100dvh - 20px));grid-template-rows:52px minmax(0,1fr);border-radius:14px}.app-dialog.product-guide-dialog>header{height:52px;padding:10px 16px}.app-dialog.product-guide-dialog>header h2{font-size:17px}.product-guide{grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr)}.guide-chapters{border-right:0;border-bottom:1px solid var(--color-border-subtle);padding:8px;overflow:auto}.guide-chapters nav{flex-direction:row;gap:4px}.guide-chapters nav button{white-space:nowrap;font-size:13px;min-height:34px;padding:6px 8px;gap:6px}.guide-chapters nav .guide-chapter-icon{width:16px;height:16px}.guide-chapters nav .guide-chapter-check{width:14px;height:14px}.guide-chapters>button{display:none}.guide-page{grid-template-rows:minmax(0,1fr) 64px}.guide-page-scroll{grid-template-rows:auto minmax(220px,1fr);padding:20px 16px 16px;gap:14px}.product-guide-dialog .guide-copy h3{font-size:22px;line-height:29px}.guide-copy>p{font-size:13px;line-height:21px}.guide-title-line{gap:8px}.guide-footer{padding:12px;gap:8px}.guide-footer>button{max-width:56%}.guide-footer>div{gap:5px}.guide-page-count{display:none}}
+
+.guide-title-line .guide-scope-trigger{padding:3px 5px;min-height:24px;font-size:var(--hither-font-meta);font-weight:400;color:var(--color-text-tertiary);gap:5px}.guide-scope-trigger svg{width:13px;height:13px}.guide-scope-popover{max-width:calc(100vw - 40px);padding:14px 16px}.guide-scope-popover p{margin:0;font-size:var(--hither-font-caption);line-height:1.75;color:var(--color-text-secondary)}

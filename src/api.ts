@@ -1,6 +1,5 @@
-import { t, getLocale } from './i18n';
-import { apiUrl, currentSpace, ENGINEER_SPACE } from './space';
-import { canonicalDemoValue } from '../shared/demo-localization.mjs';
+import { t } from './i18n';
+import { apiUrl } from './space';
 export { apiUrl } from './space';
 
 // Only known application messages are translated. Provider diagnostics and
@@ -23,6 +22,8 @@ const knownMessages: ReadonlyArray<readonly [string, string]> = [
   ["采纳内容需要你明确确认，并选择一份正文或产物版本。", "Confirm what you adopted and choose either text or an artifact version."],
   ["实际结果格式无效。", "The outcome format is invalid."],
   ["原答复或所选资料包含凭据信息，不能写入反馈记录。", "The original reply or selected material contains credentials and cannot be saved as feedback."],
+  ["当前为示例模式。可以调整内容与配置，实际执行请进入个人空间。", "You are in example mode. You can edit content and settings; open your personal workspace to run tasks."],
+  ["当前为示例模式。配置已可编辑，实际执行或连接账户请进入个人空间。", "You are in example mode. Settings are editable; open your personal workspace to run tasks or connect accounts."],
   ["示例空间只用于查看和体验界面。请切换到真实空间开始任务。", "The example space is for browsing the interface. Switch to your personal space to start a task."],
   ["这是一条历史示例记录，仅供查看。请新建真实任务。", "This historical example is read only. Create a new live task."],
   ["示例空间只用于查看和体验界面，不能运行任务或连接真实账户。请切换到真实空间。", "The example space cannot run tasks or connect real accounts. Switch to your personal space."],
@@ -68,6 +69,10 @@ const knownMessages: ReadonlyArray<readonly [string, string]> = [
   ['私聊需选择 1 个 Agent，群聊需选择 2–12 个 Agent。', 'Choose one agent for a direct chat or 2–12 agents for a group.'],
   ['这项自动化已有待处理任务，请先完成、取消或处理它的审批与配置。', 'This automation has an unfinished task. Complete or cancel it, or resolve its approval and configuration first.'],
   ['尚未填写这条连接的密钥，未发送请求', 'This connection has no API key. No request was sent.'],
+  ['暂时无法读取模型列表，请重试或手动填写模型。', 'The model list is temporarily unavailable. Retry or enter a model ID manually.'],
+  ['API Key 未通过提供方验证。', 'The provider did not accept this API key.'],
+  ['提供方暂未返回模型目录，可以重试或手动填写。', 'The provider did not return a model catalogue. Retry or enter a model ID manually.'],
+  ['提供方未返回可识别的模型列表，可以手动填写。', 'The provider returned an unrecognized model list. You can enter a model ID manually.'],
   ['请先选择另一条默认连接，再删除这条连接。', 'Choose another default connection before deleting this one.'],
   ['仍有 Agent 使用这条连接，请先修改其模型选择。', 'Agents still use this connection. Change their model selection first.'],
   ['已有任务记录绑定这条连接，为保留继续执行的能力，暂时不能删除。可以修改连接配置，或先删除对应任务。', 'Existing tasks use this connection, so it cannot be deleted while they may need to continue. Edit the connection or remove those tasks first.'],
@@ -127,26 +132,7 @@ export class APIError extends Error {
   }
 }
 
-const demoOriginals = new Map<string, unknown>();
-let demoBootstrapSequence = 0;
-function cacheDemoOriginals(data: unknown) {
-  demoOriginals.clear();
-  if (!data || typeof data !== 'object') return;
-  const bootstrap = data as Record<string, unknown>;
-  const profile = bootstrap.profile as { demo?: boolean } | undefined;
-  if (profile?.demo !== true) return;
-  demoOriginals.set('profile/profile', structuredClone(profile));
-  for (const [collection, records] of Object.entries(bootstrap)) {
-    if (!Array.isArray(records)) continue;
-    for (const record of records) {
-      if (record && typeof record === 'object' && typeof record.id === 'string') demoOriginals.set(`${collection}/${record.id}`, structuredClone(record));
-    }
-  }
-}
-
 export async function api<T>(path: string, init: RequestInit = {}, originalSpace = false): Promise<T> {
-  const requestSpace = originalSpace ? 'main' : currentSpace();
-  const bootstrapSequence = requestSpace === ENGINEER_SPACE && path === '/bootstrap' && (init.method || 'GET').toUpperCase() === 'GET' ? ++demoBootstrapSequence : 0;
   const response = await fetch(originalSpace ? `/api${path}` : apiUrl(path), {
     ...init,
     headers: { ...(init.body ? { 'Content-Type': 'application/json' } : {}), ...init.headers },
@@ -159,19 +145,20 @@ export async function api<T>(path: string, init: RequestInit = {}, originalSpace
     const error = data as { error?: unknown; code?: unknown } | undefined;
     throw new APIError(typeof error?.error === 'string' && error.error ? error.error : `请求未完成（${response.status}）`, response.status, typeof error?.code === 'string' ? error.code : undefined);
   }
-  if (bootstrapSequence && bootstrapSequence === demoBootstrapSequence) cacheDemoOriginals(data);
   return data as T;
 }
 export const write = <T,>(path: string, body?: unknown, method = 'POST') => {
-  let payload=body;
-  // An unchanged English sample field is a display translation, not a user edit.
-  // The real personal space and newly authored text always pass through verbatim.
-  if(currentSpace()===ENGINEER_SPACE&&getLocale()==='en'&&body&&['PUT','PATCH'].includes(method.toUpperCase())){
-    const [endpoint,id]=path.replace(/^\//,'').split('/');
-    const collection=endpoint==='agent-rooms'?'agentRooms':endpoint==='goal-lists'?'goalLists':endpoint;
-    const original=demoOriginals.get(`${collection}/${id||'profile'}`);
-    if(original!==undefined&&(id||collection==='profile'))payload=canonicalDemoValue(collection,id||'profile',body,'en',original);
-  }
-  return api<T>(path, { method, ...(['POST','PUT','PATCH'].includes(method.toUpperCase()) || body !== undefined ? { body: JSON.stringify(payload ?? {}) } : {}) });
+  return api<T>(path, { method, ...(['POST','PUT','PATCH'].includes(method.toUpperCase()) || body !== undefined ? { body: JSON.stringify(body ?? {}) } : {}) });
 };
 export const messageOf = (error: unknown) => error instanceof APIError ? translatedMessage(error.rawMessage) : error instanceof Error ? translatedMessage(error.message) : t('操作未完成，请重试。', 'The operation did not finish. Please try again.');
+
+/** Read a same-workspace binary response without treating JSON errors as file data. */
+export async function getArrayBuffer(path: string, mime: string, signal?: AbortSignal): Promise<ArrayBuffer> {
+  const response = await fetch(apiUrl(path), { signal, headers: { Accept: mime }, cache: 'no-store' });
+  if (!response.ok) {
+    const error = await response.json().catch(() => undefined) as { error?: unknown; code?: unknown } | undefined;
+    throw new APIError(typeof error?.error === 'string' ? error.error : `请求未完成（${response.status}）`, response.status, typeof error?.code === 'string' ? error.code : undefined);
+  }
+  if (response.headers.get('content-type')?.split(';')[0].trim().toLowerCase() !== mime) throw new APIError(t('本机服务返回的文件格式不正确。', 'The local service returned an unexpected file format.'), response.status, 'preview_format_invalid');
+  return response.arrayBuffer();
+}

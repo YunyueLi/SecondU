@@ -21,6 +21,7 @@ export const timelinePlatformOptions = () => [
   { value: 'slack', label: 'Slack' }, { value: 'teams', label: 'Teams' },
   { value: 'discord', label: 'Discord' }, { value: 'signal', label: 'Signal' },
   { value: 'line', label: 'LINE' }, { value: 'messenger', label: 'Messenger' },
+  { value: 'email', label: t('电子邮件', 'Email') }, { value: 'sms', label: t('短信', 'SMS') },
   { value: 'other', label: t('其他来源', 'Other source') },
 ];
 

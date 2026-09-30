@@ -1,0 +1,26 @@
+export type ReviewStatus = 'documented' | 'verified' | 'in_progress' | 'demo' | 'planned' | 'failed' | 'partial';
+export type ReviewReference = { document?: string; section?: string };
+export type DevelopmentStage = ReviewReference & { id: string; title: string; summary: string; status: ReviewStatus; details?: string[] };
+export type DevelopmentIteration = ReviewReference & { id: string; date: string; title: string; summary: string; status: ReviewStatus; evidence?: string[] };
+export type DevelopmentCapability = ReviewReference & { id: string; title: string; summary: string; status: ReviewStatus; evidence?: string[] };
+export type DevelopmentEvidence = ReviewReference & { id: string; title: string; scope: string; status: ReviewStatus; detail: string };
+export type DevelopmentBoundary = { id: string; title: string; detail: string; status: ReviewStatus };
+export type DevelopmentDocumentInfo = { path: string; title: string; updatedAt: string; revision: string; bytes: number };
+export type DevelopmentDocument = DevelopmentDocumentInfo & { content: string };
+export type DevelopmentMilestone = { id: string; at: string; title: string; detail: string; commit: string; iteration: string };
+export type DevelopmentReview = {
+  schemaVersion: 1;
+  revision: string;
+  updatedAt: string;
+  baselineCommit: string;
+  source: { kind: 'workspace' | 'packaged'; label: string; refresh: 'local-files' };
+  title: string;
+  summary: string;
+  stages: DevelopmentStage[];
+  iterations: DevelopmentIteration[];
+  milestones?: DevelopmentMilestone[];
+  capabilities: DevelopmentCapability[];
+  evidence: DevelopmentEvidence[];
+  boundaries: DevelopmentBoundary[];
+  documents: DevelopmentDocumentInfo[];
+};

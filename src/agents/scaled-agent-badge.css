@@ -1,0 +1,13 @@
+/* The expert reference is 238px wide. Scale its whole coordinate system,
+   rather than independently compressing the strip, portrait and typography. */
+.scaled-agent-badge { position:relative;width:100%;overflow:visible; }
+.scaled-agent-badge-canvas { position:absolute;top:0;left:0;width:238px;height:371.333px;transform-origin:top left; }
+.scaled-agent-badge-canvas>.ag-pass-stage { width:238px;--badge-avatar-size:66px;--badge-title-row:29px;--badge-copy-row:41px;--badge-owner-row:20px;--badge-row-gap:4px; }
+.scaled-agent-badge-canvas .ag-pass-front { align-content:start;padding:23px 0 16px; }
+.scaled-agent-badge-canvas .ag-pass-front h2 { font-size:16px; }
+.scaled-agent-badge-canvas .ag-pass-front p { font-size:12px;line-height:20px;max-height:40px; }
+.scaled-agent-badge-canvas .ag-pass-brand .hither-wordmark { width:72px;height:20px; }
+.scaled-agent-badge-canvas .ag-pass-brand>svg { width:20px;height:20px; }
+.scaled-agent-badge-canvas .ag-pass-face>footer { padding-top:11px;gap:5px; }
+.scaled-agent-badge-canvas .ag-pass-face>footer>button { font-size:10px;padding:4px 6px; }
+.scaled-agent-badge-canvas .ag-pass-reading>p { font-size:12px;line-height:1.8; }
