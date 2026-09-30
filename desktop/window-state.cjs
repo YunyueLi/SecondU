@@ -10,16 +10,19 @@ function installWindowState({ ipcMain, getWindow, getOrigin, platform = process.
     return windowState(window, platform);
   });
   return window => {
+    // BrowserWindow.webContents is a native getter and throws after `closed`.
+    // Keep the emitter reference while the window is alive for teardown.
+    const contents = window.webContents;
     const publish = () => {
-      if (!window.isDestroyed() && new URL(window.webContents.getURL() || 'about:blank').origin === getOrigin()) window.webContents.send('hither:window-state-changed', windowState(window, platform));
+      if (!window.isDestroyed() && !contents.isDestroyed() && new URL(contents.getURL() || 'about:blank').origin === getOrigin()) contents.send('hither:window-state-changed', windowState(window, platform));
     };
     window.on('enter-full-screen', publish);
     window.on('leave-full-screen', publish);
-    window.webContents.on('did-finish-load', publish);
+    contents.on('did-finish-load', publish);
     window.once('closed', () => {
       window.removeListener('enter-full-screen', publish);
       window.removeListener('leave-full-screen', publish);
-      window.webContents.removeListener('did-finish-load', publish);
+      contents.removeListener('did-finish-load', publish);
     });
   };
 }

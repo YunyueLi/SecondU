@@ -29,9 +29,9 @@
 .guide-team-execution-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:55px;align-items:center}
 .guide-team-execution aside>span{display:block;margin-top:24px;font-size:17px;color:var(--color-text-tertiary)}
 .guide-team-execution .team-run-detail{max-height:135px;overflow:hidden}
-.guide-artifact-layout{display:grid;grid-template-columns:360px minmax(0,1fr);height:calc(100% - 65px)}
+.guide-artifact-layout{display:grid;grid-template-columns:400px minmax(0,1fr);height:calc(100% - 65px)}
 .guide-artifact-layout>aside{display:flex;flex-direction:column;gap:18px;min-height:0;padding:18px;border-right:1px solid var(--color-border-subtle);background:var(--color-surface-secondary)}
-.guide-artifact-list{display:grid;gap:8px}
+.guide-artifact-list{display:grid;gap:8px;zoom:1.15}
 .guide-product-surface.guide-artifact-list .artifact-message-card.artifact-message-card{margin:0;padding:12px}
 .guide-artifact-formats{margin-top:auto;flex:none;padding:0 4px}
 .guide-artifact-formats>p{font-size:17px;margin:0 0 8px}

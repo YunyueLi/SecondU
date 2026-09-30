@@ -7,7 +7,7 @@ import {createApp} from '../server/index.mjs';
 import {createTask} from '../server/domain.mjs';
 import {ENGINEER_SPACE} from '../server/demo-space.mjs';
 
-async function fixture(t,executionPolicy,seed=true){const directory=mkdtempSync(path.join(os.tmpdir(),'secondu-policy-'));let calls=0;const app=createApp({dataDir:directory,seed,executionPolicy,scheduler:true,computerInfo:{codexAvailable:true},runCodex:async()=>{calls++;return{text:'must not run'};},runImCli:async()=>{calls++;throw Error('must not run');},runResourceCli:async()=>{calls++;throw Error('must not run');},chooseDirectory:async()=>{calls++;return '/tmp';}});await new Promise(resolve=>app.server.listen(0,'127.0.0.1',resolve));t.after(async()=>{await app.close();rmSync(directory,{recursive:true,force:true});});const api=async(route,body={},method='POST')=>{const response=await fetch(`http://127.0.0.1:${app.server.address().port}/api/${route}`,{method,...(method==='GET'?{}:{headers:{'Content-Type':'application/json'},body:JSON.stringify(body)})});return {status:response.status,value:await response.json()};};return {app,api,get calls(){return calls;}};}
+async function fixture(t,executionPolicy,seed=true,seedLocale='zh-CN'){const directory=mkdtempSync(path.join(os.tmpdir(),'secondu-policy-'));let calls=0;const app=createApp({dataDir:directory,seed,seedLocale,executionPolicy,scheduler:true,computerInfo:{codexAvailable:true},runCodex:async()=>{calls++;return{text:'must not run'};},runImCli:async()=>{calls++;throw Error('must not run');},runResourceCli:async()=>{calls++;throw Error('must not run');},chooseDirectory:async()=>{calls++;return '/tmp';}});await new Promise(resolve=>app.server.listen(0,'127.0.0.1',resolve));t.after(async()=>{await app.close();rmSync(directory,{recursive:true,force:true});});const api=async(route,body={},method='POST')=>{const response=await fetch(`http://127.0.0.1:${app.server.address().port}/api/${route}`,{method,...(method==='GET'?{}:{headers:{'Content-Type':'application/json'},body:JSON.stringify(body)})});return {status:response.status,value:await response.json()};};return {app,api,get calls(){return calls;}};}
 
 test('showcase blocks every execution boundary before model, OAuth, connectors, communication, files, or schedules run',async t=>{
  const f=await fixture(t,'showcase'),task=createTask(f.app.store,{prompt:'Fixture',mode:'demo'});
@@ -68,4 +68,29 @@ test('example direct and team rooms save local configuration without creating ta
  }
  assert.deepEqual(f.app.store.list('tasks'),beforeTasks);assert.equal(f.calls,0);
  assert.equal((await f.api(`spaces/personal/agent-rooms/${group.value.id}`,{},'GET')).status,404);
+});
+
+
+test('American showcase browses only its authored installed project folders',async t=>{
+ const f=await fixture(t,'showcase',true,'en');
+ const projects=f.app.store.list('projects');assert.equal(projects.length,4);
+ for(const project of projects){
+  const response=await f.api(`projects/${project.id}/files`,{},'GET');
+  assert.equal(response.status,200,project.id);assert.ok(response.value.entries.some(file=>file.name==='README.md'));
+ }
+ const original=projects[0],marker=f.app.store.meta('demo-us-files-v1');
+ f.app.store.put('projects',{...original,id:'not-authored',path:original.path});
+ assert.equal((await f.api('projects/not-authored/files',{},'GET')).status,403);
+ f.app.store.put('projects',{...original,path:f.app.store.directory});
+ assert.equal((await f.api(`projects/${original.id}/files`,{},'GET')).status,403);
+ f.app.store.put('projects',{...original,path:projects[1].path});
+ assert.equal((await f.api(`projects/${original.id}/files`,{},'GET')).status,403);
+ f.app.store.put('projects',original);f.app.store.delete('meta','demo-us-files-v1');
+ assert.equal((await f.api(`projects/${original.id}/files`,{},'GET')).status,403);
+ f.app.store.setMeta('demo-us-files-v1',{...marker,root:f.app.store.directory});
+ assert.equal((await f.api(`projects/${original.id}/files`,{},'GET')).status,403);
+ f.app.store.setMeta('demo-us-files-v1',marker);
+ assert.equal((await f.api(`projects/${original.id}/files?path=..`,{},'GET')).status,400);
+ assert.equal((await f.api(`tasks/${f.app.store.list('tasks')[0].id}/run`)).status,403);
+ assert.equal(f.calls,0);
 });

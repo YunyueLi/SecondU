@@ -1,6 +1,7 @@
 import path from 'node:path';
 import {realpathSync} from 'node:fs';
 import {HttpError} from './store.mjs';
+import {isAuthoredUSDemoProject} from './demo-us.mjs';
 
 export function resolveExecutionPolicy(policy,profile){
   if(policy===undefined)return undefined; // Explicitly injected test fixtures retain the local demo engine.
@@ -13,6 +14,7 @@ export function assertTaskExecution(policy,task){
   if(policy==='personal'&&task.mode!=='live')throw new HttpError(409,'这是一条历史示例记录，仅供查看。请新建真实任务。','historical_demo_read_only');
 }
 function authoredExampleProject(store,key){
+  if(isAuthoredUSDemoProject(store,key))return true;
   const report=store.get('meta','demo-showcase-v1')?.value,project=store.get('projects',key);
   if(!report?.root||!project?.path||!report.records?.some(record=>record.collection==='projects'&&record.id===key))return false;
   try{const root=realpathSync(report.root),directory=realpathSync(project.path),relative=path.relative(root,directory);return root===report.root&&relative!==''&&!relative.startsWith('..'+path.sep)&&relative!=='..'&&!path.isAbsolute(relative);}catch{return false;}

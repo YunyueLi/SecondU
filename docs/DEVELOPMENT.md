@@ -508,3 +508,21 @@ Office 的 DOCX/XLSX/PPTX 本机 PDF 和 DOCX 两个历史版本已有浏览器�
 - 构建过程页点击“更新记录”后，“已检查”从 02:54:55 变为 02:55:06。旧包读取包内文档快照，新的记录会随下次封包带入；手动刷新不会把包外工作树文件当成已经安装的版本。
 
 本机证据为 `native-pane-expanded-draft.png`、`native-pane-restored-draft.png`、`native-draft-restored-original.png`、`native-market-role-back-focus.png`、`native-guide-digital-twin.png`、`native-guide-experts-tree.png`、`native-guide-project-clipped.png`、`native-guide-network-dev.png` 和 `native-review-refreshed.png`，均存于忽略的 `continuation-20260930` 验收目录。完整状态记录见该目录的 `native-interaction-verification.json`。本批之后的历史工具栏换行、界面元信息文案和原生顶部留白仍按各自最新构建单独验收。
+
+
+## 2026-10-01 最终原生顶部与引导复核
+
+重建后的原生窗口已实际核对：聊天标题和工作区标签贴合顶部，交通灯只占侧栏安全区域；侧栏收起后仍不遮挡，进入 macOS 全屏及退出后恢复正确。文件、工作过程、电脑三个标签均可点击；工作区展开保留导航，Escape 恢复 520 px 侧栏。中文历史版本栏的选择器和“以此版本继续编辑”完整呈现。英文窄历史栏仍由独立浏览器验收记录，不以中文截图替代。
+
+项目引导重新分配文件列表列宽并仅调整卡片示意缩放后，四张文件卡片与完整 Office 本机只读 PDF / LibreOffice 说明已在 1197×875 原生窗口中实屏确认，无底部裁切。八章全帧和窄屏播放仍不在此次专项范围。新版原生退出实测暴露了已销毁 BrowserWindow 的属性访问异常；提前保存 WebContents 引用并在发送前检查销毁状态后，销毁回归 2/2 通过，随后实际退出、再次启动至主界面和再次退出均未重现提示。
+
+英文示例的文件列表原先被仅识别中文安装标记的权限检查拒绝。修复只认可本空间的美国示例安装标记、确定的示例根目录、原始项目 ID 及其对应文件夹，并验证真实路径。US / 执行策略 11 项检查通过：四个原始项目可列出文件，伪造 ID、个人数据路径、另一项目路径、缺失或错误安装标记仍被拒绝，目录穿越和真实执行保持阻止。
+
+官网另有实际 SDK 菜单证据：语言与主题选项可用，End + Enter 选择“系统”后焦点返回触发器；完整嵌入界面从英文深色切到英文浅色、再到中文浅色时保留未保存 Markdown 草稿。520 px 文件面板四个主要控件可见。390 px、历史栏内部英文长按钮、最后一轮 Hero 尺寸和四个详细页签完整回归仍单列待核，不宣称整体网站全部通过。
+
+本机截图包括 `native-final-three-column.png`、`native-final-navigation-collapsed.png`、`native-final-macos-fullscreen.png`、`native-final-workbench-expanded.png`、`native-final-history-520-cn.png`、`native-final-guide-project-unclipped.png`。运行、源码指纹、13 份公开文档逐字节一致、PDF 资源、原件下载与 ad-hoc 签名继续由最后封包后的隔离检查记录；Apple 公证和公开发布状态不由本段推定。
+
+
+## 2026-10-01 首版公开交付
+
+首个公开提交为 `697fb7148d726211aaed42007e1a45f69e13e604`：[独立产品仓库](https://github.com/YunyueLi/SecondU)与[产品网站](https://yunyueli.github.io/SecondU/)已上线，网站返回 HTTP 200。[Linux/macOS 构建与检查](https://github.com/YunyueLi/SecondU/actions/runs/36765173834)和[官网部署工作流](https://github.com/YunyueLi/SecondU/actions/runs/36765173844)均成功。此发布事实对应该提交，不将随后本机的退出生命周期、美国示例文件权限和引导裁切修复写成已经公开；最终原生 ZIP 上传仍另行记录。

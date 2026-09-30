@@ -7,8 +7,9 @@ function fixture() {
   const window = new EventEmitter(), contents = new EventEmitter(), sent = [];
   let full = false, destroyed = false;
   const frame = { url: 'http://127.0.0.1:58645/?desktop=1' };
-  Object.assign(contents, { mainFrame: frame, getURL: () => frame.url, send: (...args) => sent.push(args) });
-  Object.assign(window, { webContents: contents, isFullScreen: () => full, isDestroyed: () => destroyed });
+  Object.assign(contents, { mainFrame: frame, isDestroyed: () => destroyed, getURL: () => frame.url, send: (...args) => sent.push(args) });
+  Object.assign(window, { isFullScreen: () => full, isDestroyed: () => destroyed });
+  Object.defineProperty(window, 'webContents', { get() { if (destroyed) throw new Error('Object has been destroyed'); return contents; } });
   const handlers = new Map();
   const watch = installWindowState({ ipcMain: { handle: (name, callback) => handlers.set(name, callback) }, getWindow: () => destroyed ? undefined : window, getOrigin: () => 'http://127.0.0.1:58645', platform: 'darwin' });
   watch(window);

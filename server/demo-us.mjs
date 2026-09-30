@@ -9,6 +9,17 @@ const marker='demo-us-files-v1';
 const hash=value=>createHash('sha256').update(value).digest('hex');
 export const isUSDemoProfile=profile=>profile?.demo===true&&profile?.demoLocale==='en';
 
+/** Browsing is limited to this space's installed, authored project folders. */
+export function isAuthoredUSDemoProject(store,key){
+ if(!isUSDemoProfile(store.meta('profile')))return false;
+ const report=store.get('meta',marker)?.value,original=authored.projects.find(project=>project.id===key),project=store.get('projects',key);
+ if(!report?.root||!original||!project?.path)return false;
+ const root=path.join(path.dirname(store.protectedDataDirectory??store.directory),'.secondu-examples',`us-${hash(store.directory).slice(0,12)}`);
+ const folder=path.join(root,original.demoFolder);
+ if(report.root!==root||project.path!==folder)return false;
+ try{return realpathSync(root)===root&&realpathSync(folder)===folder;}catch{return false;}
+}
+
 /** Independent fictional American records. This never translates another seed. */
 export function createUSSeed(stamp=new Date().toISOString()){
  const data=JSON.parse(JSON.stringify(authored).replaceAll('__DEMO_TIMESTAMP__',stamp));

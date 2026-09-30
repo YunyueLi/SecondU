@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "baselineCommit": "fa7baf4",
   "title": "SecondU 的产品判断、实现与验证",
-  "summary": "从有来源的个人理解出发，连接任务、专家协作、消息分支与原始成果。一次真实 DeepSeek 单专家委派、Office 本机预览和原生工作区交互已有明确范围的验证；最后的界面细节与公开交付继续核对。",
+  "summary": "从有来源的个人理解出发，连接任务、专家协作、消息分支与原始成果。一次真实 DeepSeek 单专家委派、Office 本机预览、原生调宽与草稿保持、顶部布局和退出重启已有专项验证；官网窄屏与公开交付继续按实际结果记录。",
   "stages": [
     {
       "id": "research",
@@ -205,28 +205,41 @@
       "id": "native-delivery-closeout",
       "date": "2026-10-01",
       "title": "统一工牌、消息操作与可调整工作区",
-      "summary": "整张工牌等比缩放，消息编辑移出气泡，成果区展开保留导航。原生工作区拖动、键盘调宽、Escape 后草稿保持和工牌翻面键盘路径已实测；后续界面文案与顶部布局仍需新构建核对。",
+      "summary": "整张工牌等比缩放，消息编辑移出气泡，成果展开保留导航。原生调宽、草稿保持、键盘翻面、顶部布局、系统全屏与退出重启均完成专项复核；项目引导裁切已修复并重看。",
       "status": "partial",
       "evidence": [
         "native-layout-validation",
         "package-runtime-validation",
         "scoped-visual-model-review",
-        "native-interaction-validation"
+        "native-interaction-validation",
+        "native-chrome-guide-validation"
       ],
       "document": "DEVELOPMENT.md",
-      "section": "2026-10-01 原生交互补充验收"
+      "section": "2026-10-01 最终原生顶部与引导复核"
     },
     {
       "id": "website-interactive-closeout",
       "date": "2026-10-01",
       "title": "提供双语官网与可操作的完整产品",
-      "summary": "官网采用原头像粒子、深浅主题和完整产品嵌入，中英文案聚焦场景、动作和结果。深色双语及文件版本路径已有实屏；窄屏与切回路径仍单列待验。",
+      "summary": "官网采用原头像粒子、深浅主题和完整产品嵌入。SDK语言/主题菜单及嵌入切换保持草稿已有实屏；文件版本路径通过，最新窄屏和部分布局仍单列待验。",
       "status": "partial",
       "evidence": [
         "website-browser-validation"
       ],
       "document": "DEVELOPMENT.md",
       "section": "2026-10-01 发布前文档与应用包核对"
+    },
+    {
+      "id": "public-initial-delivery",
+      "date": "2026-10-01",
+      "title": "公开首版源码与产品网站",
+      "summary": "独立产品仓库与 GitHub Pages 网站已上线，首版 Linux/macOS CI 和网站工作流成功；原生下载包继续按最终签名与运行证据交付。",
+      "status": "verified",
+      "evidence": [
+        "public-initial-release"
+      ],
+      "document": "DEVELOPMENT.md",
+      "section": "2026-10-01 首版公开交付"
     }
   ],
   "capabilities": [
@@ -411,11 +424,11 @@
     {
       "id": "current-native",
       "title": "最新应用包与原生窗口分层核对",
-      "scope": "2026-10-01，37b088 构建的本机运行与原生专项交互",
+      "scope": "2026-10-01，连续原生构建的专项实屏与退出重启",
       "status": "partial",
-      "detail": "包内运行、资源、原件下载和 ad-hoc 签名通过。真实窗口已验证工牌可见焦点/Return 翻回、工作区键盘/鼠标调宽、展开/Escape 后保留草稿与导航，测试原文已恢复未新增版本。后续文案、工具栏和顶部布局变更需新构建复核；没有 Apple 公证或公开发布结论。",
+      "detail": "工牌键盘翻面、工作区调宽与草稿保持已验证；最新顶部布局、侧栏收起、系统全屏/恢复、三标签点击和项目引导完整 Office 说明均有实屏。退出生命周期异常已修复并实际重启通过。英文窄历史栏和全引导动画帧不由这些截图推定；未经 Apple 公证。",
       "document": "DEVELOPMENT.md",
-      "section": "2026-10-01 原生交互补充验收"
+      "section": "2026-10-01 最终原生顶部与引导复核"
     },
     {
       "id": "live-team-provider-validation",
@@ -464,21 +477,21 @@
     },
     {
       "id": "package-runtime-validation",
-      "title": "37b088 应用包运行、资源与签名检查",
-      "scope": "运行指纹 37b088453b91f79b6fb493af7bee5dc4c2d2b594d7b440b1094ca359bb341c1e 的 macOS arm64 包",
+      "title": "应用包运行、资源与签名检查",
+      "scope": "Electron 44.5.1 macOS arm64 发行候选包；指纹由最后封包后的本机报告记录",
       "status": "verified",
-      "detail": "包内 Electron 44.5.1 / Node 24.21.0 / SQLite 3.53.4 在隔离空间运行；health/source 指纹相同，前端入口、PDF worker/WASM、原始 PNG 字节下载与严格 ad-hoc 签名检查通过。该运行检查之后的原生交互另列证据，未经 Apple 公证。",
+      "detail": "包内 Node 24.21.0 / SQLite 3.53.4 在隔离空间运行；health/source 指纹、前端资源、PDF worker/WASM、原始 PNG 字节下载与严格 ad-hoc 签名检查通过。最终记录还逐字节核对13份公开文档；每次后端或文档变动后重新封包检查。未经 Apple 公证。",
       "document": "DEVELOPMENT.md",
-      "section": "2026-10-01 发布前文档与应用包核对"
+      "section": "2026-10-01 最终原生顶部与引导复核"
     },
     {
       "id": "website-browser-validation",
       "title": "双语深色官网与嵌入文件版本实屏",
       "scope": "2026-10-01 当前网站的桌面宽度、中文转英文和英文深色嵌入产品",
       "status": "partial",
-      "detail": "实际查看中英可见文案、深色头像粒子无白盒、SDK 控件和连续四栏页尾。嵌入产品完成 Markdown 编辑→保存第2版112B→返回第1版原文。390px、浅色切回、四个详细页签完整回归和嵌入语言/主题切回尚未覆盖；未声明公开部署。",
+      "detail": "深色双语 Hero、SDK 控件与四栏页尾已有实屏。完整嵌入产品完成编辑保存第2版112B并回到第1版；SDK语言/主题菜单和键盘选系统可用，英文深色→英文浅色→中文浅色保留未保存草稿。520px主要文件控件可见；390px、英文历史栏内部和四页签完整回归仍待核，未声明公开部署。",
       "document": "DEVELOPMENT.md",
-      "section": "2026-10-01 发布前文档与应用包核对"
+      "section": "2026-10-01 最终原生顶部与引导复核"
     },
     {
       "id": "scoped-visual-model-review",
@@ -497,6 +510,24 @@
       "detail": "键盘调宽 520→540 px，鼠标拖至 590 px；展开和 Escape 还原保留未保存内容及导航。工牌翻面焦点在可见返回键，Return 翻回后聚焦正面入口。行程恢复原第 2 版，无新增保存。构建页手动刷新检查时间变化。",
       "document": "DEVELOPMENT.md",
       "section": "2026-10-01 原生交互补充验收"
+    },
+    {
+      "id": "native-chrome-guide-validation",
+      "title": "原生顶栏、引导完整说明与退出重启",
+      "scope": "2026-10-01，1197×875 原生窗口和独立美国示例 HTTP 检查",
+      "status": "verified",
+      "detail": "侧栏收起、macOS全屏/恢复、主区展开/Escape及三标签点击通过。项目引导4文件与Office说明完整可见。销毁回归2/2与实际退出/重开通过；美国示例文件与执行边界11/11通过。中文520px历史栏已看，英文窄栏另验。",
+      "document": "DEVELOPMENT.md",
+      "section": "2026-10-01 最终原生顶部与引导复核"
+    },
+    {
+      "id": "public-initial-release",
+      "title": "首版源码与官网已公开",
+      "scope": "提交 697fb7148d726211aaed42007e1a45f69e13e604",
+      "status": "verified",
+      "detail": "独立产品仓库 YunyueLi/SecondU 公开；Build and local tests 36765173834 的 Linux/macOS 检查成功，Product website 36765173844 成功，公开网站 HTTP 200。本记录不覆盖随后本机增量修复或尚未上传的原生 ZIP。",
+      "document": "DEVELOPMENT.md",
+      "section": "2026-10-01 首版公开交付"
     }
   ],
   "boundaries": [
@@ -527,7 +558,7 @@
     {
       "id": "delivery-boundary",
       "title": "本机交付与公开发布分开",
-      "detail": "最新本机包的构建、实际运行和临时签名已通过；前一包主要页面有原生实屏。当前键盘修复后的窗口、官网最新交互、最终提交与公开发布仍分别核对，不预填发布成功。",
+      "detail": "首个公开提交 697fb714 的源码与官网已上线，Linux/macOS CI 和网站工作流成功。最后本机增量修复、原生 ZIP 发布与网站余项分别验收；临时签名不代表 Apple 公证。",
       "status": "in_progress"
     }
   ],
