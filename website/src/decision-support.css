@@ -1,0 +1,9 @@
+.cap-story.decision-story{grid-template-columns:minmax(0,1.55fr) minmax(0,.76fr)}
+.decision-story .decision-intro{grid-column:2;grid-row:1}
+.decision-story .decision-visual{grid-column:1;grid-row:1;background:#e3dfe7}
+.decision-intro h2{white-space:pre-line}
+.decision-intro .decision-agency{margin-top:18px;color:var(--site-ink);font-size:15px}
+.decision-intro .decision-example-note{margin-top:24px;padding-top:20px;border-top:1px solid var(--site-line);font-size:13px;line-height:1.75}
+[data-theme=dark] .decision-story .decision-visual{background:#28242d}
+@media(max-width:1000px){.cap-story.decision-story{grid-template-columns:minmax(0,1.3fr) minmax(0,.85fr)}}
+@media(max-width:720px){.cap-story.decision-story{display:flex;flex-direction:column;align-items:stretch}.decision-intro .decision-example-note{margin-top:20px;padding-top:16px}}

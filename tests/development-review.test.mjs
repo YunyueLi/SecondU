@@ -84,3 +84,22 @@ test('milestone timestamps remain ordered and reference an actual iteration and 
   f.writeReview({...value,milestones:[value.milestones[0],{...value.milestones[0],id:'earlier',at:'2026-09-28T12:50:01+08:00'}]});
   assert.equal((await f.api('development/review')).status,503);
 });
+
+test('local progress is bilingual, bounded and cannot impersonate a commit or release',async t=>{
+  const f=await fixture(t),value=metadata();
+  value.iterations=[{id:'current',date:'2026-10-01',title:'Current work',summary:'Local work still under review.',status:'in_progress'}];
+  const current={id:'current-round',date:'2026-10-01',status:'in_progress',title:'本轮',titleEn:'Current round',summary:'本地进度。',summaryEn:'Local progress.',completed:[{zh:'专项通过。',en:'Targeted checks passed.'}],pending:[{zh:'最终界面。',en:'Final UI review.'}],iteration:'current'};
+  value.currentProgress=current;f.writeReview(value);assert.deepEqual((await f.api('development/review')).value.currentProgress,current);
+  for(const patch of [{commit:'c7e8803'},{at:'2026-10-01T12:00:00+08:00'},{release:'v0.1.2'},{status:'verified'},{iteration:'missing'},{titleEn:''},{completed:Array(7).fill({zh:'过多',en:'Too many'})},{pending:[{zh:'缺少英文'}]}]){
+    f.writeReview({...value,currentProgress:{...current,...patch}});assert.equal((await f.api('development/review')).status,503,JSON.stringify(patch));
+  }
+});
+
+test('published release metadata keeps its own publication time and canonical release link',async t=>{
+  const f=await fixture(t),value=metadata();
+  const release={version:'v0.1.1',publishedAt:'2026-09-30T20:43:35Z',commit:'eceaee7e1ecb4d23865f6ecee47722a7013d2942',url:'https://github.com/YunyueLi/SecondU/releases/tag/v0.1.1'};
+  value.latestRelease=release;f.writeReview(value);assert.deepEqual((await f.api('development/review')).value.latestRelease,release);
+  for(const patch of [{isDraft:true},{publishedAt:'2026-99-99'},{url:'https://untrusted.invalid/v0.1.1'},{url:'https://github.com/YunyueLi/SecondU/releases/tag/v0.1.2'},{commit:'uncommitted'}]){
+    f.writeReview({...value,latestRelease:{...release,...patch}});assert.equal((await f.api('development/review')).status,503,JSON.stringify(patch));
+  }
+});

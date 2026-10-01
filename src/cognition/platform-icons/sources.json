@@ -138,5 +138,17 @@
     "sourceSha256": "eb0c39d9be0cd4463c484199f672b5e99de37c0ae91ef26678efb95111283df8",
     "assetSha256": "647b8210deb8bedac4c625e67fadeedccc77e2ca64cbf7245d6b6267f80976c2",
     "adaptation": "Original Simple Icons path geometry and viewBox retained; only an explicit fill using the catalogued brand color #0058CC was added."
+  },
+  {
+    "platform": "signal",
+    "source": "https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/signal.svg",
+    "localSource": "../../../public/icons/platforms/signal.svg",
+    "repository": "https://github.com/simple-icons/simple-icons",
+    "author": "Simple Icons contributors",
+    "license": "CC0-1.0",
+    "licenseFile": "../../../public/icons/platforms/Simple-Icons-LICENSE.txt",
+    "sourceSha256": "391f46b8feaef281a44dfdf40035d9a4546ded17d2c3eb88d6614762779f1930",
+    "assetSha256": "b51436257ca2065763712f7ca9596b36f22d50609447edfac2540218a7ec4269",
+    "adaptation": "Reviewed local Simple Icons path geometry and viewBox retained; explicit fill #3A76F0 uses the existing Signal palette. Rendered as an image instead of a CSS mask for consistent platform-card sizing."
   }
 ]

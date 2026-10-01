@@ -76,3 +76,35 @@ The branch retains selected task configuration and fixes approval mode to the st
 ### Saved artifact downloads
 
 `GET /api/artifacts/:id/download?version=N` downloads the exact saved revision, including original image, PDF or Office bytes. Omit `version` for the latest saved revision. The response includes `X-Artifact-Version`; historical metadata is taken from that revision. A repeated, empty, non-integer, non-canonical or unsafe version returns `400`; a missing revision returns `404`. Space isolation applies to every revision. The editor's title, preview and download follow the selected saved revision. Unsaved text stays a draft; downloading does not save or export it.
+
+
+## Messaging connection setup
+
+All endpoints below are local and space-scoped. `GET /api/im-setup` returns the pinned release, selected runtime, sanitized installation/service status, supported channel metadata, explicit compatibility limitations and in-memory active operations. It does not execute a process. Showcase spaces return descriptive status and reject all setup operations.
+
+| Endpoint | Body and behavior |
+| --- | --- |
+| `POST /api/im-setup/detect` | Optional `{command}`: `openclaw` or an absolute executable path. Detects version without returning CLI output. |
+| `POST /api/im-setup/select` | `{runtimeId: 'managed'|'existing'}`. Existing mode requires detection. |
+| `POST /api/im-setup/install` | `{channel, confirmed:true}`. Returns `202` with an operation ID; explicitly installs pinned official packages into the managed directory. |
+| `POST /api/im-setup/channels` | Returns a sanitized `channels list --all --json` inventory. No capability command or implicit plugin installation. |
+| `POST /api/im-setup/configure` | Managed mode only: `{channel,accountId,confirmed:true,...channelFields}`. Saves protected local configuration and validates it; secrets are not returned. |
+| `POST /api/im-setup/login` | Managed WhatsApp only: `{channel:'whatsapp',accountId,confirmed:true}`. Returns an asynchronous operation. |
+| `GET /api/im-setup/operations/:id` | Actual operation state, safe stage/error code and an optional unexpired QR matrix. Never raw CLI output. |
+| `DELETE /api/im-setup/operations/:id` | Cancels that owned operation; cannot stop another application's process. |
+| `POST /api/im-setup/gateway` | Managed mode only: `{action:'start'|'stop',confirmed:true}`. Controls an owned foreground process, not a system daemon. |
+| `POST /api/im-setup/probe` | `{channel,accountId}`. Returns explicit configured/connected flags from the tool's account check. |
+| `POST /api/im-setup/connection` | `{channel,accountId,name,target,selfId?}`. Rechecks the account and saves a connection bound to the selected runtime. |
+
+Managed setup covers 13 channels: Slack, Discord, Telegram, Feishu/Lark, QQ, WeCom, WhatsApp, Microsoft Teams, Signal, iMessage, Matrix, Mattermost and Google Chat. `supported[].fields` describes the channel-specific credential or local-service fields, defaults and select options; `requirements` supplies prerequisites, and `singleAccount` restricts Teams to `default`. `unavailable[]` explains the current WeChat and DingTalk inbound-policy incompatibilities. Recent-message import is adapted only for Slack and Discord; the other listed channels expose confirmed sending only. Credentials remain under the active space's protected managed directory. Existing OpenClaw credentials and services remain owned by the original tool. `ImConnection.runtimeId` selects a server-controlled runtime descriptor; callers cannot inject environment variables, argument prefixes or configuration paths.
+
+Saved connections reuse `/api/im-connections/:id/preview` and `/commit`, preserving the existing account, destination and revision binding. Starting the service or completing a login command is not a successful account probe. Cancelling or restarting never marks an incomplete operation successful. Missing operation IDs after restart require a fresh state check.
+
+
+## Reviewed memory import
+
+`POST /api/imports/memory/review` accepts `{previewId, entries:[{id, statement, layer}], confirmed:true}` after explicit user review. It atomically preserves the original source and candidate revision 1, then creates confirmed revision 2 with the user's wording and classification. It accepts only new entries from that preview. Invalid references, credentials, existing imported entries or write errors leave no partial batch.
+
+The response extends `MemoryImportResult` with `facts: Fact[]`. Retries bind the full selected IDs, wording and layers to the preview. The same request returns current fact revisions, preserving later corrections; changed content on the same preview receives `409`. The original `/commit` endpoint retains candidate-only semantics.
+
+The interface prepares a conversation with the confirmed fact IDs and editable task text. Preparation does not call a model or a task-run endpoint. Explicit IDs receive priority in the existing bounded context selector; they are not an exclusive allowlist of all context. See [Memory import](MEMORY-IMPORT.md).

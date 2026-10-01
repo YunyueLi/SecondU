@@ -1,0 +1,5 @@
+.website-standalone-example{height:100dvh;display:flex;flex-direction:column;background:var(--color-surface,#fff);color:var(--color-text,#242424)}
+.website-example-navigation{height:44px;min-height:44px;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:0 20px;border-bottom:1px solid var(--color-border,#e8e8e8);font:12px/1.4 -apple-system,system-ui,sans-serif;background:var(--color-surface-secondary,#f8f8f8)}
+.website-example-navigation a{display:inline-flex;gap:8px;align-items:center;min-height:32px;white-space:nowrap;color:inherit;text-decoration:none}.website-example-navigation a:hover{opacity:.72}.website-example-navigation svg{width:15px;height:15px}.website-example-navigation>span{color:var(--color-text-secondary,#777)}
+.website-standalone-product{min-height:0;flex:1;position:relative;overflow:hidden}.website-standalone-product>.app-shell{height:100%;min-height:0}
+@media(max-width:600px){.website-example-navigation{padding-inline:12px;font-size:11px;gap:12px}.website-example-navigation>span{display:none}}

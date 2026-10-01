@@ -1,0 +1,241 @@
+{
+  "schemaVersion": 1,
+  "generator": {
+    "name": "Archify",
+    "version": "3.0.1",
+    "license": "MIT"
+  },
+  "createdAt": "2026-10-01",
+  "repository": {
+    "url": "https://github.com/YunyueLi/SecondU",
+    "revision": "c7e8803caecdf83524b307365baa35e5cc98d789"
+  },
+  "scope": "Committed core implementation at the pinned revision. These diagrams explain control flow; they do not establish model quality or include memory-import, MCP, or IM setup added after that revision.",
+  "privacy": "Only public repository source paths and authored system descriptions. No personal records, account credentials, private runtime logs, or host paths.",
+  "artifacts": [
+    {
+      "id": "harness-zh",
+      "type": "architecture",
+      "locale": "zh-CN",
+      "files": {
+        "html": "harness-zh.html",
+        "svg": "harness-zh.svg",
+        "specification": "harness-zh.json",
+        "svgLight": "harness-zh-light.svg",
+        "svgDark": "harness-zh-dark.svg"
+      },
+      "sha256": {
+        "html": "db16c7491603dbffb855a8be3d6594d36d4b4a0ee038b029aed8069413684f4c",
+        "svg": "67c117618c625ad7b1185a78669275cebcbf39c56a7e6279e6a783a3be72c654",
+        "specification": "42250aa7ddd899af2c704f4f182b4fd174784dbf6b02f47f70e016cffb5ebf6c",
+        "svgLight": "81f0cd503853c700d32daa6fe3486bc5c0d5ff3a9f2e9a4dd919e5ee8df9e80b",
+        "svgDark": "5fb2c41003d57e627cd455262428b583d0b8189c28cffb7270d684428bd08c1a"
+      },
+      "validation": {
+        "checksPassed": 9,
+        "checkCount": 9,
+        "compositionProfile": "showcase",
+        "compositionStatus": "pass",
+        "errors": 0,
+        "warnings": 0
+      },
+      "gates": {
+        "validate": "pass",
+        "deliver": "pass",
+        "check": "pass",
+        "browser-check": "pass"
+      },
+      "browserEvidence": "passed",
+      "visualReview": {
+        "status": "passed",
+        "inspected": [
+          {
+            "width": 1440,
+            "height": 900,
+            "theme": "light"
+          },
+          {
+            "width": 2048,
+            "height": 1320,
+            "theme": "dark"
+          }
+        ],
+        "notes": "Labels remain within nodes; routes and confirmation boundary are readable. The checked HTML retains its complete content when vertically scrolled."
+      },
+      "export": {
+        "method": "Archify.exportMenu.run(svg)",
+        "liveDiagramUnchanged": true,
+        "transientOverlays": 0,
+        "externalResourceRequests": 0
+      }
+    },
+    {
+      "id": "harness-en",
+      "type": "architecture",
+      "locale": "en",
+      "files": {
+        "html": "harness-en.html",
+        "svg": "harness-en.svg",
+        "specification": "harness-en.json",
+        "svgLight": "harness-en-light.svg",
+        "svgDark": "harness-en-dark.svg"
+      },
+      "sha256": {
+        "html": "dfb687f3a409c59a7631b97bf9638a12e4705777f7d554f56219adab444f1cb6",
+        "svg": "73e144ff6829e2ddeb13814b3aa5d33cc9db13049bfb2b3b2ed84d0df0c1acdc",
+        "specification": "646de41922c0a8616fe6c2bddb7af808cb187dfc06a6234c9ca66368f54840d7",
+        "svgLight": "a0e631b97e24c0bcec2e07ac66d10b9aa7f4c0c785f9aaba90e1fa49bfcd0266",
+        "svgDark": "3e485261af57da1e33045cc0b56b55ea0eafb9e751ac027b80836b6e5c47eb0b"
+      },
+      "validation": {
+        "checksPassed": 9,
+        "checkCount": 9,
+        "compositionProfile": "showcase",
+        "compositionStatus": "pass",
+        "errors": 0,
+        "warnings": 0
+      },
+      "gates": {
+        "validate": "pass",
+        "deliver": "pass",
+        "check": "pass",
+        "browser-check": "pass"
+      },
+      "browserEvidence": "passed",
+      "visualReview": {
+        "status": "passed",
+        "inspected": [
+          {
+            "width": 1440,
+            "height": 900,
+            "theme": "light"
+          },
+          {
+            "width": 2048,
+            "height": 1320,
+            "theme": "dark"
+          }
+        ],
+        "notes": "Labels remain within nodes; routes and confirmation boundary are readable. The checked HTML retains its complete content when vertically scrolled."
+      },
+      "export": {
+        "method": "Archify.exportMenu.run(svg)",
+        "liveDiagramUnchanged": true,
+        "transientOverlays": 0,
+        "externalResourceRequests": 0
+      }
+    },
+    {
+      "id": "understanding-loop-zh",
+      "type": "workflow",
+      "locale": "zh-CN",
+      "files": {
+        "html": "understanding-loop-zh.html",
+        "svg": "understanding-loop-zh.svg",
+        "specification": "understanding-loop-zh.json",
+        "svgLight": "understanding-loop-zh-light.svg",
+        "svgDark": "understanding-loop-zh-dark.svg"
+      },
+      "sha256": {
+        "html": "313c7bbeec48b11cc1ce17350fd1b53ca9ffb5903e95ad2ff2de68663a6e5707",
+        "svg": "6affac3b24b4dd16a9e6c1e9d86ff166966c1ac1c0e6bd158a57e32dffd9fc27",
+        "specification": "dc27f1fe6345cf6d774786ab9a5933f8f25fe9dd62cb05ee187f8f9037a5c046",
+        "svgLight": "abb46d86f3ecce8ebdc5cde58cf269476345193e5b5a373fb4b38dd0b0f7a0b4",
+        "svgDark": "834facee987f0583d99d9bdd982e2f9ad4a074f32ec9866a622f8a5abe54ad6a"
+      },
+      "validation": {
+        "checksPassed": 9,
+        "checkCount": 9,
+        "compositionProfile": "showcase",
+        "compositionStatus": "pass",
+        "errors": 0,
+        "warnings": 0
+      },
+      "gates": {
+        "validate": "pass",
+        "deliver": "pass",
+        "check": "pass",
+        "browser-check": "pass"
+      },
+      "browserEvidence": "passed",
+      "visualReview": {
+        "status": "passed",
+        "inspected": [
+          {
+            "width": 1440,
+            "height": 900,
+            "theme": "light"
+          },
+          {
+            "width": 2048,
+            "height": 1320,
+            "theme": "dark"
+          }
+        ],
+        "notes": "Labels remain within nodes; routes and confirmation boundary are readable. The checked HTML retains its complete content when vertically scrolled."
+      },
+      "export": {
+        "method": "Archify.exportMenu.run(svg)",
+        "liveDiagramUnchanged": true,
+        "transientOverlays": 0,
+        "externalResourceRequests": 0
+      }
+    },
+    {
+      "id": "understanding-loop-en",
+      "type": "workflow",
+      "locale": "en",
+      "files": {
+        "html": "understanding-loop-en.html",
+        "svg": "understanding-loop-en.svg",
+        "specification": "understanding-loop-en.json",
+        "svgLight": "understanding-loop-en-light.svg",
+        "svgDark": "understanding-loop-en-dark.svg"
+      },
+      "sha256": {
+        "html": "769f59d0936971687976b08f0e006b1023a97263ec3cf755e03f70b506fd8569",
+        "svg": "924e1490285d7621af80b97b94b7a1426e6f6dc8627f26195cdf78239b7ffee3",
+        "specification": "a8631a512f77ac37ae98e03b9076e604b812f4476618d8636619a5a3373288ff",
+        "svgLight": "eebc470585d523dcfe3b98eb2c20fb5ac112656e3209332852088d968a1e8f1e",
+        "svgDark": "4585edbf681f2993543b183189019428685a8c1e36660f461a0493263f701c32"
+      },
+      "validation": {
+        "checksPassed": 9,
+        "checkCount": 9,
+        "compositionProfile": "showcase",
+        "compositionStatus": "pass",
+        "errors": 0,
+        "warnings": 0
+      },
+      "gates": {
+        "validate": "pass",
+        "deliver": "pass",
+        "check": "pass",
+        "browser-check": "pass"
+      },
+      "browserEvidence": "passed",
+      "visualReview": {
+        "status": "passed",
+        "inspected": [
+          {
+            "width": 1440,
+            "height": 900,
+            "theme": "light"
+          },
+          {
+            "width": 2048,
+            "height": 1320,
+            "theme": "dark"
+          }
+        ],
+        "notes": "Labels remain within nodes; routes and confirmation boundary are readable. The checked HTML retains its complete content when vertically scrolled."
+      },
+      "export": {
+        "method": "Archify.exportMenu.run(svg)",
+        "liveDiagramUnchanged": true,
+        "transientOverlays": 0,
+        "externalResourceRequests": 0
+      }
+    }
+  ]
+}

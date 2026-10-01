@@ -3,10 +3,13 @@ import { approvalMode, executionSettings, saveExecutionSettings } from './execut
 import { createDevelopmentReader } from './development-review.mjs';
 import { ensureUSDemoFiles } from './demo-us.mjs';
 import { ensureDemoShowcase } from './demo-showcase.mjs';
+import { ensureDecisionExample } from './demo-decision.mjs';
 import { resolveExecutionPolicy, guardExecutionRoute } from './execution-policy.mjs';
 import { normalizeContextRequest, personalContextFor } from './personal-context.mjs';
 import { feedbackRecord, taskFeedback, saveTaskFeedback } from './task-learning.mjs';
 import { ImCliService } from './im-cli.mjs';
+import { ImSetupService } from './im-setup.mjs';
+import { TwinMcpGrants } from './twin-mcp-grants.mjs';
 import { AgentResourcesService } from './agent-resources.mjs';
 import { saveProfile } from './profile.mjs';
 import { ConnectorService, connectorSelection, publicConnector, saveConnector, deleteConnector } from './connectors.mjs';
@@ -35,6 +38,7 @@ import { RemoteComputerService } from './remote/service.mjs';
 import { RemoteTaskBridge } from './remote/task-bridge.mjs';
 import { createRoom, roomTask } from './rooms.mjs';
 import { previewChatImport, commitChatImport } from './imports.mjs';
+import { previewMemoryImport, commitMemoryImport, reviewMemoryImport, digitalTwinPackage, digitalTwinMarkdown, digitalTwinContext } from './memory-import.mjs';
 import { dailyActivity, previewActivityImport, commitActivityImport } from './daily-activity.mjs';
 import { runtimeCapabilities, taskTrace } from './runtime-observation.mjs';
 import { saveAgentAvatar, getAvatar, batchAvatarStyle, defaultAgentAvatarStyle } from './avatars.mjs';
@@ -56,16 +60,19 @@ async function readJson(req,maxBytes=2*1024*1024){
 }
 function detectCodex(){try{const version=execFileSync(codexCommand(),['--version'],{encoding:'utf8',timeout:5000,stdio:['ignore','pipe','ignore']}).trim();return version.startsWith('codex-cli ')?{codexAvailable:true,codexVersion:version}:{codexAvailable:false};}catch{return {codexAvailable:false};}}
 
-export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJECT,'.hither'),seed=true,seedLocale='zh-CN',runCodex,runImCli,runResourceCli,scheduler=true,computerInfo,chooseDirectory=chooseProjectDirectory,distDir=path.join(PROJECT,'dist'),executionPolicy,modelFetch=fetch,remoteTransport,developmentRoot=PROJECT,officePreviewOptions,_allowDemoSpace=true,_parentPort,_protectedDataDirectory}={}) {
+export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJECT,'.hither'),seed=true,seedLocale='zh-CN',runCodex,runImCli,runResourceCli,scheduler=true,computerInfo,chooseDirectory=chooseProjectDirectory,distDir=path.join(PROJECT,'dist'),executionPolicy,modelFetch=fetch,remoteTransport,developmentRoot=PROJECT,officePreviewOptions,imSetupOptions,_allowDemoSpace=true,_parentPort,_protectedDataDirectory}={}) {
   const store=new Store(dataDir,{seed,seedLocale,protectedDataDirectory:_protectedDataDirectory});
   const policy=resolveExecutionPolicy(executionPolicy,store.meta('profile'));
   if(policy==='showcase') {
     if(store.meta('profile').demoLocale==='en')ensureUSDemoFiles(store);
     else ensureDemoShowcase(store);
+    ensureDecisionExample(store);
   }
   const spaceId=createHash('sha256').update(path.resolve(store.directory)).digest('hex').slice(0,24);
   const connectors=new ConnectorService(store,{blockedPorts:()=>[58644,58645,server?.address()?.port,_parentPort?.()]});
   const im=new ImCliService(store,{runCli:runImCli});
+  const imSetup=new ImSetupService(store,{im,executionPolicy:policy,...imSetupOptions});
+  const twinMcpGrants=new TwinMcpGrants(store);
   const resources=new AgentResourcesService(store,{im,runCli:runResourceCli});
   const runner=new TaskRunner(store,{runCodex,scheduler,connectors,executionPolicy:policy});
   const delegations=new DelegationService(store,{executionPolicy:policy});
@@ -82,7 +89,7 @@ export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJEC
     if(childApps.has(space))return childApps.get(space);
     const directory=localSpaceDirectory(store.directory,space,{create});
     if(!directory||(!create&&!existsSync(path.join(directory,'hither.sqlite'))))throw new HttpError(404,'尚未创建此空间，请从设置进入。','space_missing');
-    const app=createApp({dataDir:directory,seed:isExampleSpace(space),seedLocale:space===US_SPACE?'en':'zh-CN',executionPolicy:isExampleSpace(space)?'showcase':'personal',runCodex,runImCli,runResourceCli,scheduler,chooseDirectory,computerInfo:{codexAvailable:computer.codexAvailable,codexVersion:computer.codexVersion},distDir,modelFetch,remoteTransport,developmentRoot,officePreviewOptions,_allowDemoSpace:false,_parentPort:()=>server.address()?.port,_protectedDataDirectory:store.protectedDataDirectory});
+    const app=createApp({dataDir:directory,seed:isExampleSpace(space),seedLocale:space===US_SPACE?'en':'zh-CN',executionPolicy:isExampleSpace(space)?'showcase':'personal',runCodex,runImCli,runResourceCli,scheduler,chooseDirectory,computerInfo:{codexAvailable:computer.codexAvailable,codexVersion:computer.codexVersion},distDir,modelFetch,remoteTransport,developmentRoot,officePreviewOptions,imSetupOptions,_allowDemoSpace:false,_parentPort:()=>server.address()?.port,_protectedDataDirectory:store.protectedDataDirectory});
     childApps.set(space,app);return app;
   }
   function guard(req) {
@@ -149,6 +156,31 @@ export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJEC
     if(resource==='health'&&method==='GET')return respond(res,200,{application:'hither-desktop',version:VERSION,revision:runtimeRevision,status:'ok',spaceId});
     if(resource==='bootstrap'&&method==='GET')return respond(res,200,bootstrap());
     if(resource==='daily-activity'&&method==='GET')return respond(res,200,dailyActivity(store));
+    if(resource==='imports'&&key==='memory'&&method==='POST'&&parts.length===4){
+      if(action==='preview')return respond(res,200,previewMemoryImport(store,body));
+      if(action==='commit')return respond(res,200,commitMemoryImport(store,body));
+      if(action==='review')return respond(res,200,reviewMemoryImport(store,body));
+    }
+    if(resource==='im-setup'){
+      if(parts.length>4)throw new HttpError(404,'接口不存在。','not_found');
+      const result=await imSetup.handle({method,key,action,body});return respond(res,result.status,result.data);
+    }
+    if(resource==='digital-twin'&&key==='mcp-grants'){
+      if(method==='GET'&&parts.length===3)return respond(res,200,policy==='showcase'?[]:twinMcpGrants.list());
+      if(policy==='showcase')throw new HttpError(403,'请在个人空间中创建外部 AI 授权。','showcase_read_only');
+      if(method==='POST'&&parts.length===3)return respond(res,201,twinMcpGrants.create(body));
+      if(method==='PUT'&&parts.length===4)return respond(res,200,twinMcpGrants.setEnabled(action,body));
+      throw new HttpError(405,'授权不支持该操作。','mcp_grant_method');
+    }
+    if(resource==='digital-twin'&&parts.length===3){
+      if(key==='export'&&method==='GET'){
+        const format=url.searchParams.get('format')??'json';
+        if(!['json','markdown'].includes(format))throw new HttpError(400,'导出格式须为 json 或 markdown。','memory_export_format');
+        const data=digitalTwinPackage(store);
+        return respond(res,200,format==='markdown'?digitalTwinMarkdown(data):data,{'Content-Type':format==='markdown'?'text/markdown; charset=utf-8':'application/json; charset=utf-8','Content-Disposition':`attachment; filename="secondu-digital-twin.${format==='markdown'?'md':'json'}"`});
+      }
+      if(key==='context'&&method==='POST')return respond(res,200,digitalTwinContext(store,body));
+    }
     if(resource==='imports'&&key==='activity'&&method==='POST'){
       if(action==='preview')return respond(res,200,previewActivityImport(store,body));
       if(action==='commit')return respond(res,200,commitActivityImport(store,body.previewId));
@@ -351,7 +383,7 @@ export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJEC
   const handleRequest=(req,res)=>route(req,res).catch(error=>{if(!res.headersSent)respond(res,error.status??500,{error:runner.cleanError(error.status?error.message:'本机服务遇到错误，请检查运行日志。'),code:error.code??'internal_error'});if(!error.status)console.error('[hither]',runner.cleanError(error.stack??error.message));});
   server=http.createServer(handleRequest);
   server.requestTimeout=30000;server.headersTimeout=10000;
-  return {server,store,runner,connectors,delegations,remoteComputers,remoteTasks,bootstrap,handleRequest,async close(){for(const app of childApps.values())await app.close();connectors.close();remoteComputers.close();await runner.close();await delegations.close();if(server.listening)await new Promise(resolve=>server.close(resolve));store.close();}};
+  return {server,store,runner,connectors,delegations,remoteComputers,remoteTasks,bootstrap,handleRequest,async close(){for(const app of childApps.values())await app.close();connectors.close();await imSetup.close();remoteComputers.close();await runner.close();await delegations.close();if(server.listening)await new Promise(resolve=>server.close(resolve));store.close();}};
 }
 
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){

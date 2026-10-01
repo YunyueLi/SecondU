@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "baselineCommit": "fa7baf4",
+  "baselineCommit": "c7e8803",
   "title": "SecondU 的产品判断、实现与验证",
-  "summary": "从有来源的个人理解出发，连接任务、专家协作、消息分支与原始成果。一次真实 DeepSeek 单专家委派、Office 本机预览、原生调宽与草稿保持、顶部布局和退出重启已有专项验证；官网窄屏与公开交付继续按实际结果记录。",
+  "summary": "从有来源的个人理解，走向可继续使用的任务、专家与成果。v0.1.1 已公开交付；本轮记忆导入、官网和产品交互已取得候选检查与实屏证据，最终媒体、封包、CI 和公开发布继续分别记录。",
   "stages": [
     {
       "id": "research",
@@ -13,7 +13,13 @@
         "固定研究档案，避免重复拆解。",
         "区分数字分身的持续认知与专家 Agent 的任务能力。"
       ],
-      "document": "RESEARCH.md"
+      "document": "RESEARCH.md",
+      "titleEn": "Define the product problem",
+      "summaryEn": "Study how personal understanding supports real tasks, retaining the reasons for adopting or rejecting designs.",
+      "detailsEn": [
+        "Retain a fixed research archive to avoid repeated teardown.",
+        "Separate the twin’s enduring understanding from specialists’ task capabilities."
+      ]
     },
     {
       "id": "closed-loop",
@@ -24,28 +30,40 @@
         "首版可运行版本有实际本地提交。",
         "历史闭环证据覆盖对应版本，不能自动代表新界面。"
       ],
-      "document": "ACCEPTANCE.md"
+      "document": "ACCEPTANCE.md",
+      "titleEn": "Establish a working loop",
+      "summaryEn": "Connect sources, context, task approvals, file versions and feedback; verify state after restart.",
+      "detailsEn": [
+        "The initial working version has a real local commit.",
+        "Historical checks cover that version, not later interface changes."
+      ]
     },
     {
       "id": "product-iteration",
       "title": "完善真实使用路径",
       "summary": "从功能入口转向连续任务，补齐项目、Agent 会话、模型配置、独立中英文示例和远端执行。",
       "status": "partial",
-      "document": "DEVELOPMENT.md"
+      "document": "DEVELOPMENT.md",
+      "titleEn": "Improve real usage paths",
+      "summaryEn": "Connect projects, Agent conversations, model configuration, independent bilingual examples and remote execution into continuous workflows."
     },
     {
       "id": "current-review",
       "title": "按最新反馈修订",
-      "summary": "按页面反馈调整比例、引导和主题；加入可追踪的负责人调度、消息修改版本与多格式成果，让构建过程和交付都能直接审阅。",
+      "summary": "记忆核对、职业讨论、双语 Hero、手机入口与嵌入演示已有候选实屏；内部独立审查未发现重要缺陷，外部 Kimi 复核未取得结果。",
       "status": "in_progress",
-      "document": "ITERATION.md"
+      "document": "ITERATION.md",
+      "summaryEn": "Candidate UI checks cover memory review, career discussions, the bilingual Hero, mobile entry points and embedded demonstrations. Internal review found no important defects; external Kimi review returned no result.",
+      "titleEn": "Refine the current experience"
     },
     {
       "id": "delivery",
       "title": "验证并交付本机版本",
-      "summary": "最新包已完成构建、包内实际运行、资源、原件下载和临时签名检查。前一包的主要页面已实屏，最新工牌键盘修复后的窗口与公开发布继续单独核对。",
+      "summary": "v0.1.1 已公开交付。v0.1.2 仍为草稿；本机原生候选交互已核，最终媒体、封包、CI 与公开发布尚待收尾。",
       "status": "partial",
-      "document": "DEVELOPMENT.md"
+      "document": "DEVELOPMENT.md",
+      "summaryEn": "v0.1.1 is published and v0.1.2 remains a draft. Native candidate interactions have been checked; final media, packaging, CI and publication remain.",
+      "titleEn": "Verify and deliver"
     }
   ],
   "iterations": [
@@ -240,6 +258,64 @@
       ],
       "document": "DEVELOPMENT.md",
       "section": "2026-10-01 首版公开交付"
+    },
+    {
+      "id": "public-delivery",
+      "date": "2026-10-01",
+      "title": "公开源码与官网",
+      "titleEn": "Publish the source and website",
+      "summary": "独立产品仓库、产品说明与可交互中英文示例上线。",
+      "summaryEn": "Publish the product repository, documentation and interactive bilingual examples.",
+      "status": "verified",
+      "document": "DEVELOPMENT.md"
+    },
+    {
+      "id": "native-lifecycle",
+      "date": "2026-10-01",
+      "title": "修复桌面生命周期",
+      "titleEn": "Repair the desktop lifecycle",
+      "summary": "修复原生窗口退出与重开，完成对应示例空间专项。",
+      "summaryEn": "Repair native quit/reopen behavior and complete the corresponding example-space checks.",
+      "status": "partial",
+      "document": "DEVELOPMENT.md"
+    },
+    {
+      "id": "desktop-v011",
+      "date": "2026-10-01",
+      "title": "交付 v0.1.1",
+      "titleEn": "Deliver v0.1.1",
+      "summary": "接入同源官网工作区并交付桌面 v0.1.1；正式发布时间单独记录。",
+      "summaryEn": "Deliver the canonical website workspace and desktop v0.1.1; its publication time is recorded separately.",
+      "status": "verified",
+      "document": "DEVELOPMENT.md"
+    },
+    {
+      "id": "brand-alignment",
+      "date": "2026-10-01",
+      "title": "统一品牌与发布说明",
+      "titleEn": "Align the brand and release copy",
+      "summary": "统一官网、README 与发布文档中的 SecondU 定位。",
+      "summaryEn": "Align SecondU positioning across the website, READMEs and release documents.",
+      "status": "verified",
+      "document": "DEVELOPMENT.md"
+    },
+    {
+      "id": "context-website-current",
+      "date": "2026-10-01",
+      "title": "让数字分身更懂你",
+      "titleEn": "A twin that understands you better",
+      "summary": "这一轮围绕记忆核对、重要选择中的讨论，以及可继续使用的任务成果打磨体验。官网与引导也在同步完善。",
+      "summaryEn": "This round improves how you review existing context, think through important choices and keep working with task results. The website and onboarding are evolving alongside it.",
+      "status": "in_progress",
+      "evidence": [
+        "current-context-website-checks",
+        "current-candidate-interactions",
+        "current-candidate-native",
+        "current-candidate-performance",
+        "current-candidate-independent-review"
+      ],
+      "document": "ITERATION.md",
+      "section": "2026-10-01 本轮候选版本实屏与性能复核"
     }
   ],
   "capabilities": [
@@ -528,6 +604,66 @@
       "detail": "独立产品仓库 YunyueLi/SecondU 公开；Build and local tests 36765173834 的 Linux/macOS 检查成功，Product website 36765173844 成功，公开网站 HTTP 200。本记录不覆盖随后本机增量修复或尚未上传的原生 ZIP。",
       "document": "DEVELOPMENT.md",
       "section": "2026-10-01 首版公开交付"
+    },
+    {
+      "id": "current-context-website-checks",
+      "title": "本轮候选检查与实屏",
+      "titleEn": "Current candidate checks and UI evidence",
+      "scope": "2026-10-01 本机候选工作树；不含最终媒体、封包、CI 或公开发布",
+      "scopeEn": "Local candidate working tree on 2026-10-01; excludes final media, packaging, CI and publication",
+      "status": "partial",
+      "detail": "整合 643 项：633 通过、10 项环境选择性跳过、0 失败；官网专项 22 项全通过。前序记忆核对与只读 MCP 24 项、引导 17 项、记录接口 9 项、职业讨论 26 项、示例标题升级 30 项及媒体 64 个编码状态各保留原范围。最新 1280 px 中文浅／深和英文深色 Hero、390 px 手机 Hero／菜单／时间线／图解及产品入口已实屏；最终媒体三帧另验，不把前序编码检查扩大到最后输出。",
+      "detailEn": "Integration: 633 of 643 passed, with 10 environment-dependent skips and no failures; all 22 website checks passed. Earlier 24 context/MCP, 17 guide, 9 record-interface, 26 career-discussion and 30 heading-upgrade checks, plus 64 encoded media states, retain their original scopes. Current 1280 px Chinese light/dark and English dark Hero views, plus 390 px Hero, menus, timeline, diagrams and product entry points were checked. Final media frames remain separate.",
+      "document": "DEVELOPMENT.md",
+      "section": "2026-10-01 本轮候选版本实屏与性能复核"
+    },
+    {
+      "id": "current-candidate-interactions",
+      "title": "官网候选交互与冷启动",
+      "titleEn": "Candidate website interactions and memory setup",
+      "scope": "实际浏览器操作；虚构示例及当前页面内存",
+      "scopeEn": "Actual browser interactions with fictional, page-local examples",
+      "status": "verified",
+      "detail": "欢迎页初始 assistant 暂停，滚动可见后 6 秒轮播，iframe 内按键即暂停；职业讨论入口打开真实任务。390 px 首页项目文本与右侧三图标、含 Signal 的 13 个 IM 入口、单弹窗 Slack 进入与返回通过。前次七条确认进入未发送草稿并核对 JSON 导出，最新重开 self 恢复六条原始事实；不证明跨页面保存或真实账号连接。",
+      "detailEn": "The assistant welcome view starts paused, advances every six seconds after scrolling into view, and pauses on iframe keyboard input. The career entry opens the real task. At 390 px, project text, three action icons, all 13 IM entries including Signal, and Slack/back navigation in one dialog were checked. Earlier seven-fact confirmation reached an unsent draft with verified JSON export; reopening self restores the original six facts. No cross-page persistence or real account connection is claimed.",
+      "document": "DEVELOPMENT.md",
+      "section": "2026-10-01 本轮候选版本实屏与性能复核"
+    },
+    {
+      "id": "current-candidate-native",
+      "title": "本轮原生候选操作",
+      "titleEn": "Current native candidate interactions",
+      "scope": "本机 out/SecondU.app 与虚构示例",
+      "scopeEn": "Local out/SecondU.app and fictional examples",
+      "status": "partial",
+      "detail": "启动、打开示例、侧栏全折叠、工作区展开、进入及退出系统全屏和退出应用通过。拖动仅确认无错误，未确认位移。最终媒体与文档封入后的封包检查仍待完成，不覆盖公开发布或 Apple 公证。",
+      "detailEn": "Launch, example opening, sidebar collapse, workspace expansion, system fullscreen entry/exit and app quit passed. Dragging produced no error, but displacement was not verified. Final packaging after media and document updates remains; no publication or Apple notarization is claimed.",
+      "document": "DEVELOPMENT.md",
+      "section": "2026-10-01 本轮候选版本实屏与性能复核"
+    },
+    {
+      "id": "current-candidate-performance",
+      "title": "首屏动画减负与离屏停机",
+      "titleEn": "Hero rendering cost and offscreen suspension",
+      "scope": "同一 Chrome 页面，1124×884 浅色，八秒本机样本",
+      "scopeEn": "Same Chrome page, 1124×884 light theme, eight-second local sample",
+      "status": "verified",
+      "detail": "保留原 45 Hz 门限约 30 帧、DPR 上限 1.5 与回声顶点减负，撤回实测更慢的 60 Hz 尝试；光晕改静态后整体 59.49 fps、p95 17.4 ms、无超过 50 ms 的整体间隔。Hero 29.87 fps、p95 34.1 ms，仍有两次超过 50 ms；离屏 Hero 绘制为零。结果不保证其他设备、GPU 完成时间或生产冷启动。",
+      "detailEn": "Keep the original 45 Hz threshold (about 30 rendered fps), DPR cap 1.5 and echo vertex reduction; the slower measured 60 Hz attempt was reverted. Static washes yielded 59.49 overall fps, p95 17.4 ms and no overall intervals above 50 ms. Hero reached 29.87 fps, p95 34.1 ms, with two intervals above 50 ms; offscreen Hero draws were zero. This does not establish other-device performance, completed GPU work or production cold loading.",
+      "document": "DEVELOPMENT.md",
+      "section": "2026-10-01 本轮候选版本实屏与性能复核"
+    },
+    {
+      "id": "current-candidate-independent-review",
+      "title": "内部独立审查与外部复核缺口",
+      "titleEn": "Internal independent review and missing external result",
+      "scope": "四张桌面中文实屏及对应实现；三处动画与嵌入源码",
+      "scopeEn": "Four desktop Chinese screenshots and matching implementation; three animation/embed source files",
+      "status": "partial",
+      "detail": "中文浅／深 Hero、职业讨论和时间线四张 1280×900 图未发现阻断或 P2；HeroBackdrop、EmbeddedProduct 和嵌入入口的计时器、来源验证及清理未发现重要缺陷。四图不覆盖手机、英文或动态交互。Kimi K3 max 已尝试，钥匙串凭据读取失败，无外部结果；内部审查不标成 Kimi 通过。",
+      "detailEn": "Four 1280×900 Chinese light/dark Hero, career-discussion and timeline images showed no blockers or P2 visual defects. Timer handling, message-source validation and cleanup in HeroBackdrop, EmbeddedProduct and the embed entry showed no important defects. The four images exclude mobile, English and motion. Kimi K3 max was attempted but credential retrieval failed, so no external result exists; internal review is not a Kimi pass.",
+      "document": "DEVELOPMENT.md",
+      "section": "2026-10-01 本轮候选版本实屏与性能复核"
     }
   ],
   "boundaries": [
@@ -558,8 +694,9 @@
     {
       "id": "delivery-boundary",
       "title": "本机交付与公开发布分开",
-      "detail": "首个公开提交 697fb714 的源码与官网已上线，Linux/macOS CI 和网站工作流成功。最后本机增量修复、原生 ZIP 发布与网站余项分别验收；临时签名不代表 Apple 公证。",
-      "status": "in_progress"
+      "detail": "公开版本为 v0.1.1，发布于 2026-10-01 04:43（北京时间），对应 eceaee7。c7e8803 是之后的品牌说明提交。本轮 v0.1.2 仍为草稿；最新本机进度、最终包和公开发布分别记录。临时签名不代表 Apple 公证。",
+      "status": "in_progress",
+      "detailEn": "The public release is v0.1.1, published at 04:43 China Standard Time on 2026-10-01 from eceaee7. c7e8803 is the later brand-copy commit. v0.1.2 remains a draft; local progress, final packaging and publication are separate. Ad-hoc signing is not Apple notarization."
     }
   ],
   "milestones": [
@@ -569,7 +706,9 @@
       "title": "首个可运行闭环",
       "detail": "认知、任务、审批与成果连起来，状态可持久保存。",
       "commit": "50d5e1f",
-      "iteration": "initial-loop"
+      "iteration": "initial-loop",
+      "titleEn": "A first working loop",
+      "detailEn": "Connect personal context, tasks, approvals and persistent results."
     },
     {
       "id": "shared-design",
@@ -577,7 +716,9 @@
       "title": "统一视觉与交互",
       "detail": "共用组件、明暗主题与可操作的设计目录。",
       "commit": "7d8bc54",
-      "iteration": "visual-system"
+      "iteration": "visual-system",
+      "titleEn": "A shared visual language",
+      "detailEn": "Shared components, themes and an interactive component catalogue."
     },
     {
       "id": "complete-example",
@@ -585,7 +726,9 @@
       "title": "完整产品体验",
       "detail": "个人认知、Agent 会话、项目与独立双语示例。",
       "commit": "659d10e",
-      "iteration": "context-and-examples"
+      "iteration": "context-and-examples",
+      "titleEn": "A complete product experience",
+      "detailEn": "Personal understanding, Agent conversations, projects and independent bilingual examples."
     },
     {
       "id": "native-startup",
@@ -593,7 +736,121 @@
       "title": "修复原生启动",
       "detail": "修正启动素材读取，重新检查桌面启动路径。",
       "commit": "fa7baf4",
-      "iteration": "context-and-examples"
+      "iteration": "context-and-examples",
+      "titleEn": "Repair native startup",
+      "detailEn": "Correct artwork loading and check the native startup path."
+    },
+    {
+      "id": "public-source",
+      "at": "2026-10-01T03:11:41+08:00",
+      "title": "公开源码与官网",
+      "titleEn": "Publish the source and website",
+      "detail": "独立产品仓库、产品说明与可交互中英文示例上线。",
+      "detailEn": "Publish the product repository, documentation and interactive bilingual examples.",
+      "commit": "697fb71",
+      "iteration": "public-delivery"
+    },
+    {
+      "id": "native-lifecycle",
+      "at": "2026-10-01T03:28:14+08:00",
+      "title": "修复桌面生命周期",
+      "titleEn": "Repair the desktop lifecycle",
+      "detail": "修复原生窗口退出与重开，完成对应示例空间专项。",
+      "detailEn": "Repair native quit/reopen behavior and complete the corresponding example-space checks.",
+      "commit": "c6eb301",
+      "iteration": "native-lifecycle"
+    },
+    {
+      "id": "desktop-v011",
+      "at": "2026-10-01T04:28:55+08:00",
+      "title": "官网与桌面，同一套体验",
+      "titleEn": "One experience across browser and desktop",
+      "detail": "官网采用真实产品界面，可以浏览中英文示例、查看个人理解并编辑成果；桌面版本同步提供完整工作区。",
+      "detailEn": "The website uses the real product interface for bilingual examples, personal context and editable results. The desktop release carries the complete workspace.",
+      "commit": "eceaee7",
+      "iteration": "desktop-v011"
+    },
+    {
+      "id": "brand-alignment",
+      "at": "2026-10-01T04:56:15+08:00",
+      "title": "统一品牌与发布说明",
+      "titleEn": "Align the brand and release copy",
+      "detail": "统一官网、README 与发布文档中的 SecondU 定位。",
+      "detailEn": "Align SecondU positioning across the website, READMEs and release documents.",
+      "commit": "c7e8803",
+      "iteration": "brand-alignment"
     }
-  ]
+  ],
+  "titleEn": "SecondU: product decisions, implementation and evidence",
+  "summaryEn": "From source-backed personal understanding to tasks, specialists and results you can continue using. v0.1.1 is published. This round has candidate checks and UI evidence for memory import, the website and product interactions; final media, packaging, CI and publication remain separate.",
+  "latestRelease": {
+    "version": "v0.1.1",
+    "publishedAt": "2026-09-30T20:43:35Z",
+    "commit": "eceaee7e1ecb4d23865f6ecee47722a7013d2942",
+    "url": "https://github.com/YunyueLi/SecondU/releases/tag/v0.1.1"
+  },
+  "currentProgress": {
+    "id": "context-website-current",
+    "date": "2026-10-01",
+    "status": "in_progress",
+    "title": "让数字分身更懂你",
+    "titleEn": "A twin that understands you better",
+    "summary": "这一轮围绕记忆核对、重要选择中的讨论，以及可继续使用的任务成果打磨体验。官网与引导也在同步完善。",
+    "summaryEn": "This round improves how you review existing context, think through important choices and keep working with task results. The website and onboarding are evolving alongside it.",
+    "completed": [
+      {
+        "zh": "整合 643 项中 633 通过、10 项环境选择性跳过、0 失败；官网专项 22 项全通过。",
+        "en": "Integration: 633 of 643 passed, 10 environment-dependent skips, no failures; all 22 website checks passed."
+      },
+      {
+        "zh": "1280 px 中文浅／深、英文深色 Hero 及 390 px 手机 Hero、菜单、时间线、图解全图与缩放已实屏核对。",
+        "en": "Checked the 1280 px Chinese light/dark and English dark Hero, plus the 390 px Hero, menus, timeline, complete diagrams and zoom."
+      },
+      {
+        "zh": "欢迎页按滚动开始演示、iframe 按键即暂停；职业讨论入口、手机 IM 单弹窗、记忆确认到未发送草稿及 JSON 导出已核对。新开示例恢复六条原始事实。",
+        "en": "Verified scroll-triggered demonstrations and keyboard takeover, the career entry, one-dialog mobile IM navigation, memory confirmation to an unsent draft and JSON export. A reopened example restores the original six facts."
+      },
+      {
+        "zh": "本机原生包启动、示例、全折叠、工作区展开、系统全屏进出与退出通过；拖动仅确认无错误。",
+        "en": "Native candidate launch, examples, collapse, workspace expansion, system fullscreen entry/exit and quit passed; dragging was only checked for errors."
+      },
+      {
+        "zh": "静态光晕后本机八秒样本整体 59.49 fps、p95 17.4 ms；Hero 29.87 fps、p95 34.1 ms，离屏零次绘制。",
+        "en": "With static washes, an eight-second local sample reached 59.49 overall fps, p95 17.4 ms; Hero reached 29.87 fps, p95 34.1 ms, with zero offscreen draws."
+      },
+      {
+        "zh": "内部独立四张桌面图审查无阻断或 P2，三处动画与嵌入源码审查无重要缺陷；此结果不代表外部 Kimi 复核或用户认可。",
+        "en": "Internal independent review found no blockers or P2 defects in four desktop images and no important defects in three animation/embed source files. This does not establish external Kimi review or user acceptance."
+      }
+    ],
+    "pending": [
+      {
+        "zh": "最终媒体三帧复核，并将最终媒体与文档封入候选包。",
+        "en": "Review the final three media frames and package the final media and documents."
+      },
+      {
+        "zh": "完成最终封包核对、对应提交的 CI 与公开发布；v0.1.2 仍为草稿。",
+        "en": "Complete final package verification, CI for the corresponding commit and publication; v0.1.2 remains a draft."
+      },
+      {
+        "zh": "外部 Kimi K3 max 复核未取得结果：已尝试，但钥匙串凭据读取失败。",
+        "en": "External Kimi K3 max review has no result: it was attempted, but keychain credential retrieval failed."
+      }
+    ],
+    "iteration": "context-website-current",
+    "highlights": [
+      {
+        "zh": "把已有的个人理解带进来，核对后再使用。",
+        "en": "Bring in existing personal context and review it before use."
+      },
+      {
+        "zh": "结合自己的经历，从多个角度讨论重要选择。",
+        "en": "Explore important choices from different perspectives, with your own experiences in view."
+      },
+      {
+        "zh": "保留成果的修改与版本，让工作能够继续。",
+        "en": "Keep edits and versions so useful work can continue."
+      }
+    ]
+  }
 }

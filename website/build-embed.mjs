@@ -4,6 +4,7 @@ import ts from 'typescript';
 import path from 'node:path';
 import { mkdir, cp, readFile, readdir, lstat } from 'node:fs/promises';
 import { exportCanonicalExamples } from './export-examples.mjs';
+import { portableMemoryDomain, portableMemoryImport } from './browser-memory.mjs';
 
 /** Build the real product App with a website-only in-memory adapter. */
 export async function buildEmbeddedProduct({ root, output, base }) {
@@ -13,7 +14,9 @@ export async function buildEmbeddedProduct({ root, output, base }) {
   const apiAdapter = path.join(directory, 'src/embed/api.ts');
   const isolatedStorage = path.join(directory, 'src/embed/storage.ts');
   const serverStore = path.join(root, 'server/store.mjs');
-  const portableModules = new Set(['personal-context.mjs', 'room-reactions.mjs'].map(file => path.join(root, 'server', file)));
+  const memoryModule = path.join(root, 'server/memory-import.mjs');
+  const portableModules = new Set(['personal-context.mjs', 'room-reactions.mjs', 'memory-import.mjs'].map(file => path.join(root, 'server', file)));
+  const memoryDomain = portableMemoryDomain(await readFile(path.join(root, 'server/domain.mjs'), 'utf8'), path.join(directory, 'src/embed/runtime-store.mjs'));
   const examples = await exportCanonicalExamples();
   const embeddedBase = `${base}product/`;
   const outDir = path.resolve(root, output, 'product');
@@ -42,14 +45,27 @@ export async function buildEmbeddedProduct({ root, output, base }) {
       name: 'website-product-isolation', enforce: 'pre',
       resolveId(source, importer) {
         if (source === 'virtual:secondu-canonical-examples') return '\0secondu-canonical-examples';
+        if (importer?.split('?')[0] === memoryModule && source === 'node:crypto') return path.join(directory, 'src/embed/runtime-hash.mjs');
+        if (importer?.split('?')[0] === memoryModule && source === './domain.mjs') return '\0secondu-memory-domain';
         if (importer && portableModules.has(importer.split('?')[0]) && path.resolve(path.dirname(importer), source) === serverStore) return path.join(directory, 'src/embed/runtime-store.mjs');
         if (importer && source.startsWith('.') && path.resolve(path.dirname(importer.split('?')[0]), source).replace(/\.tsx?$/, '') === apiSource) return apiAdapter;
       },
       load(id) {
         if (id === '\0secondu-canonical-examples') return `export default ${JSON.stringify(examples)};`;
+        if (id === '\0secondu-memory-domain') return memoryDomain;
       },
       transform(code, id) {
         const file = id.split('?')[0];
+        if (file === memoryModule) return portableMemoryImport(code);
+        if (file === path.join(productRoot, 'cognition/PersonalOverview.tsx')) code = code.replace('action={!data.profile.demo&&<MemoryImportEntry', 'action={<MemoryImportEntry');
+        if (file === path.join(productRoot, 'cognition/MemoryImport.tsx')) {
+          code = `import {memoryExample as __website_memoryExample} from ${JSON.stringify(path.join(directory, 'src/embed/memory-example.ts'))};\nimport {downloadExampleFile as __website_download} from ${JSON.stringify(apiAdapter)};\n` + code;
+          code = code.replace("const [file,setFile]=useState<File>();const [content,setContent]=useState('');", "const [file,setFile]=useState<File>();const [content,setContent]=useState(__website_memoryExample);");
+          code = code.replace("useState<SourceChoice>('chatgpt')", "useState<SourceChoice>('file')");
+          code = code.replace("仅在本机读取你选择的内容，最大 256 KiB。不会登录其他账号或自动调用模型。", "预填的是虚构示例。粘贴或手动选择的文件仅在本页内存中处理，刷新后清空；不会上传或调用模型，最大 256 KiB。").replace("Selected content is processed locally, up to 256 KiB. No account access or automatic model calls.", "The prefilled context is fictional. Pasted or manually selected files stay in this page’s memory and clear on refresh. No upload or model calls; up to 256 KiB.");
+          code = code.replace("下一步可调整背景、模型与操作权限。只有点击发送，才会开始真实任务。", "下一步会带入本页的对话草稿。官网示例不会执行任务；实际运行请使用桌面版。").replace("Adjust context, model and permissions in the next step. A live task begins only after you press Send.", "Continue to a conversation draft in this page. The website does not execute tasks; use the desktop app for a live run.");
+          code = code.replaceAll("window.location.href=apiUrl('/digital-twin/export?format=json');", "__website_download('/digital-twin/export?format=json');").replaceAll("window.location.href=apiUrl('/digital-twin/export?format=markdown');", "__website_download('/digital-twin/export?format=markdown');");
+        }
         // Vite's JSON plugin receives this exact configuration before converting
         // it to JS, so runtime code uses the same reviewed, prefixed assets.
         if (file === brandFile) {

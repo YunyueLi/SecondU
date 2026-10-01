@@ -1,0 +1,365 @@
+{
+  "schema": "secondu.context-review.v1",
+  "synthetic": true,
+  "startedAt": "2026-10-01T01:03:08.900Z",
+  "finishedAt": "2026-10-01T01:04:02.152Z",
+  "configuredModel": "gpt-6-astra",
+  "providerReportedModel": null,
+  "reasoningEffort": "medium",
+  "evidence": {
+    "inputsSha256": "303fb204b85a5eea20f5bdaf4f9e062322d1b4e1c738dc47df233e3bb34e0e69",
+    "resultsSha256": "679d7e58bc6429c875fb3b7d8204e7a04705b4b7f249c7b299c672cc21193b28"
+  },
+  "scope": "One illustrative run of four synthetic cases in three conditions. Mechanical checks are not a semantic-quality score or blind review.",
+  "summary": {
+    "completed": 12,
+    "offlineChecks": 28,
+    "offlinePassed": 28,
+    "outputCanaryRepetitions": 0,
+    "structuredValidReferences": 4,
+    "minimumLatencyMs": 6398,
+    "medianLatencyMs": 8123.5,
+    "maximumLatencyMs": 11008,
+    "inputTokens": 120491,
+    "cachedInputTokens": 36352,
+    "outputTokens": 1542
+  },
+  "localEventAudit": {
+    "status": "all_local_events_checked",
+    "eventTypes": [
+      "item.completed",
+      "thread.started",
+      "turn.completed",
+      "turn.started"
+    ],
+    "itemTypes": [
+      "agent_message",
+      "error"
+    ],
+    "unexpectedItems": 0,
+    "blockedGlobalInstructionReads": 12
+  },
+  "rows": [
+    {
+      "caseId": "initial_tradeoff",
+      "mode": "no_context",
+      "choice": "A",
+      "latencyMs": 6465,
+      "usage": {
+        "input_tokens": 9978,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 100,
+        "reasoning_output_tokens": 0
+      },
+      "inputChars": 1159,
+      "inputExposure": {
+        "relevantStatementsPresent": 0,
+        "relevantStatementsTotal": 2,
+        "candidateCanaryExposed": false,
+        "unrelatedCanaryExposed": false,
+        "priorPreferenceExposed": false,
+        "oneTimeCandidateExposed": false
+      },
+      "outputCanaryRepeated": false,
+      "usedContextIds": [],
+      "structuredIdsValid": null
+    },
+    {
+      "caseId": "initial_tradeoff",
+      "mode": "raw_archive",
+      "choice": "A",
+      "latencyMs": 11008,
+      "usage": {
+        "input_tokens": 9893,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 236,
+        "reasoning_output_tokens": 123
+      },
+      "inputChars": 945,
+      "inputExposure": {
+        "relevantStatementsPresent": 2,
+        "relevantStatementsTotal": 2,
+        "candidateCanaryExposed": true,
+        "unrelatedCanaryExposed": true,
+        "priorPreferenceExposed": false,
+        "oneTimeCandidateExposed": false
+      },
+      "outputCanaryRepeated": false,
+      "usedContextIds": [
+        "Preferences",
+        "Constraints"
+      ],
+      "structuredIdsValid": null
+    },
+    {
+      "caseId": "initial_tradeoff",
+      "mode": "structured",
+      "choice": "A",
+      "latencyMs": 9494,
+      "usage": {
+        "input_tokens": 10206,
+        "cached_input_tokens": 9088,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 152,
+        "reasoning_output_tokens": 0
+      },
+      "inputChars": 1881,
+      "inputExposure": {
+        "relevantStatementsPresent": 2,
+        "relevantStatementsTotal": 2,
+        "candidateCanaryExposed": false,
+        "unrelatedCanaryExposed": false,
+        "priorPreferenceExposed": false,
+        "oneTimeCandidateExposed": false
+      },
+      "outputCanaryRepeated": false,
+      "usedContextIds": [
+        "memory-fact-170e62e4f03c0695ceaa3fa149c24ca6",
+        "memory-fact-faef167e7694e4b574305e9e7e08917f"
+      ],
+      "structuredIdsValid": true
+    },
+    {
+      "caseId": "confirmed_correction",
+      "mode": "no_context",
+      "choice": "A",
+      "latencyMs": 8039,
+      "usage": {
+        "input_tokens": 9975,
+        "cached_input_tokens": 9088,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 98,
+        "reasoning_output_tokens": 0
+      },
+      "inputChars": 1159,
+      "inputExposure": {
+        "relevantStatementsPresent": 0,
+        "relevantStatementsTotal": 2,
+        "candidateCanaryExposed": false,
+        "unrelatedCanaryExposed": false,
+        "priorPreferenceExposed": false,
+        "oneTimeCandidateExposed": false
+      },
+      "outputCanaryRepeated": false,
+      "usedContextIds": [],
+      "structuredIdsValid": null
+    },
+    {
+      "caseId": "confirmed_correction",
+      "mode": "raw_archive",
+      "choice": "B",
+      "latencyMs": 8176,
+      "usage": {
+        "input_tokens": 9910,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 105,
+        "reasoning_output_tokens": 0
+      },
+      "inputChars": 1064,
+      "inputExposure": {
+        "relevantStatementsPresent": 2,
+        "relevantStatementsTotal": 2,
+        "candidateCanaryExposed": true,
+        "unrelatedCanaryExposed": true,
+        "priorPreferenceExposed": true,
+        "oneTimeCandidateExposed": false
+      },
+      "outputCanaryRepeated": false,
+      "usedContextIds": [
+        "Confirmed continuing correction",
+        "Constraints"
+      ],
+      "structuredIdsValid": null
+    },
+    {
+      "caseId": "confirmed_correction",
+      "mode": "structured",
+      "choice": "B",
+      "latencyMs": 7280,
+      "usage": {
+        "input_tokens": 10208,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 126,
+        "reasoning_output_tokens": 0
+      },
+      "inputChars": 1883,
+      "inputExposure": {
+        "relevantStatementsPresent": 2,
+        "relevantStatementsTotal": 2,
+        "candidateCanaryExposed": false,
+        "unrelatedCanaryExposed": false,
+        "priorPreferenceExposed": false,
+        "oneTimeCandidateExposed": false
+      },
+      "outputCanaryRepeated": false,
+      "usedContextIds": [
+        "memory-fact-170e62e4f03c0695ceaa3fa149c24ca6",
+        "memory-fact-faef167e7694e4b574305e9e7e08917f"
+      ],
+      "structuredIdsValid": true
+    },
+    {
+      "caseId": "one_time_exception",
+      "mode": "no_context",
+      "choice": "A",
+      "latencyMs": 6398,
+      "usage": {
+        "input_tokens": 9999,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 105,
+        "reasoning_output_tokens": 0
+      },
+      "inputChars": 1288,
+      "inputExposure": {
+        "relevantStatementsPresent": 0,
+        "relevantStatementsTotal": 2,
+        "candidateCanaryExposed": false,
+        "unrelatedCanaryExposed": false,
+        "priorPreferenceExposed": false,
+        "oneTimeCandidateExposed": false
+      },
+      "outputCanaryRepeated": false,
+      "usedContextIds": [],
+      "structuredIdsValid": null
+    },
+    {
+      "caseId": "one_time_exception",
+      "mode": "raw_archive",
+      "choice": "A",
+      "latencyMs": 8012,
+      "usage": {
+        "input_tokens": 9960,
+        "cached_input_tokens": 9088,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 116,
+        "reasoning_output_tokens": 0
+      },
+      "inputChars": 1317,
+      "inputExposure": {
+        "relevantStatementsPresent": 2,
+        "relevantStatementsTotal": 2,
+        "candidateCanaryExposed": true,
+        "unrelatedCanaryExposed": true,
+        "priorPreferenceExposed": true,
+        "oneTimeCandidateExposed": true
+      },
+      "outputCanaryRepeated": false,
+      "usedContextIds": [],
+      "structuredIdsValid": null
+    },
+    {
+      "caseId": "one_time_exception",
+      "mode": "structured",
+      "choice": "A",
+      "latencyMs": 8747,
+      "usage": {
+        "input_tokens": 10230,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 142,
+        "reasoning_output_tokens": 0
+      },
+      "inputChars": 2012,
+      "inputExposure": {
+        "relevantStatementsPresent": 2,
+        "relevantStatementsTotal": 2,
+        "candidateCanaryExposed": false,
+        "unrelatedCanaryExposed": false,
+        "priorPreferenceExposed": false,
+        "oneTimeCandidateExposed": false
+      },
+      "outputCanaryRepeated": false,
+      "usedContextIds": [
+        "memory-fact-170e62e4f03c0695ceaa3fa149c24ca6",
+        "memory-fact-faef167e7694e4b574305e9e7e08917f"
+      ],
+      "structuredIdsValid": true
+    },
+    {
+      "caseId": "new_task_transfer",
+      "mode": "no_context",
+      "choice": "D",
+      "latencyMs": 9424,
+      "usage": {
+        "input_tokens": 9982,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 101,
+        "reasoning_output_tokens": 0
+      },
+      "inputChars": 1194,
+      "inputExposure": {
+        "relevantStatementsPresent": 0,
+        "relevantStatementsTotal": 2,
+        "candidateCanaryExposed": false,
+        "unrelatedCanaryExposed": false,
+        "priorPreferenceExposed": false,
+        "oneTimeCandidateExposed": false
+      },
+      "outputCanaryRepeated": false,
+      "usedContextIds": [],
+      "structuredIdsValid": null
+    },
+    {
+      "caseId": "new_task_transfer",
+      "mode": "raw_archive",
+      "choice": "E",
+      "latencyMs": 8071,
+      "usage": {
+        "input_tokens": 9943,
+        "cached_input_tokens": 9088,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 124,
+        "reasoning_output_tokens": 0
+      },
+      "inputChars": 1223,
+      "inputExposure": {
+        "relevantStatementsPresent": 2,
+        "relevantStatementsTotal": 2,
+        "candidateCanaryExposed": true,
+        "unrelatedCanaryExposed": true,
+        "priorPreferenceExposed": true,
+        "oneTimeCandidateExposed": true
+      },
+      "outputCanaryRepeated": false,
+      "usedContextIds": [
+        "Confirmed continuing correction",
+        "Constraints"
+      ],
+      "structuredIdsValid": null
+    },
+    {
+      "caseId": "new_task_transfer",
+      "mode": "structured",
+      "choice": "E",
+      "latencyMs": 10149,
+      "usage": {
+        "input_tokens": 10207,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 137,
+        "reasoning_output_tokens": 0
+      },
+      "inputChars": 1918,
+      "inputExposure": {
+        "relevantStatementsPresent": 2,
+        "relevantStatementsTotal": 2,
+        "candidateCanaryExposed": false,
+        "unrelatedCanaryExposed": false,
+        "priorPreferenceExposed": false,
+        "oneTimeCandidateExposed": false
+      },
+      "outputCanaryRepeated": false,
+      "usedContextIds": [
+        "memory-fact-170e62e4f03c0695ceaa3fa149c24ca6",
+        "memory-fact-faef167e7694e4b574305e9e7e08917f"
+      ],
+      "structuredIdsValid": true
+    }
+  ]
+}

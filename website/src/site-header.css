@@ -1,0 +1,35 @@
+/* One continuous frost sample follows the approved personal-site navigation. */
+.site-masthead{position:sticky;top:0;z-index:40;isolation:isolate;font-family:var(--site-font);--site-header-tint:.58}
+/* SDK menus are portaled to body. Their positioning wrapper must clear the sticky frost. */
+[data-radix-popper-content-wrapper]:has(.site-choice-menu),
+[data-radix-popper-content-wrapper]:has(.site-masthead-menu){z-index:60!important}
+.site-masthead-in{height:84px;max-width:var(--site-container);margin-inline:auto;padding-inline:var(--site-gutter);display:flex;align-items:center;gap:32px}
+.site-masthead-frost{position:absolute;inset:0 0 -22px;z-index:-1;pointer-events:none}
+.site-masthead-frost>span{position:absolute;inset:0;backdrop-filter:blur(16px) saturate(1.3);-webkit-backdrop-filter:blur(16px) saturate(1.3);mask-image:linear-gradient(#000 60%,#000a 78%,transparent);-webkit-mask-image:linear-gradient(#000 60%,#000a 78%,transparent)}
+.site-masthead-frost::after{content:'';position:absolute;inset:0;background:var(--site-bg);opacity:var(--site-header-tint);mask-image:linear-gradient(#000 64%,#0009 82%,transparent);-webkit-mask-image:linear-gradient(#000 64%,#0009 82%,transparent);transition:opacity .25s ease}
+.site-masthead.is-scrolled{--site-header-tint:.72}
+html[data-theme=dark] .site-masthead{--site-header-tint:.66}
+html[data-theme=dark] .site-masthead.is-scrolled{--site-header-tint:.8}
+.site-masthead .site-brand{flex:none;gap:5px}
+.site-masthead .site-brand>img:first-child{width:29px;height:29px}
+.site-masthead .site-brand>img+img{width:115px;height:30px}
+.site-masthead-links{display:flex;align-items:center;justify-content:center;gap:clamp(18px,2.1vw,32px);margin-left:auto;font-size:13px;line-height:1.4;white-space:nowrap}
+.site-masthead-links>a,.site-masthead-github{display:inline-flex;align-items:center;min-height:44px;color:var(--site-muted);transition:color .15s}
+.site-masthead-links>a:hover,.site-masthead-github:hover{color:var(--site-ink)}
+.site-masthead-tools{display:flex;align-items:center;gap:4px;flex:none}
+.site-masthead-github{gap:3px;margin-right:10px;font-size:13px}
+.site-masthead-github>svg{width:14px;height:14px}
+.site-masthead-github>.site-masthead-octocat{width:17px;height:17px;margin-right:3px;flex:none}
+.site-masthead-menu .site-masthead-octocat{width:16px;height:16px;flex:none}
+.site-masthead-tools .site-choice.site-choice-compact{min-height:40px;padding-inline:9px;font-size:13px;background:transparent}
+.site-masthead-tools .site-choice.site-choice-compact:hover,.site-masthead-tools .site-choice[data-state=open]{background:color-mix(in srgb,var(--site-ink) 6%,transparent)}
+.site-masthead-mobile{display:none}
+.site-masthead-mobile>button{color:var(--site-ink);width:40px;height:40px}
+.site-masthead-mobile>button>svg{width:19px;height:19px}
+@media(max-width:1120px){.site-masthead-in{gap:20px}.site-masthead-links{gap:18px}.site-masthead-github{display:none}}
+@media(max-width:920px){.site-masthead-in{height:76px;justify-content:space-between}.site-masthead-links{display:none}.site-masthead-mobile{display:block}.site-masthead-tools{gap:5px}}
+@media(max-width:600px){.site-masthead-in{height:68px;gap:12px}.site-masthead .site-brand>img:first-child{width:25px;height:25px}.site-masthead .site-brand>img+img{width:99px;height:28px}.site-masthead-tools .site-choice.site-choice-compact{font-size:12px;padding-inline:8px}.site-masthead-theme .site-choice-label,.site-masthead-theme .site-choice>svg:last-child{display:none}.site-masthead-theme .site-choice.site-choice-compact{width:40px;justify-content:center;padding:0}.site-masthead-frost{bottom:-16px}}
+@media(max-width:360px){.site-masthead .site-brand>img+img{width:72px}.site-masthead-in{gap:8px}.site-masthead-tools{gap:1px}.site-masthead-language .site-choice-icon{display:none}}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.site-masthead{--site-header-tint:.96!important}}
+@media(prefers-reduced-transparency:reduce){.site-masthead{--site-header-tint:1!important}.site-masthead-frost>span{backdrop-filter:none;-webkit-backdrop-filter:none}}
+@media(prefers-reduced-motion:reduce){.site-masthead-frost::after,.site-masthead-links>a,.site-masthead-github{transition:none}}

@@ -1,0 +1,295 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "SecondU Harness",
+    "locale": "en",
+    "output": "docs/diagrams/harness-en.html",
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "https://github.com/YunyueLi/SecondU.git",
+      "revision": "c7e8803caecdf83524b307365baa35e5cc98d789"
+    }
+  },
+  "components": [
+    {
+      "id": "workbench",
+      "type": "frontend",
+      "label": "Workspaces",
+      "sublabel": "Brief, inspect, refine",
+      "pos": [
+        40,
+        290
+      ],
+      "size": [
+        190,
+        90
+      ],
+      "sources": [
+        {
+          "path": "src/App.tsx",
+          "line": 95,
+          "end_line": 102
+        },
+        {
+          "path": "src/App.tsx",
+          "line": 158,
+          "end_line": 164
+        }
+      ]
+    },
+    {
+      "id": "cognition",
+      "type": "database",
+      "label": "Personal cognition",
+      "sublabel": "Facts, people, events, goals",
+      "pos": [
+        40,
+        60
+      ],
+      "size": [
+        190,
+        90
+      ],
+      "sources": [
+        {
+          "path": "server/store.mjs",
+          "line": 16,
+          "end_line": 35
+        }
+      ]
+    },
+    {
+      "id": "context",
+      "type": "backend",
+      "label": "Purposeful context",
+      "sublabel": "Purpose, scope, evidence budget",
+      "pos": [
+        340,
+        60
+      ],
+      "size": [
+        190,
+        90
+      ],
+      "sources": [
+        {
+          "path": "server/personal-context.mjs",
+          "line": 60,
+          "end_line": 93
+        }
+      ]
+    },
+    {
+      "id": "runner",
+      "type": "backend",
+      "label": "Task orchestration",
+      "sublabel": "Turn context and durable state",
+      "pos": [
+        340,
+        290
+      ],
+      "size": [
+        190,
+        90
+      ],
+      "sources": [
+        {
+          "path": "server/runner.mjs",
+          "line": 210,
+          "end_line": 257
+        }
+      ]
+    },
+    {
+      "id": "runtime",
+      "type": "backend",
+      "label": "Codex runtime",
+      "sublabel": "Local app-server over stdio",
+      "pos": [
+        640,
+        290
+      ],
+      "size": [
+        190,
+        90
+      ],
+      "sources": [
+        {
+          "path": "server/codex.mjs",
+          "line": 430,
+          "end_line": 460
+        }
+      ]
+    },
+    {
+      "id": "provider",
+      "type": "external",
+      "label": "Selected model",
+      "sublabel": "Configured model and protocol",
+      "pos": [
+        640,
+        60
+      ],
+      "size": [
+        190,
+        90
+      ],
+      "sources": [
+        {
+          "path": "server/chat-bridge.mjs",
+          "line": 1,
+          "end_line": 55
+        }
+      ]
+    },
+    {
+      "id": "results",
+      "type": "backend",
+      "label": "Artifacts and versions",
+      "sublabel": "Collect real files; keep revisions",
+      "pos": [
+        940,
+        290
+      ],
+      "size": [
+        190,
+        90
+      ],
+      "sources": [
+        {
+          "path": "server/runner.mjs",
+          "line": 265,
+          "end_line": 275
+        }
+      ]
+    },
+    {
+      "id": "team",
+      "type": "backend",
+      "label": "On-demand specialists",
+      "sublabel": "Lead delegates; workers isolate",
+      "pos": [
+        340,
+        520
+      ],
+      "size": [
+        190,
+        90
+      ],
+      "sources": [
+        {
+          "path": "server/runner.mjs",
+          "line": 229,
+          "end_line": 231
+        }
+      ]
+    },
+    {
+      "id": "tools",
+      "type": "security",
+      "label": "Selected tools",
+      "sublabel": "Selected connections and approvals",
+      "pos": [
+        640,
+        520
+      ],
+      "size": [
+        190,
+        90
+      ],
+      "sources": [
+        {
+          "path": "server/connectors.mjs",
+          "line": 194,
+          "end_line": 237
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "cognition-context",
+      "from": "cognition",
+      "to": "context",
+      "label": "Retrieve",
+      "variant": "default"
+    },
+    {
+      "id": "context-runner",
+      "from": "context",
+      "to": "runner",
+      "label": "Snapshot",
+      "variant": "default"
+    },
+    {
+      "id": "workbench-runner",
+      "from": "workbench",
+      "to": "runner",
+      "label": "Start",
+      "variant": "emphasis"
+    },
+    {
+      "id": "runner-runtime",
+      "from": "runner",
+      "to": "runtime",
+      "label": "Context + tools",
+      "variant": "emphasis"
+    },
+    {
+      "id": "runtime-provider",
+      "from": "runtime",
+      "to": "provider",
+      "label": "Model request",
+      "variant": "default"
+    },
+    {
+      "id": "runtime-results",
+      "from": "runtime",
+      "to": "results",
+      "label": "Outputs",
+      "variant": "default"
+    },
+    {
+      "id": "runner-team",
+      "from": "runner",
+      "to": "team",
+      "label": "When needed",
+      "variant": "emphasis"
+    },
+    {
+      "id": "runtime-tools",
+      "from": "runtime",
+      "to": "tools",
+      "label": "Gated call",
+      "variant": "security"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Understanding carries forward",
+      "items": [
+        "Each turn retrieves relevant, confirmed cognition.",
+        "Sources, revisions and omitted context stay inspectable."
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "Control stays with the user",
+      "items": [
+        "Model, context and connector bindings belong to the turn.",
+        "Approvals and cancellation propagate through execution."
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Work becomes an enduring artifact",
+      "items": [
+        "Actual workspace files become editable deliverables.",
+        "Feedback records preserve the original result and context."
+      ]
+    }
+  ]
+}

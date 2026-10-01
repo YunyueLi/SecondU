@@ -2,7 +2,7 @@ import {createHash,randomUUID} from 'node:crypto';
 import {existsSync,lstatSync,readFileSync,realpathSync,writeFileSync,renameSync,unlinkSync} from 'node:fs';
 import {isDeepStrictEqual as equal} from 'node:util';
 import path from 'node:path';
-import manifest from './fixtures/demo-copy-v3.json' with {type:'json'};
+import copyManifest from './fixtures/demo-copy-v3.json' with {type:'json'};
 
 export const DEMO_COPY_MARKER='demo-copy-v3';
 const digest=value=>createHash('sha256').update(typeof value==='string'?value:JSON.stringify(value)).digest('hex');
@@ -49,13 +49,13 @@ function writeFile(file){
 }
 
 /** Exact authored updates only. Never runs a model or rewrites edited task/output units. */
-export function applyDemoCopy(store){
+export function applyAuthoredDemoCopy(store,manifest,{marker,version}){
  const profile=store.get('meta','profile')?.value;
- if(profile?.demo!==true||store.get('meta',DEMO_COPY_MARKER))return;
+ if(profile?.demo!==true||store.get('meta',marker))return;
  const locale=profile.demoLocale==='en'?'en':'zh-CN';
  return store.transaction(()=>{
-  if(store.get('meta',DEMO_COPY_MARKER))return;
-  const report={version:3,appliedAt:new Date().toISOString(),updated:[],alreadyCurrent:[],preserved:[],files:[]};
+  if(store.get('meta',marker))return;
+  const report={version,appliedAt:new Date().toISOString(),updated:[],alreadyCurrent:[],preserved:[],files:[]};
   const changes=manifest.changes.filter(change=>change.locale===locale),groups=new Map();
   for(const change of changes){const group=change.group??`${entryKey(change)}/${change.field}`;if(!groups.has(group))groups.set(group,[]);groups.get(group).push(change);}
   const stateOf=change=>{const record=store.get(change.collection,change.id);if(!record)return 'preserve';if(equal(record[change.field],materialize(change.to,record[change.field])))return 'current';return equal(record[change.field],materialize(change.from,record[change.field]))?'update':'preserve';};
@@ -81,6 +81,10 @@ export function applyDemoCopy(store){
    if(blocked.has(group)){report.preserved.push({id:group,reason:'edited_or_removed_field'});continue;}
    for(const change of entries){const state=stateOf(change),key=`${entryKey(change)}/${change.field}`;if(state==='current'){report.alreadyCurrent.push(key);continue;}if(state!=='update')throw Error('Example record changed during migration.');const current=store.get(change.collection,change.id);store.put(change.collection,{...current,[change.field]:materialize(change.to,current[change.field])});report.updated.push(key);}
   }
-  store.setMeta(DEMO_COPY_MARKER,report);return report;
+  store.setMeta(marker,report);return report;
  });
+}
+
+export function applyDemoCopy(store){
+ return applyAuthoredDemoCopy(store,copyManifest,{marker:DEMO_COPY_MARKER,version:3});
 }

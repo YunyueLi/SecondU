@@ -21,7 +21,7 @@ test('creating a fictional space leaves originals, keys, tasks, files and downlo
  assert.equal((await f.api(namespace+'bootstrap')).status,404);assert.equal(existsSync(path.join(realpathSync(f.directory),'spaces')),false);
  const creation=await f.api('spaces/demo-cn-v1',{});assert.equal(creation.status,200);
  const demo=(await f.api(namespace+'bootstrap')).value,original=(await f.api('bootstrap')).value;
- assert.equal(demo.profile.demo,true);assert.match(demo.profile.description,/月之暗面/);assert.equal(demo.people.length,22);assert.equal(demo.tasks.length,15);assert.ok(demo.tasks.every(task=>task.mode==='demo'&&task.status==='completed'));assert.equal(demo.automations.length,2);assert.ok(demo.automations.every(automation=>!automation.enabled));assert.equal(demo.settings.hasKey,false);
+ assert.equal(demo.profile.demo,true);assert.match(demo.profile.description,/月之暗面/);assert.equal(demo.people.length,22);assert.equal(demo.tasks.length,16);assert.ok(demo.tasks.every(task=>task.mode==='demo'&&task.status==='completed'));assert.equal(demo.automations.length,2);assert.ok(demo.automations.every(automation=>!automation.enabled));assert.equal(demo.settings.hasKey,false);
  assert.equal(original.profile.name,'Original');assert.equal(original.settings.hasKey,true);assert.equal(original.tasks[0].id,task.id);
  assert.notEqual(demo.computer.workspace,original.computer.workspace);assert.ok(demo.computer.workspace.startsWith(path.join(realpathSync(f.directory),'spaces')));
  assert.equal((await f.api(namespace+`tasks/${task.id}/cancel`,{})).status,404);assert.equal(f.app.store.require('tasks',task.id).status,'awaiting_approval');assert.equal(f.app.runner.active.has(task.id),true);

@@ -1,4 +1,5 @@
 import { applyDemoCopy } from './demo-copy.mjs';
+import { applyDemoReadableCopy } from './demo-readable-copy.mjs';
 import { ensureUSMessageLinks } from './demo-us-message-links.mjs';
 import {createHash} from 'node:crypto';
 import {existsSync,lstatSync,mkdirSync,readFileSync,realpathSync,writeFileSync} from 'node:fs';
@@ -44,7 +45,7 @@ function newFile(file,content,report){
 /** Materialize only these authored projects. User folders and edits are retained. */
 export function ensureUSDemoFiles(store){
  if(!isUSDemoProfile(store.meta('profile')))return;
- if(store.get('meta',marker)){applyDemoCopy(store);ensureUSMessageLinks(store);return;}
+ if(store.get('meta',marker)){applyDemoCopy(store);ensureUSMessageLinks(store);applyDemoReadableCopy(store);return;}
  const parent=directory(path.dirname(store.protectedDataDirectory??store.directory),'.secondu-examples');
  const root=directory(parent,`us-${hash(store.directory).slice(0,12)}`);
  const report={version:US_DEMO_VERSION,installedAt:new Date().toISOString(),root,files:[],preserved:[]};
@@ -67,5 +68,6 @@ export function ensureUSDemoFiles(store){
  store.transaction(()=>{for(const project of updates)store.put('projects',project);store.setMeta(marker,report);});
  applyDemoCopy(store);
  ensureUSMessageLinks(store);
+ applyDemoReadableCopy(store);
  return report;
 }

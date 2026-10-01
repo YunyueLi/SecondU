@@ -1,0 +1,14 @@
+{
+  "asset": "twin-context.png",
+  "purpose": "Public brand artwork for project documentation; not a product screenshot.",
+  "generator": "Built-in image_gen",
+  "generatedOn": "2026-10-01",
+  "reference": {
+    "path": "public/art/twin-badge-v1.png",
+    "sha256": "364d9ff5c2412f9e9bc3f85a704ea5cb18dab22bd92fc41af8c34053aafa5f7e",
+    "classification": "Previously public fictional SecondU brand illustration"
+  },
+  "prompt": "Use case: ads-marketing. Create a refined wide 3:2 artwork for SecondU, a personal digital twin. The attached public brand artwork is an identity and material reference: preserve the recognisable layered ivory and muted lavender feminine profiles and tactile impasto paint. This is a NEW composition, no text. Show a monumental sculptural interpretation of those two profiles suspended in a deep midnight aubergine gallery atmosphere, one substantial painted ivory face and a second semi-transparent lavender echo quietly separating behind it. Sweep a very fine stream of luminous silver and muted gold particles between the profiles, dissolving a small part of the edges into the surrounding space, leaving the facial silhouette intact and dignified. Include three broad flowing translucent silk planes arcing gently around the neck to suggest remembered experience and connected contexts. Close editorial macro view, exquisite light grazing the impasto texture, museum campaign quality, severe visual restraint, deeply atmospheric with big shapes, layered depth and empty space. The faces take 65 percent of frame. Color: warm ivory, desaturated mauve, lilac, graphite; no saturated cyan/pink. No typography, logo, symbols, UI, frames, circuitry, techno brain, spheres, stock business imagery, glossy toy plastic or excessive noise. Wide polished artwork, 1536x1024 or similar landscape.",
+  "sha256": "dbba606543458011211e69d7d50aab65b5413ea358f82a24256a8f1f2193a807",
+  "privateInputs": false
+}

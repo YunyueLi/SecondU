@@ -12,6 +12,7 @@ on:
       - 'docs/DEVELOPMENT.md'
       - 'docs/ITERATION.md'
       - 'docs/licenses/**'
+      - 'docs/readme-assets/**'
       - 'THIRD_PARTY_NOTICES.md'
       - 'scripts/license-notices.mjs'
       - 'public/brand/**'
@@ -48,6 +49,7 @@ jobs:
             website/package-lock.json
       - run: npm ci --ignore-scripts
       - run: npm ci --prefix website --ignore-scripts
+      - run: node --test tests/website-canonical-example.test.mjs tests/website-diagrams.test.mjs
       - run: node website/build.mjs
       - uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5
       - uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4

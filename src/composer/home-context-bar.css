@@ -6,3 +6,14 @@
 .assistant-workspace.is-home .composer>.composer-context-bar>button svg{width:18px;height:18px;flex:none}
 .assistant-workspace.is-home .composer>.composer-context-bar .project-picker>span>svg:last-child,.assistant-workspace.is-home .composer>.composer-context-bar .composer-approval-picker>span>svg:last-child{width:12px;height:12px}
 @media(max-width:520px){.assistant-workspace.is-home .composer>.composer-context-bar{width:calc(100% - 20px);margin-inline:10px;padding-inline:8px;font-size:12px;gap:4px}.assistant-workspace.is-home .composer>.composer-context-bar>button{padding-inline:10px}}
+
+/* Compact home actions stay on one line; their popovers retain full labels. */
+@media(max-width:700px){
+ .assistant-workspace.is-home .composer>.composer-context-bar{flex-wrap:nowrap;gap:2px;min-height:56px;padding:10px 6px 4px}
+ .assistant-workspace.is-home .composer>.composer-context-bar .project-picker{flex:1 1 auto;min-width:0;max-width:none;justify-content:flex-start;height:40px;min-height:40px;padding-inline:10px}
+ .assistant-workspace.is-home .composer>.composer-context-bar .project-picker>span{min-width:0;overflow:hidden}
+ .assistant-workspace.is-home .composer>.composer-context-bar :is(.composer-connectors-trigger,.composer-twin-trigger,.composer-approval-picker){position:relative;flex:0 0 40px;width:40px;height:40px;min-height:40px;padding:0;justify-content:center;margin:0}
+ .assistant-workspace.is-home .composer>.composer-context-bar :is(.composer-connectors-label,.composer-twin-label,.composer-approval-label,.connector-count){display:none}
+ .assistant-workspace.is-home .composer>.composer-context-bar .composer-approval-picker svg:last-child{display:none}
+ .assistant-workspace.is-home .composer>.composer-context-bar .composer-twin-trigger i{position:absolute;top:7px;right:6px;width:4px;height:4px;margin:0}
+}

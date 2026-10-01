@@ -7,6 +7,7 @@ import { ArrowRight, ChevronDown, Document, X } from '@openai/apps-sdk-ui/compon
 import { PageHeading, when } from '../components';
 import { getLocale, t } from '../i18n';
 import './personal-overview.css';
+import { MemoryImportEntry } from './MemoryImport';
 import { SectionLink, SectionHeading } from '../design-system/SectionLink';
 
 type Refs = (ids: string[], compact?: boolean) => ReactNode;
@@ -14,7 +15,7 @@ type Selection = {kind:'fact';value:Fact}|{kind:'event';value:LifeEvent}|{kind:'
 const factStatus = (fact:Fact) => ({confirmed:t('已确认','Confirmed'),candidate:t('待确认','To confirm'),inferred:t('推断','Inferred'),superseded:t('已替代','Superseded')}[fact.status]);
 const count = (value:number) => new Intl.NumberFormat(getLocale()).format(value);
 
-export function PersonalOverview({data,refs,onEdit,onHistory,onCreateTask}:{data:Bootstrap;refs:Refs;onEdit:(fact:Fact)=>void;onHistory:(fact:Fact)=>void;onCreateTask:(prompt:string,factIds?:string[])=>void|Promise<void>}) {
+export function PersonalOverview({data,refs,onEdit,onHistory,onCreateTask,onRefresh}:{data:Bootstrap;onRefresh:()=>Promise<void>;refs:Refs;onEdit:(fact:Fact)=>void;onHistory:(fact:Fact)=>void;onCreateTask:(prompt:string,factIds?:string[])=>void|Promise<void>}) {
   const [selection,setSelected] = useState<Selection>();
   let selected = selection;
   if(selection?.kind==='fact'){const value=data.facts.find(fact=>fact.id===selection.value.id);selected=value?{kind:'fact',value}:undefined;}
@@ -46,8 +47,9 @@ export function PersonalOverview({data,refs,onEdit,onHistory,onCreateTask}:{data
   function more(key:string){setExpanded(previous=>({...previous,[key]:!previous[key]}));}
   function factRows(items:Fact[],key:string,empty:string,limit=3){return <><div className="portrait-fact-list">{(expanded[key]?items:items.slice(0,limit)).map(fact=><button key={fact.id} type="button" className={`portrait-fact-row ${selected?.kind==='fact'&&selected.value.id===fact.id?'is-selected':''}`} onClick={()=>select({kind:'fact',value:fact})}><span className="portrait-fact-copy"><span className="portrait-fact-text">{fact.statement}</span>{fact.status!=='confirmed'&&<small>{factStatus(fact)}</small>}</span><ArrowRight aria-hidden="true"/></button>)}</div>{!items.length&&empty&&<p className="portrait-missing">{empty}</p>}{items.length>limit&&<button type="button" className="portrait-more" aria-expanded={!!expanded[key]} onClick={()=>more(key)}>{expanded[key]?t('收起','Show less'):t(`查看全部 ${count(items.length)} 条`,`View all ${count(items.length)}`)}<ChevronDown aria-hidden="true"/></button>}</>}
   return <div className="personal-overview">
-    <PageHeading className="portrait-heading" title={<span className="portrait-title">{t('个人画像','Personal profile')}{data.profile.demo&&<Badge color="secondary" size="sm">{t('虚构人物','Fictional profile')}</Badge>}</span>} decoration="profile" description={t('查看个人背景、做事方式与重要关系。','Explore personal context, preferences and important relationships.')}/>
+    <PageHeading className="portrait-heading" title={<span className="portrait-title">{t('个人画像','Personal profile')}{data.profile.demo&&<Badge color="secondary" size="sm">{t('虚构人物','Fictional profile')}</Badge>}</span>} decoration="profile" description={t('查看个人背景、做事方式与重要关系。','Explore personal context, preferences and important relationships.')} action={!data.profile.demo&&<MemoryImportEntry onRefresh={onRefresh} onPrepareTask={onCreateTask} compact/>}/>
 
+    {!data.profile.demo&&!data.facts.length&&<p className="portrait-import-hint">{t('可以从右上角带入已有的背景、偏好与目标，逐条核对后保存。','Use Import context above to bring in your background, preferences and goals, then review each entry before saving.')}</p>}
     <div className="portrait-layout">
       <div className="portrait-main">
         <section className="portrait-background"><SectionHeading>{t('个人理解','Personal understanding')}</SectionHeading>{factRows(overviewFacts,'overview',t('确认做事方式或偏好后，会在这里显示。','Confirmed working preferences will appear here.'),2)}{capabilities.length>0&&<div className="portrait-fact-group portrait-capabilities"><h3>{t('能力与经验','Skills and experience')}</h3>{factRows(capabilities,'capabilities','',2)}</div>}</section>

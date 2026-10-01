@@ -1,5 +1,5 @@
 import { t, getLocale } from '../i18n';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { ChatImportPlatform, ChatImportPreview, ChatImportResult } from '../../shared/contracts';
 import { Button } from '@openai/apps-sdk-ui/components/Button';
 import { Input } from '@openai/apps-sdk-ui/components/Input';
@@ -40,9 +40,9 @@ const example = () => ({
   people: [{ id: 'me', name: t("我的称呼", "My name"), isSelf: true }, { id: 'contact-1', name: t("联系人", "Contact") }],
   conversations: [{ id: 'conversation-1', title: t("一次交流", "A conversation"), kind: 'direct', participantIds: ['me', 'contact-1'], messages: [{ id: 'message-1', senderId: 'contact-1', text: t("这里保留导出的原始消息。", "Keep the original exported message here."), time: '2026-09-29T10:00:00+08:00' }] }],
 });
-type Props = { onClose: () => void; onConnect?: () => void; onSaved: () => Promise<void>; onImported: (result: ChatImportResult) => void };
+type Props = { onClose: () => void; onConnect?: () => void; onSaved: () => Promise<void>; onImported: (result: ChatImportResult) => void; embedded?:boolean; hidden?:boolean; onTitleChange?:(title:string)=>void;onBusyChange?:(busy:boolean)=>void };
 
-export function ConversationFileImport({ onClose, onSaved, onImported, onConnect }: Props) {
+export function ConversationFileImport({ onClose, onSaved, onImported, onConnect, embedded=false, hidden=false, onTitleChange,onBusyChange }: Props) {
   const [platform, setPlatform] = useState<ChatImportPlatform>('generic');
   const [accountId, setAccountId] = useState('');
   const [conversationId,setConversationId]=useState('');
@@ -54,6 +54,10 @@ export function ConversationFileImport({ onClose, onSaved, onImported, onConnect
   const [error, setError] = useState('');
   const fileInput = useRef<HTMLInputElement>(null);
   const conversation = preview?.conversations[selected];
+  const contentRef=useRef<HTMLDivElement>(null);
+  useEffect(()=>{if(embedded&&!hidden)contentRef.current?.focus();},[embedded,hidden]);
+  useEffect(()=>{onBusyChange?.(busy);},[busy,onBusyChange]);
+  useEffect(()=>()=>{onBusyChange?.(false);},[onBusyChange]);
 
   function chooseFile(next?: File) {
     setError(''); setPreview(undefined); setResult(undefined); setSelected(0);
@@ -88,10 +92,12 @@ export function ConversationFileImport({ onClose, onSaved, onImported, onConnect
     setTimeout(() => URL.revokeObjectURL(href), 1000);
   }
 
-  return <Dialog className="chat-import-dialog" title={result ? t("导入完成", "Import complete") : preview ? t("预览对话记录", "Preview conversations") : t("导入外部记录", "Import records")} onClose={() => { if (!busy) onClose(); }}><div className="chat-import">
+  const title=result ? t("导入完成", "Import complete") : preview ? t("预览对话记录", "Preview conversations") : t("导入外部记录", "Import records");
+  useEffect(()=>{onTitleChange?.(title);},[title,onTitleChange]);
+  const content=<div ref={contentRef} tabIndex={-1} className="chat-import" hidden={hidden} style={hidden?{display:'none'}:undefined}>
     {result ? <div className="chat-import-complete"><CheckCircle /><h3>{result.alreadyImported ? t("这份记录已导入", "Already imported") : t("原始交流已保存", "Original messages saved")}</h3><p>{result.alreadyImported ? t("没有重复添加已有消息。", "Existing messages were not added again.") : t(`新增 ${result.added.conversations} 个会话、${result.added.messages} 条消息和 ${result.added.people} 位联系人。`, `Added ${result.added.conversations} conversations, ${result.added.messages} messages and ${result.added.people} contacts.`)}</p>{result.duplicates > 0 && <p>{t("已跳过", "Skipped ")}{result.duplicates} {t("条重复消息。", " duplicate messages.")}</p>}<p className="cog-muted">{t("原始文件保留为资料来源，内容不会自动成为已确认的个人认知。", "The original file remains a source. Its contents are not automatically confirmed as personal context.")}</p><ErrorNotice error={error} /><Button color="primary" disabled={busy} onClick={onClose}>{t("查看导入的会话", "View imported conversations")}</Button></div> : <>
       {!preview ? <>
-        {onConnect&&<div className="chat-import-connect"><div><strong>{t("接收和回复消息","Receive and reply")}</strong><p>{t("连接 OpenClaw 或其他本机通信 CLI。","Connect OpenClaw or another local messaging CLI.")}</p></div><Button color="secondary" variant="outline" size="sm" onClick={onConnect}>{t("连接通信工具","Connect messaging tool")}</Button></div>}
+        {onConnect&&<div className="chat-import-connect"><div><strong>{t("接收和回复消息","Receive and reply")}</strong><p>{t("连接常用平台，处理你指定的会话。","Connect your platforms and work with the conversations you choose.")}</p></div><Button color="secondary" variant="outline" size="sm" onClick={onConnect}>{t("连接通信工具","Connect messaging tool")}</Button></div>}
         <p className="chat-import-intro">{t("把平台导出的文件导入到本机，先查看内容，再决定是否保存。", "Preview an exported file before saving it locally.")}</p>
         <div className="chat-import-fields"><Field label={t("记录来自", "Platform")}><PlatformSelect value={platform} disabled={busy} onChange={value => { setPlatform(value as ChatImportPlatform); setError(''); }} /></Field><Field label={t("账号标识（可选）", "Account ID (optional)")} hint={t("同一账号保持一致，方便合并后续记录。留空时按文件区分。", "Use a consistent ID to merge future records. Leave blank to separate files.")}><Input size="md" aria-label={t("导入账号标识", "Import account ID")} autoComplete="off" value={accountId} disabled={busy} onChange={event => setAccountId(event.target.value)} placeholder={t("例如 my-wechat", "For example, my-wechat")} /></Field></div>
         <p className="chat-import-format">{formatDescription(platform)}</p>
@@ -111,7 +117,8 @@ export function ConversationFileImport({ onClose, onSaved, onImported, onConnect
         <p className="cog-muted">{t("导入保留原始文件和来源，不自动确认人物判断。预览在 30 分钟后失效。", "Original files and sources are preserved. Personal claims remain unconfirmed. This preview expires in 30 minutes.")}</p>
       </>}
       <ErrorNotice error={error} />
-      <div className="chat-import-actions">{preview ? <Button color="secondary" variant="ghost" disabled={busy} onClick={() => { setPreview(undefined); setError(''); }}><ArrowLeft />{t("返回选择", "Back")}</Button> : <span />}{preview ? <Button color="primary" disabled={busy} loading={busy} onClick={commit}>{t("确认导入", "Import")}</Button> : <Button color="primary" disabled={!file || busy} loading={busy} onClick={readPreview}>{t("预览记录", "Preview")}</Button>}</div>
+      <div className="chat-import-actions">{preview ? <Button color="secondary" variant="ghost" size="sm" disabled={busy} onClick={() => { setPreview(undefined); setError(''); }}><ArrowLeft />{t("返回选择", "Back")}</Button> : <span />}{preview ? <Button color="primary" disabled={busy} loading={busy} onClick={commit}>{t("确认导入", "Import")}</Button> : <Button color="primary" disabled={!file || busy} loading={busy} onClick={readPreview}>{t("预览记录", "Preview")}</Button>}</div>
     </>}
-  </div></Dialog>;
+  </div>;
+  return embedded?content:<Dialog className="chat-import-dialog" title={title} onClose={()=>{if(!busy)onClose();}}>{content}</Dialog>;
 }

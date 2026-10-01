@@ -10,6 +10,8 @@ export function SiteLanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguageState] = useState<Language>(() => {
     let initial: Language = 'zh';
     try { initial = localStorage.getItem('secondu.website.language') === 'en' ? 'en' : 'zh'; } catch { /* Default to Chinese. */ }
+    const requested = new URLSearchParams(location.search).get('lang');
+    if (requested === 'zh' || requested === 'en') initial = requested;
     setLocale(initial === 'zh' ? 'zh-CN' : 'en');
     return initial;
   });
@@ -21,7 +23,7 @@ export function SiteLanguageProvider({ children }: { children: ReactNode }) {
   }
   useEffect(() => {
     document.documentElement.lang = language === 'zh' ? 'zh-CN' : 'en';
-    document.title = language === 'zh' ? 'SecondU，另一个你' : 'SecondU — another you';
+    document.title = language === 'zh' ? 'SecondU，你的数字分身' : 'SecondU — Your digital twin';
     setLocale(language === 'zh' ? 'zh-CN' : 'en');
     try { localStorage.setItem('secondu.website.language', language); } catch { /* The page works without storage. */ }
   }, [language]);

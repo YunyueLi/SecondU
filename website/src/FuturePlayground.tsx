@@ -1,17 +1,19 @@
-import {useState} from 'react';
+import {useId,useRef,useState} from 'react';
 import {Button} from '@openai/apps-sdk-ui/components/Button';
-import {Desktop,Agent,Heart,ArrowRight} from '@openai/apps-sdk-ui/components/Icon';
+import {Brain,ChatCompose,Calendar,Groups,FolderDocumentsFinder,Terminal,ConnectApps,Mobile,Lightbulb,CompareArrows,UserHeart,BookClock,Compass} from '@openai/apps-sdk-ui/components/Icon';
 import {useSiteLanguage} from './site-language';
 import {openProductRoute,type ProductRoute} from './product-navigation';
+import RoadmapEmblem from './RoadmapEmblem';
 import './future-playground.css';
 
 export default function FuturePlayground(){
  const {t}=useSiteLanguage();
- const previews:{route:ProductRoute;title:string;body:string;action:string;Icon:typeof Desktop}[]=[
-  {route:'devices',Icon:Desktop,title:t('跨设备继续同一件事','Continue the same work across devices'),body:t('让画面、语音、个人背景与任务一起流转。从眼镜记录，到电脑整理，再在手机上确认。','Carry images, speech, personal context and tasks together. Capture with glasses, organize on a computer and confirm on a phone.'),action:t('体验跨设备原型','Explore the device prototype')},
-  {route:'agents/market',Icon:Agent,title:t('用专业分身提供服务','Offer services through a professional twin'),body:t('在明确授权和脱敏的范围内开放专业能力，探索发现、委托、交付与验收的 A2A 协作。','Share expertise within an explicitly authorized, sanitized scope. Explore A2A discovery, delegation, delivery and review.'),action:t('体验服务市场原型','Explore the marketplace prototype')},
-  {route:'agents/dating',Icon:Heart,title:t('从共同兴趣建立联系','Connect through shared interests'),body:t('让双方的 Agent 在各自愿意开放的信息中寻找联系理由。是否认识，由本人分别确认。','Let both Agents find reasons to connect within the information each person chooses to share. Each person decides whether to meet.'),action:t('体验 Agent Dating','Explore Agent Dating')},
- ];
+ const experiences:Partial<Record<number,{route:ProductRoute;action:string}>>={
+  7:{route:'devices',action:t('体验跨设备衔接','Explore cross-device continuity')},
+  8:{route:'agents/market',action:t('体验专业服务','Explore professional services')},
+  9:{route:'agents/market',action:t('查看市场流程','Explore the marketplace')},
+  10:{route:'agents/dating',action:t('体验相识流程','Explore introductions')},
+ };
     const directions = [
         { name: t("持续理解你", "Keep understanding you"), status: t("本机功能可用", "Available locally"), now: t("来源、经历、偏好、关系与近况可以查阅和修订；相关上下文参与任务。", "Review and revise sources, experiences, preferences, relationships and current circumstances. Relevant context informs tasks."), next: t("让文字、图像、语音及获准的活动进入统一认知；理解随时间更新，保留来源与适用范围。", "Bring text, images, speech and authorized activity into one understanding. Update it over time while preserving sources and scope.") },
         { name: t("工作与生活助理", "Help with work and life"), status: t("本机功能可用", "Available locally"), now: t("可保存对话和任务，配置模型，审批工具操作，并编辑、保存和重新打开成果。", "Save conversations and tasks, configure models, approve tool actions, and edit, save and reopen results."), next: t("覆盖写作、研究、申请、学习、创作、出行和家庭事务，比较长期使用中建议与结果的适合程度。", "Extend to writing, research, applications, learning, creativity, travel and household matters. Evaluate how well suggestions and outcomes fit over long-term use.") },
@@ -26,7 +28,49 @@ export default function FuturePlayground(){
         { name: t("社交、合作与恋爱", "Friendship, collaboration and dating"), status: t("开发中的概念预览", "Concept in development"), now: t("Dating 的偏好、建议、兴趣与开场白使用虚构示例，未联系真人或完成撮合。", "Dating preferences, suggestions, interest and opening messages use fictional examples. No real people have been contacted or matched."), next: t("在双方主动开放的范围内寻找联系理由，分别确认意愿后再介绍，保留拒绝、退出和撤回的选择。", "Find reasons to connect within the scope both people choose to open. Confirm each person's wishes before an introduction and preserve the ability to decline, leave or revoke.") },
         { name: t("持续更新的个人资产", "Personal knowledge that keeps improving"), status: t("开发中", "In development"), now: t("来源、认知修正、成果和版本保留在个人空间；用户可以核对与确认更新。", "Sources, corrections, results and versions remain in the personal workspace. Users can review and confirm updates."), next: t("结合新经历和更好的模型重新理解资料，比较新旧判断，积累经验证有效的个人办事方法。", "Revisit materials as new experiences and better models become available. Compare old and new judgments and accumulate approaches that have proved useful.") },
     ];
+ const stages=[
+  {title:t('从今天开始','Start today'),items:[0,1,3,4]},
+  {title:t('让理解持续生长','Deepen understanding'),items:[2,11]},
+  {title:t('跨越设备与场景','Move across devices'),items:[5,7]},
+  {title:t('连接能力与服务','Connect capabilities'),items:[6,8,9]},
+  {title:t('建立新的联系','Build new connections'),items:[10]},
+ ];
+ const directionIcons=[Brain,ChatCompose,Calendar,Groups,FolderDocumentsFinder,Terminal,ConnectApps,Mobile,Lightbulb,CompareArrows,UserHeart,BookClock];
  const [direction,setDirection]=useState(0);
+ const detail=useRef<HTMLDivElement>(null);
  const selected=directions[direction];
- return <section className="site-section future-playground" id="future"><div className="site-section-head"><span className="site-tag">Dev</span><h2>{t('个人数字分身的下一步。','What comes next for a personal digital twin.')}</h2><p>{t('跨设备、专业服务与社交正在开发。以下入口打开产品中的现有原型，不连接真实设备、交易或社交服务。','Cross-device continuity, professional services and social connections are in development. Open the existing product prototypes below; they do not connect real devices, transactions or social services.')}</p></div><div className="future-preview-links">{previews.map(({route,title,body,action,Icon})=><article key={route}><Icon/><h3>{title}</h3><p>{body}</p><Button color="secondary" variant="ghost" onClick={()=>openProductRoute(route)}>{action}<ArrowRight/></Button></article>)}</div><div className="future-roadmap"><div className="future-roadmap-heading"><h3>{t('开发路线','Product roadmap')}</h3><p>{t('各项能力的当前范围，以及计划完善的部分。','What each capability supports today and what is planned next.')}</p></div><div className="future-roadmap-body"><div className="future-direction-list" role="group" aria-label={t('十二项发展方向','Twelve development directions')}>{directions.map((item,index)=><button type="button" key={index} aria-pressed={direction===index} onClick={()=>setDirection(index)}><span>{item.name}</span><span aria-hidden="true">↗</span></button>)}</div><div className="future-direction-detail" aria-live="polite"><span className="site-tag">{selected.status}</span><h4>{selected.name}</h4><h5>{t('当前可用范围','Available today')}</h5><p>{selected.now}</p><h5>{t('后续计划','Planned next')}</h5><p>{selected.next}</p><a href="https://github.com/YunyueLi/SecondU/blob/main/docs/ROADMAP.md" target="_blank" rel="noreferrer">{t('查看完整路线','View the full roadmap')}<span aria-hidden="true">↗</span></a></div></div></div></section>;
+ const experience=experiences[direction];
+ const activeStage=stages.findIndex(stage=>stage.items.includes(direction));
+ const curveId=useId().replaceAll(':','');
+ function select(index:number){setDirection(index);if(matchMedia('(max-width:980px)').matches)detail.current?.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'nearest'});}
+ return <section className="site-section future-playground" id="future">
+  <div className="site-section-head"><span className="future-status"><Compass/>{t('发展路线','The path ahead')}</span><h2><span>{t('同一个你，','The same you, ')}</span><span>{t('走向更大的世界。','in a wider world.')}</span></h2><p>{t('从持续理解你，到跨设备协作、分享专长与建立新的联系。选择一个方向，看看今天能体验什么，接下来还要完成什么。','From understanding you to working across devices, sharing expertise and making new connections. Choose a direction to explore what works today and what comes next.')}</p></div>
+  <div className="future-roadmap">
+   <div className="future-route-landscape">
+    <svg className="future-route-curve future-route-curve-wide" viewBox="0 0 1000 240" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id={`${curveId}-wide`}><stop stopColor="var(--future-gold)"/><stop offset=".48" stopColor="var(--future-lilac)"/><stop offset="1" stopColor="var(--future-gold)"/></linearGradient></defs><path className="future-route-ribbon" d="M-25 188C35 188 53 166 100 166C196 166 204 60 300 60S404 166 500 166S604 60 700 60S804 166 900 166S973 207 1025 198"/><path className="future-route-thread" stroke={`url(#${curveId}-wide)`} d="M-25 184C35 184 53 162 100 162C196 162 204 56 300 56S404 162 500 162S604 56 700 56S804 162 900 162S973 203 1025 194"/><path className="future-route-trace" d="M-25 184C35 184 53 162 100 162C196 162 204 56 300 56S404 162 500 162S604 56 700 56S804 162 900 162S973 203 1025 194" pathLength="1000"/></svg>
+    <svg className="future-route-curve future-route-curve-tall" viewBox="0 0 100 1100" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id={`${curveId}-tall`} x1="0" y1="0" x2="0" y2="1"><stop stopColor="var(--future-gold)"/><stop offset=".5" stopColor="var(--future-lilac)"/><stop offset="1" stopColor="var(--future-gold)"/></linearGradient></defs><path className="future-route-ribbon" d="M30 -25C16 10 28 20 30 46C30 150 64 170 64 266S30 386 30 486S64 606 64 706S30 826 30 926S59 1042 50 1100"/><path className="future-route-thread" stroke={`url(#${curveId}-tall)`} d="M27 -25C13 10 25 20 27 46C27 150 61 170 61 266S27 386 27 486S61 606 61 706S27 826 27 926S56 1042 47 1100"/><path className="future-route-trace" d="M27 -25C13 10 25 20 27 46C27 150 61 170 61 266S27 386 27 486S61 606 61 706S27 826 27 926S56 1042 47 1100" pathLength="1000"/></svg>
+    <ol className="future-route" aria-label={t('产品发展路线','Product development path')}>
+     {stages.map(({title,items},stage)=><li key={stage} className={activeStage===stage?'is-active':''}>
+      <button className="future-route-stage" type="button" aria-pressed={activeStage===stage} aria-controls="future-direction-detail" onClick={()=>select(activeStage===stage?direction:items[0])}>
+       <span className="future-route-symbol"><RoadmapEmblem stage={stage}/></span>
+       <span className="future-route-number">{String(stage+1).padStart(2,'0')}</span>
+       <span className="future-route-title">{title}</span>
+      </button>
+      <div className="future-route-directions">{items.map(index=>{const ItemIcon=directionIcons[index];return <button key={index} type="button" aria-pressed={direction===index} aria-controls="future-direction-detail" onClick={()=>select(index)}><ItemIcon/><span>{directions[index].name}</span></button>;})}</div>
+     </li>)}
+    </ol>
+   </div>
+   <div ref={detail} className="future-direction-detail" id="future-direction-detail" aria-live="polite">
+    <div className={`future-detail-scene future-detail-scene-${activeStage}`} aria-hidden="true"><span className="future-scene-number">{String(activeStage+1).padStart(2,'0')}</span><i className="future-scene-orbit"/><i className="future-scene-orbit future-scene-orbit-inner"/><RoadmapEmblem stage={activeStage}/></div>
+    <div className="future-detail-content">
+     <div className="future-detail-heading"><span className="future-detail-status">{selected.status}</span><h4>{selected.name}</h4></div>
+     <div className="future-detail-panels">
+      <div className="future-detail-panel"><h5>{t('今天可以体验','Available today')}</h5><p>{selected.now}</p>{experience&&<Button className="future-detail-experience" color="secondary" variant="ghost" onClick={()=>openProductRoute(experience.route)}>{experience.action}</Button>}</div>
+      <div className="future-detail-panel future-detail-next"><h5>{t('接下来','What comes next')}</h5><p>{selected.next}</p></div>
+     </div>
+     <a className="future-full-roadmap" href="https://github.com/YunyueLi/SecondU/blob/main/docs/ROADMAP.md" target="_blank" rel="noreferrer">{t('查看完整路线','View the full roadmap')}</a>
+    </div>
+   </div>
+  </div>
+ </section>;
 }

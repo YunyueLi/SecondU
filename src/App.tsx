@@ -63,11 +63,11 @@ export function App() {
   const [composition,setComposition]=useState<TaskComposition>();
   const [narrowWindow,setNarrowWindow] = useState(()=>matchMedia('(max-width:800px)').matches);
   const sidebarSize=useSidebarWidth();
-  const [route,setRoute] = useState(routeNow); const [sidebarCollapsed,setSidebarCollapsed]=useState(()=>localStorage.getItem('hither.sidebarCollapsed')==='true'); const [sidebarOpen,setSidebarOpen]=useState(false); const [knowOpen,setKnowOpen]=useState(()=>localStorage.getItem('hither.digitalTwinOpen')==='true'); const [search,setSearch]=useState('');
+  const [route,setRoute] = useState(routeNow); const [sidebarCollapsed,setSidebarCollapsed]=useState(()=>{try{return localStorage.getItem('hither.sidebarCollapsed')==='true';}catch{return false;}}); const [sidebarOpen,setSidebarOpen]=useState(false); const [knowOpen,setKnowOpen]=useState(()=>localStorage.getItem('hither.digitalTwinOpen')==='true'); const [search,setSearch]=useState('');
   const previousWorkspace=useRef<{view:string;id?:string}>(route.view==='settings'?{view:'assistant'}:route);
   useEffect(()=>{if(route.view!=='settings')previousWorkspace.current=route;},[route]);
   const theme=appearance.theme; const setTheme=(theme:Theme)=>updateAppearance({theme});
-  const sequence=useRef(0); const mounted=useRef(true); const pendingRefresh=useRef<ReturnType<typeof createStartupRequest<Bootstrap>>|null>(null); const sidebarButton=useRef<HTMLButtonElement>(null); const mobileSidebarButton=useRef<HTMLButtonElement>(null); const searchRef=useRef<HTMLInputElement>(null);
+  const sequence=useRef(0); const mounted=useRef(true); const pendingRefresh=useRef<ReturnType<typeof createStartupRequest<Bootstrap>>|null>(null); const sidebarButton=useRef<HTMLButtonElement>(null); const shellSidebarButton=useRef<HTMLButtonElement>(null); const mobileSidebarButton=useRef<HTMLButtonElement>(null); const searchRef=useRef<HTMLInputElement>(null);
   const refresh=useCallback(async()=>{
     const seq=++sequence.current;pendingRefresh.current?.abort();
     const request=createStartupRequest(signal=>api<Bootstrap>('/bootstrap',{signal}));pendingRefresh.current=request;
@@ -88,7 +88,8 @@ export function App() {
     schedule();return()=>{disposed=true;clearTimeout(timer);};
   },[refresh,!!data,data?.tasks.some(task=>task.status==='running'||task.status==='queued')]);
   useEffect(()=>{const update=()=>{setRoute(routeNow());setSidebarOpen(false);};addEventListener('hashchange',update);return()=>removeEventListener('hashchange',update);},[]);
-  useEffect(()=>{const media=matchMedia('(max-width:800px)');const update=()=>setNarrowWindow(media.matches);media.addEventListener('change',update);return()=>media.removeEventListener('change',update);},[]);
+  useEffect(()=>{const media=matchMedia('(max-width:800px)');const update=()=>{setNarrowWindow(media.matches);if(!media.matches)setSidebarOpen(false);};media.addEventListener('change',update);return()=>media.removeEventListener('change',update);},[]);
+  useEffect(()=>{try{localStorage.setItem('hither.sidebarCollapsed',String(sidebarCollapsed));}catch{/* The current window can still toggle navigation when storage is unavailable. */}},[sidebarCollapsed]);
   useEffect(()=>{document.title=route.view==='assistant'?brand.name:`${viewTitles[route.view]} — ${brand.name}`;},[route.view,locale]);
   useEffect(()=>{const media=matchMedia('(prefers-color-scheme: dark)');const apply=()=>{document.documentElement.dataset.theme=theme==='system'?(media.matches?'dark':'light'):theme;};apply();localStorage.setItem('hither.theme',theme);media.addEventListener('change',apply);return()=>media.removeEventListener('change',apply);},[theme]);
   useEffect(()=>{const shortcut=(event:KeyboardEvent)=>{if((event.metaKey||event.ctrlKey)&&event.key.toLowerCase()==='k'){event.preventDefault();void prepareTask('');}if((event.metaKey||event.ctrlKey)&&event.shiftKey&&event.key.toLowerCase()==='f'){event.preventDefault();setSidebarCollapsed(false);setSidebarOpen(narrowWindow);requestAnimationFrame(()=>searchRef.current?.focus());}if(event.key==='Escape'&&sidebarOpen){setSidebarOpen(false);mobileSidebarButton.current?.focus();}};addEventListener('keydown',shortcut);return()=>removeEventListener('keydown',shortcut);},[sidebarOpen,narrowWindow]);
@@ -111,19 +112,23 @@ export function App() {
   const workspaceRoute=route.view==='settings'?previousWorkspace.current:route;
   const currentTask=data.tasks.find(task=>task.id===workspaceRoute.id);const tasks=[...data.tasks].filter(task=>`${task.title} ${task.prompt}`.toLowerCase().includes(search.toLowerCase())).sort((a,b)=>b.updatedAt.localeCompare(a.updatedAt));
   const isCognition=cognitionNav.some(item=>item.id===workspaceRoute.view);
-  const rail=sidebarCollapsed&&!narrowWindow;
-  const toggleSidebar=()=>{if(narrowWindow)setSidebarOpen(!sidebarOpen);else setSidebarCollapsed(current=>{localStorage.setItem('hither.sidebarCollapsed',String(!current));return !current;});};
-  const navLink=(id:string,label:string,Icon:typeof Chat)=><ButtonLink as="a" key={id} href={`#${id}`} title={rail?label:undefined} aria-label={label} color="secondary" variant="ghost" size="lg" pill={false} className="nav-item" aria-current={workspaceRoute.view===id&&!(id==='agents'&&workspaceRoute.id)?'page':undefined}><Icon /><span>{label}</span></ButtonLink>;
   const desktopMode=desktopFrame.native;
+  const collapsed=sidebarCollapsed&&!narrowWindow;
+  const sidebarHidden=desktopMode&&collapsed;
+  const rail=!desktopMode&&collapsed;
+  const toggleSidebar=()=>{if(narrowWindow){setSidebarOpen(!sidebarOpen);requestAnimationFrame(()=>{(sidebarOpen?mobileSidebarButton:sidebarButton).current?.focus({preventScroll:true});});return;}setSidebarCollapsed(current=>!current);requestAnimationFrame(()=>{(desktopMode?shellSidebarButton:sidebarButton).current?.focus({preventScroll:true});});};
+  const navLink=(id:string,label:string,Icon:typeof Chat)=><ButtonLink as="a" key={id} href={`#${id}`} title={rail?label:undefined} aria-label={label} color="secondary" variant="ghost" size="lg" pill={false} className="nav-item" aria-current={workspaceRoute.view===id&&!(id==='agents'&&workspaceRoute.id)?'page':undefined}><Icon /><span>{label}</span></ButtonLink>;
   const chatView=workspaceRoute.view==='assistant'||workspaceRoute.view==='task';
-  return <UserAvatarContext.Provider value={data.profile.avatarImage}><div className={`app-shell ${desktopMode?'desktop-mode':''} ${rail?'sidebar-collapsed':''} view-${workspaceRoute.view}`} data-window-fullscreen={desktopMode?desktopFrame.fullscreen:undefined} style={narrowWindow?undefined:sidebarSize.style}>
+  return <UserAvatarContext.Provider value={data.profile.avatarImage}><div className={`app-shell ${desktopMode?'desktop-mode':''} ${collapsed?'sidebar-collapsed':''} view-${workspaceRoute.view}`} data-window-fullscreen={desktopMode?desktopFrame.fullscreen:undefined} style={narrowWindow?undefined:sidebarSize.style}>
     <a className="skip-link" href="#main-workspace" onClick={event=>{event.preventDefault();document.getElementById('main-workspace')?.focus();}}>{t("跳到主内容", "Skip to content")}</a>
-    {sidebarOpen&&<button className="sidebar-backdrop" aria-label={t("关闭导航", "Close sidebar")} onClick={()=>setSidebarOpen(false)} />}
-    <aside className={`app-sidebar ${sidebarOpen?'is-open':''}`} aria-label={t("主导航", "Main navigation")} inert={narrowWindow&&!sidebarOpen}>
+    {desktopMode&&!narrowWindow&&<div className="shell-sidebar-drag" aria-hidden="true" />}
+    {!narrowWindow&&desktopMode&&<Button ref={shellSidebarButton} color="secondary" variant="ghost" uniform className="shell-sidebar-toggle" aria-controls="main-navigation-sidebar" aria-label={sidebarHidden?t('展开导航','Open sidebar'):t('收起导航','Close sidebar')} title={sidebarHidden?t('展开导航','Open sidebar'):t('收起导航','Close sidebar')} aria-expanded={!sidebarHidden} onClick={toggleSidebar}><SidebarPanelIcon/></Button>}
+    {sidebarOpen&&<button className="sidebar-backdrop" aria-label={t("关闭导航", "Close sidebar")} onClick={toggleSidebar} />}
+    <aside id="main-navigation-sidebar" className={`app-sidebar ${sidebarOpen?'is-open':''}`} aria-label={t("主导航", "Main navigation")} inert={sidebarHidden||(narrowWindow&&!sidebarOpen)}>
       {desktopMode&&<div className="desktop-sidebar-drag" aria-hidden="true" />}
       <div className="sidebar-brand">
         {!rail&&<a href="#assistant" className="brand"><span className="brand-symbol"><HitherMark /></span><HitherWordmark/></a>}
-        <Button ref={sidebarButton} color="secondary" variant="ghost" uniform className="sidebar-toggle" aria-label={rail?t("展开导航", "Open sidebar"):t("收起导航", "Close sidebar")} title={rail?t("展开导航", "Open sidebar"):t("收起导航", "Close sidebar")} aria-expanded={!rail} onClick={toggleSidebar}>{rail?<span className="rail-brand-switch"><span className="rail-brand-mark"><HitherMark/></span><span className="rail-panel-icon"><SidebarPanelIcon/></span></span>:<SidebarPanelIcon/>}</Button>
+        {(!desktopMode||narrowWindow)&&<Button ref={sidebarButton} color="secondary" variant="ghost" uniform className="sidebar-toggle" aria-controls="main-navigation-sidebar" aria-label={rail?t("展开导航", "Open sidebar"):t("收起导航", "Close sidebar")} title={rail?t("展开导航", "Open sidebar"):t("收起导航", "Close sidebar")} aria-expanded={!rail} onClick={toggleSidebar}>{rail?<span className="rail-brand-switch"><span className="rail-brand-mark"><HitherMark/></span><span className="rail-panel-icon"><SidebarPanelIcon/></span></span>:<SidebarPanelIcon/>}</Button>}
       </div>
 
       <div className="sidebar-scroll-body">
@@ -150,7 +155,7 @@ export function App() {
         </Menu.Content></Menu>
       </div>
     </aside>
-    {!rail&&!narrowWindow&&<SidebarResizeHandle width={sidebarSize.width} onChange={sidebarSize.setWidth} />}
+    {!collapsed&&!narrowWindow&&<SidebarResizeHandle width={sidebarSize.width} onChange={sidebarSize.setWidth} />}
     <div className="app-workspace" inert={narrowWindow&&sidebarOpen}>
       {narrowWindow&&!chatView&&!(workspaceRoute.view==='agents'&&workspaceRoute.id&&!['network','market','dating','discover'].includes(workspaceRoute.id))&&<header className="app-topbar"><div className="row">{narrowWindow&&<Button ref={mobileSidebarButton} color="secondary" variant="ghost" uniform aria-label={t("展开导航", "Open sidebar")} onClick={toggleSidebar}><SidebarPanelIcon /></Button>}<span className="topbar-title" title={workspaceRoute.view==='task'?currentTask?.title:undefined}>{workspaceRoute.view==='task'?currentTask?.title||t("任务", "Tasks"):workspaceRoute.view==='assistant'?'SecondU':viewTitles[workspaceRoute.view]}</span></div></header>}
       {error&&<div className="connection-error"><Alert color="danger" variant="soft" title={t("与本机的连接中断", "Connection lost")} description={t("正在显示上一次载入的内容。恢复连接后会自动更新。", "Showing the last saved view. It will refresh when the connection returns.")} actions={<Button color="secondary" variant="outline" size="sm" loading={refreshing} onClick={manualRefresh}><ArrowRotateCw />{t("重试", "Retry")}</Button>} /></div>}

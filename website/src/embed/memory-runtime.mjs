@@ -1,6 +1,7 @@
 import { personalContextFor, normalizeContextRequest } from '../../../server/personal-context.mjs';
 import { taskTrace } from '../../../server/runtime-observation.mjs';
 import { saveRoomReaction } from '../../../server/room-reactions.mjs';
+import { previewMemoryImport, reviewMemoryImport, digitalTwinPackage, digitalTwinMarkdown } from '../../../server/memory-import.mjs';
 import { artifactFormat, embeddedFile } from '../../../src/artifacts/format.mjs';
 
 const clone = value => structuredClone(value);
@@ -29,17 +30,25 @@ export class ExampleRuntime {
     for (const route of ['agent-resources', 'im-connections', 'im-outbox']) this.extra.set(aliases[route], clone(this.example.responses[`/${route}`] || []));
     this.appearance = clone(this.example.responses['/settings/appearance']);
   }
-  list(collection) { return this.data[collection] || this.extra.get(collection) || []; }
+  list(collection) { return [...(this.data[collection] || this.extra.get(collection) || [])]; }
   get(collection, key) { return this.list(collection).find(item => item.id === key); }
   require(collection, key) { return this.get(collection, key) || fail('记录不存在。', 404, 'not_found'); }
   put(collection, value) {
     const rows = this.list(collection), at = rows.findIndex(item => item.id === value.id);
     if (at >= 0) rows[at] = value; else rows.push(value);
-    if (!Array.isArray(this.data[collection])) this.extra.set(collection, rows);
+    if (Array.isArray(this.data[collection])) this.data[collection] = rows; else this.extra.set(collection, rows);
     return value;
   }
+  delete(collection, key) {
+    const rows = this.list(collection).filter(value => value.id !== key);
+    if (Array.isArray(this.data[collection])) this.data[collection] = rows; else this.extra.set(collection, rows);
+  }
   meta(key) { return this.data[key]; }
-  transaction(fn) { return fn(); }
+  transaction(fn) {
+    const data = clone(this.data), extra = clone(this.extra);
+    try { return fn(); }
+    catch (error) { this.data = data; this.example.bootstrap = data; this.extra = extra; throw error; }
+  }
   refs(value, collection) {
     if (!Array.isArray(value) || value.length > 200 || value.some(key => typeof key !== 'string')) fail('关联记录无效。');
     const keys = [...new Set(value)]; keys.forEach(key => this.require(collection, key)); return keys;
@@ -55,6 +64,10 @@ export class ExampleRuntime {
     const [resource, key, action] = url.pathname.split('/').filter(Boolean).map(decodeURIComponent);
     const collection = aliases[resource] || resource;
     if (method === 'GET') {
+      if (resource === 'digital-twin' && key === 'export') {
+        const data = digitalTwinPackage(this);
+        return url.searchParams.get('format') === 'markdown' ? digitalTwinMarkdown(data) : data;
+      }
       if (resource === 'bootstrap') { this.refreshActivity(); return clone(this.data); }
       if (resource === 'daily-activity') { this.refreshActivity(); return clone(this.data.dailyActivities); }
       if (resource === 'model-connections' && !key) return clone({ connections: this.data.modelConnections, defaultConnectionId: this.data.defaultConnectionId });
@@ -85,7 +98,11 @@ export class ExampleRuntime {
       if (!action && Array.isArray(this.data[collection])) return clone(key ? this.require(collection, key) : this.list(collection));
       fail('此示例记录不存在。', 404, 'not_found');
     }
-    if (body.mode === 'live' || resource === 'projects' && key === 'choose-directory' || ['computers', 'delegations', 'model-catalogue', 'imports', 'attachments', 'avatars'].includes(resource) || ['run', 'message', 'messages', 'approval', 'test', 'probe', 'send', 'prepare', 'oauth'].includes(action)) unavailable();
+    if (resource === 'imports' && key === 'memory' && method === 'POST') {
+      if (action === 'preview') return clone(previewMemoryImport(this, body));
+      if (action === 'review') return clone(reviewMemoryImport(this, body));
+    }
+    if (body.mode === 'live' || resource === 'projects' && key === 'choose-directory' || ['computers', 'delegations', 'model-catalogue', 'imports', 'attachments', 'avatars', 'im-setup'].includes(resource) || ['run', 'message', 'messages', 'approval', 'test', 'probe', 'send', 'prepare', 'oauth'].includes(action)) unavailable();
     if (resource === 'spaces') unavailable();
     if (resource === 'settings' && key === 'appearance' && method === 'PUT') { this.appearance = { ...this.appearance, ...clone(body) }; return clone(this.appearance); }
     if (resource === 'settings' && key === 'execution' && method === 'PUT') {

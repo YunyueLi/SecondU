@@ -1,13 +1,16 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { Server } from 'node:http';
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
 import { exportCanonicalExamples } from '../website/export-examples.mjs';
 import { ExampleRuntime } from '../website/src/embed/memory-runtime.mjs';
 import { scrollConversationEnd } from '../website/src/embed/scroll.mjs';
 import { replaceExampleRoute } from '../website/src/embed/navigation.mjs';
 import { reconcileAppearanceLoad } from '../src/appearanceState.ts';
 import { defaultAppearance } from '../server/local-appearance.mjs';
+import { createHash } from 'node:crypto';
+import { portableMemoryDomain } from '../website/browser-memory.mjs';
+import { createDecisionExample } from '../server/demo-decision.mjs';
 
 let examples;
 test.before(async () => {
@@ -25,14 +28,28 @@ test('website exports the complete desktop canonical spaces without user state o
     const d = example.bootstrap;
     assert.equal(d.executionPolicy, 'showcase'); assert.equal(d.profile.demo, true);
     assert.ok(d.people.length >= 22); assert.ok(d.conversations.length >= 30); assert.ok(d.agentRooms.length >= 9);
-    assert.equal(d.tasks.length, language === 'zh' ? 15 : 17);
-    assert.equal(d.artifacts.length, language === 'zh' ? 15 : 6);
+    assert.equal(d.tasks.length, language === 'zh' ? 16 : 18);
+    assert.equal(d.artifacts.length, language === 'zh' ? 16 : 7);
     assert.ok(d.artifacts.some(artifact => artifact.versions.length > 1));
     assert.ok(Object.keys(example.responses).some(route => route.startsWith('/development/documents?')));
     assert.ok(d.projects.every(project => project.path.startsWith(`/examples/${example.space}/`)));
     assert.ok(d.modelConnections.every(connection => !connection.hasKey));
     assert.equal(d.computer.status, 'offline'); assert.equal(d.computer.workspace, '');
     assert.doesNotMatch(JSON.stringify(example), /secondu-public-examples-|\/Users\/|\/private\/var\/|website-weekend|website-planner/);
+  }
+});
+
+test('career-discussion routes use the exact canonical authored tasks and editable outlines', () => {
+  for (const [language, example] of Object.entries(examples)) {
+    const { task, artifact } = createDecisionExample(language);
+    assert.deepEqual(example.bootstrap.tasks.find(item => item.id === task.id), task);
+    assert.deepEqual(example.bootstrap.artifacts.find(item => item.id === artifact.id), artifact);
+    assert.ok(example.responses[`/tasks/${task.id}/context`]);
+    assert.equal(example.responses[`/tasks/${task.id}/trace`].taskId, task.id);
+    const runtime = new ExampleRuntime(example), facts = structuredClone(runtime.data.facts);
+    const edited = runtime.response(`/artifacts/${artifact.id}`, 'PUT', { baseVersion: 1, content: artifact.content + '\nA question to discuss next.\n' });
+    assert.equal(edited.version, 2);assert.equal(edited.versions[0].content, artifact.content);
+    assert.deepEqual(runtime.data.facts, facts);
   }
 });
 
@@ -47,6 +64,74 @@ test('canonical pages read records, project files and current context through th
     const outsider = runtime.response('/bootstrap'); outsider.profile.name = 'Changed clone';
     assert.notEqual(runtime.response('/bootstrap').profile.name, outsider.profile.name);
   }
+});
+
+test('website messaging catalogue is the canonical showcase response and cannot install, authorize or start a runtime', () => {
+  for (const example of Object.values(examples)) {
+    const runtime = new ExampleRuntime(example), before = runtime.response('/bootstrap');
+    const status = runtime.response('/im-setup');
+    assert.deepEqual(status, example.responses['/im-setup']);
+    assert.equal(status.showcase, true);
+    assert.equal(status.managed.installed, false);
+    assert.equal(status.managed.gateway, 'stopped');
+    assert.equal(status.existing, null);
+    assert.ok(['slack', 'discord', 'telegram', 'feishu', 'qqbot', 'wecom'].every(channel => status.supported.some(item => item.channel === channel)));
+    for (const action of ['detect', 'select', 'install', 'channels', 'configure', 'login', 'probe', 'gateway', 'connection']) assert.throws(() => runtime.response(`/im-setup/${action}`, 'POST', { channel: 'slack', confirmed: true }), error => error.status === 403 && error.code === 'showcase_read_only');
+    assert.throws(() => runtime.response('/im-setup/operations/example-operation', 'DELETE'), error => error.status === 403);
+    assert.deepEqual(runtime.response('/bootstrap'), before);
+  }
+});
+
+test('browser SHA matches desktop import and export hashes', { skip: !existsSync(new URL('../website/node_modules/@noble/hashes/package.json', import.meta.url)) && 'Install website dependencies to validate browser hashing' }, async () => {
+  const { createHash: browserHash } = await import('../website/src/embed/runtime-hash.mjs');
+  for (const value of ['', '中文与 emoji 📷', 'a'.repeat(256 * 1024)]) assert.equal(browserHash('sha256').update(value).digest('hex'), createHash('sha256').update(value).digest('hex'));
+});
+
+test('isolated browser fact validation preserves canonical revisions', async () => {
+  const module = portableMemoryDomain(readFileSync(new URL('../server/domain.mjs', import.meta.url), 'utf8'), new URL('../website/src/embed/runtime-store.mjs', import.meta.url).href);
+  const { createEntity } = await import(`data:text/javascript;base64,${Buffer.from(module).toString('base64')}`);
+  const runtime = new ExampleRuntime(examples.zh), source = runtime.data.sources[0];
+  const candidate = createEntity(runtime, 'facts', { statement: 'Synthetic reviewed preference', sourceIds: [source.id] });
+  const confirmed = createEntity(runtime, 'facts', { baseVersion: 1, statement: 'Synthetic revised preference', status: 'confirmed' }, candidate);
+  assert.equal(confirmed.version, 2); assert.equal(confirmed.history[0].status, 'candidate'); assert.equal(confirmed.history[1].status, 'confirmed');
+  assert.throws(() => createEntity(runtime, 'tasks', {}), /only create facts/);
+  assert.throws(() => createEntity(runtime, 'facts', { baseVersion: 1, statement: 'Stale' }, confirmed), error => error.code === 'version_conflict');
+});
+
+test('website memory review saves edited selections only, exports current evidence, and never executes a task', () => {
+  const fetch = globalThis.fetch;
+  globalThis.fetch = () => { throw new Error('Memory import attempted network access'); };
+  try {
+    const runtime = new ExampleRuntime(examples.zh), original = structuredClone(runtime.data);
+    const layers = ['facts', 'preferences', 'goals', 'constraints', 'values', 'capabilities', 'decisions', 'notes'];
+    const entries = layers.map(layer => ({ layer, statement: `Synthetic memory ${layer}` }));
+    const input = { filename: 'synthetic-memory.json', content: JSON.stringify({ schema: 'secondu.memory', schemaVersion: 1, entries }) };
+    const preview = runtime.response('/imports/memory/preview', 'POST', input);
+    assert.deepEqual(runtime.data, original);
+    const review = { previewId: preview.previewId, confirmed: true, entries: preview.candidates.slice(0, 7).map(({ id, statement, layer }) => ({ id, statement: statement + ' reviewed', layer })) };
+    const result = runtime.response('/imports/memory/review', 'POST', review);
+    assert.equal(result.added, 7); assert.ok(result.facts.every(fact => fact.status === 'confirmed' && fact.version === 2));
+    assert.deepEqual(runtime.data.tasks, original.tasks);
+    const again = runtime.response('/imports/memory/review', 'POST', review);
+    assert.equal(again.added, 0); assert.equal(again.alreadyImported, true);
+    const exported = runtime.response('/digital-twin/export?format=json');
+    assert.equal(exported.schema, 'secondu.digital-twin');
+    const imported = exported.entries.filter(item => result.factIds.includes(item.id));
+    assert.deepEqual(new Set(imported.map(item => item.layer)), new Set(layers.slice(0, 7)));
+    assert.ok(imported.every(item => item.statement.endsWith(' reviewed') && item.evidence[0].pointer));
+    assert.ok(!exported.entries.some(item => item.id === preview.candidates[7].id));
+    assert.ok(!JSON.stringify(exported).includes(input.content));
+    assert.match(runtime.response('/digital-twin/export?format=markdown'), /Synthetic memory preferences reviewed/);
+    const draft = runtime.response('/tasks', 'POST', { prompt: 'Use the reviewed photography preferences', contextFactIds: result.factIds, digitalTwinEnabled: true });
+    assert.equal(draft.status, 'queued'); assert.equal(draft.messages.length, 1); assert.equal(draft.events.length, 0);
+    assert.throws(() => runtime.response(`/tasks/${draft.id}/run`, 'POST', {}), error => error.code === 'showcase_read_only');
+    assert.equal(new ExampleRuntime(examples.zh).data.facts.length, original.facts.length);
+    const fresh = runtime.response('/imports/memory/preview', 'POST', { filename: 'rollback.md', content: '# Preferences\n- Synthetic rollback only.' });
+    const before = structuredClone(runtime.data), put = runtime.put;
+    runtime.put = function (collection, value) { if (collection === 'memoryImportReviews') throw new Error('Synthetic late failure'); return put.call(this, collection, value); };
+    assert.throws(() => runtime.response('/imports/memory/review', 'POST', { previewId: fresh.previewId, confirmed: true, entries: fresh.candidates.map(({ id, statement, layer }) => ({ id, statement, layer })) }), /Synthetic late failure/);
+    assert.deepEqual(runtime.data, before);
+  } finally { globalThis.fetch = fetch; }
 });
 
 test('initial conversation scrolling stays inside the product viewport', () => {

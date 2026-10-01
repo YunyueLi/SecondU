@@ -1,7 +1,9 @@
 import * as T from 'three';
+import {addSpatialPigment} from './hero-pigment';
 
-export type HeroParticleScene={setActive:(index:number)=>void;setPaused:(paused:boolean)=>void;replay:()=>void;dispose:()=>void};
+export type HeroParticleScene={dispose:()=>void};
 type Options={onReady:()=>void;onError:()=>void;signal:AbortSignal};
+let entryPresented=false;
 const smooth=(from:number,to:number,value:number)=>{const x=Math.max(0,Math.min(1,(value-from)/(to-from)));return x*x*(3-2*x);};
 
 /** Photographic identities stay attached to the source artwork through every flow.
@@ -27,14 +29,14 @@ export async function createHeroParticles(host:HTMLElement,url:string,{onReady,o
  }
  sample.width=sample.height=1;
  const renderer=new T.WebGLRenderer({alpha:true,antialias:false,powerPreference:'low-power',premultipliedAlpha:true});
- renderer.setPixelRatio(Math.min(devicePixelRatio,mobile?1.4:1.7));renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.NoToneMapping;renderer.setClearColor(0,0);
+ renderer.setPixelRatio(Math.min(devicePixelRatio,mobile?1.35:1.5));renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.NoToneMapping;renderer.setClearColor(0,0);
  let shaderFailed=false;renderer.debug.onShaderError=(gl,program,vertex,fragment)=>{shaderFailed=true;console.warn('SecondU portrait shader unavailable; using the original artwork.',gl.getProgramInfoLog(program),gl.getShaderInfoLog(vertex),gl.getShaderInfoLog(fragment));};
  renderer.domElement.setAttribute('aria-hidden','true');renderer.domElement.className='hero-particle-canvas';host.append(renderer.domElement);
- const scene=new T.Scene(),camera=new T.PerspectiveCamera(34,1,.1,40);camera.position.z=9.3;
+ const scene=new T.Scene(),camera=new T.PerspectiveCamera(34,1,.1,40);camera.position.z=8.7;
  const group=new T.Group();scene.add(group);
  const texture=new T.Texture(image);texture.colorSpace=T.SRGBColorSpace;texture.needsUpdate=true;texture.minFilter=T.LinearFilter;texture.magFilter=T.LinearFilter;texture.generateMipmaps=false;
  const geometry=new T.BufferGeometry();geometry.setAttribute('position',new T.Float32BufferAttribute(positions,3));geometry.setAttribute('uv',new T.Float32BufferAttribute(uvs,2));geometry.setAttribute('aSeed',new T.Float32BufferAttribute(seeds,3));geometry.setAttribute('aOpacity',new T.Float32BufferAttribute(opacities,1));
- const uniforms={uPhoto:{value:texture},uTime:{value:0},uRelease:{value:1},uMode:{value:0},uPoint:{value:2},uPointer:{value:new T.Vector2(-20,-20)},uPresence:{value:0},uThemeDark:{value:document.documentElement.dataset.theme==='dark'?1:0},uEcho:{value:0}};
+ const uniforms={uPhoto:{value:texture},uTime:{value:0},uRelease:{value:.018},uMode:{value:0},uPoint:{value:2},uPointer:{value:new T.Vector2(-20,-20)},uPresence:{value:0},uThemeDark:{value:document.documentElement.dataset.theme==='dark'?1:0},uEcho:{value:0}};
  const material=new T.ShaderMaterial({uniforms,transparent:true,depthWrite:false,depthTest:false,
   vertexShader:`attribute vec3 aSeed;attribute float aOpacity;uniform float uTime,uRelease,uMode,uPoint,uPresence,uThemeDark,uEcho;uniform vec2 uPointer;varying vec2 vUv;varying float vAlpha,vSoft,vLight;
    void main(){
@@ -59,6 +61,7 @@ export async function createHeroParticles(host:HTMLElement,url:string,{onReady,o
     // A slow wave travels along the silhouette while its painted core stays legible.
     float wave=pow(.5+.5*sin(position.y*1.4-uTime*.5),8.);
     grain+=peripheral*wave*.08;
+    grain*=mix(1.,.38,uThemeDark);
     float blend=clamp(release*(.75+aSeed.z*.25)+grain,0.,1.);
     vec3 p=mix(position,flow,blend);
     vec2 away=p.xy-uPointer;
@@ -76,19 +79,25 @@ export async function createHeroParticles(host:HTMLElement,url:string,{onReady,o
     vLight=wave*peripheral*.12;
     // Keep the sampled painting's colours in both themes. Only the fine,
     // released dust gets a little more opacity against the dark page.
-    float contrast=mix(1.,1.22,uThemeDark*release);
+    float contrast=mix(1.,mix(.50,.78,release),uThemeDark);
     vAlpha=min(.98,aOpacity*mix(.75,.57,release)*mix(1.,.28,nearDust)*contrast);
-    vAlpha*=mix(1.,(.13+.07*wave)*step(.48,aSeed.x),uEcho);
+    vAlpha*=mix(1.,(.13+.07*wave)*step(.48,aSeed.x)*mix(1.,.14,uThemeDark),uEcho);
+    vAlpha*=mix(1.,pow(aOpacity,.40),uThemeDark);
    }`,
-  fragmentShader:`uniform sampler2D uPhoto;varying vec2 vUv;varying float vAlpha,vSoft,vLight;
-   void main(){float d=length(gl_PointCoord-.5)*2.;if(d>1.)discard;vec4 pixel=texture2D(uPhoto,vUv);float edge=mix(1.-smoothstep(.72,1.,d),exp(-d*d*4.),vSoft);gl_FragColor=vec4(mix(pixel.rgb,vec3(.92,.88,.98),vLight),edge*vAlpha);#include <colorspace_fragment>
+  fragmentShader:`uniform sampler2D uPhoto;uniform float uThemeDark;varying vec2 vUv;varying float vAlpha,vSoft,vLight;
+   void main(){float d=length(gl_PointCoord-.5)*2.;if(d>1.)discard;vec4 pixel=texture2D(uPhoto,vUv);float edge=mix(1.-smoothstep(.72,1.,d),exp(-d*d*4.),vSoft);float purple=smoothstep(-.015,.055,pixel.b-pixel.r);float luminance=dot(pixel.rgb,vec3(.2126,.7152,.0722));vec3 pigment=mix(vec3(luminance),pixel.rgb,1.16)*mix(vec3(.80,.75,.67),vec3(.76,.68,.86),purple);gl_FragColor=vec4(mix(pixel.rgb,pigment,uThemeDark),edge*vAlpha);#include <colorspace_fragment>
    }`.replace(';#include',';\n#include'),
  });
  const points=new T.Points(geometry,material);points.frustumCulled=false;points.renderOrder=2;group.add(points);
  // A translucent second impression uses the very same painted UVs. It follows
  // the portrait at a different depth rather than introducing a new emblem.
  const echoMaterial=new T.ShaderMaterial({uniforms:{...uniforms,uEcho:{value:1}},vertexShader:material.vertexShader,fragmentShader:material.fragmentShader,transparent:true,depthWrite:false,depthTest:false});
- const echo=new T.Points(geometry,echoMaterial);echo.frustumCulled=false;echo.renderOrder=0;group.add(echo);
+ // The shader makes seeds below .48 fully transparent. Omit those vertices
+ // from the echo draw while preserving every visible pigment identity.
+ const echoGeometry=geometry.clone(),echoIndices:number[]=[];
+ for(let i=0;i<opacities.length;i++)if(seeds[i*3]>=.48)echoIndices.push(i);
+ echoGeometry.setIndex(echoIndices);
+ const echo=new T.Points(echoGeometry,echoMaterial);echo.frustumCulled=false;echo.renderOrder=0;group.add(echo);
  // Fine streams connect the two impressions. Each strand advances continuously
  // through depth, with a quiet palette sampled from the approved artwork.
  const streamSeeds:number[]=[];for(let i=0;i<(mobile?800:1800);i++)streamSeeds.push(random(),random(),random());
@@ -103,7 +112,7 @@ export async function createHeroParticles(host:HTMLElement,url:string,{onReady,o
     vec4 mv=modelViewMatrix*vec4(p,1.);gl_Position=projectionMatrix*mv;
     gl_PointSize=clamp(uPoint*(9.3/-mv.z)*mix(.55,1.3,position.z),.7,4.);
     float envelope=pow(sin(phase*3.14159265),.55);
-    vAlpha=envelope*(.10+.20*position.z)*mix(.7,1.15,uThemeDark)*(1.-uRelease*.3);
+    vAlpha=envelope*(.10+.20*position.z)*mix(.7,.27,uThemeDark)*(1.-uRelease*.3);
     vWarm=position.y;
    }`,
   fragmentShader:`uniform float uThemeDark;varying float vAlpha,vWarm;
@@ -112,39 +121,41 @@ export async function createHeroParticles(host:HTMLElement,url:string,{onReady,o
  // A small image contribution at rest preserves the original raised oil paint.
  // Its alpha recedes with the same release value as the sampled particle field.
  const plateGeometry=new T.PlaneGeometry(portraitWidth,portraitHeight);
- const plateUniforms={uPhoto:{value:texture},uOpacity:{value:0},uCrop:{value:new T.Vector4(left/sampleWidth(),1-(bottom+1)/sampleHeight(),sourceWidth/sampleWidth(),sourceHeight/sampleHeight())}};
+ const plateUniforms={uPhoto:{value:texture},uThemeDark:uniforms.uThemeDark,uOpacity:{value:0},uCrop:{value:new T.Vector4(left/sampleWidth(),1-(bottom+1)/sampleHeight(),sourceWidth/sampleWidth(),sourceHeight/sampleHeight())}};
  function sampleWidth(){return mobile?180:300;}function sampleHeight(){return Math.round(sampleWidth()*image.naturalHeight/image.naturalWidth);}
  const plateMaterial=new T.ShaderMaterial({uniforms:plateUniforms,transparent:true,depthWrite:false,depthTest:false,
   vertexShader:'varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
-  fragmentShader:`uniform sampler2D uPhoto;uniform float uOpacity;uniform vec4 uCrop;varying vec2 vUv;void main(){vec4 color=texture2D(uPhoto,uCrop.xy+vUv*uCrop.zw);gl_FragColor=vec4(color.rgb,color.a*uOpacity);\n#include <colorspace_fragment>\n}`});
+  fragmentShader:`uniform sampler2D uPhoto;uniform float uOpacity,uThemeDark;uniform vec4 uCrop;varying vec2 vUv;void main(){vec4 color=texture2D(uPhoto,uCrop.xy+vUv*uCrop.zw);float purple=smoothstep(-.015,.055,color.b-color.r);float luminance=dot(color.rgb,vec3(.2126,.7152,.0722));vec3 pigment=mix(vec3(luminance),color.rgb,1.16)*mix(vec3(.80,.75,.67),vec3(.76,.68,.86),purple);gl_FragColor=vec4(mix(color.rgb,pigment,uThemeDark),color.a*uOpacity);\n#include <colorspace_fragment>\n}`});
  const plate=new T.Mesh(plateGeometry,plateMaterial);plate.position.z=-.03;plate.renderOrder=1;group.add(plate);
- let raf=0,disposed=false,visible=true,paused=false,clock=0,last=0,active=0,mode=0,pulseStart=0,initial=true,ready=false,pointerInside=false;
+ let raf=0,disposed=false,visible=true,paused=false,clock=0,last=0,active=0,mode=0,ready=false,pointerInside=false;
+ const assembleOnEnter=!entryPresented&&host.dataset.entryPresented!=='true';entryPresented=true;host.dataset.entryPresented='true';host.dataset.formation=assembleOnEnter?'assembling':'settled';let entryStart=0,entryElapsed=0;
  const pointer=new T.Vector2(-20,-20),pointerAim=pointer.clone();let tiltX=0,tiltY=0;
+ const layers=addSpatialPigment(scene,mobile,camera);
+ // Leave a display frame between artwork submissions on a 60 Hz display.
  const fps=mobile?30:45;
  function request(){if(!disposed&&!raf&&visible&&!document.hidden)raf=requestAnimationFrame(frame);}
  function resize(){const box=host.getBoundingClientRect();if(!box.width||!box.height)return;renderer.setSize(box.width,box.height,false);camera.aspect=box.width/box.height;camera.updateProjectionMatrix();uniforms.uPoint.value=Math.max(1.45,box.height*renderer.getPixelRatio()/sourceHeight*1.15);request();}
  function frame(now:number){raf=0;if(disposed||!visible||document.hidden)return;
   if(!paused&&last&&now-last<1000/fps){request();return;}
   const dt=Math.min((now-last)/1000||1/fps,.05);last=now;
+  if(!entryStart)entryStart=now;entryElapsed=(now-entryStart)/1000;
   if(!paused){clock+=dt;mode+=(active-mode)*(1-Math.exp(-dt*3));pointer.lerp(pointerAim,1-Math.exp(-dt*8));
-   const elapsed=clock-pulseStart;
-   const intro=initial?1-smooth(.25,3.15,elapsed):Math.sin(Math.min(1,elapsed/3.6)*Math.PI)*.85;
-   if(initial&&elapsed>=3.6)initial=false;
-   const breathing=.025+.035*(.5+.5*Math.sin(clock*.38))+.08*Math.pow(.5+.5*Math.sin(clock*.22-1.57),12);
-   uniforms.uRelease.value=Math.max(breathing,elapsed<3.6?intro:0);
+   // The first view assembles once. Theme switches, clicks and idle time
+   // never replay this entrance or dissolve the settled portrait.
+   uniforms.uRelease.value=assembleOnEnter?Math.max(.018,.34*(1-smooth(0,2.3,entryElapsed))):.018;
+   if(entryElapsed>=2.3&&host.dataset.formation!=='settled')host.dataset.formation='settled';
    uniforms.uTime.value=clock;uniforms.uMode.value=mode;uniforms.uPointer.value.copy(pointer);uniforms.uPresence.value+=(Number(pointerInside)-uniforms.uPresence.value)*(1-Math.exp(-dt*6));
-   group.rotation.y+=(tiltY*.12-group.rotation.y)*(1-Math.exp(-dt*4));group.rotation.x+=(tiltX*.07-group.rotation.x)*(1-Math.exp(-dt*4));group.position.y=Math.sin(clock*.4)*.035;
+   group.rotation.y+=(tiltY*.055-group.rotation.y)*(1-Math.exp(-dt*4));group.rotation.x+=(tiltX*.035-group.rotation.x)*(1-Math.exp(-dt*4));group.position.y=Math.sin(clock*.4)*.035;
   }
-  plateUniforms.uOpacity.value=.14+(1-smooth(.04,.42,uniforms.uRelease.value))*.82;
-  try{renderer.render(scene,camera);}catch{onError();dispose();return;}
+  layers.update(clock,pointer,uniforms.uPresence.value,uniforms.uThemeDark.value,assembleOnEnter?smooth(.1,1.4,entryElapsed):1);
+  plateUniforms.uOpacity.value=.64+(1-smooth(.04,.30,uniforms.uRelease.value))*.32;
+  try{layers.render(renderer,scene,camera);}catch{onError();dispose();return;}
   if(shaderFailed){onError();dispose();return;}
-  if(!ready){ready=true;onReady();host.dataset.particleCount=String(opacities.length);}
+  if(!ready){ready=true;onReady();host.dataset.particleCount=String(opacities.length);host.dataset.scene='approved-p1-particles';}
   if(!paused)request();
  }
  function onPointer(event:PointerEvent){if(paused||event.pointerType==='touch')return;const box=host.getBoundingClientRect();const x=(event.clientX-box.left)/box.width-.5,y=.5-(event.clientY-box.top)/box.height;const height=2*camera.position.z*Math.tan(T.MathUtils.degToRad(camera.fov/2));pointerAim.set(x*height*camera.aspect,y*height);tiltX=-y;tiltY=x;pointerInside=true;request();}
  function leave(){pointerInside=false;tiltX=tiltY=0;pointerAim.set(-20,-20);request();}
- function replay(){if(disposed)return;initial=false;pulseStart=clock;if(paused){paused=false;}request();}
- function onTap(){if(!paused)replay();}
  function visibilityChange(){if(document.hidden){cancelAnimationFrame(raf);raf=0;}else{last=0;request();}}
  function themeChange(){const next=document.documentElement.dataset.theme==='dark'?1:0;if(uniforms.uThemeDark.value===next)return;uniforms.uThemeDark.value=next;request();}
  function lost(event:Event){event.preventDefault();onError();dispose();}
@@ -153,8 +164,8 @@ export async function createHeroParticles(host:HTMLElement,url:string,{onReady,o
  const themeObserver=new MutationObserver(themeChange);themeObserver.observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
  const sizeObserver=new ResizeObserver(resize);sizeObserver.observe(host);
  const intersection=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;if(visible){last=0;request();}else{cancelAnimationFrame(raf);raf=0;}},{rootMargin:'60px'});intersection.observe(host);
- host.addEventListener('pointermove',onPointer);host.addEventListener('pointerleave',leave);host.addEventListener('pointerup',onTap);document.addEventListener('visibilitychange',visibilityChange);renderer.domElement.addEventListener('webglcontextlost',lost);
- function dispose(){if(disposed)return;disposed=true;signal.removeEventListener('abort',dispose);cancelAnimationFrame(raf);themeObserver.disconnect();sizeObserver.disconnect();intersection.disconnect();host.removeEventListener('pointermove',onPointer);host.removeEventListener('pointerleave',leave);host.removeEventListener('pointerup',onTap);document.removeEventListener('visibilitychange',visibilityChange);renderer.domElement.removeEventListener('webglcontextlost',lost);geometry.dispose();material.dispose();echoMaterial.dispose();streamGeometry.dispose();streamMaterial.dispose();plateGeometry.dispose();plateMaterial.dispose();texture.dispose();renderer.dispose();renderer.domElement.remove();}
+ host.addEventListener('pointermove',onPointer);host.addEventListener('pointerleave',leave);document.addEventListener('visibilitychange',visibilityChange);renderer.domElement.addEventListener('webglcontextlost',lost);
+ function dispose(){if(disposed)return;disposed=true;signal.removeEventListener('abort',dispose);cancelAnimationFrame(raf);themeObserver.disconnect();sizeObserver.disconnect();intersection.disconnect();host.removeEventListener('pointermove',onPointer);host.removeEventListener('pointerleave',leave);document.removeEventListener('visibilitychange',visibilityChange);renderer.domElement.removeEventListener('webglcontextlost',lost);layers.dispose();geometry.dispose();material.dispose();echoGeometry.dispose();echoMaterial.dispose();streamGeometry.dispose();streamMaterial.dispose();plateGeometry.dispose();plateMaterial.dispose();texture.dispose();renderer.dispose();renderer.domElement.remove();}
  signal.addEventListener('abort',dispose,{once:true});resize();request();
- return {setActive(index){if(index===active)return;active=index;replay();},setPaused(value){paused=value;last=0;request();},replay,dispose};
+ return {dispose};
 }

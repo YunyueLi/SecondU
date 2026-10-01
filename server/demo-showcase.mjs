@@ -1,4 +1,5 @@
 import { applyDemoCopy } from './demo-copy.mjs';
+import { applyDemoReadableCopy } from './demo-readable-copy.mjs';
 import { createHash } from 'node:crypto';
 import { existsSync, lstatSync, mkdirSync, readFileSync, realpathSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
@@ -60,7 +61,7 @@ export function ensureDemoShowcase(store){
   if(!store.meta('profile').demo||store.meta('profile').demoLocale==='en')return;
   applyChineseDemoContent(store);
   const installation=store.get('meta',marker)?.value;
-  if(installation){updateAuthoredCopies(store,installation);applyDemoAgentSessions(store);applyDemoNames(store);applyDemoCopy(store);return;}
+  if(installation){updateAuthoredCopies(store,installation);applyDemoAgentSessions(store);applyDemoNames(store);applyDemoCopy(store);applyDemoReadableCopy(store);return;}
   const data=structuredClone(authored);
   const spaceKey=hash(store.directory).slice(0,12);
   const parent=directory(path.dirname(store.protectedDataDirectory??store.directory),'.secondu-examples');
@@ -85,5 +86,6 @@ export function ensureDemoShowcase(store){
   applyDemoAgentSessions(store);
   applyDemoNames(store);
   applyDemoCopy(store);
+  applyDemoReadableCopy(store);
   return report;
 }

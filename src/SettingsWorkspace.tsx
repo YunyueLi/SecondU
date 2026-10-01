@@ -18,6 +18,8 @@ import { LocalSpaces } from './LocalSpaces';
 import './settings.css';
 import { ModelSettings } from './models/ModelSettings';
 import { RecentChatArchives } from './RecentChatArchives';
+import { MemoryImportEntry } from './cognition/MemoryImport';
+import { TwinMcpSettings } from './cognition/TwinMcpSettings';
 import { RemoteComputers } from './remote/RemoteComputers';
 
 export type Theme = 'light' | 'dark' | 'system';
@@ -149,13 +151,14 @@ export function SettingsWorkspace({ data, onRefresh, theme, onTheme, initialCate
 
         <section id="settings-data" className="settings-panel" hidden={category !== 'data'} aria-labelledby="settings-data-title">
           <PanelHeading id="settings-data-title" title={t("你的资料", "Your data")} description={t("保存在这台电脑，随时整理或导出。", "Kept on this computer, ready to organize or export.")} />
+          {!data.profile.demo&&<MemoryImportEntry onRefresh={onRefresh}/>}
           <div className="settings-data-summary"><div className="settings-data-space"><Folder/><div><strong>{displayProfileName(data.profile)}</strong><p>{data.profile.demo?t('包含虚构示例资料','Contains fictional demo data'):t('你的个人空间','Your personal space')}</p></div><span>{t('本地保存','Stored locally')}</span></div><div className="settings-data-counts"><span>{t(`${data.sources.length} 份来源`,`${data.sources.length} sources`)}</span><span>{t(`${data.facts.length} 条认识`,`${data.facts.length} insights`)}</span><span>{t(`${data.people.length} 位人物`,`${data.people.length} people`)}</span><span>{t(`${data.relationships.length} 条关系`,`${data.relationships.length} relationships`)}</span><span>{t(`${data.tasks.length} 个任务`,`${data.tasks.length} tasks`)}</span><span>{t(`${data.artifacts.length} 份成果`,`${data.artifacts.length} files`)}</span></div></div>
           <div className="settings-data-actions">
             <RecentChatArchives data={data} onRefresh={onRefresh}/>
             <div className="settings-data-action"><span className="settings-action-icon"><Document/></span><div><h3>{t('资料库','Library')}</h3><p>{t('导入文件，查看来源与已创建的内容。','Import files and review your sources and created content.')}</p></div><ButtonLink as="a" color="secondary" variant="ghost" size="sm" href="#artifacts">{t('打开','Open')}<ArrowRight/></ButtonLink></div>
             <div className="settings-data-action"><span className="settings-action-icon"><Group/></span><div><h3>{t('联系人记录','Contact records')}</h3><p>{t('预览并导入微信、Instagram、WhatsApp 的导出文件。','Preview and import WeChat, Instagram, and WhatsApp exports.')}</p></div><ButtonLink as="a" color="secondary" variant="ghost" size="sm" href="#conversations">{t('导入','Import')}<ArrowRight/></ButtonLink></div>
             <div className="settings-data-action"><span className="settings-action-icon"><Download/></span><div><h3>{t('导出资料副本','Export a copy')}</h3><p>{t('包含来源、认识、关系、任务与成果。','Includes sources, insights, relationships, tasks, and files.')}</p></div><ButtonLink as="a" color="secondary" variant="outline" size="sm" href={apiUrl('/export')}>{t('导出','Export')}</ButtonLink></div>
-          </div><p className="settings-data-note">{t('模型密钥只保存在本机，不包含在资料导出中。','Model keys stay on this computer and are excluded from data exports.')}</p>
+          </div><TwinMcpSettings active={category==='data'} showcase={data.executionPolicy==='showcase'}/><p className="settings-data-note">{t('模型密钥只保存在本机，不包含在资料导出中。','Model keys stay on this computer and are excluded from data exports.')}</p>
         </section>
       </div>
     </div>

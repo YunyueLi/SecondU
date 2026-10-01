@@ -1,0 +1,70 @@
+{
+  "createdAt": "2026-10-01",
+  "assets": [
+    {
+      "file": "understanding-v1.png",
+      "sourceOutput": "exec-60e7cebe-1d44-4799-9175-9c096878155f.png",
+      "sha256": "bc4942f86a0c4f47d04fa2934bb992ae3470494d40383a3489ec96b46d3629e6",
+      "width": 1222,
+      "height": 1287,
+      "alpha": true,
+      "tool": "built-in image_gen",
+      "source": "Original public brand concept. No private data or reference photographs.",
+      "review": "Visually reviewed: coherent cream, lilac and pale gold paper sculpture, no text or real-person likeness; transparent background retained without image alteration.",
+      "promptFile": "understanding-v1.prompt.json",
+      "promptSha256": "f3f7750bda0bffce4b1368f6a8f24976167fd03397e2db2d7f97bd7c32b8118d"
+    },
+    {
+      "file": "growth-v1.png",
+      "sourceOutput": "exec-139e2f95-22c3-472f-bbb5-b00bd75d39c3.png",
+      "sha256": "fae15acb206c924d01a15d76fadff4871cacc31c4c0313da7e126a2ceb39b4cc",
+      "width": 1209,
+      "height": 1301,
+      "alpha": true,
+      "tool": "built-in image_gen",
+      "source": "Original public brand concept. No private data or reference photographs.",
+      "review": "Visually reviewed: coherent cream, lilac and pale gold paper sculpture, no text or real-person likeness; transparent background retained without image alteration.",
+      "promptFile": "growth-v1.prompt.json",
+      "promptSha256": "5f466b983daa45b4301f0d9a0957e9b7a78b78a38f632901f1c2e24440eb4c80"
+    },
+    {
+      "file": "devices-v1.png",
+      "sourceOutput": "exec-9ba2ee01-f5ad-4f2a-8df4-6cad56fce10e.png",
+      "sha256": "8def4c610a76b94e218f242c1520cfcbfc796dcf23cb30c5040a5942efa73527",
+      "width": 1536,
+      "height": 1024,
+      "alpha": true,
+      "tool": "built-in image_gen",
+      "source": "Original public brand concept. No private data or reference photographs.",
+      "review": "Visually reviewed: coherent cream, lilac and pale gold paper sculpture, no text or real-person likeness; transparent background retained without image alteration.",
+      "promptFile": "devices-v1.prompt.json",
+      "promptSha256": "189a59b229c3aa93fd3a79b5fedb168e29559283042183e967578227859985f3"
+    },
+    {
+      "file": "capabilities-v1.png",
+      "sourceOutput": "exec-c2042efc-0f52-4dd7-8ce6-ff93d79c42ce.png",
+      "sha256": "9584de36da08fada296aa6872b5921eea279311c1ba25c64ff59e88dd9330833",
+      "width": 1374,
+      "height": 1145,
+      "alpha": true,
+      "tool": "built-in image_gen",
+      "source": "Original public brand concept. No private data or reference photographs.",
+      "review": "Visually reviewed: coherent cream, lilac and pale gold paper sculpture, no text or real-person likeness; transparent background retained without image alteration.",
+      "promptFile": "capabilities-v1.prompt.json",
+      "promptSha256": "656d30af93961aa3b4c203c610c613a35caa6b4ea6e76ed9101d6e6a0c4b4ae1"
+    },
+    {
+      "file": "relationships-v1.png",
+      "sourceOutput": "exec-15bd3d77-7ec6-44ba-9eae-d0b821d5f1a7.png",
+      "sha256": "61f0ac6963c6a3620a3f328d7787cc6ca87e9febaf038db16dc0c3be2b0f15f7",
+      "width": 1374,
+      "height": 1145,
+      "alpha": true,
+      "tool": "built-in image_gen",
+      "source": "Original public brand concept. No private data or reference photographs.",
+      "review": "Visually reviewed: coherent cream, lilac and pale gold paper sculpture, no text or real-person likeness; transparent background retained without image alteration.",
+      "promptFile": "relationships-v1.prompt.json",
+      "promptSha256": "d351bf536eb6b6a20dfd6289b6e76d1d7815bc6b5a68ec1735084cb5359dec3f"
+    }
+  ]
+}

@@ -1,4 +1,5 @@
 import {ExampleExecutionNotice} from './ExampleExecutionNotice';
+import {MemoryImportWelcome} from './cognition/MemoryImport';
 import {ConnectorPicker} from './connectors/Connectors';
 import {ComposerTools,DigitalTwinMode,ComposerContextBar} from './composer/ComposerTools';
 import { useAttachments, AttachmentDrafts, MessageAttachments } from './composer/attachments';
@@ -141,12 +142,14 @@ export function AssistantWorkspace({ navigation, data, taskId, composition, onRe
     {configurationMissing&&<SetupHint href={!modelReady?'#settings/model':'#settings'} action={!modelReady?t('连接模型','Connect a model'):t('前往设置','Open settings')}>{project&&project.execution.status!=='ready'?t('请先为项目选择本地目录。','Choose a local folder for this project.'):!modelReady?t('连接后即可开始对话。','Connect to start a conversation.'):t('请先启用本机执行环境。','Set up the runtime on this computer.')}</SetupHint>}
   </div>;
   return <div className={`assistant-workspace ${panelOpen ? 'with-artifact' : ''} ${task ? 'has-task' : 'is-home'}`}>
+    {!task&&<div className="assistant-home-drag" aria-hidden="true"/>}
     <div className="conversation-pane">
       {(task||navigation)&&<header className="conversation-header">{navigation}<h1 title={task?.title}>{task?.title||'SecondU'}</h1>{task&&<div className="conversation-header-actions"><TaskChatActions task={task} onRefresh={onRefresh}/><TaskResources data={data} tasks={[task]} projectId={task.projectId} agentIds={task.agentIds} onOpen={(_task,tab,id)=>id?openArtifact(id):openWorkbench(tab)}/></div>}</header>}
       <div className="conversation-scroll">
         {!task ? <section className="assistant-welcome">
           <div className="welcome-start"><div className="welcome-artwork"><WelcomeLettering /></div><div className="welcome-intro"><h1>{t("今天想做些什么？", "What shall we work on?")}</h1></div>
           {composer}
+          {!data.profile.demo&&!data.facts.length&&!data.tasks.length&&<MemoryImportWelcome/>}
           {exampleStories.length>0&&<nav className="assistant-example-stories" aria-label={t("示例任务", "Example tasks")}>{exampleStories.map(story=><SuggestionRow key={story.id} href={`#task/${story.id}`}>{story.title}</SuggestionRow>)}</nav>}
 
           </div></section> : <div className="task-thread"><RevisionNavigation task={task} tasks={data.tasks} rooms={data.agentRooms}/>{project&&<a className="task-project-reference" href={`#projects/${project.id}`}><Folder/>{project.name}<ArrowRight/></a>}

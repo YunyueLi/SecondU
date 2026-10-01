@@ -1,8 +1,9 @@
-import { cp, mkdir, readFile, writeFile, access, rename } from 'node:fs/promises';
+import { cp, mkdir, readFile, writeFile, access, rename, lstat } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
+import { copyTwinMcpRuntime } from '../scripts/package-twin-mcp.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const brand = JSON.parse(await readFile(path.join(root,'shared/brand.json'),'utf8'));
@@ -22,6 +23,15 @@ await mkdir(packaged, { recursive: true });
 for (const name of ['dist', 'server', 'desktop', 'shared', 'docs', 'README.md', 'README.zh-CN.md', 'QUICKSTART.md', 'CONTRIBUTING.md', 'SECURITY.md', 'CHANGELOG.md', 'THIRD_PARTY_NOTICES.md', 'LICENSE']) {
   await cp(path.join(root, name), path.join(packaged, name), { recursive: true });
 }
+// These reviewed, synthetic attachments make CONTEXT-BENCHMARK.md usable offline.
+// Never copy a benchmark run directory or local model-session logs implicitly.
+for (const name of ['inputs.json', 'model-results.json', 'review.json', 'review.html']) {
+  const relative = path.join('benchmarks/results/2026-10-01', name);
+  if (!(await lstat(path.join(root, relative))).isFile()) throw new Error('A public benchmark attachment must be a regular file.');
+  await mkdir(path.dirname(path.join(packaged, relative)), { recursive: true });
+  await cp(path.join(root, relative), path.join(packaged, relative));
+}
+await copyTwinMcpRuntime(root, packaged);
 await writeFile(path.join(packaged, 'package.json'), JSON.stringify({ name: brand.compatibility.applicationId, productName: brand.name, [brand.compatibility.packagedFlag]: true, version, type: 'module', main: 'desktop/main.cjs' }, null, 2));
 await rename(path.join(output, 'Contents/MacOS/Electron'), path.join(output, 'Contents/MacOS',brand.desktop.executable));
 const plist = path.join(output, 'Contents/Info.plist');

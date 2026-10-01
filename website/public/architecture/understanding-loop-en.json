@@ -1,0 +1,292 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "From understanding to better-informed action",
+    "locale": "en",
+    "output": "docs/diagrams/understanding-loop-en.html",
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "https://github.com/YunyueLi/SecondU.git",
+      "revision": "c7e8803caecdf83524b307365baa35e5cc98d789"
+    },
+    "views": [
+      {
+        "id": "task",
+        "label": "This task",
+        "focus": [
+          "understanding",
+          "context",
+          "action",
+          "result"
+        ]
+      },
+      {
+        "id": "learning",
+        "label": "Confirm before reuse",
+        "focus": [
+          "feedback",
+          "candidate",
+          "confirm",
+          "understanding"
+        ]
+      }
+    ]
+  },
+  "lanes": [
+    {
+      "id": "work",
+      "label": "This task"
+    },
+    {
+      "id": "learn",
+      "label": "Review"
+    }
+  ],
+  "mainPath": [
+    "understanding",
+    "context",
+    "action",
+    "result"
+  ],
+  "nodes": [
+    {
+      "id": "understanding",
+      "lane": "work",
+      "col": 0,
+      "type": "database",
+      "label": "Confirmed understanding",
+      "sublabel": "Background and preferences",
+      "width": 184,
+      "height": 68,
+      "sources": [
+        {
+          "path": "server/personal-context.mjs",
+          "line": 77,
+          "end_line": 93
+        }
+      ]
+    },
+    {
+      "id": "context",
+      "lane": "work",
+      "col": 2,
+      "type": "backend",
+      "label": "Select relevant context",
+      "sublabel": "Purpose, scope and budget",
+      "width": 184,
+      "height": 68,
+      "sources": [
+        {
+          "path": "server/personal-context.mjs",
+          "line": 60,
+          "end_line": 93
+        }
+      ]
+    },
+    {
+      "id": "action",
+      "lane": "work",
+      "col": 3,
+      "type": "backend",
+      "label": "Act with personal context",
+      "sublabel": "Current request guides the task",
+      "width": 184,
+      "height": 68,
+      "sources": [
+        {
+          "path": "server/runner.mjs",
+          "line": 210,
+          "end_line": 251
+        }
+      ]
+    },
+    {
+      "id": "result",
+      "lane": "work",
+      "col": 5,
+      "type": "frontend",
+      "label": "Review the result",
+      "sublabel": "Replies, files and versions",
+      "width": 184,
+      "height": 68,
+      "sources": [
+        {
+          "path": "server/runner.mjs",
+          "line": 257,
+          "end_line": 274
+        }
+      ]
+    },
+    {
+      "id": "confirm",
+      "lane": "learn",
+      "col": 0,
+      "type": "security",
+      "label": "Confirm and revise",
+      "sublabel": "New revision; evidence retained",
+      "width": 184,
+      "height": 68,
+      "sources": [
+        {
+          "path": "src/cognition/TaskFeedback.tsx",
+          "line": 63,
+          "end_line": 70
+        },
+        {
+          "path": "server/domain.mjs",
+          "line": 25,
+          "end_line": 33
+        }
+      ]
+    },
+    {
+      "id": "candidate",
+      "lane": "learn",
+      "col": 2,
+      "type": "database",
+      "label": "Save a candidate",
+      "sublabel": "Preserve reply and context",
+      "width": 184,
+      "height": 68,
+      "sources": [
+        {
+          "path": "server/task-learning.mjs",
+          "line": 74,
+          "end_line": 95
+        }
+      ]
+    },
+    {
+      "id": "feedback",
+      "lane": "learn",
+      "col": 3,
+      "type": "frontend",
+      "label": "Explain the correction",
+      "sublabel": "Long-term changes need review",
+      "width": 184,
+      "height": 68,
+      "sources": [
+        {
+          "path": "src/cognition/TaskFeedback.tsx",
+          "line": 38,
+          "end_line": 51
+        }
+      ]
+    },
+    {
+      "id": "oneoff",
+      "lane": "learn",
+      "col": 5,
+      "type": "database",
+      "label": "One-off feedback",
+      "sublabel": "A reaction does not create a fact",
+      "width": 184,
+      "height": 68,
+      "sources": [
+        {
+          "path": "server/task-reactions.mjs",
+          "line": 8,
+          "end_line": 24
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "select",
+      "from": "understanding",
+      "to": "context",
+      "label": "Retrieve"
+    },
+    {
+      "id": "inform",
+      "from": "context",
+      "to": "action",
+      "label": "Snapshot",
+      "variant": "emphasis"
+    },
+    {
+      "id": "inspect",
+      "from": "action",
+      "to": "result",
+      "label": "Output",
+      "variant": "emphasis"
+    },
+    {
+      "id": "correct",
+      "from": "result",
+      "to": "feedback",
+      "label": "Correct",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "role": "return",
+      "route": "drop",
+      "bias": 0.5
+    },
+    {
+      "id": "capture",
+      "from": "feedback",
+      "to": "candidate",
+      "label": "Remember",
+      "fromSide": "left",
+      "toSide": "right",
+      "role": "return"
+    },
+    {
+      "id": "approval",
+      "from": "candidate",
+      "to": "confirm",
+      "label": "Review",
+      "fromSide": "left",
+      "toSide": "right",
+      "variant": "security",
+      "role": "return"
+    },
+    {
+      "id": "inherit",
+      "from": "confirm",
+      "to": "understanding",
+      "label": "Reuse",
+      "fromSide": "top",
+      "toSide": "bottom",
+      "variant": "emphasis",
+      "role": "return"
+    },
+    {
+      "id": "temporary",
+      "from": "feedback",
+      "to": "oneoff",
+      "label": "Reply only",
+      "variant": "dashed",
+      "role": "branch"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Personal context is opt-in",
+      "items": [
+        "When enabled, each turn retrieves a bounded context snapshot.",
+        "The current request still controls the task."
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "Corrections keep their evidence",
+      "items": [
+        "A memory correction starts as a candidate with original evidence.",
+        "Only confirmed insights enter relevant future task context."
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "One-off feedback stays scoped",
+      "items": [
+        "Reply ratings and comments do not create personal facts.",
+        "This explains implemented control flow, not a model-quality guarantee."
+      ]
+    }
+  ]
+}

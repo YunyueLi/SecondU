@@ -7,7 +7,7 @@ import { chatPlatforms } from './chat-adapters.mjs';
 import { previewChatImport, commitChatImport } from './imports.mjs';
 
 const PROTOCOL='hither.im.v1';
-const sendChannels=['discord','googlechat','imessage','matrix','mattermost','msteams','signal','slack','telegram','whatsapp'];
+const sendChannels=['qqbot','wecom','feishu','discord','googlechat','imessage','matrix','mattermost','msteams','signal','slack','telegram','whatsapp'];
 const readChannels=['slack','discord']; // These two output schemas are explicitly normalized below.
 const digest=value=>createHash('sha256').update(JSON.stringify(value)).digest('hex');
 const invalid=message=>{throw new HttpError(400,message,'im_invalid');};
@@ -15,9 +15,9 @@ function scalar(value,label,max=300){return text(value,label,max);}
 function safeCode(error){return ['ENOENT','EACCES'].includes(error?.code)?error.code:error?.code==='im_timeout'?'timeout':'cli_error';}
 
 /** Execute a configured local program directly, without shell evaluation or logging its output. */
-export function runImCli(command,args,input,{timeout=15000,maxBytes=1024*1024}={}){
+export function runImCli(command,args,input,{timeout=15000,maxBytes=1024*1024,env,cwd}={}){
   return new Promise((resolve,reject)=>{
-    const child=spawn(command,args,{shell:false,windowsHide:true,stdio:['pipe','pipe','pipe']});
+    const child=spawn(command,args,{shell:false,windowsHide:true,stdio:['pipe','pipe','pipe'],env,cwd});
     let output=[],bytes=0,finished=false;
     const finish=(error,value)=>{if(finished)return;finished=true;clearTimeout(timer);error?reject(error):resolve(value);};
     const timer=setTimeout(()=>{child.kill('SIGKILL');finish(new HttpError(504,'通信工具超时，请检查工具中的实际状态。','im_timeout'));},timeout);
@@ -56,8 +56,8 @@ function normalizeOpenClawRead(connection,value){
 }
 function publicConnection(connection){const {confirmation,...rest}=connection;return rest;}
 export class ImCliService{
-  constructor(store,{runCli=runImCli}={}){
-    this.store=store;this.runCli=runCli;this.busy=new Set();
+  constructor(store,{runCli=runImCli,resolveRuntime}={}){
+    this.store=store;this.runCli=runCli;this.resolveRuntime=resolveRuntime;this.busy=new Set();
     for(const draft of store.list('imOutbox'))if(draft.status==='sending')store.put('imOutbox',{...draft,status:'unknown',statusMessage:'上次发送期间应用退出。请到原平台核对；不会自动重发。',updatedAt:now()});
   }
   list(){return this.store.list('imConnections').map(publicConnection);}
@@ -69,10 +69,11 @@ export class ImCliService{
     if(/[\r\n\0]/.test(command))invalid('可执行文件路径无效。');
     const channel=scalar(body.channel,'channel',100);
     if(adapter==='openclaw'&&!sendChannels.includes(channel))invalid('此 OpenClaw 渠道尚未适配。其他 CLI 可使用通用桥接协议。');
-    const platform=choice(adapter==='openclaw'?(channel==='msteams'?'teams':chatPlatforms.includes(channel)?channel:'generic'):body.platform,chatPlatforms,'platform');
+    const platform=choice(adapter==='openclaw'?(channel==='msteams'?'teams':channel==='qqbot'?'qq':chatPlatforms.includes(channel)?channel:'generic'):body.platform,chatPlatforms,'platform');
     const connection={id:existing?.id??id('im'),revision:(existing?.revision??0)+1,name:scalar(body.name,'name',200),adapter,command,channel,platform,accountId:scalar(body.accountId,'accountId',200),target:scalar(body.target,'target',200),selfId:typeof body.selfId==='string'?text(body.selfId,'selfId',200,false):'',createdAt:now(),status:'untested',canRead:false,canSend:false};
+    if(body.runtimeId!==undefined){if(adapter!=='openclaw'||!['managed','existing'].includes(body.runtimeId)||!this.resolveRuntime)invalid('通信运行环境无效。');connection.runtimeId=body.runtimeId;}
     if([connection.channel,connection.accountId].some(v=>v.startsWith('-')||/[\r\n\0]/.test(v))||/[\r\n\0]/.test(connection.target)||(connection.target.startsWith('-')&&!(channel==='telegram'&&/^-\d+$/.test(connection.target))))invalid('渠道、账号和目标标识无效。');
-    const duplicate=this.list().find(c=>c.id!==existing?.id&&c.adapter===adapter&&c.command===command&&c.channel===channel&&c.accountId===connection.accountId&&c.target===connection.target);
+    const duplicate=this.list().find(c=>c.id!==existing?.id&&c.adapter===adapter&&c.command===command&&c.runtimeId===connection.runtimeId&&c.channel===channel&&c.accountId===connection.accountId&&c.target===connection.target);
     if(duplicate)throw new HttpError(409,'这个账号和会话已经添加。','im_duplicate');
     if(existing?.conversationId&&existing.accountId===connection.accountId&&existing.target===connection.target&&existing.platform===connection.platform)connection.conversationId=existing.conversationId;
     return this.store.put('imConnections',connection);
@@ -80,7 +81,8 @@ export class ImCliService{
   async call(connection,action,extra={}){
     if(connection.adapter==='hither-cli')return this.runCli(connection.command,[],{protocol:PROTOCOL,action,channel:connection.channel,accountId:connection.accountId,target:connection.target,...extra});
     const args=action==='probe'?['channels','status','--channel',connection.channel,'--probe','--json']:['message',action,'--channel',connection.channel,'--account',connection.accountId,`--target=${connection.target}`,'--json',...(action==='read'?['--limit','100']:[`--message=${extra.text}`])];
-    return this.runCli(connection.command,args);
+    const runtime=connection.runtimeId?await this.resolveRuntime(connection.runtimeId):undefined;
+    return this.runCli(runtime?.command??connection.command,[...(runtime?.prefix??[]),...args],undefined,runtime?.options);
   }
   async probe(key){
     const connection=this.store.require('imConnections',key);let result;

@@ -1,0 +1,295 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "SecondU 执行架构",
+    "locale": "zh-CN",
+    "output": "docs/diagrams/harness-zh.html",
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "https://github.com/YunyueLi/SecondU.git",
+      "revision": "c7e8803caecdf83524b307365baa35e5cc98d789"
+    }
+  },
+  "components": [
+    {
+      "id": "workbench",
+      "type": "frontend",
+      "label": "工作空间",
+      "sublabel": "交代任务、检查成果",
+      "pos": [
+        40,
+        290
+      ],
+      "size": [
+        190,
+        90
+      ],
+      "sources": [
+        {
+          "path": "src/App.tsx",
+          "line": 95,
+          "end_line": 102
+        },
+        {
+          "path": "src/App.tsx",
+          "line": 158,
+          "end_line": 164
+        }
+      ]
+    },
+    {
+      "id": "cognition",
+      "type": "database",
+      "label": "个人认知",
+      "sublabel": "事实、关系、经历与目标",
+      "pos": [
+        40,
+        60
+      ],
+      "size": [
+        190,
+        90
+      ],
+      "sources": [
+        {
+          "path": "server/store.mjs",
+          "line": 16,
+          "end_line": 35
+        }
+      ]
+    },
+    {
+      "id": "context",
+      "type": "backend",
+      "label": "按需上下文",
+      "sublabel": "用途、范围与证据预算",
+      "pos": [
+        340,
+        60
+      ],
+      "size": [
+        190,
+        90
+      ],
+      "sources": [
+        {
+          "path": "server/personal-context.mjs",
+          "line": 60,
+          "end_line": 93
+        }
+      ]
+    },
+    {
+      "id": "runner",
+      "type": "backend",
+      "label": "任务编排",
+      "sublabel": "本轮背景与可追踪状态",
+      "pos": [
+        340,
+        290
+      ],
+      "size": [
+        190,
+        90
+      ],
+      "sources": [
+        {
+          "path": "server/runner.mjs",
+          "line": 210,
+          "end_line": 257
+        }
+      ]
+    },
+    {
+      "id": "runtime",
+      "type": "backend",
+      "label": "Codex 执行器",
+      "sublabel": "本机 app-server",
+      "pos": [
+        640,
+        290
+      ],
+      "size": [
+        190,
+        90
+      ],
+      "sources": [
+        {
+          "path": "server/codex.mjs",
+          "line": 430,
+          "end_line": 460
+        }
+      ]
+    },
+    {
+      "id": "provider",
+      "type": "external",
+      "label": "所选模型",
+      "sublabel": "经已配置协议调用",
+      "pos": [
+        640,
+        60
+      ],
+      "size": [
+        190,
+        90
+      ],
+      "sources": [
+        {
+          "path": "server/chat-bridge.mjs",
+          "line": 1,
+          "end_line": 55
+        }
+      ]
+    },
+    {
+      "id": "results",
+      "type": "backend",
+      "label": "成果与版本",
+      "sublabel": "收录实际文件，持续编辑",
+      "pos": [
+        940,
+        290
+      ],
+      "size": [
+        190,
+        90
+      ],
+      "sources": [
+        {
+          "path": "server/runner.mjs",
+          "line": 265,
+          "end_line": 275
+        }
+      ]
+    },
+    {
+      "id": "team",
+      "type": "backend",
+      "label": "按需专家协作",
+      "sublabel": "负责人派发，独立执行",
+      "pos": [
+        340,
+        520
+      ],
+      "size": [
+        190,
+        90
+      ],
+      "sources": [
+        {
+          "path": "server/runner.mjs",
+          "line": 229,
+          "end_line": 231
+        }
+      ]
+    },
+    {
+      "id": "tools",
+      "type": "security",
+      "label": "选中的工具",
+      "sublabel": "限定连接，执行前审批",
+      "pos": [
+        640,
+        520
+      ],
+      "size": [
+        190,
+        90
+      ],
+      "sources": [
+        {
+          "path": "server/connectors.mjs",
+          "line": 194,
+          "end_line": 237
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "cognition-context",
+      "from": "cognition",
+      "to": "context",
+      "label": "检索记录",
+      "variant": "default"
+    },
+    {
+      "id": "context-runner",
+      "from": "context",
+      "to": "runner",
+      "label": "本轮快照",
+      "variant": "default"
+    },
+    {
+      "id": "workbench-runner",
+      "from": "workbench",
+      "to": "runner",
+      "label": "发起任务",
+      "variant": "emphasis"
+    },
+    {
+      "id": "runner-runtime",
+      "from": "runner",
+      "to": "runtime",
+      "label": "上下文与工具",
+      "variant": "emphasis"
+    },
+    {
+      "id": "runtime-provider",
+      "from": "runtime",
+      "to": "provider",
+      "label": "模型请求",
+      "variant": "default"
+    },
+    {
+      "id": "runtime-results",
+      "from": "runtime",
+      "to": "results",
+      "label": "实际产出",
+      "variant": "default"
+    },
+    {
+      "id": "runner-team",
+      "from": "runner",
+      "to": "team",
+      "label": "需要时派发",
+      "variant": "emphasis"
+    },
+    {
+      "id": "runtime-tools",
+      "from": "runtime",
+      "to": "tools",
+      "label": "受控调用",
+      "variant": "security"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "理解延续到每次任务",
+      "items": [
+        "每轮按任务用途重新选择已确认认知。",
+        "来源、版本与省略内容均可查看。"
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "行动始终受用户控制",
+      "items": [
+        "模型、上下文与连接器绑定到当前任务。",
+        "审批和中断沿执行链路传递。"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "成果可以继续使用",
+      "items": [
+        "工作目录中的实际文件成为可编辑成果。",
+        "反馈保留原结果与当时上下文。"
+      ]
+    }
+  ]
+}

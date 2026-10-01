@@ -1,0 +1,419 @@
+{
+  "schema": "secondu.context-model-run.v1",
+  "synthetic": true,
+  "startedAt": "2026-10-01T01:03:08.900Z",
+  "inputManifestSha256": "303fb204b85a5eea20f5bdaf4f9e062322d1b4e1c738dc47df233e3bb34e0e69",
+  "configuredModel": "gpt-6-astra",
+  "providerReportedModel": null,
+  "reasoningEffort": "medium",
+  "temperature": "CLI default; not explicitly set",
+  "outputLimit": "CLI model default; fixed across all calls",
+  "cliVersion": "codex-cli 0.158.0-alpha.2.1",
+  "transport": "HTTPS; WebSocket disabled after observed smoke reconnect timeouts",
+  "parameters": {
+    "model_reasoning_effort": "medium",
+    "project_doc_max_bytes": 0,
+    "developer_instructions": "Use only the provided synthetic task and context. Produce text only. Do not use tools, local files, network, skills, memory or account data. Do not send messages or take actions.",
+    "web_search": "disabled",
+    "memories.use_memories": false,
+    "memories.generate_memories": false,
+    "features.skip_host_skill_discovery": true,
+    "history.persistence": "none",
+    "analytics.enabled": false,
+    "feedback.enabled": false,
+    "permissions.synthetic_text.network.enabled": false,
+    "approval_policy": "never",
+    "check_for_update_on_startup": false,
+    "model_provider": "synthetic_default",
+    "model_providers.synthetic_default": {
+      "name": "Existing OpenAI sign-in",
+      "wire_api": "responses",
+      "requires_openai_auth": true,
+      "supports_websockets": false
+    }
+  },
+  "outputs": [
+    {
+      "id": "new_task_transfer-no_context",
+      "status": "completed",
+      "exitCode": 0,
+      "latencyMs": 9424,
+      "inputSha256": "184812bab075ce9a5145ad4ab2350340bb5f1360d92e405e30589f598859e5e7",
+      "contextSha256": "4e13e47affe4900f1cb0215a46cac394d04be58496c85215fb26493c6aa17ca6",
+      "usage": {
+        "input_tokens": 9982,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 101,
+        "reasoning_output_tokens": 0
+      },
+      "output": "{\"choice\":\"D\",\"reason\":\"D costs the least at 10 credits and takes 18 minutes: it saves 20 credits and 10 minutes versus E, and saves 52 credits while taking only 2 minutes longer than F. This prioritizes cost and travel time; no current personal preferences are provided.\",\"usedContextIds\":[],\"clarification\":\"Do you prefer cycling by the river, visiting a science hall, or seeing a botanical exhibition, and are you comfortable cycling?\"}",
+      "parsedOutput": {
+        "choice": "D",
+        "reason": "D costs the least at 10 credits and takes 18 minutes: it saves 20 credits and 10 minutes versus E, and saves 52 credits while taking only 2 minutes longer than F. This prioritizes cost and travel time; no current personal preferences are provided.",
+        "usedContextIds": [],
+        "clarification": "Do you prefer cycling by the river, visiting a science hall, or seeing a botanical exhibition, and are you comfortable cycling?"
+      },
+      "toolEventCount": 0,
+      "diagnosticCodes": [
+        "host_skill_discovery_disabled_warning",
+        "global_instructions_read_denied",
+        "code_mode_disabled"
+      ],
+      "outputSha256": "78ed28790daab07081747d21bf7bd749ab5dad7561422ce42dccfbf23c32fffa"
+    },
+    {
+      "id": "new_task_transfer-structured",
+      "status": "completed",
+      "exitCode": 0,
+      "latencyMs": 10149,
+      "inputSha256": "44ea9f3b862a1eb044cb2a74bb0f2086f0fed8e25a7658c19b3088c6ee53b289",
+      "contextSha256": "48f93c48a38dc3091e71c08789adb39caf6891f48141d9821c96f7b4891e2c18",
+      "usage": {
+        "input_tokens": 10207,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 137,
+        "reasoning_output_tokens": 0
+      },
+      "output": "{\"choice\":\"E\",\"reason\":\"The science hall plan uses public transit and costs 30 credits, within the 40-credit limit. Compared with D, it takes 10 minutes longer and costs 20 credits more, but matches your confirmed preference for transit over cycling even when cycling is faster. F exceeds the budget by 22 credits. Your preference among the destinations is unknown.\",\"usedContextIds\":[\"memory-fact-170e62e4f03c0695ceaa3fa149c24ca6\",\"memory-fact-faef167e7694e4b574305e9e7e08917f\"],\"clarification\":null}",
+      "parsedOutput": {
+        "choice": "E",
+        "reason": "The science hall plan uses public transit and costs 30 credits, within the 40-credit limit. Compared with D, it takes 10 minutes longer and costs 20 credits more, but matches your confirmed preference for transit over cycling even when cycling is faster. F exceeds the budget by 22 credits. Your preference among the destinations is unknown.",
+        "usedContextIds": [
+          "memory-fact-170e62e4f03c0695ceaa3fa149c24ca6",
+          "memory-fact-faef167e7694e4b574305e9e7e08917f"
+        ],
+        "clarification": null
+      },
+      "toolEventCount": 0,
+      "diagnosticCodes": [
+        "host_skill_discovery_disabled_warning",
+        "global_instructions_read_denied",
+        "code_mode_disabled"
+      ],
+      "outputSha256": "3cb3a027ee18e7d3600c93f9c26a225120d9cd131af77ce61142fa5fea65f53c"
+    },
+    {
+      "id": "initial_tradeoff-no_context",
+      "status": "completed",
+      "exitCode": 0,
+      "latencyMs": 6465,
+      "inputSha256": "f4084f5e7c41e71aabfbd3d8416e7933f77d66ea6dcf7a8d463e5a1cb50342fd",
+      "contextSha256": "4e13e47affe4900f1cb0215a46cac394d04be58496c85215fb26493c6aa17ca6",
+      "usage": {
+        "input_tokens": 9978,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 100,
+        "reasoning_output_tokens": 0
+      },
+      "output": "{\"choice\":\"A\",\"reason\":\"A is the lowest-cost option at 12 credits and takes 20 minutes. Compared with B, it saves 12 credits and 15 minutes; compared with C, it saves 46 credits but takes 5 minutes longer. This prioritizes cost with a short journey, without assuming a personal preference.\",\"usedContextIds\":[],\"clarification\":\"Do you prefer a park, gallery, or sculpture garden, and is cycling suitable for you?\"}",
+      "parsedOutput": {
+        "choice": "A",
+        "reason": "A is the lowest-cost option at 12 credits and takes 20 minutes. Compared with B, it saves 12 credits and 15 minutes; compared with C, it saves 46 credits but takes 5 minutes longer. This prioritizes cost with a short journey, without assuming a personal preference.",
+        "usedContextIds": [],
+        "clarification": "Do you prefer a park, gallery, or sculpture garden, and is cycling suitable for you?"
+      },
+      "toolEventCount": 0,
+      "diagnosticCodes": [
+        "host_skill_discovery_disabled_warning",
+        "global_instructions_read_denied",
+        "code_mode_disabled"
+      ],
+      "outputSha256": "92dd50b31a719d6c41e898b382dcd08d17149e440c9be0dfbef8243255b4f228"
+    },
+    {
+      "id": "one_time_exception-no_context",
+      "status": "completed",
+      "exitCode": 0,
+      "latencyMs": 6398,
+      "inputSha256": "4259552fe574a4e5e6719576ebf09c0576cf3351c7e9ca6d8bbbca22dc257208",
+      "contextSha256": "4e13e47affe4900f1cb0215a46cac394d04be58496c85215fb26493c6aa17ca6",
+      "usage": {
+        "input_tokens": 9999,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 105,
+        "reasoning_output_tokens": 0
+      },
+      "output": "{\"choice\":\"A\",\"reason\":\"The park trip by bicycle fulfills your instruction to test the borrowed bicycle on this visit. At 20 minutes and 12 credits, it is 15 minutes faster and 12 credits cheaper than B, but 5 minutes slower and 46 credits cheaper than C. This choice does not establish or change your usual weekend preference.\",\"usedContextIds\":[],\"clarification\":\"Your usual weekend transport and destination preferences are unknown; neither is needed to choose cycling for this visit.\"}",
+      "parsedOutput": {
+        "choice": "A",
+        "reason": "The park trip by bicycle fulfills your instruction to test the borrowed bicycle on this visit. At 20 minutes and 12 credits, it is 15 minutes faster and 12 credits cheaper than B, but 5 minutes slower and 46 credits cheaper than C. This choice does not establish or change your usual weekend preference.",
+        "usedContextIds": [],
+        "clarification": "Your usual weekend transport and destination preferences are unknown; neither is needed to choose cycling for this visit."
+      },
+      "toolEventCount": 0,
+      "diagnosticCodes": [
+        "host_skill_discovery_disabled_warning",
+        "global_instructions_read_denied",
+        "code_mode_disabled"
+      ],
+      "outputSha256": "7313c13215f62f449706f912f53788606bfbaab4f00bf71e49232e4abc86cc7a"
+    },
+    {
+      "id": "confirmed_correction-no_context",
+      "status": "completed",
+      "exitCode": 0,
+      "latencyMs": 8039,
+      "inputSha256": "f4084f5e7c41e71aabfbd3d8416e7933f77d66ea6dcf7a8d463e5a1cb50342fd",
+      "contextSha256": "4e13e47affe4900f1cb0215a46cac394d04be58496c85215fb26493c6aa17ca6",
+      "usage": {
+        "input_tokens": 9975,
+        "cached_input_tokens": 9088,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 98,
+        "reasoning_output_tokens": 0
+      },
+      "output": "{\"choice\":\"A\",\"reason\":\"A is the lowest-cost option at 12 credits and takes 20 minutes. Compared with B, it saves 15 minutes and 12 credits; compared with C, it takes 5 minutes longer but saves 46 credits. This prioritizes cost and travel time without assuming a personal preference.\",\"usedContextIds\":[],\"clarification\":\"Do you prefer a park, gallery, or sculpture garden, and is cycling comfortable for you?\"}",
+      "parsedOutput": {
+        "choice": "A",
+        "reason": "A is the lowest-cost option at 12 credits and takes 20 minutes. Compared with B, it saves 15 minutes and 12 credits; compared with C, it takes 5 minutes longer but saves 46 credits. This prioritizes cost and travel time without assuming a personal preference.",
+        "usedContextIds": [],
+        "clarification": "Do you prefer a park, gallery, or sculpture garden, and is cycling comfortable for you?"
+      },
+      "toolEventCount": 0,
+      "diagnosticCodes": [
+        "host_skill_discovery_disabled_warning",
+        "global_instructions_read_denied",
+        "code_mode_disabled"
+      ],
+      "outputSha256": "809f6b8765932ce2c102bb883c5df34df867bfa8d43ddcd747901384c8e53402"
+    },
+    {
+      "id": "initial_tradeoff-structured",
+      "status": "completed",
+      "exitCode": 0,
+      "latencyMs": 9494,
+      "inputSha256": "2c4fd88b3b51466b0fc859f638d3c5858e640c0abe87b113d4fcac95ead8d9cd",
+      "contextSha256": "9645ac3ec58fa13b0ac041e6b91e6c220dfba3204d3e7dcaa52e38f6d108f79a",
+      "usage": {
+        "input_tokens": 10206,
+        "cached_input_tokens": 9088,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 152,
+        "reasoning_output_tokens": 0
+      },
+      "output": "{\"choice\":\"A\",\"reason\":\"The park trip matches your preference for cycling journeys of no more than 30 minutes and costs 12 credits, within your 40-credit limit. Compared with B, it takes 15 fewer minutes and costs 12 fewer credits, but offers a park visit instead of a gallery. C is 5 minutes faster but exceeds your budget by 18 credits. Your preference among parks, galleries, and sculpture gardens is unknown.\",\"usedContextIds\":[\"memory-fact-170e62e4f03c0695ceaa3fa149c24ca6\",\"memory-fact-faef167e7694e4b574305e9e7e08917f\"],\"clarification\":null}",
+      "parsedOutput": {
+        "choice": "A",
+        "reason": "The park trip matches your preference for cycling journeys of no more than 30 minutes and costs 12 credits, within your 40-credit limit. Compared with B, it takes 15 fewer minutes and costs 12 fewer credits, but offers a park visit instead of a gallery. C is 5 minutes faster but exceeds your budget by 18 credits. Your preference among parks, galleries, and sculpture gardens is unknown.",
+        "usedContextIds": [
+          "memory-fact-170e62e4f03c0695ceaa3fa149c24ca6",
+          "memory-fact-faef167e7694e4b574305e9e7e08917f"
+        ],
+        "clarification": null
+      },
+      "toolEventCount": 0,
+      "diagnosticCodes": [
+        "host_skill_discovery_disabled_warning",
+        "global_instructions_read_denied",
+        "code_mode_disabled"
+      ],
+      "outputSha256": "c1a5ae653fe4f0dc5dd69639b1915e81333791cfc8a64ec491f5557e9df0a77c"
+    },
+    {
+      "id": "confirmed_correction-structured",
+      "status": "completed",
+      "exitCode": 0,
+      "latencyMs": 7280,
+      "inputSha256": "2f3520c858d9b1bbb70cc9e26091f673869c5348f72dde48bf0b5aeb5acee707",
+      "contextSha256": "48f93c48a38dc3091e71c08789adb39caf6891f48141d9821c96f7b4891e2c18",
+      "usage": {
+        "input_tokens": 10208,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 126,
+        "reasoning_output_tokens": 0
+      },
+      "output": "{\"choice\":\"B\",\"reason\":\"The gallery by public transit costs 24 credits, within the 40-credit limit, and matches your weekend transport preference. Compared with A, it takes 15 minutes longer and costs 12 credits more. C exceeds your budget by 18 credits. Your preference among the destinations is unknown.\",\"usedContextIds\":[\"memory-fact-170e62e4f03c0695ceaa3fa149c24ca6\",\"memory-fact-faef167e7694e4b574305e9e7e08917f\"],\"clarification\":null}",
+      "parsedOutput": {
+        "choice": "B",
+        "reason": "The gallery by public transit costs 24 credits, within the 40-credit limit, and matches your weekend transport preference. Compared with A, it takes 15 minutes longer and costs 12 credits more. C exceeds your budget by 18 credits. Your preference among the destinations is unknown.",
+        "usedContextIds": [
+          "memory-fact-170e62e4f03c0695ceaa3fa149c24ca6",
+          "memory-fact-faef167e7694e4b574305e9e7e08917f"
+        ],
+        "clarification": null
+      },
+      "toolEventCount": 0,
+      "diagnosticCodes": [
+        "host_skill_discovery_disabled_warning",
+        "global_instructions_read_denied",
+        "code_mode_disabled"
+      ],
+      "outputSha256": "19ad0a5288a524c0b114999c4f534937a0da14dbbef5cc3e702d396488e48d7b"
+    },
+    {
+      "id": "new_task_transfer-raw_archive",
+      "status": "completed",
+      "exitCode": 0,
+      "latencyMs": 8071,
+      "inputSha256": "ad826c2e340b04cda4eaff1d938d8679b732566fc961d0f7275b865301db248f",
+      "contextSha256": "85960592d351051aa68da8f085a15e1e1d41cd048ce6bea5197128bd482cea37",
+      "usage": {
+        "input_tokens": 9943,
+        "cached_input_tokens": 9088,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 124,
+        "reasoning_output_tokens": 0
+      },
+      "output": "{\n  \"choice\": \"E\",\n  \"reason\": \"Public transit follows your confirmed continuing preference and costs 30 credits, within your 40-credit limit. Compared with D, E takes 10 minutes longer and costs 20 credits more. F exceeds your budget by 22 credits. The cycling exception applied only to the earlier visit. Your preference among the destinations is unknown.\",\n  \"usedContextIds\": [\n    \"Confirmed continuing correction\",\n    \"Constraints\"\n  ],\n  \"clarification\": \"Do you prefer the riverside or science hall enough to outweigh your usual transport preference?\"\n}",
+      "parsedOutput": {
+        "choice": "E",
+        "reason": "Public transit follows your confirmed continuing preference and costs 30 credits, within your 40-credit limit. Compared with D, E takes 10 minutes longer and costs 20 credits more. F exceeds your budget by 22 credits. The cycling exception applied only to the earlier visit. Your preference among the destinations is unknown.",
+        "usedContextIds": [
+          "Confirmed continuing correction",
+          "Constraints"
+        ],
+        "clarification": "Do you prefer the riverside or science hall enough to outweigh your usual transport preference?"
+      },
+      "toolEventCount": 0,
+      "diagnosticCodes": [
+        "host_skill_discovery_disabled_warning",
+        "global_instructions_read_denied",
+        "code_mode_disabled"
+      ],
+      "outputSha256": "aa3471a14e8859b77da507a1d69db07434cb364e0ee75cb9772859749f5d490a"
+    },
+    {
+      "id": "one_time_exception-raw_archive",
+      "status": "completed",
+      "exitCode": 0,
+      "latencyMs": 8012,
+      "inputSha256": "53d3796324bb3e65b04e4e0a1b73217696e053181d954ef103fd594dc96fee1c",
+      "contextSha256": "85960592d351051aa68da8f085a15e1e1d41cd048ce6bea5197128bd482cea37",
+      "usage": {
+        "input_tokens": 9960,
+        "cached_input_tokens": 9088,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 116,
+        "reasoning_output_tokens": 0
+      },
+      "output": "{\n  \"choice\": \"A\",\n  \"reason\": \"A follows your instruction to test the borrowed bicycle this visit. It costs 12 credits, within your 40-credit limit, and takes 20 minutes—15 minutes faster and 12 credits cheaper than B. Your usual preference remains public transit. C exceeds your budget by 18 credits. Your preference among the park, gallery, and sculpture garden is unknown, but is not needed to honor this visit’s cycling instruction.\",\n  \"usedContextIds\": [],\n  \"clarification\": null\n}",
+      "parsedOutput": {
+        "choice": "A",
+        "reason": "A follows your instruction to test the borrowed bicycle this visit. It costs 12 credits, within your 40-credit limit, and takes 20 minutes—15 minutes faster and 12 credits cheaper than B. Your usual preference remains public transit. C exceeds your budget by 18 credits. Your preference among the park, gallery, and sculpture garden is unknown, but is not needed to honor this visit’s cycling instruction.",
+        "usedContextIds": [],
+        "clarification": null
+      },
+      "toolEventCount": 0,
+      "diagnosticCodes": [
+        "host_skill_discovery_disabled_warning",
+        "global_instructions_read_denied",
+        "code_mode_disabled"
+      ],
+      "outputSha256": "1859f95890a169a02b6d86e5a16bfa51efeb70bacbbc6ecb554c0004fc88d3f8"
+    },
+    {
+      "id": "one_time_exception-structured",
+      "status": "completed",
+      "exitCode": 0,
+      "latencyMs": 8747,
+      "inputSha256": "6a957859d6eb748b0178064c7ed77f47c09d1debd753ea457fac51b01c5bb06d",
+      "contextSha256": "48f93c48a38dc3091e71c08789adb39caf6891f48141d9821c96f7b4891e2c18",
+      "usage": {
+        "input_tokens": 10230,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 142,
+        "reasoning_output_tokens": 0
+      },
+      "output": "{\"choice\":\"A\",\"reason\":\"For this visit, cycling lets you test the borrowed bicycle. A costs 12 credits, within your 40-credit limit, and saves 15 minutes and 12 credits versus B, while departing from your usual public-transit preference only for this visit. C exceeds your budget by 18 credits. Your preference among the park, gallery, and sculpture garden is unknown.\",\"usedContextIds\":[\"memory-fact-170e62e4f03c0695ceaa3fa149c24ca6\",\"memory-fact-faef167e7694e4b574305e9e7e08917f\"],\"clarification\":null}",
+      "parsedOutput": {
+        "choice": "A",
+        "reason": "For this visit, cycling lets you test the borrowed bicycle. A costs 12 credits, within your 40-credit limit, and saves 15 minutes and 12 credits versus B, while departing from your usual public-transit preference only for this visit. C exceeds your budget by 18 credits. Your preference among the park, gallery, and sculpture garden is unknown.",
+        "usedContextIds": [
+          "memory-fact-170e62e4f03c0695ceaa3fa149c24ca6",
+          "memory-fact-faef167e7694e4b574305e9e7e08917f"
+        ],
+        "clarification": null
+      },
+      "toolEventCount": 0,
+      "diagnosticCodes": [
+        "host_skill_discovery_disabled_warning",
+        "global_instructions_read_denied",
+        "code_mode_disabled"
+      ],
+      "outputSha256": "8c95b7e92d79c79040ecdade23c94eacd07e4e844506664ad726c18e409e6d61"
+    },
+    {
+      "id": "confirmed_correction-raw_archive",
+      "status": "completed",
+      "exitCode": 0,
+      "latencyMs": 8176,
+      "inputSha256": "ba4feaba786bf76aef1833d83b600cb56d48aacf3f993758913ea6d1e4fa999a",
+      "contextSha256": "f6e09b3cf9eb367de207985723bcabf9f715c8ca21a37c219166aac7e0b7700c",
+      "usage": {
+        "input_tokens": 9910,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 105,
+        "reasoning_output_tokens": 0
+      },
+      "output": "{\n  \"choice\": \"B\",\n  \"reason\": \"The gallery by public transit follows your confirmed continuing preference and costs 24 credits, within your 40-credit limit. Compared with A, it takes 15 minutes longer and costs 12 credits more. C exceeds your budget by 18 credits. Your preference between visiting a gallery and a park is unknown.\",\n  \"usedContextIds\": [\n    \"Confirmed continuing correction\",\n    \"Constraints\"\n  ],\n  \"clarification\": null\n}",
+      "parsedOutput": {
+        "choice": "B",
+        "reason": "The gallery by public transit follows your confirmed continuing preference and costs 24 credits, within your 40-credit limit. Compared with A, it takes 15 minutes longer and costs 12 credits more. C exceeds your budget by 18 credits. Your preference between visiting a gallery and a park is unknown.",
+        "usedContextIds": [
+          "Confirmed continuing correction",
+          "Constraints"
+        ],
+        "clarification": null
+      },
+      "toolEventCount": 0,
+      "diagnosticCodes": [
+        "host_skill_discovery_disabled_warning",
+        "global_instructions_read_denied",
+        "code_mode_disabled"
+      ],
+      "outputSha256": "416aa3708ecd0e588609b72c0648566e0e4444281f49a07b54a80cb909177441"
+    },
+    {
+      "id": "initial_tradeoff-raw_archive",
+      "status": "completed",
+      "exitCode": 0,
+      "latencyMs": 11008,
+      "inputSha256": "97fac739c59f39468269b3947f2cbb186ed9419a5bd7662295b95fde63fa60bd",
+      "contextSha256": "cbf5f185a42d6a85b570bca6ab3d93ccb83ec44e5e9b18d7d0c7b34d37acee78",
+      "usage": {
+        "input_tokens": 9893,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 236,
+        "reasoning_output_tokens": 123
+      },
+      "output": "{\n  \"choice\": \"A\",\n  \"reason\": \"The bicycle trip takes 20 minutes, matching your cycling preference, and costs 12 credits, within your 40-credit budget. It is 15 minutes faster and 12 credits cheaper than B. C saves 5 minutes but exceeds your budget by 18 credits. Your preference among the destinations is unknown.\",\n  \"usedContextIds\": [\"Preferences\", \"Constraints\"],\n  \"clarification\": \"Do you prefer visiting a park, gallery, or sculpture garden?\"\n}",
+      "parsedOutput": {
+        "choice": "A",
+        "reason": "The bicycle trip takes 20 minutes, matching your cycling preference, and costs 12 credits, within your 40-credit budget. It is 15 minutes faster and 12 credits cheaper than B. C saves 5 minutes but exceeds your budget by 18 credits. Your preference among the destinations is unknown.",
+        "usedContextIds": [
+          "Preferences",
+          "Constraints"
+        ],
+        "clarification": "Do you prefer visiting a park, gallery, or sculpture garden?"
+      },
+      "toolEventCount": 0,
+      "diagnosticCodes": [
+        "host_skill_discovery_disabled_warning",
+        "global_instructions_read_denied",
+        "code_mode_disabled"
+      ],
+      "outputSha256": "5e25112cba7f86baa4301f0446b5d263f7763c12314acd9852fe880d6f18f5d7"
+    }
+  ],
+  "semanticQualityScore": null,
+  "reviewStatus": "pending",
+  "instructionIsolation": {
+    "method": "macOS process sandbox denies reads of global AGENTS.md and AGENTS.override.md; project documents disabled; no user config, memories or host skills",
+    "globalGuidanceIncluded": false,
+    "credentials": "existing CLI login, no credential files read by this script"
+  },
+  "finishedAt": "2026-10-01T01:04:02.152Z",
+  "summary": {
+    "completed": 12,
+    "total": 12,
+    "toolEvents": 0
+  }
+}

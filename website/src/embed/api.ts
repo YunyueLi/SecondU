@@ -2,6 +2,7 @@ import { getLocale, t } from '../../../src/i18n';
 import { createWebsiteExample, type ExampleLanguage } from './fixture';
 import { ExampleRuntime, ExampleError } from './memory-runtime.mjs';
 import type { Bootstrap } from '../../../shared/contracts';
+import { decisionExampleTaskId } from '../../../shared/demo-decision.mjs';
 
 const stores = new Map<ExampleLanguage, ExampleRuntime>();
 const downloads = new Map<string, string>();
@@ -17,6 +18,7 @@ let lastBootstrap: Bootstrap | undefined;
 let websiteThemePreference: 'light' | 'dark' | 'system' = 'system';
 export function setWebsiteThemePreference(value: 'light' | 'dark' | 'system') { websiteThemePreference = value; }
 export function exampleChatRoute(lang = language()) { return `task/${runtime(lang).chooseChat()}`; }
+export function exampleDecisionRoute(lang = language()) { return `task/${decisionExampleTaskId(lang)}`; }
 export function syncExampleLanguage(next: ExampleLanguage) {
   const target = runtime(next);
   if (lastBootstrap) Object.assign(lastBootstrap, structuredClone(target.data));
@@ -57,9 +59,11 @@ export function apiUrl(path: string): string {
   const url = new URL(path, 'https://website.example');
   if (url.origin !== 'https://website.example') return 'about:blank';
   let bytes: BlobPart, name: string, mime: string, key: string;
-  if (url.pathname === '/export') {
-    const content = JSON.stringify({ exportVersion: 1, ...runtime().data }, null, 2);
-    name = `${runtime().data.profile.name}-example.json`; mime = 'application/json'; key = `${language()}:export`;
+  if (url.pathname === '/export' || url.pathname === '/digital-twin/export') {
+    const twin = url.pathname === '/digital-twin/export', markdown = twin && url.searchParams.get('format') === 'markdown';
+    const value = twin ? runtime().response(path) : { exportVersion: 1, ...runtime().data };
+    const content = markdown ? String(value) : JSON.stringify(value, null, 2);
+    name = twin ? `secondu-digital-twin.${markdown ? 'md' : 'json'}` : `${runtime().data.profile.name}-example.json`; mime = markdown ? 'text/markdown' : 'application/json'; key = `${language()}:${twin ? 'digital-twin' : 'export'}:${markdown ? 'md' : 'json'}`;
     if (exportContents.get(key) !== content) {
       const previous = downloads.get(key);
       if (previous) { URL.revokeObjectURL(previous); downloadNames.delete(previous); downloads.delete(key); }
@@ -78,5 +82,10 @@ export function apiUrl(path: string): string {
     const href = URL.createObjectURL(new Blob([bytes], { type: mime })); downloads.set(key, href); downloadNames.set(href, name);
   }
   return downloads.get(key)!;
+}
+export function downloadExampleFile(path: string) {
+  const href = apiUrl(path), name = exampleDownloadName(href);
+  if (!name) throw unavailable();
+  const link = document.createElement('a'); link.href = href; link.download = name; link.click();
 }
 addEventListener('pagehide', () => { for (const value of downloads.values()) URL.revokeObjectURL(value); downloads.clear(); downloadNames.clear(); exportContents.clear(); });

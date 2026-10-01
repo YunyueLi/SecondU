@@ -1,14 +1,17 @@
 export type ReviewStatus = 'documented' | 'verified' | 'in_progress' | 'demo' | 'planned' | 'failed' | 'partial';
 export type ReviewReference = { document?: string; section?: string };
-export type DevelopmentStage = ReviewReference & { id: string; title: string; summary: string; status: ReviewStatus; details?: string[] };
-export type DevelopmentIteration = ReviewReference & { id: string; date: string; title: string; summary: string; status: ReviewStatus; evidence?: string[] };
-export type DevelopmentCapability = ReviewReference & { id: string; title: string; summary: string; status: ReviewStatus; evidence?: string[] };
-export type DevelopmentEvidence = ReviewReference & { id: string; title: string; scope: string; status: ReviewStatus; detail: string };
-export type DevelopmentBoundary = { id: string; title: string; detail: string; status: ReviewStatus };
-export type DevelopmentDocumentInfo = { path: string; title: string; updatedAt: string; revision: string; bytes: number };
+export type ReviewTranslation = { titleEn?: string; summaryEn?: string; detailEn?: string; scopeEn?: string; detailsEn?: string[] };
+export type DevelopmentStage = ReviewReference & ReviewTranslation & { id: string; title: string; summary: string; status: ReviewStatus; details?: string[] };
+export type DevelopmentIteration = ReviewReference & ReviewTranslation & { id: string; date: string; title: string; summary: string; status: ReviewStatus; evidence?: string[] };
+export type DevelopmentCapability = ReviewReference & ReviewTranslation & { id: string; title: string; summary: string; status: ReviewStatus; evidence?: string[] };
+export type DevelopmentEvidence = ReviewReference & ReviewTranslation & { id: string; title: string; scope: string; status: ReviewStatus; detail: string };
+export type DevelopmentBoundary = ReviewTranslation & { id: string; title: string; detail: string; status: ReviewStatus };
+export type DevelopmentDocumentInfo = ReviewTranslation & { path: string; title: string; updatedAt: string; revision: string; bytes: number };
 export type DevelopmentDocument = DevelopmentDocumentInfo & { content: string };
-export type DevelopmentMilestone = { id: string; at: string; title: string; detail: string; commit: string; iteration: string };
-export type DevelopmentReview = {
+export type DevelopmentMilestone = ReviewTranslation & { id: string; at: string; title: string; detail: string; commit: string; iteration: string };
+export type DevelopmentProgress = ReviewTranslation & { id: string; date: string; status: 'in_progress' | 'partial'; title: string; summary: string; highlights?: { zh: string; en: string }[]; completed: { zh: string; en: string }[]; pending: { zh: string; en: string }[]; iteration: string };
+export type DevelopmentRelease = { version: string; publishedAt: string; commit: string; url: string };
+export type DevelopmentReview = ReviewTranslation & {
   schemaVersion: 1;
   revision: string;
   updatedAt: string;
@@ -19,6 +22,8 @@ export type DevelopmentReview = {
   stages: DevelopmentStage[];
   iterations: DevelopmentIteration[];
   milestones?: DevelopmentMilestone[];
+  currentProgress?: DevelopmentProgress;
+  latestRelease?: DevelopmentRelease;
   capabilities: DevelopmentCapability[];
   evidence: DevelopmentEvidence[];
   boundaries: DevelopmentBoundary[];

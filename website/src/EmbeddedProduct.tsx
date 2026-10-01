@@ -3,8 +3,10 @@ import { useSiteLanguage } from './site-language';
 import { useSiteTheme } from './site-theme';
 import './embedded-product.css';
 import {isProductRoute,productNavigationEvent,type ProductRoute} from './product-navigation';
+import {Pause,Play} from '@openai/apps-sdk-ui/components/Icon';
 
 const WIDTH = 1440, HEIGHT = 900;
+const demonstrationRoutes:ProductRoute[]=['assistant','example-chat','self','agents','artifacts'];
 export default function EmbeddedProduct() {
   const { language, setLanguage, t } = useSiteLanguage();
   const { preference, theme, setPreference } = useSiteTheme();
@@ -18,11 +20,29 @@ export default function EmbeddedProduct() {
   const frame = useRef<HTMLIFrameElement>(null);
   const [near, setNear] = useState(false);
   const [ready, setReady] = useState(false);
-  const [route, setRoute] = useState<ProductRoute>('example-chat');
+  const [route, setRoute] = useState<ProductRoute>('assistant');
+  const [inView,setInView]=useState(false),[scrolled,setScrolled]=useState(false),[paused,setPaused]=useState(false);
+  const [hidden,setHidden]=useState(()=>document.hidden),[reduced,setReduced]=useState(()=>matchMedia('(prefers-reduced-motion: reduce)').matches);
   // Theme/language updates use a message, preserving the frame and its drafts.
-  const [source] = useState(() => `${import.meta.env.BASE_URL}product/embed.html?space=${language==='zh'?'demo-cn-v1':'demo-us-v1'}&lang=${language}&theme=${theme}#example-chat`);
+  const [source] = useState(() => `${import.meta.env.BASE_URL}product/embed.html?space=${language==='zh'?'demo-cn-v1':'demo-us-v1'}&lang=${language}&theme=${theme}#assistant`);
   const state = useRef({ language, theme, preference, expanded, route }); state.current = { language, theme, preference, expanded, route };
   const send = (next?: string) => frame.current?.contentWindow?.postMessage({ type: 'secondu-website-example', language:state.current.language,theme:state.current.theme,themePreference:state.current.preference,expanded:state.current.expanded,...(next ? { route: next } : {}) }, location.origin);
+  const playing=ready&&scrolled&&inView&&!paused&&!expanded&&!hidden&&!reduced;
+  useEffect(()=>{
+    const initialY=window.scrollY;
+    const onScroll=()=>{if(window.scrollY>initialY+12)setScrolled(true);};
+    const onVisibility=()=>setHidden(document.hidden);
+    const query=matchMedia('(prefers-reduced-motion: reduce)'),onMotion=()=>setReduced(query.matches);
+    addEventListener('scroll',onScroll,{passive:true});document.addEventListener('visibilitychange',onVisibility);query.addEventListener('change',onMotion);
+    const observer=new IntersectionObserver(entries=>setInView(entries.some(entry=>entry.isIntersecting&&entry.intersectionRatio>=.35)),{threshold:[0,.35]});
+    if(viewport.current)observer.observe(viewport.current);
+    return()=>{removeEventListener('scroll',onScroll);document.removeEventListener('visibilitychange',onVisibility);query.removeEventListener('change',onMotion);observer.disconnect();};
+  },[]);
+  useEffect(()=>{
+    if(!playing)return;
+    const timer=window.setTimeout(()=>{const next=demonstrationRoutes[(demonstrationRoutes.indexOf(state.current.route)+1)%demonstrationRoutes.length];setRoute(next);state.current.route=next;send(next);},6000);
+    return()=>clearTimeout(timer);
+  },[playing,route]);
   useEffect(() => {
     const element = viewport.current; if (!element) return;
     const fit = () => element.style.setProperty('--product-scale', String(element.clientWidth / WIDTH));
@@ -36,7 +56,7 @@ export default function EmbeddedProduct() {
     const navigate = (event:Event) => {
       const next=(event as CustomEvent).detail?.route;
       if(!isProductRoute(next))return;
-      setNear(true); setRoute(next); state.current.route=next;
+      setPaused(true);setNear(true); setRoute(next); state.current.route=next;
       if(ready)send(next);
       if(matchMedia('(max-width:600px)').matches){stageHeight.current=stage.current?.getBoundingClientRect().height||0;setExpanded(true);}else document.getElementById('experience')?.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
     };
@@ -74,6 +94,7 @@ export default function EmbeddedProduct() {
       if (event.origin !== location.origin || event.source !== frame.current?.contentWindow) return;
       if (event.data?.type === 'secondu-example-ready') { setReady(true); send(state.current.route); }
       if (event.data?.type === 'secondu-example-collapse') setExpanded(false);
+      if (event.data?.type === 'secondu-example-interaction') setPaused(true);
       if (event.data?.type === 'secondu-example-preferences') {
         const { theme: nextTheme, language: nextLanguage } = event.data;
         if (nextTheme === 'light' || nextTheme === 'dark' || nextTheme === 'system') setPreference(nextTheme);
@@ -83,7 +104,7 @@ export default function EmbeddedProduct() {
     };
     addEventListener('message', receive); return () => removeEventListener('message', receive);
   }, []);
-  return <section id="product-window" className={`embedded-product${expanded ? ' is-expanded' : ''}`} aria-label={t('可操作的 SecondU 产品界面', 'Interactive SecondU product workspace')}>
+  return <section id="product-window" data-demonstration={playing?'playing':'paused'} data-route={route} className={`embedded-product${expanded ? ' is-expanded' : ''}`} aria-label={t('可操作的 SecondU 产品界面', 'Interactive SecondU product workspace')}>
     <div ref={stage} className="embedded-product-stage" style={{ minHeight: expanded ? stageHeight.current : undefined, backgroundImage: `url(${import.meta.env.BASE_URL}assets/pencil-garden.png)` }}>
       <div ref={workspace} className="embedded-product-window" role={expanded ? 'dialog' : undefined} aria-modal={expanded || undefined} aria-label={expanded ? t('完整产品体验', 'Expanded product workspace') : undefined}>
         {expanded && <span className="embedded-product-focus-guard" tabIndex={0} onFocus={() => frame.current?.focus()} />}
@@ -98,6 +119,6 @@ export default function EmbeddedProduct() {
     </div>
     <div className="embedded-product-caption"><div role="group" aria-label={t('切换产品示例页面', 'Choose a product example page')}>{[
       ['example-chat', t('对话与成果', 'Chat and results')], ['self', t('数字分身', 'Digital twin')], ['agents', t('专家团队', 'Expert team')], ['artifacts', t('资料库', 'Library')],
-    ].map(([id, label]) => <button type="button" key={id} disabled={!ready} aria-pressed={route === id} onClick={() => { if(isProductRoute(id)){setRoute(id);state.current.route=id;send(id);} }}>{label}</button>)}<button type="button" ref={expandButton} className="embedded-product-expand" aria-haspopup="dialog" onClick={() => { stageHeight.current = stage.current?.getBoundingClientRect().height || 0; setExpanded(true); }}>{t('展开体验', 'Expand workspace')} <span aria-hidden="true">↗</span></button></div><p>{t('体验对话、数字分身与成果编辑。示例内容仅保存在当前页面。', 'Explore conversations, your digital twin and artifact editing. Fictional example content stays in this page only.')}</p></div>
+    ].map(([id, label]) => <button type="button" key={id} disabled={!ready} aria-pressed={route === id} onClick={() => { if(isProductRoute(id)){setPaused(true);setRoute(id);state.current.route=id;send(id);} }}>{label}</button>)}{!reduced&&<button type="button" className="embedded-product-motion" disabled={!ready} aria-label={playing?t('暂停自动演示','Pause automatic demonstration'):t('播放自动演示','Play automatic demonstration')} onClick={()=>{setPaused(playing);setScrolled(true);}}>{playing?<Pause/>:<Play/>}</button>}<button type="button" ref={expandButton} className="embedded-product-expand" aria-haspopup="dialog" onClick={() => {setPaused(true);stageHeight.current = stage.current?.getBoundingClientRect().height || 0; setExpanded(true); }}>{t('展开体验', 'Expand workspace')}</button></div><p>{t('体验对话、数字分身与成果编辑。示例内容仅保存在当前页面。', 'Explore conversations, your digital twin and artifact editing. Fictional example content stays in this page only.')}</p></div>
   </section>;
 }

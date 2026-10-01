@@ -30,12 +30,13 @@ export async function exportCanonicalExamples() {
     for (const [language, space, seedLocale] of [['zh', 'demo-cn-v1', 'zh-CN'], ['en', 'demo-us-v1', 'en']]) {
       const app = createApp({ dataDir: path.join(root, space), seedLocale, executionPolicy: 'showcase', scheduler: false,
         computerInfo: { codexAvailable: false }, runCodex: deny, runImCli: deny, runResourceCli: deny,
+        imSetupOptions: { runCommand: deny, spawnProcess: deny, installRuntime: deny },
         chooseDirectory: deny, modelFetch: deny, remoteTransport: new Proxy({}, { get: () => deny }),
         developmentRoot: projectRoot, _allowDemoSpace: false });
       try {
         const bootstrap = app.bootstrap();
         const responses = {};
-        for (const route of ['/runtime/capabilities', '/computers', '/delegations', '/im-connections', '/im-outbox', '/agent-resources', '/settings/appearance', '/settings/artwork/info', '/development/review']) responses[route] = await readRoute(app, route);
+        for (const route of ['/runtime/capabilities', '/computers', '/delegations', '/im-setup', '/im-connections', '/im-outbox', '/agent-resources', '/settings/appearance', '/settings/artwork/info', '/development/review']) responses[route] = await readRoute(app, route);
         // A fresh desktop space has no saved preferences. Materialize its real
         // defaults so mounting the website never writes defaults over its host.
         responses['/settings/appearance'] ??= { ...defaultAppearance, language: seedLocale };

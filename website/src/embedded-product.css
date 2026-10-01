@@ -23,3 +23,5 @@
 @media(max-width:560px){.embedded-product.is-expanded .embedded-product-window{inset:0;border-radius:0}.embedded-product.is-expanded .embedded-product-chrome{height:44px;padding:0 12px}}
 
 .embedded-product-caption button:disabled{opacity:.45;cursor:default}
+.embedded-product-caption button.embedded-product-motion{display:inline-flex;align-items:center;justify-content:center;width:36px;min-height:36px;padding:8px;flex:none}
+.embedded-product-motion svg{width:16px;height:16px}

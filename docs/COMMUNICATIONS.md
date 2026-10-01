@@ -2,11 +2,11 @@
 
 SecondU 可以调用用户已配置的本机通信工具，读取指定会话、预览后保存记录，并在用户确认具体内容后发送文字消息。账号登录、平台凭据与平台权限由通信工具管理。SecondU 保存连接配置、导入来源和发送记录，不提供通用微信免凭据直读，也不解密平台私有数据库。
 
-这里描述 2026-09-30 的实现。当前没有后台实时同步、自动轮询、自动回复或消息附件收发；读取与发送都由界面中的操作发起。文件导入另见 [IMPORTS.md](IMPORTS.md)，任务使用的资料与 MCP 工具连接另见 [CONNECTORS.md](CONNECTORS.md)。
+这里描述 2026-10-01 的实现。当前没有后台实时同步、自动轮询、自动回复或消息附件收发；读取与发送都由界面中的操作发起。文件导入另见 [IMPORTS.md](IMPORTS.md)，任务使用的资料与 MCP 工具连接另见 [CONNECTORS.md](CONNECTORS.md)。
 
 ## 使用流程
 
-1. 在本机通信工具中完成账号配置与必要授权。在 SecondU 添加工具路径、渠道、账号和一个明确的目标会话。
+1. 打开聊天记录的「连接通信工具」。选择 SecondU 管理的独立 OpenClaw，按渠道安装固定版本、填写令牌或本人扫码；也可检测并选择原工具中已经授权的账号。随后限定一个明确的目标会话。
 2. 检查连接。只有工具确认账号在线并声明相应能力后，SecondU 才开放读取或发送。
 3. 读取时先显示预览，核对账号、会话、参与人和新增消息数量，再保存为来源与交流记录。读取本身不自动确认人物关系或个人认知。
 4. 发送时先保存草稿，再核对渠道、账号、目标和完整正文。最后一次确认有效后才调用通信工具；检查连接、读取记录和保存草稿都不会发送消息。
@@ -15,14 +15,34 @@ SecondU 可以调用用户已配置的本机通信工具，读取指定会话、
 
 ## OpenClaw 适配
 
-适配器使用本机 `openclaw`，也接受该可执行文件的绝对路径。需要已安装兼容版本、完成渠道账号配置，并满足对应平台与 Gateway 的运行条件。SecondU 当前适配范围如下：
+连接向导使用固定版本 OpenClaw 2026.9.7，为下表 13 个渠道提供按平台要求配置的入口；已有工具模式与高级 CLI 配置仍保留。独立环境需要兼容的系统 Node.js 与 npm，安装按钮才会下载程序。受管账号关闭自动回复，凭据只存本机；原工具的账号和服务不会被改写。
+
+读取与发送按渠道分别适配。完成账号授权并通过检查后，才能使用对应操作：
 
 | 渠道 | 读取指定会话 | 确认后发送文字 |
 | --- | --- | --- |
 | Slack、Discord | 已实现返回格式转换，单次请求最多 100 条 | 已实现调用 |
-| Google Chat、iMessage、Matrix、Mattermost、Microsoft Teams、Signal、Telegram、WhatsApp | 尚未实现返回格式转换 | 已实现调用 |
+| 飞书 / Lark、QQ、企业微信、Google Chat、iMessage、Matrix、Mattermost、Microsoft Teams、Signal、Telegram、WhatsApp | 尚未实现返回格式转换 | 已实现调用 |
 
-这里的“已实现调用”指 SecondU 已接入命令和回执处理，实际可用性取决于本机工具、账号及平台权限。Mattermost 还需要对应插件。OpenClaw 官方的命令范围和目标格式见 [message 参考](https://docs.openclaw.ai/cli/message)；SecondU 的读取适配仅覆盖上表两项。
+这里的“已实现调用”指 SecondU 已接入命令和回执处理，实际可用性取决于本机工具、账号及平台权限。OpenClaw 官方的命令范围和目标格式见 [message 参考](https://docs.openclaw.ai/cli/message)；SecondU 的读取适配仅覆盖上表两项。
+
+### 授权方式与安装条件
+
+| 渠道 | 向导接入方式 | 必要条件 |
+| --- | --- | --- |
+| Slack、Discord、Telegram | 机器人令牌 | 本人在对应平台创建应用并授予所选会话的权限 |
+| 飞书 / Lark | App ID、App Secret；选择平台 | 企业自建机器人，官方 WebSocket 长连接 |
+| QQ | App ID、App Secret | 腾讯官方插件 `@tencent-connect/openclaw-qqbot@2.0.4`，使用对应会话 OpenID |
+| 企业微信 | Bot ID、Secret | 官方插件 `@wecom/wecom-openclaw-plugin@2026.9.15`，智能机器人长连接 |
+| WhatsApp | 关联设备二维码 | 本人使用 WhatsApp 扫描临时二维码 |
+| Microsoft Teams、Google Chat | 平台应用与服务凭据 | 已配置平台要求的 HTTPS webhook；向导不开放公网端口 |
+| Signal | 号码与本机服务地址 | 已授权并运行的本机 signal-cli HTTP 服务 |
+| iMessage | imsg 路径，可选资料路径 | 已登录「信息」的 Mac，以及本人授予的 macOS 权限 |
+| Matrix、Mattermost | 服务地址与令牌 | 已有账号或机器人及目标频道权限；Matrix 加密房间的设备验证未接入 |
+
+Telegram 使用核心内置渠道。其余 OpenClaw 官方插件固定为 2026.9.7；QQ 与企业微信使用上表独立版本。安装与加载路径由 SecondU 管理，接口不接受任意包名。
+
+微信和钉钉均有实际维护的官方插件，当前版本的自动入站行为与本向导的手动操作范围不兼容，因此未加入受管安装：腾讯微信插件 2.4.9 未提供关闭自动入站处理的配置；钉钉插件 0.8.26 没有禁用私聊的策略，禁用群聊后仍会自动回复拒绝消息。界面显示具体兼容性说明，聊天文件导入仍可使用。依据为[微信官方说明](https://docs.openclaw.ai/channels/wechat)和[钉钉官方插件源码](https://github.com/DingTalk-Real-AI/dingtalk-openclaw-connector)。
 
 SecondU 传给 OpenClaw 的操作是：
 
@@ -198,3 +218,10 @@ SecondU 核对协议、渠道和账号，且只在 `connected === true` 时采�
 ## 验证边界
 
 当前已用虚构数据核对协议、回执匹配、UTF-8 分块处理和嵌套 OpenClaw 消息标识。没有读取真实账号、发送真实消息或验证平台送达。新增渠道、升级通信工具或接入真实账号后，应分别验证账号检查、读取预览、确认保存、具体消息发送和异常后的原平台核对；文档与模拟结果不能替代这些验收。
+
+
+## 内置连接向导的本轮证据
+
+`server/im-setup.mjs` 与 `src/communications/ImSetupWizard.tsx` 将安装检测、授权、服务状态与会话范围接入同一对话框。直接入口为 `#conversations/connect`。配置、读取和发送保持独立；未选会话不读取任何聊天。
+
+20 项定向测试使用临时目录、合成账号和模拟 CLI，确认凭据不出现在状态／参数中、不会改动已有运行环境、示例空间不能连接、二维码按时失效，13 个渠道的配置字段与策略映射、写入失败后的锁释放，以及原有预览／提交／一次发送契约。真实平台授权和消息接收仍待按渠道验收。API 细节见 [连接向导接口](API.md#messaging-connection-setup)。

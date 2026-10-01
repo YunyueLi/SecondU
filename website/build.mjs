@@ -5,6 +5,8 @@ import { createHash } from 'node:crypto';
 import { spawnSync } from 'node:child_process';
 import { build } from 'vite';
 import { buildEmbeddedProduct } from './build-embed.mjs';
+import { copyArchitectureAssets } from './build-diagrams.mjs';
+import { copyRoadmapProvenance } from './build-roadmap.mjs';
 
 const directory = path.dirname(fileURLToPath(import.meta.url));
 const root = path.dirname(directory);
@@ -38,6 +40,8 @@ for (const [source, target] of assets) {
   await mkdir(path.dirname(path.join(output, target)), { recursive: true });
   await cp(path.join(root, 'public', source), path.join(output, target));
 }
+await copyArchitectureAssets({ sourceDirectory: path.join(directory, 'public/architecture'), outputDirectory: output });
+await copyRoadmapProvenance({ sourceDirectory: path.join(directory, 'public/art/roadmap'), outputDirectory: output });
 const fontDirectory = path.join(root, 'node_modules/katex/dist/fonts');
 await mkdir(path.join(output, 'fonts'), { recursive: true });
 for (const name of await readdir(fontDirectory)) if (/^KaTeX_[A-Za-z0-9-]+\.woff2$/.test(name)) await cp(path.join(fontDirectory, name), path.join(output, 'fonts', name));

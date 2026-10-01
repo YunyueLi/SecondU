@@ -36,8 +36,16 @@ export function evidenceFor(store,records,{budgetChars=12000,maxSourceChars=3000
     const anchors=records.filter(record=>record.sourceIds?.includes(sourceId)).flatMap(record=>[record.statement,record.name,record.title]).filter(value=>typeof value==='string'&&value.length>1);
     const match=anchors.map(anchor=>source.text.indexOf(anchor)).find(index=>index>=0);
     const offset=bounded&&match!==undefined?Math.max(0,match-200):0;
-    const excerpt=source.text.slice(offset,offset+limit);
-    evidence.sources.push({id:source.id,title:source.title,kind:source.kind,demo:source.demo,excerpt,sha256:createHash('sha256').update(source.text).digest('hex'),truncated:excerpt.length<source.text.length,...(bounded?{offset}: {})});
+    // Memory files can contain many unrelated or unselected claims. A selected
+    // fact must not pull its neighboring candidates into the model context.
+    const selectedMemory=source.memoryImport?records.filter(record=>record.sourceIds?.includes(sourceId)).flatMap(record=>{
+      const imported=store.get('memoryImportItems',record.id);
+      if(imported?.sourceId===sourceId&&typeof imported.evidence?.excerpt==='string')return [imported.evidence.excerpt];
+      return typeof record.statement==='string'&&source.text.includes(record.statement)?[record.statement]:[];
+    }):undefined;
+    if(selectedMemory&&!selectedMemory.length){omit(sourceId);continue;}
+    const excerpt=selectedMemory?[...new Set(selectedMemory)].join('\n\n').slice(0,limit):source.text.slice(offset,offset+limit);
+    evidence.sources.push({id:source.id,title:source.title,kind:source.kind,demo:source.demo,excerpt,sha256:createHash('sha256').update(source.text).digest('hex'),truncated:excerpt!==source.text,...(selectedMemory?{selection:'selected_import_entries'}:bounded?{offset}: {})});
     evidence.totalExcerptChars+=excerpt.length;
   }
   if(bounded){

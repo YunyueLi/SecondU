@@ -1,4 +1,6 @@
 /* The personal profile has its own reading scale; other cognition pages are untouched. */
+.personal-overview .portrait-heading .page-heading-actions{align-self:flex-start;padding-top:3px}
+.personal-overview .portrait-import-hint{font-size:13px;line-height:21px;color:var(--color-text-secondary);margin:-6px 0 24px}
 .personal-overview .portrait-title{display:flex;align-items:center;gap:10px}
 .personal-overview .portrait-title>:last-child:not(:first-child){font-size:11px;letter-spacing:0;font-weight:400;flex-shrink:0}
 .personal-overview .portrait-layout{display:grid;grid-template-columns:minmax(0,1.9fr) minmax(250px,1fr);gap:32px;align-items:start}

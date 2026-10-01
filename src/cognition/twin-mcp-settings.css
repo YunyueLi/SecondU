@@ -1,0 +1,30 @@
+.twin-mcp-settings{margin-top:28px;padding-top:24px;border-top:1px solid var(--color-border-subtle);font-size:14px;line-height:1.6}
+.twin-mcp-settings>header,.twin-mcp-grants article>header{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.twin-mcp-settings h3{font-size:14px;font-weight:500;margin:0}
+.twin-mcp-settings header p,.twin-mcp-grants article>p{font-size:13px;color:var(--color-text-secondary);margin:5px 0 0}
+.twin-mcp-settings>header>button{flex-shrink:0}
+.twin-mcp-note,.twin-mcp-grants small{font-size:12px;color:var(--color-text-secondary)}
+.twin-mcp-form{display:grid;gap:16px;margin-top:20px}
+.twin-mcp-form p{margin:0}
+.twin-mcp-selection{max-height:320px;overflow:auto;overscroll-behavior:contain;border-block:1px solid var(--color-border-subtle)}
+.twin-mcp-selection details{padding:10px 0;border-bottom:1px solid var(--color-border-subtle)}
+.twin-mcp-selection details:last-child{border:0}
+.twin-mcp-selection summary{cursor:pointer;font-size:13px}
+.twin-mcp-selection summary small{margin-left:10px;color:var(--color-text-secondary)}
+.twin-mcp-selection details>div{margin:12px 0 0}
+.twin-mcp-selection details>div>small{display:block;font-size:12px;color:var(--color-text-secondary);margin-left:26px}
+.twin-mcp-selection label{font-size:13px;overflow-wrap:anywhere}
+.twin-mcp-options{display:flex;flex-wrap:wrap;gap:12px 20px}
+.twin-mcp-form footer{display:flex;align-items:center;justify-content:flex-end;gap:8px}
+.twin-mcp-form footer>span{margin-right:auto;font-size:12px;color:var(--color-text-secondary)}
+.twin-mcp-grants{display:grid;gap:16px;margin-top:20px}
+.twin-mcp-grants article{border-top:1px solid var(--color-border-subtle);padding-top:16px;min-width:0}
+.twin-mcp-grants article>header strong{font-weight:500;font-size:14px;overflow-wrap:anywhere}
+.twin-mcp-grants article>header span:not([class]){display:block;font-size:12px;color:var(--color-text-secondary)}
+.twin-mcp-configuration{margin:12px 0;font-size:13px}
+.twin-mcp-configuration summary{cursor:pointer}
+.twin-mcp-configuration p{font-size:12px;color:var(--color-text-secondary)}
+.twin-mcp-configuration textarea{font-family:var(--font-mono,monospace);font-size:12px;max-height:220px}
+.twin-mcp-configuration button{margin-top:8px}
+.twin-mcp-grant-actions{display:flex;justify-content:flex-end;margin-top:12px}
+@media(max-width:600px){.twin-mcp-settings>header{flex-wrap:wrap}.twin-mcp-options{flex-direction:column}}

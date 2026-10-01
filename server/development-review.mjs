@@ -45,13 +45,15 @@ function validateReview(value,documents) {
   if(!value||value.schemaVersion!==1||!/^([a-f0-9]{7,40})$/.test(value.baselineCommit??''))throw invalid();
   const text=(value,limit=6000)=>{if(typeof value!=='string'||!value.trim()||value.length>limit)throw invalid();return value;};
   text(value.title);text(value.summary);
+  const translations=item=>{for(const key of ['titleEn','summaryEn','detailEn','scopeEn'])if(item[key]!==undefined)text(item[key]);if(item.detailsEn!==undefined){if(!Array.isArray(item.detailsEn)||item.detailsEn.length>20)throw invalid();for(const detail of item.detailsEn)text(detail);}};
+  translations(value);
   const documentPaths=new Set(documents.map(item=>item.path));
   for(const key of ['stages','iterations','capabilities','evidence','boundaries']) {
     if(!Array.isArray(value[key])||value[key].length>100)throw invalid();
     const ids=new Set();
     for(const item of value[key]) {
       if(!item||!/^[a-z0-9][a-z0-9-]{0,79}$/.test(item.id??'')||ids.has(item.id)||!statuses.has(item.status))throw invalid();
-      ids.add(item.id);text(item.title);
+      ids.add(item.id);text(item.title);translations(item);
       text(key==='evidence'||key==='boundaries'?item.detail:item.summary);
       if(key==='evidence')text(item.scope);
       if(key==='iterations'&&!/^\d{4}-\d{2}-\d{2}$/.test(item.date??''))throw invalid();
@@ -68,8 +70,22 @@ function validateReview(value,documents) {
     for(const item of value.milestones){
       const at=Date.parse(item?.at);
       if(!item||!/^[a-z0-9][a-z0-9-]{0,79}$/.test(item.id??'')||ids.has(item.id)||!Number.isFinite(at)||at<previous||!/^\d{4}-\d{2}-\d{2}T.*(?:Z|[+-]\d{2}:\d{2})$/.test(item.at)||!/^[a-f0-9]{7,40}$/.test(item.commit??'')||!iterationIds.has(item.iteration))throw invalid();
-      ids.add(item.id);previous=at;text(item.title,100);text(item.detail,600);
+      ids.add(item.id);previous=at;text(item.title,100);text(item.detail,600);translations(item);
     }
+  }
+  if(value.currentProgress!==undefined){
+    const item=value.currentProgress;
+    if(!item||!/^[a-z0-9][a-z0-9-]{0,79}$/.test(item.id??'')||!/^\d{4}-\d{2}-\d{2}$/.test(item.date??'')||!['in_progress','partial'].includes(item.status)||!value.iterations.some(entry=>entry.id===item.iteration)||value.milestones?.some(entry=>entry.id===item.id)||['commit','at','publishedAt','release'].some(key=>key in item))throw invalid();
+    text(item.title,100);text(item.summary,800);text(item.titleEn,160);text(item.summaryEn,1200);
+    for(const key of ['completed','pending','highlights']){
+      if(key==='highlights'&&item[key]===undefined)continue;
+      if(!Array.isArray(item[key])||item[key].length>6)throw invalid();
+      for(const note of item[key]){text(note?.zh,300);text(note?.en,500);}
+    }
+  }
+  if(value.latestRelease!==undefined){
+    const item=value.latestRelease;
+    if(!item||!/^v\d+\.\d+\.\d+(?:-[a-zA-Z0-9.-]+)?$/.test(item.version??'')||!/^\d{4}-\d{2}-\d{2}T.*(?:Z|[+-]\d{2}:\d{2})$/.test(item.publishedAt??'')||!Number.isFinite(Date.parse(item.publishedAt))||!/^([a-f0-9]{7,40})$/.test(item.commit??'')||item.url!==`https://github.com/YunyueLi/SecondU/releases/tag/${item.version}`||item.isDraft===true)throw invalid();
   }
   for(const item of [...value.iterations,...value.capabilities]) {
     if(item.evidence&&(!Array.isArray(item.evidence)||item.evidence.some(id=>!evidenceIds.has(id))))throw invalid();

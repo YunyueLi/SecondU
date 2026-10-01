@@ -27,3 +27,6 @@
 .im-conversation-composer .composer .composer-input textarea{font-size:14px;color:var(--color-text-secondary);cursor:not-allowed}
 .im-conversation-composer .composer button:disabled{cursor:not-allowed}
 @media(max-width:620px){.im-conversation-composer{padding:10px 14px 14px}.im-composer-hint{justify-content:flex-start;column-gap:5px}.im-composer-hint>p{flex:1 1 220px}.im-composer-hint>button{margin-left:19px}}
+
+.im-back-nav{display:flex;align-items:center;justify-content:flex-start;flex:none}.im-back-nav>button{width:auto!important;align-self:flex-start;flex:none;min-height:28px;padding-inline:7px}.im-connections:has(.im-back-nav)>.im-intro{margin-top:-4px}.im-connections>.im-back-nav{margin-bottom:4px}.im-connections:has(>.im-setup)>.im-back-nav{margin-bottom:24px}
+.im-connections:focus,.chat-import:focus{outline:none}

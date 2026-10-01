@@ -1,0 +1,292 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "从个人理解到下一次更合适的行动",
+    "locale": "zh-CN",
+    "output": "docs/diagrams/understanding-loop-zh.html",
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "https://github.com/YunyueLi/SecondU.git",
+      "revision": "c7e8803caecdf83524b307365baa35e5cc98d789"
+    },
+    "views": [
+      {
+        "id": "task",
+        "label": "本次任务",
+        "focus": [
+          "understanding",
+          "context",
+          "action",
+          "result"
+        ]
+      },
+      {
+        "id": "learning",
+        "label": "经确认后延续",
+        "focus": [
+          "feedback",
+          "candidate",
+          "confirm",
+          "understanding"
+        ]
+      }
+    ]
+  },
+  "lanes": [
+    {
+      "id": "work",
+      "label": "本次任务"
+    },
+    {
+      "id": "learn",
+      "label": "反馈与确认"
+    }
+  ],
+  "mainPath": [
+    "understanding",
+    "context",
+    "action",
+    "result"
+  ],
+  "nodes": [
+    {
+      "id": "understanding",
+      "lane": "work",
+      "col": 0,
+      "type": "database",
+      "label": "已确认的理解",
+      "sublabel": "个人背景、偏好与约束",
+      "width": 184,
+      "height": 68,
+      "sources": [
+        {
+          "path": "server/personal-context.mjs",
+          "line": 77,
+          "end_line": 93
+        }
+      ]
+    },
+    {
+      "id": "context",
+      "lane": "work",
+      "col": 2,
+      "type": "backend",
+      "label": "按本次任务取用",
+      "sublabel": "用途、适用范围与字数预算",
+      "width": 184,
+      "height": 68,
+      "sources": [
+        {
+          "path": "server/personal-context.mjs",
+          "line": 60,
+          "end_line": 93
+        }
+      ]
+    },
+    {
+      "id": "action",
+      "lane": "work",
+      "col": 3,
+      "type": "backend",
+      "label": "带着背景做取舍",
+      "sublabel": "当前指令仍决定本次任务",
+      "width": 184,
+      "height": 68,
+      "sources": [
+        {
+          "path": "server/runner.mjs",
+          "line": 210,
+          "end_line": 251
+        }
+      ]
+    },
+    {
+      "id": "result",
+      "lane": "work",
+      "col": 5,
+      "type": "frontend",
+      "label": "检查实际成果",
+      "sublabel": "答复、文件与明确版本",
+      "width": 184,
+      "height": 68,
+      "sources": [
+        {
+          "path": "server/runner.mjs",
+          "line": 257,
+          "end_line": 274
+        }
+      ]
+    },
+    {
+      "id": "confirm",
+      "lane": "learn",
+      "col": 0,
+      "type": "security",
+      "label": "由你确认与修订",
+      "sublabel": "版本递增，原始证据保留",
+      "width": 184,
+      "height": 68,
+      "sources": [
+        {
+          "path": "src/cognition/TaskFeedback.tsx",
+          "line": 63,
+          "end_line": 70
+        },
+        {
+          "path": "server/domain.mjs",
+          "line": 25,
+          "end_line": 33
+        }
+      ]
+    },
+    {
+      "id": "candidate",
+      "lane": "learn",
+      "col": 2,
+      "type": "database",
+      "label": "保存待确认理解",
+      "sublabel": "保留原答复与当时上下文",
+      "width": 184,
+      "height": 68,
+      "sources": [
+        {
+          "path": "server/task-learning.mjs",
+          "line": 74,
+          "end_line": 95
+        }
+      ]
+    },
+    {
+      "id": "feedback",
+      "lane": "learn",
+      "col": 3,
+      "type": "frontend",
+      "label": "指出需要怎样改",
+      "sublabel": "长期理解需单独保存与确认",
+      "width": 184,
+      "height": 68,
+      "sources": [
+        {
+          "path": "src/cognition/TaskFeedback.tsx",
+          "line": 38,
+          "end_line": 51
+        }
+      ]
+    },
+    {
+      "id": "oneoff",
+      "lane": "learn",
+      "col": 5,
+      "type": "database",
+      "label": "本次反馈留在本次",
+      "sublabel": "评价不会自动生成个人事实",
+      "width": 184,
+      "height": 68,
+      "sources": [
+        {
+          "path": "server/task-reactions.mjs",
+          "line": 8,
+          "end_line": 24
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "select",
+      "from": "understanding",
+      "to": "context",
+      "label": "检索"
+    },
+    {
+      "id": "inform",
+      "from": "context",
+      "to": "action",
+      "label": "快照",
+      "variant": "emphasis"
+    },
+    {
+      "id": "inspect",
+      "from": "action",
+      "to": "result",
+      "label": "输出",
+      "variant": "emphasis"
+    },
+    {
+      "id": "correct",
+      "from": "result",
+      "to": "feedback",
+      "label": "纠正",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "role": "return",
+      "route": "drop",
+      "bias": 0.5
+    },
+    {
+      "id": "capture",
+      "from": "feedback",
+      "to": "candidate",
+      "label": "长期理解",
+      "fromSide": "left",
+      "toSide": "right",
+      "role": "return"
+    },
+    {
+      "id": "approval",
+      "from": "candidate",
+      "to": "confirm",
+      "label": "待确认",
+      "fromSide": "left",
+      "toSide": "right",
+      "variant": "security",
+      "role": "return"
+    },
+    {
+      "id": "inherit",
+      "from": "confirm",
+      "to": "understanding",
+      "label": "下次取用",
+      "fromSide": "top",
+      "toSide": "bottom",
+      "variant": "emphasis",
+      "role": "return"
+    },
+    {
+      "id": "temporary",
+      "from": "feedback",
+      "to": "oneoff",
+      "label": "本次评价",
+      "variant": "dashed",
+      "role": "branch"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "开启数字分身后按需使用",
+      "items": [
+        "开启后，每轮重新选择相关认知，保留预算和来源。",
+        "当前指令仍决定这次任务，不把历史偏好当作绝对规则。"
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "纠正留痕，确认后再继承",
+      "items": [
+        "纠正先成为候选，并保留原答复、产物版本与当时上下文。",
+        "经你确认后，相关的新任务才会使用这条理解。"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "一次性反馈不自动泛化",
+      "items": [
+        "对答复的评价和补充意见不会自动创建个人事实。",
+        "此图说明实现机制，不代表模型效果已经普遍验证。"
+      ]
+    }
+  ]
+}

@@ -1,19 +1,40 @@
-.site-hero-portrait{overflow:clip}
-.site-hero-portrait .site-hero-object{isolation:isolate}
-.site-hero-portrait .hero-portrait-field{width:calc(100% + 110px);height:580px;margin-inline:-55px;position:relative;isolation:isolate}
-.site-hero-portrait .hero-portrait-field::before{inset:2% 2% 4%;background:radial-gradient(ellipse at 62% 38%,#e6dfea55,transparent 55%),radial-gradient(ellipse at 36% 68%,#eee2cc66,transparent 53%)}
-.site-hero-portrait .hero-particle-canvas{position:absolute;inset:0;z-index:1;display:block;width:100%;height:100%;touch-action:pan-y;cursor:crosshair;transition:opacity .6s ease}
-.site-hero-portrait .hero-portrait-fallback{display:block;position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:18px 0 40px;opacity:1;transition:opacity .65s ease;pointer-events:none}
+/* A clear reading column alongside a large, unframed three-dimensional field.
+   No opaque text shield, image distortion or mask cuts across the painting. */
+.site-hero.site-hero-portrait{position:relative;isolation:isolate;overflow:clip;grid-template-columns:minmax(0,1fr) minmax(0,1.16fr);gap:0;min-height:800px;padding-block:16px}
+.site-hero-portrait .site-hero-copy{position:relative;z-index:2;isolation:isolate;padding-right:18px}
+.site-hero-portrait .site-hero-copy::before{display:none}
+.site-hero-portrait .site-hero-description{color:color-mix(in srgb,var(--site-ink) 81%,var(--site-bg));line-height:1.82}
+.site-hero-portrait .site-hero-position,.site-hero-portrait .site-hero-description{max-width:29em}
+.site-hero-portrait .site-hero-copy h1>span{font-size:clamp(29px,2.7vw,39px)}
+.site-hero-portrait .site-hero-object{isolation:isolate;z-index:0;margin:0;overflow:visible;justify-content:center}
+.site-hero.site-hero-portrait .site-hero-object .hero-portrait-field{width:calc(100% + 110px);height:clamp(640px,60vw,820px);max-height:calc(100svh - 130px);aspect-ratio:auto;margin:0 -55px;position:relative;isolation:isolate;mask-image:none}
+.site-hero-portrait .hero-portrait-field::before{display:none}
+.site-hero-portrait .hero-particle-canvas,.site-hero-portrait .hero-portrait-fallback{display:block;position:absolute;inset:0;width:100%;height:100%;border:0;object-fit:contain;opacity:1;transition:opacity .45s ease}
+.site-hero-portrait .hero-particle-canvas{z-index:1;touch-action:pan-y}
+.site-hero-portrait .hero-portrait-fallback{padding:5%;pointer-events:none}
 .site-hero-portrait .hero-portrait-field[data-ready=true] .hero-portrait-fallback{opacity:0}
 .site-hero-portrait .hero-portrait-field[data-ready=false] .hero-particle-canvas{opacity:0}
-.site-hero-portrait .hero-pause-button{position:absolute;right:12px;bottom:12px;z-index:3;width:30px;height:30px;min-width:30px;padding:7px;border:1px solid var(--site-line);border-radius:50%;background:color-mix(in srgb,var(--site-bg) 78%,transparent);color:var(--site-muted);opacity:.58;transition:opacity .2s,background .2s}
-.site-hero-portrait .hero-pause-button:hover,.site-hero-portrait .hero-pause-button:focus-visible{opacity:1;background:var(--site-surface);color:var(--site-ink)}
-.site-hero-portrait .hero-pause-button svg{width:14px;height:14px}
-/* The original transparent artwork stays in the page's atmosphere. No opaque
-   canvas background, image inversion, or replacement asset is needed at night. */
-[data-theme=dark] .site-hero-portrait .hero-portrait-field{background:transparent}
-[data-theme=dark] .site-hero-portrait .hero-portrait-field::before{inset:2% -2% 3%;background:radial-gradient(ellipse at 60% 48%,rgb(154 127 181 / .18),transparent 58%),radial-gradient(ellipse at 42% 58%,rgb(200 177 136 / .07),transparent 48%),radial-gradient(ellipse at 53% 77%,rgb(113 94 146 / .12),transparent 54%)}
-[data-theme=dark] .site-hero-portrait .hero-portrait-field[data-ready=false] .hero-portrait-fallback{filter:drop-shadow(0 16px 30px rgb(0 0 0 / .22))}
-@media(max-width:950px){.site-hero-portrait .hero-portrait-field{height:500px;width:100%;margin-inline:0}}
-@media(max-width:700px){.site-hero-portrait .hero-portrait-field{height:440px;width:calc(100% + 40px);margin-inline:-20px}.site-hero-portrait .hero-portrait-fallback{padding-block:12px 32px}}
-@media(prefers-reduced-motion:reduce){.site-hero-portrait .hero-portrait-fallback,.site-hero-portrait .hero-particle-canvas,.site-hero-portrait .hero-pause-button{transition:none}}
+html:lang(en) .site-hero-portrait .site-hero-copy h1{font-size:clamp(49px,4.3vw,64px)}
+html:lang(en) .site-hero-portrait .site-hero-copy h1>span{font-size:.69em}
+@media(max-width:1100px){
+ .site-hero.site-hero-portrait{grid-template-columns:minmax(0,1fr) minmax(0,1.16fr);min-height:680px}
+ .site-hero-portrait .site-hero-copy{padding-right:12px}
+ .site-hero-portrait .site-hero-copy h1>span{font-size:29px}
+}
+@media(max-width:800px){
+ .site-hero.site-hero-portrait{grid-template-columns:1fr;min-height:0;padding-top:32px}
+ .site-hero-portrait .site-hero-copy{padding-right:0;max-width:560px}
+ .site-hero.site-hero-portrait .site-hero-object .hero-portrait-field{width:100%;height:auto;margin-inline:0;aspect-ratio:.86;max-height:480px}
+ .site-hero-portrait .site-hero-object{margin-top:24px;margin-bottom:4px}
+ .site-hero-portrait .site-hero-copy h1>span{font-size:.8em}
+ html:lang(en) .site-hero-portrait .site-hero-copy h1{font-size:clamp(43px,8vw,58px)}
+ html:lang(en) .site-hero-portrait .site-hero-copy h1>span{font-size:.76em}
+}
+@media(prefers-reduced-motion:reduce){.site-hero-portrait .hero-portrait-fallback,.site-hero-portrait .hero-particle-canvas{transition:none}}
+
+/* Keep the approved editorial type and the two accepted title colors. */
+.site-hero-portrait .site-hero-copy h1{color:#483955}
+.site-hero-portrait .site-hero-copy h1>span{color:#796886}
+[data-theme=dark] .site-hero-portrait .site-hero-copy h1{color:#ede5d9}
+[data-theme=dark] .site-hero-portrait .site-hero-copy h1>span{color:#bbaaca}
+[data-theme=dark] .site-hero-portrait .hero-portrait-fallback{filter:brightness(.89) saturate(1.12)}

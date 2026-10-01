@@ -1,0 +1,411 @@
+{
+  "schemaVersion": 1,
+  "assets": [
+    {
+      "file": "personal-context-zh.jpg",
+      "sha256": "37cea250391f3130bc57a2203a1299df2ad7b0dc1d81baa37bd2cfc0550f4713",
+      "format": "image/jpeg",
+      "width": 1280,
+      "height": 900,
+      "locale": "zh-CN",
+      "theme": "light",
+      "space": "demo-cn-v1",
+      "captureDate": "2026-10-01",
+      "source": "Actual SecondU interface, canonical fictional example. Original 1280x900 capture copied without alteration.",
+      "fixtureReferences": [
+        "server/fixtures/demo-showcase.json",
+        "server/fixtures/demo-copy-v3.json"
+      ],
+      "fictional": true,
+      "visualReview": "Individually viewed: actual Chinese 万叶 canonical fictional workspace, correct theme, no private records, credentials, browser chrome or developer tools. Full original window retained.",
+      "metadata": [
+        {
+          "marker": "0xe0",
+          "bytes": 14,
+          "type": "JFIF"
+        }
+      ]
+    },
+    {
+      "file": "specialists-zh.jpg",
+      "sha256": "a5f0e281e385d924a4281ac45493f452d072f8d336708c89edc4f311d24a59f9",
+      "format": "image/jpeg",
+      "width": 1280,
+      "height": 900,
+      "locale": "zh-CN",
+      "theme": "light",
+      "space": "demo-cn-v1",
+      "captureDate": "2026-10-01",
+      "source": "Actual SecondU interface, canonical fictional example. Original 1280x900 capture copied without alteration.",
+      "fixtureReferences": [
+        "server/fixtures/demo-showcase.json",
+        "server/fixtures/demo-copy-v3.json"
+      ],
+      "fictional": true,
+      "visualReview": "Individually viewed: actual Chinese 万叶 canonical fictional workspace, correct theme, no private records, credentials, browser chrome or developer tools. Full original window retained.",
+      "metadata": [
+        {
+          "marker": "0xe0",
+          "bytes": 14,
+          "type": "JFIF"
+        }
+      ]
+    },
+    {
+      "file": "task-workspace-zh.jpg",
+      "sha256": "e4fa6f937e5dbe66402dcf050c8c830b844951b5ac20f3d4cbeb6b9672cc2792",
+      "format": "image/jpeg",
+      "width": 1280,
+      "height": 900,
+      "locale": "zh-CN",
+      "theme": "light",
+      "space": "demo-cn-v1",
+      "captureDate": "2026-10-01",
+      "source": "Actual SecondU interface, canonical fictional example. Original 1280x900 capture copied without alteration.",
+      "fixtureReferences": [
+        "server/fixtures/demo-showcase.json",
+        "server/fixtures/demo-copy-v3.json"
+      ],
+      "fictional": true,
+      "visualReview": "Individually viewed: actual Chinese 万叶 canonical fictional workspace, correct theme, no private records, credentials, browser chrome or developer tools. Full original window retained.",
+      "metadata": [
+        {
+          "marker": "0xe0",
+          "bytes": 14,
+          "type": "JFIF"
+        }
+      ]
+    },
+    {
+      "file": "task-workspace-zh-dark.jpg",
+      "sha256": "1001baba683141f674aa1bc315b8d425eb46c231cec49d6e063d0989518251c6",
+      "format": "image/jpeg",
+      "width": 1280,
+      "height": 900,
+      "locale": "zh-CN",
+      "theme": "dark",
+      "space": "demo-cn-v1",
+      "captureDate": "2026-10-01",
+      "source": "Actual SecondU interface, canonical fictional example. Original 1280x900 capture copied without alteration.",
+      "fixtureReferences": [
+        "server/fixtures/demo-showcase.json",
+        "server/fixtures/demo-copy-v3.json"
+      ],
+      "fictional": true,
+      "visualReview": "Individually viewed: actual Chinese 万叶 canonical fictional workspace, correct theme, no private records, credentials, browser chrome or developer tools. Full original window retained.",
+      "metadata": [
+        {
+          "marker": "0xe0",
+          "bytes": 14,
+          "type": "JFIF"
+        }
+      ]
+    },
+    {
+      "file": "personal-context-zh-dark.jpg",
+      "sha256": "740b69874a4a6d4c05418332ff19d56ff87b61602b0f7cc687c409e958a375a3",
+      "format": "image/jpeg",
+      "width": 1280,
+      "height": 900,
+      "locale": "zh-CN",
+      "theme": "dark",
+      "space": "demo-cn-v1",
+      "captureDate": "2026-10-01",
+      "source": "Actual SecondU interface, canonical fictional example. Original 1280x900 capture copied without alteration.",
+      "fixtureReferences": [
+        "server/fixtures/demo-showcase.json",
+        "server/fixtures/demo-copy-v3.json"
+      ],
+      "fictional": true,
+      "visualReview": "Individually viewed: actual Chinese 万叶 canonical fictional workspace, correct theme, no private records, credentials, browser chrome or developer tools. Full original window retained.",
+      "metadata": [
+        {
+          "marker": "0xe0",
+          "bytes": 14,
+          "type": "JFIF"
+        }
+      ]
+    },
+    {
+      "file": "specialists-zh-dark.jpg",
+      "sha256": "1c1004d1a2d8d4efaa9d70df6f7d2e9367b3b96170f0aadbf5f7f113df6945fd",
+      "format": "image/jpeg",
+      "width": 1280,
+      "height": 900,
+      "locale": "zh-CN",
+      "theme": "dark",
+      "space": "demo-cn-v1",
+      "captureDate": "2026-10-01",
+      "source": "Actual SecondU interface, canonical fictional example. Original 1280x900 capture copied without alteration.",
+      "fixtureReferences": [
+        "server/fixtures/demo-showcase.json",
+        "server/fixtures/demo-copy-v3.json"
+      ],
+      "fictional": true,
+      "visualReview": "Individually viewed: actual Chinese 万叶 canonical fictional workspace, correct theme, no private records, credentials, browser chrome or developer tools. Full original window retained.",
+      "metadata": [
+        {
+          "marker": "0xe0",
+          "bytes": 14,
+          "type": "JFIF"
+        }
+      ]
+    },
+    {
+      "file": "personal-context-en.jpg",
+      "sha256": "d35107f41c01a11c74f1627a5174fc8e9f0503b54a5c33056d9808134e4f5a2a",
+      "format": "image/jpeg",
+      "width": 1280,
+      "height": 900,
+      "locale": "en-US",
+      "theme": "light",
+      "space": "demo-us-v1",
+      "captureDate": "2026-10-01",
+      "source": "Actual SecondU interface, canonical fictional example. Original 1280x900 capture copied without alteration.",
+      "fixtureReferences": [
+        "server/fixtures/demo-us.json"
+      ],
+      "fictional": true,
+      "visualReview": "Individually viewed: actual English Caspian canonical fictional workspace, correct theme, no private records, credentials, browser chrome or developer tools. Full original window retained.",
+      "metadata": [
+        {
+          "marker": "0xe0",
+          "bytes": 14,
+          "type": "JFIF"
+        }
+      ]
+    },
+    {
+      "file": "specialists-en.jpg",
+      "sha256": "70ffa3f1808a665b509e94e51fc95401c70ddb2c3686d38dce734fdc1384181c",
+      "format": "image/jpeg",
+      "width": 1280,
+      "height": 900,
+      "locale": "en-US",
+      "theme": "light",
+      "space": "demo-us-v1",
+      "captureDate": "2026-10-01",
+      "source": "Actual SecondU interface, canonical fictional example. Original 1280x900 capture copied without alteration.",
+      "fixtureReferences": [
+        "server/fixtures/demo-us.json"
+      ],
+      "fictional": true,
+      "visualReview": "Individually viewed: actual English Caspian canonical fictional workspace, correct theme, no private records, credentials, browser chrome or developer tools. Full original window retained.",
+      "metadata": [
+        {
+          "marker": "0xe0",
+          "bytes": 14,
+          "type": "JFIF"
+        }
+      ]
+    },
+    {
+      "file": "task-workspace-en.jpg",
+      "sha256": "7de0a2ee17bb1297199bb6ab79f8f8aac6751cb1eedd62bdfd1996356cd32c12",
+      "format": "image/jpeg",
+      "width": 1280,
+      "height": 900,
+      "locale": "en-US",
+      "theme": "light",
+      "space": "demo-us-v1",
+      "captureDate": "2026-10-01",
+      "source": "Actual SecondU interface, canonical fictional example. Original 1280x900 capture copied without alteration.",
+      "fixtureReferences": [
+        "server/fixtures/demo-us.json"
+      ],
+      "fictional": true,
+      "visualReview": "Individually viewed: actual English Caspian canonical fictional workspace, correct theme, no private records, credentials, browser chrome or developer tools. Full original window retained.",
+      "metadata": [
+        {
+          "marker": "0xe0",
+          "bytes": 14,
+          "type": "JFIF"
+        }
+      ]
+    },
+    {
+      "file": "personal-context-en-dark.jpg",
+      "sha256": "6fafbf0a4c2cd9f7faca51ded3daa4776f6b91ea3245943b460365c2479ec02b",
+      "format": "image/jpeg",
+      "width": 1280,
+      "height": 900,
+      "locale": "en-US",
+      "theme": "dark",
+      "space": "demo-us-v1",
+      "captureDate": "2026-10-01",
+      "source": "Actual SecondU interface, canonical fictional example. Original 1280x900 capture copied without alteration.",
+      "fixtureReferences": [
+        "server/fixtures/demo-us.json"
+      ],
+      "fictional": true,
+      "visualReview": "Individually viewed: actual English Caspian canonical fictional workspace, correct theme, no private records, credentials, browser chrome or developer tools. Full original window retained.",
+      "metadata": [
+        {
+          "marker": "0xe0",
+          "bytes": 14,
+          "type": "JFIF"
+        }
+      ]
+    },
+    {
+      "file": "specialists-en-dark.jpg",
+      "sha256": "9aae59225444aa29b550b74924afa9778e39c46258aa283396c1aae7767a3ba9",
+      "format": "image/jpeg",
+      "width": 1280,
+      "height": 900,
+      "locale": "en-US",
+      "theme": "dark",
+      "space": "demo-us-v1",
+      "captureDate": "2026-10-01",
+      "source": "Actual SecondU interface, canonical fictional example. Original 1280x900 capture copied without alteration.",
+      "fixtureReferences": [
+        "server/fixtures/demo-us.json"
+      ],
+      "fictional": true,
+      "visualReview": "Individually viewed: actual English Caspian canonical fictional workspace, correct theme, no private records, credentials, browser chrome or developer tools. Full original window retained.",
+      "metadata": [
+        {
+          "marker": "0xe0",
+          "bytes": 14,
+          "type": "JFIF"
+        }
+      ]
+    },
+    {
+      "file": "task-workspace-en-dark.jpg",
+      "sha256": "cdfc488baeea695628d427b93038ed4aa81189c7a6c8e0b6ab3abe345ffdb8fc",
+      "format": "image/jpeg",
+      "width": 1280,
+      "height": 900,
+      "locale": "en-US",
+      "theme": "dark",
+      "space": "demo-us-v1",
+      "captureDate": "2026-10-01",
+      "source": "Actual SecondU interface, canonical fictional example. Original 1280x900 capture copied without alteration.",
+      "fixtureReferences": [
+        "server/fixtures/demo-us.json"
+      ],
+      "fictional": true,
+      "visualReview": "Individually viewed: actual English Caspian canonical fictional workspace, correct theme, no private records, credentials, browser chrome or developer tools. Full original window retained.",
+      "metadata": [
+        {
+          "marker": "0xe0",
+          "bytes": 14,
+          "type": "JFIF"
+        }
+      ]
+    },
+    {
+      "file": "decision-support-zh.jpg",
+      "sha256": "5ea83b22cbc87c16458f86ca8b57868514e7018af185d5790eae49f41b1e57e5",
+      "format": "image/jpeg",
+      "width": 1280,
+      "height": 900,
+      "locale": "zh-CN",
+      "theme": "light",
+      "space": "demo-cn-v1",
+      "captureDate": "2026-10-01",
+      "source": "Actual SecondU career-discussion task and Markdown outline in the canonical fictional workspace. Original JPEG capture copied byte-for-byte at 1280x900; its source filename used a .png suffix. No crop, scaling, padding or re-encoding.",
+      "sourceCapture": "decision-support-zh.png",
+      "sourceSha256": "5ea83b22cbc87c16458f86ca8b57868514e7018af185d5790eae49f41b1e57e5",
+      "fixtureReferences": [
+        "server/demo-decision.mjs",
+        "shared/demo-decision.mjs",
+        "server/fixtures/demo-zh-content-v1.json"
+      ],
+      "fictional": true,
+      "visualReview": "Individually viewed: actual Chinese 万叶 fictional conversation with its editable outline, matching locale and theme. No private records, credentials, browser chrome or developer tools. Authored example; no model call or outreach.",
+      "metadata": [
+        {
+          "marker": "0xe0",
+          "bytes": 14,
+          "type": "JFIF"
+        }
+      ]
+    },
+    {
+      "file": "decision-support-zh-dark.jpg",
+      "sha256": "f8e88926c43b7b754f9b98b2b706a28ca1634fb6d76e0c4fdbe08aeb6b523d26",
+      "format": "image/jpeg",
+      "width": 1280,
+      "height": 900,
+      "locale": "zh-CN",
+      "theme": "dark",
+      "space": "demo-cn-v1",
+      "captureDate": "2026-10-01",
+      "source": "Actual SecondU career-discussion task and Markdown outline in the canonical fictional workspace. Original JPEG capture copied byte-for-byte at 1280x900; its source filename used a .png suffix. No crop, scaling, padding or re-encoding.",
+      "sourceCapture": "decision-support-zh-dark.png",
+      "sourceSha256": "f8e88926c43b7b754f9b98b2b706a28ca1634fb6d76e0c4fdbe08aeb6b523d26",
+      "fixtureReferences": [
+        "server/demo-decision.mjs",
+        "shared/demo-decision.mjs",
+        "server/fixtures/demo-zh-content-v1.json"
+      ],
+      "fictional": true,
+      "visualReview": "Individually viewed: actual Chinese 万叶 fictional conversation with its editable outline, matching locale and theme. No private records, credentials, browser chrome or developer tools. Authored example; no model call or outreach.",
+      "metadata": [
+        {
+          "marker": "0xe0",
+          "bytes": 14,
+          "type": "JFIF"
+        }
+      ]
+    },
+    {
+      "file": "decision-support-en.jpg",
+      "sha256": "7cc64ad23d7736fedc149203afe17c1e98cb55bc4f5643aefbbd684f9dffe7d4",
+      "format": "image/jpeg",
+      "width": 1280,
+      "height": 900,
+      "locale": "en-US",
+      "theme": "light",
+      "space": "demo-us-v1",
+      "captureDate": "2026-10-01",
+      "source": "Actual SecondU career-discussion task and Markdown outline in the canonical fictional workspace. Original JPG capture copied byte-for-byte at 1280x900. No crop, scaling, padding or re-encoding.",
+      "sourceCapture": "decision-en-light.jpg",
+      "sourceSha256": "7cc64ad23d7736fedc149203afe17c1e98cb55bc4f5643aefbbd684f9dffe7d4",
+      "fixtureReferences": [
+        "server/demo-decision.mjs",
+        "shared/demo-decision.mjs",
+        "server/fixtures/demo-us.json"
+      ],
+      "fictional": true,
+      "visualReview": "Individually viewed: actual English Caspian fictional conversation with its editable outline, matching locale and theme. No private records, credentials, browser chrome or developer tools. Authored example; no model call or outreach.",
+      "metadata": [
+        {
+          "marker": "0xe0",
+          "bytes": 14,
+          "type": "JFIF"
+        }
+      ]
+    },
+    {
+      "file": "decision-support-en-dark.jpg",
+      "sha256": "9f3e1bb6c4ef7e6b5027aaf088b0411ff6c386d2d4c89bae00b2c869db03b47c",
+      "format": "image/jpeg",
+      "width": 1280,
+      "height": 900,
+      "locale": "en-US",
+      "theme": "dark",
+      "space": "demo-us-v1",
+      "captureDate": "2026-10-01",
+      "source": "Actual SecondU career-discussion task and Markdown outline in the canonical fictional workspace. Original JPG capture copied byte-for-byte at 1280x900. No crop, scaling, padding or re-encoding.",
+      "sourceCapture": "decision-en-dark.jpg",
+      "sourceSha256": "9f3e1bb6c4ef7e6b5027aaf088b0411ff6c386d2d4c89bae00b2c869db03b47c",
+      "fixtureReferences": [
+        "server/demo-decision.mjs",
+        "shared/demo-decision.mjs",
+        "server/fixtures/demo-us.json"
+      ],
+      "fictional": true,
+      "visualReview": "Individually viewed: actual English Caspian fictional conversation with its editable outline, matching locale and theme. No private records, credentials, browser chrome or developer tools. Authored example; no model call or outreach.",
+      "metadata": [
+        {
+          "marker": "0xe0",
+          "bytes": 14,
+          "type": "JFIF"
+        }
+      ]
+    }
+  ]
+}

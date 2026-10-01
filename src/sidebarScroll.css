@@ -5,10 +5,10 @@
 .sidebar-scroll-body>.main-navigation,.sidebar-scroll-body>.sidebar-projects { flex-shrink:0; }
 .sidebar-scroll-body>.task-navigation { flex:0 0 auto;min-height:0;overflow:visible;padding-bottom:0; }
 .sidebar-scroll-body>.task-navigation>nav { overflow:visible;min-height:0;padding:0 0 4px;margin-top:7px; }
-.sidebar-collapsed .sidebar-scroll-body { width:100%;align-items:center;gap:8px;padding:0;mask-image:none; }
-.sidebar-collapsed .sidebar-scroll-body>.main-navigation { align-items:center;width:100%; }
-.sidebar-collapsed .sidebar-scroll-body>.main-navigation>.nav-item,.sidebar-collapsed .sidebar-scroll-body>.main-navigation>.new-task-button,.sidebar-collapsed .sidebar-scroll-body>.nav-item { width:42px;padding-inline:0; }
-.sidebar-collapsed .sidebar-scroll-body>.main-navigation>.nav-item>span,.sidebar-collapsed .sidebar-scroll-body>.main-navigation>.new-task-button>span { justify-content:center; }
+.app-shell:not(.desktop-mode).sidebar-collapsed .sidebar-scroll-body { width:100%;align-items:center;gap:8px;padding:0;mask-image:none; }
+.app-shell:not(.desktop-mode).sidebar-collapsed .sidebar-scroll-body>.main-navigation { align-items:center;width:100%; }
+.app-shell:not(.desktop-mode).sidebar-collapsed .sidebar-scroll-body>.main-navigation>.nav-item,.app-shell:not(.desktop-mode).sidebar-collapsed .sidebar-scroll-body>.main-navigation>.new-task-button,.app-shell:not(.desktop-mode).sidebar-collapsed .sidebar-scroll-body>.nav-item { width:42px;padding-inline:0; }
+.app-shell:not(.desktop-mode).sidebar-collapsed .sidebar-scroll-body>.main-navigation>.nav-item>span,.app-shell:not(.desktop-mode).sidebar-collapsed .sidebar-scroll-body>.main-navigation>.new-task-button>span { justify-content:center; }
 .app-sidebar > .sidebar-bottom {
   flex-shrink:0;
   position:relative;
