@@ -4,6 +4,7 @@ import {ArrowUpRight, ChevronRight, Code} from '@openai/apps-sdk-ui/components/I
 import {useSiteLanguage} from './site-language';
 import {SiteChoice} from './SiteChoice';
 import type {BenchmarkCase, BenchmarkComparison, BenchmarkDataset, BenchmarkResult, BenchmarkText} from './benchmark-data';
+import homepageSummary from 'virtual:benchmark-summary';
 import './benchmark.css';
 
 const repository = 'https://github.com/YunyueLi/SecondU';
@@ -112,9 +113,9 @@ function ReplyInspector({data,currentCase,result,mode,repetition,onMode,onRepeti
  </div>;
 }
 
-function BenchmarkSummary({data,reportUrl}:{data:BenchmarkDataset;reportUrl:string}){
+function BenchmarkSummary({data,reportUrl}:{data:typeof homepageSummary;reportUrl:string}){
  const {language,t}=useSiteLanguage();
- const metric=data.comparisons.find(item=>item.id==='decision')?.cells.find(item=>item.mode==='structured');
+ const metric=data.decision;
  const percentage=metric?.denominator?100*(metric.numerator??0)/metric.denominator:null;
  const labels:Record<string,BenchmarkText>={
   tradeoffs:{zh:'偏好取舍',en:'Personal preferences'},planning:{zh:'组合规划',en:'Constraint planning'},temporal:{zh:'记忆更新',en:'Memory updates'},uncertainty:{zh:'信息澄清',en:'Clarification'},routing:{zh:'人物与任务',en:'People and tasks'},hygiene:{zh:'噪声排除',en:'Distracting evidence'},
@@ -125,11 +126,11 @@ function BenchmarkSummary({data,reportUrl}:{data:BenchmarkDataset;reportUrl:stri
     <span>{t('SecondU 决策通过率','SecondU decision pass rate')}</span>
     <div className="benchmark-score-number">{percentage===null?'—':percentage.toFixed(1)}{percentage!==null&&<span>%</span>}</div>
     <p>{metric?t(`${metric.numerator} / ${metric.denominator} 次调用符合预设决策要求。`,`${metric.numerator} / ${metric.denominator} calls met the prespecified decision requirements.`):t('历史基线，查看完整报告。','Historical baseline. See the full report.')}</p>
-    <div className="benchmark-summary-stats"><span><strong>{data.cases.length}</strong>{t('个场景','cases')}</span><span><strong>{data.capabilities?.length??4}</strong>{t('类能力','capabilities')}</span><span><strong>{data.planned}</strong>{t('次调用','calls')}</span></div>
+    <div className="benchmark-summary-stats"><span><strong>{data.caseCount}</strong>{t('个场景','cases')}</span><span><strong>{data.capabilities?.length??4}</strong>{t('类能力','capabilities')}</span><span><strong>{data.planned}</strong>{t('次调用','calls')}</span></div>
    </div>
    <div className="benchmark-capability-results" aria-label={t('各类能力的实际决策通过率','Observed decision pass rate by capability')}>
     {data.capabilities?.map(group=>{
-     const cell=group.comparisons.find(item=>item.id==='decision')?.cells.find(item=>item.mode==='structured');
+     const cell=group.decision;
      const value=cell?.denominator?100*(cell.numerator??0)/cell.denominator:0;
      return <div className="benchmark-capability-result" key={group.id}><div><span>{(labels[group.id]??group.title)[language]}</span><strong>{value===100?'100':value.toFixed(1)}<small>%</small></strong></div><div className="benchmark-result-track" role="meter" aria-label={(labels[group.id]??group.title)[language]} aria-valuenow={value} aria-valuemin={0} aria-valuemax={100} aria-valuetext={`${cell?.numerator??0} / ${cell?.denominator??0}`}><span style={{width:`${value}%`}}/></div></div>;
     })}
@@ -151,6 +152,7 @@ export default function Benchmark({standalone=false}:{standalone?:boolean}){
  const base=import.meta.env.BASE_URL==='./'&&standalone?'../':import.meta.env.BASE_URL;
  const reportUrl=`${base}benchmark/?lang=${language}`;
  useEffect(()=>{
+  if(!standalone)return;
   let cancelled=false,started=false;
   function start(){
    if(started)return;started=true;setError(false);
@@ -185,7 +187,7 @@ export default function Benchmark({standalone=false}:{standalone?:boolean}){
    <div className="site-section-head"><Heading id="benchmark-title">{standalone?t('个人上下文评测报告','Personal-context benchmark report'):t('个人上下文评测','Personal-context benchmark')}</Heading><p>{standalone?t('查看场景结果、对照条件与模型原文。所有评测材料均为合成内容，输入与输出完整公开。','Inspect results, context conditions and original replies. All evaluation material is synthetic; inputs and outputs are public.'):t('通过模拟任务，检验个人偏好、记忆更新与任务决策。','Testing personal preferences, memory updates and decisions through simulated tasks.')}</p></div>
    {standalone&&<a className="benchmark-method-link" href={`${repository}/blob/main/docs/CONTEXT-BENCHMARK.md`} target="_blank" rel="noreferrer">{t('阅读评测方法','Read the methodology')}<ArrowUpRight/></a>}
   </div>
-  {!data?<div className="benchmark-loading" role="status">{error?<><p>{t('评测材料未能加载，请重新载入或查看原始记录。','The evidence could not be loaded. Try again or inspect the original record.')}</p><button type="button" onClick={()=>setAttempt(value=>value+1)}>{t('重新加载','Retry')}</button><a href={`${repository}/tree/main/benchmarks/results`}>{t('原始记录','Original records')}</a></>:t('正在载入评测结果…','Loading benchmark results…')}</div>:!standalone?<BenchmarkSummary data={data} reportUrl={reportUrl}/>:<>
+  {!standalone?<BenchmarkSummary data={homepageSummary} reportUrl={reportUrl}/>:!data?<div className="benchmark-loading" role="status">{error?<><p>{t('评测材料未能加载，请重新载入或查看原始记录。','The evidence could not be loaded. Try again or inspect the original record.')}</p><button type="button" onClick={()=>setAttempt(value=>value+1)}>{t('重新加载','Retry')}</button><a href={`${repository}/tree/main/benchmarks/results`}>{t('原始记录','Original records')}</a></>:t('正在载入评测结果…','Loading benchmark results…')}</div>:<>
    <div className="benchmark-runline"><div><strong>{data.version==='v1'?t('历史基线','Historical baseline'):t('上下文评测','Context benchmark')} · {data.version}</strong><span>{data.cases.length} {t('个合成场景','synthetic cases')}</span><span>{data.modes.length} {t('种条件','conditions')}</span><span>{data.repetitions} {t('次重复',data.repetitions===1?'repetition':'repetitions')}</span></div><span>{data.completed}/{data.planned} {t('次调用返回','calls returned')}<i aria-hidden="true"/></span></div>
    {data.paired?<div className="benchmark-primary-evidence">
     <PairedCases data={data} capability={capability} onCapability={setCapability} onSelect={id=>selectCase(id,true)} activeCase={currentCase?.id}/>

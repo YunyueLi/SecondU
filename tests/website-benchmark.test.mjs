@@ -62,3 +62,30 @@ test('formal presentation retains failed calls, null usage and exact original re
  assert.deepEqual(data.comparisons.find(item=>item.id==='constraints').cells.map(item=>[item.numerator,item.denominator]),[[36,36],[32,36]]);
  assert.equal(data.paired.categories.reduce((sum,item)=>sum+item.count,0),24);
 });
+
+
+test('homepage summary derives every displayed count from frozen trials without original text',async()=>{
+ const {readBenchmarkSummary}=await import('../website/benchmark-summary.mjs');
+ const summary=await readBenchmarkSummary(path.join(root,'benchmarks/results'));
+ assert.equal(summary.caseCount,24);assert.equal(summary.planned,144);assert.equal(summary.completed,143);
+ assert.deepEqual(summary.decision,{numerator:43,denominator:48});
+ assert.deepEqual(summary.capabilities.map(group=>[group.id,group.decision.numerator,group.decision.denominator]),[['tradeoffs',8,8],['planning',8,8],['temporal',8,8],['uncertainty',8,8],['routing',7,8],['hygiene',4,8]]);
+ const payload=JSON.stringify(summary);
+ assert.ok(Buffer.byteLength(payload)<2048);
+ assert.doesNotMatch(payload,/source-memory-|UNRELATED_CANARY|parsedOutput|usedSourceIds|clarificationFields/);
+ assert.equal(summary.evidence['inputs.json'],'cee4ab06a070e6dc18dd71cc24479abdd3e485d93456a47e1a15352135c96f6a');
+});
+
+test('homepage summary rejects changed source bytes and misgrouped trial identities',async()=>{
+ const {readBenchmarkSummary}=await import('../website/benchmark-summary.mjs');
+ const temporary=await mkdtemp(path.join(os.tmpdir(),'secondu-benchmark-summary-'));
+ try{
+  const run=path.join(temporary,'2026-10-01-v2');await cp(path.join(root,'benchmarks/results/2026-10-01-v2'),run,{recursive:true});
+  const reviewPath=path.join(run,'review.json'),review=JSON.parse(await readFile(reviewPath,'utf8'));
+  review.rows[0].capabilityId='hygiene';await writeFile(reviewPath,JSON.stringify(review));
+  await assert.rejects(readBenchmarkSummary(temporary),/trial identity/);
+  await cp(path.join(root,'benchmarks/results/2026-10-01-v2/review.json'),reviewPath);
+  await writeFile(path.join(run,'inputs.json'),await readFile(path.join(run,'inputs.json'),'utf8')+' ');
+  await assert.rejects(readBenchmarkSummary(temporary),/hash/);
+ }finally{await rm(temporary,{recursive:true,force:true});}
+});

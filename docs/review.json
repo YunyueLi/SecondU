@@ -751,8 +751,8 @@
       "scope": "本机候选工作树；当前公开版本仍为 v0.1.2",
       "scopeEn": "Local candidate working tree; v0.1.2 remains the public release",
       "status": "partial",
-      "detail": "原生标题对齐与重复收栏修复已有源码，最新连续操作实屏待主任务补入；独立隐私插图的桌面浅／深色及窄屏实屏通过。原包与解压包的签名、文件一致性、隔离 runtime 和 MCP 检查通过。Mac 当前锁定，原生连续操作待解锁。最终封包、对应提交 CI、Pages、公开版本及资产核对未完成，不预填发布时间。外部 Kimi 仍无有效结果。发布后只补真实发布记录；文档补录不触发重复整包。",
-      "detailEn": "Native title alignment and repeated-collapse repairs are implemented, but current interaction evidence remains pending. The privacy illustration passed desktop light/dark and narrow-screen review. Package and unpacked-archive signature, file-integrity, isolated runtime and MCP checks passed. The Mac is locked; native interactions await unlock. Final packaging, commit-specific CI, Pages, publication and asset checks remain pending; no publication time is invented. External Kimi review has no valid result. After publication, append the factual release record without repackaging solely for that record.",
+      "detail": "30d7a7a 的 macOS 与 Ubuntu Build CI 36887858601、Pages 36887858409 均成功；官网量化结果、独立报告与超时记录已上线实测。最终包与解压包的签名、文件一致性、runtime 和 MCP 检查通过。v0.1.3 ZIP 为 220915395 字节，GitHub 草稿摘要与本机 ac43f5f1872a331e430a29deda8993f4258f3b87cdc160c8a9312127c7dc9cf7 一致。Mac 仍锁定，最新原生连续操作待解锁，桌面版本尚未公开。外部 Kimi 无有效结果。",
+      "detailEn": "Build CI 36887858601 passed on macOS and Ubuntu; Pages 36887858409 succeeded for 30d7a7a. Live summary, separate report and timeout evidence were checked. Final and unpacked archives passed signatures, integrity, runtime and MCP checks. The 220915395-byte v0.1.3 ZIP has a matching local/GitHub draft digest ac43f5f1872a331e430a29deda8993f4258f3b87cdc160c8a9312127c7dc9cf7. The Mac remains locked; native repeated interactions and public desktop release are pending. External Kimi review has no valid result.",
       "document": "DEVELOPMENT.md",
       "section": "2026-10-01 v0.1.3 候选变更与验收"
     }
@@ -919,20 +919,20 @@
       {
         "zh": "独立书册插图在桌面浅／深色及 390 窄屏通过；最终官网构建与 30 项针对性检查通过。",
         "en": "The separate book illustration passed desktop light/dark and 390px review; the final website build and 30 targeted checks passed."
+      },
+      {
+        "zh": "30d7a7a 的 macOS／Ubuntu CI 与 Pages 成功；官网已上线复核。v0.1.3 安装包和校验文件已上传草稿，远端摘要一致。",
+        "en": "Commit 30d7a7a passed macOS/Ubuntu CI and Pages; the live website was checked. The v0.1.3 archive and checksum are uploaded to a draft with matching remote digests."
       }
     ],
     "pending": [
       {
-        "zh": "补最新原生标题对齐与连续收起／展开的实际验收。",
-        "en": "Record current native title alignment and repeated collapse/expand checks."
+        "zh": "Mac 当前锁定；解锁后完成原生连续收起／展开与拖动实测，再公开 v0.1.3。",
+        "en": "The Mac is locked. Complete native repeated collapse/expand and drag checks after unlock, then publish v0.1.3."
       },
       {
-        "zh": "最终包、对应提交 CI、Pages、v0.1.3 发布与资产核对；发布时间尚未产生。",
-        "en": "Final package, commit-specific CI, Pages, v0.1.3 publication and asset checks; no publication time exists yet."
-      },
-      {
-        "zh": "外部 Kimi 视觉复核仍无有效结果，继续保留缺口。",
-        "en": "External Kimi visual review still has no valid result; retain that gap."
+        "zh": "外部 Kimi 视觉复核因本机凭据读取不可用未取得有效结果。",
+        "en": "External Kimi visual review has no valid result because local credential access was unavailable."
       }
     ]
   }
