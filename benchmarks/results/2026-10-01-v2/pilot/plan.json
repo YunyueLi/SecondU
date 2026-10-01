@@ -1,0 +1,226 @@
+{
+  "schema": "secondu.context-trial-plan.v2",
+  "synthetic": true,
+  "inputManifestSha256": "7824c761227ee757a6753da5cb9a1ca4c0180497f822ed61c8ab5fd21434cf96",
+  "configuredModel": "gpt-6-astra",
+  "reasoningEffort": "medium",
+  "repetitions": 1,
+  "concurrency": 2,
+  "timeoutMs": 180000,
+  "retries": 0,
+  "orderSeed": "secondu-v2-order",
+  "conditionOrder": "Six prespecified permutations; same option mapping and prompt for every condition and repeat within each scenario",
+  "outputLimit": "Identical CLI model default, plus the same 180-word answer instruction. Not an independently enforced token cap.",
+  "parameters": {
+    "model_reasoning_effort": "medium",
+    "project_doc_max_bytes": 0,
+    "developer_instructions": "Use only the provided synthetic task and context. Produce text only. Do not use tools, local files, network, skills, memory or account data. Do not send messages or take actions.",
+    "web_search": "disabled",
+    "memories.use_memories": false,
+    "memories.generate_memories": false,
+    "features.skip_host_skill_discovery": true,
+    "history.persistence": "none",
+    "analytics.enabled": false,
+    "feedback.enabled": false,
+    "permissions.synthetic_text.network.enabled": false,
+    "approval_policy": "never",
+    "check_for_update_on_startup": false,
+    "model_provider": "synthetic_default",
+    "model_providers.synthetic_default": {
+      "name": "Existing OpenAI sign-in",
+      "wire_api": "responses",
+      "requires_openai_auth": true,
+      "supports_websockets": false
+    }
+  },
+  "disabledFeatures": [
+    "shell_tool",
+    "unified_exec",
+    "apps",
+    "plugins",
+    "remote_plugin",
+    "memories",
+    "browser_use",
+    "browser_use_external",
+    "computer_use",
+    "view_image",
+    "image_generation",
+    "multi_agent",
+    "multi_agent_v2",
+    "hooks",
+    "goals",
+    "code_mode",
+    "code_mode_host",
+    "workspace_dependencies",
+    "chronicle",
+    "skill_search",
+    "skill_mcp_dependency_install",
+    "sleep_tool",
+    "tool_suggest",
+    "recommended_plugins"
+  ],
+  "codeHashes": [
+    {
+      "file": "benchmarks/context/v2-cases.mjs",
+      "sha256": "dbb0f376e3c74cd4e38ceee8fb4c2a9f1a2ccf9be88fef28e6d82d839a5e13c4"
+    },
+    {
+      "file": "benchmarks/context/suite-v2.mjs",
+      "sha256": "b9719d713acce6a828850bd6fedaad94efcc3a71805ff1585a25aca5befb6f46"
+    },
+    {
+      "file": "benchmarks/context/retrieval-v2.mjs",
+      "sha256": "a9b14840449530285ba29ea73d6f2e59ca3a89ac9d712d73e900fbc7ecca6a7b"
+    },
+    {
+      "file": "server/memory-import.mjs",
+      "sha256": "72640a80ba23b41b50df7a5e91dc9b47087250d0fa523ea3fc338e20023025ed"
+    },
+    {
+      "file": "server/domain.mjs",
+      "sha256": "2b942e94228b0109d6aad7f68191ba5f6dabecd5b126ee48aff640e768ab935f"
+    },
+    {
+      "file": "server/personal-context.mjs",
+      "sha256": "439d17d47dc9d484ebea4b3e3e69378c270ff6cdd1156be8e5c043a633dc7e5e"
+    },
+    {
+      "file": "server/runner.mjs",
+      "sha256": "64580ece6e038cbe72ab952a64f741b831743767873e7cd74c917615ffd2ae56"
+    },
+    {
+      "file": "scripts/benchmark-context-v2-model.mjs",
+      "sha256": "1c680da5a5352d85ce8dc03d438a400593e2915328836365a4ce823236e6f97d"
+    },
+    {
+      "file": "benchmarks/context/score-v2.mjs",
+      "sha256": "463b99dbb67c3515720ffaf42686972a8fd50335a95184560e6a31ae0bd7b364"
+    },
+    {
+      "file": "scripts/review-context-benchmark-v2.mjs",
+      "sha256": "9dd8cface0d90638a8ac2ea4376993018013abfdd1f5d68722de4301eacd06e6"
+    }
+  ],
+  "trials": [
+    {
+      "id": "dev02--no_context--r1--a1",
+      "caseId": "dev02",
+      "capabilityId": "temporal",
+      "mode": "no_context",
+      "repetition": 1,
+      "attempt": 1,
+      "inputSha256": "28fa185507a0827494ea072e30943a27bf4def1f9bf11cf0bc4700d2a0215eeb",
+      "contextSha256": "ad34a7fecfcc5627751273d2bd00c4f0a3c63b89b17e8f2a13045f0c037b51d4"
+    },
+    {
+      "id": "dev02--structured--r1--a1",
+      "caseId": "dev02",
+      "capabilityId": "temporal",
+      "mode": "structured",
+      "repetition": 1,
+      "attempt": 1,
+      "inputSha256": "a93244512a6c7025f28e5d358bb0e1e2685096f546a72ab416d7284a8911a54f",
+      "contextSha256": "d3ed4447177cad06dc18d1446cb41edddf51bb7be4ce30e6584ebdf4468b7dad"
+    },
+    {
+      "id": "dev02--raw_retrieval--r1--a1",
+      "caseId": "dev02",
+      "capabilityId": "temporal",
+      "mode": "raw_retrieval",
+      "repetition": 1,
+      "attempt": 1,
+      "inputSha256": "e9747707d803ca01eb26a7c01c9b459202772fa20c718c6241c1c55b62e81ea4",
+      "contextSha256": "3a82743dc94cb029d9bb55008c57c98ffaf8fb83a2f36acaf75961aba758dd93"
+    },
+    {
+      "id": "dev04--raw_retrieval--r1--a1",
+      "caseId": "dev04",
+      "capabilityId": "hygiene",
+      "mode": "raw_retrieval",
+      "repetition": 1,
+      "attempt": 1,
+      "inputSha256": "29334e9cd2f0bc4299a03484e28bad91a4a48c12505255e182d8f17feccbd5a1",
+      "contextSha256": "4d7c508a1e43132681c06cff1575c199b6272921289f52adb92571699202958c"
+    },
+    {
+      "id": "dev04--structured--r1--a1",
+      "caseId": "dev04",
+      "capabilityId": "hygiene",
+      "mode": "structured",
+      "repetition": 1,
+      "attempt": 1,
+      "inputSha256": "a6ffe415b3209faeefc4101ebb2ddd7ce15ff8beb866f883adc258c879790382",
+      "contextSha256": "648559449e2ece2517125f5f8a6cd115bc476a50ed3742dfac6e7fbefe649888"
+    },
+    {
+      "id": "dev04--no_context--r1--a1",
+      "caseId": "dev04",
+      "capabilityId": "hygiene",
+      "mode": "no_context",
+      "repetition": 1,
+      "attempt": 1,
+      "inputSha256": "9c4906ac6940edef231c1c84f1159c650282b5879302e2eb47ff9af494e52f03",
+      "contextSha256": "ad34a7fecfcc5627751273d2bd00c4f0a3c63b89b17e8f2a13045f0c037b51d4"
+    },
+    {
+      "id": "dev01--no_context--r1--a1",
+      "caseId": "dev01",
+      "capabilityId": "tradeoffs",
+      "mode": "no_context",
+      "repetition": 1,
+      "attempt": 1,
+      "inputSha256": "f25fc0b5f76ea1e51374c4aacd18bb72389c04cf04143d814fbdbbf0aa61c58e",
+      "contextSha256": "ad34a7fecfcc5627751273d2bd00c4f0a3c63b89b17e8f2a13045f0c037b51d4"
+    },
+    {
+      "id": "dev01--raw_retrieval--r1--a1",
+      "caseId": "dev01",
+      "capabilityId": "tradeoffs",
+      "mode": "raw_retrieval",
+      "repetition": 1,
+      "attempt": 1,
+      "inputSha256": "cde26dfc0671bd6bb195f10021207d7d54a0c9c7452b788ddc7b7e582ad5e591",
+      "contextSha256": "c996211ae1951bdc5f34e9adf27f914feccecfa0b8c8c1d17a53bb0ec0158732"
+    },
+    {
+      "id": "dev01--structured--r1--a1",
+      "caseId": "dev01",
+      "capabilityId": "tradeoffs",
+      "mode": "structured",
+      "repetition": 1,
+      "attempt": 1,
+      "inputSha256": "f90ad5c5d663d96f645229626940e3f86ce852a956bd383b10f27df713ee4488",
+      "contextSha256": "33f3ab11237319b9cef59b503bede11f32efc440e7a4af1848de3f8b2f8bc45c"
+    },
+    {
+      "id": "dev03--raw_retrieval--r1--a1",
+      "caseId": "dev03",
+      "capabilityId": "uncertainty",
+      "mode": "raw_retrieval",
+      "repetition": 1,
+      "attempt": 1,
+      "inputSha256": "393c4a681a683c30597ded68acdef0631c3e74ccfa015c8405cdfcf769bda8e7",
+      "contextSha256": "9b5db6fd9b7325f03a48ae00231d3e6e3b6e1af68fbe57740844abcb4e59b91e"
+    },
+    {
+      "id": "dev03--no_context--r1--a1",
+      "caseId": "dev03",
+      "capabilityId": "uncertainty",
+      "mode": "no_context",
+      "repetition": 1,
+      "attempt": 1,
+      "inputSha256": "9bae93cc8dd76f58b02b87680e3813010da03047f8ab34f4ff88e23cfcdc89cb",
+      "contextSha256": "ad34a7fecfcc5627751273d2bd00c4f0a3c63b89b17e8f2a13045f0c037b51d4"
+    },
+    {
+      "id": "dev03--structured--r1--a1",
+      "caseId": "dev03",
+      "capabilityId": "uncertainty",
+      "mode": "structured",
+      "repetition": 1,
+      "attempt": 1,
+      "inputSha256": "5e667d3f5aefc4fc110d94f7f7fba0e7b3468174aaabcb650d42bc3d8a9f39f2",
+      "contextSha256": "ab9c8923913503e4a9efde396d890afcc87b7bbc0d0a7e5075b95f9db4926da4"
+    }
+  ]
+}

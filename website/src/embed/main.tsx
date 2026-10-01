@@ -69,6 +69,9 @@ window.addEventListener('message', event => {
   // The first API read must see the host's preference, not the product's
   // default system theme. Later messages update this same mounted instance.
   startProduct();
+  // The host also sends initialization on iframe load. A requested acknowledgement
+  // recovers a missed initial announcement without polling or remounting drafts.
+  if(value.requestReady===true)parent.postMessage({type:'secondu-example-ready'},location.origin);
 });
 addEventListener('click', event => {
   const link = (event.target as Element | null)?.closest<HTMLAnchorElement>('a[href]');

@@ -7,6 +7,7 @@ import { build } from 'vite';
 import { buildEmbeddedProduct } from './build-embed.mjs';
 import { copyArchitectureAssets } from './build-diagrams.mjs';
 import { copyRoadmapProvenance } from './build-roadmap.mjs';
+import { copyBenchmarkAssets } from './build-benchmark.mjs';
 
 const directory = path.dirname(fileURLToPath(import.meta.url));
 const root = path.dirname(directory);
@@ -35,6 +36,7 @@ const assets = [
   ...['pencil', 'tidal', 'night', 'plain'].flatMap(theme => [`art/themes/${theme}-atlas-v1.png`, `art/themes/${theme}-atlas-v1.prompt.json`].map(file => [file, file])),
   ['art/twin-badge-v1.png', 'art/twin-badge-v1.png'],
   ['art/twin-badge-v1.prompt.json', 'art/twin-badge-v1.prompt.json'],
+  ['art/paper-rhythm.png', 'art/paper-rhythm.png'],
 ];
 for (const [source, target] of assets) {
   await mkdir(path.dirname(path.join(output, target)), { recursive: true });
@@ -42,6 +44,7 @@ for (const [source, target] of assets) {
 }
 await copyArchitectureAssets({ sourceDirectory: path.join(directory, 'public/architecture'), outputDirectory: output });
 await copyRoadmapProvenance({ sourceDirectory: path.join(directory, 'public/art/roadmap'), outputDirectory: output });
+await copyBenchmarkAssets({ sourceDirectory: path.join(root, 'benchmarks/results'), outputDirectory: output });
 const fontDirectory = path.join(root, 'node_modules/katex/dist/fonts');
 await mkdir(path.join(output, 'fonts'), { recursive: true });
 for (const name of await readdir(fontDirectory)) if (/^KaTeX_[A-Za-z0-9-]+\.woff2$/.test(name)) await cp(path.join(fontDirectory, name), path.join(output, 'fonts', name));
@@ -58,6 +61,9 @@ for (const [source, name] of [
 
 await build({ configFile: path.join(directory, 'vite.config.ts'), base, build: { outDir: output, emptyOutDir: false },
   plugins: [{ name: 'website-local-public-assets', enforce: 'pre', transform(code, id) {
+    if (id.split('?')[0] === path.join(root, 'src/StartupScreen.tsx')) {
+      return code.replaceAll("'/art/paper-rhythm.png'", JSON.stringify(`${base}art/paper-rhythm.png`));
+    }
     if (id.split('?')[0] === path.join(root, 'shared/brand.json')) {
       const brand = JSON.parse(code);
       for (const key of ['mark', 'wordmark', 'favicon']) if (typeof brand[key] === 'string' && brand[key].startsWith('/brand/')) brand[key] = `${base}assets/${path.basename(brand[key])}`;
@@ -78,7 +84,7 @@ for (const name of built) if (name.endsWith('.css')) {
 }
 await writeFile(path.join(output, '.nojekyll'), '');
 await writeFile(path.join(output, 'robots.txt'), `User-agent: *\nAllow: /\nSitemap: ${config.url}sitemap.xml\n`);
-await writeFile(path.join(output, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>${config.url}</loc></url></urlset>\n`);
+await writeFile(path.join(output, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>${config.url}</loc></url><url><loc>${config.url}benchmark/</loc></url></urlset>\n`);
 const files = await readdir(output, { recursive: true, withFileTypes: true });
 const manifest = [];
 for (const item of files) if (item.isFile()) {

@@ -122,7 +122,6 @@ export function App() {
   return <UserAvatarContext.Provider value={data.profile.avatarImage}><div className={`app-shell ${desktopMode?'desktop-mode':''} ${collapsed?'sidebar-collapsed':''} view-${workspaceRoute.view}`} data-window-fullscreen={desktopMode?desktopFrame.fullscreen:undefined} style={narrowWindow?undefined:sidebarSize.style}>
     <a className="skip-link" href="#main-workspace" onClick={event=>{event.preventDefault();document.getElementById('main-workspace')?.focus();}}>{t("跳到主内容", "Skip to content")}</a>
     {desktopMode&&!narrowWindow&&<div className="shell-sidebar-drag" aria-hidden="true" />}
-    {!narrowWindow&&desktopMode&&<Button ref={shellSidebarButton} color="secondary" variant="ghost" uniform className="shell-sidebar-toggle" aria-controls="main-navigation-sidebar" aria-label={sidebarHidden?t('展开导航','Open sidebar'):t('收起导航','Close sidebar')} title={sidebarHidden?t('展开导航','Open sidebar'):t('收起导航','Close sidebar')} aria-expanded={!sidebarHidden} onClick={toggleSidebar}><SidebarPanelIcon/></Button>}
     {sidebarOpen&&<button className="sidebar-backdrop" aria-label={t("关闭导航", "Close sidebar")} onClick={toggleSidebar} />}
     <aside id="main-navigation-sidebar" className={`app-sidebar ${sidebarOpen?'is-open':''}`} aria-label={t("主导航", "Main navigation")} inert={sidebarHidden||(narrowWindow&&!sidebarOpen)}>
       {desktopMode&&<div className="desktop-sidebar-drag" aria-hidden="true" />}
@@ -178,5 +177,7 @@ export function App() {
         {creatingProject&&<ProjectEditor onClose={()=>setCreatingProject(false)} onSaved={async project=>{await refresh();setCreatingProject(false);navigate('projects',project.id);}}/>}
         {route.view==='settings'&&<Dialog title={t("设置", "Settings")} className="settings-dialog" onClose={()=>navigate(previousWorkspace.current.view,previousWorkspace.current.id)}><SettingsWorkspace data={data} onRefresh={refresh} theme={theme} onTheme={setTheme} initialCategory={route.id} appearance={appearance} appearanceStatus={appearanceStatus} onAppearance={updateAppearance} /></Dialog>}
     </div>
+    {/* Apply the native no-drag region after workspace drag surfaces. */}
+    {!narrowWindow&&desktopMode&&<Button ref={shellSidebarButton} color="secondary" variant="ghost" uniform pill={false} className="shell-sidebar-toggle" aria-controls="main-navigation-sidebar" aria-label={sidebarHidden?t('展开导航','Open sidebar'):t('收起导航','Close sidebar')} title={sidebarHidden?t('展开导航','Open sidebar'):t('收起导航','Close sidebar')} aria-expanded={!sidebarHidden} onClick={toggleSidebar}><SidebarPanelIcon/></Button>}
   </div></UserAvatarContext.Provider>;
 }

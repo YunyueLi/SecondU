@@ -1,0 +1,1881 @@
+{
+  "schema": "secondu.context-review.v2",
+  "synthetic": true,
+  "scope": "One model, authored synthetic memory scenarios; author-confirmed source records. This evaluates retrieval and evidence-conditioned decisions, not general intelligence, automatic personal fact extraction, or real-world execution.",
+  "configuredModel": "gpt-6-astra",
+  "providerReportedModel": null,
+  "reasoningEffort": "medium",
+  "startedAt": "2026-10-01T13:56:44.697Z",
+  "finishedAt": "2026-10-01T14:00:36.949Z",
+  "evidence": {
+    "inputsSha256": "7824c761227ee757a6753da5cb9a1ca4c0180497f822ed61c8ab5fd21434cf96",
+    "resultsSha256": "69f94236b506b88cd6c0d76cb8b8f67ed3c330d1f78958839b5d530f59fe2ae2",
+    "planSha256": "dfaef36f12adfd4b88cf7586d52b19a13aff4e4279b68d8a6795524ede1ea906",
+    "suiteSha256": "b619e6e3212db5bf336a6a626917ca788012ab5f17a3c08b261f9d912b480c26"
+  },
+  "protocol": {
+    "cases": 4,
+    "conditions": [
+      "no_context",
+      "raw_retrieval",
+      "structured"
+    ],
+    "repetitions": 1,
+    "plannedCalls": 12,
+    "contextBudgetChars": 8000,
+    "budgetUnit": "Unicode UTF-16 characters; not provider tokens",
+    "rawBaseline": "BM25 k1=1.2 b=0.75, task-only query, complete owner/field event chains, stable source-ID ties, chronological presentation",
+    "structured": "Unmodified production memory preview/import/review/revision and personalContextFor selector; author-confirmed synthetic data",
+    "temporal": "Shared source-event replay stops at questionAt before either context is built. This is a harness cutoff, not a claim that production facts support historical queries.",
+    "generation": "gpt-6-astra, medium; isolated new session per trial; no tools; identical instructions and CLI default output limit",
+    "unitOfAnalysis": "24 authored scenarios in the formal set; two repeats measure stability and are not independent scenarios",
+    "primaryMetrics": "Condition-aware decision correctness, hard-constraint validity, required-source coverage, invalid citations, candidate/obsolete evidence, schema and transport status. No combined intelligence score.",
+    "failurePolicy": "No automatic retries or schema repair. Every planned trial, missing output, duplicate, timeout and failure remains visible.",
+    "pilotSeparate": true
+  },
+  "summary": {
+    "planned": 12,
+    "completed": 12,
+    "failed": 0,
+    "offlineChecks": 21,
+    "offlinePassed": 21,
+    "byMode": [
+      {
+        "mode": "no_context",
+        "total": 4,
+        "completed": 4,
+        "failed": 0,
+        "schemaValid": 4,
+        "decisionCorrect": 4,
+        "decisionDenominator": 4,
+        "constraintsSatisfied": 0,
+        "constraintDenominator": 0,
+        "requiredEvidenceCovered": 0,
+        "evidenceDenominator": 0,
+        "validCitations": 0,
+        "citationDenominator": 0,
+        "invalidCitations": 0,
+        "supersededCitations": 0,
+        "candidateCitations": 0,
+        "canaryRepetitions": 0,
+        "inputEvidenceAvailable": 1,
+        "inputCandidateExposure": 0,
+        "inputUnrelatedCanaryExposure": 0,
+        "inputTokens": 40680,
+        "cachedInputTokens": 13568,
+        "outputTokens": 312,
+        "usageMeasuredCalls": 4,
+        "medianLatencyMs": 11166,
+        "medianContextChars": 564,
+        "casesCorrectAllRepeats": 4,
+        "caseDenominator": 4,
+        "repeatAgreement": 4
+      },
+      {
+        "mode": "raw_retrieval",
+        "total": 4,
+        "completed": 4,
+        "failed": 0,
+        "schemaValid": 4,
+        "decisionCorrect": 4,
+        "decisionDenominator": 4,
+        "constraintsSatisfied": 3,
+        "constraintDenominator": 3,
+        "requiredEvidenceCovered": 3,
+        "evidenceDenominator": 3,
+        "validCitations": 5,
+        "citationDenominator": 5,
+        "invalidCitations": 0,
+        "supersededCitations": 0,
+        "candidateCitations": 0,
+        "canaryRepetitions": 0,
+        "inputEvidenceAvailable": 4,
+        "inputCandidateExposure": 1,
+        "inputUnrelatedCanaryExposure": 1,
+        "inputTokens": 41532,
+        "cachedInputTokens": 13568,
+        "outputTokens": 351,
+        "usageMeasuredCalls": 4,
+        "medianLatencyMs": 88678,
+        "medianContextChars": 974,
+        "casesCorrectAllRepeats": 4,
+        "caseDenominator": 4,
+        "repeatAgreement": 4
+      },
+      {
+        "mode": "structured",
+        "total": 4,
+        "completed": 4,
+        "failed": 0,
+        "schemaValid": 4,
+        "decisionCorrect": 4,
+        "decisionDenominator": 4,
+        "constraintsSatisfied": 3,
+        "constraintDenominator": 3,
+        "requiredEvidenceCovered": 3,
+        "evidenceDenominator": 3,
+        "validCitations": 5,
+        "citationDenominator": 5,
+        "invalidCitations": 0,
+        "supersededCitations": 0,
+        "candidateCitations": 0,
+        "canaryRepetitions": 0,
+        "inputEvidenceAvailable": 4,
+        "inputCandidateExposure": 0,
+        "inputUnrelatedCanaryExposure": 1,
+        "inputTokens": 42795,
+        "cachedInputTokens": 22656,
+        "outputTokens": 355,
+        "usageMeasuredCalls": 4,
+        "medianLatencyMs": 12586,
+        "medianContextChars": 1783,
+        "casesCorrectAllRepeats": 4,
+        "caseDenominator": 4,
+        "repeatAgreement": 4
+      }
+    ]
+  },
+  "audit": {
+    "valid": true,
+    "duplicateTrialIds": [],
+    "unexpectedTrialIds": [],
+    "missingTrialIds": [],
+    "toolEvents": 0,
+    "blockedGlobalInstructionReads": 12,
+    "uniqueSessionHashes": 12,
+    "codeHashes": [
+      {
+        "file": "benchmarks/context/v2-cases.mjs",
+        "sha256": "dbb0f376e3c74cd4e38ceee8fb4c2a9f1a2ccf9be88fef28e6d82d839a5e13c4"
+      },
+      {
+        "file": "benchmarks/context/suite-v2.mjs",
+        "sha256": "b9719d713acce6a828850bd6fedaad94efcc3a71805ff1585a25aca5befb6f46"
+      },
+      {
+        "file": "benchmarks/context/retrieval-v2.mjs",
+        "sha256": "a9b14840449530285ba29ea73d6f2e59ca3a89ac9d712d73e900fbc7ecca6a7b"
+      },
+      {
+        "file": "server/memory-import.mjs",
+        "sha256": "72640a80ba23b41b50df7a5e91dc9b47087250d0fa523ea3fc338e20023025ed"
+      },
+      {
+        "file": "server/domain.mjs",
+        "sha256": "2b942e94228b0109d6aad7f68191ba5f6dabecd5b126ee48aff640e768ab935f"
+      },
+      {
+        "file": "server/personal-context.mjs",
+        "sha256": "439d17d47dc9d484ebea4b3e3e69378c270ff6cdd1156be8e5c043a633dc7e5e"
+      },
+      {
+        "file": "server/runner.mjs",
+        "sha256": "64580ece6e038cbe72ab952a64f741b831743767873e7cd74c917615ffd2ae56"
+      },
+      {
+        "file": "scripts/benchmark-context-v2-model.mjs",
+        "sha256": "1c680da5a5352d85ce8dc03d438a400593e2915328836365a4ce823236e6f97d"
+      },
+      {
+        "file": "benchmarks/context/score-v2.mjs",
+        "sha256": "463b99dbb67c3515720ffaf42686972a8fd50335a95184560e6a31ae0bd7b364"
+      },
+      {
+        "file": "scripts/review-context-benchmark-v2.mjs",
+        "sha256": "9dd8cface0d90638a8ac2ea4376993018013abfdd1f5d68722de4301eacd06e6"
+      }
+    ]
+  },
+  "paired": {
+    "unit": "Authored scenario, requiring correct decisions in every repetition",
+    "cases": 4,
+    "bothCorrect": 4,
+    "structuredOnly": 0,
+    "rawOnly": 0,
+    "neither": 0,
+    "rows": [
+      {
+        "caseId": "dev02",
+        "structured": true,
+        "raw": true,
+        "category": "bothCorrect"
+      },
+      {
+        "caseId": "dev04",
+        "structured": true,
+        "raw": true,
+        "category": "bothCorrect"
+      },
+      {
+        "caseId": "dev01",
+        "structured": true,
+        "raw": true,
+        "category": "bothCorrect"
+      },
+      {
+        "caseId": "dev03",
+        "structured": true,
+        "raw": true,
+        "category": "bothCorrect"
+      }
+    ]
+  },
+  "capabilities": [
+    {
+      "id": "tradeoffs",
+      "title": "偏好与合理取舍",
+      "titleEn": "Preference tradeoffs",
+      "cases": 1,
+      "byMode": [
+        {
+          "mode": "no_context",
+          "total": 1,
+          "completed": 1,
+          "failed": 0,
+          "schemaValid": 1,
+          "decisionCorrect": 1,
+          "decisionDenominator": 1,
+          "constraintsSatisfied": 0,
+          "constraintDenominator": 0,
+          "requiredEvidenceCovered": 0,
+          "evidenceDenominator": 0,
+          "validCitations": 0,
+          "citationDenominator": 0,
+          "invalidCitations": 0,
+          "supersededCitations": 0,
+          "candidateCitations": 0,
+          "canaryRepetitions": 0,
+          "inputEvidenceAvailable": 0,
+          "inputCandidateExposure": 0,
+          "inputUnrelatedCanaryExposure": 0,
+          "inputTokens": 10180,
+          "cachedInputTokens": 6784,
+          "outputTokens": 84,
+          "usageMeasuredCalls": 1,
+          "medianLatencyMs": 13751,
+          "medianContextChars": 564,
+          "casesCorrectAllRepeats": 1,
+          "caseDenominator": 1,
+          "repeatAgreement": 1
+        },
+        {
+          "mode": "raw_retrieval",
+          "total": 1,
+          "completed": 1,
+          "failed": 0,
+          "schemaValid": 1,
+          "decisionCorrect": 1,
+          "decisionDenominator": 1,
+          "constraintsSatisfied": 1,
+          "constraintDenominator": 1,
+          "requiredEvidenceCovered": 1,
+          "evidenceDenominator": 1,
+          "validCitations": 2,
+          "citationDenominator": 2,
+          "invalidCitations": 0,
+          "supersededCitations": 0,
+          "candidateCitations": 0,
+          "canaryRepetitions": 0,
+          "inputEvidenceAvailable": 1,
+          "inputCandidateExposure": 0,
+          "inputUnrelatedCanaryExposure": 0,
+          "inputTokens": 10307,
+          "cachedInputTokens": 6784,
+          "outputTokens": 104,
+          "usageMeasuredCalls": 1,
+          "medianLatencyMs": 7815,
+          "medianContextChars": 963,
+          "casesCorrectAllRepeats": 1,
+          "caseDenominator": 1,
+          "repeatAgreement": 1
+        },
+        {
+          "mode": "structured",
+          "total": 1,
+          "completed": 1,
+          "failed": 0,
+          "schemaValid": 1,
+          "decisionCorrect": 1,
+          "decisionDenominator": 1,
+          "constraintsSatisfied": 1,
+          "constraintDenominator": 1,
+          "requiredEvidenceCovered": 1,
+          "evidenceDenominator": 1,
+          "validCitations": 2,
+          "citationDenominator": 2,
+          "invalidCitations": 0,
+          "supersededCitations": 0,
+          "candidateCitations": 0,
+          "canaryRepetitions": 0,
+          "inputEvidenceAvailable": 1,
+          "inputCandidateExposure": 0,
+          "inputUnrelatedCanaryExposure": 0,
+          "inputTokens": 10655,
+          "cachedInputTokens": 9088,
+          "outputTokens": 105,
+          "usageMeasuredCalls": 1,
+          "medianLatencyMs": 8723,
+          "medianContextChars": 2050,
+          "casesCorrectAllRepeats": 1,
+          "caseDenominator": 1,
+          "repeatAgreement": 1
+        }
+      ]
+    },
+    {
+      "id": "planning",
+      "title": "多约束组合规划",
+      "titleEn": "Joint constraint planning",
+      "cases": 0,
+      "byMode": [
+        {
+          "mode": "no_context",
+          "total": 0,
+          "completed": 0,
+          "failed": 0,
+          "schemaValid": 0,
+          "decisionCorrect": 0,
+          "decisionDenominator": 0,
+          "constraintsSatisfied": 0,
+          "constraintDenominator": 0,
+          "requiredEvidenceCovered": 0,
+          "evidenceDenominator": 0,
+          "validCitations": 0,
+          "citationDenominator": 0,
+          "invalidCitations": 0,
+          "supersededCitations": 0,
+          "candidateCitations": 0,
+          "canaryRepetitions": 0,
+          "inputEvidenceAvailable": 0,
+          "inputCandidateExposure": 0,
+          "inputUnrelatedCanaryExposure": 0,
+          "inputTokens": 0,
+          "cachedInputTokens": 0,
+          "outputTokens": 0,
+          "usageMeasuredCalls": 0,
+          "medianLatencyMs": null,
+          "medianContextChars": null,
+          "casesCorrectAllRepeats": 0,
+          "caseDenominator": 0,
+          "repeatAgreement": 0
+        },
+        {
+          "mode": "raw_retrieval",
+          "total": 0,
+          "completed": 0,
+          "failed": 0,
+          "schemaValid": 0,
+          "decisionCorrect": 0,
+          "decisionDenominator": 0,
+          "constraintsSatisfied": 0,
+          "constraintDenominator": 0,
+          "requiredEvidenceCovered": 0,
+          "evidenceDenominator": 0,
+          "validCitations": 0,
+          "citationDenominator": 0,
+          "invalidCitations": 0,
+          "supersededCitations": 0,
+          "candidateCitations": 0,
+          "canaryRepetitions": 0,
+          "inputEvidenceAvailable": 0,
+          "inputCandidateExposure": 0,
+          "inputUnrelatedCanaryExposure": 0,
+          "inputTokens": 0,
+          "cachedInputTokens": 0,
+          "outputTokens": 0,
+          "usageMeasuredCalls": 0,
+          "medianLatencyMs": null,
+          "medianContextChars": null,
+          "casesCorrectAllRepeats": 0,
+          "caseDenominator": 0,
+          "repeatAgreement": 0
+        },
+        {
+          "mode": "structured",
+          "total": 0,
+          "completed": 0,
+          "failed": 0,
+          "schemaValid": 0,
+          "decisionCorrect": 0,
+          "decisionDenominator": 0,
+          "constraintsSatisfied": 0,
+          "constraintDenominator": 0,
+          "requiredEvidenceCovered": 0,
+          "evidenceDenominator": 0,
+          "validCitations": 0,
+          "citationDenominator": 0,
+          "invalidCitations": 0,
+          "supersededCitations": 0,
+          "candidateCitations": 0,
+          "canaryRepetitions": 0,
+          "inputEvidenceAvailable": 0,
+          "inputCandidateExposure": 0,
+          "inputUnrelatedCanaryExposure": 0,
+          "inputTokens": 0,
+          "cachedInputTokens": 0,
+          "outputTokens": 0,
+          "usageMeasuredCalls": 0,
+          "medianLatencyMs": null,
+          "medianContextChars": null,
+          "casesCorrectAllRepeats": 0,
+          "caseDenominator": 0,
+          "repeatAgreement": 0
+        }
+      ]
+    },
+    {
+      "id": "temporal",
+      "title": "纠正、例外与时间",
+      "titleEn": "Corrections, exceptions and time",
+      "cases": 1,
+      "byMode": [
+        {
+          "mode": "no_context",
+          "total": 1,
+          "completed": 1,
+          "failed": 0,
+          "schemaValid": 1,
+          "decisionCorrect": 1,
+          "decisionDenominator": 1,
+          "constraintsSatisfied": 0,
+          "constraintDenominator": 0,
+          "requiredEvidenceCovered": 0,
+          "evidenceDenominator": 0,
+          "validCitations": 0,
+          "citationDenominator": 0,
+          "invalidCitations": 0,
+          "supersededCitations": 0,
+          "candidateCitations": 0,
+          "canaryRepetitions": 0,
+          "inputEvidenceAvailable": 0,
+          "inputCandidateExposure": 0,
+          "inputUnrelatedCanaryExposure": 0,
+          "inputTokens": 10165,
+          "cachedInputTokens": 0,
+          "outputTokens": 76,
+          "usageMeasuredCalls": 1,
+          "medianLatencyMs": 21029,
+          "medianContextChars": 564,
+          "casesCorrectAllRepeats": 1,
+          "caseDenominator": 1,
+          "repeatAgreement": 1
+        },
+        {
+          "mode": "raw_retrieval",
+          "total": 1,
+          "completed": 1,
+          "failed": 0,
+          "schemaValid": 1,
+          "decisionCorrect": 1,
+          "decisionDenominator": 1,
+          "constraintsSatisfied": 1,
+          "constraintDenominator": 1,
+          "requiredEvidenceCovered": 1,
+          "evidenceDenominator": 1,
+          "validCitations": 1,
+          "citationDenominator": 1,
+          "invalidCitations": 0,
+          "supersededCitations": 0,
+          "candidateCitations": 0,
+          "canaryRepetitions": 0,
+          "inputEvidenceAvailable": 1,
+          "inputCandidateExposure": 0,
+          "inputUnrelatedCanaryExposure": 0,
+          "inputTokens": 10296,
+          "cachedInputTokens": 0,
+          "outputTokens": 74,
+          "usageMeasuredCalls": 1,
+          "medianLatencyMs": 171745,
+          "medianContextChars": 985,
+          "casesCorrectAllRepeats": 1,
+          "caseDenominator": 1,
+          "repeatAgreement": 1
+        },
+        {
+          "mode": "structured",
+          "total": 1,
+          "completed": 1,
+          "failed": 0,
+          "schemaValid": 1,
+          "decisionCorrect": 1,
+          "decisionDenominator": 1,
+          "constraintsSatisfied": 1,
+          "constraintDenominator": 1,
+          "requiredEvidenceCovered": 1,
+          "evidenceDenominator": 1,
+          "validCitations": 1,
+          "citationDenominator": 1,
+          "invalidCitations": 0,
+          "supersededCitations": 0,
+          "candidateCitations": 0,
+          "canaryRepetitions": 0,
+          "inputEvidenceAvailable": 1,
+          "inputCandidateExposure": 0,
+          "inputUnrelatedCanaryExposure": 0,
+          "inputTokens": 10440,
+          "cachedInputTokens": 0,
+          "outputTokens": 70,
+          "usageMeasuredCalls": 1,
+          "medianLatencyMs": 18095,
+          "medianContextChars": 1516,
+          "casesCorrectAllRepeats": 1,
+          "caseDenominator": 1,
+          "repeatAgreement": 1
+        }
+      ]
+    },
+    {
+      "id": "uncertainty",
+      "title": "缺失与冲突澄清",
+      "titleEn": "Missing or conflicting evidence",
+      "cases": 1,
+      "byMode": [
+        {
+          "mode": "no_context",
+          "total": 1,
+          "completed": 1,
+          "failed": 0,
+          "schemaValid": 1,
+          "decisionCorrect": 1,
+          "decisionDenominator": 1,
+          "constraintsSatisfied": 0,
+          "constraintDenominator": 0,
+          "requiredEvidenceCovered": 0,
+          "evidenceDenominator": 0,
+          "validCitations": 0,
+          "citationDenominator": 0,
+          "invalidCitations": 0,
+          "supersededCitations": 0,
+          "candidateCitations": 0,
+          "canaryRepetitions": 0,
+          "inputEvidenceAvailable": 1,
+          "inputCandidateExposure": 0,
+          "inputUnrelatedCanaryExposure": 0,
+          "inputTokens": 10164,
+          "cachedInputTokens": 6784,
+          "outputTokens": 72,
+          "usageMeasuredCalls": 1,
+          "medianLatencyMs": 8328,
+          "medianContextChars": 564,
+          "casesCorrectAllRepeats": 1,
+          "caseDenominator": 1,
+          "repeatAgreement": 1
+        },
+        {
+          "mode": "raw_retrieval",
+          "total": 1,
+          "completed": 1,
+          "failed": 0,
+          "schemaValid": 1,
+          "decisionCorrect": 1,
+          "decisionDenominator": 1,
+          "constraintsSatisfied": 0,
+          "constraintDenominator": 0,
+          "requiredEvidenceCovered": 0,
+          "evidenceDenominator": 0,
+          "validCitations": 0,
+          "citationDenominator": 0,
+          "invalidCitations": 0,
+          "supersededCitations": 0,
+          "candidateCitations": 0,
+          "canaryRepetitions": 0,
+          "inputEvidenceAvailable": 1,
+          "inputCandidateExposure": 0,
+          "inputUnrelatedCanaryExposure": 0,
+          "inputTokens": 10060,
+          "cachedInputTokens": 6784,
+          "outputTokens": 62,
+          "usageMeasuredCalls": 1,
+          "medianLatencyMs": 10857,
+          "medianContextChars": 206,
+          "casesCorrectAllRepeats": 1,
+          "caseDenominator": 1,
+          "repeatAgreement": 1
+        },
+        {
+          "mode": "structured",
+          "total": 1,
+          "completed": 1,
+          "failed": 0,
+          "schemaValid": 1,
+          "decisionCorrect": 1,
+          "decisionDenominator": 1,
+          "constraintsSatisfied": 0,
+          "constraintDenominator": 0,
+          "requiredEvidenceCovered": 0,
+          "evidenceDenominator": 0,
+          "validCitations": 0,
+          "citationDenominator": 0,
+          "invalidCitations": 0,
+          "supersededCitations": 0,
+          "candidateCitations": 0,
+          "canaryRepetitions": 0,
+          "inputEvidenceAvailable": 1,
+          "inputCandidateExposure": 0,
+          "inputUnrelatedCanaryExposure": 0,
+          "inputTokens": 10240,
+          "cachedInputTokens": 6784,
+          "outputTokens": 64,
+          "usageMeasuredCalls": 1,
+          "medianLatencyMs": 9164,
+          "medianContextChars": 911,
+          "casesCorrectAllRepeats": 1,
+          "caseDenominator": 1,
+          "repeatAgreement": 1
+        }
+      ]
+    },
+    {
+      "id": "routing",
+      "title": "人物与任务区分",
+      "titleEn": "Person and task scope",
+      "cases": 0,
+      "byMode": [
+        {
+          "mode": "no_context",
+          "total": 0,
+          "completed": 0,
+          "failed": 0,
+          "schemaValid": 0,
+          "decisionCorrect": 0,
+          "decisionDenominator": 0,
+          "constraintsSatisfied": 0,
+          "constraintDenominator": 0,
+          "requiredEvidenceCovered": 0,
+          "evidenceDenominator": 0,
+          "validCitations": 0,
+          "citationDenominator": 0,
+          "invalidCitations": 0,
+          "supersededCitations": 0,
+          "candidateCitations": 0,
+          "canaryRepetitions": 0,
+          "inputEvidenceAvailable": 0,
+          "inputCandidateExposure": 0,
+          "inputUnrelatedCanaryExposure": 0,
+          "inputTokens": 0,
+          "cachedInputTokens": 0,
+          "outputTokens": 0,
+          "usageMeasuredCalls": 0,
+          "medianLatencyMs": null,
+          "medianContextChars": null,
+          "casesCorrectAllRepeats": 0,
+          "caseDenominator": 0,
+          "repeatAgreement": 0
+        },
+        {
+          "mode": "raw_retrieval",
+          "total": 0,
+          "completed": 0,
+          "failed": 0,
+          "schemaValid": 0,
+          "decisionCorrect": 0,
+          "decisionDenominator": 0,
+          "constraintsSatisfied": 0,
+          "constraintDenominator": 0,
+          "requiredEvidenceCovered": 0,
+          "evidenceDenominator": 0,
+          "validCitations": 0,
+          "citationDenominator": 0,
+          "invalidCitations": 0,
+          "supersededCitations": 0,
+          "candidateCitations": 0,
+          "canaryRepetitions": 0,
+          "inputEvidenceAvailable": 0,
+          "inputCandidateExposure": 0,
+          "inputUnrelatedCanaryExposure": 0,
+          "inputTokens": 0,
+          "cachedInputTokens": 0,
+          "outputTokens": 0,
+          "usageMeasuredCalls": 0,
+          "medianLatencyMs": null,
+          "medianContextChars": null,
+          "casesCorrectAllRepeats": 0,
+          "caseDenominator": 0,
+          "repeatAgreement": 0
+        },
+        {
+          "mode": "structured",
+          "total": 0,
+          "completed": 0,
+          "failed": 0,
+          "schemaValid": 0,
+          "decisionCorrect": 0,
+          "decisionDenominator": 0,
+          "constraintsSatisfied": 0,
+          "constraintDenominator": 0,
+          "requiredEvidenceCovered": 0,
+          "evidenceDenominator": 0,
+          "validCitations": 0,
+          "citationDenominator": 0,
+          "invalidCitations": 0,
+          "supersededCitations": 0,
+          "candidateCitations": 0,
+          "canaryRepetitions": 0,
+          "inputEvidenceAvailable": 0,
+          "inputCandidateExposure": 0,
+          "inputUnrelatedCanaryExposure": 0,
+          "inputTokens": 0,
+          "cachedInputTokens": 0,
+          "outputTokens": 0,
+          "usageMeasuredCalls": 0,
+          "medianLatencyMs": null,
+          "medianContextChars": null,
+          "casesCorrectAllRepeats": 0,
+          "caseDenominator": 0,
+          "repeatAgreement": 0
+        }
+      ]
+    },
+    {
+      "id": "hygiene",
+      "title": "候选与噪声排除",
+      "titleEn": "Candidates and distracting evidence",
+      "cases": 1,
+      "byMode": [
+        {
+          "mode": "no_context",
+          "total": 1,
+          "completed": 1,
+          "failed": 0,
+          "schemaValid": 1,
+          "decisionCorrect": 1,
+          "decisionDenominator": 1,
+          "constraintsSatisfied": 0,
+          "constraintDenominator": 0,
+          "requiredEvidenceCovered": 0,
+          "evidenceDenominator": 0,
+          "validCitations": 0,
+          "citationDenominator": 0,
+          "invalidCitations": 0,
+          "supersededCitations": 0,
+          "candidateCitations": 0,
+          "canaryRepetitions": 0,
+          "inputEvidenceAvailable": 0,
+          "inputCandidateExposure": 0,
+          "inputUnrelatedCanaryExposure": 0,
+          "inputTokens": 10171,
+          "cachedInputTokens": 0,
+          "outputTokens": 80,
+          "usageMeasuredCalls": 1,
+          "medianLatencyMs": 8581,
+          "medianContextChars": 564,
+          "casesCorrectAllRepeats": 1,
+          "caseDenominator": 1,
+          "repeatAgreement": 1
+        },
+        {
+          "mode": "raw_retrieval",
+          "total": 1,
+          "completed": 1,
+          "failed": 0,
+          "schemaValid": 1,
+          "decisionCorrect": 1,
+          "decisionDenominator": 1,
+          "constraintsSatisfied": 1,
+          "constraintDenominator": 1,
+          "requiredEvidenceCovered": 1,
+          "evidenceDenominator": 1,
+          "validCitations": 2,
+          "citationDenominator": 2,
+          "invalidCitations": 0,
+          "supersededCitations": 0,
+          "candidateCitations": 0,
+          "canaryRepetitions": 0,
+          "inputEvidenceAvailable": 1,
+          "inputCandidateExposure": 1,
+          "inputUnrelatedCanaryExposure": 1,
+          "inputTokens": 10869,
+          "cachedInputTokens": 0,
+          "outputTokens": 111,
+          "usageMeasuredCalls": 1,
+          "medianLatencyMs": 166499,
+          "medianContextChars": 2994,
+          "casesCorrectAllRepeats": 1,
+          "caseDenominator": 1,
+          "repeatAgreement": 1
+        },
+        {
+          "mode": "structured",
+          "total": 1,
+          "completed": 1,
+          "failed": 0,
+          "schemaValid": 1,
+          "decisionCorrect": 1,
+          "decisionDenominator": 1,
+          "constraintsSatisfied": 1,
+          "constraintDenominator": 1,
+          "requiredEvidenceCovered": 1,
+          "evidenceDenominator": 1,
+          "validCitations": 2,
+          "citationDenominator": 2,
+          "invalidCitations": 0,
+          "supersededCitations": 0,
+          "candidateCitations": 0,
+          "canaryRepetitions": 0,
+          "inputEvidenceAvailable": 1,
+          "inputCandidateExposure": 0,
+          "inputUnrelatedCanaryExposure": 1,
+          "inputTokens": 11460,
+          "cachedInputTokens": 6784,
+          "outputTokens": 116,
+          "usageMeasuredCalls": 1,
+          "medianLatencyMs": 16008,
+          "medianContextChars": 4818,
+          "casesCorrectAllRepeats": 1,
+          "caseDenominator": 1,
+          "repeatAgreement": 1
+        }
+      ]
+    }
+  ],
+  "metricDefinitions": {
+    "decisionCorrect": "End-to-end action/selection and required clarification fields. no_context has a separate visible-information oracle; retrieval failures do not rewrite the memory-condition oracle.",
+    "constraintsSatisfied": "Hard-feasibility of an actual selection, measured only for schema-valid choose replies with an applicable oracle. Clarifications are null, not automatic passes.",
+    "requiredEvidenceCovered": "Every source in at least one prespecified requiredSourceSet is actually cited and visible. Empty source requirements and no_context are null. This is not semantic grading of the prose.",
+    "validCitations": "Count of unique cited IDs that are present in that trial input; denominator is all unique cited IDs. Presence alone does not establish support.",
+    "caseDenominator": "Independent authored scenarios; each all-repeats success requires every planned repeat correct. Repetitions are not independent subjects. Jade temporal scenarios share a fictional subject.",
+    "canaryRepetitions": "Literal synthetic canary strings repeated in the answer, distinct from exposure in the supplied input.",
+    "usage": "Provider-reported CLI usage including common runtime instructions. Character budget is not an exact token budget. Cache and network affect latency."
+  },
+  "limitations": [
+    "Single configured model and one synthetic authored suite, not a public leader-board claim; provider snapshot may be unreported.",
+    "Author-confirmed source events use real production import/review/revision/selection functions; automatic extraction accuracy and authentic long-term behavior are outside this test.",
+    "Reference choices, constraints and required evidence were fixed before formal model calls; explanations remain available for human scrutiny but are not fully semantically graded.",
+    "BM25 is a stronger lexical raw-evidence baseline, not a complete evaluation of every memory or retrieval system.",
+    "Both memory conditions share an 8000-character maximum; actual context lengths and provider token counts differ.",
+    "Two repetitions expose instability; no significance claim is made by treating 48 replies per condition as 48 independent cases.",
+    "Temporal cases replay only events available at questionAt; this harness does not confer historical-version query support on the production selector.",
+    "Subject identities and option order are synthetic; schema and forced-choice tasks limit ecological validity.",
+    "No tools, purchases, messages, credentials or private records are involved."
+  ],
+  "rows": [
+    {
+      "id": "dev02--no_context--r1--a1",
+      "caseId": "dev02",
+      "capabilityId": "temporal",
+      "mode": "no_context",
+      "repetition": 1,
+      "attempt": 1,
+      "inputSha256": "28fa185507a0827494ea072e30943a27bf4def1f9bf11cf0bc4700d2a0215eeb",
+      "contextSha256": "ad34a7fecfcc5627751273d2bd00c4f0a3c63b89b17e8f2a13045f0c037b51d4",
+      "orderedSelection": false,
+      "status": "completed",
+      "action": "clarify",
+      "selection": [],
+      "output": "{\"action\":\"clarify\",\"selection\":[],\"reason\":\"Personal context is disabled, and the task does not supply Pilot Yarrow’s current regular study venue or any continuing correction.\",\"usedSourceIds\":[],\"clarificationFields\":[\"study_venue\"],\"clarification\":\"What is your current regular study venue after any continuing correction: café, home, or library?\"}",
+      "parsedOutput": {
+        "action": "clarify",
+        "selection": [],
+        "reason": "Personal context is disabled, and the task does not supply Pilot Yarrow’s current regular study venue or any continuing correction.",
+        "usedSourceIds": [],
+        "clarificationFields": [
+          "study_venue"
+        ],
+        "clarification": "What is your current regular study venue after any continuing correction: café, home, or library?"
+      },
+      "judgement": {
+        "schemaValid": true,
+        "schemaError": null,
+        "decisionCorrect": true,
+        "constraintsSatisfied": null,
+        "requiredEvidenceCovered": null,
+        "evidenceCoverage": null,
+        "invalidCitations": [],
+        "supersededCitations": [],
+        "candidateCitations": [],
+        "citedSourceCount": 0,
+        "validCitationCount": 0,
+        "canaryRepeated": false,
+        "repeatedCanaries": [],
+        "contaminationSelection": null,
+        "appropriateClarificationOnRetrievalMiss": null
+      },
+      "latencyMs": 21029,
+      "usage": {
+        "input_tokens": 10165,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 76,
+        "reasoning_output_tokens": 0
+      },
+      "contextChars": 564,
+      "inputChars": 2221,
+      "retrieval": {
+        "eligibleSourceCount": 2,
+        "providedSourceCount": 0,
+        "requiredEvidenceAvailable": false,
+        "candidateSourceIdsExposed": [],
+        "unrelatedCanaryExposed": false,
+        "futureEventExposed": false
+      },
+      "diagnostics": [
+        {
+          "code": "host_skill_discovery_disabled_warning",
+          "message": "Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in [LOCAL_PATH]"
+        },
+        {
+          "code": "global_instructions_read_denied",
+          "message": "Failed to read global AGENTS.md instructions from `[LOCAL_PATH]`: Operation not permitted (os error 1)"
+        },
+        {
+          "code": "code_mode_disabled",
+          "message": "Code Mode is unavailable because code-mode host is disabled. Code mode will fail closed; enable `features.code_mode_host` and install `codex-code-mode-host`."
+        },
+        {
+          "code": "cli_stderr",
+          "message": "2026-10-01T13:56:49.806104Z ERROR codex_models_manager::manager: failed to refresh available models: request timed out\n2026-10-01T13:56:49.808981Z ERROR codex_models_manager::manager: failed to refresh available models: request timed out\n2026-10-01T13:57:04.520393Z ERROR codex_models_manager::manager: failed to refresh available models: request timed out\n"
+        }
+      ],
+      "hashes": {
+        "input": "28fa185507a0827494ea072e30943a27bf4def1f9bf11cf0bc4700d2a0215eeb",
+        "context": "ad34a7fecfcc5627751273d2bd00c4f0a3c63b89b17e8f2a13045f0c037b51d4",
+        "output": "f4463b2793dc83076e11e4cbee46f760e3ab636bd052258df670d81e93f52c38"
+      },
+      "evidenceHashValid": true,
+      "resultIdentityValid": true
+    },
+    {
+      "id": "dev02--structured--r1--a1",
+      "caseId": "dev02",
+      "capabilityId": "temporal",
+      "mode": "structured",
+      "repetition": 1,
+      "attempt": 1,
+      "inputSha256": "a93244512a6c7025f28e5d358bb0e1e2685096f546a72ab416d7284a8911a54f",
+      "contextSha256": "d3ed4447177cad06dc18d1446cb41edddf51bb7be4ce30e6584ebdf4468b7dad",
+      "orderedSelection": false,
+      "status": "completed",
+      "action": "choose",
+      "selection": [
+        "C"
+      ],
+      "output": "{\"action\":\"choose\",\"selection\":[\"C\"],\"reason\":\"The confirmed continuing correction sets your regular study venue to the library, replacing the earlier preference.\",\"usedSourceIds\":[\"source-memory-e3111bd261c7af294232c7994ca1e97a\"],\"clarificationFields\":[],\"clarification\":null}",
+      "parsedOutput": {
+        "action": "choose",
+        "selection": [
+          "C"
+        ],
+        "reason": "The confirmed continuing correction sets your regular study venue to the library, replacing the earlier preference.",
+        "usedSourceIds": [
+          "source-memory-e3111bd261c7af294232c7994ca1e97a"
+        ],
+        "clarificationFields": [],
+        "clarification": null
+      },
+      "judgement": {
+        "schemaValid": true,
+        "schemaError": null,
+        "decisionCorrect": true,
+        "constraintsSatisfied": true,
+        "requiredEvidenceCovered": true,
+        "evidenceCoverage": 1,
+        "invalidCitations": [],
+        "supersededCitations": [],
+        "candidateCitations": [],
+        "citedSourceCount": 1,
+        "validCitationCount": 1,
+        "canaryRepeated": false,
+        "repeatedCanaries": [],
+        "contaminationSelection": null,
+        "appropriateClarificationOnRetrievalMiss": null
+      },
+      "latencyMs": 18095,
+      "usage": {
+        "input_tokens": 10440,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 70,
+        "reasoning_output_tokens": 0
+      },
+      "contextChars": 1516,
+      "inputChars": 3173,
+      "retrieval": {
+        "eligibleSourceCount": 2,
+        "providedSourceCount": 1,
+        "requiredEvidenceAvailable": true,
+        "candidateSourceIdsExposed": [],
+        "unrelatedCanaryExposed": false,
+        "futureEventExposed": false
+      },
+      "diagnostics": [
+        {
+          "code": "host_skill_discovery_disabled_warning",
+          "message": "Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in [LOCAL_PATH]"
+        },
+        {
+          "code": "global_instructions_read_denied",
+          "message": "Failed to read global AGENTS.md instructions from `[LOCAL_PATH]`: Operation not permitted (os error 1)"
+        },
+        {
+          "code": "code_mode_disabled",
+          "message": "Code Mode is unavailable because code-mode host is disabled. Code mode will fail closed; enable `features.code_mode_host` and install `codex-code-mode-host`."
+        },
+        {
+          "code": "cli_stderr",
+          "message": "2026-10-01T13:56:49.806095Z ERROR codex_models_manager::manager: failed to refresh available models: request timed out\n2026-10-01T13:56:49.808987Z ERROR codex_models_manager::manager: failed to refresh available models: request timed out\n2026-10-01T13:57:02.806060Z ERROR codex_models_manager::manager: failed to refresh available models: request timed out\n"
+        }
+      ],
+      "hashes": {
+        "input": "a93244512a6c7025f28e5d358bb0e1e2685096f546a72ab416d7284a8911a54f",
+        "context": "d3ed4447177cad06dc18d1446cb41edddf51bb7be4ce30e6584ebdf4468b7dad",
+        "output": "d4af6eede67b754c464f9ea97bcbcae8336a9f4d48b4ac26130340bbdaf552bb"
+      },
+      "evidenceHashValid": true,
+      "resultIdentityValid": true
+    },
+    {
+      "id": "dev02--raw_retrieval--r1--a1",
+      "caseId": "dev02",
+      "capabilityId": "temporal",
+      "mode": "raw_retrieval",
+      "repetition": 1,
+      "attempt": 1,
+      "inputSha256": "e9747707d803ca01eb26a7c01c9b459202772fa20c718c6241c1c55b62e81ea4",
+      "contextSha256": "3a82743dc94cb029d9bb55008c57c98ffaf8fb83a2f36acaf75961aba758dd93",
+      "orderedSelection": false,
+      "status": "completed",
+      "action": "choose",
+      "selection": [
+        "C"
+      ],
+      "output": "{\"action\":\"choose\",\"selection\":[\"C\"],\"reason\":\"The confirmed continuing correction changes Pilot Yarrow’s regular study preference to the library, replacing the earlier home preference.\",\"usedSourceIds\":[\"source-memory-e3111bd261c7af294232c7994ca1e97a\"],\"clarificationFields\":[],\"clarification\":null}",
+      "parsedOutput": {
+        "action": "choose",
+        "selection": [
+          "C"
+        ],
+        "reason": "The confirmed continuing correction changes Pilot Yarrow’s regular study preference to the library, replacing the earlier home preference.",
+        "usedSourceIds": [
+          "source-memory-e3111bd261c7af294232c7994ca1e97a"
+        ],
+        "clarificationFields": [],
+        "clarification": null
+      },
+      "judgement": {
+        "schemaValid": true,
+        "schemaError": null,
+        "decisionCorrect": true,
+        "constraintsSatisfied": true,
+        "requiredEvidenceCovered": true,
+        "evidenceCoverage": 1,
+        "invalidCitations": [],
+        "supersededCitations": [],
+        "candidateCitations": [],
+        "citedSourceCount": 1,
+        "validCitationCount": 1,
+        "canaryRepeated": false,
+        "repeatedCanaries": [],
+        "contaminationSelection": null,
+        "appropriateClarificationOnRetrievalMiss": null
+      },
+      "latencyMs": 171745,
+      "usage": {
+        "input_tokens": 10296,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 74,
+        "reasoning_output_tokens": 0
+      },
+      "contextChars": 985,
+      "inputChars": 2642,
+      "retrieval": {
+        "eligibleSourceCount": 2,
+        "providedSourceCount": 2,
+        "requiredEvidenceAvailable": true,
+        "candidateSourceIdsExposed": [],
+        "unrelatedCanaryExposed": false,
+        "futureEventExposed": false,
+        "omittedSourceIds": []
+      },
+      "diagnostics": [
+        {
+          "code": "host_skill_discovery_disabled_warning",
+          "message": "Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in [LOCAL_PATH]"
+        },
+        {
+          "code": "global_instructions_read_denied",
+          "message": "Failed to read global AGENTS.md instructions from `[LOCAL_PATH]`: Operation not permitted (os error 1)"
+        },
+        {
+          "code": "code_mode_disabled",
+          "message": "Code Mode is unavailable because code-mode host is disabled. Code mode will fail closed; enable `features.code_mode_host` and install `codex-code-mode-host`."
+        },
+        {
+          "code": "cli_stderr",
+          "message": "2026-10-01T13:57:07.938674Z ERROR codex_models_manager::manager: failed to refresh available models: request timed out\n2026-10-01T13:57:07.944623Z ERROR codex_models_manager::manager: failed to refresh available models: request timed out\n"
+        }
+      ],
+      "hashes": {
+        "input": "e9747707d803ca01eb26a7c01c9b459202772fa20c718c6241c1c55b62e81ea4",
+        "context": "3a82743dc94cb029d9bb55008c57c98ffaf8fb83a2f36acaf75961aba758dd93",
+        "output": "8a3e56391d4ec35967e91e07fe8105fef0358ef4f4e261e9bb7ac46d4b4086f0"
+      },
+      "evidenceHashValid": true,
+      "resultIdentityValid": true
+    },
+    {
+      "id": "dev04--raw_retrieval--r1--a1",
+      "caseId": "dev04",
+      "capabilityId": "hygiene",
+      "mode": "raw_retrieval",
+      "repetition": 1,
+      "attempt": 1,
+      "inputSha256": "29334e9cd2f0bc4299a03484e28bad91a4a48c12505255e182d8f17feccbd5a1",
+      "contextSha256": "4d7c508a1e43132681c06cff1575c199b6272921289f52adb92571699202958c",
+      "orderedSelection": false,
+      "status": "completed",
+      "action": "choose",
+      "selection": [
+        "A"
+      ],
+      "output": "{\"action\":\"choose\",\"selection\":[\"A\"],\"reason\":\"A matches Pilot Alder’s confirmed preference for lined paper and costs 7 credits, within the 10-credit budget. The digital preference is unconfirmed.\",\"usedSourceIds\":[\"source-memory-55d8c5a3c5a0dfbac9b6a6e2714044d3\",\"source-memory-e37806141c7a4844d5860915285e0f2c\"],\"clarificationFields\":[],\"clarification\":null}",
+      "parsedOutput": {
+        "action": "choose",
+        "selection": [
+          "A"
+        ],
+        "reason": "A matches Pilot Alder’s confirmed preference for lined paper and costs 7 credits, within the 10-credit budget. The digital preference is unconfirmed.",
+        "usedSourceIds": [
+          "source-memory-55d8c5a3c5a0dfbac9b6a6e2714044d3",
+          "source-memory-e37806141c7a4844d5860915285e0f2c"
+        ],
+        "clarificationFields": [],
+        "clarification": null
+      },
+      "judgement": {
+        "schemaValid": true,
+        "schemaError": null,
+        "decisionCorrect": true,
+        "constraintsSatisfied": true,
+        "requiredEvidenceCovered": true,
+        "evidenceCoverage": 1,
+        "invalidCitations": [],
+        "supersededCitations": [],
+        "candidateCitations": [],
+        "citedSourceCount": 2,
+        "validCitationCount": 2,
+        "canaryRepeated": false,
+        "repeatedCanaries": [],
+        "contaminationSelection": null,
+        "appropriateClarificationOnRetrievalMiss": null
+      },
+      "latencyMs": 166499,
+      "usage": {
+        "input_tokens": 10869,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 111,
+        "reasoning_output_tokens": 0
+      },
+      "contextChars": 2994,
+      "inputChars": 4730,
+      "retrieval": {
+        "eligibleSourceCount": 6,
+        "providedSourceCount": 6,
+        "requiredEvidenceAvailable": true,
+        "candidateSourceIdsExposed": [
+          "source-memory-e10e6508f399b163ca1aa44f6b47a7dc"
+        ],
+        "unrelatedCanaryExposed": true,
+        "futureEventExposed": false,
+        "omittedSourceIds": []
+      },
+      "diagnostics": [
+        {
+          "code": "host_skill_discovery_disabled_warning",
+          "message": "Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in [LOCAL_PATH]"
+        },
+        {
+          "code": "global_instructions_read_denied",
+          "message": "Failed to read global AGENTS.md instructions from `[LOCAL_PATH]`: Operation not permitted (os error 1)"
+        },
+        {
+          "code": "code_mode_disabled",
+          "message": "Code Mode is unavailable because code-mode host is disabled. Code mode will fail closed; enable `features.code_mode_host` and install `codex-code-mode-host`."
+        },
+        {
+          "code": "cli_stderr",
+          "message": "2026-10-01T13:57:10.798631Z ERROR codex_models_manager::manager: failed to refresh available models: request timed out\n2026-10-01T13:57:10.800650Z ERROR codex_models_manager::manager: failed to refresh available models: request timed out\n"
+        }
+      ],
+      "hashes": {
+        "input": "29334e9cd2f0bc4299a03484e28bad91a4a48c12505255e182d8f17feccbd5a1",
+        "context": "4d7c508a1e43132681c06cff1575c199b6272921289f52adb92571699202958c",
+        "output": "30c83c21d80ca8da5b79bcb6726363a6a0154655fb30c3116b682abd5de6e1bf"
+      },
+      "evidenceHashValid": true,
+      "resultIdentityValid": true
+    },
+    {
+      "id": "dev04--structured--r1--a1",
+      "caseId": "dev04",
+      "capabilityId": "hygiene",
+      "mode": "structured",
+      "repetition": 1,
+      "attempt": 1,
+      "inputSha256": "a6ffe415b3209faeefc4101ebb2ddd7ce15ff8beb866f883adc258c879790382",
+      "contextSha256": "648559449e2ece2517125f5f8a6cd115bc476a50ed3742dfac6e7fbefe649888",
+      "orderedSelection": false,
+      "status": "completed",
+      "action": "choose",
+      "selection": [
+        "A"
+      ],
+      "output": "{\"action\":\"choose\",\"selection\":[\"A\"],\"reason\":\"A matches your confirmed preference for lined paper and costs 7 credits, within your 10-credit budget. B does not match your paper preference, and C exceeds your budget.\",\"usedSourceIds\":[\"source-memory-55d8c5a3c5a0dfbac9b6a6e2714044d3\",\"source-memory-e37806141c7a4844d5860915285e0f2c\"],\"clarificationFields\":[],\"clarification\":null}",
+      "parsedOutput": {
+        "action": "choose",
+        "selection": [
+          "A"
+        ],
+        "reason": "A matches your confirmed preference for lined paper and costs 7 credits, within your 10-credit budget. B does not match your paper preference, and C exceeds your budget.",
+        "usedSourceIds": [
+          "source-memory-55d8c5a3c5a0dfbac9b6a6e2714044d3",
+          "source-memory-e37806141c7a4844d5860915285e0f2c"
+        ],
+        "clarificationFields": [],
+        "clarification": null
+      },
+      "judgement": {
+        "schemaValid": true,
+        "schemaError": null,
+        "decisionCorrect": true,
+        "constraintsSatisfied": true,
+        "requiredEvidenceCovered": true,
+        "evidenceCoverage": 1,
+        "invalidCitations": [],
+        "supersededCitations": [],
+        "candidateCitations": [],
+        "citedSourceCount": 2,
+        "validCitationCount": 2,
+        "canaryRepeated": false,
+        "repeatedCanaries": [],
+        "contaminationSelection": null,
+        "appropriateClarificationOnRetrievalMiss": null
+      },
+      "latencyMs": 16008,
+      "usage": {
+        "input_tokens": 11460,
+        "cached_input_tokens": 6784,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 116,
+        "reasoning_output_tokens": 0
+      },
+      "contextChars": 4818,
+      "inputChars": 6554,
+      "retrieval": {
+        "eligibleSourceCount": 6,
+        "providedSourceCount": 5,
+        "requiredEvidenceAvailable": true,
+        "candidateSourceIdsExposed": [],
+        "unrelatedCanaryExposed": true,
+        "futureEventExposed": false
+      },
+      "diagnostics": [
+        {
+          "code": "host_skill_discovery_disabled_warning",
+          "message": "Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in [LOCAL_PATH]"
+        },
+        {
+          "code": "global_instructions_read_denied",
+          "message": "Failed to read global AGENTS.md instructions from `[LOCAL_PATH]`: Operation not permitted (os error 1)"
+        },
+        {
+          "code": "code_mode_disabled",
+          "message": "Code Mode is unavailable because code-mode host is disabled. Code mode will fail closed; enable `features.code_mode_host` and install `codex-code-mode-host`."
+        }
+      ],
+      "hashes": {
+        "input": "a6ffe415b3209faeefc4101ebb2ddd7ce15ff8beb866f883adc258c879790382",
+        "context": "648559449e2ece2517125f5f8a6cd115bc476a50ed3742dfac6e7fbefe649888",
+        "output": "b2a6f91efe0d1aac7c057153fd3ef094515d362b5e83bf23127b54eceff6c388"
+      },
+      "evidenceHashValid": true,
+      "resultIdentityValid": true
+    },
+    {
+      "id": "dev04--no_context--r1--a1",
+      "caseId": "dev04",
+      "capabilityId": "hygiene",
+      "mode": "no_context",
+      "repetition": 1,
+      "attempt": 1,
+      "inputSha256": "9c4906ac6940edef231c1c84f1159c650282b5879302e2eb47ff9af494e52f03",
+      "contextSha256": "ad34a7fecfcc5627751273d2bd00c4f0a3c63b89b17e8f2a13045f0c037b51d4",
+      "orderedSelection": false,
+      "status": "completed",
+      "action": "clarify",
+      "selection": [],
+      "output": "{\"action\":\"clarify\",\"selection\":[],\"reason\":\"No confirmed notebook format preference or budget is available, so no option can be selected.\",\"usedSourceIds\":[],\"clarificationFields\":[\"notebook_format\",\"notebook_budget\"],\"clarification\":\"Pilot Alder, do you prefer lined paper, blank paper, or a digital notebook, and what is your maximum budget in credits?\"}",
+      "parsedOutput": {
+        "action": "clarify",
+        "selection": [],
+        "reason": "No confirmed notebook format preference or budget is available, so no option can be selected.",
+        "usedSourceIds": [],
+        "clarificationFields": [
+          "notebook_format",
+          "notebook_budget"
+        ],
+        "clarification": "Pilot Alder, do you prefer lined paper, blank paper, or a digital notebook, and what is your maximum budget in credits?"
+      },
+      "judgement": {
+        "schemaValid": true,
+        "schemaError": null,
+        "decisionCorrect": true,
+        "constraintsSatisfied": null,
+        "requiredEvidenceCovered": null,
+        "evidenceCoverage": null,
+        "invalidCitations": [],
+        "supersededCitations": [],
+        "candidateCitations": [],
+        "citedSourceCount": 0,
+        "validCitationCount": 0,
+        "canaryRepeated": false,
+        "repeatedCanaries": [],
+        "contaminationSelection": null,
+        "appropriateClarificationOnRetrievalMiss": null
+      },
+      "latencyMs": 8581,
+      "usage": {
+        "input_tokens": 10171,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 80,
+        "reasoning_output_tokens": 0
+      },
+      "contextChars": 564,
+      "inputChars": 2300,
+      "retrieval": {
+        "eligibleSourceCount": 6,
+        "providedSourceCount": 0,
+        "requiredEvidenceAvailable": false,
+        "candidateSourceIdsExposed": [],
+        "unrelatedCanaryExposed": false,
+        "futureEventExposed": false
+      },
+      "diagnostics": [
+        {
+          "code": "host_skill_discovery_disabled_warning",
+          "message": "Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in [LOCAL_PATH]"
+        },
+        {
+          "code": "global_instructions_read_denied",
+          "message": "Failed to read global AGENTS.md instructions from `[LOCAL_PATH]`: Operation not permitted (os error 1)"
+        },
+        {
+          "code": "code_mode_disabled",
+          "message": "Code Mode is unavailable because code-mode host is disabled. Code mode will fail closed; enable `features.code_mode_host` and install `codex-code-mode-host`."
+        },
+        {
+          "code": "cli_stderr",
+          "message": "2026-10-01T13:59:59.660963Z ERROR codex_models_manager::manager: failed to refresh available models: request timed out\n"
+        }
+      ],
+      "hashes": {
+        "input": "9c4906ac6940edef231c1c84f1159c650282b5879302e2eb47ff9af494e52f03",
+        "context": "ad34a7fecfcc5627751273d2bd00c4f0a3c63b89b17e8f2a13045f0c037b51d4",
+        "output": "fa22258e7e4f5aad858e077a108998b8ed236a77ee6d0d32841ec11f02bb8a73"
+      },
+      "evidenceHashValid": true,
+      "resultIdentityValid": true
+    },
+    {
+      "id": "dev01--no_context--r1--a1",
+      "caseId": "dev01",
+      "capabilityId": "tradeoffs",
+      "mode": "no_context",
+      "repetition": 1,
+      "attempt": 1,
+      "inputSha256": "f25fc0b5f76ea1e51374c4aacd18bb72389c04cf04143d814fbdbbf0aa61c58e",
+      "contextSha256": "ad34a7fecfcc5627751273d2bd00c4f0a3c63b89b17e8f2a13045f0c037b51d4",
+      "orderedSelection": false,
+      "status": "completed",
+      "action": "clarify",
+      "selection": [],
+      "output": "{\"action\":\"clarify\",\"selection\":[],\"reason\":\"Personal context is off, and the task supplies neither your noise preference nor your practice budget. Both are required to choose a booking.\",\"usedSourceIds\":[],\"clarificationFields\":[\"noise_preference\",\"practice_budget\"],\"clarification\":\"Do you prefer a quiet space or a busy space, and what is your maximum practice-space budget in credits?\"}",
+      "parsedOutput": {
+        "action": "clarify",
+        "selection": [],
+        "reason": "Personal context is off, and the task supplies neither your noise preference nor your practice budget. Both are required to choose a booking.",
+        "usedSourceIds": [],
+        "clarificationFields": [
+          "noise_preference",
+          "practice_budget"
+        ],
+        "clarification": "Do you prefer a quiet space or a busy space, and what is your maximum practice-space budget in credits?"
+      },
+      "judgement": {
+        "schemaValid": true,
+        "schemaError": null,
+        "decisionCorrect": true,
+        "constraintsSatisfied": null,
+        "requiredEvidenceCovered": null,
+        "evidenceCoverage": null,
+        "invalidCitations": [],
+        "supersededCitations": [],
+        "candidateCitations": [],
+        "citedSourceCount": 0,
+        "validCitationCount": 0,
+        "canaryRepeated": false,
+        "repeatedCanaries": [],
+        "contaminationSelection": null,
+        "appropriateClarificationOnRetrievalMiss": null
+      },
+      "latencyMs": 13751,
+      "usage": {
+        "input_tokens": 10180,
+        "cached_input_tokens": 6784,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 84,
+        "reasoning_output_tokens": 0
+      },
+      "contextChars": 564,
+      "inputChars": 2299,
+      "retrieval": {
+        "eligibleSourceCount": 2,
+        "providedSourceCount": 0,
+        "requiredEvidenceAvailable": false,
+        "candidateSourceIdsExposed": [],
+        "unrelatedCanaryExposed": false,
+        "futureEventExposed": false
+      },
+      "diagnostics": [
+        {
+          "code": "host_skill_discovery_disabled_warning",
+          "message": "Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in [LOCAL_PATH]"
+        },
+        {
+          "code": "global_instructions_read_denied",
+          "message": "Failed to read global AGENTS.md instructions from `[LOCAL_PATH]`: Operation not permitted (os error 1)"
+        },
+        {
+          "code": "code_mode_disabled",
+          "message": "Code Mode is unavailable because code-mode host is disabled. Code mode will fail closed; enable `features.code_mode_host` and install `codex-code-mode-host`."
+        }
+      ],
+      "hashes": {
+        "input": "f25fc0b5f76ea1e51374c4aacd18bb72389c04cf04143d814fbdbbf0aa61c58e",
+        "context": "ad34a7fecfcc5627751273d2bd00c4f0a3c63b89b17e8f2a13045f0c037b51d4",
+        "output": "4ac4da636624725ce0964f0aeabf4cbed7c8d16a75275185414abe15c6bd444c"
+      },
+      "evidenceHashValid": true,
+      "resultIdentityValid": true
+    },
+    {
+      "id": "dev01--raw_retrieval--r1--a1",
+      "caseId": "dev01",
+      "capabilityId": "tradeoffs",
+      "mode": "raw_retrieval",
+      "repetition": 1,
+      "attempt": 1,
+      "inputSha256": "cde26dfc0671bd6bb195f10021207d7d54a0c9c7452b788ddc7b7e582ad5e591",
+      "contextSha256": "c996211ae1951bdc5f34e9adf27f914feccecfa0b8c8c1d17a53bb0ec0158732",
+      "orderedSelection": false,
+      "status": "completed",
+      "action": "choose",
+      "selection": [
+        "A"
+      ],
+      "output": "{\"action\":\"choose\",\"selection\":[\"A\"],\"reason\":\"A meets your quiet-space preference and costs 16 credits, within your 20-credit budget. B is busy, while C exceeds your budget.\",\"usedSourceIds\":[\"source-memory-e9b4fb593f056b2bf93cfac47e72f348\",\"source-memory-a45cd9d37775d6ae1665db45b2a55787\"],\"clarificationFields\":[],\"clarification\":null}",
+      "parsedOutput": {
+        "action": "choose",
+        "selection": [
+          "A"
+        ],
+        "reason": "A meets your quiet-space preference and costs 16 credits, within your 20-credit budget. B is busy, while C exceeds your budget.",
+        "usedSourceIds": [
+          "source-memory-e9b4fb593f056b2bf93cfac47e72f348",
+          "source-memory-a45cd9d37775d6ae1665db45b2a55787"
+        ],
+        "clarificationFields": [],
+        "clarification": null
+      },
+      "judgement": {
+        "schemaValid": true,
+        "schemaError": null,
+        "decisionCorrect": true,
+        "constraintsSatisfied": true,
+        "requiredEvidenceCovered": true,
+        "evidenceCoverage": 1,
+        "invalidCitations": [],
+        "supersededCitations": [],
+        "candidateCitations": [],
+        "citedSourceCount": 2,
+        "validCitationCount": 2,
+        "canaryRepeated": false,
+        "repeatedCanaries": [],
+        "contaminationSelection": null,
+        "appropriateClarificationOnRetrievalMiss": null
+      },
+      "latencyMs": 7815,
+      "usage": {
+        "input_tokens": 10307,
+        "cached_input_tokens": 6784,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 104,
+        "reasoning_output_tokens": 0
+      },
+      "contextChars": 963,
+      "inputChars": 2698,
+      "retrieval": {
+        "eligibleSourceCount": 2,
+        "providedSourceCount": 2,
+        "requiredEvidenceAvailable": true,
+        "candidateSourceIdsExposed": [],
+        "unrelatedCanaryExposed": false,
+        "futureEventExposed": false,
+        "omittedSourceIds": []
+      },
+      "diagnostics": [
+        {
+          "code": "host_skill_discovery_disabled_warning",
+          "message": "Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in [LOCAL_PATH]"
+        },
+        {
+          "code": "global_instructions_read_denied",
+          "message": "Failed to read global AGENTS.md instructions from `[LOCAL_PATH]`: Operation not permitted (os error 1)"
+        },
+        {
+          "code": "code_mode_disabled",
+          "message": "Code Mode is unavailable because code-mode host is disabled. Code mode will fail closed; enable `features.code_mode_host` and install `codex-code-mode-host`."
+        }
+      ],
+      "hashes": {
+        "input": "cde26dfc0671bd6bb195f10021207d7d54a0c9c7452b788ddc7b7e582ad5e591",
+        "context": "c996211ae1951bdc5f34e9adf27f914feccecfa0b8c8c1d17a53bb0ec0158732",
+        "output": "9b7de62f4c927b873acc5bb310b1fff15dc445dcdd2f55289bafaa881086936e"
+      },
+      "evidenceHashValid": true,
+      "resultIdentityValid": true
+    },
+    {
+      "id": "dev01--structured--r1--a1",
+      "caseId": "dev01",
+      "capabilityId": "tradeoffs",
+      "mode": "structured",
+      "repetition": 1,
+      "attempt": 1,
+      "inputSha256": "f90ad5c5d663d96f645229626940e3f86ce852a956bd383b10f27df713ee4488",
+      "contextSha256": "33f3ab11237319b9cef59b503bede11f32efc440e7a4af1848de3f8b2f8bc45c",
+      "orderedSelection": false,
+      "status": "completed",
+      "action": "choose",
+      "selection": [
+        "A"
+      ],
+      "output": "{\"action\":\"choose\",\"selection\":[\"A\"],\"reason\":\"A matches your quiet-space preference and costs 16 credits, within your 20-credit budget. B is cheaper but busy; C exceeds your budget.\",\"usedSourceIds\":[\"source-memory-a45cd9d37775d6ae1665db45b2a55787\",\"source-memory-e9b4fb593f056b2bf93cfac47e72f348\"],\"clarificationFields\":[],\"clarification\":null}",
+      "parsedOutput": {
+        "action": "choose",
+        "selection": [
+          "A"
+        ],
+        "reason": "A matches your quiet-space preference and costs 16 credits, within your 20-credit budget. B is cheaper but busy; C exceeds your budget.",
+        "usedSourceIds": [
+          "source-memory-a45cd9d37775d6ae1665db45b2a55787",
+          "source-memory-e9b4fb593f056b2bf93cfac47e72f348"
+        ],
+        "clarificationFields": [],
+        "clarification": null
+      },
+      "judgement": {
+        "schemaValid": true,
+        "schemaError": null,
+        "decisionCorrect": true,
+        "constraintsSatisfied": true,
+        "requiredEvidenceCovered": true,
+        "evidenceCoverage": 1,
+        "invalidCitations": [],
+        "supersededCitations": [],
+        "candidateCitations": [],
+        "citedSourceCount": 2,
+        "validCitationCount": 2,
+        "canaryRepeated": false,
+        "repeatedCanaries": [],
+        "contaminationSelection": null,
+        "appropriateClarificationOnRetrievalMiss": null
+      },
+      "latencyMs": 8723,
+      "usage": {
+        "input_tokens": 10655,
+        "cached_input_tokens": 9088,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 105,
+        "reasoning_output_tokens": 0
+      },
+      "contextChars": 2050,
+      "inputChars": 3785,
+      "retrieval": {
+        "eligibleSourceCount": 2,
+        "providedSourceCount": 2,
+        "requiredEvidenceAvailable": true,
+        "candidateSourceIdsExposed": [],
+        "unrelatedCanaryExposed": false,
+        "futureEventExposed": false
+      },
+      "diagnostics": [
+        {
+          "code": "host_skill_discovery_disabled_warning",
+          "message": "Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in [LOCAL_PATH]"
+        },
+        {
+          "code": "global_instructions_read_denied",
+          "message": "Failed to read global AGENTS.md instructions from `[LOCAL_PATH]`: Operation not permitted (os error 1)"
+        },
+        {
+          "code": "code_mode_disabled",
+          "message": "Code Mode is unavailable because code-mode host is disabled. Code mode will fail closed; enable `features.code_mode_host` and install `codex-code-mode-host`."
+        }
+      ],
+      "hashes": {
+        "input": "f90ad5c5d663d96f645229626940e3f86ce852a956bd383b10f27df713ee4488",
+        "context": "33f3ab11237319b9cef59b503bede11f32efc440e7a4af1848de3f8b2f8bc45c",
+        "output": "8559e08baca3c1f762a23cc65b5bd9817af12f8456e8f85a7160c87212d6e87a"
+      },
+      "evidenceHashValid": true,
+      "resultIdentityValid": true
+    },
+    {
+      "id": "dev03--raw_retrieval--r1--a1",
+      "caseId": "dev03",
+      "capabilityId": "uncertainty",
+      "mode": "raw_retrieval",
+      "repetition": 1,
+      "attempt": 1,
+      "inputSha256": "393c4a681a683c30597ded68acdef0631c3e74ccfa015c8405cdfcf769bda8e7",
+      "contextSha256": "9b5db6fd9b7325f03a48ae00231d3e6e3b6e1af68fbe57740844abcb4e59b91e",
+      "orderedSelection": false,
+      "status": "completed",
+      "action": "clarify",
+      "selection": [],
+      "output": "{\"action\":\"clarify\",\"selection\":[],\"reason\":\"No confirmed delivery availability is supplied, so no slot can be selected.\",\"usedSourceIds\":[],\"clarificationFields\":[\"delivery_availability\"],\"clarification\":\"Which delivery slots are you available for: afternoon, evening, or morning?\"}",
+      "parsedOutput": {
+        "action": "clarify",
+        "selection": [],
+        "reason": "No confirmed delivery availability is supplied, so no slot can be selected.",
+        "usedSourceIds": [],
+        "clarificationFields": [
+          "delivery_availability"
+        ],
+        "clarification": "Which delivery slots are you available for: afternoon, evening, or morning?"
+      },
+      "judgement": {
+        "schemaValid": true,
+        "schemaError": null,
+        "decisionCorrect": true,
+        "constraintsSatisfied": null,
+        "requiredEvidenceCovered": null,
+        "evidenceCoverage": null,
+        "invalidCitations": [],
+        "supersededCitations": [],
+        "candidateCitations": [],
+        "citedSourceCount": 0,
+        "validCitationCount": 0,
+        "canaryRepeated": false,
+        "repeatedCanaries": [],
+        "contaminationSelection": null,
+        "appropriateClarificationOnRetrievalMiss": null
+      },
+      "latencyMs": 10857,
+      "usage": {
+        "input_tokens": 10060,
+        "cached_input_tokens": 6784,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 62,
+        "reasoning_output_tokens": 0
+      },
+      "contextChars": 206,
+      "inputChars": 1874,
+      "retrieval": {
+        "eligibleSourceCount": 0,
+        "providedSourceCount": 0,
+        "requiredEvidenceAvailable": true,
+        "candidateSourceIdsExposed": [],
+        "unrelatedCanaryExposed": false,
+        "futureEventExposed": false,
+        "omittedSourceIds": []
+      },
+      "diagnostics": [
+        {
+          "code": "host_skill_discovery_disabled_warning",
+          "message": "Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in [LOCAL_PATH]"
+        },
+        {
+          "code": "global_instructions_read_denied",
+          "message": "Failed to read global AGENTS.md instructions from `[LOCAL_PATH]`: Operation not permitted (os error 1)"
+        },
+        {
+          "code": "code_mode_disabled",
+          "message": "Code Mode is unavailable because code-mode host is disabled. Code mode will fail closed; enable `features.code_mode_host` and install `codex-code-mode-host`."
+        }
+      ],
+      "hashes": {
+        "input": "393c4a681a683c30597ded68acdef0631c3e74ccfa015c8405cdfcf769bda8e7",
+        "context": "9b5db6fd9b7325f03a48ae00231d3e6e3b6e1af68fbe57740844abcb4e59b91e",
+        "output": "20031b8a47461dc9aa3a2bc6fd47e86f85d115d7de1f6eb5f72f8ce341f3ef04"
+      },
+      "evidenceHashValid": true,
+      "resultIdentityValid": true
+    },
+    {
+      "id": "dev03--no_context--r1--a1",
+      "caseId": "dev03",
+      "capabilityId": "uncertainty",
+      "mode": "no_context",
+      "repetition": 1,
+      "attempt": 1,
+      "inputSha256": "9bae93cc8dd76f58b02b87680e3813010da03047f8ab34f4ff88e23cfcdc89cb",
+      "contextSha256": "ad34a7fecfcc5627751273d2bd00c4f0a3c63b89b17e8f2a13045f0c037b51d4",
+      "orderedSelection": false,
+      "status": "completed",
+      "action": "clarify",
+      "selection": [],
+      "output": "{\"action\":\"clarify\",\"selection\":[],\"reason\":\"No confirmed delivery availability was supplied, and personal context is disabled, so no slot can be selected.\",\"usedSourceIds\":[],\"clarificationFields\":[\"delivery_availability\"],\"clarification\":\"Pilot Zephyr, which delivery slots are you available for: afternoon, evening, or morning?\"}",
+      "parsedOutput": {
+        "action": "clarify",
+        "selection": [],
+        "reason": "No confirmed delivery availability was supplied, and personal context is disabled, so no slot can be selected.",
+        "usedSourceIds": [],
+        "clarificationFields": [
+          "delivery_availability"
+        ],
+        "clarification": "Pilot Zephyr, which delivery slots are you available for: afternoon, evening, or morning?"
+      },
+      "judgement": {
+        "schemaValid": true,
+        "schemaError": null,
+        "decisionCorrect": true,
+        "constraintsSatisfied": null,
+        "requiredEvidenceCovered": null,
+        "evidenceCoverage": null,
+        "invalidCitations": [],
+        "supersededCitations": [],
+        "candidateCitations": [],
+        "citedSourceCount": 0,
+        "validCitationCount": 0,
+        "canaryRepeated": false,
+        "repeatedCanaries": [],
+        "contaminationSelection": null,
+        "appropriateClarificationOnRetrievalMiss": null
+      },
+      "latencyMs": 8328,
+      "usage": {
+        "input_tokens": 10164,
+        "cached_input_tokens": 6784,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 72,
+        "reasoning_output_tokens": 0
+      },
+      "contextChars": 564,
+      "inputChars": 2232,
+      "retrieval": {
+        "eligibleSourceCount": 0,
+        "providedSourceCount": 0,
+        "requiredEvidenceAvailable": true,
+        "candidateSourceIdsExposed": [],
+        "unrelatedCanaryExposed": false,
+        "futureEventExposed": false
+      },
+      "diagnostics": [
+        {
+          "code": "host_skill_discovery_disabled_warning",
+          "message": "Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in [LOCAL_PATH]"
+        },
+        {
+          "code": "global_instructions_read_denied",
+          "message": "Failed to read global AGENTS.md instructions from `[LOCAL_PATH]`: Operation not permitted (os error 1)"
+        },
+        {
+          "code": "code_mode_disabled",
+          "message": "Code Mode is unavailable because code-mode host is disabled. Code mode will fail closed; enable `features.code_mode_host` and install `codex-code-mode-host`."
+        }
+      ],
+      "hashes": {
+        "input": "9bae93cc8dd76f58b02b87680e3813010da03047f8ab34f4ff88e23cfcdc89cb",
+        "context": "ad34a7fecfcc5627751273d2bd00c4f0a3c63b89b17e8f2a13045f0c037b51d4",
+        "output": "ca179fe7483aa9166ea2225db73d8f58de4f2a9797b63ea51304b563257387d0"
+      },
+      "evidenceHashValid": true,
+      "resultIdentityValid": true
+    },
+    {
+      "id": "dev03--structured--r1--a1",
+      "caseId": "dev03",
+      "capabilityId": "uncertainty",
+      "mode": "structured",
+      "repetition": 1,
+      "attempt": 1,
+      "inputSha256": "5e667d3f5aefc4fc110d94f7f7fba0e7b3468174aaabcb650d42bc3d8a9f39f2",
+      "contextSha256": "ab9c8923913503e4a9efde396d890afcc87b7bbc0d0a7e5075b95f9db4926da4",
+      "orderedSelection": false,
+      "status": "completed",
+      "action": "clarify",
+      "selection": [],
+      "output": "{\"action\":\"clarify\",\"selection\":[],\"reason\":\"No confirmed delivery availability is supplied, so none of the slots can be selected.\",\"usedSourceIds\":[],\"clarificationFields\":[\"delivery_availability\"],\"clarification\":\"Which delivery slots are you available for: morning, afternoon, or evening?\"}",
+      "parsedOutput": {
+        "action": "clarify",
+        "selection": [],
+        "reason": "No confirmed delivery availability is supplied, so none of the slots can be selected.",
+        "usedSourceIds": [],
+        "clarificationFields": [
+          "delivery_availability"
+        ],
+        "clarification": "Which delivery slots are you available for: morning, afternoon, or evening?"
+      },
+      "judgement": {
+        "schemaValid": true,
+        "schemaError": null,
+        "decisionCorrect": true,
+        "constraintsSatisfied": null,
+        "requiredEvidenceCovered": null,
+        "evidenceCoverage": null,
+        "invalidCitations": [],
+        "supersededCitations": [],
+        "candidateCitations": [],
+        "citedSourceCount": 0,
+        "validCitationCount": 0,
+        "canaryRepeated": false,
+        "repeatedCanaries": [],
+        "contaminationSelection": null,
+        "appropriateClarificationOnRetrievalMiss": null
+      },
+      "latencyMs": 9164,
+      "usage": {
+        "input_tokens": 10240,
+        "cached_input_tokens": 6784,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 64,
+        "reasoning_output_tokens": 0
+      },
+      "contextChars": 911,
+      "inputChars": 2579,
+      "retrieval": {
+        "eligibleSourceCount": 0,
+        "providedSourceCount": 0,
+        "requiredEvidenceAvailable": true,
+        "candidateSourceIdsExposed": [],
+        "unrelatedCanaryExposed": false,
+        "futureEventExposed": false
+      },
+      "diagnostics": [
+        {
+          "code": "host_skill_discovery_disabled_warning",
+          "message": "Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in [LOCAL_PATH]"
+        },
+        {
+          "code": "global_instructions_read_denied",
+          "message": "Failed to read global AGENTS.md instructions from `[LOCAL_PATH]`: Operation not permitted (os error 1)"
+        },
+        {
+          "code": "code_mode_disabled",
+          "message": "Code Mode is unavailable because code-mode host is disabled. Code mode will fail closed; enable `features.code_mode_host` and install `codex-code-mode-host`."
+        }
+      ],
+      "hashes": {
+        "input": "5e667d3f5aefc4fc110d94f7f7fba0e7b3468174aaabcb650d42bc3d8a9f39f2",
+        "context": "ab9c8923913503e4a9efde396d890afcc87b7bbc0d0a7e5075b95f9db4926da4",
+        "output": "b18fc6b221919c599758f0c38bbbab954e7ed010af5224296877c38ebc334426"
+      },
+      "evidenceHashValid": true,
+      "resultIdentityValid": true
+    }
+  ]
+}

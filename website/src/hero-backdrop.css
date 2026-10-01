@@ -5,7 +5,8 @@
    layers competes with the portrait and pointer-driven character field. */
 .hero-backdrop-wash i{position:absolute;width:75%;height:88%;left:30%;top:-10%;border-radius:46% 54% 60% 40%;background:radial-gradient(ellipse at 45% 45%,#e7dfec66,transparent 67%);filter:blur(48px);transform:rotate(-18deg)}
 .hero-backdrop-wash i+i{width:85%;height:100%;left:-22%;top:22%;background:radial-gradient(ellipse at 55% 48%,#e9ddc84a,transparent 66%)}
-.hero-character-field{position:absolute;inset:0;z-index:2;width:100%;height:100%;pointer-events:none;mask-image:linear-gradient(#000 0%,#000 78%,transparent 100%)}
+.hero-character-field{--hero-character-ink:rgba(72,57,85,.58);position:absolute;inset:0;z-index:0;width:100%;height:100%;pointer-events:none;mask-image:linear-gradient(#000 0%,#000 78%,transparent 100%)}
+[data-theme=dark] .hero-character-field{--hero-character-ink:rgba(255,255,255,.7)}
 [data-theme=dark] .hero-backdrop-wash{opacity:.35}
 [data-theme=dark] .hero-backdrop-wash i{background:radial-gradient(ellipse at 45% 45%,#82718d38,transparent 68%)}
 [data-theme=dark] .hero-backdrop-wash i+i{background:radial-gradient(ellipse at 55% 48%,#9d896725,transparent 68%)}

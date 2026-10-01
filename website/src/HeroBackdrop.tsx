@@ -1,4 +1,6 @@
 import {useEffect, useRef} from 'react';
+import {createPortraitClearance} from './hero-clearance';
+import {createTextClearance} from './hero-text-clearance';
 import './hero-backdrop.css';
 
 type Cell = {column:number; row:number; energy:number; updated:number};
@@ -16,26 +18,38 @@ export default function HeroBackdrop() {
   if (!context) return;
   const disabled = matchMedia('(prefers-reduced-motion: reduce), (pointer: coarse), (max-width: 800px)');
   const cells = new Map<number, Cell>();
-  let width = 0, height = 0, frame = 0, lastPaint = 0, visible = true;
+  const textNodes=[...host.querySelectorAll('.site-hero-copy h1, .site-hero-copy p')];
+  const safeNodes = [...host.querySelectorAll('.site-hero-actions a, .site-hero-actions button')];
+  const textClearance=createTextClearance(textNodes);
+  const portrait=host.querySelector<HTMLElement>('.hero-portrait-field');
+  const portraitClearance=portrait?createPortraitClearance(portrait):null;
+  let width = 0, height = 0, frame = 0, lastPaint = 0, visible = true, ratio = 1;
+  let documentLeft=0, documentTop=0;
+  let ink = '';
   let previous: {x:number; y:number; time:number} | null = null;
   let safeAreas: SafeArea[] = [];
   const measure = () => {
    const box = host.getBoundingClientRect();
    width = box.width; height = box.height;
-   const ratio = Math.min(devicePixelRatio, 1.5);
+   documentLeft=box.left+scrollX; documentTop=box.top+scrollY;
+   ratio = Math.min(devicePixelRatio, 1.5);
    element.width = Math.round(width * ratio); element.height = Math.round(height * ratio);
    context.setTransform(ratio, 0, 0, ratio, 0, 0);
-   safeAreas = [...host.querySelectorAll('.site-hero-copy h1, .site-hero-copy p, .site-hero-actions')].map(node => {
+   ink = getComputedStyle(element).getPropertyValue('--hero-character-ink').trim();
+   safeAreas = safeNodes.map(node => {
     const bounds = node.getBoundingClientRect();
-    return {left:bounds.left-box.left-5, top:bounds.top-box.top-5, right:bounds.right-box.left+5, bottom:bounds.bottom-box.top+5};
+    const padding = 5;
+    return {left:bounds.left-box.left-padding, top:bounds.top-box.top-padding, right:bounds.right-box.left+padding, bottom:bounds.bottom-box.top+padding};
    });
+   portraitClearance?.measure(box);
+   textClearance.measure(box);
   };
   const clear = () => {
    cancelAnimationFrame(frame); frame = 0; previous = null; cells.clear();
    context.clearRect(0, 0, width, height);
   };
   const clearance = (x:number, y:number) => {
-   let strength = 1;
+   let strength = Math.min(portraitClearance?.at(x,y)??1,textClearance.at(x,y));
    for (const area of safeAreas) {
     const distance = Math.hypot(Math.max(area.left-x, 0, x-area.right), Math.max(area.top-y, 0, y-area.bottom));
     const ramp = Math.min(1, distance/28);
@@ -48,10 +62,11 @@ export default function HeroBackdrop() {
    if (!visible || document.hidden || disabled.matches) { clear(); return; }
    if (now-lastPaint < 30) { frame = requestAnimationFrame(draw); return; }
    lastPaint = now;
+   portraitClearance?.request(now);
    context.clearRect(0, 0, width, height);
    context.font = '400 12px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace';
    context.textAlign = 'center'; context.textBaseline = 'middle';
-   context.fillStyle = 'rgba(255, 255, 255, 0.8)';
+   context.fillStyle = ink;
    for (const [key, cell] of cells) {
     const age = (now-cell.updated)/LIFETIME;
     const energy = cell.energy*Math.pow(Math.max(0, 1-age), 1.3);
@@ -59,8 +74,9 @@ export default function HeroBackdrop() {
     const x = cell.column*CELL_WIDTH, y = cell.row*CELL_HEIGHT;
     const edge = clearance(x, y);
     if (edge < .015) continue;
-    // Density changes with the trail's strength; glyphs remain anchored to the grid.
-    const glyph = energy > .77 ? 'U' : energy > .48 ? 'd' : energy > .22 ? 'n' : '2';
+    // Read across each row in the fixed 2 → n → d → U cycle. Letters remain
+    // upright and keep their identity as the pointer trail fades.
+    const glyph = '2ndU'[(cell.column+cell.row*3)%4];
     context.globalAlpha = Math.min(1, energy*3.4)*edge;
     context.fillText(glyph, x, y);
    }
@@ -81,8 +97,8 @@ export default function HeroBackdrop() {
   };
   const move = (event:PointerEvent) => {
    if (event.pointerType!=='mouse' || disabled.matches || !visible || document.hidden) return;
-   const now = performance.now(), box = host.getBoundingClientRect();
-   const point = {x:event.clientX-box.left, y:event.clientY-box.top, time:now};
+   const now = performance.now();
+   const point = {x:event.clientX+scrollX-documentLeft, y:event.clientY+scrollY-documentTop, time:now};
    if (previous && now-previous.time<20) return;
    if (previous && now-previous.time<140) {
     const steps = Math.min(16, Math.ceil(Math.hypot(point.x-previous.x,point.y-previous.y)/10));
@@ -104,16 +120,25 @@ export default function HeroBackdrop() {
   });
   const resizeObserver = new ResizeObserver(measure);
   observer.observe(host); resizeObserver.observe(host);
-  // Re-measure after translated text reflows, without reading layout during animation.
+  if (portrait) resizeObserver.observe(portrait);
+  for (const node of safeNodes) resizeObserver.observe(node);
+  for (const node of textNodes) resizeObserver.observe(node);
+  // Keep clearance and ink in sync with layout and theme, outside the draw loop.
   const copyObserver = new MutationObserver(measure);
   const copy = host.querySelector('.site-hero-copy');
   if (copy) copyObserver.observe(copy,{childList:true,subtree:true,characterData:true});
+  copyObserver.observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+  let active=true;
+  void document.fonts.ready.then(()=>{if(active)measure();});
+  document.fonts.addEventListener('loadingdone',measure);
   host.addEventListener('pointermove',move,{passive:true});
   host.addEventListener('pointerleave',leave,{passive:true});
   document.addEventListener('visibilitychange',visibility); disabled.addEventListener('change',onPreference);
   measure();
   return () => {
-   clear(); observer.disconnect(); resizeObserver.disconnect(); copyObserver.disconnect();
+   active=false; clear(); observer.disconnect(); resizeObserver.disconnect(); copyObserver.disconnect();
+   portraitClearance?.dispose();
+   textClearance.dispose();document.fonts.removeEventListener('loadingdone',measure);
    host.removeEventListener('pointermove',move); host.removeEventListener('pointerleave',leave);
    document.removeEventListener('visibilitychange',visibility); disabled.removeEventListener('change',onPreference);
   };

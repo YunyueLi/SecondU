@@ -1,0 +1,954 @@
+{
+  "schema": "secondu.context-model-run.v2",
+  "synthetic": true,
+  "startedAt": "2026-10-01T13:56:44.697Z",
+  "inputManifestSha256": "7824c761227ee757a6753da5cb9a1ca4c0180497f822ed61c8ab5fd21434cf96",
+  "planSha256": "dfaef36f12adfd4b88cf7586d52b19a13aff4e4279b68d8a6795524ede1ea906",
+  "configuredModel": "gpt-6-astra",
+  "providerReportedModel": null,
+  "reasoningEffort": "medium",
+  "temperature": "CLI default; not explicitly set",
+  "outputLimit": "Identical CLI model default, plus the same 180-word answer instruction. Not an independently enforced token cap.",
+  "cliVersion": "codex-cli 0.158.0-alpha.2.1",
+  "transport": "HTTPS; WebSocket disabled",
+  "parameters": {
+    "model_reasoning_effort": "medium",
+    "project_doc_max_bytes": 0,
+    "developer_instructions": "Use only the provided synthetic task and context. Produce text only. Do not use tools, local files, network, skills, memory or account data. Do not send messages or take actions.",
+    "web_search": "disabled",
+    "memories.use_memories": false,
+    "memories.generate_memories": false,
+    "features.skip_host_skill_discovery": true,
+    "history.persistence": "none",
+    "analytics.enabled": false,
+    "feedback.enabled": false,
+    "permissions.synthetic_text.network.enabled": false,
+    "approval_policy": "never",
+    "check_for_update_on_startup": false,
+    "model_provider": "synthetic_default",
+    "model_providers.synthetic_default": {
+      "name": "Existing OpenAI sign-in",
+      "wire_api": "responses",
+      "requires_openai_auth": true,
+      "supports_websockets": false
+    }
+  },
+  "codeHashes": [
+    {
+      "file": "benchmarks/context/v2-cases.mjs",
+      "sha256": "dbb0f376e3c74cd4e38ceee8fb4c2a9f1a2ccf9be88fef28e6d82d839a5e13c4"
+    },
+    {
+      "file": "benchmarks/context/suite-v2.mjs",
+      "sha256": "b9719d713acce6a828850bd6fedaad94efcc3a71805ff1585a25aca5befb6f46"
+    },
+    {
+      "file": "benchmarks/context/retrieval-v2.mjs",
+      "sha256": "a9b14840449530285ba29ea73d6f2e59ca3a89ac9d712d73e900fbc7ecca6a7b"
+    },
+    {
+      "file": "server/memory-import.mjs",
+      "sha256": "72640a80ba23b41b50df7a5e91dc9b47087250d0fa523ea3fc338e20023025ed"
+    },
+    {
+      "file": "server/domain.mjs",
+      "sha256": "2b942e94228b0109d6aad7f68191ba5f6dabecd5b126ee48aff640e768ab935f"
+    },
+    {
+      "file": "server/personal-context.mjs",
+      "sha256": "439d17d47dc9d484ebea4b3e3e69378c270ff6cdd1156be8e5c043a633dc7e5e"
+    },
+    {
+      "file": "server/runner.mjs",
+      "sha256": "64580ece6e038cbe72ab952a64f741b831743767873e7cd74c917615ffd2ae56"
+    },
+    {
+      "file": "scripts/benchmark-context-v2-model.mjs",
+      "sha256": "1c680da5a5352d85ce8dc03d438a400593e2915328836365a4ce823236e6f97d"
+    },
+    {
+      "file": "benchmarks/context/score-v2.mjs",
+      "sha256": "463b99dbb67c3515720ffaf42686972a8fd50335a95184560e6a31ae0bd7b364"
+    },
+    {
+      "file": "scripts/review-context-benchmark-v2.mjs",
+      "sha256": "9dd8cface0d90638a8ac2ea4376993018013abfdd1f5d68722de4301eacd06e6"
+    }
+  ],
+  "outputs": [
+    {
+      "id": "dev02--structured--r1--a1",
+      "caseId": "dev02",
+      "capabilityId": "temporal",
+      "mode": "structured",
+      "repetition": 1,
+      "attempt": 1,
+      "inputSha256": "a93244512a6c7025f28e5d358bb0e1e2685096f546a72ab416d7284a8911a54f",
+      "contextSha256": "d3ed4447177cad06dc18d1446cb41edddf51bb7be4ce30e6584ebdf4468b7dad",
+      "status": "completed",
+      "exitCode": 0,
+      "latencyMs": 18095,
+      "usage": {
+        "input_tokens": 10440,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 70,
+        "reasoning_output_tokens": 0
+      },
+      "output": "{\"action\":\"choose\",\"selection\":[\"C\"],\"reason\":\"The confirmed continuing correction sets your regular study venue to the library, replacing the earlier preference.\",\"usedSourceIds\":[\"source-memory-e3111bd261c7af294232c7994ca1e97a\"],\"clarificationFields\":[],\"clarification\":null}",
+      "parsedOutput": {
+        "action": "choose",
+        "selection": [
+          "C"
+        ],
+        "reason": "The confirmed continuing correction sets your regular study venue to the library, replacing the earlier preference.",
+        "usedSourceIds": [
+          "source-memory-e3111bd261c7af294232c7994ca1e97a"
+        ],
+        "clarificationFields": [],
+        "clarification": null
+      },
+      "outputSha256": "d4af6eede67b754c464f9ea97bcbcae8336a9f4d48b4ac26130340bbdaf552bb",
+      "toolEventCount": 0,
+      "diagnostics": [
+        {
+          "code": "host_skill_discovery_disabled_warning",
+          "message": "Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in [LOCAL_PATH]"
+        },
+        {
+          "code": "global_instructions_read_denied",
+          "message": "Failed to read global AGENTS.md instructions from `[LOCAL_PATH]`: Operation not permitted (os error 1)"
+        },
+        {
+          "code": "code_mode_disabled",
+          "message": "Code Mode is unavailable because code-mode host is disabled. Code mode will fail closed; enable `features.code_mode_host` and install `codex-code-mode-host`."
+        },
+        {
+          "code": "cli_stderr",
+          "message": "2026-10-01T13:56:49.806095Z ERROR codex_models_manager::manager: failed to refresh available models: request timed out\n2026-10-01T13:56:49.808987Z ERROR codex_models_manager::manager: failed to refresh available models: request timed out\n2026-10-01T13:57:02.806060Z ERROR codex_models_manager::manager: failed to refresh available models: request timed out\n"
+        }
+      ],
+      "isolation": {
+        "sessionIdSha256": "5323c0a299378c82a28a160453c4fb564dd2e924d422fa26368be8b760a5c282",
+        "blockedGlobalInstructionReads": 1,
+        "eventTypes": [
+          "item.completed",
+          "thread.started",
+          "turn.completed",
+          "turn.started"
+        ],
+        "itemTypes": [
+          "agent_message",
+          "error"
+        ],
+        "temporaryWorkingDirectoryRemoved": true
+      },
+      "localRawEvidence": {
+        "eventsSha256": "579a5214102014713931b23c21d4d5670297e8d4abe12354446c3c8a2ac98b2c",
+        "stderrSha256": "ca222080cdbcd6bf98b6b6d6be5ae62a0972b432c83d4b4913abc4cb57d4317b"
+      }
+    },
+    {
+      "id": "dev02--no_context--r1--a1",
+      "caseId": "dev02",
+      "capabilityId": "temporal",
+      "mode": "no_context",
+      "repetition": 1,
+      "attempt": 1,
+      "inputSha256": "28fa185507a0827494ea072e30943a27bf4def1f9bf11cf0bc4700d2a0215eeb",
+      "contextSha256": "ad34a7fecfcc5627751273d2bd00c4f0a3c63b89b17e8f2a13045f0c037b51d4",
+      "status": "completed",
+      "exitCode": 0,
+      "latencyMs": 21029,
+      "usage": {
+        "input_tokens": 10165,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 76,
+        "reasoning_output_tokens": 0
+      },
+      "output": "{\"action\":\"clarify\",\"selection\":[],\"reason\":\"Personal context is disabled, and the task does not supply Pilot Yarrow’s current regular study venue or any continuing correction.\",\"usedSourceIds\":[],\"clarificationFields\":[\"study_venue\"],\"clarification\":\"What is your current regular study venue after any continuing correction: café, home, or library?\"}",
+      "parsedOutput": {
+        "action": "clarify",
+        "selection": [],
+        "reason": "Personal context is disabled, and the task does not supply Pilot Yarrow’s current regular study venue or any continuing correction.",
+        "usedSourceIds": [],
+        "clarificationFields": [
+          "study_venue"
+        ],
+        "clarification": "What is your current regular study venue after any continuing correction: café, home, or library?"
+      },
+      "outputSha256": "f4463b2793dc83076e11e4cbee46f760e3ab636bd052258df670d81e93f52c38",
+      "toolEventCount": 0,
+      "diagnostics": [
+        {
+          "code": "host_skill_discovery_disabled_warning",
+          "message": "Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in [LOCAL_PATH]"
+        },
+        {
+          "code": "global_instructions_read_denied",
+          "message": "Failed to read global AGENTS.md instructions from `[LOCAL_PATH]`: Operation not permitted (os error 1)"
+        },
+        {
+          "code": "code_mode_disabled",
+          "message": "Code Mode is unavailable because code-mode host is disabled. Code mode will fail closed; enable `features.code_mode_host` and install `codex-code-mode-host`."
+        },
+        {
+          "code": "cli_stderr",
+          "message": "2026-10-01T13:56:49.806104Z ERROR codex_models_manager::manager: failed to refresh available models: request timed out\n2026-10-01T13:56:49.808981Z ERROR codex_models_manager::manager: failed to refresh available models: request timed out\n2026-10-01T13:57:04.520393Z ERROR codex_models_manager::manager: failed to refresh available models: request timed out\n"
+        }
+      ],
+      "isolation": {
+        "sessionIdSha256": "471867b28207773a5810328901ea10b23f1a7056b2746ebbaab34985808488dc",
+        "blockedGlobalInstructionReads": 1,
+        "eventTypes": [
+          "item.completed",
+          "thread.started",
+          "turn.completed",
+          "turn.started"
+        ],
+        "itemTypes": [
+          "agent_message",
+          "error"
+        ],
+        "temporaryWorkingDirectoryRemoved": true
+      },
+      "localRawEvidence": {
+        "eventsSha256": "edd6af66a149634f4791dd599df5fb53838f0793122435baa0d073b2ad1779c5",
+        "stderrSha256": "d9fc5f92073bd5384107d9a80b3062b5e88cd2ad5b444a398f64c2e2f7de065b"
+      }
+    },
+    {
+      "id": "dev04--raw_retrieval--r1--a1",
+      "caseId": "dev04",
+      "capabilityId": "hygiene",
+      "mode": "raw_retrieval",
+      "repetition": 1,
+      "attempt": 1,
+      "inputSha256": "29334e9cd2f0bc4299a03484e28bad91a4a48c12505255e182d8f17feccbd5a1",
+      "contextSha256": "4d7c508a1e43132681c06cff1575c199b6272921289f52adb92571699202958c",
+      "status": "completed",
+      "exitCode": 0,
+      "latencyMs": 166499,
+      "usage": {
+        "input_tokens": 10869,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 111,
+        "reasoning_output_tokens": 0
+      },
+      "output": "{\"action\":\"choose\",\"selection\":[\"A\"],\"reason\":\"A matches Pilot Alder’s confirmed preference for lined paper and costs 7 credits, within the 10-credit budget. The digital preference is unconfirmed.\",\"usedSourceIds\":[\"source-memory-55d8c5a3c5a0dfbac9b6a6e2714044d3\",\"source-memory-e37806141c7a4844d5860915285e0f2c\"],\"clarificationFields\":[],\"clarification\":null}",
+      "parsedOutput": {
+        "action": "choose",
+        "selection": [
+          "A"
+        ],
+        "reason": "A matches Pilot Alder’s confirmed preference for lined paper and costs 7 credits, within the 10-credit budget. The digital preference is unconfirmed.",
+        "usedSourceIds": [
+          "source-memory-55d8c5a3c5a0dfbac9b6a6e2714044d3",
+          "source-memory-e37806141c7a4844d5860915285e0f2c"
+        ],
+        "clarificationFields": [],
+        "clarification": null
+      },
+      "outputSha256": "30c83c21d80ca8da5b79bcb6726363a6a0154655fb30c3116b682abd5de6e1bf",
+      "toolEventCount": 0,
+      "diagnostics": [
+        {
+          "code": "host_skill_discovery_disabled_warning",
+          "message": "Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in [LOCAL_PATH]"
+        },
+        {
+          "code": "global_instructions_read_denied",
+          "message": "Failed to read global AGENTS.md instructions from `[LOCAL_PATH]`: Operation not permitted (os error 1)"
+        },
+        {
+          "code": "code_mode_disabled",
+          "message": "Code Mode is unavailable because code-mode host is disabled. Code mode will fail closed; enable `features.code_mode_host` and install `codex-code-mode-host`."
+        },
+        {
+          "code": "cli_stderr",
+          "message": "2026-10-01T13:57:10.798631Z ERROR codex_models_manager::manager: failed to refresh available models: request timed out\n2026-10-01T13:57:10.800650Z ERROR codex_models_manager::manager: failed to refresh available models: request timed out\n"
+        }
+      ],
+      "isolation": {
+        "sessionIdSha256": "f2f0b9f14ca8c1eeac9a31a514d9f782cfb19ad2d93a47ce968fca7547ce0857",
+        "blockedGlobalInstructionReads": 1,
+        "eventTypes": [
+          "item.completed",
+          "thread.started",
+          "turn.completed",
+          "turn.started"
+        ],
+        "itemTypes": [
+          "agent_message",
+          "error"
+        ],
+        "temporaryWorkingDirectoryRemoved": true
+      },
+      "localRawEvidence": {
+        "eventsSha256": "03808f4d40783eef3f2203fbfd39c185ada1c1d1ef64f8969225d36144abeb11",
+        "stderrSha256": "f65a40b5e28f0e2ba50e80815e74d41a64c635fa2781a70559b7f99238a5d5ed"
+      }
+    },
+    {
+      "id": "dev02--raw_retrieval--r1--a1",
+      "caseId": "dev02",
+      "capabilityId": "temporal",
+      "mode": "raw_retrieval",
+      "repetition": 1,
+      "attempt": 1,
+      "inputSha256": "e9747707d803ca01eb26a7c01c9b459202772fa20c718c6241c1c55b62e81ea4",
+      "contextSha256": "3a82743dc94cb029d9bb55008c57c98ffaf8fb83a2f36acaf75961aba758dd93",
+      "status": "completed",
+      "exitCode": 0,
+      "latencyMs": 171745,
+      "usage": {
+        "input_tokens": 10296,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 74,
+        "reasoning_output_tokens": 0
+      },
+      "output": "{\"action\":\"choose\",\"selection\":[\"C\"],\"reason\":\"The confirmed continuing correction changes Pilot Yarrow’s regular study preference to the library, replacing the earlier home preference.\",\"usedSourceIds\":[\"source-memory-e3111bd261c7af294232c7994ca1e97a\"],\"clarificationFields\":[],\"clarification\":null}",
+      "parsedOutput": {
+        "action": "choose",
+        "selection": [
+          "C"
+        ],
+        "reason": "The confirmed continuing correction changes Pilot Yarrow’s regular study preference to the library, replacing the earlier home preference.",
+        "usedSourceIds": [
+          "source-memory-e3111bd261c7af294232c7994ca1e97a"
+        ],
+        "clarificationFields": [],
+        "clarification": null
+      },
+      "outputSha256": "8a3e56391d4ec35967e91e07fe8105fef0358ef4f4e261e9bb7ac46d4b4086f0",
+      "toolEventCount": 0,
+      "diagnostics": [
+        {
+          "code": "host_skill_discovery_disabled_warning",
+          "message": "Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in [LOCAL_PATH]"
+        },
+        {
+          "code": "global_instructions_read_denied",
+          "message": "Failed to read global AGENTS.md instructions from `[LOCAL_PATH]`: Operation not permitted (os error 1)"
+        },
+        {
+          "code": "code_mode_disabled",
+          "message": "Code Mode is unavailable because code-mode host is disabled. Code mode will fail closed; enable `features.code_mode_host` and install `codex-code-mode-host`."
+        },
+        {
+          "code": "cli_stderr",
+          "message": "2026-10-01T13:57:07.938674Z ERROR codex_models_manager::manager: failed to refresh available models: request timed out\n2026-10-01T13:57:07.944623Z ERROR codex_models_manager::manager: failed to refresh available models: request timed out\n"
+        }
+      ],
+      "isolation": {
+        "sessionIdSha256": "d2b911170aee4b4d80bfaa9603cb1e667a3300457ee782335582b313bc901e5e",
+        "blockedGlobalInstructionReads": 1,
+        "eventTypes": [
+          "item.completed",
+          "thread.started",
+          "turn.completed",
+          "turn.started"
+        ],
+        "itemTypes": [
+          "agent_message",
+          "error"
+        ],
+        "temporaryWorkingDirectoryRemoved": true
+      },
+      "localRawEvidence": {
+        "eventsSha256": "f90e1e8dec2f3b0088536a49a74b382238334ccec23f6a35d4e08fe4b7afaff9",
+        "stderrSha256": "acafdc40d386256d89ba53bf26c4818e0c630c9c26ae36d0ce9f4dd8f88b08f6"
+      }
+    },
+    {
+      "id": "dev04--no_context--r1--a1",
+      "caseId": "dev04",
+      "capabilityId": "hygiene",
+      "mode": "no_context",
+      "repetition": 1,
+      "attempt": 1,
+      "inputSha256": "9c4906ac6940edef231c1c84f1159c650282b5879302e2eb47ff9af494e52f03",
+      "contextSha256": "ad34a7fecfcc5627751273d2bd00c4f0a3c63b89b17e8f2a13045f0c037b51d4",
+      "status": "completed",
+      "exitCode": 0,
+      "latencyMs": 8581,
+      "usage": {
+        "input_tokens": 10171,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 80,
+        "reasoning_output_tokens": 0
+      },
+      "output": "{\"action\":\"clarify\",\"selection\":[],\"reason\":\"No confirmed notebook format preference or budget is available, so no option can be selected.\",\"usedSourceIds\":[],\"clarificationFields\":[\"notebook_format\",\"notebook_budget\"],\"clarification\":\"Pilot Alder, do you prefer lined paper, blank paper, or a digital notebook, and what is your maximum budget in credits?\"}",
+      "parsedOutput": {
+        "action": "clarify",
+        "selection": [],
+        "reason": "No confirmed notebook format preference or budget is available, so no option can be selected.",
+        "usedSourceIds": [],
+        "clarificationFields": [
+          "notebook_format",
+          "notebook_budget"
+        ],
+        "clarification": "Pilot Alder, do you prefer lined paper, blank paper, or a digital notebook, and what is your maximum budget in credits?"
+      },
+      "outputSha256": "fa22258e7e4f5aad858e077a108998b8ed236a77ee6d0d32841ec11f02bb8a73",
+      "toolEventCount": 0,
+      "diagnostics": [
+        {
+          "code": "host_skill_discovery_disabled_warning",
+          "message": "Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in [LOCAL_PATH]"
+        },
+        {
+          "code": "global_instructions_read_denied",
+          "message": "Failed to read global AGENTS.md instructions from `[LOCAL_PATH]`: Operation not permitted (os error 1)"
+        },
+        {
+          "code": "code_mode_disabled",
+          "message": "Code Mode is unavailable because code-mode host is disabled. Code mode will fail closed; enable `features.code_mode_host` and install `codex-code-mode-host`."
+        },
+        {
+          "code": "cli_stderr",
+          "message": "2026-10-01T13:59:59.660963Z ERROR codex_models_manager::manager: failed to refresh available models: request timed out\n"
+        }
+      ],
+      "isolation": {
+        "sessionIdSha256": "0a1aa59c349ea651432fa501c3d5711ed699a8346d3bb9eb96f49005800955fe",
+        "blockedGlobalInstructionReads": 1,
+        "eventTypes": [
+          "item.completed",
+          "thread.started",
+          "turn.completed",
+          "turn.started"
+        ],
+        "itemTypes": [
+          "agent_message",
+          "error"
+        ],
+        "temporaryWorkingDirectoryRemoved": true
+      },
+      "localRawEvidence": {
+        "eventsSha256": "0451fb8a7557c4fd6a8fd7e287319ff3bd3b562620eb21755f99176967f6bc2b",
+        "stderrSha256": "d1883d95ef9be97ed9e54988ec2891f0768dada177b1789f7136e76f9c6da307"
+      }
+    },
+    {
+      "id": "dev04--structured--r1--a1",
+      "caseId": "dev04",
+      "capabilityId": "hygiene",
+      "mode": "structured",
+      "repetition": 1,
+      "attempt": 1,
+      "inputSha256": "a6ffe415b3209faeefc4101ebb2ddd7ce15ff8beb866f883adc258c879790382",
+      "contextSha256": "648559449e2ece2517125f5f8a6cd115bc476a50ed3742dfac6e7fbefe649888",
+      "status": "completed",
+      "exitCode": 0,
+      "latencyMs": 16008,
+      "usage": {
+        "input_tokens": 11460,
+        "cached_input_tokens": 6784,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 116,
+        "reasoning_output_tokens": 0
+      },
+      "output": "{\"action\":\"choose\",\"selection\":[\"A\"],\"reason\":\"A matches your confirmed preference for lined paper and costs 7 credits, within your 10-credit budget. B does not match your paper preference, and C exceeds your budget.\",\"usedSourceIds\":[\"source-memory-55d8c5a3c5a0dfbac9b6a6e2714044d3\",\"source-memory-e37806141c7a4844d5860915285e0f2c\"],\"clarificationFields\":[],\"clarification\":null}",
+      "parsedOutput": {
+        "action": "choose",
+        "selection": [
+          "A"
+        ],
+        "reason": "A matches your confirmed preference for lined paper and costs 7 credits, within your 10-credit budget. B does not match your paper preference, and C exceeds your budget.",
+        "usedSourceIds": [
+          "source-memory-55d8c5a3c5a0dfbac9b6a6e2714044d3",
+          "source-memory-e37806141c7a4844d5860915285e0f2c"
+        ],
+        "clarificationFields": [],
+        "clarification": null
+      },
+      "outputSha256": "b2a6f91efe0d1aac7c057153fd3ef094515d362b5e83bf23127b54eceff6c388",
+      "toolEventCount": 0,
+      "diagnostics": [
+        {
+          "code": "host_skill_discovery_disabled_warning",
+          "message": "Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in [LOCAL_PATH]"
+        },
+        {
+          "code": "global_instructions_read_denied",
+          "message": "Failed to read global AGENTS.md instructions from `[LOCAL_PATH]`: Operation not permitted (os error 1)"
+        },
+        {
+          "code": "code_mode_disabled",
+          "message": "Code Mode is unavailable because code-mode host is disabled. Code mode will fail closed; enable `features.code_mode_host` and install `codex-code-mode-host`."
+        }
+      ],
+      "isolation": {
+        "sessionIdSha256": "e29ed5b25ce74d7a8f792702a884a76b1839031803e3c16108d90e96f00cb27e",
+        "blockedGlobalInstructionReads": 1,
+        "eventTypes": [
+          "item.completed",
+          "thread.started",
+          "turn.completed",
+          "turn.started"
+        ],
+        "itemTypes": [
+          "agent_message",
+          "error"
+        ],
+        "temporaryWorkingDirectoryRemoved": true
+      },
+      "localRawEvidence": {
+        "eventsSha256": "38e15d31657bd9a80c9ea1615247ff8fbf931cb2002ec116f1149ae07e96a54a",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "id": "dev01--raw_retrieval--r1--a1",
+      "caseId": "dev01",
+      "capabilityId": "tradeoffs",
+      "mode": "raw_retrieval",
+      "repetition": 1,
+      "attempt": 1,
+      "inputSha256": "cde26dfc0671bd6bb195f10021207d7d54a0c9c7452b788ddc7b7e582ad5e591",
+      "contextSha256": "c996211ae1951bdc5f34e9adf27f914feccecfa0b8c8c1d17a53bb0ec0158732",
+      "status": "completed",
+      "exitCode": 0,
+      "latencyMs": 7815,
+      "usage": {
+        "input_tokens": 10307,
+        "cached_input_tokens": 6784,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 104,
+        "reasoning_output_tokens": 0
+      },
+      "output": "{\"action\":\"choose\",\"selection\":[\"A\"],\"reason\":\"A meets your quiet-space preference and costs 16 credits, within your 20-credit budget. B is busy, while C exceeds your budget.\",\"usedSourceIds\":[\"source-memory-e9b4fb593f056b2bf93cfac47e72f348\",\"source-memory-a45cd9d37775d6ae1665db45b2a55787\"],\"clarificationFields\":[],\"clarification\":null}",
+      "parsedOutput": {
+        "action": "choose",
+        "selection": [
+          "A"
+        ],
+        "reason": "A meets your quiet-space preference and costs 16 credits, within your 20-credit budget. B is busy, while C exceeds your budget.",
+        "usedSourceIds": [
+          "source-memory-e9b4fb593f056b2bf93cfac47e72f348",
+          "source-memory-a45cd9d37775d6ae1665db45b2a55787"
+        ],
+        "clarificationFields": [],
+        "clarification": null
+      },
+      "outputSha256": "9b7de62f4c927b873acc5bb310b1fff15dc445dcdd2f55289bafaa881086936e",
+      "toolEventCount": 0,
+      "diagnostics": [
+        {
+          "code": "host_skill_discovery_disabled_warning",
+          "message": "Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in [LOCAL_PATH]"
+        },
+        {
+          "code": "global_instructions_read_denied",
+          "message": "Failed to read global AGENTS.md instructions from `[LOCAL_PATH]`: Operation not permitted (os error 1)"
+        },
+        {
+          "code": "code_mode_disabled",
+          "message": "Code Mode is unavailable because code-mode host is disabled. Code mode will fail closed; enable `features.code_mode_host` and install `codex-code-mode-host`."
+        }
+      ],
+      "isolation": {
+        "sessionIdSha256": "4f898356d193a7ed2a275e8af14c20ef6db48f3cc07a0dbe36238989c1eeb532",
+        "blockedGlobalInstructionReads": 1,
+        "eventTypes": [
+          "item.completed",
+          "thread.started",
+          "turn.completed",
+          "turn.started"
+        ],
+        "itemTypes": [
+          "agent_message",
+          "error"
+        ],
+        "temporaryWorkingDirectoryRemoved": true
+      },
+      "localRawEvidence": {
+        "eventsSha256": "ff80be76b322310072038e9891b19e0a8cdb26111bcc36472163b4d9d9ddf690",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "id": "dev01--no_context--r1--a1",
+      "caseId": "dev01",
+      "capabilityId": "tradeoffs",
+      "mode": "no_context",
+      "repetition": 1,
+      "attempt": 1,
+      "inputSha256": "f25fc0b5f76ea1e51374c4aacd18bb72389c04cf04143d814fbdbbf0aa61c58e",
+      "contextSha256": "ad34a7fecfcc5627751273d2bd00c4f0a3c63b89b17e8f2a13045f0c037b51d4",
+      "status": "completed",
+      "exitCode": 0,
+      "latencyMs": 13751,
+      "usage": {
+        "input_tokens": 10180,
+        "cached_input_tokens": 6784,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 84,
+        "reasoning_output_tokens": 0
+      },
+      "output": "{\"action\":\"clarify\",\"selection\":[],\"reason\":\"Personal context is off, and the task supplies neither your noise preference nor your practice budget. Both are required to choose a booking.\",\"usedSourceIds\":[],\"clarificationFields\":[\"noise_preference\",\"practice_budget\"],\"clarification\":\"Do you prefer a quiet space or a busy space, and what is your maximum practice-space budget in credits?\"}",
+      "parsedOutput": {
+        "action": "clarify",
+        "selection": [],
+        "reason": "Personal context is off, and the task supplies neither your noise preference nor your practice budget. Both are required to choose a booking.",
+        "usedSourceIds": [],
+        "clarificationFields": [
+          "noise_preference",
+          "practice_budget"
+        ],
+        "clarification": "Do you prefer a quiet space or a busy space, and what is your maximum practice-space budget in credits?"
+      },
+      "outputSha256": "4ac4da636624725ce0964f0aeabf4cbed7c8d16a75275185414abe15c6bd444c",
+      "toolEventCount": 0,
+      "diagnostics": [
+        {
+          "code": "host_skill_discovery_disabled_warning",
+          "message": "Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in [LOCAL_PATH]"
+        },
+        {
+          "code": "global_instructions_read_denied",
+          "message": "Failed to read global AGENTS.md instructions from `[LOCAL_PATH]`: Operation not permitted (os error 1)"
+        },
+        {
+          "code": "code_mode_disabled",
+          "message": "Code Mode is unavailable because code-mode host is disabled. Code mode will fail closed; enable `features.code_mode_host` and install `codex-code-mode-host`."
+        }
+      ],
+      "isolation": {
+        "sessionIdSha256": "97d1fd2b83ec356295354b57149d32b134d1bd134b906caef79b0112036e24e5",
+        "blockedGlobalInstructionReads": 1,
+        "eventTypes": [
+          "item.completed",
+          "thread.started",
+          "turn.completed",
+          "turn.started"
+        ],
+        "itemTypes": [
+          "agent_message",
+          "error"
+        ],
+        "temporaryWorkingDirectoryRemoved": true
+      },
+      "localRawEvidence": {
+        "eventsSha256": "979a715a20813bc896380ad0509d34154c972120c4c57d09a30256ea000dfe54",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "id": "dev01--structured--r1--a1",
+      "caseId": "dev01",
+      "capabilityId": "tradeoffs",
+      "mode": "structured",
+      "repetition": 1,
+      "attempt": 1,
+      "inputSha256": "f90ad5c5d663d96f645229626940e3f86ce852a956bd383b10f27df713ee4488",
+      "contextSha256": "33f3ab11237319b9cef59b503bede11f32efc440e7a4af1848de3f8b2f8bc45c",
+      "status": "completed",
+      "exitCode": 0,
+      "latencyMs": 8723,
+      "usage": {
+        "input_tokens": 10655,
+        "cached_input_tokens": 9088,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 105,
+        "reasoning_output_tokens": 0
+      },
+      "output": "{\"action\":\"choose\",\"selection\":[\"A\"],\"reason\":\"A matches your quiet-space preference and costs 16 credits, within your 20-credit budget. B is cheaper but busy; C exceeds your budget.\",\"usedSourceIds\":[\"source-memory-a45cd9d37775d6ae1665db45b2a55787\",\"source-memory-e9b4fb593f056b2bf93cfac47e72f348\"],\"clarificationFields\":[],\"clarification\":null}",
+      "parsedOutput": {
+        "action": "choose",
+        "selection": [
+          "A"
+        ],
+        "reason": "A matches your quiet-space preference and costs 16 credits, within your 20-credit budget. B is cheaper but busy; C exceeds your budget.",
+        "usedSourceIds": [
+          "source-memory-a45cd9d37775d6ae1665db45b2a55787",
+          "source-memory-e9b4fb593f056b2bf93cfac47e72f348"
+        ],
+        "clarificationFields": [],
+        "clarification": null
+      },
+      "outputSha256": "8559e08baca3c1f762a23cc65b5bd9817af12f8456e8f85a7160c87212d6e87a",
+      "toolEventCount": 0,
+      "diagnostics": [
+        {
+          "code": "host_skill_discovery_disabled_warning",
+          "message": "Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in [LOCAL_PATH]"
+        },
+        {
+          "code": "global_instructions_read_denied",
+          "message": "Failed to read global AGENTS.md instructions from `[LOCAL_PATH]`: Operation not permitted (os error 1)"
+        },
+        {
+          "code": "code_mode_disabled",
+          "message": "Code Mode is unavailable because code-mode host is disabled. Code mode will fail closed; enable `features.code_mode_host` and install `codex-code-mode-host`."
+        }
+      ],
+      "isolation": {
+        "sessionIdSha256": "0874de5f3a07fbcb59f13e65636b613eebe079617e1740ed32d2782af233f55c",
+        "blockedGlobalInstructionReads": 1,
+        "eventTypes": [
+          "item.completed",
+          "thread.started",
+          "turn.completed",
+          "turn.started"
+        ],
+        "itemTypes": [
+          "agent_message",
+          "error"
+        ],
+        "temporaryWorkingDirectoryRemoved": true
+      },
+      "localRawEvidence": {
+        "eventsSha256": "114f458eaad99a3d113bb225cd6d19aed635e0bd49f7d397155a46c36245ac80",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "id": "dev03--raw_retrieval--r1--a1",
+      "caseId": "dev03",
+      "capabilityId": "uncertainty",
+      "mode": "raw_retrieval",
+      "repetition": 1,
+      "attempt": 1,
+      "inputSha256": "393c4a681a683c30597ded68acdef0631c3e74ccfa015c8405cdfcf769bda8e7",
+      "contextSha256": "9b5db6fd9b7325f03a48ae00231d3e6e3b6e1af68fbe57740844abcb4e59b91e",
+      "status": "completed",
+      "exitCode": 0,
+      "latencyMs": 10857,
+      "usage": {
+        "input_tokens": 10060,
+        "cached_input_tokens": 6784,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 62,
+        "reasoning_output_tokens": 0
+      },
+      "output": "{\"action\":\"clarify\",\"selection\":[],\"reason\":\"No confirmed delivery availability is supplied, so no slot can be selected.\",\"usedSourceIds\":[],\"clarificationFields\":[\"delivery_availability\"],\"clarification\":\"Which delivery slots are you available for: afternoon, evening, or morning?\"}",
+      "parsedOutput": {
+        "action": "clarify",
+        "selection": [],
+        "reason": "No confirmed delivery availability is supplied, so no slot can be selected.",
+        "usedSourceIds": [],
+        "clarificationFields": [
+          "delivery_availability"
+        ],
+        "clarification": "Which delivery slots are you available for: afternoon, evening, or morning?"
+      },
+      "outputSha256": "20031b8a47461dc9aa3a2bc6fd47e86f85d115d7de1f6eb5f72f8ce341f3ef04",
+      "toolEventCount": 0,
+      "diagnostics": [
+        {
+          "code": "host_skill_discovery_disabled_warning",
+          "message": "Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in [LOCAL_PATH]"
+        },
+        {
+          "code": "global_instructions_read_denied",
+          "message": "Failed to read global AGENTS.md instructions from `[LOCAL_PATH]`: Operation not permitted (os error 1)"
+        },
+        {
+          "code": "code_mode_disabled",
+          "message": "Code Mode is unavailable because code-mode host is disabled. Code mode will fail closed; enable `features.code_mode_host` and install `codex-code-mode-host`."
+        }
+      ],
+      "isolation": {
+        "sessionIdSha256": "04cf1eb7cc17124ac854c5b0faf63817dcefd745465e5bb3f4d231dbf009fe39",
+        "blockedGlobalInstructionReads": 1,
+        "eventTypes": [
+          "item.completed",
+          "thread.started",
+          "turn.completed",
+          "turn.started"
+        ],
+        "itemTypes": [
+          "agent_message",
+          "error"
+        ],
+        "temporaryWorkingDirectoryRemoved": true
+      },
+      "localRawEvidence": {
+        "eventsSha256": "d0b9458e3bfa4beecb48906e3296f083d087499a6c5ae6238e1059b8cce896d2",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "id": "dev03--no_context--r1--a1",
+      "caseId": "dev03",
+      "capabilityId": "uncertainty",
+      "mode": "no_context",
+      "repetition": 1,
+      "attempt": 1,
+      "inputSha256": "9bae93cc8dd76f58b02b87680e3813010da03047f8ab34f4ff88e23cfcdc89cb",
+      "contextSha256": "ad34a7fecfcc5627751273d2bd00c4f0a3c63b89b17e8f2a13045f0c037b51d4",
+      "status": "completed",
+      "exitCode": 0,
+      "latencyMs": 8328,
+      "usage": {
+        "input_tokens": 10164,
+        "cached_input_tokens": 6784,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 72,
+        "reasoning_output_tokens": 0
+      },
+      "output": "{\"action\":\"clarify\",\"selection\":[],\"reason\":\"No confirmed delivery availability was supplied, and personal context is disabled, so no slot can be selected.\",\"usedSourceIds\":[],\"clarificationFields\":[\"delivery_availability\"],\"clarification\":\"Pilot Zephyr, which delivery slots are you available for: afternoon, evening, or morning?\"}",
+      "parsedOutput": {
+        "action": "clarify",
+        "selection": [],
+        "reason": "No confirmed delivery availability was supplied, and personal context is disabled, so no slot can be selected.",
+        "usedSourceIds": [],
+        "clarificationFields": [
+          "delivery_availability"
+        ],
+        "clarification": "Pilot Zephyr, which delivery slots are you available for: afternoon, evening, or morning?"
+      },
+      "outputSha256": "ca179fe7483aa9166ea2225db73d8f58de4f2a9797b63ea51304b563257387d0",
+      "toolEventCount": 0,
+      "diagnostics": [
+        {
+          "code": "host_skill_discovery_disabled_warning",
+          "message": "Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in [LOCAL_PATH]"
+        },
+        {
+          "code": "global_instructions_read_denied",
+          "message": "Failed to read global AGENTS.md instructions from `[LOCAL_PATH]`: Operation not permitted (os error 1)"
+        },
+        {
+          "code": "code_mode_disabled",
+          "message": "Code Mode is unavailable because code-mode host is disabled. Code mode will fail closed; enable `features.code_mode_host` and install `codex-code-mode-host`."
+        }
+      ],
+      "isolation": {
+        "sessionIdSha256": "95cd9007b96bc748ebe0ddc604c4a347cbc7e3c66a5c1e4784d24c87a919d7ff",
+        "blockedGlobalInstructionReads": 1,
+        "eventTypes": [
+          "item.completed",
+          "thread.started",
+          "turn.completed",
+          "turn.started"
+        ],
+        "itemTypes": [
+          "agent_message",
+          "error"
+        ],
+        "temporaryWorkingDirectoryRemoved": true
+      },
+      "localRawEvidence": {
+        "eventsSha256": "b7f9de400948c6cd3ef3ef21ab719a4ad91a6d8801d597b01de718f67452e76a",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "id": "dev03--structured--r1--a1",
+      "caseId": "dev03",
+      "capabilityId": "uncertainty",
+      "mode": "structured",
+      "repetition": 1,
+      "attempt": 1,
+      "inputSha256": "5e667d3f5aefc4fc110d94f7f7fba0e7b3468174aaabcb650d42bc3d8a9f39f2",
+      "contextSha256": "ab9c8923913503e4a9efde396d890afcc87b7bbc0d0a7e5075b95f9db4926da4",
+      "status": "completed",
+      "exitCode": 0,
+      "latencyMs": 9164,
+      "usage": {
+        "input_tokens": 10240,
+        "cached_input_tokens": 6784,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 64,
+        "reasoning_output_tokens": 0
+      },
+      "output": "{\"action\":\"clarify\",\"selection\":[],\"reason\":\"No confirmed delivery availability is supplied, so none of the slots can be selected.\",\"usedSourceIds\":[],\"clarificationFields\":[\"delivery_availability\"],\"clarification\":\"Which delivery slots are you available for: morning, afternoon, or evening?\"}",
+      "parsedOutput": {
+        "action": "clarify",
+        "selection": [],
+        "reason": "No confirmed delivery availability is supplied, so none of the slots can be selected.",
+        "usedSourceIds": [],
+        "clarificationFields": [
+          "delivery_availability"
+        ],
+        "clarification": "Which delivery slots are you available for: morning, afternoon, or evening?"
+      },
+      "outputSha256": "b18fc6b221919c599758f0c38bbbab954e7ed010af5224296877c38ebc334426",
+      "toolEventCount": 0,
+      "diagnostics": [
+        {
+          "code": "host_skill_discovery_disabled_warning",
+          "message": "Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in [LOCAL_PATH]"
+        },
+        {
+          "code": "global_instructions_read_denied",
+          "message": "Failed to read global AGENTS.md instructions from `[LOCAL_PATH]`: Operation not permitted (os error 1)"
+        },
+        {
+          "code": "code_mode_disabled",
+          "message": "Code Mode is unavailable because code-mode host is disabled. Code mode will fail closed; enable `features.code_mode_host` and install `codex-code-mode-host`."
+        }
+      ],
+      "isolation": {
+        "sessionIdSha256": "4b3542e1b488e4952c406509f56ddf2a1ddd98fcfb86f5b7561c12fbf604a6ca",
+        "blockedGlobalInstructionReads": 1,
+        "eventTypes": [
+          "item.completed",
+          "thread.started",
+          "turn.completed",
+          "turn.started"
+        ],
+        "itemTypes": [
+          "agent_message",
+          "error"
+        ],
+        "temporaryWorkingDirectoryRemoved": true
+      },
+      "localRawEvidence": {
+        "eventsSha256": "7dfde76840c89cfeebbd711b2fb750b39a88906af2bf626faa6bc236c3b4fd94",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "reviewStatus": "pending",
+  "isolation": {
+    "ephemeralSessions": true,
+    "toolFeaturesDisabled": [
+      "shell_tool",
+      "unified_exec",
+      "apps",
+      "plugins",
+      "remote_plugin",
+      "memories",
+      "browser_use",
+      "browser_use_external",
+      "computer_use",
+      "view_image",
+      "image_generation",
+      "multi_agent",
+      "multi_agent_v2",
+      "hooks",
+      "goals",
+      "code_mode",
+      "code_mode_host",
+      "workspace_dependencies",
+      "chronicle",
+      "skill_search",
+      "skill_mcp_dependency_install",
+      "sleep_tool",
+      "tool_suggest",
+      "recommended_plugins"
+    ],
+    "projectInstructionsDisabled": true,
+    "userConfigIgnored": true,
+    "globalInstructionReadGuard": "macOS sandbox denies reads of global AGENTS.md and AGENTS.override.md including resolved symlink targets",
+    "credentials": "Uses existing CLI login; no credential files read by this script and no key supplied",
+    "localRawLogsPublished": false
+  },
+  "finishedAt": "2026-10-01T14:00:36.949Z",
+  "summary": {
+    "planned": 12,
+    "recorded": 12,
+    "completed": 12,
+    "failed": 0,
+    "missing": 0,
+    "toolEvents": 0
+  }
+}

@@ -12,7 +12,7 @@ export default function SiteHeader(){
  const {t}=useSiteLanguage();
  const [scrolled,setScrolled]=useState(()=>window.scrollY>16);
  useEffect(()=>{const update=()=>setScrolled(window.scrollY>16);window.addEventListener('scroll',update,{passive:true});update();return()=>window.removeEventListener('scroll',update);},[]);
- const links=[{href:'#experience',label:t('体验产品','Experience')},{href:'#capabilities',label:t('产品能力','Capabilities')},{href:'#future',label:t('未来方向','Future directions')},{href:'#build',label:t('开发进展','Development')}];
+ const links=[{href:'#experience',label:t('体验产品','Experience')},{href:'#capabilities',label:t('产品能力','Capabilities')},{href:'#future',label:t('未来方向','Future directions')},{href:'#benchmark',label:t('评测','Benchmark')},{href:'#build',label:t('开发进展','Development')}];
  return <header className={`site-masthead${scrolled?' is-scrolled':''}`}>
   <div className="site-masthead-frost" aria-hidden="true"><span/></div>
   <div className="site-masthead-in">

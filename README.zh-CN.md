@@ -8,6 +8,7 @@
   <a href="https://yunyueli.github.io/SecondU/product/embed.html?space=demo-cn-v1&lang=zh#example-chat"><strong>在线体验</strong></a>&nbsp;&nbsp;&nbsp;
   <a href="https://github.com/YunyueLi/SecondU/releases/latest"><strong>下载 macOS 版</strong></a>&nbsp;&nbsp;&nbsp;
   <a href="QUICKSTART.md">快速开始</a>&nbsp;&nbsp;&nbsp;
+  <a href="https://yunyueli.github.io/SecondU/benchmark/?lang=zh">Benchmark</a>&nbsp;&nbsp;&nbsp;
   <a href="README.md">English</a>
 </p>
 <p align="center">
@@ -89,6 +90,23 @@ SecondU 持续理解你的背景、经历、价值观、偏好、关系和长期
 | 受限能力分享 | 本机文本委托与 A2A 协议子集，可选择材料，按接收者授权，审批和撤回。[具体范围](docs/DELEGATION.md) |
 | 可检查的产品界面 | 中英文示例、明暗模式、主题装饰、实际组件目录，以及能够更新的构建时间线。 |
 
+## 个人上下文评测
+
+[**打开交互式 Benchmark**](https://yunyueli.github.io/SecondU/benchmark/?lang=zh)：**24 个合成场景、六个维度、三种上下文条件、各重复两次；计划调用 144 次，实际返回 143 次。** 可逐题检查两个轮次、实际输入、模型原文、引用来源与失败原因。[评测方法与复现](docs/CONTEXT-BENCHMARK.md) · [冻结计划与完整证据](benchmarks/results/2026-10-01-v2/)
+
+主要对照使用同一模型和 8,000 字符上下文上限：原始资料采用 BM25 检索，SecondU 采用产品实际的确认、纠正和上下文选择流程。
+
+| 预设检查项 | 原始资料检索 | SecondU 上下文 |
+| --- | ---: | ---: |
+| 两次均通过的场景 | 24 / 24 | 21 / 24 |
+| 决策或澄清符合预期的调用 | 48 / 48 | 43 / 48 |
+| 硬约束满足，限适用场景 | 36 / 36 | 32 / 36 |
+| 必要来源覆盖，限适用场景 | 40 / 40 | 36 / 40 |
+
+**这轮暴露的问题：**SecondU 在 H03、H04 未取回必需来源，四次回复都作了合理澄清，但仍未完成预设决策。R04 的第二次 SecondU 调用在 180 秒后超时，未重试。这些记录均保留在分母中；传输失败不能归因于检索质量。
+
+无个人上下文单独按可见信息校准：**47 / 48** 次符合预期，另一次返回截断 JSON，原文未修补。本轮仅使用单一模型和作者确认的合成材料，尚未证明普遍的回答质量、速度或 token 效率优势，也未检验自动事实提取与真实用户的长期效果。[12 次历史基线](benchmarks/results/2026-10-01/)与 [12 次先导运行](benchmarks/results/2026-10-01-v2/pilot/)均独立保留，不计入正式结果。
+
 ## 开始使用
 
 | 方式 | 可以做什么 |
@@ -169,3 +187,5 @@ API 只监听回环地址；凭据保存于限制权限的独立本机文件。�
 ## 开源许可
 
 项目代码采用 [MIT](LICENSE)。第三方代码、插画、品牌标识与字体保留各自许可，详见[第三方说明](THIRD_PARTY_NOTICES.md)。SecondU 为独立项目，与 OpenAI 或模型提供方无官方从属关系。旧名称 **Hither** 保留在部分内部标识与资料路径中，用于兼容已有状态。
+
+<p><sub><a href="https://yunyueli.github.io/SecondU/?lang=zh">移动鼠标，发现藏在首页的 2ndU。</a></sub></p>

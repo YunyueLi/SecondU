@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "baselineCommit": "33b0889b927f29322cef6e2faf4aa40f347b4fb6",
   "title": "SecondU 的产品判断、实现与验证",
-  "summary": "从有来源的个人理解，走向可继续使用的任务、专家与成果。v0.1.2 已于北京时间 2026-10-01 20:54 公开发布；本轮记忆核对、职业讨论、官网与原生候选有分项检查，发布提交的双平台 CI、Pages 和线上入口已核。外部 Kimi 视觉复核仍未取得结果。",
+  "summary": "v0.1.2 已公开发布。v0.1.3 候选新增 144 次合成评测、官网量化摘要与独立报告、Hero 真实 alpha 避让、启动握手修复及独立隐私插图；网站实屏与包内隔离运行已核对，原生最新连续操作及最终发布仍待收尾。外部 Kimi 无有效结果。",
   "stages": [
     {
       "id": "research",
@@ -50,10 +50,10 @@
     {
       "id": "current-review",
       "title": "按最新反馈修订",
-      "summary": "记忆核对、职业讨论、双语明暗 Hero、390 px 手机入口、时间线、图解与嵌入接管已有实屏；内部独立审查未发现重要缺陷。外部 Kimi 未取得结果，保留独立缺口，不记作用户最终认可。",
+      "summary": "v0.1.3 的评测原始证据、Hero 人物及字形避让和本机启动握手已有分项验证；原生最新标题／连续收栏、隐私插图与发布仍待补证。外部 Kimi 无有效结果，不记作用户最终认可。",
       "status": "partial",
       "document": "ITERATION.md",
-      "summaryEn": "Actual UI checks cover memory review, career discussions, bilingual light/dark Hero views, 390 px entry points, timeline, diagrams and embedded takeover. Internal review found no important defects. External Kimi review remains unavailable, and user acceptance is not inferred.",
+      "summaryEn": "The v0.1.3 evaluation records, portrait and text-glyph clearance, and local startup handshake have scoped evidence. Current native title/collapse checks, the privacy illustration and publication remain pending. External Kimi review has no valid result; final user acceptance is not inferred.",
       "titleEn": "Refine the current experience"
     },
     {
@@ -318,6 +318,23 @@
       ],
       "document": "ITERATION.md",
       "section": "2026-10-01 v0.1.2 发布收口"
+    },
+    {
+      "id": "benchmark-startup-v013",
+      "date": "2026-10-01",
+      "title": "核对评测与交互细节",
+      "titleEn": "Check evaluation and interaction details",
+      "summary": "v0.1.3 候选：144 次合成尝试保留 143 次返回与一次超时，官网分层呈现证据，Hero 按真实 alpha 避让，嵌入修复子路径与握手。原生最新实屏、隐私插图及发布待收尾。",
+      "summaryEn": "v0.1.3 candidate: retain 143 replies and one timeout from 144 synthetic attempts, separate the website summary from evidence, use actual alpha for Hero clearance, and repair embed paths and readiness. Current native checks, the privacy illustration and publication remain pending.",
+      "status": "partial",
+      "evidence": [
+        "benchmark-v2-v013",
+        "hero-clearance-v013",
+        "startup-handshake-v013",
+        "pending-delivery-v013"
+      ],
+      "document": "ITERATION.md",
+      "section": "2026-10-01 v0.1.3 候选变更与验收"
     }
   ],
   "capabilities": [
@@ -690,6 +707,54 @@
       "detailEn": "The GitHub release is public and not a draft, published at 12:54:12 UTC on October 1, 2026. Both macOS and Ubuntu passed Build CI 36863219981; Pages 36863219974 succeeded and deployed at 12:40:34 UTC. Both runs refer to 33b0889. Native ZIP and checksum digests and sizes matched locally and on GitHub. Live Hero asset hashes matched, both faces were visible, and the embedded career route and manual pause worked. This post-release record does not expand historical evidence scopes.",
       "document": "DEVELOPMENT.md",
       "section": "2026-10-01 v0.1.2 发布收口"
+    },
+    {
+      "id": "benchmark-v2-v013",
+      "title": "评测 v2 原始结果与失败",
+      "titleEn": "Version 2 results and failures",
+      "scope": "24 个合成场景 × 3 条件 × 2 次重复；独立 pilot 不计入",
+      "scopeEn": "24 authored scenarios × 3 conditions × 2 repetitions; pilot excluded",
+      "status": "verified",
+      "detail": "144 次计划全部入账，143 次返回、一次 180 秒超时。原始检索正确 48/48，结构化 43/48；两次均正确场景 24/24 与 21/24。结构化四次必要偏好检索缺失及一次超时保留分母，123 项离线检查和证据哈希通过。首页量化摘要与独立报告读取保存证据；不宣称结构化优势、节省 token 或独立盲评。",
+      "detailEn": "All 144 planned attempts are recorded: 143 replies and one 180-second timeout. Correct decisions: raw retrieval 48/48, structured 43/48; stable-correct scenarios: 24/24 and 21/24. Four structured retrieval misses and one timeout remain in the denominator. All 123 offline checks and evidence hashes passed. The website summary and separate report use saved evidence; no structured advantage, token saving or independent blind review is claimed.",
+      "document": "DEVELOPMENT.md",
+      "section": "2026-10-01 v0.1.3 候选变更与验收"
+    },
+    {
+      "id": "hero-clearance-v013",
+      "title": "Hero 人物与文字实际轮廓避让",
+      "titleEn": "Actual portrait and text-glyph clearance",
+      "scope": "本机中英文首屏；人物效果、实际字形及按钮安全区",
+      "scopeEn": "Local Chinese/English Hero; portrait effects, text glyphs and button safe areas",
+      "status": "verified",
+      "detail": "人物遮罩来自实际合成 alpha，保护人像与粒子边缘；h1/p 按真实字体字形 alpha 避让，行间和行尾空白仍可显示 2ndU。字形固定正立、无旋转，按钮保留安全区。中英实屏、类型及差异检查通过；文字仅布局／语言／字体变化时重建，人物采样限频并在空闲停止。",
+      "detailEn": "Portrait clearance uses actual composited alpha, including effect edges. Headings and paragraphs use the rendered font glyph alpha, leaving line-end and interline space available. 2ndU remains upright with no rotation; buttons retain safe areas. Chinese/English UI, type and diff checks passed. Text masks rebuild on layout/language/font changes; portrait sampling is throttled and stops when idle.",
+      "document": "DEVELOPMENT.md",
+      "section": "2026-10-01 v0.1.3 候选变更与验收"
+    },
+    {
+      "id": "startup-handshake-v013",
+      "title": "统一启动与初始化握手",
+      "titleEn": "Shared startup and readiness handshake",
+      "scope": "本机官网嵌入与构建子路径；一次冷启动样本",
+      "scopeEn": "Local embedded product and deployment subpath; one cold-start sample",
+      "status": "verified",
+      "detail": "嵌入复用 StartupScreen，提供加载错误与重试；预览识别构建子路径，缺失资源返回明确 404。iframe load 请求 ready 确认，补上首次通知丢失的恢复路径，不用轮询或主题切换重挂载。一次本机冷启动实测 636 ms 完成握手，不代表线上或所有设备时延。",
+      "detailEn": "The embed reuses StartupScreen with error and retry states. Preview resolves the build subpath and returns explicit 404s for missing assets. Iframe load requests a ready acknowledgement, recovering a missed initial notification without polling or remounting on theme changes. One local cold start completed the handshake in 636 ms; this is not an online or cross-device latency guarantee.",
+      "document": "DEVELOPMENT.md",
+      "section": "2026-10-01 v0.1.3 候选变更与验收"
+    },
+    {
+      "id": "pending-delivery-v013",
+      "title": "v0.1.3 未完成验收与发布",
+      "titleEn": "Pending v0.1.3 checks and delivery",
+      "scope": "本机候选工作树；当前公开版本仍为 v0.1.2",
+      "scopeEn": "Local candidate working tree; v0.1.2 remains the public release",
+      "status": "partial",
+      "detail": "原生标题对齐与重复收栏修复已有源码，最新连续操作实屏待主任务补入；独立隐私插图的桌面浅／深色及窄屏实屏通过。原包与解压包的签名、文件一致性、隔离 runtime 和 MCP 检查通过。Mac 当前锁定，原生连续操作待解锁。最终封包、对应提交 CI、Pages、公开版本及资产核对未完成，不预填发布时间。外部 Kimi 仍无有效结果。发布后只补真实发布记录；文档补录不触发重复整包。",
+      "detailEn": "Native title alignment and repeated-collapse repairs are implemented, but current interaction evidence remains pending. The privacy illustration passed desktop light/dark and narrow-screen review. Package and unpacked-archive signature, file-integrity, isolated runtime and MCP checks passed. The Mac is locked; native interactions await unlock. Final packaging, commit-specific CI, Pages, publication and asset checks remain pending; no publication time is invented. External Kimi review has no valid result. After publication, append the factual release record without repackaging solely for that record.",
+      "document": "DEVELOPMENT.md",
+      "section": "2026-10-01 v0.1.3 候选变更与验收"
     }
   ],
   "boundaries": [
@@ -818,11 +883,57 @@
     }
   ],
   "titleEn": "SecondU: product decisions, implementation and evidence",
-  "summaryEn": "From sourced personal understanding to reusable tasks, specialists and results. v0.1.2 was published on October 1, 2026 at 12:54 UTC. Scoped checks cover memory review, career discussions, the website and the native candidate; the release commit passed both CI platforms, Pages and live entry checks. External Kimi visual review still has no result.",
+  "summaryEn": "v0.1.2 is published. The v0.1.3 candidate adds 144 synthetic evaluation attempts, a concise website summary and separate report, alpha-based Hero clearance and startup handshake repairs. The privacy illustration passed desktop and narrow-screen review. Current native interaction checks and publication remain pending; external Kimi review has no valid result.",
   "latestRelease": {
     "version": "v0.1.2",
     "publishedAt": "2026-10-01T12:54:12Z",
     "commit": "33b0889b927f29322cef6e2faf4aa40f347b4fb6",
     "url": "https://github.com/YunyueLi/SecondU/releases/tag/v0.1.2"
+  },
+  "currentProgress": {
+    "id": "current-v013",
+    "date": "2026-10-01",
+    "status": "partial",
+    "title": "评测与交互修订",
+    "titleEn": "Evaluation and interaction updates",
+    "summary": "v0.1.3 候选的合成评测、Hero 轮廓避让、启动修复和独立隐私插图已核对；安装包及解压包的隔离运行检查通过，原生连续操作待解锁后完成。",
+    "summaryEn": "Evaluation, Hero clearance, startup repairs and the separate privacy illustration have been reviewed. Package and unpacked-archive isolated runtime checks passed; native interaction checks await an unlocked Mac.",
+    "iteration": "benchmark-startup-v013",
+    "completed": [
+      {
+        "zh": "144 次正式尝试，143 次返回、1 次超时；原始检索 48/48、结构化 43/48，失败完整保留。",
+        "en": "144 formal attempts: 143 replies, one timeout; raw retrieval 48/48, structured 43/48. Failures are retained."
+      },
+      {
+        "zh": "官网量化摘要与独立报告分开，原始输入、回复、评分和 pilot 可检查。",
+        "en": "The concise website summary links to a separate report with inspectable inputs, replies, scores and pilot records."
+      },
+      {
+        "zh": "Hero 人物与正文按实际 alpha 避让，2ndU 固定正立，中英文空白区域实屏通过。",
+        "en": "Hero portrait and text use actual alpha clearance. Upright 2ndU remains visible in verified Chinese/English whitespace."
+      },
+      {
+        "zh": "统一 StartupScreen、子路径和 ready 握手；一次本机冷启动实测 636 ms。",
+        "en": "Shared StartupScreen, subpath and ready-handshake repairs; one local cold start measured 636 ms."
+      },
+      {
+        "zh": "独立书册插图在桌面浅／深色及 390 窄屏通过；最终官网构建与 30 项针对性检查通过。",
+        "en": "The separate book illustration passed desktop light/dark and 390px review; the final website build and 30 targeted checks passed."
+      }
+    ],
+    "pending": [
+      {
+        "zh": "补最新原生标题对齐与连续收起／展开的实际验收。",
+        "en": "Record current native title alignment and repeated collapse/expand checks."
+      },
+      {
+        "zh": "最终包、对应提交 CI、Pages、v0.1.3 发布与资产核对；发布时间尚未产生。",
+        "en": "Final package, commit-specific CI, Pages, v0.1.3 publication and asset checks; no publication time exists yet."
+      },
+      {
+        "zh": "外部 Kimi 视觉复核仍无有效结果，继续保留缺口。",
+        "en": "External Kimi visual review still has no valid result; retain that gap."
+      }
+    ]
   }
 }

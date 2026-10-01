@@ -6,27 +6,33 @@
 }
 .app-shell>.shell-sidebar-toggle {
   position:absolute;
-  top:12px;
+  top:calc((var(--native-titlebar-height,56px) - 32px) / 2);
   left:var(--shell-sidebar-toggle-left);
   z-index:40;
   width:32px;
   min-width:32px;
   height:32px;
   padding:0;
+  border-radius:8px;
   color:var(--color-text-secondary);
   -webkit-app-region:no-drag;
 }
 .shell-sidebar-toggle svg { width:20px;height:20px; }
+.shell-sidebar-toggle,
+.shell-sidebar-toggle *,
+.shell-sidebar-toggle::before,
+.shell-sidebar-toggle::after { -webkit-app-region:no-drag; }
 .shell-sidebar-drag,.assistant-home-drag { display:none; }
 .app-shell:not(.desktop-mode)>.shell-sidebar-toggle { display:none; }
 
-/* macOS traffic lights and the visible toggle share the top-left corner. */
+/* Native traffic-light centres (desktop/main.cjs, y=21 + 7) and workspace
+   toolbars share y=28. The toggle follows the native controls by 14px. */
 .app-shell.desktop-mode {
   --native-titlebar-height:56px;
-  --native-controls-height:44px;
-  --native-controls-width:96px;
-  --shell-sidebar-toggle-left:104px;
-  --shell-header-inset:144px;
+  --native-controls-height:var(--native-titlebar-height);
+  --native-controls-width:80px;
+  --shell-sidebar-toggle-left:88px;
+  --shell-header-inset:136px;
   padding-top:0;
 }
 .app-shell.desktop-mode[data-window-fullscreen=true] {
@@ -39,16 +45,22 @@
   padding-top:var(--native-controls-height);
   height:100%;
 }
+.app-shell.desktop-mode .sidebar-brand {
+  height:36px;
+  min-height:36px;
+  margin-bottom:12px;
+  padding-left:8px;
+}
 .app-shell.desktop-mode>.shell-sidebar-drag {
   display:block;
   position:absolute;
-  inset:0 auto auto 0;
-  width:var(--shell-header-inset);
+  inset:0 auto auto calc(var(--shell-sidebar-toggle-left) + 32px);
+  width:16px;
   height:var(--native-controls-height);
   z-index:35;
   -webkit-app-region:drag;
 }
-.desktop-sidebar-drag { position:absolute;inset:0 0 auto;height:var(--native-controls-height);-webkit-app-region:drag; }
+.desktop-sidebar-drag { position:absolute;inset:0 0 auto var(--shell-header-inset);height:var(--native-controls-height);-webkit-app-region:drag; }
 .app-shell.desktop-mode :is(.conversation-header,.workbench-panel-bar,.ag-room-header,.app-topbar) {
   height:var(--native-titlebar-height);
   min-height:var(--native-titlebar-height);

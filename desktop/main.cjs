@@ -85,7 +85,8 @@ function openWindow() {
   mainWindow = new BrowserWindow({
     ...initialWindowBounds(screen.getDisplayNearestPoint(screen.getCursorScreenPoint()).workArea),
     title: brand.name, icon: path.join(__dirname, 'assets', brand.desktop.iconImage), backgroundColor: (startupAppearance().appearance.theme==='dark'||(startupAppearance().appearance.theme!=='light'&&nativeTheme.shouldUseDarkColors))?'#212121':'#ffffff',
-    ...(process.platform === 'darwin' ? { titleBarStyle: 'hiddenInset', trafficLightPosition: { x: 16, y: 16 } } : {}),
+    // 14px native buttons centre at y=28, matching the 56px workspace toolbar.
+    ...(process.platform === 'darwin' ? { titleBarStyle: 'hiddenInset', trafficLightPosition: { x: 16, y: 21 } } : {}),
     webPreferences: { preload: path.join(__dirname, 'preload.cjs'), nodeIntegration: false, contextIsolation: true, sandbox: true, spellcheck: false },
   });
   observeWindowState(mainWindow);

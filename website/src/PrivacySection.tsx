@@ -1,6 +1,6 @@
 import {useSiteLanguage} from './site-language';
 import {openProductRoute} from './product-navigation';
-import RoadmapEmblem from './RoadmapEmblem';
+import privacyIllustration from '../public/assets/privacy-boundaries.png';
 import './privacy-section.css';
 
 export default function PrivacySection(){
@@ -12,7 +12,7 @@ export default function PrivacySection(){
  ];
  return <section className="site-section privacy-story" aria-labelledby="privacy-title">
   <div className="privacy-intro"><span className="privacy-eyebrow">{t('信任，从边界开始','TRUST STARTS WITH BOUNDARIES')}</span><h2 id="privacy-title">{t('属于你的分身，','Your digital twin.')}<br/>{t('由你决定边界。','Your boundaries.')}</h2><p>{t('理解可以越来越深，使用与分享的范围，始终由你选择。','Understanding can grow deeper. You choose how it is used and shared.')}</p>
-   <div className="privacy-illustration" aria-hidden="true"><i className="privacy-ring privacy-ring-outer"/><i className="privacy-ring privacy-ring-inner"/><div className="privacy-art"><RoadmapEmblem stage={0}/></div><span className="privacy-boundary privacy-boundary-one">{t('你允许的背景','Context you allow')}</span><span className="privacy-boundary privacy-boundary-two">{t('你选择的范围','Scope you choose')}</span><span className="privacy-boundary privacy-boundary-three">{t('你保留的决定','Decisions you keep')}</span></div>
+   <div className="privacy-illustration" aria-hidden="true"><i className="privacy-ring privacy-ring-outer"/><i className="privacy-ring privacy-ring-inner"/><div className="privacy-art"><img src={privacyIllustration} alt="" width="1536" height="1024" loading="lazy" decoding="async"/></div><span className="privacy-boundary privacy-boundary-one">{t('你允许的背景','Context you allow')}</span><span className="privacy-boundary privacy-boundary-two">{t('你选择的范围','Scope you choose')}</span><span className="privacy-boundary privacy-boundary-three">{t('你保留的决定','Decisions you keep')}</span></div>
   </div>
   <div className="privacy-principles">{principles.map((item,index)=><article key={index}><div className="privacy-principle-label"><span>0{index+1}</span><span>{item.label}</span></div><h3>{item.title}</h3><p>{item.body}</p></article>)}<button className="privacy-explore" onClick={()=>openProductRoute('self')}>{t('查看可检查、可修正的个人理解','Explore understanding you can inspect and correct')}</button></div>
  </section>;

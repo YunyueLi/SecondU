@@ -8,6 +8,7 @@
   <a href="https://yunyueli.github.io/SecondU/product/embed.html?space=demo-us-v1&lang=en#example-chat"><strong>Try SecondU</strong></a>&nbsp;&nbsp;&nbsp;
   <a href="https://github.com/YunyueLi/SecondU/releases/latest"><strong>Download for macOS</strong></a>&nbsp;&nbsp;&nbsp;
   <a href="QUICKSTART.md">Quick start</a>&nbsp;&nbsp;&nbsp;
+  <a href="https://yunyueli.github.io/SecondU/benchmark/?lang=en">Benchmark</a>&nbsp;&nbsp;&nbsp;
   <a href="README.zh-CN.md">简体中文</a>
 </p>
 <p align="center">
@@ -84,6 +85,23 @@ Edit files beside the conversation, save versions and revisit earlier content. R
 | Projects and routines | Project materials, directories, goals and locally scheduled tasks. |
 | Limited capability sharing | Local text delegation and an A2A subset, with scoped authorization, approval and revocation. [Scope](docs/DELEGATION.md) |
 | A workspace you can inspect | Bilingual examples, themes, a component catalogue and an updateable development timeline. |
+
+## Personal-context benchmark
+
+[**Explore the interactive benchmark**](https://yunyueli.github.io/SecondU/benchmark/?lang=en): **24 authored synthetic cases, six dimensions, three context conditions and two repetitions — 144 planned calls, 143 returned.** The page lets you inspect each case, repetition, exact input, original reply, source and failure. [Method and reproduction](docs/CONTEXT-BENCHMARK.md) · [Frozen plan and evidence](benchmarks/results/2026-10-01-v2/)
+
+The primary comparison uses the same model and an 8,000-character context cap. Raw-record retrieval uses BM25; SecondU uses its production confirmation, revision and context-selection path.
+
+| Prespecified check | Raw-record retrieval | SecondU context |
+| --- | ---: | ---: |
+| Both repetitions correct, per case | 24 / 24 | 21 / 24 |
+| Expected decision or clarification, per call | 48 / 48 | 43 / 48 |
+| Hard constraints met, where applicable | 36 / 36 | 32 / 36 |
+| Required source coverage, where applicable | 40 / 40 | 36 / 40 |
+
+**What needs work:** SecondU missed required sources in H03 and H04. All four replies appropriately asked for clarification, but failed the end-to-end decision requirement. R04's second SecondU call timed out after 180 seconds and was not retried. These remain in the denominators; a transport failure does not establish retrieval quality.
+
+No-context is a separate visible-information calibration: **47 / 48** calls met its requirements; one returned truncated JSON, preserved without repair. The run uses one model and synthetic, author-confirmed records. It does not establish a general quality, speed or token-efficiency advantage, and does not test automatic fact extraction or long-term real-user outcomes. The [12-call historical baseline](benchmarks/results/2026-10-01/) and [12-call pilot](benchmarks/results/2026-10-01-v2/pilot/) remain separate from formal results.
 
 ## Get started
 
@@ -163,3 +181,5 @@ Contribute to context quality, recovery, files, accessibility or integrations. R
 ## License
 
 Project code is [MIT licensed](LICENSE); third-party assets retain their [own licenses](THIRD_PARTY_NOTICES.md). SecondU is independent of OpenAI and model providers. **Hither** remains in legacy identifiers and data paths.
+
+<p><sub><a href="https://yunyueli.github.io/SecondU/?lang=en">Move your cursor to discover the 2ndU hidden on the homepage.</a></sub></p>

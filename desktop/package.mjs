@@ -25,8 +25,14 @@ for (const name of ['dist', 'server', 'desktop', 'shared', 'docs', 'README.md', 
 }
 // These reviewed, synthetic attachments make CONTEXT-BENCHMARK.md usable offline.
 // Never copy a benchmark run directory or local model-session logs implicitly.
-for (const name of ['inputs.json', 'model-results.json', 'review.json', 'review.html']) {
-  const relative = path.join('benchmarks/results/2026-10-01', name);
+const publicBenchmarkAttachments = [
+  ...['inputs.json', 'model-results.json', 'review.json', 'review.html'].map(name => path.join('benchmarks/results/2026-10-01', name)),
+  ...['inputs.json', 'plan.json', 'model-results.json', 'review.json'].flatMap(name => [
+    path.join('benchmarks/results/2026-10-01-v2', name),
+    path.join('benchmarks/results/2026-10-01-v2/pilot', name),
+  ]),
+];
+for (const relative of publicBenchmarkAttachments) {
   if (!(await lstat(path.join(root, relative))).isFile()) throw new Error('A public benchmark attachment must be a regular file.');
   await mkdir(path.dirname(path.join(packaged, relative)), { recursive: true });
   await cp(path.join(root, relative), path.join(packaged, relative));

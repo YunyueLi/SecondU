@@ -4,11 +4,38 @@ User-visible changes are recorded here. Detailed decisions and scoped checks rem
 
 ## Unreleased
 
+## 0.1.3 — Release candidate
+
+### Fixed
+
+- Align the native macOS navigation control with the window controls and keep its clickable region separate from draggable window surfaces when navigation collapses.
+- Load the website's product example reliably under the published subpath, confirm its ready state and provide an explicit retry after loading failures.
+- Keep the homepage's upright, ordered 2ndU characters clear of actual portrait and text shapes in both themes.
+
+### Added
+
+- A 24-scenario personal-context benchmark with six dimensions, three conditions and two repetitions: all 144 attempts, including 143 replies and one timeout, are retained for inspection. The SecondU condition met 43 of 48 decision checks; raw retrieval met 48 of 48. The website shows a compact summary and links to the full report.
+- A dedicated privacy illustration and concise bilingual benchmark and artwork notes in the README.
+
+### Validation and status
+
+- Candidate checks: 645 passed, 10 environment-dependent skips, no failures. Package and unpacked-archive runtime checks, read-only MCP and ad-hoc signature verification passed.
+- Final native title/collapse/drag interaction checks, release-commit CI, Pages and public asset verification remain pending. External Kimi visual review is incomplete. v0.1.2 remains the published release; see the [v0.1.3 candidate notes](docs/releases/v0.1.3.md).
+
+
 ## 0.1.2 — 2026-10-01
+
+### Added
+
+- Reviewable memory import, individual correction and confirmation, unsent context-bearing task drafts, and portable JSON/Markdown exports.
+- Explicitly scoped, revocable read-only MCP context access and a unified setup catalogue for 13 messaging platforms.
+- Authored bilingual career discussions with editable comparison outlines, plus the initial 12-call synthetic context comparison.
 
 ### Changed
 
-- Align the product documentation, roadmap closing line and website sharing summary with the current Hero message. Product capabilities and verification limits are unchanged from v0.1.1. See the [release notes](docs/releases/v0.1.2.md).
+- Rebuild the bilingual website around the actual workspace, page-local imports and editing, and demonstrations that pause on interaction. Improve native navigation collapse, fullscreen and mobile controls.
+- Record 633 passed checks, 10 environment-dependent skips and no failures, plus 22 passing website checks. External Kimi review did not produce a result.
+- Retain the runtime tag at `33b0889`; the final archive includes three post-publication documentation updates from `bbf4c32`, with 1,500 compared runtime, frontend, dependency and benchmark files unchanged. See [release notes and package provenance](docs/releases/v0.1.2.md).
 
 ## 0.1.1 — 2026-10-01
 
