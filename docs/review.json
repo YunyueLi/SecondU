@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "baselineCommit": "c7e8803",
+  "baselineCommit": "33b0889b927f29322cef6e2faf4aa40f347b4fb6",
   "title": "SecondU 的产品判断、实现与验证",
-  "summary": "从有来源的个人理解，走向可继续使用的任务、专家与成果。v0.1.1 已公开交付；本轮记忆导入、官网和产品交互已取得候选检查与实屏证据，最终媒体、封包、CI 和公开发布继续分别记录。",
+  "summary": "从有来源的个人理解，走向可继续使用的任务、专家与成果。v0.1.2 已于北京时间 2026-10-01 20:54 公开发布；本轮记忆核对、职业讨论、官网与原生候选有分项检查，发布提交的双平台 CI、Pages 和线上入口已核。外部 Kimi 视觉复核仍未取得结果。",
   "stages": [
     {
       "id": "research",
@@ -50,19 +50,19 @@
     {
       "id": "current-review",
       "title": "按最新反馈修订",
-      "summary": "记忆核对、职业讨论、双语 Hero、手机入口与嵌入演示已有候选实屏；内部独立审查未发现重要缺陷，外部 Kimi 复核未取得结果。",
-      "status": "in_progress",
+      "summary": "记忆核对、职业讨论、双语明暗 Hero、390 px 手机入口、时间线、图解与嵌入接管已有实屏；内部独立审查未发现重要缺陷。外部 Kimi 未取得结果，保留独立缺口，不记作用户最终认可。",
+      "status": "partial",
       "document": "ITERATION.md",
-      "summaryEn": "Candidate UI checks cover memory review, career discussions, the bilingual Hero, mobile entry points and embedded demonstrations. Internal review found no important defects; external Kimi review returned no result.",
+      "summaryEn": "Actual UI checks cover memory review, career discussions, bilingual light/dark Hero views, 390 px entry points, timeline, diagrams and embedded takeover. Internal review found no important defects. External Kimi review remains unavailable, and user acceptance is not inferred.",
       "titleEn": "Refine the current experience"
     },
     {
       "id": "delivery",
       "title": "验证并交付本机版本",
-      "summary": "v0.1.1 已公开交付。v0.1.2 仍为草稿；本机原生候选交互已核，最终媒体、封包、CI 与公开发布尚待收尾。",
-      "status": "partial",
+      "summary": "v0.1.2 于北京时间 2026-10-01 20:54:12 公开发布，对应提交 33b0889。macOS 与 Ubuntu CI、Pages 部署成功；原生 ZIP 与校验和的服务端摘要及尺寸已核。临时签名不等于 Apple 公证。",
+      "status": "verified",
       "document": "DEVELOPMENT.md",
-      "summaryEn": "v0.1.1 is published and v0.1.2 remains a draft. Native candidate interactions have been checked; final media, packaging, CI and publication remain.",
+      "summaryEn": "v0.1.2 was published on October 1, 2026 at 12:54:12 UTC from commit 33b0889. macOS and Ubuntu CI and Pages passed. Server-side digests and sizes of the native ZIP and checksum file matched local assets. Ad-hoc signing is not Apple notarization.",
       "titleEn": "Verify and deliver"
     }
   ],
@@ -304,18 +304,20 @@
       "date": "2026-10-01",
       "title": "让数字分身更懂你",
       "titleEn": "A twin that understands you better",
-      "summary": "这一轮围绕记忆核对、重要选择中的讨论，以及可继续使用的任务成果打磨体验。官网与引导也在同步完善。",
-      "summaryEn": "This round improves how you review existing context, think through important choices and keep working with task results. The website and onboarding are evolving alongside it.",
-      "status": "in_progress",
+      "summary": "记忆核对与可编辑草稿、真实职业讨论、双语官网、原始比例媒体和八章引导已随 v0.1.2 发布。提交 33b0889 的 CI、Pages、公开版本与线上任务入口分别核实；未把示例、目录或内部审查扩大为真实外部业务、长期认知质量或 Kimi 通过。",
+      "summaryEn": "v0.1.2 delivers reviewed memory and editable drafts, real career-discussion workspaces, the bilingual website, original-size media and eight-chapter onboarding. CI, Pages, publication and live task entry were verified for 33b0889. Examples, catalogues and internal review do not establish external business execution, long-term context quality or a Kimi pass.",
+      "status": "verified",
       "evidence": [
         "current-context-website-checks",
         "current-candidate-interactions",
         "current-candidate-native",
         "current-candidate-performance",
-        "current-candidate-independent-review"
+        "current-candidate-independent-review",
+        "final-media-v012",
+        "public-release-v012"
       ],
       "document": "ITERATION.md",
-      "section": "2026-10-01 本轮候选版本实屏与性能复核"
+      "section": "2026-10-01 v0.1.2 发布收口"
     }
   ],
   "capabilities": [
@@ -664,6 +666,30 @@
       "detailEn": "Four 1280×900 Chinese light/dark Hero, career-discussion and timeline images showed no blockers or P2 visual defects. Timer handling, message-source validation and cleanup in HeroBackdrop, EmbeddedProduct and the embed entry showed no important defects. The four images exclude mobile, English and motion. Kimi K3 max was attempted but credential retrieval failed, so no external result exists; internal review is not a Kimi pass.",
       "document": "DEVELOPMENT.md",
       "section": "2026-10-01 本轮候选版本实屏与性能复核"
+    },
+    {
+      "id": "final-media-v012",
+      "title": "最终原始比例媒体与双语 README",
+      "titleEn": "Final original-size media and bilingual READMEs",
+      "scope": "提交 33b0889 中的 16 张海报与 8 组 MP4/GIF，均为虚构示例",
+      "scopeEn": "Sixteen posters and eight MP4/GIF pairs in 33b0889, all from fictional examples",
+      "status": "verified",
+      "detail": "四张职业讨论实拍分别覆盖中英文和浅深主题，原字节采用；全部 32 个媒体输出保留 1280×900。海报源文件字节、全部 SHA、16 个动态输出与 64 个解码状态通过核对，最低 SSIM 0.973613。中文深色视频末帧复用已核对的历史第 2 版，清除旧第 1 版点串画面；明确是实拍状态帧序列，不是模型运行录像。两版 README 各 12 处本地媒体引用及独立入口已检查。",
+      "detailEn": "Four career-discussion captures cover both languages and themes and are copied byte-for-byte. All 32 outputs retain 1280×900 dimensions. Original poster bytes, all hashes, 16 motion outputs and 64 decoded states were checked; minimum SSIM was 0.973613. The Chinese dark clip ends with the reviewed preserved v2 capture, replacing the old v1 heading. These are held captures of actual UI states, not a model-run recording. Each README has 12 verified local media references and matching standalone routes.",
+      "document": "DEVELOPMENT.md",
+      "section": "2026-10-01 v0.1.2 发布收口"
+    },
+    {
+      "id": "public-release-v012",
+      "title": "v0.1.2 实际发布与对应提交检查",
+      "titleEn": "Published v0.1.2 and checks for its commit",
+      "scope": "公开版本 v0.1.2，代码提交 33b0889b927f29322cef6e2faf4aa40f347b4fb6；发布时间 2026-10-01T12:54:12Z",
+      "scopeEn": "Public v0.1.2, source commit 33b0889b927f29322cef6e2faf4aa40f347b4fb6, published at 2026-10-01T12:54:12Z",
+      "status": "verified",
+      "detail": "GitHub 公开版本非草稿，发布时间为北京时间 2026-10-01 20:54:12。Build CI 36863219981 的 macOS 与 Ubuntu 均成功，Pages 36863219974 成功并于 12:40:34 UTC 部署，均对应 33b0889。原生 ZIP 与校验和服务端摘要、尺寸与本机一致。线上 Hero 资源逐字节哈希一致，完整双脸可见；真实嵌入的职业讨论路由和手动暂停可用。发布后记录补录不改变历史证据范围。",
+      "detailEn": "The GitHub release is public and not a draft, published at 12:54:12 UTC on October 1, 2026. Both macOS and Ubuntu passed Build CI 36863219981; Pages 36863219974 succeeded and deployed at 12:40:34 UTC. Both runs refer to 33b0889. Native ZIP and checksum digests and sizes matched locally and on GitHub. Live Hero asset hashes matched, both faces were visible, and the embedded career route and manual pause worked. This post-release record does not expand historical evidence scopes.",
+      "document": "DEVELOPMENT.md",
+      "section": "2026-10-01 v0.1.2 发布收口"
     }
   ],
   "boundaries": [
@@ -694,9 +720,9 @@
     {
       "id": "delivery-boundary",
       "title": "本机交付与公开发布分开",
-      "detail": "公开版本为 v0.1.1，发布于 2026-10-01 04:43（北京时间），对应 eceaee7。c7e8803 是之后的品牌说明提交。本轮 v0.1.2 仍为草稿；最新本机进度、最终包和公开发布分别记录。临时签名不代表 Apple 公证。",
-      "status": "in_progress",
-      "detailEn": "The public release is v0.1.1, published at 04:43 China Standard Time on 2026-10-01 from eceaee7. c7e8803 is the later brand-copy commit. v0.1.2 remains a draft; local progress, final packaging and publication are separate. Ad-hoc signing is not Apple notarization."
+      "detail": "公开版本 v0.1.2 发布于北京时间 2026-10-01 20:54:12，代码基线为 33b0889；提交时间、版本发布时间和发布后文档补录分别记录。双平台 CI、Pages 与公开包已有证据，但 macOS 包仍仅临时签名，未获 Apple 公证。发布不代表用户最终视觉认可或所有真实账号、设备和模型任务均已验收。",
+      "status": "documented",
+      "detailEn": "Public v0.1.2 was published on October 1, 2026 at 12:54:12 UTC from 33b0889. Commit time, publication time and post-release documentation are distinct. CI, Pages and public package checks exist, but the macOS package remains ad-hoc signed and is not Apple-notarized. Publication does not imply final user acceptance or validation of all real accounts, devices and model tasks."
     }
   ],
   "milestones": [
@@ -779,78 +805,24 @@
       "detailEn": "Align SecondU positioning across the website, READMEs and release documents.",
       "commit": "c7e8803",
       "iteration": "brand-alignment"
+    },
+    {
+      "id": "context-website-v012",
+      "at": "2026-10-01T20:37:51+08:00",
+      "title": "让数字分身更懂你",
+      "titleEn": "A twin that understands you better",
+      "detail": "核对已有记忆，结合自身经历讨论重要选择，再把确认的理解带入可继续修改的任务。同步交付中英文官网、真实产品媒体与桌面工作区。",
+      "detailEn": "Review existing memory, explore important choices in the context of your own experiences, and bring confirmed understanding into editable tasks. Deliver the bilingual website, actual product media and desktop workspace together.",
+      "commit": "33b0889b927f29322cef6e2faf4aa40f347b4fb6",
+      "iteration": "context-website-current"
     }
   ],
   "titleEn": "SecondU: product decisions, implementation and evidence",
-  "summaryEn": "From source-backed personal understanding to tasks, specialists and results you can continue using. v0.1.1 is published. This round has candidate checks and UI evidence for memory import, the website and product interactions; final media, packaging, CI and publication remain separate.",
+  "summaryEn": "From sourced personal understanding to reusable tasks, specialists and results. v0.1.2 was published on October 1, 2026 at 12:54 UTC. Scoped checks cover memory review, career discussions, the website and the native candidate; the release commit passed both CI platforms, Pages and live entry checks. External Kimi visual review still has no result.",
   "latestRelease": {
-    "version": "v0.1.1",
-    "publishedAt": "2026-09-30T20:43:35Z",
-    "commit": "eceaee7e1ecb4d23865f6ecee47722a7013d2942",
-    "url": "https://github.com/YunyueLi/SecondU/releases/tag/v0.1.1"
-  },
-  "currentProgress": {
-    "id": "context-website-current",
-    "date": "2026-10-01",
-    "status": "in_progress",
-    "title": "让数字分身更懂你",
-    "titleEn": "A twin that understands you better",
-    "summary": "这一轮围绕记忆核对、重要选择中的讨论，以及可继续使用的任务成果打磨体验。官网与引导也在同步完善。",
-    "summaryEn": "This round improves how you review existing context, think through important choices and keep working with task results. The website and onboarding are evolving alongside it.",
-    "completed": [
-      {
-        "zh": "整合 643 项中 633 通过、10 项环境选择性跳过、0 失败；官网专项 22 项全通过。",
-        "en": "Integration: 633 of 643 passed, 10 environment-dependent skips, no failures; all 22 website checks passed."
-      },
-      {
-        "zh": "1280 px 中文浅／深、英文深色 Hero 及 390 px 手机 Hero、菜单、时间线、图解全图与缩放已实屏核对。",
-        "en": "Checked the 1280 px Chinese light/dark and English dark Hero, plus the 390 px Hero, menus, timeline, complete diagrams and zoom."
-      },
-      {
-        "zh": "欢迎页按滚动开始演示、iframe 按键即暂停；职业讨论入口、手机 IM 单弹窗、记忆确认到未发送草稿及 JSON 导出已核对。新开示例恢复六条原始事实。",
-        "en": "Verified scroll-triggered demonstrations and keyboard takeover, the career entry, one-dialog mobile IM navigation, memory confirmation to an unsent draft and JSON export. A reopened example restores the original six facts."
-      },
-      {
-        "zh": "本机原生包启动、示例、全折叠、工作区展开、系统全屏进出与退出通过；拖动仅确认无错误。",
-        "en": "Native candidate launch, examples, collapse, workspace expansion, system fullscreen entry/exit and quit passed; dragging was only checked for errors."
-      },
-      {
-        "zh": "静态光晕后本机八秒样本整体 59.49 fps、p95 17.4 ms；Hero 29.87 fps、p95 34.1 ms，离屏零次绘制。",
-        "en": "With static washes, an eight-second local sample reached 59.49 overall fps, p95 17.4 ms; Hero reached 29.87 fps, p95 34.1 ms, with zero offscreen draws."
-      },
-      {
-        "zh": "内部独立四张桌面图审查无阻断或 P2，三处动画与嵌入源码审查无重要缺陷；此结果不代表外部 Kimi 复核或用户认可。",
-        "en": "Internal independent review found no blockers or P2 defects in four desktop images and no important defects in three animation/embed source files. This does not establish external Kimi review or user acceptance."
-      }
-    ],
-    "pending": [
-      {
-        "zh": "最终媒体三帧复核，并将最终媒体与文档封入候选包。",
-        "en": "Review the final three media frames and package the final media and documents."
-      },
-      {
-        "zh": "完成最终封包核对、对应提交的 CI 与公开发布；v0.1.2 仍为草稿。",
-        "en": "Complete final package verification, CI for the corresponding commit and publication; v0.1.2 remains a draft."
-      },
-      {
-        "zh": "外部 Kimi K3 max 复核未取得结果：已尝试，但钥匙串凭据读取失败。",
-        "en": "External Kimi K3 max review has no result: it was attempted, but keychain credential retrieval failed."
-      }
-    ],
-    "iteration": "context-website-current",
-    "highlights": [
-      {
-        "zh": "把已有的个人理解带进来，核对后再使用。",
-        "en": "Bring in existing personal context and review it before use."
-      },
-      {
-        "zh": "结合自己的经历，从多个角度讨论重要选择。",
-        "en": "Explore important choices from different perspectives, with your own experiences in view."
-      },
-      {
-        "zh": "保留成果的修改与版本，让工作能够继续。",
-        "en": "Keep edits and versions so useful work can continue."
-      }
-    ]
+    "version": "v0.1.2",
+    "publishedAt": "2026-10-01T12:54:12Z",
+    "commit": "33b0889b927f29322cef6e2faf4aa40f347b4fb6",
+    "url": "https://github.com/YunyueLi/SecondU/releases/tag/v0.1.2"
   }
 }
