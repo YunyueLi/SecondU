@@ -883,7 +883,7 @@
     },
     {
       "id": "benchmark-startup-v013-release",
-      "at": "2026-10-02T00:00:47Z",
+      "at": "2026-10-01T23:52:39+08:00",
       "title": "评测与原生交互交付",
       "titleEn": "Evaluation and native interaction release",
       "detail": "144 次合成尝试及失败完整公开；原生侧栏跨首页、Agents、对话、工作台与全屏连续切换 30 次通过，v0.1.3 安装包已发布。",
