@@ -16,15 +16,16 @@ export default function ProductPreview({kind,route,alt,action,className}:{kind:P
  const {t}=useSiteLanguage();
  const {poster,video,width,height}=useProductPreview(kind);
  const host=useRef<HTMLDivElement>(null),player=useRef<HTMLVideoElement>(null);
- const [visible,setVisible]=useState(false),[paused,setPaused]=useState(false),[hidden,setHidden]=useState(()=>document.hidden);
+ const [near,setNear]=useState(false),[visible,setVisible]=useState(false),[paused,setPaused]=useState(false),[hidden,setHidden]=useState(()=>document.hidden);
  const [reduced,setReduced]=useState(()=>matchMedia('(prefers-reduced-motion: reduce)').matches);
  useEffect(()=>{const query=matchMedia('(prefers-reduced-motion: reduce)');const change=()=>setReduced(query.matches);const visibility=()=>setHidden(document.hidden);query.addEventListener('change',change);document.addEventListener('visibilitychange',visibility);return()=>{query.removeEventListener('change',change);document.removeEventListener('visibilitychange',visibility);};},[]);
  useEffect(()=>{if(!host.current)return;const observer=new IntersectionObserver(entries=>setVisible(entries.some(entry=>entry.isIntersecting&&entry.intersectionRatio>=.2)),{threshold:.2});observer.observe(host.current);return()=>observer.disconnect();},[poster,video]);
- useEffect(()=>{const element=player.current;if(!element)return;if(visible&&!hidden&&!paused&&!reduced)void element.play().catch(()=>setPaused(true));else element.pause();},[visible,hidden,paused,reduced,video]);
+ useEffect(()=>{if(!host.current)return;const observer=new IntersectionObserver(entries=>{if(entries.some(entry=>entry.isIntersecting)){setNear(true);observer.disconnect();}},{rootMargin:'500px'});observer.observe(host.current);return()=>observer.disconnect();},[]);
+ useEffect(()=>{const element=player.current;if(!element)return;if(visible&&!hidden&&!paused&&!reduced)void element.play().catch(()=>setPaused(true));else element.pause();},[near,visible,hidden,paused,reduced,video]);
  if(!poster)return null;
  return <div ref={host} className={`${className} product-preview`}>
   <button className="product-preview-open" type="button" onClick={()=>openProductRoute(route)} aria-label={action}>
-   {video&&!reduced?<video width={width} height={height} ref={player} src={video} poster={poster} muted loop playsInline preload="metadata" aria-label={alt}/>:<img width={width} height={height} src={poster} alt={alt} loading="lazy" decoding="async"/>}
+   {video&&!reduced&&near?<video width={width} height={height} ref={player} src={video} poster={poster} muted loop playsInline preload="metadata" aria-label={alt}/>:<img width={width} height={height} src={poster} alt={alt} loading="lazy" decoding="async"/>}
    <span className="product-preview-enter">{t('进入体验','Explore the workspace')}</span>
   </button>
   {video&&!reduced&&<button className="product-preview-motion" type="button" onClick={()=>setPaused(value=>!value)} aria-label={paused?t('播放产品演示','Play product demonstration'):t('暂停产品演示','Pause product demonstration')} aria-pressed={paused}>{paused?<Play/>:<Pause/>}</button>}

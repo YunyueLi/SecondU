@@ -8,6 +8,7 @@ import { buildEmbeddedProduct } from './build-embed.mjs';
 import { copyArchitectureAssets } from './build-diagrams.mjs';
 import { copyRoadmapProvenance } from './build-roadmap.mjs';
 import { copyBenchmarkAssets } from './build-benchmark.mjs';
+import { buildWebsiteArtwork, verifyWebsiteArtwork } from './build-artwork.mjs';
 
 const directory = path.dirname(fileURLToPath(import.meta.url));
 const root = path.dirname(directory);
@@ -27,6 +28,7 @@ try {
 await mkdir(output, { recursive: true });
 // Write the marker before compilation so a failed build can be retried safely.
 await writeFile(path.join(output, '.site-build'), 'SecondU interactive website\n');
+const artwork = await buildWebsiteArtwork({ root, output, base });
 
 // Only explicitly selected public artwork is copied. Runtime data, app backend,
 // local screenshots and personal API responses can never enter this asset list.
@@ -39,6 +41,7 @@ const assets = [
   ['art/paper-rhythm.png', 'art/paper-rhythm.png'],
 ];
 for (const [source, target] of assets) {
+  if (artwork.urlFor(source)) continue;
   await mkdir(path.dirname(path.join(output, target)), { recursive: true });
   await cp(path.join(root, 'public', source), path.join(output, target));
 }
@@ -60,7 +63,12 @@ for (const [source, name] of [
 ]) await cp(source, path.join(output, 'licenses', name));
 
 await build({ configFile: path.join(directory, 'vite.config.ts'), base, build: { outDir: output, emptyOutDir: false },
-  plugins: [{ name: 'website-local-public-assets', enforce: 'pre', transform(code, id) {
+  plugins: [{ name: 'website-local-public-assets', enforce: 'pre',
+  resolveId(source, importer) { return artwork.resolveImport(source, importer); },
+  load(id) { return artwork.load(id); },
+  transformIndexHtml: { order: 'pre', handler: html => html.replaceAll('../public/art/twin-badge-v1.png', artwork.urlFor('art/twin-badge-v1.png')) },
+  transform(code, id) {
+    code = artwork.rewriteSource(code);
     if (id.split('?')[0] === path.join(root, 'src/StartupScreen.tsx')) {
       return code.replaceAll("'/art/paper-rhythm.png'", JSON.stringify(`${base}art/paper-rhythm.png`));
     }
@@ -69,22 +77,23 @@ await build({ configFile: path.join(directory, 'vite.config.ts'), base, build: {
       for (const key of ['mark', 'wordmark', 'favicon']) if (typeof brand[key] === 'string' && brand[key].startsWith('/brand/')) brand[key] = `${base}assets/${path.basename(brand[key])}`;
       return JSON.stringify(brand);
     }
-    if (!/\.css(?:\?|$)/.test(id)) return;
-    return code.replaceAll('https://cdn.openai.com/common/fonts/katex/', `${base}fonts/`).replace(/url\((['"]?)\/art\//g, `url($1${base}art/`);
+    if (!/\.css(?:\?|$)/.test(id)) return code;
+    return artwork.rewriteCss(code).replaceAll('https://cdn.openai.com/common/fonts/katex/', `${base}fonts/`).replace(/url\((['"]?)\/art\//g, `url($1${base}art/`);
   } }],
 });
-await buildEmbeddedProduct({ root, output, base });
+await buildEmbeddedProduct({ root, output, base, artwork });
 // Tailwind may expand imported SDK CSS after transform. Apply the same rewrite
 // to emitted CSS so math preview never loads third-party font URLs.
 const built = await readdir(path.join(output, 'assets'));
 for (const name of built) if (name.endsWith('.css')) {
   const file = path.join(output, 'assets', name);
   const css = await readFile(file, 'utf8');
-  await writeFile(file, css.replaceAll('https://cdn.openai.com/common/fonts/katex/', `${base}fonts/`).replace(/url\((['"]?)\/art\//g, `url($1${base}art/`));
+  await writeFile(file, artwork.rewriteCss(css).replaceAll('https://cdn.openai.com/common/fonts/katex/', `${base}fonts/`).replace(/url\((['"]?)\/art\//g, `url($1${base}art/`));
 }
 await writeFile(path.join(output, '.nojekyll'), '');
 await writeFile(path.join(output, 'robots.txt'), `User-agent: *\nAllow: /\nSitemap: ${config.url}sitemap.xml\n`);
 await writeFile(path.join(output, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>${config.url}</loc></url><url><loc>${config.url}benchmark/</loc></url></urlset>\n`);
+await verifyWebsiteArtwork({ output, base, records: artwork.records });
 const files = await readdir(output, { recursive: true, withFileTypes: true });
 const manifest = [];
 for (const item of files) if (item.isFile()) {

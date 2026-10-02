@@ -4,6 +4,8 @@ User-visible changes are recorded here. Detailed decisions and scoped checks rem
 
 ## Unreleased
 
+- Reduce website artwork transfer with transparent WebP variants, share repeated example data, prioritize the Hero image and defer offscreen video/report UI. Keep slow examples loading after 20 seconds instead of reporting a false failure.
+
 - Website follow-up: widen Hero glyph clearance to an 8px clear edge with a 7px fade; replace the rejected book artwork with a clean ivory frame and lavender glass door. Desktop binaries are unchanged.
 
 ## 0.1.3 — 2026-10-02

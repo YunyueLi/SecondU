@@ -5,9 +5,10 @@ import path from 'node:path';
 import { mkdir, cp, readFile, readdir, lstat } from 'node:fs/promises';
 import { exportCanonicalExamples } from './export-examples.mjs';
 import { portableMemoryDomain, portableMemoryImport } from './browser-memory.mjs';
+import { createCanonicalExampleModule } from './example-module.mjs';
 
 /** Build the real product App with a website-only in-memory adapter. */
-export async function buildEmbeddedProduct({ root, output, base }) {
+export async function buildEmbeddedProduct({ root, output, base, artwork }) {
   const directory = path.join(root, 'website');
   const productRoot = path.join(root, 'src');
   const apiSource = path.join(productRoot, 'api');
@@ -34,6 +35,7 @@ export async function buildEmbeddedProduct({ root, output, base }) {
     if (typeof file !== 'string' || !/^(art|brand|fonts|icons)\//.test(file) || file.split('/').some(part => part === '..' || part === '.')) throw new Error('Invalid embedded product public asset.');
     const source = path.join(root, 'public', file);
     if (!(await lstat(source)).isFile()) throw new Error('Embedded public assets must be regular files.');
+    if (artwork?.urlFor(file)) continue;
     const target = path.join(outDir, file);
     await mkdir(path.dirname(target), { recursive: true });
     await cp(source, target);
@@ -44,6 +46,7 @@ export async function buildEmbeddedProduct({ root, output, base }) {
     plugins: [{
       name: 'website-product-isolation', enforce: 'pre',
       resolveId(source, importer) {
+        const image = artwork?.resolveImport(source, importer); if (image) return image;
         if (source === 'virtual:secondu-canonical-examples') return '\0secondu-canonical-examples';
         if (importer?.split('?')[0] === memoryModule && source === 'node:crypto') return path.join(directory, 'src/embed/runtime-hash.mjs');
         if (importer?.split('?')[0] === memoryModule && source === './domain.mjs') return '\0secondu-memory-domain';
@@ -51,11 +54,13 @@ export async function buildEmbeddedProduct({ root, output, base }) {
         if (importer && source.startsWith('.') && path.resolve(path.dirname(importer.split('?')[0]), source).replace(/\.tsx?$/, '') === apiSource) return apiAdapter;
       },
       load(id) {
-        if (id === '\0secondu-canonical-examples') return `export default ${JSON.stringify(examples)};`;
+        const image = artwork?.load(id); if (image) return image;
+        if (id === '\0secondu-canonical-examples') return createCanonicalExampleModule(examples);
         if (id === '\0secondu-memory-domain') return memoryDomain;
       },
       transform(code, id) {
         const file = id.split('?')[0];
+        if (/\.(?:m?js|tsx?)$/.test(file)) code = artwork?.rewriteSource(code, { avatar: file === path.join(productRoot, 'UserAvatar.tsx') }) ?? code;
         if (file === memoryModule) return portableMemoryImport(code);
         if (file === path.join(productRoot, 'cognition/PersonalOverview.tsx')) code = code.replace('action={!data.profile.demo&&<MemoryImportEntry', 'action={<MemoryImportEntry');
         if (file === path.join(productRoot, 'cognition/MemoryImport.tsx')) {
@@ -74,7 +79,7 @@ export async function buildEmbeddedProduct({ root, output, base }) {
           brandRewritten = true;
           return { code: JSON.stringify(config), map: null };
         }
-        if (/\.css$/.test(file)) return code.replaceAll('https://cdn.openai.com/common/fonts/katex/', `${embeddedBase}fonts/`).replace(/url\((['"]?)\/(art|brand|fonts|icons)\//g, `url($1${embeddedBase}$2/`);
+        if (/\.css$/.test(file)) return (artwork?.rewriteCss(code) ?? code).replaceAll('https://cdn.openai.com/common/fonts/katex/', `${embeddedBase}fonts/`).replace(/url\((['"]?)\/(art|brand|fonts|icons)\//g, `url($1${embeddedBase}$2/`);
         if (!file.startsWith(`${productRoot}${path.sep}`) && !file.startsWith(path.join(root, 'shared') + path.sep)) return;
         if (!/\.(?:m?js|tsx?)$/.test(file)) return;
         const source = ts.createSourceFile(file, code, ts.ScriptTarget.Latest, true, file.endsWith('.tsx') ? ts.ScriptKind.TSX : ts.ScriptKind.TS);
@@ -112,7 +117,7 @@ export async function buildEmbeddedProduct({ root, output, base }) {
       },
       transformIndexHtml: { order: 'post', handler: () => [{ tag: 'style', attrs: { 'data-product-layers': '' }, children: '@layer properties, theme, base, components, utilities;', injectTo: 'head-prepend' }] },
       generateBundle(_options, bundle) {
-        for (const asset of Object.values(bundle)) if (asset.type === 'asset' && asset.fileName.endsWith('.css') && typeof asset.source === 'string') asset.source = asset.source.replaceAll('https://cdn.openai.com/common/fonts/katex/', `${embeddedBase}fonts/`).replace(/url\((['"]?)\/(art|brand|fonts|icons)\//g, `url($1${embeddedBase}$2/`);
+        for (const asset of Object.values(bundle)) if (asset.type === 'asset' && asset.fileName.endsWith('.css') && typeof asset.source === 'string') asset.source = (artwork?.rewriteCss(asset.source) ?? asset.source).replaceAll('https://cdn.openai.com/common/fonts/katex/', `${embeddedBase}fonts/`).replace(/url\((['"]?)\/(art|brand|fonts|icons)\//g, `url($1${embeddedBase}$2/`);
       },
     }, tailwindcss()],
     build: { outDir, emptyOutDir: false, sourcemap: false, chunkSizeWarningLimit: 2000, rollupOptions: { input: path.join(directory, 'embed.html') } },

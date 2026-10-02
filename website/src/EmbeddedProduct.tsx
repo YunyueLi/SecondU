@@ -23,6 +23,9 @@ export default function EmbeddedProduct() {
   const [ready, setReady] = useState(false);
   const readyState = useRef(false);
   const [loadError, setLoadError] = useState(false);
+  const [slow, setSlow] = useState(false);
+  const loadStarted = useRef(0);
+  const [readyMs, setReadyMs] = useState<number>();
   const [attempt, setAttempt] = useState(0);
   const [route, setRoute] = useState<ProductRoute>('assistant');
   const [inView,setInView]=useState(false),[scrolled,setScrolled]=useState(false),[paused,setPaused]=useState(false);
@@ -31,7 +34,7 @@ export default function EmbeddedProduct() {
   const [source] = useState(() => `${import.meta.env.BASE_URL}product/embed.html?space=${language==='zh'?'demo-cn-v1':'demo-us-v1'}&lang=${language}&theme=${theme}#assistant`);
   const state = useRef({ language, theme, preference, expanded, route }); state.current = { language, theme, preference, expanded, route };
   const send = (next?: string, requestReady=false) => frame.current?.contentWindow?.postMessage({ type: 'secondu-website-example', language:state.current.language,theme:state.current.theme,themePreference:state.current.preference,expanded:state.current.expanded,requestReady,...(next ? { route: next } : {}) }, location.origin);
-  const retry = () => {readyState.current=false;setReady(false);setLoadError(false);setNear(true);setAttempt(value=>value+1);};
+  const retry = () => {readyState.current=false;setReady(false);setLoadError(false);setSlow(false);setReadyMs(undefined);setNear(true);setAttempt(value=>value+1);};
   const playing=ready&&scrolled&&inView&&!paused&&!expanded&&!hidden&&!reduced;
   useEffect(()=>{
     const initialY=window.scrollY;
@@ -59,7 +62,10 @@ export default function EmbeddedProduct() {
   useEffect(() => { if (ready) send(); }, [language, theme, preference, ready, expanded]);
   useEffect(() => {
     if(!near||ready)return;
-    const timer=window.setTimeout(()=>setLoadError(true),20000);
+    loadStarted.current=performance.now();
+    // Elapsed time is not a failed request: the browser may still be downloading
+    // the workspace. Keep that attempt alive and allow a manual retry.
+    const timer=window.setTimeout(()=>setSlow(true),20000);
     return()=>clearTimeout(timer);
   },[near,ready,attempt]);
   useEffect(() => {
@@ -102,7 +108,7 @@ export default function EmbeddedProduct() {
   useEffect(() => {
     const receive = (event: MessageEvent) => {
       if (event.origin !== location.origin || event.source !== frame.current?.contentWindow) return;
-      if (event.data?.type === 'secondu-example-ready'&&!readyState.current) { readyState.current=true;setReady(true);setLoadError(false);send(state.current.route); }
+      if (event.data?.type === 'secondu-example-ready'&&!readyState.current) { readyState.current=true;setReady(true);setLoadError(false);setSlow(false);setReadyMs(Math.round(performance.now()-loadStarted.current));send(state.current.route); }
       if (event.data?.type === 'secondu-example-collapse') setExpanded(false);
       if (event.data?.type === 'secondu-example-interaction') setPaused(true);
       if (event.data?.type === 'secondu-example-preferences') {
@@ -114,7 +120,7 @@ export default function EmbeddedProduct() {
     };
     addEventListener('message', receive); return () => removeEventListener('message', receive);
   }, []);
-  return <section id="product-window" data-ready={ready} data-demonstration={playing?'playing':'paused'} data-route={route} className={`embedded-product${expanded ? ' is-expanded' : ''}`} aria-label={t('可操作的 SecondU 产品界面', 'Interactive SecondU product workspace')}>
+  return <section id="product-window" data-ready={ready} data-ready-ms={readyMs} data-load-state={ready?'ready':loadError?'error':slow?'slow':'loading'} data-demonstration={playing?'playing':'paused'} data-route={route} className={`embedded-product${expanded ? ' is-expanded' : ''}`} aria-label={t('可操作的 SecondU 产品界面', 'Interactive SecondU product workspace')}>
     <div ref={stage} className="embedded-product-stage" style={{ minHeight: expanded ? stageHeight.current : undefined, backgroundImage: `url(${import.meta.env.BASE_URL}assets/pencil-garden.png)` }}>
       <div ref={workspace} className="embedded-product-window" role={expanded ? 'dialog' : undefined} aria-modal={expanded || undefined} aria-label={expanded ? t('完整产品体验', 'Expanded product workspace') : undefined}>
         {expanded && <span className="embedded-product-focus-guard" tabIndex={0} onFocus={() => frame.current?.focus()} />}
@@ -122,7 +128,7 @@ export default function EmbeddedProduct() {
         <div className="embedded-product-viewport" ref={viewport} style={{ '--product-height': `${HEIGHT}px` } as React.CSSProperties}>
           {/* Forms dispatch their local submit handlers; the embed CSP blocks native form destinations. */}
           {near && <iframe key={attempt} ref={frame} src={source} title={t('SecondU 完整工作区：导航、对话与可编辑成果', 'Full SecondU workspace: navigation, conversation and editable results')} sandbox="allow-scripts allow-same-origin allow-downloads allow-modals allow-forms" loading="eager" onLoad={()=>send(state.current.route,true)} onError={()=>setLoadError(true)} className="embedded-product-frame" width={WIDTH} height={HEIGHT} />}
-          {!ready && <div className={`embedded-product-loading${loadError?' is-error':''}`}><StartupScreen contained state={loadError?'error':'loading'} error={loadError?t('示例尚未完成加载。请检查网络后重新尝试。','The example has not finished loading. Check your connection and try again.'):undefined} onRetry={retry} appearance={{theme,language:language==='zh'?'zh-CN':'en',motion:reduced?'reduced':'system',fontSize:14}}/></div>}
+          {!ready && <div className={`embedded-product-loading${loadError?' is-error':''}${slow?' is-slow':''}`}><StartupScreen contained state={loadError?'error':'loading'} message={slow&&!loadError?t('示例仍在加载，请稍候','The example is still loading. Please wait.'):undefined} error={loadError?t('未能载入示例页面，请重新尝试。','The example page could not be loaded. Please try again.'):undefined} onRetry={retry} appearance={{theme,language:language==='zh'?'zh-CN':'en',motion:reduced?'reduced':'system',fontSize:14}}/>{slow&&!loadError&&<button type="button" className="embedded-product-slow-retry" onClick={retry}>{t('重新加载','Reload example')}</button>}</div>}
         </div>
         {expanded && <span className="embedded-product-focus-guard" tabIndex={0} onFocus={() => closeButton.current?.focus()} />}
       </div>

@@ -1,0 +1,125 @@
+{
+  "description": "Explicitly reviewed public artwork. Build-only WebP derivatives; original desktop assets are unchanged.",
+  "privateInputs": false,
+  "assets": [
+    {
+      "source": "art/twin-badge-v1.png",
+      "sourceSha256": "364d9ff5c2412f9e9bc3f85a704ea5cb18dab22bd92fc41af8c34053aafa5f7e",
+      "variants": [
+        {
+          "name": "default",
+          "size": 1200,
+          "quality": 90
+        },
+        {
+          "name": "avatar",
+          "size": 192,
+          "quality": 92
+        }
+      ]
+    },
+    {
+      "source": "art/pencil-garden.png",
+      "sourceSha256": "ce8becb0681f7c356a5fdabd5a0e6b499ffb6e1e63101f6fcc298fba61afce17",
+      "variants": [
+        {
+          "name": "default",
+          "size": 1440,
+          "quality": 88
+        },
+        {
+          "name": "thumbnail",
+          "size": 480,
+          "quality": 88
+        }
+      ]
+    },
+    {
+      "source": "art/tidal-pencil.png",
+      "sourceSha256": "8d8c43bcf68bc9dd4235e2fe33bd83327718da18e670d4e1155854a9e3dd1641",
+      "variants": [
+        {
+          "name": "default",
+          "size": 1440,
+          "quality": 88
+        },
+        {
+          "name": "thumbnail",
+          "size": 480,
+          "quality": 88
+        }
+      ]
+    },
+    {
+      "source": "art/moon-voyage.png",
+      "sourceSha256": "012db2011e6d293fac54a55b5b2d9d7625b4615b345af1a0d7ea4a7490fb9a10",
+      "variants": [
+        {
+          "name": "default",
+          "size": 1440,
+          "quality": 88
+        },
+        {
+          "name": "thumbnail",
+          "size": 480,
+          "quality": 88
+        }
+      ]
+    },
+    {
+      "source": "art/paper-rhythm.png",
+      "sourceSha256": "105079eaa588c24d70a6f4c0bac7a6b7ec77e8a87ee7dc224b1a5eb925f86ad0",
+      "variants": [
+        {
+          "name": "default",
+          "size": 480,
+          "quality": 88
+        }
+      ]
+    },
+    {
+      "source": "art/themes/pencil-atlas-v1.png",
+      "sourceSha256": "5c0c99650609ff8f891c9b7d6b1f803f0670623dac9108929b8a67997a770f01",
+      "variants": [
+        {
+          "name": "default",
+          "size": 576,
+          "quality": 90
+        }
+      ]
+    },
+    {
+      "source": "art/themes/tidal-atlas-v1.png",
+      "sourceSha256": "b8205be234aeb9327c3ecd07c4b167327543622b561fe963888891a9dc608ff0",
+      "variants": [
+        {
+          "name": "default",
+          "size": 576,
+          "quality": 90
+        }
+      ]
+    },
+    {
+      "source": "art/themes/night-atlas-v1.png",
+      "sourceSha256": "ebde6224a72b308cf89f42d9a039627b0bea29b2bcefa7f14d58d86438080cda",
+      "variants": [
+        {
+          "name": "default",
+          "size": 576,
+          "quality": 90
+        }
+      ]
+    },
+    {
+      "source": "art/themes/plain-atlas-v1.png",
+      "sourceSha256": "3018143741c759cb8624c49de9ed3b268064c51a0ce63ef863dc6d4d1cf2fe9c",
+      "variants": [
+        {
+          "name": "default",
+          "size": 576,
+          "quality": 90
+        }
+      ]
+    }
+  ]
+}
