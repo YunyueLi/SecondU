@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import ts from 'typescript';
-import { createCanonicalExampleModule } from '../website/example-module.mjs';
+import { createCanonicalExampleModule, partitionCanonicalExampleData } from '../website/example-module.mjs';
 
 const moduleUrl = source => `data:text/javascript;base64,${Buffer.from(source).toString('base64')}`;
 const examples = () => ({
@@ -50,4 +50,26 @@ test('missing and unequal responses stay locale-specific', async () => {
   const { default: actual } = await import(moduleUrl(createCanonicalExampleModule(input)));
   assert.deepEqual(actual, input);
   assert.equal(Object.hasOwn(actual.en.responses, '/absent-in-en'), false);
+});
+
+test('development records stay outside the initial module and load through the real fixture on demand', async () => {
+  const input = examples(), { initial, development } = partitionCanonicalExampleData(input);
+  const initialSource = createCanonicalExampleModule(initial);
+  assert.ok(!initialSource.includes('SHARED_DOCUMENT_SENTINEL'));
+  const developmentSource = createCanonicalExampleModule(development);
+  assert.equal(developmentSource.split('SHARED_DOCUMENT_SENTINEL').length - 1, 1);
+  const counter = `__developmentModuleLoads_${Date.now()}`;
+  globalThis[counter] = 0;
+  try {
+    const fixture = (await readFile(new URL('../website/src/embed/fixture.ts', import.meta.url), 'utf8'))
+      .replace("'virtual:secondu-canonical-examples'", JSON.stringify(moduleUrl(initialSource)))
+      .replace("'virtual:secondu-development-examples'", JSON.stringify(moduleUrl(`globalThis[${JSON.stringify(counter)}]++;\n${developmentSource}`)));
+    const { outputText } = ts.transpileModule(fixture, { compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 } });
+    const { createWebsiteExample, loadWebsiteDevelopment } = await import(moduleUrl(outputText));
+    assert.deepEqual(createWebsiteExample('zh'), initial.zh); assert.equal(globalThis[counter], 0);
+    const [zh, en] = await Promise.all([loadWebsiteDevelopment('zh'), loadWebsiteDevelopment('en')]);
+    assert.equal(globalThis[counter], 1); assert.deepEqual(zh, development.zh.responses); assert.deepEqual(en, development.en.responses);
+    zh['/development/documents?path=DEVELOPMENT.md'].sections[0].title = 'Local edit';
+    assert.deepEqual(await loadWebsiteDevelopment('zh'), development.zh.responses); assert.deepEqual(en, development.en.responses);
+  } finally { delete globalThis[counter]; }
 });

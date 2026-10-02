@@ -5,7 +5,7 @@ import path from 'node:path';
 import { mkdir, cp, readFile, readdir, lstat } from 'node:fs/promises';
 import { exportCanonicalExamples } from './export-examples.mjs';
 import { portableMemoryDomain, portableMemoryImport } from './browser-memory.mjs';
-import { createCanonicalExampleModule } from './example-module.mjs';
+import { createCanonicalExampleModule, partitionCanonicalExampleData } from './example-module.mjs';
 
 /** Build the real product App with a website-only in-memory adapter. */
 export async function buildEmbeddedProduct({ root, output, base, artwork }) {
@@ -19,6 +19,7 @@ export async function buildEmbeddedProduct({ root, output, base, artwork }) {
   const portableModules = new Set(['personal-context.mjs', 'room-reactions.mjs', 'memory-import.mjs'].map(file => path.join(root, 'server', file)));
   const memoryDomain = portableMemoryDomain(await readFile(path.join(root, 'server/domain.mjs'), 'utf8'), path.join(directory, 'src/embed/runtime-store.mjs'));
   const examples = await exportCanonicalExamples();
+  const partitionedExamples = partitionCanonicalExampleData(examples);
   const embeddedBase = `${base}product/`;
   const outDir = path.resolve(root, output, 'product');
   const brandFile = path.join(root, 'shared/brand.json');
@@ -48,6 +49,7 @@ export async function buildEmbeddedProduct({ root, output, base, artwork }) {
       resolveId(source, importer) {
         const image = artwork?.resolveImport(source, importer); if (image) return image;
         if (source === 'virtual:secondu-canonical-examples') return '\0secondu-canonical-examples';
+        if (source === 'virtual:secondu-development-examples') return '\0secondu-development-examples';
         if (importer?.split('?')[0] === memoryModule && source === 'node:crypto') return path.join(directory, 'src/embed/runtime-hash.mjs');
         if (importer?.split('?')[0] === memoryModule && source === './domain.mjs') return '\0secondu-memory-domain';
         if (importer && portableModules.has(importer.split('?')[0]) && path.resolve(path.dirname(importer), source) === serverStore) return path.join(directory, 'src/embed/runtime-store.mjs');
@@ -55,7 +57,8 @@ export async function buildEmbeddedProduct({ root, output, base, artwork }) {
       },
       load(id) {
         const image = artwork?.load(id); if (image) return image;
-        if (id === '\0secondu-canonical-examples') return createCanonicalExampleModule(examples);
+        if (id === '\0secondu-canonical-examples') return createCanonicalExampleModule(partitionedExamples.initial);
+        if (id === '\0secondu-development-examples') return createCanonicalExampleModule(partitionedExamples.development);
         if (id === '\0secondu-memory-domain') return memoryDomain;
       },
       transform(code, id) {
@@ -117,6 +120,15 @@ export async function buildEmbeddedProduct({ root, output, base, artwork }) {
       },
       transformIndexHtml: { order: 'post', handler: () => [{ tag: 'style', attrs: { 'data-product-layers': '' }, children: '@layer properties, theme, base, components, utilities;', injectTo: 'head-prepend' }] },
       generateBundle(_options, bundle) {
+        const initialChunks = new Set();
+        const collect = name => {
+          if (initialChunks.has(name)) return;
+          const chunk = bundle[name]; if (chunk?.type !== 'chunk') return;
+          initialChunks.add(name); chunk.imports.forEach(collect);
+        };
+        for (const chunk of Object.values(bundle)) if (chunk.type === 'chunk' && chunk.isEntry) collect(chunk.fileName);
+        const developmentChunk = Object.values(bundle).find(chunk => chunk.type === 'chunk' && Object.hasOwn(chunk.modules, '\0secondu-development-examples'));
+        if (!developmentChunk || initialChunks.has(developmentChunk.fileName)) throw new Error('Development records must remain outside the initial product module graph.');
         for (const asset of Object.values(bundle)) if (asset.type === 'asset' && asset.fileName.endsWith('.css') && typeof asset.source === 'string') asset.source = (artwork?.rewriteCss(asset.source) ?? asset.source).replaceAll('https://cdn.openai.com/common/fonts/katex/', `${embeddedBase}fonts/`).replace(/url\((['"]?)\/(art|brand|fonts|icons)\//g, `url($1${embeddedBase}$2/`);
       },
     }, tailwindcss()],

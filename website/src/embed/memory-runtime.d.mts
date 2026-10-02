@@ -4,6 +4,7 @@ export class ExampleError extends Error { status: number; code: string; construc
 export class ExampleRuntime {
   data: Bootstrap;
   constructor(example: CanonicalExample);
+  loadDevelopmentResponses(responses: Record<string, unknown>): void;
   chooseChat(): string | undefined;
   response(path: string, method?: string, body?: Record<string, unknown>): unknown;
   download(artifactId: string, version: number): { name: string; mime: string; bytes: Uint8Array<ArrayBuffer>; version: number };

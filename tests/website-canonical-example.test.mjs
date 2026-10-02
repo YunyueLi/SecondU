@@ -11,6 +11,7 @@ import { defaultAppearance } from '../server/local-appearance.mjs';
 import { createHash } from 'node:crypto';
 import { portableMemoryDomain } from '../website/browser-memory.mjs';
 import { createDecisionExample } from '../server/demo-decision.mjs';
+import { partitionCanonicalExampleData } from '../website/example-module.mjs';
 
 let examples;
 test.before(async () => {
@@ -51,6 +52,32 @@ test('career-discussion routes use the exact canonical authored tasks and editab
     assert.equal(edited.version, 2);assert.equal(edited.versions[0].content, artifact.content);
     assert.deepEqual(runtime.data.facts, facts);
   }
+});
+
+test('initial example data omits deferred and unreachable responses without changing live task results', t => {
+  t.mock.timers.enable({ apis: ['Date'], now: new Date('2026-10-02T00:00:00.000Z') });
+  const original = structuredClone(examples), { initial, development } = partitionCanonicalExampleData(examples);
+  for (const language of ['zh', 'en']) {
+    const complete = new ExampleRuntime(examples[language]), first = new ExampleRuntime(initial[language]);
+    assert.deepEqual(first.data, complete.data);
+    assert.ok(!Object.keys(initial[language].responses).some(route => route.startsWith('/development/') || /^\/tasks\/[^/]+\/(?:context|trace|feedback)$/.test(route)));
+    const compareTasks = () => { for (const task of complete.data.tasks) for (const action of ['context', 'trace', 'feedback']) assert.deepEqual(first.response(`/tasks/${task.id}/${action}`), complete.response(`/tasks/${task.id}/${action}`)); };
+    compareTasks();
+    for (const store of [complete, first]) {
+      const fact = store.data.facts.find(item => item.status === 'confirmed');
+      fact.statement += ' — synthetic reviewed correction'; fact.version++;
+      const task = store.data.tasks[0];
+      task.contextFactIds = [fact.id]; task.events.push({ id: 'synthetic-review-event', type: 'note', title: 'Synthetic observation', createdAt: '2026-10-02T00:00:00.000Z' });
+      store.put('taskFeedback', { id: 'synthetic-live-feedback', taskId: task.id, factId: fact.id, createdAt: '2026-10-02T00:00:00.000Z' });
+    }
+    compareTasks();
+    assert.throws(() => first.response('/development/review'), error => error.code === 'not_found');
+    first.loadDevelopmentResponses(development[language].responses);
+    for (const [route, value] of Object.entries(development[language].responses)) assert.deepEqual(first.response(route), value);
+    assert.throws(() => first.loadDevelopmentResponses({ '/bootstrap': {} }), /Invalid development/);
+    assert.throws(() => first.response('/development/review', 'PUT', {}), error => error.code === 'showcase_read_only');
+  }
+  assert.deepEqual(examples, original);
 });
 
 test('canonical pages read records, project files and current context through the same disposable store', () => {

@@ -8,3 +8,11 @@ export type CanonicalExample = { space: string; bootstrap: Bootstrap; responses:
 export function createWebsiteExample(language: ExampleLanguage): CanonicalExample {
   return structuredClone(canonical[language]);
 }
+
+/** Loaded only when the development page asks for a public record. This is a
+ * same-origin script chunk, preserving the embed's connect-src 'none' boundary.
+ */
+export async function loadWebsiteDevelopment(language: ExampleLanguage): Promise<Record<string, unknown>> {
+  const { default: development } = await import('virtual:secondu-development-examples');
+  return structuredClone(development[language].responses);
+}

@@ -1,10 +1,11 @@
 import { getLocale, t } from '../../../src/i18n';
-import { createWebsiteExample, type ExampleLanguage } from './fixture';
+import { createWebsiteExample, loadWebsiteDevelopment, type ExampleLanguage } from './fixture';
 import { ExampleRuntime, ExampleError } from './memory-runtime.mjs';
 import type { Bootstrap } from '../../../shared/contracts';
 import { decisionExampleTaskId } from '../../../shared/demo-decision.mjs';
 
 const stores = new Map<ExampleLanguage, ExampleRuntime>();
+const developmentLoads = new Map<ExampleLanguage, Promise<void>>();
 const downloads = new Map<string, string>();
 const downloadNames = new Map<string, string>();
 const exportContents = new Map<string, string>();
@@ -36,7 +37,17 @@ export async function api<T>(path: string, init: RequestInit = {}, _originalSpac
   try {
     const method = (init.method || 'GET').toUpperCase();
     const body = typeof init.body === 'string' ? JSON.parse(init.body) : {};
-    const value = await runtime().response(path, method, body);
+    const requestedLanguage = language(), target = runtime(requestedLanguage);
+    if (method === 'GET' && path.startsWith('/development/')) {
+      let pending = developmentLoads.get(requestedLanguage);
+      if (!pending) {
+        pending = loadWebsiteDevelopment(requestedLanguage).then(responses => target.loadDevelopmentResponses(responses)).catch(error => { developmentLoads.delete(requestedLanguage); throw error; });
+        developmentLoads.set(requestedLanguage, pending);
+      }
+      await pending;
+      if (init.signal?.aborted) throw new DOMException('Aborted', 'AbortError');
+    }
+    const value = await target.response(path, method, body);
     if (path === '/bootstrap') lastBootstrap = value as Bootstrap;
     if (path === '/settings/appearance' && method === 'PUT' && ['light', 'dark', 'system'].includes(body.theme)) websiteThemePreference = body.theme;
     if (path === '/settings/appearance' && value && typeof value === 'object') Object.assign(value, { language: getLocale(), theme: websiteThemePreference });

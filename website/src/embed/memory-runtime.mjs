@@ -30,6 +30,10 @@ export class ExampleRuntime {
     for (const route of ['agent-resources', 'im-connections', 'im-outbox']) this.extra.set(aliases[route], clone(this.example.responses[`/${route}`] || []));
     this.appearance = clone(this.example.responses['/settings/appearance']);
   }
+  loadDevelopmentResponses(responses) {
+    if (!responses || typeof responses !== 'object' || Array.isArray(responses) || Object.keys(responses).some(route => !route.startsWith('/development/'))) fail('Invalid development example records.');
+    Object.assign(this.example.responses, clone(responses));
+  }
   list(collection) { return [...(this.data[collection] || this.extra.get(collection) || [])]; }
   get(collection, key) { return this.list(collection).find(item => item.id === key); }
   require(collection, key) { return this.get(collection, key) || fail('记录不存在。', 404, 'not_found'); }
