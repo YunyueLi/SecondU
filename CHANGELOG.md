@@ -4,7 +4,9 @@ User-visible changes are recorded here. Detailed decisions and scoped checks rem
 
 ## Unreleased
 
-## 0.1.3 — Release candidate
+- Website follow-up: widen Hero glyph clearance to an 8px clear edge with a 7px fade; replace the rejected book artwork with a clean ivory frame and lavender glass door. Desktop binaries are unchanged.
+
+## 0.1.3 — 2026-10-02
 
 ### Fixed
 
@@ -20,7 +22,8 @@ User-visible changes are recorded here. Detailed decisions and scoped checks rem
 ### Validation and status
 
 - Candidate checks: 645 passed, 10 environment-dependent skips, no failures. Package and unpacked-archive runtime checks, read-only MCP and ad-hoc signature verification passed.
-- Final native title/collapse/drag interaction checks, release-commit CI, Pages and public asset verification remain pending. External Kimi visual review is incomplete. v0.1.2 remains the published release; see the [v0.1.3 candidate notes](docs/releases/v0.1.3.md).
+- The verified final app passed 30 native sidebar toggles: six each on Home, Agents, a conversation, an expanded workbench and macOS fullscreen. Leaving fullscreen restored the window. Empty-title-bar dragging preserved the content and controls; window displacement was not measured.
+- v0.1.3 was published at 2026-10-02 00:00:47 UTC. Both public asset digests and sizes match the verified local files. External Kimi review could not read its credential and produced no result; see the [v0.1.3 release notes](docs/releases/v0.1.3.md).
 
 
 ## 0.1.2 — 2026-10-01

@@ -54,9 +54,9 @@ export function createTextClearance(nodes:Element[]) {
    if(!distances)return 1;
    const px=Math.floor(x-left),py=Math.floor(y-top);
    if(px<0||py<0||px>=canvas.width||py>=canvas.height)return 1;
-   // A narrow falloff protects the small moving glyph itself while leaving
-   // genuine line ends, line gaps and large letter counters available.
-   const ramp=Math.max(0,Math.min(1,(distances[py*canvas.width+px]-5)/5));
+   // Leave a little air around the actual letter strokes, then fade the
+   // moving glyphs in without masking paragraph or heading rectangles.
+   const ramp=Math.max(0,Math.min(1,(distances[py*canvas.width+px]-8)/7));
    return ramp*ramp*(3-2*ramp);
   },
   dispose(){distances=null;canvas.width=canvas.height=1;},

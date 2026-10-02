@@ -321,11 +321,11 @@
     },
     {
       "id": "benchmark-startup-v013",
-      "date": "2026-10-01",
+      "date": "2026-10-02",
       "title": "核对评测与交互细节",
       "titleEn": "Check evaluation and interaction details",
-      "summary": "v0.1.3 候选：144 次合成尝试保留 143 次返回与一次超时，官网分层呈现证据，Hero 按真实 alpha 避让，嵌入修复子路径与握手。原生最新实屏、隐私插图及发布待收尾。",
-      "summaryEn": "v0.1.3 candidate: retain 143 replies and one timeout from 144 synthetic attempts, separate the website summary from evidence, use actual alpha for Hero clearance, and repair embed paths and readiness. Current native checks, the privacy illustration and publication remain pending.",
+      "summary": "v0.1.3 已发布：完整保留 144 次合成评测、原生连续点击实测与启动修复。官网文字增加轮廓留白，隐私插图替换为几何门框。外部 Kimi 评审因缺少凭据未完成。",
+      "summaryEn": "v0.1.3 is published with all 144 synthetic attempts, native repeated-click verification and startup repairs. Website text has wider glyph clearance and a geometric privacy illustration. External Kimi review remains unavailable because its credential is missing.",
       "status": "partial",
       "evidence": [
         "benchmark-v2-v013",
@@ -746,15 +746,15 @@
     },
     {
       "id": "pending-delivery-v013",
-      "title": "v0.1.3 未完成验收与发布",
-      "titleEn": "Pending v0.1.3 checks and delivery",
-      "scope": "本机候选工作树；当前公开版本仍为 v0.1.2",
-      "scopeEn": "Local candidate working tree; v0.1.2 remains the public release",
+      "title": "v0.1.3 已发布与验证边界",
+      "titleEn": "v0.1.3 release and verification limits",
+      "scope": "公开安装包、官网后续修订及本机原生交互",
+      "scopeEn": "Public archive, website follow-up and local native interactions",
       "status": "partial",
-      "detail": "30d7a7a 的 macOS 与 Ubuntu Build CI 36887858601、Pages 36887858409 均成功；官网量化结果、独立报告与超时记录已上线实测。最终包与解压包的签名、文件一致性、runtime 和 MCP 检查通过。v0.1.3 ZIP 为 220915395 字节，GitHub 草稿摘要与本机 ac43f5f1872a331e430a29deda8993f4258f3b87cdc160c8a9312127c7dc9cf7 一致。Mac 仍锁定，最新原生连续操作待解锁，桌面版本尚未公开。外部 Kimi 无有效结果。",
-      "detailEn": "Build CI 36887858601 passed on macOS and Ubuntu; Pages 36887858409 succeeded for 30d7a7a. Live summary, separate report and timeout evidence were checked. Final and unpacked archives passed signatures, integrity, runtime and MCP checks. The 220915395-byte v0.1.3 ZIP has a matching local/GitHub draft digest ac43f5f1872a331e430a29deda8993f4258f3b87cdc160c8a9312127c7dc9cf7. The Mac remains locked; native repeated interactions and public desktop release are pending. External Kimi review has no valid result.",
+      "detail": "v0.1.3 于 2026-10-02T00:00:47Z 公开，代码提交 30d7a7a 的 macOS／Ubuntu CI 与 Pages 均通过。公开 ZIP 220915395 字节，摘要 ac43f5f1872a331e430a29deda8993f4258f3b87cdc160c8a9312127c7dc9cf7。排除旧进程后，最终包五种界面各六次侧栏切换全部成功；退出全屏恢复。旧副本12份已回收。官网扩大字形边缘留白、替换几何隐私插图，浅深色和390px实屏通过。Kimi凭据预检退出42，未调用模型；包未获Apple公证。",
+      "detailEn": "v0.1.3 was published at 2026-10-02T00:00:47Z. macOS/Ubuntu CI and Pages passed for runtime commit 30d7a7a. The public ZIP is 220915395 bytes with digest ac43f5f1872a331e430a29deda8993f4258f3b87cdc160c8a9312127c7dc9cf7. After excluding an old process, all 30 sidebar toggles across five views passed; leaving fullscreen restored the window. Twelve obsolete app copies were trashed. Wider glyph clearance and geometric privacy artwork passed light/dark and 390px checks. Kimi credential preflight exited 42 without a model call. The archive is not Apple-notarized.",
       "document": "DEVELOPMENT.md",
-      "section": "2026-10-01 v0.1.3 候选变更与验收"
+      "section": "2026-10-02 v0.1.3 公开发布"
     }
   ],
   "boundaries": [
@@ -880,60 +880,24 @@
       "detailEn": "Review existing memory, explore important choices in the context of your own experiences, and bring confirmed understanding into editable tasks. Deliver the bilingual website, actual product media and desktop workspace together.",
       "commit": "33b0889b927f29322cef6e2faf4aa40f347b4fb6",
       "iteration": "context-website-current"
+    },
+    {
+      "id": "benchmark-startup-v013-release",
+      "at": "2026-10-02T00:00:47Z",
+      "title": "评测与原生交互交付",
+      "titleEn": "Evaluation and native interaction release",
+      "detail": "144 次合成尝试及失败完整公开；原生侧栏跨首页、Agents、对话、工作台与全屏连续切换 30 次通过，v0.1.3 安装包已发布。",
+      "detailEn": "All 144 synthetic attempts and failures are public. The final native app passed 30 sidebar toggles across Home, Agents, conversation, workbench and fullscreen; v0.1.3 is published.",
+      "commit": "30d7a7a5ad7d3f2275fa9966b18cd8f4eb831f1c",
+      "iteration": "benchmark-startup-v013"
     }
   ],
   "titleEn": "SecondU: product decisions, implementation and evidence",
   "summaryEn": "v0.1.2 is published. The v0.1.3 candidate adds 144 synthetic evaluation attempts, a concise website summary and separate report, alpha-based Hero clearance and startup handshake repairs. The privacy illustration passed desktop and narrow-screen review. Current native interaction checks and publication remain pending; external Kimi review has no valid result.",
   "latestRelease": {
-    "version": "v0.1.2",
-    "publishedAt": "2026-10-01T12:54:12Z",
-    "commit": "33b0889b927f29322cef6e2faf4aa40f347b4fb6",
-    "url": "https://github.com/YunyueLi/SecondU/releases/tag/v0.1.2"
-  },
-  "currentProgress": {
-    "id": "current-v013",
-    "date": "2026-10-01",
-    "status": "partial",
-    "title": "评测与交互修订",
-    "titleEn": "Evaluation and interaction updates",
-    "summary": "v0.1.3 候选的合成评测、Hero 轮廓避让、启动修复和独立隐私插图已核对；安装包及解压包的隔离运行检查通过，原生连续操作待解锁后完成。",
-    "summaryEn": "Evaluation, Hero clearance, startup repairs and the separate privacy illustration have been reviewed. Package and unpacked-archive isolated runtime checks passed; native interaction checks await an unlocked Mac.",
-    "iteration": "benchmark-startup-v013",
-    "completed": [
-      {
-        "zh": "144 次正式尝试，143 次返回、1 次超时；原始检索 48/48、结构化 43/48，失败完整保留。",
-        "en": "144 formal attempts: 143 replies, one timeout; raw retrieval 48/48, structured 43/48. Failures are retained."
-      },
-      {
-        "zh": "官网量化摘要与独立报告分开，原始输入、回复、评分和 pilot 可检查。",
-        "en": "The concise website summary links to a separate report with inspectable inputs, replies, scores and pilot records."
-      },
-      {
-        "zh": "Hero 人物与正文按实际 alpha 避让，2ndU 固定正立，中英文空白区域实屏通过。",
-        "en": "Hero portrait and text use actual alpha clearance. Upright 2ndU remains visible in verified Chinese/English whitespace."
-      },
-      {
-        "zh": "统一 StartupScreen、子路径和 ready 握手；一次本机冷启动实测 636 ms。",
-        "en": "Shared StartupScreen, subpath and ready-handshake repairs; one local cold start measured 636 ms."
-      },
-      {
-        "zh": "独立书册插图在桌面浅／深色及 390 窄屏通过；最终官网构建与 30 项针对性检查通过。",
-        "en": "The separate book illustration passed desktop light/dark and 390px review; the final website build and 30 targeted checks passed."
-      },
-      {
-        "zh": "30d7a7a 的 macOS／Ubuntu CI 与 Pages 成功；官网已上线复核。v0.1.3 安装包和校验文件已上传草稿，远端摘要一致。",
-        "en": "Commit 30d7a7a passed macOS/Ubuntu CI and Pages; the live website was checked. The v0.1.3 archive and checksum are uploaded to a draft with matching remote digests."
-      }
-    ],
-    "pending": [
-      {
-        "zh": "Mac 当前锁定；解锁后完成原生连续收起／展开与拖动实测，再公开 v0.1.3。",
-        "en": "The Mac is locked. Complete native repeated collapse/expand and drag checks after unlock, then publish v0.1.3."
-      },
-      {
-        "zh": "外部 Kimi 视觉复核因本机凭据读取不可用未取得有效结果。",
-        "en": "External Kimi visual review has no valid result because local credential access was unavailable."
-      }
-    ]
+    "version": "v0.1.3",
+    "publishedAt": "2026-10-02T00:00:47Z",
+    "commit": "30d7a7a5ad7d3f2275fa9966b18cd8f4eb831f1c",
+    "url": "https://github.com/YunyueLi/SecondU/releases/tag/v0.1.3"
   }
 }
