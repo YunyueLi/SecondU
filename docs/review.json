@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "baselineCommit": "33b0889b927f29322cef6e2faf4aa40f347b4fb6",
   "title": "SecondU 的产品判断、实现与验证",
-  "summary": "v0.1.3 已公开发布。本轮 0.1.4 候选完善官网双语、键盘与动态控制，接通真实任务活动状态。网站八组合与连续交互、新原生窗口及包内运行内容已分项核对；两轮 Kimi 视觉辅助复核完成，可见范围无新增发布阻断。新提交、CI／Pages、公开资产与线上重开仍待完成，用户最终采纳单独确认。",
+  "summary": "v0.1.4 已公开发布，完善双语官网、键盘与动态控制，以及真实任务活动状态。macOS 与 Ubuntu CI 均通过，公开安装包大小与摘要匹配，官网主要资源与验收候选一致并已重开。八组合实屏、原生窗口与两轮视觉复核各有对应范围；真实手机、真实 provider 新执行和用户最终采纳另行确认。",
   "stages": [
     {
       "id": "research",
@@ -50,22 +50,22 @@
     {
       "id": "current-review",
       "title": "按最新反馈修订",
-      "summary": "0.1.4 候选已检查官网八组合、连续键盘操作、任务活动八态及新原生窗口；暂停残影、手机节奏与文字链接反馈已修复并重开，两轮 Kimi 复核完成。证据覆盖当前可见范围，真实 provider 新执行、真实手机和用户最终采纳不由此推定。",
+      "summary": "本轮官网与任务活动修订已随 v0.1.4 交付：八组合、连续键盘操作、任务八态、新原生窗口和两轮 Kimi 复核已有对应证据；尚未推定真实手机、真实 provider 新执行或用户最终采纳。",
       "status": "partial",
       "document": "DEVELOPMENT.md",
-      "summaryEn": "The 0.1.4 candidate has scoped checks for eight website combinations, continuous keyboard use, eight activity states and the new native window. Paused trails, mobile pacing and text links were repaired and reopened; both Kimi reviews are complete. These checks do not establish a new real-provider run, real-phone coverage or final user acceptance.",
+      "summaryEn": "The website and task activity revisions are delivered in v0.1.4, with scoped evidence for eight screen combinations, continuous keyboard use, eight task states, the new native window and two Kimi reviews. Real-phone coverage, a new real-provider run and final user acceptance are not inferred.",
       "titleEn": "Refine the current experience",
-      "section": "2026-10-08 生产候选复验与首轮视觉反馈收口"
+      "section": "2026-10-08 v0.1.4 公开交付"
     },
     {
       "id": "delivery",
       "title": "验证并交付本机版本",
-      "summary": "当前公开版本仍为 v0.1.3。0.1.4 本机窗口已实际启动，签名与包内容校验通过，源码和包内 runtime revision 一致；本轮正式提交、CI／Pages、公开安装包摘要及线上重开待交付。临时签名不等于 Apple 公证。",
-      "status": "partial",
+      "summary": "v0.1.4 已公开发布。C2 提交的双平台 CI、公开 ZIP 与校验文件摘要核对通过；官网 C1 Pages 成功，主要资源匹配候选并已重开。安装包保留封包时文档；临时签名不等于 Apple 公证。",
+      "status": "verified",
       "document": "DEVELOPMENT.md",
-      "summaryEn": "The current public release remains v0.1.3. The local 0.1.4 app was launched; signing and package-content checks passed, and source and packaged runtime revisions match. The new commit, CI/Pages, public archive digests and live recheck are pending. Ad-hoc signing is not Apple notarization.",
+      "summaryEn": "v0.1.4 is public. C2 passed CI on both platforms and public ZIP/checksum verification; the C1 website deployment succeeded, its primary resources match the candidate, and the live page was reopened. The archive retains its packaging-time documentation. Ad-hoc signing is not Apple notarization.",
       "titleEn": "Verify and deliver",
-      "section": "2026-10-08 生产候选复验与首轮视觉反馈收口"
+      "section": "2026-10-08 v0.1.4 公开交付"
     }
   ],
   "iterations": [
@@ -356,6 +356,20 @@
       ],
       "document": "DEVELOPMENT.md",
       "section": "2026-10-08 生产候选复验与首轮视觉反馈收口"
+    },
+    {
+      "id": "website-task-quality-v014-release",
+      "date": "2026-10-08",
+      "title": "官网品质与任务活动正式交付",
+      "titleEn": "Website quality and task activity release",
+      "summary": "v0.1.4 安装包已公开，双平台 CI、包内容及公开摘要通过。官网双语入口、素材、暂停和产品体验已上线核对；发布回执更新开发记录，封包内容保持。",
+      "summaryEn": "The v0.1.4 archive is public with passing CI on both platforms, package-content checks and matching public digests. Bilingual website entries, assets, pause control and product entry were checked live. Publication facts update the development record without changing the archive.",
+      "status": "verified",
+      "evidence": [
+        "public-delivery-v014"
+      ],
+      "document": "DEVELOPMENT.md",
+      "section": "2026-10-08 v0.1.4 公开交付"
     }
   ],
   "capabilities": [
@@ -848,6 +862,18 @@
       "detailEn": "Three first-round Kimi K3 max findings were implemented and reopened: paused character trails, mobile Hero pacing and consistent text-link underlines. The second round used 10 public or fictional screenshots with matching source changes, confirmed those fixes and found no new release blocker within the visible scope. Advisory review does not replace actual acceptance. The new commit, CI/Pages, public asset digests and live recheck remain pending. The latest public release is still v0.1.3; no award or final user-acceptance outcome is claimed.",
       "document": "DEVELOPMENT.md",
       "section": "2026-10-08 生产候选复验与首轮视觉反馈收口"
+    },
+    {
+      "id": "public-delivery-v014",
+      "title": "v0.1.4 公开资产与官网",
+      "titleEn": "v0.1.4 public assets and website",
+      "detail": "2026-10-08T05:16:38Z 公开，标签为 835b11302a0ee0142a082ff6d0f55c385e2554da。C2 CI 37730878799 双平台成功；C1 Pages 37730416743 成功。ZIP 为 221,970,343 字节，公开 SHA-256 与本机相同；SHA256SUMS 亦匹配。正式官网已重开。",
+      "detailEn": "Published at 2026-10-08T05:16:38Z from tag commit 835b11302a0ee0142a082ff6d0f55c385e2554da. C2 CI 37730878799 passed on both platforms; C1 Pages 37730416743 succeeded. The 221,970,343-byte ZIP and SHA256SUMS match their verified local digests. The live website was reopened.",
+      "scope": "正式发布、公开资产与官网主要资源。包保留 C2 文档；本轮未新增真实 provider、真实手机或奖项结果。",
+      "scopeEn": "Publication, public assets and primary website resources. The archive retains C2 documentation; no new real-provider, real-phone or award result is established.",
+      "status": "verified",
+      "document": "DEVELOPMENT.md",
+      "section": "2026-10-08 v0.1.4 公开交付"
     }
   ],
   "boundaries": [
@@ -983,56 +1009,24 @@
       "detailEn": "All 144 synthetic attempts and failures are public. The final native app passed 30 sidebar toggles across Home, Agents, conversation, workbench and fullscreen; v0.1.3 is published.",
       "commit": "30d7a7a5ad7d3f2275fa9966b18cd8f4eb831f1c",
       "iteration": "benchmark-startup-v013"
+    },
+    {
+      "id": "website-task-quality-v014-release",
+      "at": "2026-10-08T05:16:38Z",
+      "title": "更清楚地看见工作，继续理解你",
+      "titleEn": "Follow the work as understanding grows",
+      "detail": "紧凑任务过程、真实调用与协作状态，以及完善的双语官网随 v0.1.4 交付；本机、CI 与公开资产分别核验。",
+      "detailEn": "v0.1.4 delivers compact task activity, real operation and collaboration states, and a refined bilingual website, with separate native, CI and public-asset checks.",
+      "commit": "835b11302a0ee0142a082ff6d0f55c385e2554da",
+      "iteration": "website-task-quality-v014-release"
     }
   ],
   "titleEn": "SecondU: product decisions, implementation and evidence",
-  "summaryEn": "v0.1.3 is published. The 0.1.4 candidate improves the bilingual website, keyboard access, motion controls and task activity states. Eight website combinations, continuous interactions, the new native window and packaged runtime have scoped checks. Two Kimi visual reviews found no new release blocker within the visible scope. The new commit, CI/Pages, public assets and live recheck remain pending; final user acceptance is separate.",
+  "summaryEn": "v0.1.4 is published with improvements to the bilingual website, keyboard access, motion controls and real task activity states. macOS and Ubuntu CI passed, public package sizes and digests match, and the live website was reopened with primary resources matching the reviewed candidate. Eight screen combinations, the native window and two visual reviews retain their scoped evidence; real phones, a new real-provider run and final user acceptance remain separate.",
   "latestRelease": {
-    "version": "v0.1.3",
-    "publishedAt": "2026-10-02T00:00:47Z",
-    "commit": "30d7a7a5ad7d3f2275fa9966b18cd8f4eb831f1c",
-    "url": "https://github.com/YunyueLi/SecondU/releases/tag/v0.1.3"
-  },
-  "currentProgress": {
-    "id": "website-task-quality-current",
-    "date": "2026-10-08",
-    "status": "partial",
-    "title": "0.1.4 本机候选已复验，公开交付待完成",
-    "titleEn": "0.1.4 local candidate rechecked; public delivery pending",
-    "summary": "官网与任务活动的本轮修正已有源码、实屏、性能及原生分项证据。两轮 Kimi 辅助复核完成，可见范围无新增发布阻断；当前公开版本仍为 v0.1.3，公开交付及用户最终采纳继续分开记录。",
-    "summaryEn": "The website and task activity changes have scoped source, screen, performance and native evidence. Two Kimi advisory reviews are complete, with no new release blocker in the visible scope. The public version remains v0.1.3; public delivery and final user acceptance are recorded separately.",
-    "completed": [
-      {
-        "zh": "官网八组合、键盘焦点、手机路线详情和页面内虚构成果保存／重开已核对。",
-        "en": "Eight website combinations, keyboard focus, mobile roadmap details and within-page fictional artifact save/reopen were checked."
-      },
-      {
-        "zh": "结构化任务活动接通生产事件，八态与审查、拒绝、远端断联预览已核对；最新 45 项专项和类型检查通过。",
-        "en": "Structured task activity is connected to production events. Eight states plus review, rejection and remote-disconnect previews were checked; the latest 45 targeted checks and type checking passed."
-      },
-      {
-        "zh": "暂停残影、手机 Hero 节奏及文字链接已修正并重开；两轮 Kimi 复核完成，可见范围无新增发布阻断。",
-        "en": "Paused trails, mobile Hero pacing and text links were repaired and reopened. Both Kimi reviews are complete, with no new release blocker in the visible scope."
-      },
-      {
-        "zh": "本机生产样本暂停和离屏均为零应用动画回调／WebGL 提交；双语静态入口、分享图与素材白名单有独立检查。",
-        "en": "Local production samples had zero application animation callbacks or WebGL submissions when paused and offscreen. Bilingual static entries, the share image and asset allowlists have separate checks."
-      },
-      {
-        "zh": "新 0.1.4 原生窗口、历史保留、成果和工作过程面板已实际核对；签名、包内容及 runtime 一致性检查通过。",
-        "en": "The new 0.1.4 native window, retained history, artifacts and process panel were exercised. Signing, package contents and runtime consistency checks passed."
-      }
-    ],
-    "pending": [
-      {
-        "zh": "完成本轮正式提交、CI／Pages、公开安装包与摘要核对，并重开线上入口；最终发布信息按实际结果回填。",
-        "en": "Complete the new commit, CI/Pages, public archive and digest verification, then reopen the live entry points; record publication details from actual results."
-      },
-      {
-        "zh": "用户最终采纳及未测范围继续独立确认，包括真实手机、真实平台分享抓取、真实 provider 新执行及相应完整实屏边界。",
-        "en": "Keep final user acceptance and untested scope separate, including real phones, real-platform share fetching, a new real-provider run and the corresponding complete screen evidence."
-      }
-    ],
-    "iteration": "website-task-activity-v014"
+    "version": "v0.1.4",
+    "publishedAt": "2026-10-08T05:16:38Z",
+    "commit": "835b11302a0ee0142a082ff6d0f55c385e2554da",
+    "url": "https://github.com/YunyueLi/SecondU/releases/tag/v0.1.4"
   }
 }

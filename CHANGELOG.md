@@ -2,7 +2,7 @@
 
 User-visible changes are recorded here. Detailed decisions and scoped checks remain in [Development](docs/DEVELOPMENT.md) and [Iteration](docs/ITERATION.md). Published releases are tied to a tag and commit; subsequent changes remain under Unreleased.
 
-## 0.1.4 — Candidate
+## 0.1.4 — 2026-10-08
 
 ### Changed
 
@@ -12,11 +12,22 @@ User-visible changes are recorded here. Detailed decisions and scoped checks rem
 - Load website development records only when opened and omit redundant frozen task responses from startup data, preserving computed task context, traces and feedback.
 - Reduce website artwork transfer with transparent WebP variants, share repeated example data, prioritize the Hero image and defer offscreen video/report UI. Keep slow examples loading after 20 seconds instead of reporting a false failure.
 - Widen Hero glyph clearance to an 8px clear edge with a 7px fade, and replace the rejected book artwork with an ivory frame and lavender glass door.
+- Exclude only `.DS_Store` Finder metadata during desktop package copying, preserving all other copy rules and framework symlinks.
 
 ### Validation and status
 
 - Candidate source tests, type checking and website builds passed. Browser previews covered eight task states, review and rejection, remote disconnection, repeated start notifications and 320px/390px layouts; these checks use synthetic task events.
-- Two Kimi K3 max visual reviews informed the fixes; the second found no new release blockers within its visible scope. The native 0.1.4 app reopened existing history and example artifacts, and package identity, dependency coverage and strict ad-hoc signature verification passed. Publication and downloadable-asset verification remain separate; no new real-provider, award or public-network performance result is claimed.
+- Two Kimi K3 max visual reviews informed the fixes; the second found no new release blockers within its visible scope. The native 0.1.4 app reopened existing history and example artifacts, and package identity, dependency coverage and strict ad-hoc signature verification passed. The final ZIP passed extraction checks and an isolated empty-data backend check; that process was closed without invoking a real provider.
+- [Source CI 37730878799](https://github.com/YunyueLi/SecondU/actions/runs/37730878799) passed for release commit `835b11302a0ee0142a082ff6d0f55c385e2554da` on Node 22, on both macOS and Ubuntu. Each platform ran 719 checks: 709 passed, 10 environment-dependent skips, zero failures. These counts remain separate from earlier local checks.
+- [Pages 37730416743](https://github.com/YunyueLi/SecondU/actions/runs/37730416743) succeeded for website commit `ca2d887a517a9ea3aed00fd8da18f7cad2ef5107`. The following release commit changes only Finder-metadata filtering in the packager; website runtime code is unchanged.
+- [v0.1.4](https://github.com/YunyueLi/SecondU/releases/tag/v0.1.4) was published at **2026-10-08 05:16:38 UTC**, tagged at `835b11302a0ee0142a082ff6d0f55c385e2554da`. Public asset sizes and SHA-256 digests match the verified local files:
+
+| Asset | Bytes | SHA-256 |
+| --- | ---: | --- |
+| `SecondU-v0.1.4-macos-arm64.zip` | 221,970,343 | `c45913997eb6ba3e949b2270037cb084a6e19dfdaa23f80a7f0f6c6a887841ec` |
+| `SHA256SUMS` | 97 | `8efa07c6ed33ad50c0493ffac801cf48fc36349bba1c01d41e638d8675c473b6` |
+
+`SHA256SUMS` covers only the ZIP. The published archive retains the documents sealed at the release commit; later publication records update source documentation without changing the archive, signature or digests. The live site was reopened in the in-app browser, with the paused Hero and product-ready state checked. Earlier native acceptance covers the unchanged release runtime; no additional native or Safari screen check was performed after device lock. No new real-provider, award or public-network performance result is claimed. See the [v0.1.4 release record](docs/releases/v0.1.4.md).
 
 ## 0.1.3 — 2026-10-02
 
