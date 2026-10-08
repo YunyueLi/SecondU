@@ -7,7 +7,7 @@ import {Pause,Play} from '@openai/apps-sdk-ui/components/Icon';
 import {StartupScreen} from '../../src/StartupScreen';
 
 const WIDTH = 1440, HEIGHT = 900;
-const demonstrationRoutes:ProductRoute[]=['assistant','example-chat','self','agents','artifacts'];
+const demonstrationRoutes:ProductRoute[]=['example-chat','self','agents','artifacts'];
 export default function EmbeddedProduct() {
   const { language, setLanguage, t } = useSiteLanguage();
   const { preference, theme, setPreference } = useSiteTheme();
@@ -16,6 +16,7 @@ export default function EmbeddedProduct() {
   const workspace = useRef<HTMLDivElement>(null);
   const expandButton = useRef<HTMLButtonElement>(null);
   const closeButton = useRef<HTMLButtonElement>(null);
+  const opener = useRef<HTMLElement | null>(null);
   const stageHeight = useRef(0);
   const [expanded, setExpanded] = useState(false);
   const frame = useRef<HTMLIFrameElement>(null);
@@ -27,11 +28,11 @@ export default function EmbeddedProduct() {
   const loadStarted = useRef(0);
   const [readyMs, setReadyMs] = useState<number>();
   const [attempt, setAttempt] = useState(0);
-  const [route, setRoute] = useState<ProductRoute>('assistant');
+  const [route, setRoute] = useState<ProductRoute>('example-chat');
   const [inView,setInView]=useState(false),[scrolled,setScrolled]=useState(false),[paused,setPaused]=useState(false);
   const [hidden,setHidden]=useState(()=>document.hidden),[reduced,setReduced]=useState(()=>matchMedia('(prefers-reduced-motion: reduce)').matches);
   // Theme/language updates use a message, preserving the frame and its drafts.
-  const [source] = useState(() => `${import.meta.env.BASE_URL}product/embed.html?space=${language==='zh'?'demo-cn-v1':'demo-us-v1'}&lang=${language}&theme=${theme}#assistant`);
+  const [source] = useState(() => `${import.meta.env.BASE_URL}product/embed.html?space=${language==='zh'?'demo-cn-v1':'demo-us-v1'}&lang=${language}&theme=${theme}#example-chat`);
   const state = useRef({ language, theme, preference, expanded, route }); state.current = { language, theme, preference, expanded, route };
   const send = (next?: string, requestReady=false) => frame.current?.contentWindow?.postMessage({ type: 'secondu-website-example', language:state.current.language,theme:state.current.theme,themePreference:state.current.preference,expanded:state.current.expanded,requestReady,...(next ? { route: next } : {}) }, location.origin);
   const retry = () => {readyState.current=false;setReady(false);setLoadError(false);setSlow(false);setReadyMs(undefined);setNear(true);setAttempt(value=>value+1);};
@@ -70,11 +71,18 @@ export default function EmbeddedProduct() {
   },[near,ready,attempt]);
   useEffect(() => {
     const navigate = (event:Event) => {
-      const next=(event as CustomEvent).detail?.route;
+      const navigation=(event as CustomEvent).detail;
+      const next=navigation?.route;
       if(!isProductRoute(next))return;
       setPaused(true);setNear(true); setRoute(next); state.current.route=next;
       if(ready)send(next);
-      if(matchMedia('(max-width:600px)').matches){stageHeight.current=stage.current?.getBoundingClientRect().height||0;setExpanded(true);}else document.getElementById('experience')?.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
+      if(matchMedia('(max-width:600px)').matches){
+        if(!state.current.expanded)opener.current=navigation?.trigger instanceof HTMLElement?navigation.trigger:document.activeElement instanceof HTMLElement?document.activeElement:null;
+        stageHeight.current=stage.current?.getBoundingClientRect().height||0;setExpanded(true);
+      }else{
+        workspace.current?.focus({preventScroll:true});
+        document.getElementById('experience')?.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
+      }
     };
     addEventListener(productNavigationEvent,navigate);addEventListener('secondu:explore',navigate);
     return()=>{removeEventListener(productNavigationEvent,navigate);removeEventListener('secondu:explore',navigate);};
@@ -102,7 +110,9 @@ export default function EmbeddedProduct() {
       removeEventListener('keydown', escape);
       for (const item of muted) item.element.inert = item.inert;
       document.body.style.overflow = overflow;
-      expandButton.current?.focus({ preventScroll: true });
+      const returnTo=opener.current?.isConnected?opener.current:expandButton.current;
+      returnTo?.focus({ preventScroll: true });
+      opener.current=null;
     };
   }, [expanded]);
   useEffect(() => {
@@ -122,7 +132,7 @@ export default function EmbeddedProduct() {
   }, []);
   return <section id="product-window" data-ready={ready} data-ready-ms={readyMs} data-load-state={ready?'ready':loadError?'error':slow?'slow':'loading'} data-demonstration={playing?'playing':'paused'} data-route={route} className={`embedded-product${expanded ? ' is-expanded' : ''}`} aria-label={t('可操作的 SecondU 产品界面', 'Interactive SecondU product workspace')}>
     <div ref={stage} className="embedded-product-stage" style={{ minHeight: expanded ? stageHeight.current : undefined, backgroundImage: `url(${import.meta.env.BASE_URL}assets/pencil-garden.png)` }}>
-      <div ref={workspace} className="embedded-product-window" role={expanded ? 'dialog' : undefined} aria-modal={expanded || undefined} aria-label={expanded ? t('完整产品体验', 'Expanded product workspace') : undefined}>
+      <div ref={workspace} className="embedded-product-window" tabIndex={-1} role={expanded ? 'dialog' : 'region'} aria-modal={expanded || undefined} aria-label={expanded ? t('完整产品体验', 'Expanded product workspace') : t('可操作的产品示例', 'Interactive product example')}>
         {expanded && <span className="embedded-product-focus-guard" tabIndex={0} onFocus={() => frame.current?.focus()} />}
         <div className="embedded-product-chrome"><span className="embedded-product-dots" aria-hidden="true"><i /><i /><i /></span><span>SecondU</span><span className="embedded-product-badge">{expanded ? <button type="button" ref={closeButton} className="embedded-product-close" onClick={() => setExpanded(false)} aria-label={t('收起产品体验', 'Close expanded workspace')}>{t('收起', 'Close')} <span aria-hidden="true">×</span></button> : t('虚构示例', 'Fictional example')}</span></div>
         <div className="embedded-product-viewport" ref={viewport} style={{ '--product-height': `${HEIGHT}px` } as React.CSSProperties}>
@@ -135,6 +145,6 @@ export default function EmbeddedProduct() {
     </div>
     <div className="embedded-product-caption"><div role="group" aria-label={t('切换产品示例页面', 'Choose a product example page')}>{[
       ['example-chat', t('对话与成果', 'Chat and results')], ['self', t('数字分身', 'Digital twin')], ['agents', t('专家团队', 'Expert team')], ['artifacts', t('资料库', 'Library')],
-    ].map(([id, label]) => <button type="button" key={id} disabled={!ready} aria-pressed={route === id} onClick={() => { if(isProductRoute(id)){setPaused(true);setRoute(id);state.current.route=id;send(id);} }}>{label}</button>)}{!reduced&&<button type="button" className="embedded-product-motion" disabled={!ready} aria-label={playing?t('暂停自动演示','Pause automatic demonstration'):t('播放自动演示','Play automatic demonstration')} onClick={()=>{setPaused(playing);setScrolled(true);}}>{playing?<Pause/>:<Play/>}</button>}<button type="button" ref={expandButton} className="embedded-product-expand" aria-haspopup="dialog" onClick={() => {setPaused(true);setNear(true);stageHeight.current = stage.current?.getBoundingClientRect().height || 0; setExpanded(true); }}>{t('展开体验', 'Expand workspace')}</button></div><p>{t('体验对话、数字分身与成果编辑。示例内容仅保存在当前页面。', 'Explore conversations, your digital twin and artifact editing. Fictional example content stays in this page only.')}</p></div>
+    ].map(([id, label]) => <button type="button" key={id} disabled={!ready} aria-pressed={route === id} onClick={() => { if(isProductRoute(id)){setPaused(true);setRoute(id);state.current.route=id;send(id);} }}>{label}</button>)}{!reduced&&<button type="button" className="embedded-product-motion" disabled={!ready} aria-label={playing?t('暂停自动演示','Pause automatic demonstration'):t('播放自动演示','Play automatic demonstration')} onClick={()=>{setPaused(playing);setScrolled(true);}}>{playing?<Pause/>:<Play/>}</button>}<button type="button" ref={expandButton} className="embedded-product-expand" aria-haspopup="dialog" onClick={(event) => {opener.current=event.currentTarget;setPaused(true);setNear(true);stageHeight.current = stage.current?.getBoundingClientRect().height || 0; setExpanded(true); }}>{t('展开体验', 'Expand workspace')}</button></div><p>{t('体验对话、数字分身与成果编辑。示例内容仅保存在当前页面。', 'Explore conversations, your digital twin and artifact editing. Fictional example content stays in this page only.')}</p></div>
   </section>;
 }

@@ -16,6 +16,8 @@ html[data-theme=dark] .site-masthead.is-scrolled{--site-header-tint:.8}
 .site-masthead-links{display:flex;align-items:center;justify-content:center;gap:clamp(18px,2.1vw,32px);margin-left:auto;font-size:13px;line-height:1.4;white-space:nowrap}
 .site-masthead-links>a,.site-masthead-github{display:inline-flex;align-items:center;min-height:44px;color:var(--site-muted);transition:color .15s}
 .site-masthead-links>a:hover,.site-masthead-github:hover{color:var(--site-ink)}
+.site-masthead-links>a[aria-current=location]{color:var(--site-ink);text-decoration:underline;text-decoration-color:var(--site-accent);text-underline-offset:7px;text-decoration-thickness:1px}
+.site-masthead-menu a[aria-current=location]{font-weight:600}
 .site-masthead-tools{display:flex;align-items:center;gap:4px;flex:none}
 .site-masthead-github{gap:3px;margin-right:10px;font-size:13px}
 .site-masthead-github>svg{width:14px;height:14px}

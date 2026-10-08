@@ -6,6 +6,7 @@ import { validateConnectionModel } from '../connections.mjs';
 import { assertTaskExecution } from '../execution-policy.mjs';
 import { PROTOCOL, RUN_STATUSES, stamp, digest, clean, fail, identifier, plainObject, boundedString, relativeFile, inputManifest, modelSettings, MAX_FILE_BYTES } from './common.mjs';
 import { SshRemoteTransport, runtimePackage, sshArgs } from './transport.mjs';
+import { taskEventActivity } from '../task-event-activity.mjs';
 
 const runCollection='remoteRuns', computerCollection='remoteComputers';
 const revision=value=>Number.isSafeInteger(value)&&value>0;
@@ -34,7 +35,7 @@ function stateValue(state,run,secret=''){
 function eventValues(events,cursor,secret){
   if(!Array.isArray(events)||events.length>200)throw protocolError();
   let sequence=cursor;
-  return events.map(row=>{if(!Number.isSafeInteger(row.sequence)||row.sequence<=sequence)throw protocolError();sequence=row.sequence;return {sequence,at:time(row.at),type:text(row.type,200),label:clean(text(row.label,1000),secret),detail:clean(text(row.detail,65536),secret)};});
+  return events.map(row=>{if(!Number.isSafeInteger(row.sequence)||row.sequence<=sequence)throw protocolError();sequence=row.sequence;const activity=taskEventActivity(row.activity,value=>clean(value,secret));return {sequence,at:time(row.at),type:text(row.type,200),label:clean(text(row.label,1000),secret),detail:clean(text(row.detail,65536),secret),...(activity?{activity}:{})};});
 }
 
 /** Local records are observers. Only the first explicitly authorized start sends

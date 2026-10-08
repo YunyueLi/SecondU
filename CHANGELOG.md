@@ -2,13 +2,21 @@
 
 User-visible changes are recorded here. Detailed decisions and scoped checks remain in [Development](docs/DEVELOPMENT.md) and [Iteration](docs/ITERATION.md). Published releases are tied to a tag and commit; subsequent changes remain under Unreleased.
 
-## Unreleased
+## 0.1.4 — Candidate
 
+### Changed
+
+- Show current task activity and recorded elapsed time in a compact summary, with expandable tools, plans and collaborators linked to the existing workbench. Repeated start notifications preserve confirmed results, and represented collaboration updates no longer repeat in the event feed.
+- Distinguish approval waits, requests for information, operation review and terminal outcomes. Unconfirmed remote dispatch or connection state is explicit; a lost connection does not imply a stopped task or justify an unverified live timer.
+- Improve mobile Hero spacing, text-link visibility, route details and keyboard focus around the product example. Share Hero pause controls, clear transient character trails when paused, and improve theme initialization and static bilingual share metadata.
 - Load website development records only when opened and omit redundant frozen task responses from startup data, preserving computed task context, traces and feedback.
-
 - Reduce website artwork transfer with transparent WebP variants, share repeated example data, prioritize the Hero image and defer offscreen video/report UI. Keep slow examples loading after 20 seconds instead of reporting a false failure.
+- Widen Hero glyph clearance to an 8px clear edge with a 7px fade, and replace the rejected book artwork with an ivory frame and lavender glass door.
 
-- Website follow-up: widen Hero glyph clearance to an 8px clear edge with a 7px fade; replace the rejected book artwork with a clean ivory frame and lavender glass door. Desktop binaries are unchanged.
+### Validation and status
+
+- Candidate source tests, type checking and website builds passed. Browser previews covered eight task states, review and rejection, remote disconnection, repeated start notifications and 320px/390px layouts; these checks use synthetic task events.
+- Two Kimi K3 max visual reviews informed the fixes; the second found no new release blockers within its visible scope. The native 0.1.4 app reopened existing history and example artifacts, and package identity, dependency coverage and strict ad-hoc signature verification passed. Publication and downloadable-asset verification remain separate; no new real-provider, award or public-network performance result is claimed.
 
 ## 0.1.3 — 2026-10-02
 

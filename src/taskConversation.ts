@@ -39,10 +39,24 @@ export function taskConversationTurns(task: Task, facts: Fact[] = []): Conversat
   }
   if (!groups.length) groups.push([]);
   const byId = new Map(task.events.map(event => [event.id, event]));
+  const eventsByTurn: TaskEvent[][] = groups.map(() => []);
+  let activeRunOwner: number | undefined;
+  let lastRunOwner: number | undefined;
+  for (const event of task.events) {
+    let owner = 0;
+    for (let index = 1; index < groups.length; index++) {
+      if ((groups[index][0]?.createdAt || task.createdAt) <= event.createdAt) owner = index;
+    }
+    if (event.type === 'started') { activeRunOwner = owner; lastRunOwner = owner; }
+    // A follow-up is recorded before the previous run finishes aborting. Keep
+    // that run's late tool results and terminal event with its original turn.
+    const closingRecord = ['artifact_pending','artifact_collection_warning','artifact_conflict'].includes(event.type);
+    const executionOwner = event.type === 'correction' ? owner : activeRunOwner ?? (closingRecord ? lastRunOwner : undefined) ?? owner;
+    eventsByTurn[executionOwner].push(event);
+    if (['completed','failed','cancelled','interrupted','needs_input','configuration_required','write_rejected'].includes(event.type)) activeRunOwner = undefined;
+  }
   return groups.map((messages, index) => {
-    const start = messages[0]?.createdAt || task.createdAt;
-    const end = groups[index + 1]?.[0]?.createdAt;
-    const events = task.events.filter(event => event.createdAt >= start && (!end || event.createdAt < end));
+    const events = eventsByTurn[index];
     const latest = index === groups.length - 1;
     const linkedMessages = messages.filter(message => message.role === 'assistant' && message.contextEventIds !== undefined);
     const contextEvents = linkedMessages.length
@@ -54,8 +68,11 @@ export function taskConversationTurns(task: Task, facts: Fact[] = []): Conversat
     let context = contextEntries(contextEvents);
     if (latest && task.status === 'queued' && !contextEvents.some(event => event.type === 'context') && !linkedMessages.length)
       context = facts.filter(fact => task.contextFactIds.includes(fact.id));
-    const terminal = [...events].reverse().find(event => ['completed','failed','cancelled','interrupted','needs_input'].includes(event.type));
+    const terminal = [...events].reverse().find(event => ['completed','failed','cancelled','interrupted','needs_input','configuration_required','write_rejected'].includes(event.type));
+    const awaitingNewRun = latest && events.some(event => event.type === 'correction') && !events.some(event => event.type === 'started')
+      && ['running','awaiting_approval','interrupted'].includes(task.status);
+    const historicalStatus = terminal?.type === 'write_rejected' ? 'cancelled' : terminal?.type === 'configuration_required' ? 'needs_input' : terminal?.type as TaskStatus | undefined;
     return {id:messages[0]?.id || task.id, messages, events, latest,
-      status:latest ? task.status : (terminal?.type as TaskStatus || 'completed'), context};
+      status:latest ? awaitingNewRun ? 'queued' : task.status : historicalStatus || (activeRunOwner === index ? 'running' : 'completed'), context};
   });
 }

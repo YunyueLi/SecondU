@@ -24,7 +24,7 @@ export default function ProductPreview({kind,route,alt,action,className}:{kind:P
  useEffect(()=>{const element=player.current;if(!element)return;if(visible&&!hidden&&!paused&&!reduced)void element.play().catch(()=>setPaused(true));else element.pause();},[near,visible,hidden,paused,reduced,video]);
  if(!poster)return null;
  return <div ref={host} className={`${className} product-preview`}>
-  <button className="product-preview-open" type="button" onClick={()=>openProductRoute(route)} aria-label={action}>
+  <button className="product-preview-open" type="button" onClick={event=>openProductRoute(route,event.currentTarget)} aria-label={action}>
    {video&&!reduced&&near?<video width={width} height={height} ref={player} src={video} poster={poster} muted loop playsInline preload="metadata" aria-label={alt}/>:<img width={width} height={height} src={poster} alt={alt} loading="lazy" decoding="async"/>}
    <span className="product-preview-enter">{t('进入体验','Explore the workspace')}</span>
   </button>

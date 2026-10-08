@@ -5,8 +5,8 @@ import path from 'node:path';
 const names = ['understanding', 'growth', 'devices', 'capabilities', 'relationships'].map(name => `${name}-v1`);
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 
-/** Publish only the reviewed artwork provenance. Vite emits the five imported
- * PNGs separately; validate those same original bytes before retaining records. */
+/** Publish only the reviewed artwork provenance. The artwork build derives the
+ * imported website images; validate their original bytes before retaining records. */
 export async function copyRoadmapProvenance({ sourceDirectory, outputDirectory }) {
   async function read(name) {
     const file = path.join(sourceDirectory, name);

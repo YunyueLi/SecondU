@@ -101,3 +101,14 @@ html:lang(en) .site-privacy p,html:lang(en) .site-privacy dd,html:lang(en) .site
 @media(max-width:720px){:root{--site-display:clamp(34px,7vw,46px);--site-heading:30px}html{scroll-padding-top:88px}.site-hero h1{margin-bottom:22px;line-height:1.32}.site-hero h1>span{font-size:.8em}.site-hero-position,.site-hero-description{max-width:32em;line-height:1.8}.site-hero-position{margin-bottom:12px}.site-section-head h2,.site-privacy h2,.site-open h2{line-height:1.4;margin-bottom:14px}html:lang(en){--site-display:clamp(43px,9vw,58px);--site-heading:36px;--site-reading:16px}html:lang(en) .site-hero h1{line-height:1.05}html:lang(en) .site-hero h1>span{font-size:.76em}html:lang(en) .site-hero-position{font-size:17px;line-height:1.6}html:lang(en) .site-hero-description{font-size:16px;line-height:1.65}.site-ending .site-open h2{font-size:34px}}
 
 .site-footer-secret{display:inline;margin-left:10px;color:var(--site-muted);font-size:11px}.site-footer-secret:hover{color:var(--site-ink);text-decoration:underline;text-underline-offset:4px}
+
+/* Keep the complete mobile introduction while bringing the painting into the first view. */
+@media(max-width:720px){
+ .site-hero-stage>.site-hero.site-hero-portrait{padding-top:20px}
+ .site-hero.site-hero-portrait .site-hero-copy h1{margin-bottom:16px}
+ .site-hero.site-hero-portrait .site-hero-position{margin-bottom:10px}
+ .site-hero.site-hero-portrait .site-hero-actions{margin-top:18px}
+ .site-hero.site-hero-portrait .hero-motion-controls{margin-top:6px}
+ .site-hero.site-hero-portrait .site-hero-object{margin-top:12px}
+ html:lang(en) .site-hero.site-hero-portrait .site-hero-copy h1>span{display:block;text-wrap:balance}
+}

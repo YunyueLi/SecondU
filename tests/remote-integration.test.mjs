@@ -51,6 +51,7 @@ test('HTTP remote run creates an isolated task mirror, survives app restart, and
   const attachment=(await f.api('attachments',{name:'fixture.pdf',mime:'application/pdf',data:Buffer.from('%PDF-1.7\nSynthetic fixture').toString('base64')})).value;
   body.files=[{attachmentId:attachment.id,path:'input.pdf'}];
   const start=await f.api(`computers/${computer.id}/runs`,body);assert.equal(start.status,200);const run=start.value.run;assert.ok(run.taskId);await dispatched(f);
+  const remote=f.transport.states.get(run.id);f.transport.event(remote,'runtime.action','Recorded remote operation');remote.events.at(-1).activity={kind:'tool',phase:'running',callId:'remote-call',name:`read ${key}`,permissions:'all',arguments:{password:'never copy'}};
   let task=(await f.api(`tasks/${run.taskId}`)).value;assert.equal(task.status,'awaiting_approval');assert.equal(task.digitalTwinEnabled,false);assert.equal(task.approvalMode,'ask');assert.deepEqual(task.contextFactIds,[]);assert.deepEqual(task.connectorIds,[]);assert.deepEqual(task.agentIds,[]);assert.deepEqual(task.artifactIds,[]);assert.equal(f.localCalls,0);
   assert.equal((await f.api(`computers/${computer.id}/runs`,body)).value.run.id,run.id);assert.equal(f.app.store.list('tasks').length,1);
   await f.restart();task=(await f.api(`tasks/${run.taskId}`)).value;assert.equal(task.status,'awaiting_approval');assert.equal(task.events.some(event=>event.type==='interrupted'),false);assert.equal(f.transport.calls.filter(call=>call.op==='start').length,1);assert.equal(f.localCalls,0);
@@ -58,7 +59,8 @@ test('HTTP remote run creates an isolated task mirror, survives app restart, and
   const polled=await f.api(`tasks/${run.taskId}/poll`,{});assert.equal(polled.status,200);assert.equal(polled.value.status,'awaiting_approval');
   const approved=await f.api(`tasks/${run.taskId}/approval`,{approvalId:'fixture-approval',decision:'approve'});assert.equal(approved.status,200);assert.equal(approved.value.status,'completed');
   await f.api(`tasks/${run.taskId}/poll`,{});await f.api(`tasks/${run.taskId}/poll`,{cursor:0});task=(await f.api(`tasks/${run.taskId}`)).value;
-  assert.equal(task.messages.filter(message=>message.id===`${run.id}-result`).length,1);assert.equal(task.events.filter(event=>event.id.startsWith(`${run.id}-event-`)).length,2);assert.equal(new Set(task.events.map(event=>event.id)).size,task.events.length);
+  assert.equal(task.messages.filter(message=>message.id===`${run.id}-result`).length,1);assert.equal(task.events.filter(event=>event.id.startsWith(`${run.id}-event-`)).length,3);assert.equal(new Set(task.events.map(event=>event.id)).size,task.events.length);
+  const activity=task.events.find(event=>event.type==='remote.runtime.action').activity;assert.deepEqual(activity,{kind:'tool',phase:'running',callId:'remote-call',name:'read [已隐藏凭据]'});assert.doesNotMatch(JSON.stringify(task),/never copy/);
   const artifact=await f.api(`computers/${computer.id}/runs/${run.id}/file`,{path:'result.txt'});assert.equal(artifact.status,200);assert.equal(artifact.value.dataBase64,fileData.toString('base64'));
   assert.equal((await f.api(`tasks/${run.taskId}`,{},'DELETE')).status,409);assert.equal(f.localCalls,0);assert.equal(f.transport.calls.filter(call=>call.op==='start').length,1);
   for(const route of ['bootstrap','computers',`computers/${computer.id}/runs`,`tasks/${run.taskId}/remote`])assert.equal(JSON.stringify((await f.api(route)).value).includes(key),false);

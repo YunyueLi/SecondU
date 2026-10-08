@@ -52,6 +52,7 @@ test('detached run survives observer close, reopens without replay, and returns 
   writeFileSync(path.join(f.workspace,'result.md'),'Changed outside task.');await assert.rejects(reopened.readFile(run.id,'result.md'),error=>error.code==='remote_file_changed');
   assert.equal(allContents(f.home).includes(secret),false,'the remote runtime must not persist a credential');assert.equal(JSON.stringify(f.store.list('remoteRuns')).includes(secret),false);
   assert.ok(completed.events.some(event=>event.type==='remote.completed'));assert.equal(completed.observation.status,'connected');
+  const message=completed.events.find(event=>event.type==='runtime.message');assert.equal(message.activity.kind,'message');assert.equal(message.activity.phase,'completed');assert.equal(message.activity.messagePhase,'final_answer');assert.ok(message.activity.callId);
   await assert.rejects(reopened.poll(run.id,{cursor:completed.cursor+1}),error=>error.code==='remote_cursor_ahead');assert.equal(reopened.getRun(run.id).cursor,completed.cursor);
 });
 

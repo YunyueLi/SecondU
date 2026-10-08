@@ -45,7 +45,7 @@ const getStatusDescription = (): Partial<Record<Task['status'], string>> => ({ q
 export type TaskComposition = { projectId?: string; id: string; prompt: string; factIds?: string[]; agentIds: string[] };
 type Props = { navigation?:ReactNode; data: Bootstrap; taskId?: string; composition?: TaskComposition; onRefresh: () => Promise<void>; onCreateTask: (prompt: string, facts?: string[], agents?: string[], mode?: 'demo'|'live', connectionId?: string, projectId?: string, attachmentIds?: string[], connectorIds?: string[], digitalTwinEnabled?:boolean, approvalMode?:ApprovalMode|null) => Promise<void> };
 
-function ContextFacts({ facts, queued }: { facts: ConversationContextFact[]; queued: boolean }) {
+export function ContextFacts({ facts, queued }: { facts: ConversationContextFact[]; queued: boolean }) {
   const [open, setOpen] = useState(false);
   const panelId = useId();
   if (!facts.length) return null;

@@ -9,6 +9,9 @@ import { copyArchitectureAssets } from './build-diagrams.mjs';
 import { copyRoadmapProvenance } from './build-roadmap.mjs';
 import { copyBenchmarkAssets } from './build-benchmark.mjs';
 import { buildWebsiteArtwork, verifyWebsiteArtwork } from './build-artwork.mjs';
+import { renderWebsitePage } from './build-site-metadata.mjs';
+import { renderThemeBootstrap } from './theme-bootstrap.mjs';
+import { copyShareCard } from './build-share-card.mjs';
 
 const directory = path.dirname(fileURLToPath(import.meta.url));
 const root = path.dirname(directory);
@@ -29,6 +32,7 @@ await mkdir(output, { recursive: true });
 // Write the marker before compilation so a failed build can be retried safely.
 await writeFile(path.join(output, '.site-build'), 'SecondU interactive website\n');
 const artwork = await buildWebsiteArtwork({ root, output, base });
+await copyShareCard({ root, output });
 
 // Only explicitly selected public artwork is copied. Runtime data, app backend,
 // local screenshots and personal API responses can never enter this asset list.
@@ -81,6 +85,13 @@ await build({ configFile: path.join(directory, 'vite.config.ts'), base, build: {
     return artwork.rewriteCss(code).replaceAll('https://cdn.openai.com/common/fonts/katex/', `${base}fonts/`).replace(/url\((['"]?)\/art\//g, `url($1${base}art/`);
   } }],
 });
+// Both languages have crawlable metadata without running JavaScript. The English
+// document shares the homepage's asset paths, while legacy ?lang= links still work.
+const homepage = renderThemeBootstrap(await readFile(path.join(output, 'index.html'), 'utf8'));
+await writeFile(path.join(output, 'index.html'), renderWebsitePage(homepage, 'zh', config.url));
+await writeFile(path.join(output, 'en.html'), renderWebsitePage(homepage, 'en', config.url));
+const benchmark = path.join(output, 'benchmark/index.html');
+await writeFile(benchmark, renderThemeBootstrap(await readFile(benchmark, 'utf8')));
 await buildEmbeddedProduct({ root, output, base, artwork });
 // Tailwind may expand imported SDK CSS after transform. Apply the same rewrite
 // to emitted CSS so math preview never loads third-party font URLs.
@@ -92,7 +103,7 @@ for (const name of built) if (name.endsWith('.css')) {
 }
 await writeFile(path.join(output, '.nojekyll'), '');
 await writeFile(path.join(output, 'robots.txt'), `User-agent: *\nAllow: /\nSitemap: ${config.url}sitemap.xml\n`);
-await writeFile(path.join(output, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>${config.url}</loc></url><url><loc>${config.url}benchmark/</loc></url></urlset>\n`);
+await writeFile(path.join(output, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>${config.url}</loc></url><url><loc>${config.url}en.html</loc></url><url><loc>${config.url}benchmark/</loc></url></urlset>\n`);
 await verifyWebsiteArtwork({ output, base, records: artwork.records });
 const files = await readdir(output, { recursive: true, withFileTypes: true });
 const manifest = [];

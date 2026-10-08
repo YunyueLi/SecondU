@@ -82,16 +82,18 @@ test('probe status and credentials invalidate when endpoint or token changes; st
 });
 
 test('each remote call requires exact approval, snapshots arguments and rechecks configuration revision',async t=>{
-  const f=await tested(t),{service,store,connector}=f,events=[];
+  const f=await tested(t),{service,store,connector}=f,events=[],deniedEvents=[];
   let reviewed;
-  const denied=await service.prepare([connector.id],{onApproval:request=>{reviewed=request;return 'reject';}});
+  const denied=await service.prepare([connector.id],{onApproval:request=>{reviewed=request;return 'reject';},onEvent:event=>deniedEvents.push(event)});
   const deniedResult=await denied.call({tool:denied.definitions[0].name,arguments:{text:'must stay local'}});
   assert.equal(deniedResult.success,false);assert.equal(f.calls.filter(c=>c.message.method==='tools/call').length,0);
+  assert.equal(deniedEvents.length,1);assert.equal(deniedEvents[0].type,'connector.rejected');assert.equal(deniedEvents[0].activity.phase,'rejected');assert.ok(deniedEvents[0].activity.callId);
   assert.match(reviewed.details,/must stay local/);assert.match(reviewed.details,/"revision": 1/);
   const args={text:'approved snapshot'};
   const allowed=await service.prepare([connector.id],{onApproval:request=>{reviewed=request;args.text='changed after approval';return 'approve';},onEvent:e=>events.push(e)});
   assert.equal((await allowed.call({tool:allowed.definitions[0].name,arguments:args})).success,true);
   assert.equal(f.calls.find(c=>c.message.method==='tools/call').message.params.arguments.text,'approved snapshot');assert.ok(!JSON.stringify(events).includes('approved snapshot'));
+  assert.deepEqual(events.map(event=>event.activity.phase),['running','completed']);assert.equal(events[0].activity.callId,events[1].activity.callId);assert.notEqual(events[0].activity.callId,deniedEvents[0].activity.callId);assert.equal(events[0].activity.name,'echo');
   let sensitiveAsked=false;
   const sensitive=await service.prepare([connector.id],{onApproval:()=>{sensitiveAsked=true;return 'approve';}});
   assert.equal((await sensitive.call({tool:sensitive.definitions[0].name,arguments:{text:'fixture-connector-key'}})).success,false);
@@ -99,6 +101,24 @@ test('each remote call requires exact approval, snapshots arguments and rechecks
   const changed=await service.prepare([connector.id],{onApproval:()=>{saveConnector(store,{enabled:false},store.require('connectors',connector.id));return 'approve';}});
   assert.equal((await changed.call({tool:changed.definitions[0].name,arguments:{text:'must not call'}})).success,false);
   assert.equal(f.calls.filter(c=>c.message.method==='tools/call').length,1);assert.throws(()=>connectorSelection(store,[connector.id]),{code:'connector_unavailable'});
+});
+
+test('connector errors and concurrent calls keep individual lifecycle IDs without recording arguments or result content',async t=>{
+  const f=await tested(t,{handler:(message,_req,res)=>{
+    if(message.method!=='tools/call')return false;
+    res.setHeader('Content-Type','application/json');res.end(JSON.stringify({jsonrpc:'2.0',id:message.id,result:{isError:true,content:[{type:'text',text:'Synthetic returned error'}]}}));return true;
+  }}),events=[];
+  const prepared=await f.service.prepare([f.connector.id],{onApproval:()=> 'approve',onEvent:event=>events.push(event)});
+  const result=await prepared.call({tool:prepared.definitions[0].name,arguments:{text:'private argument'},threadId:'thread',turnId:'turn',callId:'native-call'});
+  assert.equal(result.success,false);assert.deepEqual(events.map(event=>[event.type,event.activity.phase]),[['connector.call','running'],['connector.result','failed']]);
+  assert.equal(events[0].activity.callId,'thread/turn/native-call');assert.equal(events[1].activity.callId,events[0].activity.callId);
+  assert.doesNotMatch(JSON.stringify(events),/private argument|Synthetic returned error/);
+  const localEvents=[],library=saveConnector(f.store,{kind:'library',name:'Library'}),local=await f.service.prepare([library.id],{onEvent:event=>localEvents.push(event)});
+  const read=local.definitions.find(item=>item.description.includes('/ read.'));
+  await Promise.all([local.call({tool:read.name,arguments:{id:'missing-one'}}),local.call({tool:read.name,arguments:{id:'missing-two'}})]);
+  const starts=localEvents.filter(event=>event.type==='connector.call'),failures=localEvents.filter(event=>event.type==='connector.error');
+  assert.equal(starts.length,2);assert.equal(failures.length,2);assert.notEqual(starts[0].activity.callId,starts[1].activity.callId);
+  for(const failed of failures){assert.equal(failed.activity.phase,'failed');assert.ok(starts.some(start=>start.activity.callId===failed.activity.callId));}
 });
 
 test('local library and project tools are explicitly selected, read-only, bounded and path constrained',async t=>{
@@ -124,6 +144,8 @@ test('resource connector APIs persist selection and deliver real local tool data
   const app=createApp({dataDir:directory,seed:false,scheduler:false,computerInfo:{codexAvailable:false},runCodex:async options=>{
     called.push(options);const tool=options.dynamicTools.find(d=>d.description.includes('/ search.'));
     if(tool){const result=await options.onDynamicTool({tool:tool.name,arguments:{query:'fixture'}});assert.match(result.contentItems[0].text,/fixture-only-source/);assert.equal(result.success,true);}
+    await options.onEvent({type:'runtime.action',label:'Recorded operation',detail:'Original public detail fixture-model-key',activity:{kind:'tool',phase:'running',callId:'call-one',name:'read fixture-model-key',permissions:{all:true},arguments:{password:'do not persist'}}});
+    await options.onEvent({type:'runtime.message',label:'Public progress',detail:'Reviewing the selected source.',activity:{kind:'message',phase:'completed',callId:'message-one',messagePhase:'commentary'}});
     return {text:'Local protocol fixture completed',threadId:'fixture-thread'};
   }});
   await new Promise(resolve=>app.server.listen(0,'127.0.0.1',resolve));t.after(async()=>{await app.close();rmSync(directory,{recursive:true,force:true});});
@@ -136,6 +158,10 @@ test('resource connector APIs persist selection and deliver real local tool data
   const task=(await api('tasks',{prompt:'fixture',mode:'live',digitalTwinEnabled:false,connectorIds:[connector.id]})).value;
   await api(`tasks/${task.id}/run`,{});await app.runner.active.get(task.id)?.promise;
   assert.equal(app.store.require('tasks',task.id).status,'completed');assert.equal(called[0].dynamicTools.length,2);assert.doesNotMatch(called[0].prompt,/fixture content/);
+  const saved=app.store.require('tasks',task.id),action=saved.events.find(event=>event.activity?.kind==='tool'),connectorEvents=saved.events.filter(event=>event.activity?.kind==='connector');
+  assert.deepEqual(action.activity,{kind:'tool',phase:'running',callId:'call-one',name:'read [redacted]'});assert.equal(action.detail,'Original public detail [redacted]');
+  assert.deepEqual(connectorEvents.map(event=>event.activity.phase),['running','completed']);assert.equal(connectorEvents[0].activity.callId,connectorEvents[1].activity.callId);
+  assert.equal(saved.events.find(event=>event.activity?.kind==='message').activity.messagePhase,'commentary');assert.doesNotMatch(JSON.stringify(saved),/do not persist|fixture-model-key/);
   await api(`tasks/${task.id}`,{connectorIds:[]},'PUT');await api(`tasks/${task.id}/message`,{content:'continue without resources'});await app.runner.active.get(task.id)?.promise;
   assert.deepEqual(called[1].dynamicTools,[]);assert.equal(called[1].threadId,undefined);
   assert.equal((await api(`connectors/${connector.id}`,{},'DELETE')).status,200);assert.ok(app.store.get('sources','fixture-only-source'));

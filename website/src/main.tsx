@@ -5,5 +5,6 @@ import './site.css';
 import App from './App';
 import {SiteLanguageProvider} from './site-language';
 import {SiteThemeProvider} from './site-theme';
+import {SiteMotionProvider} from './site-motion';
 if(import.meta.env.DEV&&new URLSearchParams(location.search).get('perf')==='1')void import('./dev-performance').then(({installPerformanceProbe})=>{const dispose=installPerformanceProbe();import.meta.hot?.dispose(dispose);});
-createRoot(document.getElementById('root')!).render(<React.StrictMode><SiteLanguageProvider><SiteThemeProvider><AppsSDKUIProvider linkComponent="a"><App/></AppsSDKUIProvider></SiteThemeProvider></SiteLanguageProvider></React.StrictMode>);
+createRoot(document.getElementById('root')!).render(<React.StrictMode><SiteLanguageProvider><SiteThemeProvider><SiteMotionProvider><AppsSDKUIProvider linkComponent="a"><App/></AppsSDKUIProvider></SiteMotionProvider></SiteThemeProvider></SiteLanguageProvider></React.StrictMode>);

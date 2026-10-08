@@ -2,12 +2,13 @@ import { createContext, useContext, useEffect, useLayoutEffect, useState, type R
 import {Sun,Moon,MoonSunSystem} from '@openai/apps-sdk-ui/components/Icon';
 import {SiteChoice} from './SiteChoice';
 import { useSiteLanguage } from './site-language';
+import { themeColors, themeQuery, themeStorageKey } from '../theme-bootstrap.mjs';
 
 type Theme = 'light' | 'dark';
 type Preference = Theme | 'system';
 type SiteTheme = { preference: Preference; theme: Theme; setPreference: (preference: Preference) => void };
-const storageKey = 'secondu.website.theme';
-const query = '(prefers-color-scheme: dark)';
+const storageKey = themeStorageKey;
+const query = themeQuery;
 const isPreference = (value: unknown): value is Preference => value === 'light' || value === 'dark' || value === 'system';
 const Context = createContext<SiteTheme>({ preference: 'system', theme: 'light', setPreference: () => {} });
 
@@ -37,7 +38,7 @@ export function SiteThemeProvider({ children }: { children: ReactNode }) {
   useLayoutEffect(() => {
     document.documentElement.dataset.theme = theme;
     document.documentElement.style.colorScheme = theme;
-    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#161616' : '#f8f7f4');
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', themeColors[theme]);
   }, [theme]);
   return <Context.Provider value={{ preference, theme, setPreference }}>{children}</Context.Provider>;
 }

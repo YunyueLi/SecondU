@@ -7,6 +7,7 @@ import { runnableProject, listProjectFiles } from './projects.mjs';
 import { eligibleWorkspaceName, sensitiveWorkspaceContent } from './workspace-files.mjs';
 import { connectorUrl, openConnectorSession } from './connector-http.mjs';
 import { ConnectorOAuthService, normalizeOAuth, publicOAuth, oauthSecret, setOAuthSecret } from './connector-oauth.mjs';
+import { taskEventActivity } from './task-event-activity.mjs';
 
 const MAX_TEXT = 24000;
 const MAX_ARGUMENT_BYTES = 16000;
@@ -209,10 +210,13 @@ export class ConnectorService {
         entries.set(name, { connector, tool, session });
       }
     }
-    const call = async ({ tool: name, arguments: input }) => {
+    const call = async ({ tool: name, arguments: input, callId: nativeCallId, threadId, turnId }) => {
       const entry = entries.get(name);
       if (!entry) return { success: false, contentItems: [{ type: 'inputText', text: '这个工具不在本轮明确选择的连接器范围内。' }] };
       const { connector, tool, session } = entry;
+      const callId = typeof nativeCallId === 'string' && nativeCallId && nativeCallId.length <= 200 && !/[\x00-\x20\x7f]/.test(nativeCallId)
+        ? `${threadId || ''}/${turnId || ''}/${nativeCallId}` : id('connector-call');
+      const activity = phase => taskEventActivity({kind:'connector',phase,callId,name:tool.name},value=>redact(store,value));
       const assertCurrent = () => {
         signal?.throwIfAborted();
         const current = store.get('connectors', connector.id);
@@ -228,20 +232,24 @@ export class ConnectorService {
           const details = redact(store, JSON.stringify({ connector: connector.name, url: connector.url, revision: connector.revision, tool: tool.name, arguments: args }, null, 2));
           const decision = await onApproval?.({ title: `调用 ${connector.name}：${tool.title || tool.name}`, description: '将把下列参数发送到这个 MCP 服务，并执行一次工具。权限提示由服务声明，不替代本次确认。', details });
           assertCurrent();
-          if (decision !== 'approve') return { success: false, contentItems: [{ type: 'inputText', text: '用户未批准本次 MCP 工具调用，未发送 tools/call。' }] };
+          if (decision !== 'approve') {
+            const message='用户未批准本次 MCP 工具调用，未发送 tools/call。';
+            await onEvent({type:'connector.rejected',label:'本次连接器调用未获批准',detail:message,activity:activity('rejected')});
+            return { success: false, contentItems: [{ type: 'inputText', text: message }] };
+          }
         }
         assertCurrent();
-        await onEvent({ type: 'connector.call', label: `正在调用连接器：${connector.name}`, detail: JSON.stringify({ connectorId: connector.id, revision: connector.revision, tool: tool.name }) });
+        await onEvent({ type: 'connector.call', label: `正在调用连接器：${connector.name}`, detail: JSON.stringify({ connectorId: connector.id, revision: connector.revision, tool: tool.name }), activity:activity('running') });
         const result = session ? await session.call(tool.name, args) : localRead(store, connector, tool.name, args);
         const output = redact(store, JSON.stringify({ trust: 'untrusted_tool_result', connector: connector.name, tool: tool.name, result }));
         if(sensitiveWorkspaceContent(output))throw new HttpError(400,'工具结果含敏感凭据，未注入模型。','connector_sensitive_content');
         if (output.length > MAX_TEXT * 2) throw new HttpError(400, '工具结果过大，未注入模型；请缩小查询范围。', 'connector_result_too_large');
-        await onEvent({ type: 'connector.result', label: result?.isError ? '连接器返回错误' : '连接器已返回结果', detail: JSON.stringify({ connectorId: connector.id, tool: tool.name, success: !result?.isError }) });
+        await onEvent({ type: 'connector.result', label: result?.isError ? '连接器返回错误' : '连接器已返回结果', detail: JSON.stringify({ connectorId: connector.id, tool: tool.name, success: !result?.isError }), activity:activity(result?.isError?'failed':'completed') });
         return { success: !result?.isError, contentItems: [{ type: 'inputText', text: output }] };
       } catch (error) {
         if (error.name === 'AbortError') throw error;
         const message = redact(store, error instanceof HttpError ? error.message : '连接器调用未完成；请检查资源或服务状态。');
-        await onEvent({ type: 'connector.error', label: '连接器调用未完成', detail: message });
+        await onEvent({ type: 'connector.error', label: '连接器调用未完成', detail: message, activity:activity('failed') });
         return { success: false, contentItems: [{ type: 'inputText', text: message }] };
       }
     };

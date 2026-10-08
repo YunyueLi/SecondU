@@ -10,11 +10,12 @@ import { normalizeAgentSourceUrl, AgentSourceError } from '../shared/agent-sourc
 import { validLifeDate, lifeDateStart } from './life-date.mjs';
 import { timelineMedia } from './timeline-media.mjs';
 import { HttpError, id, now } from './store.mjs';
+import { taskEventActivity } from './task-event-activity.mjs';
 export function text(value, field, max=200000, required=true) { if(typeof value!=='string' || (required && !value.trim()) || value.length>max) throw new HttpError(400,`${field} 无效或过长`); return value.trim(); }
 export function choice(value,values,field) { if(!values.includes(value)) throw new HttpError(400,`${field} 无效`); return value; }
 export function bool(value,field) { if(typeof value!=='boolean') throw new HttpError(400,`${field} 必须为布尔值`); return value; }
 export function refs(store,value,collection,field) { if(!Array.isArray(value) || value.length>200 || value.some(x=>typeof x!=='string')) throw new HttpError(400,`${field} 必须是标识列表`); const result=[...new Set(value)]; for(const key of result) store.require(collection,key); return result; }
-export function addEvent(task,type,label,detail,agentId) { task.events.push({id:id('event'),type,label,detail,agentId,createdAt:now()}); task.updatedAt=now(); return task; }
+export function addEvent(task,type,label,detail,agentId,activity) { const lifecycle=taskEventActivity(activity);task.events.push({id:id('event'),type,label,detail,agentId,createdAt:now(),...(lifecycle?{activity:lifecycle}:{})}); task.updatedAt=now(); return task; }
 export function createEntity(store, collection, body, existing) {
   const value={...existing,...body}, entity={id:existing?.id ?? id(collection.slice(0,-1))};
   const str=(key,max=10000,required=true)=>entity[key]=text(value[key]??(required?undefined:''),key,max,required);

@@ -11,9 +11,9 @@
 @media(hover:none){.assistant-workspace .message-user-actions{opacity:1}}
 @media(prefers-reduced-motion:reduce){.assistant-workspace .message-user-actions{transition:none}}
 .assistant-workspace .task-context{flex-basis:100%;max-width:100%;min-width:0;margin:0;border:0;padding:0;font-size:var(--hither-font-caption);color:var(--color-text-secondary)}
-.assistant-workspace .task-context-trigger{display:flex;align-items:center;gap:6px;min-height:30px;line-height:22px;width:fit-content;flex:none;padding:3px 5px;border:0;border-radius:7px;background:transparent;color:var(--color-text-secondary);font:inherit;font-size:var(--hither-font-caption);cursor:pointer}
+.assistant-workspace .task-context-trigger{display:flex;align-items:center;gap:8px;min-height:30px;line-height:22px;width:fit-content;flex:none;padding:3px 0;border:0;border-radius:7px;background:transparent;color:var(--color-text-secondary);font:inherit;font-size:var(--hither-font-caption);cursor:pointer}
 .assistant-workspace .task-context-trigger:hover{background:var(--color-surface-secondary);color:var(--color-text)}
-.assistant-workspace .task-context-trigger>svg{width:15px;height:15px;flex:none}
+.assistant-workspace .task-context-trigger>svg{width:16px;height:16px;flex:none}
 .assistant-workspace .task-context-trigger>small{font-size:var(--hither-font-meta);font-variant-numeric:tabular-nums}
 .assistant-workspace .task-context-trigger>.context-chevron{width:12px;height:12px;transition:transform 150ms ease}
 .assistant-workspace .task-context-trigger[aria-expanded=true]>.context-chevron{transform:rotate(90deg)}

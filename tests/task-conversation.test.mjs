@@ -40,3 +40,34 @@ test('pending turns use selected facts only before execution and preserve errors
  const value=task({status:'awaiting_approval',messages:[message('u1','user',0),message('u2','user',10)],events:[error,approval]});
  const turns=taskConversationTurns(value);assert.equal(turns[0].status,'failed');assert.deepEqual(turns[0].events,[error]);assert.equal(turns[1].status,'awaiting_approval');assert.deepEqual(turns[1].events,[approval]);
 });
+
+test('a follow-up does not steal the interrupted run or its late tool result',()=>{
+ const event=(id,type,second)=>({id,type,label:type,createdAt:time(second)});
+ const firstStart=event('start-1','started',1),toolStart=event('tool-1','runtime.action',3),correction=event('new-message','correction',10),lateResult=event('tool-result','runtime.action',11),interrupted=event('stop-1','interrupted',12),pendingFile=event('pending-file','artifact_pending',12),secondStart=event('start-2','started',13),secondTool=event('tool-2','runtime.action',14);
+ const original=task({messages:[message('u1','user',0),message('u2','user',10)],events:[firstStart,toolStart,correction,lateResult,interrupted,pendingFile,secondStart,secondTool]});
+ const before=structuredClone(original),turns=taskConversationTurns(original);
+ assert.deepEqual(turns[0].events,[firstStart,toolStart,lateResult,interrupted,pendingFile]);
+ assert.equal(turns[0].status,'interrupted');
+ assert.deepEqual(turns[1].events,[correction,secondStart,secondTool]);
+ assert.equal(turns[1].status,'running');
+ assert.deepEqual(original,before);
+});
+
+test('a queued follow-up never borrows the earlier run status while cancellation is settling',()=>{
+ const start={id:'start',type:'started',label:'Started',createdAt:time(1)},correction={id:'correction',type:'correction',label:'New instructions',createdAt:time(10)};
+ const original=task({messages:[message('u1','user',0),message('u2','user',10)],events:[start,correction]});
+ const turns=taskConversationTurns(original);
+ assert.equal(turns[0].status,'running');assert.equal(turns[1].status,'queued');
+ const settled=taskConversationTurns({...original,status:'interrupted',events:[...original.events,{id:'stop',type:'interrupted',label:'Stopped',createdAt:time(11)}]});
+ assert.equal(settled[0].status,'interrupted');assert.equal(settled[1].status,'queued');
+});
+
+
+test('historical configuration requests and declined writes preserve their actual task state',()=>{
+ for(const [type,status] of [['configuration_required','needs_input'],['write_rejected','cancelled']]){
+  const events=[{id:'start',type:'started',label:'Started',createdAt:time(1)},{id:'terminal',type,label:type,createdAt:time(4)},{id:'new-start',type:'started',label:'Started',createdAt:time(11)}];
+  const turns=taskConversationTurns(task({messages:[message('u1','user',0),message('u2','user',10)],events}));
+  assert.equal(turns[0].status,status);assert.equal(turns[1].status,'running');
+  assert.deepEqual(turns[0].events,events.slice(0,2));
+ }
+});

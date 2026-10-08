@@ -1,0 +1,12 @@
+{
+  "description": "Reviewed website-only illustrations already imported by the public website. This list is not used by the desktop or embedded-product asset copier.",
+  "privateInputs": false,
+  "files": [
+    "art/roadmap/understanding-v1.png",
+    "art/roadmap/growth-v1.png",
+    "art/roadmap/devices-v1.png",
+    "art/roadmap/capabilities-v1.png",
+    "art/roadmap/relationships-v1.png",
+    "assets/privacy-boundaries.png"
+  ]
+}

@@ -10,6 +10,7 @@ import { accessSync, constants, statSync } from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
 import { inlineImage, ATTACHMENT_COUNT, MULTIMODAL_REQUEST_LIMIT } from './attachment-input.mjs';
+import { taskEventActivity } from './task-event-activity.mjs';
 
 const execFileAsync = promisify(execFile);
 const MAX_MESSAGE_BYTES = MULTIMODAL_REQUEST_LIMIT;
@@ -284,7 +285,9 @@ export async function runCodex({ workspace, settings, apiKey, prompt='', images=
   let eventQueue = Promise.resolve();
   const stop = error => { stopError ||= error; stopped.reject(stopError); };
   const emit = event => {
-    const safe = { ...event, label: redact(event.label, apiKey), ...(event.detail === undefined ? {} : { detail: redact(event.detail, apiKey) }) };
+    const { activity, ...fields } = event;
+    const lifecycle = taskEventActivity(activity, value => redact(value, apiKey));
+    const safe = { ...fields, label: redact(event.label, apiKey), ...(event.detail === undefined ? {} : { detail: redact(event.detail, apiKey) }), ...(lifecycle ? {activity:lifecycle} : {}) };
     eventQueue = eventQueue.then(() => onEvent(safe));
     eventQueue.catch(stop);
     return eventQueue;
@@ -339,18 +342,25 @@ export async function runCodex({ workspace, settings, apiKey, prompt='', images=
       if (!item) return;
       items.set(item.id, item);
       const completed = method === 'item/completed';
+      // A resumed task can reuse a native item ID in a later turn. Pair only
+      // within this thread/turn, without moving command arguments into metadata.
+      const callId = typeof item.id === 'string' && item.id ? `${currentThread || ''}/${params.turnId || currentTurn || ''}/${item.id}` : undefined;
       if (item.type === 'agentMessage' && completed) {
         messages.set(item.id, item);
-        emit({ type: 'runtime.message', label: 'Agent 已回复', detail: item.text });
+        emit({ type: 'runtime.message', label: 'Agent 已回复', detail: item.text,
+          activity: {kind:'message',phase:'completed',callId,...(['commentary','final_answer'].includes(item.phase)?{messagePhase:item.phase}:{})} });
       } else if (item.type === 'reasoning' && completed && Array.isArray(item.summary)) {
         const summary = item.summary.map(part => typeof part === 'string' ? part : typeof part?.text === 'string' ? part.text : '').filter(part => part.trim()).join('\n\n');
         if (summary) emit({ type: 'runtime.reasoning_summary', label: '思考摘要', detail: summary });
       } else if (['commandExecution', 'fileChange', 'mcpToolCall', 'webSearch'].includes(item.type)) {
         const labels = { commandExecution: '本机命令', fileChange: '文件修改', mcpToolCall: '工具调用', webSearch: '网页检索' };
+        const kinds = { commandExecution:'command', fileChange:'file_change', mcpToolCall:'tool', webSearch:'web_search' };
         const failed = ['failed', 'declined'].includes(item.status) || (item.exitCode != null && item.exitCode !== 0);
         emit({ type: failed ? 'runtime.action_failed' : 'runtime.action',
           label: `${labels[item.type]}${completed ? (failed ? '未成功' : '已结束') : '开始'}`,
-          detail: item.type === 'commandExecution' ? `${item.command}\n${item.aggregatedOutput || ''}` : JSON.stringify(item) });
+          detail: item.type === 'commandExecution' ? `${item.command}\n${item.aggregatedOutput || ''}` : JSON.stringify(item),
+          activity: {kind:kinds[item.type],phase:item.status==='declined'?'rejected':failed?'failed':completed?'completed':'running',callId,
+            ...(item.type==='mcpToolCall'&&typeof item.tool==='string'?{name:[item.server,item.tool].filter(part=>typeof part==='string'&&part).join(' / ')}:{})} });
       }
     }
     if (method === 'error') {

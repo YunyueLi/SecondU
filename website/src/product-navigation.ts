@@ -2,8 +2,10 @@ export const productRoutes = ['example-chat','example-decision','assistant','sel
 export type ProductRoute = typeof productRoutes[number];
 export const productNavigationEvent = 'secondu-website-navigate';
 export function isProductRoute(value: unknown): value is ProductRoute { return typeof value==='string' && (productRoutes as readonly string[]).includes(value); }
-export function openProductRoute(route: ProductRoute) {
- window.dispatchEvent(new CustomEvent(productNavigationEvent,{detail:{route}}));
+export function openProductRoute(route: ProductRoute, trigger?: HTMLElement) {
+ // Touch and Safari clicks need not focus a button. Carry the actual opener so
+ // the expanded workspace can restore focus to the control that launched it.
+ window.dispatchEvent(new CustomEvent(productNavigationEvent,{detail:{route,trigger}}));
 }
 
 export function productExampleUrl(language: 'zh' | 'en', theme?: 'light' | 'dark') {

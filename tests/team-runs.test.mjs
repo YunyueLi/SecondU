@@ -6,6 +6,7 @@ import os from 'node:os';
 import {createApp} from '../server/index.mjs';
 import {TaskRunner} from '../server/runner.mjs';
 import {TeamCoordinator,teamConfiguration} from '../server/team-runs.mjs';
+import {saveConnector} from '../server/connectors.mjs';
 const lead='agent-planner',worker='agent-reviewer',third='demo-v2-agent-writer';
 const unpack=result=>JSON.parse(result.contentItems[0].text);
 const tool=(args,name,body={})=>args.onDynamicTool({tool:name,arguments:body});
@@ -26,6 +27,8 @@ test('team config is explicit, membership-bound and removable; existing rooms re
 });
 test('lead delegates on demand, collects real worker result, persists a bounded tree and alone replies to the room',async t=>{
  const calls=[];const f=await fixture(t,async args=>{calls.push(args);assert.equal(args.allowSubagents,false);
+  await args.onEvent({type:'runtime.action',label:'Recorded tool',detail:'Fixture operation',activity:{kind:'command',phase:'running',callId:'same-native-id',name:'synthetic-team-key',permissions:'all'}});
+  await args.onEvent({type:'runtime.message',label:'Public progress',detail:'Checking this assigned scope.',activity:{kind:'message',phase:'completed',callId:'public-message',messagePhase:'commentary'}});
   if(args.dynamicTools.some(x=>x.name==='team_delegate')){const node=unpack(await tool(args,'team_delegate',{agentId:worker,task:'检查提供的两条验收要求'}));const result=unpack(await tool(args,'team_wait',{nodeIds:[node.nodeId]}));assert.equal(result.nodes[0].result,'Worker evidence.');return {text:'Lead checked the worker evidence.'};}
   assert.deepEqual(args.dynamicTools,[]);assert.match(args.prompt,/临时专家/);return {text:'Worker evidence.'};
  });
@@ -34,7 +37,26 @@ test('lead delegates on demand, collects real worker result, persists a bounded 
  const run=task.teamRuns[0];assert.equal(run.status,'completed');assert.equal(run.nodes.length,2);assert.equal(run.nodes[1].parentId,run.nodes[0].id);assert.ok(run.nodes.every(n=>n.status==='completed'&&n.startedAt&&n.finishedAt));
  assert.equal(task.messages.filter(m=>m.role==='assistant').length,1);assert.equal(task.messages.at(-1).agentId,lead);assert.equal(f.app.store.require('agentRooms',f.room.id).messages.at(-1).content,'Lead checked the worker evidence.');
  assert.ok(!JSON.stringify(run).includes('synthetic-team-key'));
+ const recorded=task.events.filter(event=>event.activity?.kind==='command');assert.deepEqual(recorded.map(event=>event.agentId),[lead,worker]);assert.ok(recorded.every(event=>event.activity.name==='[redacted]'&&!Object.hasOwn(event.activity,'permissions')));
+ assert.equal(task.events.filter(event=>event.activity?.messagePhase==='commentary').length,2);assert.ok(!JSON.stringify(task).includes('synthetic-team-key'));
  const saved=await f.api(`agent-rooms/${f.room.id}`,{team:null},'PUT');assert.equal(saved.value.team,undefined);assert.deepEqual(task.team,{leadAgentId:lead});
+});
+test('lead and worker connector lifecycles both reach the task with separate call IDs and agent ownership',async t=>{
+ const f=await fixture(t,async args=>{
+  const read=args.dynamicTools.find(item=>item.description.includes('/ search.'));
+  assert.ok(read);assert.equal((await args.onDynamicTool({tool:read.name,arguments:{query:'fixture'}})).success,true);
+  if(args.dynamicTools.some(item=>item.name==='team_delegate')){
+   const node=unpack(await tool(args,'team_delegate',{agentId:worker,task:'Check selected source'}));await tool(args,'team_wait',{nodeIds:[node.nodeId]});return {text:'Lead collected the checked source.'};
+  }
+  return {text:'Worker checked the selected source.'};
+ });
+ const connector=saveConnector(f.app.store,{kind:'library',name:'Selected fixture library'});
+ assert.equal((await f.api(`agent-rooms/${f.room.id}`,{connectorIds:[connector.id]},'PUT')).status,200);
+ const sent=await f.api(`agent-rooms/${f.room.id}/messages`,{content:'检查所选资料'}),task=await f.settled(sent.value.task.id);
+ assert.equal(task.status,'completed',task.error);
+ const events=task.events.filter(event=>event.activity?.kind==='connector');assert.equal(events.length,4);
+ for(const agentId of [lead,worker]){const own=events.filter(event=>event.agentId===agentId);assert.deepEqual(own.map(event=>event.activity.phase),['running','completed']);assert.equal(own[0].activity.callId,own[1].activity.callId);}
+ assert.notEqual(events[0].activity.callId,events[2].activity.callId);
 });
 test('unsupported protocol rejects before a model starts and does not fabricate a team run',async t=>{
  let calls=0;const f=await fixture(t,async()=>{calls++;return {text:'unexpected'};});const connection=f.app.store.connection();f.app.store.put('modelConnections',{...connection,provider:'custom',api:'unsupported_fixture'});

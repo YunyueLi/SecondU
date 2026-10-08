@@ -2,15 +2,15 @@ import * as T from 'three';
 import {addSpatialPigment} from './hero-pigment';
 import {PORTRAIT_ALPHA_FRAME,PORTRAIT_ALPHA_REQUEST} from './hero-clearance';
 
-export type HeroParticleScene={dispose:()=>void};
-type Options={onReady:()=>void;onError:()=>void;signal:AbortSignal};
+export type HeroParticleScene={dispose:()=>void;setPaused:(paused:boolean)=>void};
+type Options={onReady:()=>void;onError:()=>void;signal:AbortSignal;paused?:boolean};
 let entryPresented=false;
 const smooth=(from:number,to:number,value:number)=>{const x=Math.max(0,Math.min(1,(value-from)/(to-from)));return x*x*(3-2*x);};
 
 /** Photographic identities stay attached to the source artwork through every flow.
  * Reference: ungetsu.net photographic-particles/lunar-scene's stable UV formation.
  * This scene uses the approved transparent painting, never a generated 3D emblem. */
-export async function createHeroParticles(host:HTMLElement,url:string,{onReady,onError,signal}:Options):Promise<HeroParticleScene|null>{
+export async function createHeroParticles(host:HTMLElement,url:string,{onReady,onError,signal,paused=false}:Options):Promise<HeroParticleScene|null>{
  const image=new Image();image.decoding='async';image.src=url;await image.decode();if(signal.aborted)return null;
  const mobile=matchMedia('(max-width:700px)').matches;
  const sample=document.createElement('canvas');sample.width=mobile?180:300;sample.height=Math.round(sample.width*image.naturalHeight/image.naturalWidth);
@@ -128,26 +128,30 @@ export async function createHeroParticles(host:HTMLElement,url:string,{onReady,o
   vertexShader:'varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
   fragmentShader:`uniform sampler2D uPhoto;uniform float uOpacity,uThemeDark;uniform vec4 uCrop;varying vec2 vUv;void main(){vec4 color=texture2D(uPhoto,uCrop.xy+vUv*uCrop.zw);float purple=smoothstep(-.015,.055,color.b-color.r);float luminance=dot(color.rgb,vec3(.2126,.7152,.0722));vec3 pigment=mix(vec3(luminance),color.rgb,1.16)*mix(vec3(.80,.75,.67),vec3(.76,.68,.86),purple);gl_FragColor=vec4(mix(color.rgb,pigment,uThemeDark),color.a*uOpacity);\n#include <colorspace_fragment>\n}`});
  const plate=new T.Mesh(plateGeometry,plateMaterial);plate.position.z=-.03;plate.renderOrder=1;group.add(plate);
- let raf=0,disposed=false,visible=true,paused=false,clock=0,last=0,active=0,mode=0,ready=false,pointerInside=false,alphaRequested=true;
- const assembleOnEnter=!entryPresented&&host.dataset.entryPresented!=='true';entryPresented=true;host.dataset.entryPresented='true';host.dataset.formation=assembleOnEnter?'assembling':'settled';let entryStart=0,entryElapsed=0;
+ let raf=0,disposed=false,visible=true,clock=0,last=0,active=0,mode=0,ready=false,pointerInside=false,alphaRequested=true;
+ const assembleOnEnter=!entryPresented&&host.dataset.entryPresented!=='true';entryPresented=true;host.dataset.entryPresented='true';
+ // A pause before the first frame presents the complete painting. Once an
+ // entrance has started, its elapsed time advances only with visible motion.
+ let entryElapsed=paused?2.3:0;
+ host.dataset.formation=assembleOnEnter&&entryElapsed<2.3?'assembling':'settled';
  const pointer=new T.Vector2(-20,-20),pointerAim=pointer.clone();let tiltX=0,tiltY=0;
  const layers=addSpatialPigment(scene,mobile,camera);
  // Leave a display frame between artwork submissions on a 60 Hz display.
  const fps=mobile?30:45;
+ function syncMotion(){host.dataset.renderState=disposed?'disposed':paused?'paused':visible&&!document.hidden?'playing':'suspended';host.dataset.motionTime=clock.toFixed(3);}
  function request(){if(!disposed&&!raf&&visible&&!document.hidden)raf=requestAnimationFrame(frame);}
  function resize(){const box=host.getBoundingClientRect();if(!box.width||!box.height)return;renderer.setSize(box.width,box.height,false);camera.aspect=box.width/box.height;camera.updateProjectionMatrix();uniforms.uPoint.value=Math.max(1.45,box.height*renderer.getPixelRatio()/sourceHeight*1.15);alphaRequested=true;request();}
  function frame(now:number){raf=0;if(disposed||!visible||document.hidden)return;
   if(!paused&&last&&now-last<1000/fps){request();return;}
-  const dt=Math.min((now-last)/1000||1/fps,.05);last=now;
-  if(!entryStart)entryStart=now;entryElapsed=(now-entryStart)/1000;
-  if(!paused){clock+=dt;mode+=(active-mode)*(1-Math.exp(-dt*3));pointer.lerp(pointerAim,1-Math.exp(-dt*8));
+  const dt=last?Math.min((now-last)/1000,.05):0;last=paused?0:now;
+  if(!paused){clock+=dt;entryElapsed+=dt;mode+=(active-mode)*(1-Math.exp(-dt*3));pointer.lerp(pointerAim,1-Math.exp(-dt*8));
    // The first view assembles once. Theme switches, clicks and idle time
    // never replay this entrance or dissolve the settled portrait.
-   uniforms.uRelease.value=assembleOnEnter?Math.max(.018,.34*(1-smooth(0,2.3,entryElapsed))):.018;
-   if(entryElapsed>=2.3&&host.dataset.formation!=='settled'){host.dataset.formation='settled';alphaRequested=true;}
    uniforms.uTime.value=clock;uniforms.uMode.value=mode;uniforms.uPointer.value.copy(pointer);uniforms.uPresence.value+=(Number(pointerInside)-uniforms.uPresence.value)*(1-Math.exp(-dt*6));
    group.rotation.y+=(tiltY*.055-group.rotation.y)*(1-Math.exp(-dt*4));group.rotation.x+=(tiltX*.035-group.rotation.x)*(1-Math.exp(-dt*4));group.position.y=Math.sin(clock*.4)*.035;
   }
+  uniforms.uRelease.value=assembleOnEnter?Math.max(.018,.34*(1-smooth(0,2.3,entryElapsed))):.018;
+  if(entryElapsed>=2.3&&host.dataset.formation!=='settled'){host.dataset.formation='settled';alphaRequested=true;}
   layers.update(clock,pointer,uniforms.uPresence.value,uniforms.uThemeDark.value,assembleOnEnter?smooth(.1,1.4,entryElapsed):1);
   plateUniforms.uOpacity.value=.64+(1-smooth(.04,.30,uniforms.uRelease.value))*.32;
   try{layers.render(renderer,scene,camera);}catch{onError();dispose();return;}
@@ -156,9 +160,18 @@ export async function createHeroParticles(host:HTMLElement,url:string,{onReady,o
   if(!ready){ready=true;onReady();host.dataset.particleCount=String(opacities.length);host.dataset.scene='approved-p1-particles';}
   if(!paused)request();
  }
+ function setPaused(next:boolean){
+  if(disposed||next===paused)return;
+  paused=next;cancelAnimationFrame(raf);raf=0;last=0;
+  // Discard a stale pointer target without changing the frozen rendered pose.
+  pointerInside=false;pointerAim.set(-20,-20);tiltX=tiltY=0;
+  if(paused&&!ready){entryElapsed=2.3;request();}
+  else if(!paused)request();
+  syncMotion();
+ }
  function onPointer(event:PointerEvent){if(paused||event.pointerType==='touch')return;const box=host.getBoundingClientRect();const x=(event.clientX-box.left)/box.width-.5,y=.5-(event.clientY-box.top)/box.height;const height=2*camera.position.z*Math.tan(T.MathUtils.degToRad(camera.fov/2));pointerAim.set(x*height*camera.aspect,y*height);tiltX=-y;tiltY=x;pointerInside=true;request();}
- function leave(){pointerInside=false;tiltX=tiltY=0;pointerAim.set(-20,-20);request();}
- function visibilityChange(){if(document.hidden){cancelAnimationFrame(raf);raf=0;}else{last=0;request();}}
+ function leave(){pointerInside=false;tiltX=tiltY=0;pointerAim.set(-20,-20);if(!paused)request();}
+ function visibilityChange(){if(document.hidden){cancelAnimationFrame(raf);raf=0;}else{last=0;request();}syncMotion();}
  function themeChange(){const next=document.documentElement.dataset.theme==='dark'?1:0;if(uniforms.uThemeDark.value===next)return;uniforms.uThemeDark.value=next;alphaRequested=true;request();}
  function requestAlpha(){alphaRequested=true;request();}
  function lost(event:Event){event.preventDefault();onError();dispose();}
@@ -166,10 +179,10 @@ export async function createHeroParticles(host:HTMLElement,url:string,{onReady,o
  // scene or resume the animation. Reduced-motion mode uses the CSS fallback.
  const themeObserver=new MutationObserver(themeChange);themeObserver.observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
  const sizeObserver=new ResizeObserver(resize);sizeObserver.observe(host);
- const intersection=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;if(visible){last=0;request();}else{cancelAnimationFrame(raf);raf=0;}},{rootMargin:'60px'});intersection.observe(host);
+ const intersection=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;if(visible){last=0;request();}else{cancelAnimationFrame(raf);raf=0;}syncMotion();},{rootMargin:'60px'});intersection.observe(host);
  host.addEventListener('pointermove',onPointer);host.addEventListener('pointerleave',leave);document.addEventListener('visibilitychange',visibilityChange);renderer.domElement.addEventListener('webglcontextlost',lost);
  host.addEventListener(PORTRAIT_ALPHA_REQUEST,requestAlpha);
- function dispose(){if(disposed)return;disposed=true;signal.removeEventListener('abort',dispose);cancelAnimationFrame(raf);themeObserver.disconnect();sizeObserver.disconnect();intersection.disconnect();host.removeEventListener('pointermove',onPointer);host.removeEventListener('pointerleave',leave);host.removeEventListener(PORTRAIT_ALPHA_REQUEST,requestAlpha);document.removeEventListener('visibilitychange',visibilityChange);renderer.domElement.removeEventListener('webglcontextlost',lost);layers.dispose();geometry.dispose();material.dispose();echoGeometry.dispose();echoMaterial.dispose();streamGeometry.dispose();streamMaterial.dispose();plateGeometry.dispose();plateMaterial.dispose();texture.dispose();renderer.dispose();renderer.domElement.remove();}
- signal.addEventListener('abort',dispose,{once:true});resize();request();
- return {dispose};
+ function dispose(){if(disposed)return;disposed=true;signal.removeEventListener('abort',dispose);cancelAnimationFrame(raf);raf=0;syncMotion();themeObserver.disconnect();sizeObserver.disconnect();intersection.disconnect();host.removeEventListener('pointermove',onPointer);host.removeEventListener('pointerleave',leave);host.removeEventListener(PORTRAIT_ALPHA_REQUEST,requestAlpha);document.removeEventListener('visibilitychange',visibilityChange);renderer.domElement.removeEventListener('webglcontextlost',lost);layers.dispose();geometry.dispose();material.dispose();echoGeometry.dispose();echoMaterial.dispose();streamGeometry.dispose();streamMaterial.dispose();plateGeometry.dispose();plateMaterial.dispose();texture.dispose();renderer.dispose();renderer.domElement.remove();}
+ signal.addEventListener('abort',dispose,{once:true});syncMotion();resize();request();
+ return {dispose,setPaused};
 }

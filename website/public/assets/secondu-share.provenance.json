@@ -1,0 +1,15 @@
+{
+  "file": "secondu-share.jpg",
+  "sha256": "112082cfc7c98e0e3a9b722947c507eaf8474167fd6726afa9d58788a6f5cc40",
+  "bytes": 37688,
+  "width": 1200,
+  "height": 630,
+  "privateInputs": false,
+  "method": "Rendered public brand artwork and typography in a 1200 by 630 HTML composition, captured the actual page, and exported JPEG. No new illustration was generated.",
+  "sources": [
+    { "file": "public/art/twin-badge-v1.png", "sha256": "364d9ff5c2412f9e9bc3f85a704ea5cb18dab22bd92fc41af8c34053aafa5f7e" },
+    { "file": "public/brand/secondu-mark.svg", "sha256": "6703701e20ab6e9f01badc36fedab3ad09efaac652bcbf85390cd1f6e88d1659" },
+    { "file": "public/brand/secondu-wordmark.svg", "sha256": "08e8041d80338754246d60cd3a74f74d11f4df42060dcf58e790027bc0b0f8ef" }
+  ],
+  "font": { "name": "EB Garamond Variable", "package": "@fontsource-variable/eb-garamond", "version": "5.3.0", "license": "SIL Open Font License 1.1" }
+}

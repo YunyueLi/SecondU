@@ -1,4 +1,5 @@
 import { createTask, addEvent } from '../domain.mjs';
+import { taskEventActivity } from '../task-event-activity.mjs';
 import { HttpError } from '../store.mjs';
 
 /** Mirrors confirmed remote snapshots into the local task list. It never starts
@@ -36,7 +37,7 @@ export class RemoteTaskBridge {
       const eventIds = new Set(task.events.map(event => event.id));
       for (const event of run.events) {
         const id = `${run.id}-event-${event.sequence}`;
-        if (!eventIds.has(id)) task.events.push({ id, type: `remote.${event.type}`, label: event.label, detail: event.detail, createdAt: event.at });
+        if (!eventIds.has(id)) { const activity=taskEventActivity(event.activity);task.events.push({ id, type: `remote.${event.type}`, label: event.label, detail: event.detail, createdAt: event.at, ...(activity?{activity}:{}) }); }
       }
       if (previous?.observation?.status !== run.observation.status && run.observation.status === 'disconnected') addEvent(task, 'remote.observation_warning', '暂时无法联系执行电脑', '保留上次确认的任务状态；恢复连接只读取进展，不会重新执行。');
       // Remote approval state remains owned by the remote run; do not invent

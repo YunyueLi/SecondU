@@ -388,6 +388,54 @@ test('only completed public reasoning summaries become activity events; raw or e
   assert.doesNotMatch(JSON.stringify(run.events),/private-|encrypted-payload|not completed|not text/);
 });
 
+test('native action metadata pairs concurrent calls and preserves command detail, failures and credential redaction',async t=>{
+  const calls=[
+    {id:'command-a',type:'commandExecution',status:'inProgress',command:`read-fixture ${secret}`},
+    {id:'command-b',type:'commandExecution',status:'inProgress',command:'read-fixture second'},
+    {id:'file-a',type:'fileChange',status:'inProgress',changes:[{path:'result.txt',kind:'update',diff:'fixture'}]},
+    {id:'mcp-a',type:'mcpToolCall',status:'inProgress',server:'fixture',tool:`read-${secret}`,arguments:{query:'reviewed'}},
+    {id:'search-a',type:'webSearch',status:'inProgress',query:'fixture evidence'},
+  ];
+  const run=await fixtureRun(t,{start(transport){
+    for(const item of calls)transport.notification('item/started',{item});
+    transport.notification('item/completed',{item:{...calls[1],status:'completed',exitCode:0,aggregatedOutput:'second result'}});
+    transport.notification('item/completed',{item:{...calls[0],status:'completed',exitCode:2,aggregatedOutput:`failed ${secret}`}});
+    transport.notification('item/completed',{item:{...calls[2],status:'declined'}});
+    transport.notification('item/completed',{item:{...calls[3],status:'failed',error:{message:'fixture tool failed'}}});
+    transport.notification('item/completed',{item:{...calls[4],status:'completed'}});
+    transport.complete();
+  }});
+  await run.promise;
+  const actions=run.events.filter(event=>event.type.startsWith('runtime.action'));
+  assert.equal(actions.length,10);
+  assert.deepEqual(actions.slice(0,5).map(event=>[event.activity.kind,event.activity.phase]),[['command','running'],['command','running'],['file_change','running'],['tool','running'],['web_search','running']]);
+  assert.equal(new Set(actions.slice(0,5).map(event=>event.activity.callId)).size,5);
+  assert.deepEqual(actions.slice(5).map(event=>event.activity.phase),['completed','failed','rejected','failed','completed']);
+  for(const event of actions.slice(5))assert.ok(actions.slice(0,5).some(start=>start.activity.callId===event.activity.callId&&start.activity.kind===event.activity.kind));
+  assert.equal(actions[0].detail,'read-fixture [已隐藏凭据]\n');
+  assert.equal(actions[6].detail,'read-fixture [已隐藏凭据]\nfailed [已隐藏凭据]');
+  assert.equal(actions[5].detail,'read-fixture second\nsecond result');
+  assert.equal(actions[2].detail,JSON.stringify(calls[2]));
+  assert.equal(actions[3].activity.name,'fixture / read-[已隐藏凭据]');
+  assert.deepEqual(Object.keys(actions[0].activity).sort(),['callId','kind','phase']);
+  assert.ok(!JSON.stringify(run.events).includes(secret));
+});
+
+test('completed public message events retain commentary or final phase without exposing private reasoning',async t=>{
+  const run=await fixtureRun(t,{start(transport){
+    transport.notification('item/started',{item:{id:'progress',type:'agentMessage',phase:'commentary',text:'Unfinished text'}});
+    transport.notification('item/completed',{item:{id:'progress',type:'agentMessage',phase:'commentary',text:'Checking the supplied records.',raw_content:'must not persist'}});
+    transport.notification('item/completed',{item:{id:'legacy-message',type:'agentMessage',text:'Legacy public message.'}});
+    transport.complete('Confirmed final result.');
+  }});
+  assert.equal((await run.promise).text,'Confirmed final result.');
+  const messages=run.events.filter(event=>event.type==='runtime.message');
+  assert.deepEqual(messages.map(event=>event.activity.messagePhase),['commentary',undefined,'final_answer']);
+  assert.ok(messages.every(event=>event.activity.kind==='message'&&event.activity.phase==='completed'&&event.activity.callId));
+  assert.equal(messages[0].detail,'Checking the supplied records.');
+  assert.doesNotMatch(JSON.stringify(run.events),/Unfinished text|must not persist/);
+});
+
 for (const mode of ['auto', 'full']) test(`user-selected ${mode} policy reaches configuration, thread and turn without weakening the other policy`, async t => {
   const policy=mode==='full'?'never':'on-request',reviewer=mode==='auto'?'auto_review':'user';
   const run=await fixtureRun(t,{request:(method,_params,tr)=>method==='config/read'?{config:{approval_policy:policy,approvals_reviewer:reviewer,...(mode==='full'?{sandbox_mode:'danger-full-access',default_permissions:null}:{default_permissions:'hither',permissions:{hither:{filesystem:{':minimal':'read',[tr.options.cwd]:'write'},network:{enabled:false}}}})}}:undefined},{approvalMode:mode});

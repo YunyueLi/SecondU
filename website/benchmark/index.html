@@ -1,2 +1,19 @@
 <!doctype html>
-<html lang="zh-CN" data-theme="light"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f8f7f4"><title>SecondU — Context Benchmark</title><meta name="description" content="Inspect SecondU's synthetic personal-context benchmark: conditions, observed results, exact model replies and limitations."><link rel="canonical" href="https://yunyueli.github.io/SecondU/benchmark/"><link rel="icon" href="../assets/secondu-favicon.svg" type="image/svg+xml"></head><body><div id="root"></div><noscript><a href="https://github.com/YunyueLi/SecondU/blob/main/docs/CONTEXT-BENCHMARK.md">Read the benchmark methodology and recorded evidence.</a></noscript><script type="module" src="/src/benchmark-main.tsx"></script></body></html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f8f7f4">
+  <!-- theme-bootstrap:start -->
+  <style data-initial-theme>html{background:#f8f7f4;color-scheme:light}html[data-theme=dark]{background:#18191c;color-scheme:dark}</style>
+  <script data-theme-bootstrap>
+    (() => {
+      let preference = 'system';
+      try {
+        const saved = localStorage.getItem("secondu.website.theme");
+        if (saved === 'light' || saved === 'dark' || saved === 'system') preference = saved;
+      } catch { /* Storage is optional. */ }
+      const theme = preference === 'system' ? (matchMedia("(prefers-color-scheme: dark)").matches ? 'dark' : 'light') : preference;
+      document.documentElement.dataset.theme = theme;
+      document.documentElement.style.colorScheme = theme;
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', theme === 'dark' ? '#18191c' : '#f8f7f4');
+    })();
+  </script>
+  <!-- theme-bootstrap:end -->
+  <title>SecondU — Context Benchmark</title><meta name="description" content="Inspect SecondU's synthetic personal-context benchmark: conditions, observed results, exact model replies and limitations."><link rel="canonical" href="https://yunyueli.github.io/SecondU/benchmark/"><link rel="icon" href="../assets/secondu-favicon.svg" type="image/svg+xml"></head><body><div id="root"></div><noscript><a href="https://github.com/YunyueLi/SecondU/blob/main/docs/CONTEXT-BENCHMARK.md">Read the benchmark methodology and recorded evidence.</a></noscript><script type="module" src="/src/benchmark-main.tsx"></script></body></html>

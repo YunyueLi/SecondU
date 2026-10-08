@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "baselineCommit": "33b0889b927f29322cef6e2faf4aa40f347b4fb6",
   "title": "SecondU 的产品判断、实现与验证",
-  "summary": "v0.1.2 已公开发布。v0.1.3 候选新增 144 次合成评测、官网量化摘要与独立报告、Hero 真实 alpha 避让、启动握手修复及独立隐私插图；网站实屏与包内隔离运行已核对，原生最新连续操作及最终发布仍待收尾。外部 Kimi 无有效结果。",
+  "summary": "v0.1.3 已公开发布。本轮 0.1.4 候选完善官网双语、键盘与动态控制，接通真实任务活动状态。网站八组合与连续交互、新原生窗口及包内运行内容已分项核对；两轮 Kimi 视觉辅助复核完成，可见范围无新增发布阻断。新提交、CI／Pages、公开资产与线上重开仍待完成，用户最终采纳单独确认。",
   "stages": [
     {
       "id": "research",
@@ -50,20 +50,22 @@
     {
       "id": "current-review",
       "title": "按最新反馈修订",
-      "summary": "v0.1.3 的评测原始证据、Hero 人物及字形避让和本机启动握手已有分项验证；原生最新标题／连续收栏、隐私插图与发布仍待补证。外部 Kimi 无有效结果，不记作用户最终认可。",
+      "summary": "0.1.4 候选已检查官网八组合、连续键盘操作、任务活动八态及新原生窗口；暂停残影、手机节奏与文字链接反馈已修复并重开，两轮 Kimi 复核完成。证据覆盖当前可见范围，真实 provider 新执行、真实手机和用户最终采纳不由此推定。",
       "status": "partial",
-      "document": "ITERATION.md",
-      "summaryEn": "The v0.1.3 evaluation records, portrait and text-glyph clearance, and local startup handshake have scoped evidence. Current native title/collapse checks, the privacy illustration and publication remain pending. External Kimi review has no valid result; final user acceptance is not inferred.",
-      "titleEn": "Refine the current experience"
+      "document": "DEVELOPMENT.md",
+      "summaryEn": "The 0.1.4 candidate has scoped checks for eight website combinations, continuous keyboard use, eight activity states and the new native window. Paused trails, mobile pacing and text links were repaired and reopened; both Kimi reviews are complete. These checks do not establish a new real-provider run, real-phone coverage or final user acceptance.",
+      "titleEn": "Refine the current experience",
+      "section": "2026-10-08 生产候选复验与首轮视觉反馈收口"
     },
     {
       "id": "delivery",
       "title": "验证并交付本机版本",
-      "summary": "v0.1.2 于北京时间 2026-10-01 20:54:12 公开发布，对应提交 33b0889。macOS 与 Ubuntu CI、Pages 部署成功；原生 ZIP 与校验和的服务端摘要及尺寸已核。临时签名不等于 Apple 公证。",
-      "status": "verified",
+      "summary": "当前公开版本仍为 v0.1.3。0.1.4 本机窗口已实际启动，签名与包内容校验通过，源码和包内 runtime revision 一致；本轮正式提交、CI／Pages、公开安装包摘要及线上重开待交付。临时签名不等于 Apple 公证。",
+      "status": "partial",
       "document": "DEVELOPMENT.md",
-      "summaryEn": "v0.1.2 was published on October 1, 2026 at 12:54:12 UTC from commit 33b0889. macOS and Ubuntu CI and Pages passed. Server-side digests and sizes of the native ZIP and checksum file matched local assets. Ad-hoc signing is not Apple notarization.",
-      "titleEn": "Verify and deliver"
+      "summaryEn": "The current public release remains v0.1.3. The local 0.1.4 app was launched; signing and package-content checks passed, and source and packaged runtime revisions match. The new commit, CI/Pages, public archive digests and live recheck are pending. Ad-hoc signing is not Apple notarization.",
+      "titleEn": "Verify and deliver",
+      "section": "2026-10-08 生产候选复验与首轮视觉反馈收口"
     }
   ],
   "iterations": [
@@ -335,6 +337,25 @@
       ],
       "document": "ITERATION.md",
       "section": "2026-10-01 v0.1.3 候选变更与验收"
+    },
+    {
+      "id": "website-task-activity-v014",
+      "date": "2026-10-08",
+      "title": "官网品质与真实任务活动",
+      "titleEn": "Website quality and real task activity",
+      "summary": "0.1.4 候选完善双语静态入口、素材交付、键盘焦点与可暂停 Hero，并将结构化生产事件接到统一任务活动视图。网站八组合、连续交互、原生窗口、包内容及两轮视觉复核已有分项证据；正式提交与公开交付仍待完成。",
+      "summaryEn": "The 0.1.4 candidate improves bilingual static entry points, asset delivery, keyboard focus and a pausable Hero, and connects structured production events to one task activity view. Scoped evidence covers eight website combinations, continuous interactions, the native window, package contents and two visual reviews. The new commit and public delivery remain pending.",
+      "status": "partial",
+      "evidence": [
+        "website-interactions-v014",
+        "task-activity-v014",
+        "candidate-checks-v014",
+        "hero-performance-v014",
+        "native-package-v014",
+        "quality-delivery-v014"
+      ],
+      "document": "DEVELOPMENT.md",
+      "section": "2026-10-08 生产候选复验与首轮视觉反馈收口"
     }
   ],
   "capabilities": [
@@ -755,6 +776,78 @@
       "detailEn": "v0.1.3 was published at 2026-10-02T00:00:47Z. macOS/Ubuntu CI and Pages passed for runtime commit 30d7a7a. The public ZIP is 220915395 bytes with digest ac43f5f1872a331e430a29deda8993f4258f3b87cdc160c8a9312127c7dc9cf7. After excluding an old process, all 30 sidebar toggles across five views passed; leaving fullscreen restored the window. Twelve obsolete app copies were trashed. Wider glyph clearance and geometric privacy artwork passed light/dark and 390px checks. Kimi credential preflight exited 42 without a model call. The archive is not Apple-notarized.",
       "document": "DEVELOPMENT.md",
       "section": "2026-10-02 v0.1.3 公开发布"
+    },
+    {
+      "id": "website-interactions-v014",
+      "title": "官网八组合与连续交互",
+      "titleEn": "Eight website combinations and continuous interactions",
+      "scope": "本机 Chrome 八组合、Safari 分项及当前页面内的虚构示例",
+      "scopeEn": "Eight local Chrome combinations, scoped Safari checks and fictional examples within the current page",
+      "status": "verified",
+      "detail": "Chrome 中英文、浅深主题、桌面／手机宽度八组合已核对；Safari 覆盖中文浅／深色及英文深色。320px 无横向溢出；手机路线详情就近展开并保留焦点，产品窗 Enter 打开、Escape 收起后返回实际触发者。虚构成果编辑、保存 v2 并重开成功，仅证明当前页面内流程；手机宽度仿真不等于真实手机验收。",
+      "detailEn": "Chrome covered Chinese/English, light/dark and desktop/mobile widths; Safari covered Chinese light/dark and English dark. No horizontal overflow at 320px. Mobile roadmap details retain focus, and Enter/Escape restores the actual product-window trigger. A fictional artifact was edited, saved as v2 and reopened within the page. Width emulation is not real-phone acceptance, and this does not establish cross-page persistence.",
+      "document": "DEVELOPMENT.md",
+      "section": "2026-10-08 生产候选复验与首轮视觉反馈收口"
+    },
+    {
+      "id": "task-activity-v014",
+      "title": "真实事件驱动的任务活动",
+      "titleEn": "Task activity driven by structured events",
+      "scope": "生产事件接线、共享活动模型与合成状态预览",
+      "scopeEn": "Production event wiring, shared activity model and synthetic state previews",
+      "status": "verified",
+      "detail": "Codex、连接器、本机执行与远端桥接携带经过规范化和脱敏的调用身份、种类及阶段。活动按轮次与调用聚合，重复 started 不覆盖已确认结果；审批、补充、失败、停止、中断及远端未确认分别呈现，不将断联推成结束。复用官方 Apps SDK UI，参考 DSH 的事件聚合与逐层展开。八态及审查、拒绝、断联预览已核对，未执行新的真实 provider 任务。",
+      "detailEn": "Codex, connectors, local execution and remote bridges carry normalized and redacted call identity, kind and phase. Activity is grouped by attempt and call; duplicate starts cannot overwrite confirmed results. Approval, input, failure, stop, interruption and unconfirmed remote observation remain distinct. The interface reuses official Apps SDK UI and draws on DSH event grouping and progressive disclosure. Eight states and review, rejection and disconnect previews were checked; no new real-provider task was run.",
+      "document": "DEVELOPMENT.md",
+      "section": "2026-10-08 官网品质与任务活动状态"
+    },
+    {
+      "id": "candidate-checks-v014",
+      "title": "候选检查、元数据与素材交付",
+      "titleEn": "Candidate checks, metadata and asset delivery",
+      "scope": "本轮源码专项、本机生产构建及公开素材白名单",
+      "scopeEn": "Targeted source checks, local production build and reviewed public-asset allowlists",
+      "status": "verified",
+      "detail": "最新 45 项针对检查全部通过，TypeScript 通过；前序整套 719 项为 709 通过、0 失败、10 跳过，保留原时点，不合并计数。候选清单 SHA-256 为 596e821cfb36f0dfd556b445592b0c54a4a0429e47c30fbc79b1721c24b97233，420 条目，加清单共 421 文件。双语静态标签、URL 兼容、主题首帧及素材来源守卫有专项检查；六图减少 93.63% 字节仅为素材体积变化。最终 JPEG 为 1200×630、37,688 字节，真实平台抓取未测。",
+      "detailEn": "The latest 45 targeted checks and TypeScript passed. The earlier full suite remains 709 passes, zero failures and 10 skips out of 719 at its original snapshot; counts are not combined. Candidate manifest SHA-256 is 596e821cfb36f0dfd556b445592b0c54a4a0429e47c30fbc79b1721c24b97233, with 420 entries and 421 files including the manifest. Targeted checks cover bilingual static metadata, URL compatibility, initial-theme rules and asset provenance guards. The six-image 93.63% byte reduction is not a loading-speed claim. The final JPEG is 1200×630 and 37,688 bytes; real-platform fetching is untested.",
+      "document": "DEVELOPMENT.md",
+      "section": "2026-10-08 生产候选复验与首轮视觉反馈收口"
+    },
+    {
+      "id": "hero-performance-v014",
+      "title": "动态暂停与生产候选观测",
+      "titleEn": "Motion pause and production-candidate observations",
+      "scope": "本机 Chrome 154 独立可见、暂停与离屏约 8 秒样本",
+      "scopeEn": "About eight-second local Chrome 154 samples while visible, paused and offscreen",
+      "status": "verified",
+      "detail": "暂停残影修复后已重开。1440×1000、DPR 1、浅色、当前缓存、未限速且带探针的独立首屏样本为 rAF 60.86 fps、Hero 提交 30.87 fps、长任务 0；暂停与离屏应用动画回调、WebGL 提交均为 0。旧多标签页约 17 fps 与视口／主题不同的开发样本保留，不构成严格 A/B 或性能增益证明。GPU、公网和真实用户性能未测；减少动态效果、冷开主题和后台恢复仍按各自实屏证据界定。",
+      "detailEn": "The paused-trail repair was reopened and checked. In a 1440×1000, DPR 1, light-theme, cached, unthrottled and instrumented visible sample, rAF was 60.86 fps and Hero submissions 30.87 fps, with zero long tasks. Paused and offscreen samples had zero application animation callbacks and WebGL submissions. Earlier multi-tab samples near 17 fps and a differently sized/themed development sample remain recorded, without a strict A/B or improvement claim. GPU, public-network and field performance were not measured; reduced motion, cold-start themes and background restoration retain their own evidence limits.",
+      "document": "DEVELOPMENT.md",
+      "section": "2026-10-08 生产候选复验与首轮视觉反馈收口"
+    },
+    {
+      "id": "native-package-v014",
+      "title": "0.1.4 原生窗口与包核对",
+      "titleEn": "0.1.4 native window and package checks",
+      "scope": "本机新构建、包内 runtime 与既有本地资料",
+      "scopeEn": "New local build, packaged runtime and existing local records",
+      "status": "verified",
+      "detail": "实际启动新原生窗口，health 为 0.1.4／ok，既有任务保留；完成过程显示固定 4 秒与背景行，公开示例 v2 成果和工作过程面板可打开并返回原会话。严格签名校验通过，验收时包内文件与对应源码一致，17 个远端运行依赖齐全，包目录与文件名排查未见私人资料、日志或凭据文件。源码和包内 runtime revision 同为 ee71eb2a42c1aa239672e37844cd8d27979011f4b0e69075d9194a7643f98be8。此证据覆盖本机验收包，不代表公开安装包或 Apple 公证。",
+      "detailEn": "The new native window launched with health 0.1.4/ok and retained existing tasks. Completed activity showed a fixed four-second duration and context line; the public v2 artifact and process panel opened, and navigation returned to the original conversation. Strict signing checks passed. At inspection, package files matched their source, all 17 remote-runtime dependencies were present, and directory and filename checks found no private-record, log or credential files. Source and packaged runtime revisions both equal ee71eb2a42c1aa239672e37844cd8d27979011f4b0e69075d9194a7643f98be8. This covers the locally checked build, not a public archive or Apple notarization.",
+      "document": "DEVELOPMENT.md",
+      "section": "2026-10-08 生产候选复验与首轮视觉反馈收口"
+    },
+    {
+      "id": "quality-delivery-v014",
+      "title": "两轮视觉复核与待交付范围",
+      "titleEn": "Two visual reviews and remaining delivery scope",
+      "scope": "公开／虚构截图与匹配差异；尚未公开的本轮候选",
+      "scopeEn": "Public or fictional screenshots with matching changes; the current unpublished candidate",
+      "status": "partial",
+      "detail": "首轮 Kimi K3 max 的三项意见已实施并实屏重开：清理暂停字符残影、调整手机 Hero 节奏、统一文字链接下划线。第二轮基于 10 张公开／虚构截图和匹配源码差异，确认三项已知问题解决，可见范围无新增发布阻断；辅助评审不代替实际验收。正式提交、CI／Pages、公开资产摘要和线上重开待完成；最新公开版本仍为 v0.1.3，奖项结果与用户最终采纳未作结论。",
+      "detailEn": "Three first-round Kimi K3 max findings were implemented and reopened: paused character trails, mobile Hero pacing and consistent text-link underlines. The second round used 10 public or fictional screenshots with matching source changes, confirmed those fixes and found no new release blocker within the visible scope. Advisory review does not replace actual acceptance. The new commit, CI/Pages, public asset digests and live recheck remain pending. The latest public release is still v0.1.3; no award or final user-acceptance outcome is claimed.",
+      "document": "DEVELOPMENT.md",
+      "section": "2026-10-08 生产候选复验与首轮视觉反馈收口"
     }
   ],
   "boundaries": [
@@ -893,11 +986,53 @@
     }
   ],
   "titleEn": "SecondU: product decisions, implementation and evidence",
-  "summaryEn": "v0.1.2 is published. The v0.1.3 candidate adds 144 synthetic evaluation attempts, a concise website summary and separate report, alpha-based Hero clearance and startup handshake repairs. The privacy illustration passed desktop and narrow-screen review. Current native interaction checks and publication remain pending; external Kimi review has no valid result.",
+  "summaryEn": "v0.1.3 is published. The 0.1.4 candidate improves the bilingual website, keyboard access, motion controls and task activity states. Eight website combinations, continuous interactions, the new native window and packaged runtime have scoped checks. Two Kimi visual reviews found no new release blocker within the visible scope. The new commit, CI/Pages, public assets and live recheck remain pending; final user acceptance is separate.",
   "latestRelease": {
     "version": "v0.1.3",
     "publishedAt": "2026-10-02T00:00:47Z",
     "commit": "30d7a7a5ad7d3f2275fa9966b18cd8f4eb831f1c",
     "url": "https://github.com/YunyueLi/SecondU/releases/tag/v0.1.3"
+  },
+  "currentProgress": {
+    "id": "website-task-quality-current",
+    "date": "2026-10-08",
+    "status": "partial",
+    "title": "0.1.4 本机候选已复验，公开交付待完成",
+    "titleEn": "0.1.4 local candidate rechecked; public delivery pending",
+    "summary": "官网与任务活动的本轮修正已有源码、实屏、性能及原生分项证据。两轮 Kimi 辅助复核完成，可见范围无新增发布阻断；当前公开版本仍为 v0.1.3，公开交付及用户最终采纳继续分开记录。",
+    "summaryEn": "The website and task activity changes have scoped source, screen, performance and native evidence. Two Kimi advisory reviews are complete, with no new release blocker in the visible scope. The public version remains v0.1.3; public delivery and final user acceptance are recorded separately.",
+    "completed": [
+      {
+        "zh": "官网八组合、键盘焦点、手机路线详情和页面内虚构成果保存／重开已核对。",
+        "en": "Eight website combinations, keyboard focus, mobile roadmap details and within-page fictional artifact save/reopen were checked."
+      },
+      {
+        "zh": "结构化任务活动接通生产事件，八态与审查、拒绝、远端断联预览已核对；最新 45 项专项和类型检查通过。",
+        "en": "Structured task activity is connected to production events. Eight states plus review, rejection and remote-disconnect previews were checked; the latest 45 targeted checks and type checking passed."
+      },
+      {
+        "zh": "暂停残影、手机 Hero 节奏及文字链接已修正并重开；两轮 Kimi 复核完成，可见范围无新增发布阻断。",
+        "en": "Paused trails, mobile Hero pacing and text links were repaired and reopened. Both Kimi reviews are complete, with no new release blocker in the visible scope."
+      },
+      {
+        "zh": "本机生产样本暂停和离屏均为零应用动画回调／WebGL 提交；双语静态入口、分享图与素材白名单有独立检查。",
+        "en": "Local production samples had zero application animation callbacks or WebGL submissions when paused and offscreen. Bilingual static entries, the share image and asset allowlists have separate checks."
+      },
+      {
+        "zh": "新 0.1.4 原生窗口、历史保留、成果和工作过程面板已实际核对；签名、包内容及 runtime 一致性检查通过。",
+        "en": "The new 0.1.4 native window, retained history, artifacts and process panel were exercised. Signing, package contents and runtime consistency checks passed."
+      }
+    ],
+    "pending": [
+      {
+        "zh": "完成本轮正式提交、CI／Pages、公开安装包与摘要核对，并重开线上入口；最终发布信息按实际结果回填。",
+        "en": "Complete the new commit, CI/Pages, public archive and digest verification, then reopen the live entry points; record publication details from actual results."
+      },
+      {
+        "zh": "用户最终采纳及未测范围继续独立确认，包括真实手机、真实平台分享抓取、真实 provider 新执行及相应完整实屏边界。",
+        "en": "Keep final user acceptance and untested scope separate, including real phones, real-platform share fetching, a new real-provider run and the corresponding complete screen evidence."
+      }
+    ],
+    "iteration": "website-task-activity-v014"
   }
 }

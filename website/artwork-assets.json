@@ -1,5 +1,5 @@
 {
-  "description": "Explicitly reviewed public artwork. Build-only WebP derivatives; original desktop assets are unchanged.",
+  "description": "Explicitly reviewed public artwork. Build-only WebP derivatives; original assets remain unchanged. Website-only entries use their own allowlist and namespace, separate from desktop/embed assets.",
   "privateInputs": false,
   "assets": [
     {
@@ -118,6 +118,84 @@
           "name": "default",
           "size": 576,
           "quality": 90
+        }
+      ]
+    },
+    {
+      "namespace": "website",
+      "source": "art/roadmap/understanding-v1.png",
+      "sourceSha256": "bc4942f86a0c4f47d04fa2934bb992ae3470494d40383a3489ec96b46d3629e6",
+      "sizeReason": "Shared route/detail image. The detail scene is about 350 by 330 CSS pixels; 768 pixels covers 2x display without loading another image for the 112-pixel route thumbnail.",
+      "variants": [
+        {
+          "name": "default",
+          "size": 768,
+          "quality": 92
+        }
+      ]
+    },
+    {
+      "namespace": "website",
+      "source": "art/roadmap/growth-v1.png",
+      "sourceSha256": "fae15acb206c924d01a15d76fadff4871cacc31c4c0313da7e126a2ceb39b4cc",
+      "sizeReason": "Shared route/detail image. The detail scene is about 350 by 330 CSS pixels; 768 pixels covers 2x display without loading another image for the 112-pixel route thumbnail.",
+      "variants": [
+        {
+          "name": "default",
+          "size": 768,
+          "quality": 92
+        }
+      ]
+    },
+    {
+      "namespace": "website",
+      "source": "art/roadmap/devices-v1.png",
+      "sourceSha256": "8def4c610a76b94e218f242c1520cfcbfc796dcf23cb30c5040a5942efa73527",
+      "sizeReason": "Shared route/detail image. The detail scene is about 350 by 330 CSS pixels; 768 pixels covers 2x display without loading another image for the 112-pixel route thumbnail.",
+      "variants": [
+        {
+          "name": "default",
+          "size": 768,
+          "quality": 92
+        }
+      ]
+    },
+    {
+      "namespace": "website",
+      "source": "art/roadmap/capabilities-v1.png",
+      "sourceSha256": "9584de36da08fada296aa6872b5921eea279311c1ba25c64ff59e88dd9330833",
+      "sizeReason": "Shared route/detail image. The detail scene is about 350 by 330 CSS pixels; 768 pixels covers 2x display without loading another image for the 112-pixel route thumbnail.",
+      "variants": [
+        {
+          "name": "default",
+          "size": 768,
+          "quality": 92
+        }
+      ]
+    },
+    {
+      "namespace": "website",
+      "source": "art/roadmap/relationships-v1.png",
+      "sourceSha256": "61f0ac6963c6a3620a3f328d7787cc6ca87e9febaf038db16dc0c3be2b0f15f7",
+      "sizeReason": "Shared route/detail image. The detail scene is about 350 by 330 CSS pixels; 768 pixels covers 2x display without loading another image for the 112-pixel route thumbnail.",
+      "variants": [
+        {
+          "name": "default",
+          "size": 768,
+          "quality": 92
+        }
+      ]
+    },
+    {
+      "namespace": "website",
+      "source": "assets/privacy-boundaries.png",
+      "sourceSha256": "bc2930d43ebf041c91502209573836f4de91e5c7ff7b24a8ba0914fc0621752f",
+      "sizeReason": "The 410 by 250 CSS-pixel illustration box contains a 3:2 image at up to 375 by 250 pixels; 768 by 512 covers 2x display.",
+      "variants": [
+        {
+          "name": "default",
+          "size": 768,
+          "quality": 92
         }
       ]
     }

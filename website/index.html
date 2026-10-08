@@ -1,16 +1,51 @@
 <!doctype html>
-<html lang="zh-CN" data-theme="light">
+<html lang="zh-CN" data-site-page="home">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f8f7f4">
+  <!-- theme-bootstrap:start -->
+  <style data-initial-theme>html{background:#f8f7f4;color-scheme:light}html[data-theme=dark]{background:#18191c;color-scheme:dark}</style>
+  <script data-theme-bootstrap>
+    (() => {
+      let preference = 'system';
+      try {
+        const saved = localStorage.getItem("secondu.website.theme");
+        if (saved === 'light' || saved === 'dark' || saved === 'system') preference = saved;
+      } catch { /* Storage is optional. */ }
+      const theme = preference === 'system' ? (matchMedia("(prefers-color-scheme: dark)").matches ? 'dark' : 'light') : preference;
+      document.documentElement.dataset.theme = theme;
+      document.documentElement.style.colorScheme = theme;
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', theme === 'dark' ? '#18191c' : '#f8f7f4');
+    })();
+  </script>
+  <!-- theme-bootstrap:end -->
+  <!-- Generated from site-metadata.mjs; the build also emits an English en.html. -->
+  <!-- site-metadata:start -->
   <title>SecondU，你的数字分身</title>
-  <meta name="description" content="SecondU 是以个人数字分身为核心的智能体产品。持续理解背景、经历、偏好、目标、关系与现实处境，在任务、应用和设备之间延续这些理解，支持协作、社交和专业服务。">
+  <meta name="description" content="你的数字分身。从懂你，到为你行动。SecondU 持续理解你的背景、经历、偏好、关系和目标，在不同任务、场景和设备之间延续这些理解。">
   <meta property="og:title" content="SecondU，你的数字分身">
   <meta property="og:description" content="你的数字分身。从懂你，到为你行动。SecondU 持续理解你的背景、经历、偏好、关系和目标，在不同任务、场景和设备之间延续这些理解。">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://yunyueli.github.io/SecondU/">
+  <meta property="og:site_name" content="SecondU">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta property="og:image" content="https://yunyueli.github.io/SecondU/assets/secondu-share.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="SecondU 奶油色与淡紫色的两个油画侧脸，彼此相伴。">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="SecondU，你的数字分身">
+  <meta name="twitter:description" content="你的数字分身。从懂你，到为你行动。SecondU 持续理解你的背景、经历、偏好、关系和目标，在不同任务、场景和设备之间延续这些理解。">
+  <meta name="twitter:image" content="https://yunyueli.github.io/SecondU/assets/secondu-share.jpg">
+  <meta name="twitter:image:alt" content="SecondU 奶油色与淡紫色的两个油画侧脸，彼此相伴。">
   <link rel="canonical" href="https://yunyueli.github.io/SecondU/">
+  <link rel="alternate" hreflang="zh-CN" href="https://yunyueli.github.io/SecondU/">
+  <link rel="alternate" hreflang="en" href="https://yunyueli.github.io/SecondU/en.html">
+  <link rel="alternate" hreflang="x-default" href="https://yunyueli.github.io/SecondU/">
+  <!-- site-metadata:end -->
   <link rel="icon" href="./assets/secondu-favicon.svg" type="image/svg+xml">
   <link rel="preload" as="image" href="../public/art/twin-badge-v1.png" fetchpriority="high">
 </head>

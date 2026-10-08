@@ -14,6 +14,11 @@
 .site-hero-portrait .hero-portrait-fallback{padding:5%;pointer-events:none}
 .site-hero-portrait .hero-portrait-field[data-ready=true] .hero-portrait-fallback{opacity:0}
 .site-hero-portrait .hero-portrait-field[data-ready=false] .hero-particle-canvas{opacity:0}
+.hero-motion-controls{margin-top:10px}
+.hero-motion-toggle{display:inline-flex;align-items:center;gap:7px;min-height:36px;padding:6px 0;border:0;border-radius:4px;background:transparent;color:var(--site-muted);font:400 12px/1.5 var(--site-font);transition:color .18s ease}
+.hero-motion-toggle>svg{width:14px;height:14px;flex:none}
+.hero-motion-toggle:hover{color:var(--site-ink)}
+.hero-motion-toggle:focus-visible{outline:2px solid var(--site-accent);outline-offset:5px}
 html:lang(en) .site-hero-portrait .site-hero-copy h1{font-size:clamp(49px,4.3vw,64px)}
 html:lang(en) .site-hero-portrait .site-hero-copy h1>span{font-size:.69em}
 @media(max-width:1100px){

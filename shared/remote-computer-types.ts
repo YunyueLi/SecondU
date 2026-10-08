@@ -1,4 +1,4 @@
-import type { ModelConnection, ProviderSettings } from './contracts';
+import type { ModelConnection, ProviderSettings, TaskEventActivity } from './contracts';
 
 export type RemoteRunStatus = 'starting' | 'running' | 'awaiting_approval' | 'completed' | 'failed' | 'cancelled' | 'interrupted';
 export interface RemoteError { code: string; message: string }
@@ -29,7 +29,7 @@ export interface RemoteComputer {
 }
 export interface RemoteInputFile { attachmentId: string; path: string; size: number; sha256: string }
 export interface RemoteArtifactFile { path: string; size: number; sha256: string; modifiedAt: string }
-export interface RemoteRunEvent { sequence: number; at: string; type: string; label: string; detail: string }
+export interface RemoteRunEvent { sequence: number; at: string; type: string; label: string; detail: string; activity?: TaskEventActivity }
 export interface RemoteApproval { id: string; title: string; description: string; details: string; createdAt: string }
 export interface RemoteRun {
   id: string;

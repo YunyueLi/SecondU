@@ -1,7 +1,8 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useLayoutEffect, useState, type ReactNode } from 'react';
 import {Globe} from '@openai/apps-sdk-ui/components/Icon';
 import {SiteChoice} from './SiteChoice';
 import { setLocale } from '../../src/i18n';
+import { homepageLanguageUrl, requestedSiteLanguage, siteMetadata } from '../site-metadata.mjs';
 
 type Language = 'zh' | 'en';
 type SiteLanguage = { language: Language; setLanguage: (language: Language) => void; t: (zh: string, en: string) => string };
@@ -10,8 +11,8 @@ export function SiteLanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguageState] = useState<Language>(() => {
     let initial: Language = 'zh';
     try { initial = localStorage.getItem('secondu.website.language') === 'en' ? 'en' : 'zh'; } catch { /* Default to Chinese. */ }
-    const requested = new URLSearchParams(location.search).get('lang');
-    if (requested === 'zh' || requested === 'en') initial = requested;
+    const requested = requestedSiteLanguage(location.href);
+    if (requested) initial = requested;
     setLocale(initial === 'zh' ? 'zh-CN' : 'en');
     return initial;
   });
@@ -22,10 +23,22 @@ export function SiteLanguageProvider({ children }: { children: ReactNode }) {
     setLanguageState(next);
   }
   useEffect(() => {
-    document.documentElement.lang = language === 'zh' ? 'zh-CN' : 'en';
-    document.title = language === 'zh' ? 'SecondU，你的数字分身' : 'SecondU — Your digital twin';
     setLocale(language === 'zh' ? 'zh-CN' : 'en');
     try { localStorage.setItem('secondu.website.language', language); } catch { /* The page works without storage. */ }
+  }, [language]);
+  useLayoutEffect(() => {
+    document.documentElement.lang = language === 'zh' ? 'zh-CN' : 'en';
+    // This provider also serves the benchmark, which owns its own document metadata.
+    if (document.documentElement.dataset.sitePage !== 'home') return;
+    const metadata = siteMetadata(language);
+    document.title = metadata.title;
+    for (const { name, property, content } of metadata.meta) {
+      const attribute = name ? 'name' : 'property';
+      document.querySelector(`meta[${attribute}="${name ?? property}"]`)?.setAttribute('content', content);
+    }
+    document.querySelector('link[rel="canonical"]')?.setAttribute('href', metadata.canonical);
+    const next = homepageLanguageUrl(location.href, language);
+    if (next.href !== location.href) history.replaceState(history.state, '', next);
   }, [language]);
   return <Context.Provider value={{ language, setLanguage, t: (zh, en) => language === 'zh' ? zh : en }}>{children}</Context.Provider>;
 }
