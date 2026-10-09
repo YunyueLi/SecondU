@@ -2,19 +2,22 @@
 
 User-visible changes are recorded here. Detailed decisions and scoped checks remain in [Development](docs/DEVELOPMENT.md) and [Iteration](docs/ITERATION.md). Published releases are tied to a tag and commit; subsequent changes remain under Unreleased.
 
-## 0.1.5 — Unreleased
+## 0.1.5 — 2026-10-10
 
 ### Added
 
-- Add an in-app macOS update entry in settings, the application menu and the sidebar, backed by the official Sparkle 2.9.6 update window and installer. Update archives use Ed25519 verification against the public key embedded in the app; release signing uses a dedicated local Keychain account.
-- Prepare ordinary quits and update restarts through the same checks for unsaved edits and active work. The backend freezes new requests and scheduled tasks, drains accepted requests, checks every local space, and closes only after a separate commit message. Running tasks, approval waits and unconfirmed remote execution prevent the restart without cancelling work.
-- Add a repeatable appcast generator and document the native integration, update interaction, signing sequence and release acceptance requirements.
+- Add in-app macOS updates through a sidebar download icon, an update group within General settings and the application menu. Official Sparkle 2.9.6 handles the native update window, download, verification and installation; there is no standalone update page.
+- Discover releases in the background without automatic downloads or restarts, and show progress from actual download bytes. Update archives are verified with the app's embedded Ed25519 public key.
+- Protect ordinary quits and update restarts with checks for drafts, pending edits and active work. The backend drains accepted requests and checks all spaces before closing; timeouts do not forcibly cancel work.
+- Preserve the original window and drafts when the macOS close button hides it. Repair startup retry handling and disable feedback inputs while saving.
 
-### Validation and status
+### Validation and delivery
 
-- The backend lifecycle tests include slow request bodies, loaded and dormant spaces, pending approvals, OAuth callbacks, cancellation, timeouts and a real forked-process exit. The relevant backend regressions passed; these are scoped source checks, not a released build certification.
-- Appcast generation tests use a mocked signer and no Keychain access. They verify fixed release URLs, archive metadata, escaping and rejection of changed archives. Sparkle's original license is retained byte-for-byte.
-- This remains an unreleased candidate. Current native screens, invalid-signature rejection, a complete two-version installation and relaunch, data preservation, final sealed assets and publication require separate evidence. Earlier versions without the updater need one manual installation of the first updater-enabled release.
+- The complete local source run passed 765 of 775 checks, with 10 existing environment-dependent skips and no failures. The final feedback fix separately passed type checking and five related checks. Release-commit [CI 37960044495](https://github.com/YunyueLi/SecondU/actions/runs/37960044495) and [Product website 37960044610](https://github.com/YunyueLi/SecondU/actions/runs/37960044610) succeeded.
+- Isolated native acceptance rejected an archive with an invalid signature without changing the old app or data. A real unsent draft blocked relaunch and remained intact; clearing the synthetic draft allowed installation and automatic relaunch into 0.1.5, preserving task records, artifact versions and file bytes. Both test versions contain this updater; the test's 0.1.4 is not the historical release.
+- The production package passed independent extraction, strict signatures and source correspondence. The installed app retained existing domain records and artifact files; its actual General settings and Sparkle window confirmed version 0.1.5 is up to date after publication. The Dock points to the canonical installed app.
+- [v0.1.5](https://github.com/YunyueLi/SecondU/releases/tag/v0.1.5) was published at **2026-10-09 16:48:45 UTC / October 10 00:48:45 in Beijing**, tagged at `2cef8a6ab17ca30aa7c6a7094b2eddf2f85fd7eb`. Official Keychain-backed signing and independent Ed25519 verification passed. All three uploaded assets and anonymous HTTPS downloads match the sealed files; independent Ed25519 verification of the public ZIP and feed version, architecture and minimum-system checks passed. Exact digests are recorded in the [release notes](docs/releases/v0.1.5.md).
+- Earlier versions need one manual installation of this first updater-enabled release. The app targets Apple silicon and macOS 13+, uses ad-hoc signing and is not Apple-notarized. Native active-task refusal, permission errors, a full background-check cycle and simultaneous sidebar/native progress comparison were not performed; scoped source and child-process checks remain separate.
 
 ## 0.1.4 — 2026-10-08
 

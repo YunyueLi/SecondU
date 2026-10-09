@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "baselineCommit": "33b0889b927f29322cef6e2faf4aa40f347b4fb6",
   "title": "SecondU 的产品判断、实现与验证",
-  "summary": "v0.1.4 已公开发布，完善双语官网、键盘与动态控制，以及真实任务活动状态。macOS 与 Ubuntu CI 均通过，公开安装包大小与摘要匹配，官网主要资源与验收候选一致并已重开。八组合实屏、原生窗口与两轮视觉复核各有对应范围；真实手机、真实 provider 新执行和用户最终采纳另行确认。",
+  "summary": "v0.1.5 已公开发布，提供侧栏图标、通用设置和原生窗口中的应用内更新。本机已安装并确认最新版本，草稿阻止重启、隔离两版本升级和数据保留已实测；双平台 CI、网站工作流、生产签名及匿名公开下载核验通过。未测原生异常、真实 provider 新执行和用户最终采纳保留各自边界。",
   "stages": [
     {
       "id": "research",
@@ -50,22 +50,22 @@
     {
       "id": "current-review",
       "title": "按最新反馈修订",
-      "summary": "本轮官网与任务活动修订已随 v0.1.4 交付：八组合、连续键盘操作、任务八态、新原生窗口和两轮 Kimi 复核已有对应证据；尚未推定真实手机、真实 provider 新执行或用户最终采纳。",
+      "summary": "本轮应用内更新已随 v0.1.5 交付：真实侧栏下载入口、原有通用设置、错误签名拒绝、草稿保护及升级后数据保留均有对应实测；没有独立更新页面，未测异常和用户最终采纳另列。",
       "status": "partial",
       "document": "DEVELOPMENT.md",
-      "summaryEn": "The website and task activity revisions are delivered in v0.1.4, with scoped evidence for eight screen combinations, continuous keyboard use, eight task states, the new native window and two Kimi reviews. Real-phone coverage, a new real-provider run and final user acceptance are not inferred.",
+      "summaryEn": "v0.1.5 delivers in-app updates with scoped native evidence for the sidebar download entry, existing General settings, invalid-signature rejection, draft protection and post-upgrade data preservation. There is no standalone update page; unchecked edge cases and final user acceptance remain separate.",
       "titleEn": "Refine the current experience",
-      "section": "2026-10-08 v0.1.4 公开交付"
+      "section": "2026-10-10 v0.1.5 公开交付"
     },
     {
       "id": "delivery",
       "title": "验证并交付本机版本",
-      "summary": "v0.1.4 已公开发布。C2 提交的双平台 CI、公开 ZIP 与校验文件摘要核对通过；官网 C1 Pages 成功，主要资源匹配候选并已重开。安装包保留封包时文档；临时签名不等于 Apple 公证。",
+      "summary": "v0.1.5 已公开发布。本机标准安装 App 与 Dock 已更新，正式 feed 实际检查为最新版本；双平台 CI、网站工作流、公开资产字节和 Ed25519 验签通过。封包保留冻结时文档；ad-hoc 签名不等于 Apple 公证。",
       "status": "verified",
       "document": "DEVELOPMENT.md",
-      "summaryEn": "v0.1.4 is public. C2 passed CI on both platforms and public ZIP/checksum verification; the C1 website deployment succeeded, its primary resources match the candidate, and the live page was reopened. The archive retains its packaging-time documentation. Ad-hoc signing is not Apple notarization.",
+      "summaryEn": "v0.1.5 is public. The canonical local app and Dock entry are updated, and an actual production-feed check reports the current version. CI on both platforms, the website workflow, public asset bytes and Ed25519 verification passed. The archive retains its frozen documentation; ad-hoc signing is not Apple notarization.",
       "titleEn": "Verify and deliver",
-      "section": "2026-10-08 v0.1.4 公开交付"
+      "section": "2026-10-10 v0.1.5 公开交付"
     }
   ],
   "iterations": [
@@ -370,6 +370,21 @@
       ],
       "document": "DEVELOPMENT.md",
       "section": "2026-10-08 v0.1.4 公开交付"
+    },
+    {
+      "id": "in-app-updates-v015-release",
+      "date": "2026-10-10",
+      "title": "在 App 内更新并安全重启",
+      "titleEn": "Update in the app and restart safely",
+      "summary": "v0.1.5 已公开：侧栏图标和通用设置接入 Sparkle，草稿保护与隔离升级通过；正式本机保留数据，实际确认最新版本。生产签名、匿名公开下载和双平台 CI 分别通过。",
+      "summaryEn": "v0.1.5 is public: the sidebar icon and General settings use Sparkle, with tested draft protection and an isolated upgrade. The installed app preserves existing data and confirms it is current. Production signing, anonymous public downloads and CI on both platforms passed separately.",
+      "status": "verified",
+      "evidence": [
+        "native-updates-v015",
+        "public-delivery-v015"
+      ],
+      "document": "DEVELOPMENT.md",
+      "section": "2026-10-10 v0.1.5 公开交付"
     }
   ],
   "capabilities": [
@@ -874,6 +889,30 @@
       "status": "verified",
       "document": "DEVELOPMENT.md",
       "section": "2026-10-08 v0.1.4 公开交付"
+    },
+    {
+      "id": "native-updates-v015",
+      "title": "原生升级、草稿保护与本机资料保留",
+      "titleEn": "Native updates, draft protection and local data preservation",
+      "scope": "隔离的两版本测试与正式本机 App，各自记录包身份与数据边界。",
+      "scopeEn": "An isolated two-version test and the production local app, each with its own package identity and data scope.",
+      "status": "verified",
+      "detail": "隔离 App 完整下载后拒绝错误签名；实际侧栏图标打开 Sparkle，未发送草稿阻止重启且保持正文。清空自建草稿后完成安装并自动运行 0.1.5，任务、成果两版本及字节保持。测试 0.1.4 已内置本轮 updater，不是历史发布包；生产包还包含最后的反馈输入修复。正式安装 App 的既有资料比较无差异，Dock 指向标准安装，原有通用设置实际确认 0.1.5 为最新版本。未原生实测活动任务拒绝、权限错误、完整后台周期或侧栏与原生百分比同步对照。",
+      "detailEn": "The isolated app rejected a fully downloaded archive with an invalid signature. The actual sidebar icon opened Sparkle, and an unsent draft blocked restart without losing its text. Clearing that synthetic draft allowed installation and automatic launch of 0.1.5, preserving tasks, both artifact versions and file bytes. The test 0.1.4 already contains this updater and is not the historical release; the production package also includes the final feedback input guard. Existing records in the installed production app matched their baseline, the Dock targets the canonical install, and General settings confirmed 0.1.5 is current. Native active-task refusal, permission errors, a full background cycle and simultaneous sidebar/native percentage comparison were not performed.",
+      "document": "DEVELOPMENT.md",
+      "section": "2026-10-10 v0.1.5 原生升级与冻结封包验收"
+    },
+    {
+      "id": "public-delivery-v015",
+      "title": "v0.1.5 公开资产与生产更新源",
+      "titleEn": "v0.1.5 public assets and production update feed",
+      "scope": "正式 Release、生产签名、匿名公开下载及正式 App 检查；不扩大其他未测场景。",
+      "scopeEn": "The public Release, production signing, anonymous public downloads and an actual app check; other untested scenarios are not inferred.",
+      "status": "verified",
+      "detail": "2026-10-09T16:48:45Z（北京时间 10 月 10 日 00:48:45）公开，标签精确对应 2cef8a6ab17ca30aa7c6a7094b2eddf2f85fd7eb。CI 37960044495 和 Product website 37960044610 成功。223,094,255 字节 ZIP、2,106 字节 appcast 和 175 字节 SHA256SUMS 的平台摘要及匿名下载字节匹配冻结资产，生产公钥对公开 ZIP 的独立 Ed25519 验签通过。latest feed 的版本、arm64、macOS 13.0.0 和固定下载地址核对一致；正式 App 已实际确认最新版本。",
+      "detailEn": "Published at 2026-10-09T16:48:45Z, or October 10 at 00:48:45 in Beijing, with tag commit 2cef8a6ab17ca30aa7c6a7094b2eddf2f85fd7eb. CI 37960044495 and Product website 37960044610 succeeded. Platform digests and anonymous downloads of the 223,094,255-byte ZIP, 2,106-byte appcast and 175-byte SHA256SUMS match the sealed assets. Independent Ed25519 verification of the public ZIP passed with the production key. The latest feed matches version, arm64, macOS 13.0.0 and the fixed download URL; the production app confirmed it is current.",
+      "document": "DEVELOPMENT.md",
+      "section": "2026-10-10 v0.1.5 公开交付"
     }
   ],
   "boundaries": [
@@ -1019,14 +1058,24 @@
       "detailEn": "v0.1.4 delivers compact task activity, real operation and collaboration states, and a refined bilingual website, with separate native, CI and public-asset checks.",
       "commit": "835b11302a0ee0142a082ff6d0f55c385e2554da",
       "iteration": "website-task-quality-v014-release"
+    },
+    {
+      "id": "in-app-updates-v015-release",
+      "at": "2026-10-09T16:48:45Z",
+      "title": "在应用内完成更新",
+      "titleEn": "Update within the app",
+      "detail": "v0.1.5 交付真实下载入口、签名验证与安全重启，完成隔离升级、本机资料保留和公开更新源验收。",
+      "detailEn": "v0.1.5 delivers real download controls, signature verification and safe restarts, with scoped isolated-upgrade, local-data preservation and public-feed checks.",
+      "commit": "2cef8a6ab17ca30aa7c6a7094b2eddf2f85fd7eb",
+      "iteration": "in-app-updates-v015-release"
     }
   ],
   "titleEn": "SecondU: product decisions, implementation and evidence",
-  "summaryEn": "v0.1.4 is published with improvements to the bilingual website, keyboard access, motion controls and real task activity states. macOS and Ubuntu CI passed, public package sizes and digests match, and the live website was reopened with primary resources matching the reviewed candidate. Eight screen combinations, the native window and two visual reviews retain their scoped evidence; real phones, a new real-provider run and final user acceptance remain separate.",
+  "summaryEn": "v0.1.5 is public with in-app updates through a sidebar icon, General settings and the native updater. The installed app confirms it is current; native tests cover draft-protected restarts, an isolated two-version upgrade and data preservation. CI on both platforms, the website workflow, production signing and anonymous public-download verification passed. Unchecked native edge cases, new real-provider execution and final user acceptance retain their separate scope.",
   "latestRelease": {
-    "version": "v0.1.4",
-    "publishedAt": "2026-10-08T05:16:38Z",
-    "commit": "835b11302a0ee0142a082ff6d0f55c385e2554da",
-    "url": "https://github.com/YunyueLi/SecondU/releases/tag/v0.1.4"
+    "version": "v0.1.5",
+    "publishedAt": "2026-10-09T16:48:45Z",
+    "commit": "2cef8a6ab17ca30aa7c6a7094b2eddf2f85fd7eb",
+    "url": "https://github.com/YunyueLi/SecondU/releases/tag/v0.1.5"
   }
 }
