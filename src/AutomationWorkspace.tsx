@@ -1,5 +1,6 @@
 import {ExampleExecutionNotice} from './ExampleExecutionNotice';
 import { useState } from 'react';
+import { useUnsavedChanges } from './useUnsavedChanges';
 import type { Automation, Bootstrap, Task } from '../shared/contracts';
 import { Button } from '@openai/apps-sdk-ui/components/Button';
 import { Input } from '@openai/apps-sdk-ui/components/Input';
@@ -25,12 +26,14 @@ function AutomationForm({ initial, data, onRefresh, onClose }: { initial?: Autom
   const [exampleNotice,setExampleNotice]=useState(false);
   const [draft, setDraft] = useState({ title: initial?.title || '', prompt: initial?.prompt || '', trigger: initial?.trigger || 'daily', time: initial?.time || '09:00', intervalMinutes: initial?.intervalMinutes || 60, enabled: initial?.enabled ?? true, mode: initial?.mode || 'live', agentIds: initial?.agentIds || [] });
   const [busy, setBusy] = useState(false), [error, setError] = useState('');
+  const [baseline, setBaseline] = useState(draft);
+  useUnsavedChanges({ unsaved: JSON.stringify(draft) !== JSON.stringify(baseline), busy });
   const example=!!data.profile.demo||initial?.mode==='demo';
   const valid = !!draft.title.trim() && !!draft.prompt.trim() && (draft.trigger !== 'interval' || (Number.isFinite(draft.intervalMinutes) && draft.intervalMinutes >= 1 && draft.intervalMinutes <= 525600));
   async function save() {
     if (busy || !valid) return;
     setBusy(true); setError('');
-    try { const saved = await write<Automation>(savedRecord ? `/automations/${savedRecord.id}` : '/automations', example?{...draft,mode:'demo',enabled:false}:draft, savedRecord ? 'PUT' : 'POST'); setSavedRecord(saved); await onRefresh(); if(example&&draft.enabled){setExampleNotice(true);return;}onClose(); }
+    try { const saved = await write<Automation>(savedRecord ? `/automations/${savedRecord.id}` : '/automations', example?{...draft,mode:'demo',enabled:false}:draft, savedRecord ? 'PUT' : 'POST'); setSavedRecord(saved); setBaseline(draft); await onRefresh(); if(example&&draft.enabled){setExampleNotice(true);return;}onClose(); }
     catch (err) { setError(messageOf(err)); }
     finally { setBusy(false); }
   }

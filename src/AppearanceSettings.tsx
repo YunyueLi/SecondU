@@ -1,4 +1,5 @@
 import { t } from './i18n';
+import { useUnsavedChanges } from './useUnsavedChanges';
 import { compactSelectProps } from './compactSelect';
 import { useRef } from 'react';
 import { WelcomeLettering } from './WelcomeLettering';
@@ -13,6 +14,7 @@ import { defaultAppearance, type Appearance, type AppearanceStatus } from './app
 import type { Theme } from './SettingsWorkspace';
 export function AppearanceSettings({theme,onTheme,value,onChange,status}:{theme:Theme;onTheme:(theme:Theme)=>void;value:Appearance;status:AppearanceStatus;onChange:(update:Partial<Appearance>)=>void}) {
   const artwork=useArtwork();const fileInput=useRef<HTMLInputElement>(null);
+  useUnsavedChanges({ unsaved: status.pendingChanges, busy: artwork.busy || status.saving });
   return <>
     <header className="settings-panel-heading"><h2 id="settings-appearance-title">{t("外观", "Appearance")}</h2><p>{t("让这个空间更像你。更改会自动保存在这台电脑。", "Make this space feel like you. Changes save automatically on this computer.")}</p></header>
     <div className="appearance-block"><h3>{t("界面模式", "Color mode")}</h3><div className="theme-options">{([{id:'system',label:t("跟随系统", "System"),Icon:MoonSunSystem},{id:'light',label:t("月之亮面", "Light side of the moon"),Icon:Sun},{id:'dark',label:t("月之暗面", "Dark side of the moon"),Icon:Moon}] as const).map(({id,label,Icon})=><button key={id} className={`theme-option ${theme===id?'selected':''}`} aria-pressed={theme===id} onClick={()=>onTheme(id)}><div className={`theme-mini theme-mini-${id}`} aria-hidden="true"><aside><i/><i/><i/></aside><section><i/><i/><div/><span/></section></div><span><Icon />{label}{theme===id&&<Check />}</span></button>)}</div></div>

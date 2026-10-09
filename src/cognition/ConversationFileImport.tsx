@@ -1,3 +1,4 @@
+import { useUnsavedChanges } from '../useUnsavedChanges';
 import { t, getLocale } from '../i18n';
 import { useEffect, useRef, useState } from 'react';
 import type { ChatImportPlatform, ChatImportPreview, ChatImportResult } from '../../shared/contracts';
@@ -52,6 +53,7 @@ export function ConversationFileImport({ onClose, onSaved, onImported, onConnect
   const [result, setResult] = useState<ChatImportResult>();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
+  useUnsavedChanges({unsaved:!result&&(!!file||!!accountId||!!conversationId||platform!=='generic'),busy});
   const fileInput = useRef<HTMLInputElement>(null);
   const conversation = preview?.conversations[selected];
   const contentRef=useRef<HTMLDivElement>(null);

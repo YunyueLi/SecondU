@@ -8,6 +8,7 @@ import { api, write, messageOf } from '../api';
 import { Field, ErrorNotice } from '../components';
 import { compactSelectProps } from '../compactSelect';
 import { t } from '../i18n';
+import { useUnsavedChanges } from '../useUnsavedChanges';
 import { getProviders, ProviderMark, type Provider } from './providers';
 import { accountModels, completeConnectionSetup, draftForProvider, type AccountModel, type ModelSetupDraft as Draft } from './modelSetup';
 import { modelIdIssue } from '../../shared/model-validation.mjs';
@@ -48,6 +49,8 @@ export function ModelOnboarding({ onSaved, onDone, initialConnection }: { onSave
   const modelIssue = draft.provider && draft.model ? modelIdIssue(draft.provider, draft.model) : '';
   const modelChosen = manual || catalogueState === 'loaded' && models.some(model => model.id === draft.model);
   const ready = !!draft.provider && !!draft.model.trim() && !!draft.baseUrl.trim() && !!draft.name.trim() && !modelIssue && hasCredential && modelChosen;
+  const changed = stored ? draft.provider !== stored.provider || draft.model.trim() !== stored.model || draft.name.trim() !== stored.name || draft.reasoningEffort !== stored.reasoningEffort || normalizedAddress(draft.baseUrl) !== normalizedAddress(stored.baseUrl) || draft.api !== stored.api || draft.appTitle.trim() !== (stored.appTitle || '') || !!draft.apiKey : Object.entries(draft).some(([key, value]) => value !== blankDraft[key as keyof Draft]);
+  useUnsavedChanges({ unsaved: changed, busy: !!busy || catalogueState === 'loading' });
 
   useEffect(() => {
     mounted.current = true;
@@ -109,7 +112,6 @@ export function ModelOnboarding({ onSaved, onDone, initialConnection }: { onSave
   }
 
   function leave() {
-    const changed = stored ? draft.model !== stored.model || draft.name !== stored.name || draft.reasoningEffort !== stored.reasoningEffort || normalizedAddress(draft.baseUrl) !== normalizedAddress(stored.baseUrl) || draft.api !== stored.api || draft.apiKey : draft.apiKey || draft.model;
     if (changed && !success) setConfirmLeave(true); else onDone();
   }
 

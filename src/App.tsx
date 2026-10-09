@@ -1,4 +1,6 @@
 import { useDesktopFrame } from './useDesktopFrame';
+import { UpdateIndicator } from './UpdateSettings';
+import { useUnsavedChanges } from './useUnsavedChanges';
 import { RemoteTaskWorkspace } from './remote/RemoteTaskWorkspace';
 import { brand } from './brand';
 import { displayProfileName } from './profile';
@@ -54,6 +56,7 @@ export function App() {
   const data = canonicalData;
   const [error,setError] = useState(''); const [actionError,setActionError]=useState(''); const [starting,setStarting] = useState(true); const [refreshing,setRefreshing]=useState(false);
   const [appearance,updateAppearance,appearanceStatus]=useAppearance();
+  useUnsavedChanges({ unsaved: appearanceStatus.pendingChanges, busy: appearanceStatus.saving });
   const customArtwork=useArtwork();
   useEffect(()=>{document.documentElement.style.setProperty('--hither-custom-artwork',customArtwork.url?`url("${customArtwork.url}")`:'none');document.documentElement.style.setProperty('--hither-artwork-ink',customArtwork.ink);},[customArtwork.url,customArtwork.ink]);
   const [guideOpen,setGuideOpen]=useState(()=>!hasSeenProductGuide()&&!location.hash);
@@ -141,7 +144,7 @@ export function App() {
       </div>
       <div className="sidebar-bottom">
         {rail||exploreDismissed?<Button color="secondary" variant="ghost" size="sm" className="sidebar-explore" aria-label={t('探索 SecondU','Explore SecondU')} onClick={()=>setGuideOpen(true)}><HitherMark/>{!rail&&<span>{t('探索 SecondU','Explore SecondU')}</span>}</Button>:<div className="sidebar-explore-card"><Button className="explore-dismiss" color="secondary" variant="ghost" size="sm" uniform aria-label={t('收起介绍卡片','Dismiss introduction card')} onClick={()=>setExploreDismissed(true)}><CloseBold/></Button><strong>{t('让 SecondU 更懂你','Make SecondU your own')}</strong><p>{t('从认识你，到一起把事情做好。','From understanding you to getting things done together.')}</p><Button color="secondary" variant="outline" size="sm" onClick={()=>setGuideOpen(true)}>{t('探索 SecondU','Explore SecondU')}<ArrowRight/></Button></div>}
-        <Menu><Menu.Trigger><button type="button" className="profile-trigger" aria-label={t(`${displayProfileName(data.profile)}的个人菜单`, `${displayProfileName(data.profile)} profile menu`)} title={rail?t("个人菜单", "Profile menu"):undefined}><UserAvatar size={33}/>{!rail&&<><span className="profile-copy"><strong>{displayProfileName(data.profile)}</strong><small>{data.profile.demo?t("示例空间", "Demo workspace"):t("个人空间", "Personal workspace")}</small></span></>}</button></Menu.Trigger><Menu.Content side="top" align="start" minWidth={240}>
+        <div className="profile-update-row"><Menu><Menu.Trigger><button type="button" className="profile-trigger" aria-label={t(`${displayProfileName(data.profile)}的个人菜单`, `${displayProfileName(data.profile)} profile menu`)} title={rail?t("个人菜单", "Profile menu"):undefined}><UserAvatar size={33}/>{!rail&&<><span className="profile-copy"><strong>{displayProfileName(data.profile)}</strong><small>{data.profile.demo?t("示例空间", "Demo workspace"):t("个人空间", "Personal workspace")}</small></span></>}</button></Menu.Trigger><Menu.Content side="top" align="start" minWidth={240}>
           <div className="profile-menu-heading"><strong>{displayProfileName(data.profile)}</strong><span>{data.profile.demo?t("虚构资料演示", "Fictional sample data"):t("本地个人空间", "Local workspace")}</span></div>
           <Menu.Item onSelect={()=>navigate('settings','personal')}><User />{t("个人资料", "Profile")}</Menu.Item>
           <Menu.Item onSelect={()=>navigate('settings','appearance')}><Sun />{t("外观与个性化", "Appearance")}</Menu.Item>
@@ -151,7 +154,7 @@ export function App() {
           <Menu.Item onSelect={()=>navigate('settings','computer')}><Desktop />{t("我的电脑", "My computer")}<span className="menu-online">{data.computer.status==='online'?t("在线", "Online"):t("离线", "Offline")}</span></Menu.Item>
           <Menu.Item onSelect={()=>navigate('development')}><Document />{t('构建过程与开发记录','Development history')}</Menu.Item>
           <Menu.Item onSelect={()=>navigate('components')}><Code />{t("组件与设计规范", "Design system")}</Menu.Item>
-        </Menu.Content></Menu>
+        </Menu.Content></Menu><UpdateIndicator compact={rail}/></div>
       </div>
     </aside>
     {!collapsed&&!narrowWindow&&<SidebarResizeHandle width={sidebarSize.width} onChange={sidebarSize.setWidth} />}

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Button } from '@openai/apps-sdk-ui/components/Button';
 import { Input } from '@openai/apps-sdk-ui/components/Input';
 import { Plus, ChevronLeft, ChevronRight, Edit, Reload, Desktop } from '@openai/apps-sdk-ui/components/Icon';
@@ -7,6 +7,7 @@ import type { RemoteComputer, RemoteComputersResponse, RemoteRun } from '../../s
 import { api, write, messageOf } from '../api';
 import { Dialog, ErrorNotice, Field, when } from '../components';
 import { t } from '../i18n';
+import { useUnsavedChanges } from '../useUnsavedChanges';
 import { RemoteRunDialog } from './RemoteRunDialog';
 import { RemoteRunDetail, remoteRunLabel } from './RemoteRunDetail';
 import '../design-system/settings-type-scale.css';
@@ -36,6 +37,7 @@ export function RemoteComputers({ data: bootstrap, onRefresh }: { data?: Bootstr
   const [runsLoading, setRunsLoading] = useState(false);
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
+  useUnsavedChanges({ unsaved: false, busy: !!busy });
   const selected = data?.computers.find(computer => computer.id === selectedId);
   const modelVersions = JSON.stringify(bootstrap?.modelConnections?.map(connection => [connection.id, connection.updatedAt]));
   const refresh = useCallback(async () => { const result = await api<RemoteComputersResponse>('/computers'); setData(result); return result; }, []);
@@ -86,9 +88,12 @@ export function RemoteComputers({ data: bootstrap, onRefresh }: { data?: Bootstr
 function ComputerForm({ computer, onClose, onSaved }: { computer?: RemoteComputer; onClose: () => void; onSaved: (value: RemoteComputer) => Promise<void> }) {
   const [name, setName] = useState(computer?.name || ''), [host, setHost] = useState(computer?.host || ''), [user, setUser] = useState(computer?.user || ''), [port, setPort] = useState(String(computer?.port || 22)), [workspace, setWorkspace] = useState(computer?.workspaceRoot || '');
   const [busy, setBusy] = useState(false), [error, setError] = useState('');
+  const draft = JSON.stringify([name, host, user, port, workspace]);
+  const baseline = useRef(draft);
+  useUnsavedChanges(() => ({ unsaved: draft !== baseline.current, busy }));
   async function save() {
     if (busy) return; setBusy(true); setError('');
-    try { const result = await write<{ computer: RemoteComputer }>(computer ? `/computers/${computer.id}` : '/computers', { name: name.trim(), host: host.trim(), ...(user.trim() ? { user: user.trim() } : {}), port: Number(port), workspaceRoot: workspace.trim(), ...(computer ? { expectedRevision: computer.revision } : {}) }, computer ? 'PUT' : 'POST'); await onSaved(result.computer); }
+    try { const result = await write<{ computer: RemoteComputer }>(computer ? `/computers/${computer.id}` : '/computers', { name: name.trim(), host: host.trim(), ...(user.trim() ? { user: user.trim() } : {}), port: Number(port), workspaceRoot: workspace.trim(), ...(computer ? { expectedRevision: computer.revision } : {}) }, computer ? 'PUT' : 'POST'); baseline.current = draft; await onSaved(result.computer); }
     catch (err) { setError(messageOf(err)); } finally { setBusy(false); }
   }
   return <Dialog title={computer ? t('编辑电脑', 'Edit computer') : t('添加电脑', 'Add computer')} className="remote-dialog settings-type-scale" onClose={() => { if (!busy) onClose(); }}><form className="remote-form" onSubmit={event => { event.preventDefault(); void save(); }}><Field label={t('电脑名称', 'Computer name')}><Input value={name} onChange={event => setName(event.target.value)} maxLength={100} placeholder={t('例如：家里的 Mac', 'For example: Home Mac')} disabled={busy} required /></Field><Field label={t('连接地址', 'Host')} hint={t('使用已配置的 SSH 主机名或别名。', 'Use a host or alias from your existing SSH setup.')}><Input value={host} onChange={event => setHost(event.target.value)} maxLength={253} placeholder="my-computer.local" disabled={busy} autoCapitalize="none" autoCorrect="off" spellCheck={false} required /></Field><div className="remote-form-columns"><Field label={t('用户名', 'Username')} hint={t('留空时使用 SSH 配置。', 'Leave blank to use SSH settings.')}><Input value={user} onChange={event => setUser(event.target.value)} maxLength={64} disabled={busy} autoCapitalize="none" autoCorrect="off" spellCheck={false} /></Field><Field label={t('端口', 'Port')}><Input type="number" min={1} max={65535} value={port} onChange={event => setPort(event.target.value)} disabled={busy} required /></Field></div><Field label={t('远程工作目录', 'Remote workspace')} hint={t('填写远程电脑上已存在的项目目录完整路径。', 'Enter the full path of an existing project folder on that computer.')}><Input value={workspace} onChange={event => setWorkspace(event.target.value)} placeholder="/Users/you/projects/my-project" disabled={busy} autoCapitalize="none" autoCorrect="off" spellCheck={false} required /></Field><ErrorNotice error={error} /><div className="remote-form-actions"><Button color="secondary" variant="ghost" disabled={busy} onClick={onClose}>{t('取消', 'Cancel')}</Button><Button type="submit" color="primary" loading={busy} disabled={busy || !name.trim() || !host.trim() || !workspace.trim() || !Number.isInteger(Number(port)) || Number(port) < 1 || Number(port) > 65535}>{t('保存电脑', 'Save computer')}</Button></div></form></Dialog>;

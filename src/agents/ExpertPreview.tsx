@@ -1,3 +1,4 @@
+import { useUnsavedChanges } from '../useUnsavedChanges';
 import { useEffect, useState } from 'react';
 import type { AgentProfile } from '../../shared/contracts';
 import { Button } from '@openai/apps-sdk-ui/components/Button';
@@ -19,6 +20,8 @@ export function ExpertPreview({item,avatarStyle,onClose,onCreated}:{item:ExpertR
   const [name,setName]=useState(expertText(template.name,getLocale()));
   const [focusId,setFocusId]=useState(item.focusId),[answer,setAnswer]=useState('');
   const [busy,setBusy]=useState(false),[error,setError]=useState(''),[created,setCreated]=useState<AgentProfile>();
+  const [baseline]=useState({name,focusId,answer});
+  useUnsavedChanges({unsaved:!created&&(name!==baseline.name||focusId!==baseline.focusId||answer!==baseline.answer),busy});
   const [reasonsOpen,setReasonsOpen]=useState(()=>window.matchMedia('(min-width: 761px)').matches);
   useEffect(()=>{const media=window.matchMedia('(min-width: 761px)');const update=()=>setReasonsOpen(media.matches);media.addEventListener('change',update);return()=>media.removeEventListener('change',update);},[]);
   const focus=template.focuses.find(option=>option.id===focusId)||template.focuses[0];

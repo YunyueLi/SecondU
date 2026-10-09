@@ -1,3 +1,4 @@
+import { useUnsavedChanges } from '../useUnsavedChanges';
 import { useState } from 'react';
 import type { AgentRoom, Bootstrap } from '../../shared/contracts';
 import { Button } from '@openai/apps-sdk-ui/components/Button';
@@ -22,6 +23,9 @@ export function RoomEditor({ data, room, initialAgentId, initialKind, onClose, o
   const [savedId,setSavedId]=useState(room?.id);
   const [busy,setBusy]=useState(false);
   const [error,setError]=useState('');
+  const draftSnapshot=JSON.stringify({kind,title,teamMode,leadId,ids,projectId});
+  const [savedSnapshot,setSavedSnapshot]=useState(draftSnapshot);
+  useUnsavedChanges({unsaved:draftSnapshot!==savedSnapshot,busy});
   const projectLocked=!!room&&data.tasks.find(task=>task.id===room.taskIds.at(-1))?.status==='interrupted';
   const valid=kind==='direct'?ids.length===1:ids.length>=2&&ids.length<=12&&(!teamMode||ids.includes(leadId));
   const selected=ids.flatMap(id=>data.agents.find(agent=>agent.id===id)||[]);
@@ -33,7 +37,7 @@ export function RoomEditor({ data, room, initialAgentId, initialKind, onClose, o
     setBusy(true);setError('');
     try{
       const result=await write<AgentRoom>(savedId?`/agent-rooms/${savedId}`:'/agent-rooms',{title:title.trim()||undefined,kind,agentIds:ids,mode:data.profile.demo?'demo':room?.mode||'live',projectId:projectId||null,team:kind==='group'&&teamMode?{leadAgentId:leadId}:null},savedId?'PUT':'POST');
-      setSavedId(result.id);await onSaved(result);
+      setSavedId(result.id);setSavedSnapshot(draftSnapshot);await onSaved(result);
     }catch(err){setError(messageOf(err));}finally{setBusy(false);}
   }
   return <Dialog className="ag-room-dialog settings-type-scale" title={room?t('会话设置','Chat settings'):kind==='group'?t('发起群聊','New group'):t('发起会话','New chat')} onClose={()=>{if(!busy)onClose();}}>

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useUnsavedChanges } from './useUnsavedChanges';
 import type { Bootstrap, Project } from '../shared/contracts';
 import { Button, ButtonLink } from '@openai/apps-sdk-ui/components/Button';
 import { Input } from '@openai/apps-sdk-ui/components/Input';
@@ -20,6 +21,8 @@ export function ProjectPicker({data,value,onChange,disabled=false}:{data:Pick<Bo
 export function ProjectEditor({project,onClose,onSaved}:{project?:Project;onClose:()=>void;onSaved:(p:Project)=>Promise<void>}){
   const [savedId,setSavedId]=useState(project?.id);const [name,setName]=useState(project?.name||'');const [kind,setKind]=useState<'local'|'remote'>(project?.kind||'local');const [location,setLocation]=useState(project?.path||project?.url||'');const [description,setDescription]=useState(project?.description||'');const [saving,setSaving]=useState(false);const [choosing,setChoosing]=useState(false);const [manual,setManual]=useState(false);const [noteOpen,setNoteOpen]=useState(!!project?.description);const [error,setError]=useState('');
   const nameInput=useRef<HTMLInputElement>(null);const busy=saving||choosing;
+  const [baseline,setBaseline]=useState({name,kind,location,description});
+  useUnsavedChanges({unsaved:name!==baseline.name||kind!==baseline.kind||location!==baseline.location||description!==baseline.description,busy});
   useEffect(()=>{const frame=requestAnimationFrame(()=>nameInput.current?.focus());return()=>cancelAnimationFrame(frame);},[]);
   async function chooseFolder(){
     if(busy)return;setChoosing(true);setError('');
@@ -29,7 +32,7 @@ export function ProjectEditor({project,onClose,onSaved}:{project?:Project;onClos
     finally{setChoosing(false);}
   }
   function changeKind(next:'local'|'remote'){if(kind===next)return;setKind(next);setLocation('');setError('');setManual(false);}
-  return <Dialog title={project?t('项目设置','Project settings'):t('创建项目','Create project')} className="project-editor" onClose={()=>{if(!busy)onClose();}}><form onSubmit={async e=>{e.preventDefault();if(busy)return;setSaving(true);setError('');try{const saved=await write<Project>(savedId?`/projects/${savedId}`:'/projects',{name:name.trim(),kind,...(kind==='local'?{path:location.trim()}:{url:location.trim()}),description},savedId?'PUT':'POST');setSavedId(saved.id);await onSaved(saved);}catch(err){setError(messageOf(err));}finally{setSaving(false);}}}><fieldset disabled={busy} className="project-editor-fields">
+  return <Dialog title={project?t('项目设置','Project settings'):t('创建项目','Create project')} className="project-editor" onClose={()=>{if(!busy)onClose();}}><form onSubmit={async e=>{e.preventDefault();if(busy)return;setSaving(true);setError('');try{const saved=await write<Project>(savedId?`/projects/${savedId}`:'/projects',{name:name.trim(),kind,...(kind==='local'?{path:location.trim()}:{url:location.trim()}),description},savedId?'PUT':'POST');setSavedId(saved.id);setBaseline({name,kind,location,description});await onSaved(saved);}catch(err){setError(messageOf(err));}finally{setSaving(false);}}}><fieldset disabled={busy} className="project-editor-fields">
     <div className={!project?'spot-field-heading':undefined}><Field label={t('项目名称','Project name')}><Input ref={nameInput} startAdornment={<Folder/>} size="xl" value={name} onChange={e=>setName(e.target.value)} maxLength={100} placeholder={t('给这段工作起个名字','Name this work')}/></Field>{!project&&<SpotIllustration scene="archive"/>}</div>
     <section className="project-source-section" aria-label={t('源文件夹','Source folder')}><h3>{t('源文件夹','Source folder')}</h3><div className={`project-source-card ${location?'has-location':''}`}>
       {!project?<Menu><Menu.Trigger><Button type="button" className="project-source-kind" color="secondary" variant="ghost" disabled={busy}>{kind==='local'?t('在此电脑上添加文件夹','Add a folder on this computer'):t('保存远程项目链接','Save a remote project link')}{kind==='remote'&&<span className="project-dev-label">Dev</span>}<ChevronDown/></Button></Menu.Trigger><Menu.Content align="center" minWidth={220}><Menu.Item onSelect={()=>changeKind('local')}><Folder/>{t('此电脑','This computer')}</Menu.Item><Menu.Item onSelect={()=>changeKind('remote')}><span>{t('远程项目','Remote project')} <span className="project-dev-label">Dev</span></span></Menu.Item></Menu.Content></Menu>:<span className="project-source-label">{kind==='local'?t('此电脑','This computer'):t('远程项目链接','Remote project link')}</span>}

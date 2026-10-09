@@ -9,6 +9,7 @@ import {Store} from '../server/store.mjs';
 import {ConnectorService,saveConnector,publicConnector} from '../server/connectors.mjs';
 import {ConnectorOAuthService,discoverOAuth,oauthSecret,oauthTarget} from '../server/connector-oauth.mjs';
 import {createApp} from '../server/index.mjs';
+import {UpdateLifecycle} from '../server/update-lifecycle.mjs';
 
 async function oauthFixture(t,{noPrm=false,oidc=false,noDcr=false,pkce=true,handler}={}){
   let base,issued=0;const requests=[],clients=[],refreshTokens=new Set();
@@ -56,6 +57,27 @@ async function authorize(service,connectorId,start){
   callback.searchParams.set('state',auth.searchParams.get('state'));callback.searchParams.set('code','fixture-authorization-code');
   const response=await fetch(callback);return {start,auth,callback,response,text:await response.text()};
 }
+
+test('quit readiness drains an expired OAuth callback that is still exchanging its code',async t=>{
+  const lifecycle=new UpdateLifecycle();t.after(()=>lifecycle.dispose());
+  const entered=Promise.withResolvers(),release=Promise.withResolvers();
+  const remote=await oauthFixture(t,{handler:async({url,json})=>{
+    if(url.pathname!=='/token')return false;
+    entered.resolve();await release.promise;json(200,{access_token:'synthetic-expired-token',token_type:'Bearer',expires_in:3600});return true;
+  }});
+  const {store,service}=storeFixture(t,{oauth:{requestGate:(request,work)=>lifecycle.runRequest(request,work)}});
+  lifecycle.register({store,connectors:service});
+  const connector=saveConnector(store,definition(remote)),start=await service.oauth.start(connector.id);
+  const callback=authorize(service,connector.id,start);await entered.promise;
+  const attempt=service.oauth.attempts.get(start.attemptId);
+  service.oauth.finish(attempt,'expired','Synthetic expiration while token response is pending.');
+  const replies=[];lifecycle.prepare('oauth-exit',reply=>replies.push(reply));
+  assert.equal(lifecycle.phase,'preparing');assert.deepEqual(replies,[]);
+  release.resolve();assert.equal((await callback).response.status,400);
+  assert.equal(replies[0].ready,true);assert.equal(replies[0].pendingCount,0);
+  assert.equal(oauthSecret(store,store.require('connectors',connector.id),'access'),undefined);
+  await service.close();
+});
 
 test('DCR + PKCE callback persists isolated credentials, discovers actual tools and rotates refresh tokens',async t=>{
   const remote=await oauthFixture(t),{store,service,directory}=storeFixture(t),c=saveConnector(store,definition(remote));

@@ -23,8 +23,8 @@ function draftValue(body) {
 }
 
 export class DelegationService {
-  constructor(store,{executionPolicy,resolveKey=settings=>store.getKey(settings)}={}) {
-    this.store=store;this.policy=executionPolicy;this.resolveKey=resolveKey;this.active=new Map();this.closed=false;this.serviceError='';
+  constructor(store,{executionPolicy,resolveKey=settings=>store.getKey(settings),requestGate=(_req,work)=>work()}={}) {
+    this.store=store;this.policy=executionPolicy;this.resolveKey=resolveKey;this.active=new Map();this.closed=false;this.serviceError='';this.requestGate=requestGate;
     for(const call of store.list('delegationCalls'))if(['TASK_STATE_WORKING','TASK_STATE_SUBMITTED'].includes(call.task.status.state))this.finish(call,'TASK_STATE_FAILED','应用上次运行已中断；本次调用不会自动重试。');
     if(this.policy!=='showcase'&&store.list('delegations').some(item=>item.status==='published'))void this.start().catch(()=>{});
   }
@@ -33,7 +33,7 @@ export class DelegationService {
     if(this.server?.listening)return;
     if(this.starting)return this.starting;
     const port=this.store.get('meta','delegationPort')?.value??0;
-    this.server=http.createServer((req,res)=>void this.publicRequest(req,res).catch(error=>reply(res,error.status??500,{error:error.status?error.message:'能力服务遇到错误。'})));
+    this.server=http.createServer((req,res)=>void this.requestGate(req,()=>this.publicRequest(req,res)).catch(error=>reply(res,error.status??500,{error:error.status?error.message:'能力服务遇到错误。',...(error.code?{code:error.code}:{})})));
     this.server.requestTimeout=65000;this.server.headersTimeout=10000;
     this.starting=new Promise((resolve,reject)=>{
       const onError=error=>{this.serviceError=error.code==='EADDRINUSE'?'能力服务端口已被占用，请关闭占用程序后重试。':'能力服务未能启动。';reject(new HttpError(503,this.serviceError));};

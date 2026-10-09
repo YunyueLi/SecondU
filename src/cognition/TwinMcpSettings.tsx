@@ -1,3 +1,4 @@
+import { useUnsavedChanges } from '../useUnsavedChanges';
 import { useEffect, useState } from 'react';
 import { Button } from '@openai/apps-sdk-ui/components/Button';
 import { Input } from '@openai/apps-sdk-ui/components/Input';
@@ -19,6 +20,7 @@ export function TwinMcpSettings({active,showcase}:{active:boolean;showcase:boole
   const [includeName,setIncludeName]=useState(false),[includeEvidence,setIncludeEvidence]=useState(false),[ack,setAck]=useState<Record<string,boolean>>({});
   const [busy,setBusy]=useState(false),[error,setError]=useState(''),[copied,setCopied]=useState('');
   useEffect(()=>{let current=true;if(active&&!showcase)api<TwinMcpGrant[]>('/digital-twin/mcp-grants').then(value=>{if(current)setGrants(value);}).catch(error=>{if(current)setError(messageOf(error));});return()=>{current=false;};},[active,showcase]);
+  useUnsavedChanges({unsaved:editing&&(!!clientName||selected.length>0||includeName||includeEvidence),busy});
   async function begin(){setBusy(true);setError('');try{setPack(await api<DigitalTwinPackage>('/digital-twin/export'));setSelected([]);setClientName('');setIncludeName(false);setIncludeEvidence(false);setEditing(true);}catch(error){setError(messageOf(error));}finally{setBusy(false);}}
   async function save(){if(!pack)return;setBusy(true);setError('');try{const scopes=[...new Set(pack.entries.filter(entry=>selected.includes(entry.id)).map(entry=>entry.layer))];const grant=await write<TwinMcpGrant>('/digital-twin/mcp-grants',{clientName,baseRevision:pack.revision,scopes,entryIds:selected,includeName:includeName&&scopes.includes('facts'),includeEvidence});setGrants(previous=>[...previous,grant]);setEditing(false);setPack(undefined);}catch(error){setError(messageOf(error));}finally{setBusy(false);}}
   async function toggle(grant:TwinMcpGrant){setBusy(true);setError('');try{const saved=await write<TwinMcpGrant>(`/digital-twin/mcp-grants/${grant.id}`,{revision:grant.revision,enabled:!grant.enabled,acknowledgeExternal:ack[grant.id]===true},'PUT');setGrants(previous=>previous.map(row=>row.id===saved.id?saved:row));setAck(previous=>({...previous,[grant.id]:false}));}catch(error){setError(messageOf(error));}finally{setBusy(false);}}

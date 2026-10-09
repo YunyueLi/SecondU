@@ -1,9 +1,10 @@
-export {};
+import type { DesktopUpdatesBridge } from './desktop-updates';
 
 declare global {
   interface Window {
     hitherDesktop?: {
       platform?:string;
+      updates?: DesktopUpdatesBridge;
       windowState?:{
         get:()=>Promise<{platform:string;fullscreen:boolean}>;
         onChange:(callback:(state:{platform:string;fullscreen:boolean})=>void)=>()=>void;

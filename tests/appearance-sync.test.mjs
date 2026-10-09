@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { appearanceAfterPatch, reconcileAppearanceLoad } from '../src/appearanceState.ts';
+import { appearanceAfterPatch, createAppearancePendingChanges, reconcileAppearanceLoad } from '../src/appearanceState.ts';
 import { defaultAppearance } from '../server/local-appearance.mjs';
 
 const values=new Map();
@@ -9,6 +9,25 @@ globalThis.document={documentElement:{lang:''}};
 globalThis.window=new EventTarget();
 const {getLocale,setLocale,subscribeLocale}=await import('../src/i18n.ts');
 function otherWindowLocale(value){values.set('hither.locale',value);const event=new Event('storage');Object.assign(event,{key:'hither.locale',newValue:value});window.dispatchEvent(event);}
+
+test('failed appearance writes remain dirty and are included in the next edit retry',()=>{
+  const pending=createAppearancePendingChanges();
+  assert.equal(pending.dirty,false); // Reading, including a failed initial read, stages no edits.
+  pending.stage({theme:'dark'});const failed=pending.snapshot('zh-CN');
+  assert.deepEqual(failed,{theme:'dark'});assert.equal(pending.dirty,true);
+  pending.stage({fontSize:16});const retry=pending.snapshot('zh-CN');
+  assert.deepEqual(retry,{theme:'dark',fontSize:16});
+  pending.acknowledge(retry);assert.equal(pending.dirty,false);
+});
+
+test('an acknowledged appearance write cannot clear newer edits or restore a stale shared locale',()=>{
+  const pending=createAppearancePendingChanges();
+  pending.stage({theme:'dark'});const first=pending.snapshot('zh-CN');
+  pending.stage({theme:'light'});pending.acknowledge(first);
+  assert.equal(pending.dirty,true);assert.deepEqual(pending.snapshot('zh-CN'),{theme:'light'});
+  pending.stage({language:'zh-CN'});const next=pending.snapshot('en');
+  assert.deepEqual(next,{theme:'light'});pending.acknowledge(next);assert.equal(pending.dirty,false);
+});
 
 test('another window language change updates the current appearance before a theme edit',()=>{
   setLocale('zh-CN');let current={...defaultAppearance};

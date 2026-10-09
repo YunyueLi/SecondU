@@ -1,3 +1,4 @@
+import { useUnsavedChanges } from '../useUnsavedChanges';
 import { ProjectPicker } from '../ProjectWorkspace';
 import { t } from '../i18n';
 import { useEffect, useRef, useState } from 'react';
@@ -27,11 +28,14 @@ export function AgentEditor({ agent, data, onClose, onSaved }: { agent?:AgentPro
   const [section,setSection]=useState<'identity'|'instructions'|'model'>('identity');const [avatarOpen,setAvatarOpen]=useState(false);
   const [name,setName]=useState(agent?.name||'');const [role,setRole]=useState(agent?.role||'');const [instructions,setInstructions]=useState(agent?.instructions||'');const [busy,setBusy]=useState(false);const [error,setError]=useState('');
   const [savedId,setSavedId]=useState(agent?.id);const [connectionId,setConnectionId]=useState(agent?.connectionId||'default');const [avatarStyle,setAvatarStyle]=useState<AvatarStyle>(validAvatarStyle(agent?.avatarStyle||data.defaultAgentAvatarStyle));const [avatarStyleChanged,setAvatarStyleChanged]=useState(false);const [avatarUpload,setAvatarUpload]=useState<string>();const [clearAvatar,setClearAvatar]=useState(false);
+  const draftSnapshot=JSON.stringify({name,role,instructions,connectionId,avatarStyle,avatarUpload,clearAvatar});
+  const [savedSnapshot,setSavedSnapshot]=useState(draftSnapshot);
+  useUnsavedChanges({unsaved:draftSnapshot!==savedSnapshot,busy});
   const defaultModel=data.modelConnections?.find(connection=>connection.id===data.defaultConnectionId);
 
   return <Dialog className="ag-editor-dialog" title={agent?t("编辑助理", "Edit agent"):t("创建助理", "Create agent")} onClose={onClose}><form className="ag-form" onSubmit={async event=>{event.preventDefault();if(busy)return;setBusy(true);setError('');let profileSaved=false;try{
     let saved=await write<AgentProfile>(savedId?`/agents/${savedId}`:'/agents',{name:name.trim(),role:role.trim(),instructions:instructions.trim()||role.trim(),connectionId:connectionId==='default'?null:connectionId,...(agent||avatarStyleChanged?{avatarStyle}:{}),clearAvatar},savedId?'PUT':'POST');setSavedId(saved.id);profileSaved=true;
-    if(avatarUpload)saved=await write<AgentProfile>(`/agents/${saved.id}/avatar`,{dataUrl:avatarUpload});await onSaved(saved);
+    if(avatarUpload)saved=await write<AgentProfile>(`/agents/${saved.id}/avatar`,{dataUrl:avatarUpload});setSavedSnapshot(draftSnapshot);await onSaved(saved);
   }catch(err){setError(`${profileSaved&&avatarUpload?t("角色资料已保存。头像上传或刷新未完成，重试保存即可。 ", "The agent profile was saved. The avatar upload or refresh did not finish. Save again to retry. "):''}${messageOf(err)}`);}finally{setBusy(false);}}}>
     <nav className="ag-editor-tabs" aria-label={t('编辑内容','Agent settings')}>
       {([{id:'identity',label:t('基本信息','Identity')},{id:'instructions',label:t('工作方式','Instructions')},{id:'model',label:t('模型','Model')}] as const).map(item=><button type="button" key={item.id} aria-pressed={section===item.id} onClick={()=>setSection(item.id)}>{item.label}</button>)}
@@ -59,6 +63,7 @@ export function AgentCardDialog({ agent, data, onClose, onImported }: {agent?:Ag
 function AgentImportDialog({ agent, onClose, onImported }: {agent?:AgentProfile;onClose:()=>void;onImported:(agent:AgentProfile)=>Promise<void>}) {
   const [qr,setQR]=useState('');const [pasted,setPasted]=useState('');const [preview,setPreview]=useState<AgentImportPreview>();const [busy,setBusy]=useState(false);const [error,setError]=useState('');
   const [sourceName,setSourceName]=useState('');const [sourceRole,setSourceRole]=useState('');const [sourceInstructions,setSourceInstructions]=useState('');const [created,setCreated]=useState<AgentProfile>();
+  useUnsavedChanges({unsaved:!agent&&!created&&!!(pasted.trim()||preview||sourceName.trim()||sourceRole.trim()||sourceInstructions.trim()),busy});
   const [pasteOpen,setPasteOpen]=useState(false);const [dragging,setDragging]=useState(false);const [filename,setFilename]=useState('');const readSequence=useRef(0);const fileInput=useRef<HTMLInputElement>(null);
   useEffect(()=>{let active=true;if(agent)QRCode.toDataURL(encodeCard(publicCard(agent)),{width:320,margin:2}).then(value=>{if(active)setQR(value);}).catch(err=>{if(active)setError(messageOf(err));});return()=>{active=false;readSequence.current++;};},[agent]);
   function acceptPreview(value:AgentImportPreview){setPreview(value);setCreated(undefined);setSourceName('');setSourceRole('');setSourceInstructions('');}

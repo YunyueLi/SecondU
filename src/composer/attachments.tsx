@@ -5,6 +5,7 @@ import {CloseBold,Paperclip,Reload,Download} from '@openai/apps-sdk-ui/component
 import {api,apiUrl} from '../api';
 import {Dialog} from '../components';
 import {t} from '../i18n';
+import { useUnsavedChanges } from '../useUnsavedChanges';
 import {createAttachmentDrafts,previewableImage,type AttachmentRef,type AttachmentUploader,type DraftAttachment} from './attachmentState';
 import './attachments.css';
 export type {AttachmentRef,DraftAttachment,AttachmentUploader} from './attachmentState';
@@ -35,6 +36,10 @@ export function useAttachments({onUpload=uploadAttachment,maxFiles,maxBytes,cont
   let store=stores.get(contextKey);
   if(!store){store=createAttachmentDrafts({upload:(file,signal)=>uploader.current(file,signal),maxFiles,maxBytes});stores.set(contextKey,store);}
   const snapshot=useSyncExternalStore(store.subscribe,store.getSnapshot,store.getSnapshot);
+  useUnsavedChanges(() => {
+    const items = [...stores.values()].flatMap(draft => draft.getSnapshot().items);
+    return { unsaved: items.length > 0, busy: items.some(item => item.status === 'uploading') };
+  });
   const inputRef=useRef<HTMLInputElement>(null);
   useEffect(()=>()=>{for(const draft of stores.values())draft.clear();},[stores]);
   const readyAttachments=snapshot.items.flatMap(item=>item.status==='ready'&&item.attachment?[item.attachment]:[]);

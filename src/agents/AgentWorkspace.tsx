@@ -3,6 +3,7 @@ import {ExampleExecutionNotice} from '../ExampleExecutionNotice';
 import {ConnectorPicker} from '../connectors/Connectors';
 import {ComposerTools,DigitalTwinMode} from '../composer/ComposerTools';
 import {ComposerSurface} from '../composer/ComposerSurface';
+import { useUnsavedChanges } from '../useUnsavedChanges';
 import {ApprovalPicker,ContextUsage} from '../composer/ExecutionControls';
 import {useAttachments,AttachmentDrafts,MessageAttachments} from '../composer/attachments';
 import {pasteComposerLinks} from '../composer/composerInput';
@@ -99,6 +100,7 @@ export function AgentWorkspace({navigation,data:originalData,onRefresh,onTask,in
   const {digitalTwinEnabled:contextEnabled,locked:runtimeLocked}=roomRuntimeControls(room,task,busy);
   const contextLocked=runtimeLocked;
   const draft=room?(drafts[room.id]??readDraft(room.id)):'';
+  useUnsavedChanges({ unsaved: !!draft.trim() || Object.values(drafts).some(value => !!value.trim()), busy });
   const messageTarget=room?(messageTargets[room.id]??readMessageTarget(room.id)):{recipientIds:[],mentions:[]};
   const replyMessage=room?.messages.find(message=>message.id===messageTarget.replyToMessageId);
   const targetingLocked=busy||!!task&&(pending||task.status==='interrupted');
@@ -159,7 +161,14 @@ export function AgentWorkspace({navigation,data:originalData,onRefresh,onTask,in
     else {const result=await write<AgentRoomTaskResult>(`/agent-rooms/${target.id}/${asTask?'tasks':'messages'}`,asTask?{prompt:content,contextFactIds:selectedFacts,run:false,...targetFields}:{content,contextFactIds:selectedFacts,...targetFields});if(asTask)openTask(result.task.id);}
     submittedAttachments.forEach(attachments.remove);
     if((!canContinue||asTask)&&(draftsRef.current[target.id]??readDraft(target.id)).trim()===content)setMessageTargets(previous=>{const current=previous[target.id]??readMessageTarget(target.id);if(JSON.stringify(current)!==JSON.stringify(targetSnapshot))return previous;try{sessionStorage.removeItem(spaceStorageKey(`hither.agent-room.target.${target.id}`));}catch{}return {...previous,[target.id]:{recipientIds:[],mentions:[]}};});
-    setDrafts(previous=>{const current=previous[target.id]??readDraft(target.id);if(current.trim()!==content)return previous;try{sessionStorage.removeItem(draftKey(target.id));}catch{}return {...previous,[target.id]:''};});await refresh();stickyBottom.current=true;composer.current?.focus();
+    if((draftsRef.current[target.id]??readDraft(target.id)).trim()===content){
+      // Persist the acknowledgement before a route change can unmount the
+      // composer; a sent session draft must not block the next app restart.
+      try{sessionStorage.removeItem(draftKey(target.id));}catch{}
+      draftsRef.current={...draftsRef.current,[target.id]:''};
+      setDrafts(previous=>({...previous,[target.id]:''}));
+    }
+    await refresh();stickyBottom.current=true;composer.current?.focus();
   }catch(err){setActionError({roomId:target.id,message:messageOf(err)});}finally{setBusy(false);}}
   const afterRoom=async(saved:AgentRoom)=>{await refresh();setCreatingRoom(false);setEditingRoom(undefined);selectRoom(saved.id);};
   const afterAgent=async(saved:AgentProfile)=>{await refresh();setEditingAgent(undefined);showIdentity(saved.id);};

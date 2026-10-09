@@ -45,6 +45,7 @@ import { saveAgentAvatar, getAvatar, batchAvatarStyle, defaultAgentAvatarStyle }
 import { ENGINEER_SPACE, LEGACY_ENGINEER_SPACE, US_SPACE, isExampleSpace, PERSONAL_SPACE, localSpaceDirectory } from './demo-space.mjs';
 import { getAppearance, saveAppearance, getArtwork, getArtworkInfo, saveArtwork } from './local-appearance.mjs';
 import { saveAttachment, getAttachment, publicAttachment, ATTACHMENT_LIMIT } from './attachments.mjs';
+import { UpdateLifecycle, installQuitIpc } from './update-lifecycle.mjs';
 
 const here=path.dirname(fileURLToPath(import.meta.url));
 const PROJECT=path.resolve(here,'..');
@@ -60,7 +61,8 @@ async function readJson(req,maxBytes=2*1024*1024){
 }
 function detectCodex(){try{const version=execFileSync(codexCommand(),['--version'],{encoding:'utf8',timeout:5000,stdio:['ignore','pipe','ignore']}).trim();return version.startsWith('codex-cli ')?{codexAvailable:true,codexVersion:version}:{codexAvailable:false};}catch{return {codexAvailable:false};}}
 
-export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJECT,'.hither'),seed=true,seedLocale='zh-CN',runCodex,runImCli,runResourceCli,scheduler=true,computerInfo,chooseDirectory=chooseProjectDirectory,distDir=path.join(PROJECT,'dist'),executionPolicy,modelFetch=fetch,remoteTransport,developmentRoot=PROJECT,officePreviewOptions,imSetupOptions,_allowDemoSpace=true,_parentPort,_protectedDataDirectory}={}) {
+export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJECT,'.hither'),seed=true,seedLocale='zh-CN',runCodex,runImCli,runResourceCli,scheduler=true,computerInfo,chooseDirectory=chooseProjectDirectory,distDir=path.join(PROJECT,'dist'),executionPolicy,modelFetch=fetch,remoteTransport,developmentRoot=PROJECT,officePreviewOptions,imSetupOptions,_allowDemoSpace=true,_parentPort,_protectedDataDirectory,_updateLifecycle}={}) {
+  const updateLifecycle=_updateLifecycle??new UpdateLifecycle();
   const store=new Store(dataDir,{seed,seedLocale,protectedDataDirectory:_protectedDataDirectory});
   const policy=resolveExecutionPolicy(executionPolicy,store.meta('profile'));
   if(policy==='showcase') {
@@ -69,15 +71,16 @@ export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJEC
     ensureDecisionExample(store);
   }
   const spaceId=createHash('sha256').update(path.resolve(store.directory)).digest('hex').slice(0,24);
-  const connectors=new ConnectorService(store,{blockedPorts:()=>[58644,58645,server?.address()?.port,_parentPort?.()]});
+  const connectors=new ConnectorService(store,{blockedPorts:()=>[58644,58645,server?.address()?.port,_parentPort?.()],oauth:{requestGate:(req,work)=>updateLifecycle.runRequest(req,work)}});
   const im=new ImCliService(store,{runCli:runImCli});
   const imSetup=new ImSetupService(store,{im,executionPolicy:policy,...imSetupOptions});
   const twinMcpGrants=new TwinMcpGrants(store);
   const resources=new AgentResourcesService(store,{im,runCli:runResourceCli});
-  const runner=new TaskRunner(store,{runCodex,scheduler,connectors,executionPolicy:policy});
-  const delegations=new DelegationService(store,{executionPolicy:policy});
+  const runner=new TaskRunner(store,{runCodex,scheduler,connectors,executionPolicy:policy,canSchedule:()=>updateLifecycle.accepting});
+  const delegations=new DelegationService(store,{executionPolicy:policy,requestGate:(req,work)=>updateLifecycle.runRequest(req,work)});
   const remoteTasks=new RemoteTaskBridge(store);
   const remoteComputers=new RemoteComputerService(store,{executionPolicy:policy,...(remoteTransport?{transport:remoteTransport}:{}),onRunChanged:run=>remoteTasks.sync(run)});
+  updateLifecycle.register({store,runner,delegations,remoteComputers,imSetup,connectors});
   const development=createDevelopmentReader({projectRoot:developmentRoot});
   const previewOffice=createOfficePreviewer(store,officePreviewOptions);
   remoteTasks.connect(remoteComputers);
@@ -89,7 +92,7 @@ export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJEC
     if(childApps.has(space))return childApps.get(space);
     const directory=localSpaceDirectory(store.directory,space,{create});
     if(!directory||(!create&&!existsSync(path.join(directory,'hither.sqlite'))))throw new HttpError(404,'尚未创建此空间，请从设置进入。','space_missing');
-    const app=createApp({dataDir:directory,seed:isExampleSpace(space),seedLocale:space===US_SPACE?'en':'zh-CN',executionPolicy:isExampleSpace(space)?'showcase':'personal',runCodex,runImCli,runResourceCli,scheduler,chooseDirectory,computerInfo:{codexAvailable:computer.codexAvailable,codexVersion:computer.codexVersion},distDir,modelFetch,remoteTransport,developmentRoot,officePreviewOptions,imSetupOptions,_allowDemoSpace:false,_parentPort:()=>server.address()?.port,_protectedDataDirectory:store.protectedDataDirectory});
+    const app=createApp({dataDir:directory,seed:isExampleSpace(space),seedLocale:space===US_SPACE?'en':'zh-CN',executionPolicy:isExampleSpace(space)?'showcase':'personal',runCodex,runImCli,runResourceCli,scheduler,chooseDirectory,computerInfo:{codexAvailable:computer.codexAvailable,codexVersion:computer.codexVersion},distDir,modelFetch,remoteTransport,developmentRoot,officePreviewOptions,imSetupOptions,_allowDemoSpace:false,_parentPort:()=>server.address()?.port,_protectedDataDirectory:store.protectedDataDirectory,_updateLifecycle:updateLifecycle});
     childApps.set(space,app);return app;
   }
   function guard(req) {
@@ -380,14 +383,17 @@ export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJEC
     }
     throw new HttpError(404,'接口不存在','not_found');
   }
-  const handleRequest=(req,res)=>route(req,res).catch(error=>{if(!res.headersSent)respond(res,error.status??500,{error:runner.cleanError(error.status?error.message:'本机服务遇到错误，请检查运行日志。'),code:error.code??'internal_error'});if(!error.status)console.error('[hither]',runner.cleanError(error.stack??error.message));});
+  const requestError=(error,res)=>{if(!res.headersSent)respond(res,error.status??500,{error:error.code==='app_quit_pending'?error.message:runner.cleanError(error.status?error.message:'本机服务遇到错误，请检查运行日志。'),code:error.code??'internal_error'});if(!error.status)console.error('[hither]',runner.cleanError(error.stack??error.message));};
+  const handleRequest=(req,res)=>updateLifecycle.runRequest(req,()=>route(req,res).catch(error=>requestError(error,res))).catch(error=>requestError(error,res));
   server=http.createServer(handleRequest);
   server.requestTimeout=30000;server.headersTimeout=10000;
-  return {server,store,runner,connectors,delegations,remoteComputers,remoteTasks,bootstrap,handleRequest,async close(){for(const app of childApps.values())await app.close();connectors.close();await imSetup.close();remoteComputers.close();await runner.close();await delegations.close();if(server.listening)await new Promise(resolve=>server.close(resolve));store.close();}};
+  let closing;
+  return {server,store,runner,connectors,delegations,remoteComputers,remoteTasks,bootstrap,handleRequest,updateLifecycle,close(){return closing??=(async()=>{for(const app of childApps.values())await app.close();await connectors.close();await imSetup.close();remoteComputers.close();await runner.close();await delegations.close();if(server.listening)await new Promise((resolve,reject)=>server.close(error=>error?reject(error):resolve()));store.close();if(!_updateLifecycle)updateLifecycle.dispose();})();}};
 }
 
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){
   const app=createApp({executionPolicy:'auto'});const port=Number(process.env.PORT??58645);
+  installQuitIpc(app);
   app.server.listen(port,'127.0.0.1',()=>console.log(`Hither ${VERSION} listening on http://127.0.0.1:${port}`));
   app.server.on('error',error=>{console.error(`Hither startup failed: ${error.code??error.message}`);process.exitCode=1;app.close();});
   for(const signal of ['SIGINT','SIGTERM'])process.once(signal,()=>{app.close().then(()=>process.exit(0));});

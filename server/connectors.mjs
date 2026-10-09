@@ -169,7 +169,7 @@ export class ConnectorService {
     this.store = store; this.blockedPorts = blockedPorts; this.network = network;
     this.oauth = new ConnectorOAuthService(store,{...oauth,blockedPorts,network,onAuthorized:id=>this.test(id)});
   }
-  close(){this.oauth.close();}
+  close(){return this.oauth.close();}
   async token(connector){return connector.authMode==='oauth'?this.oauth.accessToken(connector):tokenFor(this.store,connector);}
   list() { return this.store.list('connectors').map(item => publicConnector(this.store, item)); }
   options(signal) { return { ...this.network, blockedPorts: this.blockedPorts().filter(Boolean), signal }; }

@@ -4,6 +4,7 @@ import { createRoot } from 'react-dom/client';
 import { AppsSDKUIProvider } from '@openai/apps-sdk-ui/components/AppsSDKUIProvider';
 import { ErrorBoundary } from './components';
 import { App } from './App';
+import { DesktopQuitGuard } from './UpdateSettings';
 import { ExampleLanguageGate } from './ExampleLanguageGate';
 import './desktop-refinement.css';
 import './composer/conversation-composer.css';
@@ -31,4 +32,4 @@ function InitialWorkspace(){
   if(explicit)return <ExampleLanguageGate><App/></ExampleLanguageGate>;
   return <StartupScreen phase="personal-space" state={error?'error':'loading'} error={error} onRetry={()=>setAttempt(value=>value+1)} desktop={window.hitherDesktop?.platform==='darwin'}/>;
 }
-createRoot(document.getElementById('root')!).render(<React.StrictMode><AppsSDKUIProvider linkComponent="a"><ErrorBoundary><InitialWorkspace /></ErrorBoundary></AppsSDKUIProvider></React.StrictMode>);
+createRoot(document.getElementById('root')!).render(<React.StrictMode><AppsSDKUIProvider linkComponent="a"><DesktopQuitGuard/><ErrorBoundary><InitialWorkspace /></ErrorBoundary></AppsSDKUIProvider></React.StrictMode>);

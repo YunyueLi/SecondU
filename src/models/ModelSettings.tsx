@@ -7,6 +7,7 @@ import { Plus, ApiKey, Check, Edit, Trash, DotsHorizontalMoreMenu } from '@opena
 import { Dialog, ErrorNotice, when } from '../components';
 import { api, write, messageOf } from '../api';
 import { t } from '../i18n';
+import { useUnsavedChanges } from '../useUnsavedChanges';
 import { modelIdIssue } from '../../shared/model-validation.mjs';
 import { ProviderMark, protocolName } from './providers';
 import { ModelOnboarding } from './ModelOnboarding';
@@ -23,6 +24,7 @@ export function ModelSettings({ data, onRefresh }: { data: Bootstrap; onRefresh:
   const [defaultId, setDefaultId] = useState(data.defaultConnectionId || '');
   const [onboarding, setOnboarding] = useState<{ connection?: ModelConnection; key: number } | undefined>(() => data.modelConnections?.some(connection => connection.hasKey) ? undefined : { key: 0 });
   const [busy, setBusy] = useState('');
+  useUnsavedChanges({ unsaved: false, busy: !!busy });
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
   const sequence = useRef(0);

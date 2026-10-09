@@ -17,6 +17,7 @@ The lockfile is the dependency-version record. A source snapshot of installed pr
 | jsQR | Apache-2.0 — [jsQR](https://github.com/cozmo/jsQR) |
 | Luxon / QRCode | MIT — [Luxon](https://github.com/moment/luxon), [node-qrcode](https://github.com/soldair/node-qrcode) |
 | Electron | MIT and bundled Chromium/third-party notices — [Electron](https://github.com/electron/electron); the local packaging script copies the installed Electron application, including its license files. |
+| Sparkle 2.9.6 | MIT with bundled component notices — [official release](https://github.com/sparkle-project/Sparkle/releases/tag/2.9.6), [complete unmodified upstream license](docs/licenses/Sparkle-2.9.6.txt). The macOS app embeds the official framework and its installer helpers; SecondU supplies a small N-API adapter. The pinned archive identity is recorded in `desktop/native/vendor-lock.json`. |
 
 OpenClaw is not bundled in the desktop application. The communications setup can download the pinned `openclaw@2026.9.7` runtime and selected official channel packages only after an explicit install action. OpenClaw and the supported separately distributed `@tencent-connect/openclaw-qqbot@2.0.4` and `@wecom/wecom-openclaw-plugin@2026.9.15` packages use MIT licenses; installed package notices remain with each dependency. The local installer records and verifies the selected package versions and registry integrity values. This does not grant rights to platform trademarks or imply that an account has been connected.
 

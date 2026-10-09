@@ -1,4 +1,5 @@
 import {ExampleExecutionNotice} from './ExampleExecutionNotice';
+import { useUnsavedChanges } from './useUnsavedChanges';
 import {MemoryImportWelcome} from './cognition/MemoryImport';
 import {ConnectorPicker} from './connectors/Connectors';
 import {ComposerTools,DigitalTwinMode,ComposerContextBar} from './composer/ComposerTools';
@@ -73,6 +74,7 @@ export function AssistantWorkspace({ navigation, data, taskId, composition, onRe
   const [automaticContext,setAutomaticContext]=useState(true);
   const [digitalTwinEnabled,setDigitalTwinEnabled]=useState(true);
   const [busy, setBusy] = useState(false);
+  useUnsavedChanges({ unsaved: prompt.trim().length > 0, busy });
   const [error, setError] = useState('');
   const [exampleNotice,setExampleNotice]=useState(false);
   const [artifactDirty,setArtifactDirty]=useState(false);

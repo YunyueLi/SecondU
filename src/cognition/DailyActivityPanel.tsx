@@ -1,3 +1,4 @@
+import { useUnsavedChanges } from '../useUnsavedChanges';
 import { useRef, useState } from 'react';
 import type { ActivityImportPreview, ActivityImportResult, DailyActivity } from '../../shared/contracts';
 import { Button } from '@openai/apps-sdk-ui/components/Button';
@@ -21,6 +22,7 @@ export function DailyActivities({items,filter,refs,onEdit}:{items:DailyActivity[
 const activityExample=()=>({format:'hither.activity.v1',sourceId:'fictional-workday-example',demo:true,activities:[{id:'work-001',title:t('梳理文件预览反馈（示例）','Review file preview feedback (example)'),summary:t('虚构示例：整理两条待验证的问题，没有连接任何外部应用。','Fictional example: organize two questions to validate. No external app is connected.'),start:'2026-09-29T09:00:00+08:00',end:'2026-09-29T09:30:00+08:00',app:'Example editor',reference:'local-export/activity-001'}]});
 export function ActivityImportDialog({onClose,onRefresh}:{onClose:()=>void;onRefresh:()=>Promise<void>}){
  const [content,setContent]=useState(''),[filename,setFilename]=useState('activities.json'),[preview,setPreview]=useState<ActivityImportPreview>(),[result,setResult]=useState<ActivityImportResult>(),[busy,setBusy]=useState(false),[error,setError]=useState('');const fileInput=useRef<HTMLInputElement>(null);
+ useUnsavedChanges({unsaved:!result&&(!!content||filename!=='activities.json'||!!preview),busy});
  async function loadFile(file?:File){if(!file||busy)return;setBusy(true);setError('');try{if(file.size>512*1024)throw Error(t('文件最多 512 KiB，请按日期拆分。','Files can be up to 512 KiB. Split larger files by date.'));const text=new TextDecoder('utf-8',{fatal:true}).decode(await file.arrayBuffer());setContent(text);setFilename(file.name);setPreview(undefined);}catch(err){setError(messageOf(err));}finally{setBusy(false);}}
  async function inspect(){if(busy)return;setBusy(true);setError('');try{setPreview(await write<ActivityImportPreview>('/imports/activity/preview',{filename,content}));}catch(err){setError(messageOf(err));}finally{setBusy(false);}}
  async function commit(){if(!preview||busy)return;setBusy(true);setError('');try{if(!result)setResult(await write<ActivityImportResult>('/imports/activity/commit',{previewId:preview.previewId}));await onRefresh();onClose();}catch(err){setError(messageOf(err));}finally{setBusy(false);}}

@@ -10,6 +10,7 @@ import { Dialog, ErrorNotice, Field } from '../components';
 import { useAttachments, AttachmentDrafts } from '../composer/attachments';
 import { ConnectionSelect } from '../models/ConnectionSelect';
 import { t } from '../i18n';
+import { useUnsavedChanges } from '../useUnsavedChanges';
 import '../design-system/settings-type-scale.css';
 import './remote-computers.css';
 
@@ -28,6 +29,9 @@ export function RemoteRunDialog({ computer, connections, initialPrompt = '', onC
   const [consent, setConsent] = useState(false), [busy, setBusy] = useState(false), [error, setError] = useState('');
   const [paths, setPaths] = useState<Record<string, string>>({});
   const attemptRef = useRef(attempt), busyRef = useRef(false);
+  const draft = JSON.stringify([prompt, connectionId, consent, paths]);
+  const baseline = useRef(draft);
+  useUnsavedChanges(() => ({ unsaved: !!attemptRef.current || draft !== baseline.current, busy: busyRef.current }));
   const attachments = useAttachments({ maxFiles: 6, maxBytes: 8 * 1024 * 1024, contextKey: `remote:${computer.id}` });
   const connection = connections.find(item => item.id === connectionId);
   const totalBytes = attachments.readyAttachments.reduce((total, attachment) => total + attachment.size, 0);
@@ -39,7 +43,7 @@ export function RemoteRunDialog({ computer, connections, initialPrompt = '', onC
   useEffect(() => { setConsent(false); }, [computer.revision, connection?.revision, fileSignature]);
   function resetConsent() { setConsent(false); setError(''); }
   function clearAttempt() { try { sessionStorage.removeItem(pendingKey(computer.id)); } catch { /* The in-memory request remains authoritative for this dialog. */ } attemptRef.current = undefined; setAttempt(undefined); setConsent(false); }
-  function accepted(run: RemoteRun) { clearAttempt(); onStarted(run); }
+  function accepted(run: RemoteRun) { baseline.current = JSON.stringify([prompt, connectionId, false, paths]); attachments.clear(); clearAttempt(); onStarted(run); }
   async function checkSubmission() {
     if (busyRef.current || !attemptRef.current) return; busyRef.current = true; setBusy(true); setError('');
     try { const result = await api<{ runs: RemoteRun[] }>(`/computers/${computer.id}/runs`); const found = result.runs.find(run => run.requestId === attemptRef.current?.body.requestId); if (found) accepted(found); else setError(t('本机还没有收到这次任务的确认。可用同一请求重试；内容保持不变。', 'This submission has not been confirmed locally. You can retry the same request with its unchanged contents.')); }

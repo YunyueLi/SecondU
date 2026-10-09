@@ -2,6 +2,20 @@
 
 User-visible changes are recorded here. Detailed decisions and scoped checks remain in [Development](docs/DEVELOPMENT.md) and [Iteration](docs/ITERATION.md). Published releases are tied to a tag and commit; subsequent changes remain under Unreleased.
 
+## 0.1.5 — Unreleased
+
+### Added
+
+- Add an in-app macOS update entry in settings, the application menu and the sidebar, backed by the official Sparkle 2.9.6 update window and installer. Update archives use Ed25519 verification against the public key embedded in the app; release signing uses a dedicated local Keychain account.
+- Prepare ordinary quits and update restarts through the same checks for unsaved edits and active work. The backend freezes new requests and scheduled tasks, drains accepted requests, checks every local space, and closes only after a separate commit message. Running tasks, approval waits and unconfirmed remote execution prevent the restart without cancelling work.
+- Add a repeatable appcast generator and document the native integration, update interaction, signing sequence and release acceptance requirements.
+
+### Validation and status
+
+- The backend lifecycle tests include slow request bodies, loaded and dormant spaces, pending approvals, OAuth callbacks, cancellation, timeouts and a real forked-process exit. The relevant backend regressions passed; these are scoped source checks, not a released build certification.
+- Appcast generation tests use a mocked signer and no Keychain access. They verify fixed release URLs, archive metadata, escaping and rejection of changed archives. Sparkle's original license is retained byte-for-byte.
+- This remains an unreleased candidate. Current native screens, invalid-signature rejection, a complete two-version installation and relaunch, data preservation, final sealed assets and publication require separate evidence. Earlier versions without the updater need one manual installation of the first updater-enabled release.
+
 ## 0.1.4 — 2026-10-08
 
 ### Changed

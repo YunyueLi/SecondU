@@ -1,4 +1,5 @@
 import { spaceStorageKey } from './space';
+import { useUnsavedChanges } from './useUnsavedChanges';
 import { t, getLocale } from './i18n';
 import { useEffect, useMemo, useRef, useState, type MouseEvent } from 'react';
 import type { Artifact, Bootstrap, Source } from '../shared/contracts';
@@ -28,6 +29,7 @@ export function ArtifactEditor({ artifact, onRefresh, onClose, onBack, compact =
   const [localTab, setLocalTab] = useState<ArtifactViewState['tab']>('preview');
   const [initial] = useState(() => readOnly?{content:artifact.content,baseContent:artifact.content,baseVersion:artifact.version}:savedDraft(artifact));
   const [draft, setDraft] = useState(initial.content);
+  const draftRef = useRef(draft); draftRef.current = draft;
   const [baseContent, setBaseContent] = useState(initial.baseContent);
   const [baseVersion, setBaseVersion] = useState(initial.baseVersion);
   const [localHistoryVersion, setLocalHistoryVersion] = useState(String(artifact.version));
@@ -52,6 +54,7 @@ export function ArtifactEditor({ artifact, onRefresh, onClose, onBack, compact =
   const canDownload = !!downloadUrl;
   const downloadLabel = t(`下载已保存的第 ${selectedVersion} 版`, `Download saved version ${selectedVersion}`);
   const dirty = draft !== baseContent;
+  useUnsavedChanges({ unsaved: dirty && !readOnly, busy: saving });
   useEffect(() => {
     if (!readOnly || !hasDownload || selectedContent === undefined || selectedVersion === undefined) { setExampleDownload(undefined); return; }
     const url = URL.createObjectURL(new Blob([binaryBytes || selectedContent], { type:format.mime }));
@@ -67,7 +70,18 @@ export function ArtifactEditor({ artifact, onRefresh, onClose, onBack, compact =
     saveInFlight.current = true;
     const submittedDraft = draft;
     setSaving(true); setError(''); setSaved(false);
-    try { const result = await write<Artifact>(`/artifacts/${artifact.id}`, { content: submittedDraft, baseVersion }, 'PUT'); setBaseVersion(result.version); setBaseContent(result.content); setDraft(current => current === submittedDraft ? result.content : current); await onRefresh(); setSaved(true); }
+    try {
+      const result = await write<Artifact>(`/artifacts/${artifact.id}`, { content: submittedDraft, baseVersion }, 'PUT');
+      // Clear an acknowledged draft even if navigation unmounts this editor
+      // before its effect runs; newer edits retain their new saved baseline.
+      try {
+        const nextDraft = draftRef.current === submittedDraft ? result.content : draftRef.current;
+        const key = spaceStorageKey(`hither.artifact.${artifact.id}`);
+        if (nextDraft === result.content) sessionStorage.removeItem(key);
+        else sessionStorage.setItem(key, JSON.stringify({ content: nextDraft, baseContent: result.content, baseVersion: result.version }));
+      } catch { /* The mounted editor reports cache failures in its draft effect. */ }
+      setBaseVersion(result.version); setBaseContent(result.content); setDraft(current => current === submittedDraft ? result.content : current); await onRefresh(); setSaved(true);
+    }
     catch (e) { setError(messageOf(e)); }
     finally { saveInFlight.current = false; setSaving(false); }
   }

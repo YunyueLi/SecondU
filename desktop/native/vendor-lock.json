@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "sparkle": {
+    "version": "2.9.6",
+    "url": "https://github.com/sparkle-project/Sparkle/releases/download/2.9.6/Sparkle-2.9.6.tar.xz",
+    "sha256": "52bf9e88cdd972fc0c81501377a880e90d47031bd8ca5462488f843e2609e192",
+    "bytes": 15554568
+  },
+  "nodeHeaders": {
+    "version": "22.13.0",
+    "url": "https://nodejs.org/dist/v22.13.0/node-v22.13.0-headers.tar.gz",
+    "sha256": "e4a0ba46c194eb9390c2f2177f4a6ab4f43f4c4029f6b0b239bf5cdb701c307d"
+  }
+}

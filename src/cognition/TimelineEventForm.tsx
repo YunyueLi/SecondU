@@ -1,3 +1,4 @@
+import { useUnsavedChanges } from '../useUnsavedChanges';
 import { useState, type ChangeEvent } from 'react';
 import type { Bootstrap, LifeEvent } from '../../shared/contracts';
 import { Button } from '@openai/apps-sdk-ui/components/Button';
@@ -22,6 +23,9 @@ export function EventForm({ event, data, initialScope = 'note', onClose, onSaved
   const attachments = useAttachments({ maxFiles: 9, contextKey: event?.id || 'new-timeline-record' });
   const total = existing.length + attachments.items.length;
   const waiting = busy || attachments.busy;
+  const snapshot=JSON.stringify([draft,existing]);
+  const [baseline]=useState(snapshot);
+  useUnsavedChanges({unsaved:!saved&&snapshot!==baseline,busy:waiting});
   const update = <K extends keyof LifeEvent>(key: K, value: LifeEvent[K]) => setDraft(current => ({ ...current, [key]: value }));
   const categories = timelineCategoryOptions();
   if (draft.category && !categories.some(item => item.value === draft.category)) categories.push({ value: draft.category, label: timelineCategoryLabel(draft.category) });
@@ -43,7 +47,7 @@ export function EventForm({ event, data, initialScope = 'note', onClose, onSaved
         if (!saved) {
           if (!draft.date) throw new Error(t('请选择日期；只知道年份或月份也可以。', 'Choose a date. A year or month is enough.'));
           await write(event ? `/events/${event.id}` : '/events', { ...draft, attachmentIds: [...existing, ...attachments.attachmentIds] }, event ? 'PUT' : 'POST');
-          setSaved(true);
+          setSaved(true); setExisting([...existing,...attachments.attachmentIds]); attachments.clear();
         }
         await onSaved(); onClose();
       } catch (reason) { setError(messageOf(reason)); } finally { setBusy(false); }

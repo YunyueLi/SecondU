@@ -124,14 +124,14 @@ export async function discoverOAuth(connector,options={}) {
 }
 
 export class ConnectorOAuthService {
-  constructor(store,{network={},blockedPorts=()=>[58644,58645],onAuthorized,attemptTtlMs=600000}={}){
+  constructor(store,{network={},blockedPorts=()=>[58644,58645],onAuthorized,attemptTtlMs=600000,requestGate=(_req,work)=>work()}={}){
     this.store=store;this.network=network;this.blockedPorts=blockedPorts;this.onAuthorized=onAuthorized;this.attemptTtlMs=attemptTtlMs;
-    this.attempts=new Map();this.starting=new Set();this.refreshing=new Map();this.closed=false;
+    this.attempts=new Map();this.starting=new Set();this.refreshing=new Map();this.closed=false;this.requestGate=requestGate;
   }
   options(){return {...this.network,blockedPorts:this.blockedPorts().filter(Boolean)};}
   connector(id){const c=this.store.require('connectors',id);if(c.kind!=='mcp_http'||c.authMode!=='oauth'||!c.enabled)throw fail('请先启用使用 OAuth 的 MCP 连接。');return c;}
   assertCurrent(c){const current=this.store.get('connectors',c.id);if(this.closed||!current||!current.enabled||current.authMode!=='oauth'||current.revision!==c.revision||current.url!==c.url)throw fail('授权期间连接配置已改变，结果未保存。','connector_oauth_stale',409);return current;}
-  finish(attempt,status,message){attempt.status=status;attempt.message=message;attempt.verifier=undefined;attempt.state=undefined;attempt.client=undefined;clearTimeout(attempt.timer);attempt.server?.close();}
+  finish(attempt,status,message){attempt.status=status;attempt.message=message;attempt.verifier=undefined;attempt.state=undefined;attempt.client=undefined;clearTimeout(attempt.timer);if(attempt.server&&!attempt.closing)attempt.closing=new Promise(resolve=>attempt.server.close(error=>{if(error&&error.code!=='ERR_SERVER_NOT_RUNNING')attempt.closeError=error;resolve();}));}
   invalidate(connectorId){for(const a of this.attempts.values())if(a.connectorId===connectorId&&a.status==='pending')this.finish(a,'error','连接配置已改变，请重新授权。');}
   async start(connectorId){
     if(this.starting.has(connectorId))throw fail('这个连接正在准备授权，请稍候。','connector_oauth_busy',409);
@@ -142,7 +142,7 @@ export class ConnectorOAuthService {
       if(this.attempts.size>=32)throw fail('授权尝试过多，请稍后再试。','connector_oauth_busy',429);
       const config=await discoverOAuth(c,this.options());this.assertCurrent(c);
       attempt={id:random(),connectorId,status:'pending',message:'等待在浏览器完成授权。',createdAt:Date.now(),state:random(),verifier:random(),connector:c,config,consumed:false};
-      attempt.server=http.createServer((req,res)=>{this.callback(attempt,req,res).catch(()=>{if(!res.writableEnded)res.end('Authorization could not be completed.');});});
+      attempt.server=http.createServer((req,res)=>{this.requestGate(req,()=>this.callback(attempt,req,res)).catch(error=>{if(!res.headersSent)res.writeHead(error.status??500);if(!res.writableEnded)res.end('Authorization could not be completed.');});});
       const port=c.oauth?.callbackPort||0;
       if(this.blockedPorts().map(Number).includes(port)&&port)throw fail('回调端口不能使用 SecondU 的应用服务端口。');
       await new Promise((resolve,reject)=>{attempt.server.once('error',()=>reject(fail('授权回调端口被占用，请调整端口或结束已有授权。','connector_oauth_callback_unavailable',409)));attempt.server.listen(port,'127.0.0.1',resolve);});
@@ -256,5 +256,5 @@ export class ConnectorOAuthService {
     if(response.status!==200)throw fail(`服务撤销未确认（HTTP ${response.status}）；本地连接未改动。`,'connector_oauth_revoke_failed');
     this.assertCurrent(c);this.disconnect(connectorId);
   }
-  close(){this.closed=true;for(const a of this.attempts.values())if(a.status==='pending')this.finish(a,'expired','应用已关闭，请重新授权。');}
+  async close(){this.closed=true;for(const a of this.attempts.values()){if(a.status==='pending')this.finish(a,'expired','应用已关闭，请重新授权。');a.server?.closeIdleConnections();}await Promise.all([...this.attempts.values()].map(a=>a.closing));for(const a of this.attempts.values())if(a.closeError)throw a.closeError;}
 }

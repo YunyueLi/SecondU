@@ -1,4 +1,5 @@
 import { displayProfileName } from './profile';
+import { useUnsavedChanges } from './useUnsavedChanges';
 import { UserAvatar } from './UserAvatar';
 import {ConnectorsSettings,ConnectorGlyph} from './connectors/Connectors';
 import { t } from './i18n';
@@ -53,6 +54,7 @@ function PersonalSpace({ data, onRefresh }: { data: Bootstrap; onRefresh: () => 
   const imageRequest = useRef(0);
   useEffect(() => () => { imageRequest.current++; }, []);
   const dirty = name !== data.profile.name || description !== data.profile.description || avatar !== undefined;
+  useUnsavedChanges({ unsaved: dirty, busy: busy || readingImage });
 
   async function chooseAvatar(file?: File) {
     if (!file) return;

@@ -1,3 +1,4 @@
+import { useUnsavedChanges } from '../useUnsavedChanges';
 import {ExampleExecutionNotice} from '../ExampleExecutionNotice';
 import { t } from '../i18n';
 import { lazy, Suspense, useEffect, useState } from 'react';
@@ -36,9 +37,11 @@ export function AgentDirectory({initialTab='mine',data,onOpen,onTrial,onWork,onC
 
 export function AgentWorkDialog({agent,data,onClose,onCreated}:{agent:AgentProfile;data:Bootstrap;onClose:()=>void;onCreated:(result:AgentRoomTaskResult)=>Promise<void>}) {
   const [prompt,setPrompt]=useState('');const [exampleNotice,setExampleNotice]=useState(false);const mode='live';const [busy,setBusy]=useState(false);const [error,setError]=useState('');
+  const [savedPrompt,setSavedPrompt]=useState(prompt);
+  useUnsavedChanges({unsaved:prompt!==savedPrompt,busy});
   return <Dialog title={t(`交给${agent.name}的工作`, `Assign work to ${agent.name}`)} onClose={onClose}>{exampleNotice&&<ExampleExecutionNotice onClose={()=>setExampleNotice(false)}/>}<form className="ag-form" onSubmit={async event=>{event.preventDefault();if(!prompt.trim()||busy)return;if(data.profile.demo){setExampleNotice(true);return;}setBusy(true);setError('');try{
     let room=data.agentRooms.find(room=>room.kind==='direct'&&room.agentIds[0]===agent.id&&room.mode===mode&&!room.activeTaskId);
     if(!room)room=await write<AgentRoom>('/agent-rooms',{kind:'direct',agentIds:[agent.id],mode,title:agent.name});
-    const result=await write<AgentRoomTaskResult>(`/agent-rooms/${room.id}/tasks`,{prompt:prompt.trim(),contextFactIds:selectTaskContext(data.facts,prompt.trim()),run:false});await onCreated(result);
+    const result=await write<AgentRoomTaskResult>(`/agent-rooms/${room.id}/tasks`,{prompt:prompt.trim(),contextFactIds:selectTaskContext(data.facts,prompt.trim()),run:false});setSavedPrompt(prompt);await onCreated(result);
   }catch(err){setError(messageOf(err));}finally{setBusy(false);}}}><div className="ag-share-person"><AgentAvatar agent={agent} size={42}/><div><h3>{agent.name}</h3><p>{agent.role}</p></div></div><Field label={t("希望完成什么", "What should get done?")}><Textarea rows={5} value={prompt} onChange={event=>setPrompt(event.target.value)} placeholder={t("描述目标、需要的成果，以及你在意的要求。", "Describe your goal, the result you need, and any requirements.")} required maxLength={12000}/></Field><ErrorNotice error={error}/><div className="ag-form-actions"><Button color="secondary" variant="ghost" onClick={onClose}>{t("取消", "Cancel")}</Button><Button type="submit" color="primary" loading={busy} disabled={!prompt.trim()}><Document/>{t("创建任务", "Create task")}</Button></div></form></Dialog>;
 }

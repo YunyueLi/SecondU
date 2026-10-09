@@ -1,3 +1,4 @@
+import { useUnsavedChanges } from '../useUnsavedChanges';
 import {useEffect,useRef,useState} from 'react';
 import {Button,ButtonLink} from '@openai/apps-sdk-ui/components/Button';
 import {Checkbox} from '@openai/apps-sdk-ui/components/Checkbox';
@@ -40,6 +41,8 @@ export function MemoryImport({onClose,onRefresh,onPrepareTask,onImported}:Props)
  const [taskFactIds,setTaskFactIds]=useState<string[]>([]);
  const [busy,setBusy]=useState(false);const [error,setError]=useState('');const [copied,setCopied]=useState(false);
  const [reviewAttempt,setReviewAttempt]=useState<{previewId:string;entries:Array<Draft&{id:string}>;confirmed:true}>();
+ const [taskBaseline,setTaskBaseline]=useState(()=>JSON.stringify([taskPrompt,taskFactIds]));
+ useUnsavedChanges({unsaved:result?JSON.stringify([taskPrompt,taskFactIds])!==taskBaseline:!!file||!!content||!!preview,busy});
  const fileInput=useRef<HTMLInputElement>(null);const headingRef=useRef<HTMLHeadingElement>(null);
  const step=result?2:preview?1:0;
  const selectable=preview?.candidates.filter(item=>!item.alreadyImported)??[];
@@ -69,7 +72,8 @@ export function MemoryImport({onClose,onRefresh,onPrepareTask,onImported}:Props)
   setReviewAttempt(attempt);
   try{
    const saved=await write<ReviewedResult>('/imports/memory/review',attempt);
-   setResult(saved);setTaskFactIds(saved.facts.filter(fact=>fact.status==='confirmed').slice(0,32).map(fact=>fact.id));setEditingId(undefined);
+   const confirmedIds=saved.facts.filter(fact=>fact.status==='confirmed').slice(0,32).map(fact=>fact.id);
+   setResult(saved);setTaskFactIds(confirmedIds);setTaskBaseline(JSON.stringify([taskPrompt,confirmedIds]));setEditingId(undefined);
    await onRefresh();onImported?.(saved);
   }catch(err){if(err instanceof APIError&&err.status>=400&&err.status<500)setReviewAttempt(undefined);setError(messageOf(err));}finally{setBusy(false);}
  }

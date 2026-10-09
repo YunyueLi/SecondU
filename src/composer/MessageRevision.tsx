@@ -5,6 +5,7 @@ import { ArrowLeft, Edit } from '@openai/apps-sdk-ui/components/Icon';
 import type { AgentRoom, Task, TaskRevisionResult } from '../../shared/contracts';
 import { APIError, messageOf, write } from '../api';
 import { t } from '../i18n';
+import { useUnsavedChanges } from '../useUnsavedChanges';
 import './message-revision.css';
 
 type RevisionControls = { editor: ReactNode; editAction: ReactNode };
@@ -56,6 +57,7 @@ export function MessageRevision({ task, messageId, content, busy = false, roomBu
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [savedResult, setSavedResult] = useState<TaskRevisionResult>();
+  useUnsavedChanges({ unsaved: editing && !savedResult && draft !== content, busy: saving });
   const attempt = useRef<{ requestId: string; content: string; run: boolean } | undefined>(undefined);
   const inFlight = useRef(false);
   const mounted = useRef(true);

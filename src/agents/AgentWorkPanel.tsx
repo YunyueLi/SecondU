@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useUnsavedChanges } from '../useUnsavedChanges';
 import { Button } from '@openai/apps-sdk-ui/components/Button';
 import { SegmentedControl } from '@openai/apps-sdk-ui/components/SegmentedControl';
 import { ArrowRight } from '@openai/apps-sdk-ui/components/Icon';
@@ -31,6 +32,7 @@ export function AgentWorkPanel({ agent, data, initialView = 'model', resourceKin
   const [resourceDirty, setResourceDirty] = useState(false), [resourceBusy, setResourceBusy] = useState(false);
   const [resourceVisit, setResourceVisit] = useState(initialView === 'resources' ? subject : '');
   const state = { dirty: modelState.dirty || resourceDirty, busy: modelState.busy || resourceBusy };
+  useUnsavedChanges({ unsaved: state.dirty, busy: state.busy });
   const stateRef = useRef(state); stateRef.current = state;
   const content = useRef<HTMLDivElement>(null);
   const tasks = data.tasks.filter(task => self ? !task.agentIds.length : task.agentIds.includes(agent.id)).sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));

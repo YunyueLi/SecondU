@@ -84,8 +84,8 @@ export function buildPrompt(task,facts,agent,previous=[],evidence={trust:'untrus
 }
 
 export class TaskRunner {
-  constructor(store,{runCodex,scheduler=true,intervalMs=15000,connectors=new ConnectorService(store),executionPolicy}={}) {
-    this.store=store;this.executionPolicy=executionPolicy;this.active=new Map();this.live=runCodex;this.closed=false;this.connectors=connectors;
+  constructor(store,{runCodex,scheduler=true,intervalMs=15000,connectors=new ConnectorService(store),executionPolicy,canSchedule=()=>true}={}) {
+    this.store=store;this.executionPolicy=executionPolicy;this.active=new Map();this.live=runCodex;this.closed=false;this.connectors=connectors;this.canSchedule=canSchedule;
     for(const task of store.list('tasks')) if(!task.remoteExecution&&['running','awaiting_approval'].includes(task.status)) {
       interruptTeamRuns(task);
       task.status='interrupted';task.error='上次执行进程已结束，请检查产物和操作结果后继续。';
@@ -314,7 +314,7 @@ export class TaskRunner {
   }
   sourceImported(source){if(this.executionPolicy==='showcase')return;for(const a of this.store.list('automations'))if(a.enabled&&a.trigger==='source_import'&&(this.executionPolicy!=='personal'||a.mode==='live'))this.runAutomation(a.id,{source,scheduled:true});}
   tick(at=new Date()){
-    if(this.closed||this.executionPolicy==='showcase')return;
+    if(this.closed||!this.canSchedule()||this.executionPolicy==='showcase')return;
     for(const a of this.store.list('automations'))if(a.enabled&&(this.executionPolicy!=='personal'||a.mode==='live')&&a.trigger!=='source_import'&&a.nextRunAt&&new Date(a.nextRunAt)<=at){
       // Advance before execution; an offline interval creates one catch-up task, never an unbounded replay.
       this.store.put('automations',{...a,nextRunAt:nextRunAt(a,at)});this.runAutomation(a.id,{scheduled:true});

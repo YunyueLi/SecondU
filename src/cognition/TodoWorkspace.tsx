@@ -1,3 +1,4 @@
+import { useUnsavedChanges } from '../useUnsavedChanges';
 import { useState } from 'react';
 import type { ReactNode, FormEvent } from 'react';
 import type { Bootstrap, Goal, GoalList } from '../../shared/contracts';
@@ -30,6 +31,7 @@ export function TodoWorkspace({data,refs,onRefresh,onCreateTask}:Props) {
   const [listColor,setListColor] = useState<GoalList['color']>('blue');
   const [busy,setBusy] = useState(false);
   const [error,setError] = useState('');
+  useUnsavedChanges({unsaved:!!newTitle||!!listEdit&&(listName!==(listEdit.name||'')||listColor!==(listEdit.color||'blue')),busy});
   const today = todayKey();
   const lists = data.goalLists || [];
   const undone = data.goals.filter(goal=>goal.status!=='done');
@@ -49,7 +51,7 @@ export function TodoWorkspace({data,refs,onRefresh,onCreateTask}:Props) {
   const heading = currentList?.name || currentSmart.label;
   const groupName = (key:string) => view==='scheduled'?dateLabel(key,today):view==='today'?(key==='overdue'?t('已过期','Overdue'):t('今天','Today')):lists.find(list=>list.id===key)?.name||t('提醒事项','Reminders');
   async function perform(action:()=>Promise<unknown>) { if(busy)return;setBusy(true);setError('');try{await action();await onRefresh();}catch(e){setError(messageOf(e));}finally{setBusy(false);} }
-  async function patch(goal:Goal,changes:Record<string,unknown>) { await perform(()=>write(`/goals/${goal.id}`,changes,'PUT')); }
+  async function patch(goal:Goal,changes:Record<string,unknown>,onCommitted?:()=>void) { await perform(async()=>{await write(`/goals/${goal.id}`,changes,'PUT');onCommitted?.();}); }
   async function addItem(e:FormEvent) {e.preventDefault();if(!newTitle.trim())return;await perform(async()=>{const goal=await write<Goal>('/goals',{title:newTitle,description:'',status:'active',listId:currentList?.id||inbox,flagged:view==='flagged',dueDate:view==='today'?today:undefined,sourceIds:[]});setNewTitle('');setSelectedId(goal.id);});}
   function editList(list:Partial<GoalList>) {setListEdit(list);setListName(list.name||'');setListColor(list.color||'blue');setError('');}
   function choose(next:string){setView(next);setSelectedId(undefined);setQuery('');}
@@ -68,12 +70,15 @@ export function TodoWorkspace({data,refs,onRefresh,onCreateTask}:Props) {
       {!items.length&&<p className="todo-empty">{query?t('没有匹配的待办','No matching reminders'):view==='completed'?t('还没有完成的事项','No completed reminders'):t('没有待办事项','No reminders')}</p>}
       {view!=='completed'&&<form className="todo-add" onSubmit={addItem}><Plus/><Input aria-label={t('新待办标题','New reminder title')} placeholder={t('添加提醒事项','Add a reminder')} value={newTitle} disabled={busy} onChange={e=>setNewTitle(e.target.value)}/>{newTitle.trim()&&<Button color="primary" size="sm" type="submit" disabled={busy}>{t('添加','Add')}</Button>}</form>}
     </div>
-    {selected&&<TodoDetail key={`${selected.id}:${selected.updatedAt||''}`} goal={selected} lists={lists} refs={refs} busy={busy} onClose={()=>setSelectedId(undefined)} onSave={changes=>patch(selected,changes)} onCreateTask={onCreateTask}/>}
+    {selected&&<TodoDetail key={`${selected.id}:${selected.updatedAt||''}`} goal={selected} lists={lists} refs={refs} busy={busy} onClose={()=>setSelectedId(undefined)} onSave={(changes,onCommitted)=>patch(selected,changes,onCommitted)} onCreateTask={onCreateTask}/>}
   </section>;
 }
 
-function TodoDetail({goal,lists,refs,busy,onClose,onSave,onCreateTask}:{goal:Goal;lists:GoalList[];refs:Props['refs'];busy:boolean;onClose:()=>void;onSave:(changes:Record<string,unknown>)=>Promise<void>;onCreateTask:Props['onCreateTask']}) {
+function TodoDetail({goal,lists,refs,busy,onClose,onSave,onCreateTask}:{goal:Goal;lists:GoalList[];refs:Props['refs'];busy:boolean;onClose:()=>void;onSave:(changes:Record<string,unknown>,onCommitted?:()=>void)=>Promise<void>;onCreateTask:Props['onCreateTask']}) {
   const [title,setTitle]=useState(goal.title),[description,setDescription]=useState(goal.description),[due,setDue]=useState(goal.dueDate||''),[listId,setListId]=useState(listOf(goal)),[flagged,setFlagged]=useState(!!goal.flagged);
-  const dirty=title!==goal.title||description!==goal.description||due!==(goal.dueDate||'')||listId!==listOf(goal)||flagged!==!!goal.flagged;
-  return <aside className="todo-detail" aria-label={t('待办详情','Reminder details')}><header><h2>{t('详情','Details')}</h2><Button color="secondary" variant="ghost" uniform size="sm" aria-label={t('关闭详情','Close details')} onClick={onClose}><X/></Button></header><form onSubmit={e=>{e.preventDefault();void onSave({title,description,dueDate:due,listId,flagged});}}><Field label={t('标题','Title')}><Textarea aria-label={t('待办标题','Reminder title')} value={title} required rows={2} onChange={e=>setTitle(e.target.value)}/></Field><Field label={t('备注','Notes')}><Textarea aria-label={t('待办备注','Reminder notes')} value={description} rows={4} placeholder={t('添加备注','Add notes')} onChange={e=>setDescription(e.target.value)}/></Field><Field label={t('日期','Date')}><RecordDateInput value={due} onChange={setDue} disabled={busy}/></Field><Field label={t('清单','List')}><Select aria-label={t('待办清单','Reminder list')} value={listId} options={lists.map(list=>({value:list.id,label:list.name}))} onChange={option=>setListId(option.value)}/></Field><Checkbox label={t('旗标','Flagged')} checked={flagged} onCheckedChange={setFlagged}/><Button color="primary" type="submit" disabled={busy||!dirty}>{t('保存更改','Save changes')}</Button></form>{goal.sourceIds.length>0&&<div className="todo-detail-sources"><h3>{t('资料来源','Sources')}</h3>{refs(goal.sourceIds,true)}</div>}<div className="todo-detail-actions"><Button color="secondary" variant="ghost" size="sm" disabled={busy} onClick={()=>void onSave({status:goal.status==='active'?'paused':'active'})}>{goal.status==='done'?t('重新开始','Reopen'):goal.status==='paused'?t('继续','Resume'):t('暂停','Pause')}</Button><Button color="secondary" variant="ghost" size="sm" onClick={()=>onCreateTask(t(`帮我推进这件事：${goal.title}。${goal.description}`,`Help me work on this: ${goal.title}. ${goal.description}`))}>{t('交给 SecondU','Ask SecondU')}<ArrowRight/></Button></div></aside>;
+  const snapshot=JSON.stringify([title,description,due,listId,flagged]);
+  const [baseline,setBaseline]=useState(snapshot);
+  const dirty=snapshot!==baseline;
+  useUnsavedChanges({unsaved:dirty,busy});
+  return <aside className="todo-detail" aria-label={t('待办详情','Reminder details')}><header><h2>{t('详情','Details')}</h2><Button color="secondary" variant="ghost" uniform size="sm" aria-label={t('关闭详情','Close details')} onClick={onClose}><X/></Button></header><form onSubmit={e=>{e.preventDefault();void onSave({title,description,dueDate:due,listId,flagged},()=>setBaseline(snapshot));}}><Field label={t('标题','Title')}><Textarea aria-label={t('待办标题','Reminder title')} value={title} required rows={2} onChange={e=>setTitle(e.target.value)}/></Field><Field label={t('备注','Notes')}><Textarea aria-label={t('待办备注','Reminder notes')} value={description} rows={4} placeholder={t('添加备注','Add notes')} onChange={e=>setDescription(e.target.value)}/></Field><Field label={t('日期','Date')}><RecordDateInput value={due} onChange={setDue} disabled={busy}/></Field><Field label={t('清单','List')}><Select aria-label={t('待办清单','Reminder list')} value={listId} options={lists.map(list=>({value:list.id,label:list.name}))} onChange={option=>setListId(option.value)}/></Field><Checkbox label={t('旗标','Flagged')} checked={flagged} onCheckedChange={setFlagged}/><Button color="primary" type="submit" disabled={busy||!dirty}>{t('保存更改','Save changes')}</Button></form>{goal.sourceIds.length>0&&<div className="todo-detail-sources"><h3>{t('资料来源','Sources')}</h3>{refs(goal.sourceIds,true)}</div>}<div className="todo-detail-actions"><Button color="secondary" variant="ghost" size="sm" disabled={busy} onClick={()=>void onSave({status:goal.status==='active'?'paused':'active'})}>{goal.status==='done'?t('重新开始','Reopen'):goal.status==='paused'?t('继续','Resume'):t('暂停','Pause')}</Button><Button color="secondary" variant="ghost" size="sm" onClick={()=>onCreateTask(t(`帮我推进这件事：${goal.title}。${goal.description}`,`Help me work on this: ${goal.title}. ${goal.description}`))}>{t('交给 SecondU','Ask SecondU')}<ArrowRight/></Button></div></aside>;
 }
