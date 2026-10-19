@@ -2,7 +2,7 @@ import { approvalMode, executionSettings } from './execution-settings.mjs';
 import { normalizeContextRequest } from './personal-context.mjs';
 import { connectorSelection } from './connectors.mjs';
 import { updatePersonPortrait, portraitSourceIds } from './person-portrait.mjs';
-import { messageInput } from './attachments.mjs';
+import { messageInput, storedAttachmentRefs } from './attachments.mjs';
 import { chatTitle } from './chat-title.mjs';
 import { defaultAgentAvatarStyle } from './avatars.mjs';
 import { createProject, projectReference } from './projects.mjs';
@@ -22,7 +22,13 @@ export function createEntity(store, collection, body, existing) {
   const sourceRefs=()=>entity.sourceIds=refs(store,value.sourceIds??[],'sources','sourceIds');
   switch(collection) {
     case 'projects': return createProject(store,body,existing);
-    case 'sources': str('title',300); str('text',200000); entity.text=value.text; entity.kind=choice(value.kind??'note',['note','conversation','document','feedback'],'kind'); entity.demo=existing?.demo??false; entity.createdAt=existing?.createdAt??now(); break;
+    case 'sources': {
+      str('title',300);str('text',200000,false);entity.text=value.text??'';
+      const attachmentIds=storedAttachmentRefs(store,value.attachmentIds);
+      if(!entity.text.trim()&&!attachmentIds.length)throw new HttpError(400,'请添加原文或至少一个原件。','empty_source');
+      if(attachmentIds.length)entity.attachmentIds=attachmentIds;
+      entity.kind=choice(value.kind??'note',['note','conversation','document','feedback'],'kind');entity.demo=existing?.demo??false;entity.createdAt=existing?.createdAt??now();break;
+    }
     case 'facts': {
       str('statement',10000); entity.kind=choice(value.kind??'preference',['preference','value','capability','constraint','identity','decision'],'kind'); entity.status=choice(value.status??'candidate',['confirmed','inferred','candidate','superseded'],'status'); sourceRefs();
       if(Object.hasOwn(body,'preferenceDomain')) {
@@ -46,6 +52,7 @@ export function createEntity(store, collection, body, existing) {
       if(value.dueDate){str('dueDate',10);if(!/^\d{4}-\d{2}-\d{2}$/.test(entity.dueDate)||!validLifeDate(entity.dueDate))throw new HttpError(400,'请选择有效的待办日期','invalid_due_date');}
       entity.listId=text(value.listId||'goal-list-inbox','listId',200);store.require('goalLists',entity.listId);
       entity.flagged=bool(value.flagged??false,'flagged');entity.createdAt=existing?.createdAt??now();entity.updatedAt=now();
+      if(existing?.helpTaskIds)entity.helpTaskIds=[...existing.helpTaskIds];
       if(entity.status==='done')entity.completedAt=existing?.status==='done'&&existing.completedAt?existing.completedAt:entity.updatedAt;
       sourceRefs();break;
     }
@@ -57,6 +64,13 @@ export function createEntity(store, collection, body, existing) {
       entity.messages=value.messages.map(m=>{store.require('people',m.senderId);store.require('sources',m.sourceId);return {id:typeof m.id==='string'?m.id:id('message'),senderId:m.senderId,sourceId:m.sourceId,content:text(m.content,'content',30000),time:m.time&&Number.isFinite(Date.parse(m.time))?m.time:now()};});break;
     case 'automations': {
       str('title',300); str('prompt',30000); entity.enabled=bool(value.enabled??false,'enabled'); entity.trigger=choice(value.trigger,['daily','interval','source_import'],'trigger'); entity.mode=choice(value.mode??'demo',['live','demo'],'mode'); entity.agentIds=refs(store,value.agentIds??[],'agents','agentIds');
+      const projectId=projectReference(store,value.projectId,{runnable:true});if(projectId)entity.projectId=projectId;
+      if(value.connectionId){entity.connectionId=text(value.connectionId,'connectionId',200);store.require('modelConnections',entity.connectionId);}
+      if(value.digitalTwinEnabled!==undefined)entity.digitalTwinEnabled=bool(value.digitalTwinEnabled,'digitalTwinEnabled');
+      if(value.contextRequest!==undefined)entity.contextRequest=normalizeContextRequest(value.contextRequest);
+      if(value.connectorIds!==undefined)entity.connectorIds=connectorSelection(store,value.connectorIds);
+      entity.contextFactIds=refs(store,value.contextFactIds??[],'facts','contextFactIds');
+      if(value.approvalMode!==undefined)entity.approvalMode=approvalMode(value.approvalMode,{nullable:true});
       if(entity.trigger==='daily'){str('time',5);if(!/^([01]\d|2[0-3]):[0-5]\d$/.test(entity.time))throw new HttpError(400,'time 应为本机时间 HH:mm');}
       if(entity.trigger==='interval'){const n=value.intervalMinutes;if(!Number.isFinite(n)||n<1||n>525600)throw new HttpError(400,'间隔应为 1–525600 分钟');entity.intervalMinutes=n;}
       entity.nextRunAt=entity.enabled && entity.trigger!=='source_import' ? nextRunAt(entity) : undefined;
@@ -80,6 +94,16 @@ export function createTask(store, body) {
   const title=body.title!==undefined?text(body.title,'title',300):chatTitle(prompt,prompt?'新对话':store.require('attachments',attachmentIds[0]).name);
   return store.put('tasks',{approvalMode:body.approvalMode===undefined?executionSettings(store).approvalMode:approvalMode(body.approvalMode,{nullable:true}),...(contextRequest?{contextRequest}:{}),...(digitalTwinEnabled===undefined?{}:{digitalTwinEnabled}),...(connectorIds===undefined?{}:{connectorIds}),...(projectId?{projectId}:{}),...(connectionId?{connectionId}:{}),id:id('task'),title,prompt,agentIds:refs(store,body.agentIds??[],'agents','agentIds'),contextFactIds:refs(store,body.contextFactIds??[],'facts','contextFactIds'),mode:choice(body.mode,['live','demo'],'mode'),status:'queued',createdAt:stamp,updatedAt:stamp,messages:[{id:id('message'),role:'user',content:prompt,...(attachmentIds.length?{attachmentIds}:{}),createdAt:stamp}],events:[{id:id('event'),type:'created',label:body.mode==='demo'?'本地流程演示已建立':'任务已建立',createdAt:stamp}],artifactIds:[],approvals:[]});
 }
+/** Start a normal, replyable chat without fabricating a user request. Provenance
+ * distinguishes an application notice from a completed model evaluation. Only
+ * internal callers can attach it; public createTask input does not accept it. */
+export function createProactiveTask(store,{title,content,proactive,generator='application'}) {
+  const task=createTask(store,{title,prompt:content,mode:'live',agentIds:[],contextFactIds:[],connectorIds:[],digitalTwinEnabled:false,approvalMode:'ask'});
+  task.interaction='chat';task.status='completed';task.proactive=proactive;
+  task.messages=[{id:id('message'),role:'assistant',content,createdAt:task.createdAt,origin:{kind:'proactive',generator,suggestionId:proactive.suggestionId,sourceIds:[proactive.sourceId],...(proactive.evaluationTaskId?{evaluationTaskId:proactive.evaluationTaskId}:{})}}];
+  task.events=[{id:id('event'),type:'proactive_notice',label:generator==='model'?'SecondU 已带来一份准备结果':'SecondU 已带来一条资料提示',detail:generator==='model'?'已完成一次受限只读模型评估。这里只包含分析或草稿，没有执行外部动作。':'由应用生成，附有资料来源。用户回复后才会开始模型处理。',createdAt:task.createdAt}];
+  return store.put('tasks',task);
+}
 export function assertDeletable(store,collection,key) {
   const targets=[];
   if(collection==='people'&&store.meta('profile').selfPersonId===key)throw new HttpError(409,'此人物是当前空间的本人，请先修改个人身份关联。','profile_person_in_use');
@@ -87,12 +111,17 @@ export function assertDeletable(store,collection,key) {
   if(collection==='goalLists'&&store.list('goals').some(goal=>(goal.listId||'goal-list-inbox')===key))targets.push('goals');
   if(collection==='sources') for(const c of ['facts','people','relationships','events','goals']) if(store.list(c).some(e=>e.sourceIds?.includes(key)))targets.push(c);
   if(collection==='sources' && store.list('conversations').some(c=>c.messages.some(m=>m.sourceId===key||m.sourceIds?.includes(key))))targets.push('conversations');
+  if(collection==='sources' && store.list('tasks').some(task=>task.proactive?.sourceId===key))targets.push('tasks');
+  if(collection==='sources' && store.list('twinCaptures').some(capture=>capture.sourceId===key||capture.upstreamSourceId===key))targets.push('twinCaptures');
   if(collection==='people') for(const c of ['relationships','events','conversations']) if(store.list(c).some(e=>e.from===key||e.to===key||e.personIds?.includes(key)))targets.push(c);
   if(collection==='facts' && store.list('tasks').some(t=>t.contextFactIds.includes(key)))targets.push('tasks');
+  if(collection==='facts' && store.list('automations').some(automation=>automation.contextFactIds?.includes(key)))targets.push('automations');
   if(collection==='agents') for(const c of ['tasks','automations','agentRooms'])if(store.list(c).some(e=>e.agentIds.includes(key)))targets.push(c);
   if(collection==='tasks' && store.list('tasks').some(task=>task.forkedFrom?.taskId===key||task.revisionTaskIds?.includes(key)))targets.push('taskRevisions');
   if(collection==='tasks' && store.list('remoteRuns').some(run=>run.taskId===key))targets.push('remoteRuns');
   if(collection==='tasks' && store.list('agentRooms').some(room=>room.taskIds.includes(key)))targets.push('agentRooms');
+  if(collection==='tasks' && store.list('goals').some(goal=>goal.helpTaskIds?.includes(key)))targets.push('goals');
+  if(collection==='tasks' && store.list('twinSuggestions').some(suggestion=>suggestion.followUpTaskId===key))targets.push('twinSuggestions');
   if(collection==='attachments' && store.list('events').some(event=>event.attachmentIds?.includes(key)))targets.push('events');
   if(['sources','facts','tasks','artifacts'].includes(collection)&&store.list('taskFeedback').some(record=>collection==='sources'?record.sourceId===key:collection==='facts'?record.factId===key:collection==='tasks'?record.taskId===key:record.original.artifact?.id===key||record.adoption?.artifact?.id===key))targets.push('taskFeedback');
   if(targets.length)throw new HttpError(409,'记录仍被引用，请先修改关联记录','record_in_use');

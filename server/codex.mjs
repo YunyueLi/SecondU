@@ -5,7 +5,7 @@ import { HITHER_BASE_INSTRUCTIONS, HITHER_DEVELOPER_INSTRUCTIONS } from './ident
 import { EventEmitter } from 'node:events';
 import { spawn, execFile } from 'node:child_process';
 import { promisify } from 'node:util';
-import { mkdir, realpath } from 'node:fs/promises';
+import { mkdir, realpath, mkdtemp, readFile, rm } from 'node:fs/promises';
 import { accessSync, constants, statSync } from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
@@ -16,6 +16,25 @@ const execFileAsync = promisify(execFile);
 const MAX_MESSAGE_BYTES = MULTIMODAL_REQUEST_LIMIT;
 const API_KEY_ENV = 'HITHER_PROVIDER_API_KEY';
 const clientInfo = { name: 'hither', title: `${brand.name}`, version: '0.1.0' };
+// Native capabilities disabled only for the bounded material-extraction turn.
+// The installed runtime still exposes request_user_input; the host rejects it.
+export const EXTRACTION_DISABLED_FEATURES = Object.freeze(['multi_agent','multi_agent_v2','shell_tool','unified_exec','view_image','apps','plugins','remote_plugin','memories','browser_use','computer_use','image_generation','code_mode','code_mode_host','sleep_tool','goals','skill_search','hooks','request_permissions_tool','workspace_dependencies','tool_suggest']);
+const extractionProtocols = new Map();
+async function verifyExtractionProtocol({nativeSchema}) {
+  const command=codexCommand();let signature=command;
+  try{const stat=statSync(command);signature+=`:${stat.mtimeMs}:${stat.size}`;}catch{/* PATH commands are checked by schema generation. */}
+  if(!extractionProtocols.has(signature))extractionProtocols.set(signature,(async()=>{
+    const directory=await mkdtemp(path.join(os.tmpdir(),'secondu-codex-schema-'));
+    try{
+      await execFileAsync(command,['app-server','generate-json-schema','--experimental','--out',directory],{timeout:15000,maxBuffer:1024*1024,env:{PATH:process.env.PATH||'/usr/bin:/bin',HOME:directory,CODEX_HOME:directory}});
+      const load=async name=>JSON.parse(await readFile(path.join(directory,'v2',name+'.json'),'utf8')).properties??{};
+      const [thread,turn]=await Promise.all([load('ThreadStartParams'),load('TurnStartParams')]);
+      return {environments:Object.hasOwn(thread,'environments')&&Object.hasOwn(turn,'environments'),outputSchema:Object.hasOwn(turn,'outputSchema')};
+    }finally{await rm(directory,{recursive:true,force:true});}
+  })());
+  let supported;try{supported=await extractionProtocols.get(signature);}catch{extractionProtocols.delete(signature);throw runtimeError('无法核对本机 Codex 的材料抽取协议，未启动模型。请检查或更新运行时。','CODEX_EXTRACTION_UNSUPPORTED');}
+  if(!supported.environments||nativeSchema&&!supported.outputSchema)throw runtimeError('本机 Codex 不支持所需的隔离抽取或结构化输出协议，未启动模型。','CODEX_EXTRACTION_UNSUPPORTED');
+}
 
 export function codexCommand() {
   const configured=process.env.HITHER_CODEX_BIN || process.env.HITHER_CODEX_BINARY;
@@ -222,9 +241,13 @@ function providerConfig(settings) {
  */
 export async function runCodex({ workspace, settings, apiKey, prompt='', images=[], threadId,
   onEvent = () => {}, onApproval, signal, codexHome, approvalMode = 'ask', dynamicTools = [], onDynamicTool, allowSubagents = true,
+  extractOnly = false, outputSchema, verifyExtraction = verifyExtractionProtocol,
   transportFactory = options => new AppServerTransport(options), requestTimeoutMs = 20_000 } = {}) {
   if (signal?.aborted) throw cancelledError();
-  const policy = runtimePolicy(approvalMode);
+  if(extractOnly&&(dynamicTools.length||threadId))throw runtimeError('材料抽取不能提供工具或恢复其他任务会话。','INVALID_EXTRACTION_SCOPE');
+  if(outputSchema!==undefined&&(!extractOnly||!outputSchema||typeof outputSchema!=='object'||Array.isArray(outputSchema)))throw runtimeError('结构化输出只用于明确的材料抽取。','INVALID_EXTRACTION_SCHEMA');
+  if(extractOnly){await verifyExtraction({nativeSchema:outputSchema!==undefined});if(signal?.aborted)throw cancelledError();allowSubagents=false;}
+  const policy = extractOnly?{approvalPolicy:'never',approvalsReviewer:'user',access:'read-only'}:runtimePolicy(approvalMode);
   const provider = providerConfig(settings);
   if (typeof apiKey !== 'string' || !apiKey.trim()) throw runtimeError('请先配置模型 API Key。', 'MISSING_API_KEY');
   if(!Array.isArray(images)||images.length>ATTACHMENT_COUNT)throw runtimeError('每轮最多输入 6 张图片。','INVALID_IMAGE_INPUT');
@@ -241,14 +264,15 @@ export async function runCodex({ workspace, settings, apiKey, prompt='', images=
   }
   const config = {
     ...(allowSubagents ? {} : {'features.multi_agent':false,'features.multi_agent_v2':false}),
+    ...(extractOnly?Object.fromEntries(EXTRACTION_DISABLED_FEATURES.map(feature=>[`features.${feature}`,false])):{}),
     model_provider: 'hither', model: settings.model.trim(),
     'model_providers.hither': provider,
     approval_policy: policy.approvalPolicy, approvals_reviewer: policy.approvalsReviewer,
     // The legacy workspace-write policy allows reads across the whole host.
     // This named profile instead permits minimal OS reads and this directory only.
-    ...(approvalMode === 'full' ? { sandbox_mode: 'danger-full-access' } : {
+    ...(!extractOnly&&approvalMode === 'full' ? { sandbox_mode: 'danger-full-access' } : {
       default_permissions: 'hither',
-      'permissions.hither.filesystem': { ':minimal': 'read', [workspace]: 'write' },
+      'permissions.hither.filesystem': { ':minimal': 'read', [workspace]: extractOnly?'read':'write' },
       'permissions.hither.network.enabled': false,
     }),
     'shell_environment_policy.inherit': 'none',
@@ -302,6 +326,9 @@ export async function runCodex({ workspace, settings, apiKey, prompt='', images=
     // states before the root-turn filter, without treating child replies as the
     // root result or silently granting child tool requests new permissions.
     const nativeItem=params.item;
+    if(extractOnly&&['item/started','item/completed'].includes(method)&&nativeItem&&!['agentMessage','userMessage','reasoning'].includes(nativeItem.type)){
+      stop(runtimeError('材料抽取运行时尝试了未授权的工具或委派，已停止本轮。','CODEX_EXTRACTION_TOOL_DENIED'));return;
+    }
     const bounded=value=>typeof value==='string'?value.slice(0,1000):null;
     const nativeDetail=value=>{
       const trim=(part,limit)=>typeof part==='string'?part.slice(0,limit):Array.isArray(part)?part.map(item=>trim(item,limit)):part&&typeof part==='object'?Object.fromEntries(Object.entries(part).map(([key,item])=>[key,trim(item,limit)])):part;
@@ -383,6 +410,14 @@ export async function runCodex({ workspace, settings, apiKey, prompt='', images=
         transport.rejectRequest(id, 'This request no longer belongs to the active turn.');
         return;
       }
+      if(extractOnly){
+        if(method==='item/tool/requestUserInput')transport.respond(id,{answers:{}});
+        else if(method==='item/tool/call')transport.respond(id,{success:false,contentItems:[{type:'inputText',text:'Material extraction does not permit tool calls.'}]});
+        else if(method==='item/permissions/requestApproval')transport.respond(id,{permissions:{},scope:'turn'});
+        else if(['item/commandExecution/requestApproval','item/fileChange/requestApproval'].includes(method))transport.respond(id,{decision:'decline'});
+        else transport.rejectRequest(id,'Material extraction does not permit tools or delegation.');
+        stop(runtimeError('材料抽取请求了工具、授权或补充输入，已拒绝并停止本轮。','CODEX_EXTRACTION_TOOL_DENIED'));return;
+      }
       if (method === 'item/tool/call') {
         // Only tools declared for this exact thread are callable. Never replay a
         // dynamic call, including while its approval is still pending.
@@ -437,9 +472,10 @@ export async function runCodex({ workspace, settings, apiKey, prompt='', images=
   });
   try {
     await emit({ type: 'runtime.connecting', label: '正在连接本机运行时' });
-    await request('initialize', { clientInfo, capabilities: { experimentalApi: dynamicTools.length > 0 || approvalMode === 'auto' } });
+    await request('initialize', { clientInfo, capabilities: { experimentalApi: extractOnly || dynamicTools.length > 0 || approvalMode === 'auto' } });
     transport.notify('initialized');
     const effective = (await request('config/read', { includeLayers: false })).config;
+    if(extractOnly&&EXTRACTION_DISABLED_FEATURES.some(feature=>effective?.features?.[feature]!==false))throw runtimeError('本机 Codex 未确认关闭材料抽取的工具能力，未启动模型。','CODEX_EXTRACTION_UNSUPPORTED');
     if (!allowSubagents && (effective?.features?.multi_agent !== false || effective?.features?.multi_agent_v2 !== false)) {
       throw runtimeError('本机 Codex 未确认禁用专家的再次委派，已停止本轮团队执行。', 'CODEX_TEAM_BOUNDARY_UNSUPPORTED');
     }
@@ -447,14 +483,14 @@ export async function runCodex({ workspace, settings, apiKey, prompt='', images=
     if (effective?.approval_policy !== policy.approvalPolicy || effective?.approvals_reviewer !== policy.approvalsReviewer) {
       throw runtimeError('本机 Codex 未确认所选审批策略，已停止运行；没有改用更宽松的策略。', 'CODEX_APPROVAL_POLICY_UNSUPPORTED');
     }
-    if (approvalMode === 'full' ? effective?.sandbox_mode !== 'danger-full-access' || effective?.default_permissions != null : effective?.default_permissions !== 'hither' || fs?.[':minimal'] !== 'read' || fs?.[workspace] !== 'write'
+    if (!extractOnly&&approvalMode === 'full' ? effective?.sandbox_mode !== 'danger-full-access' || effective?.default_permissions != null : effective?.default_permissions !== 'hither' || fs?.[':minimal'] !== 'read' || fs?.[workspace] !== (extractOnly?'read':'write')
       || Object.entries(fs || {}).some(([key, value]) => value != null && ![':minimal', workspace].includes(key))
       || effective?.permissions?.hither?.network?.enabled !== false) {
       throw runtimeError('本机 Codex 未确认任务目录权限配置，已停止运行。请升级到支持命名权限配置的版本。', 'CODEX_SANDBOX_UNSUPPORTED');
     }
     const threadParams = { cwd: workspace, model: settings.model.trim(), modelProvider: 'hither',
       approvalPolicy: policy.approvalPolicy, approvalsReviewer: policy.approvalsReviewer,
-      ...(approvalMode === 'full' ? { sandbox: 'danger-full-access' } : {}),
+      ...(extractOnly?{environments:[],permissions:'hither'}:approvalMode === 'full' ? { sandbox: 'danger-full-access' } : {}),
       baseInstructions: HITHER_BASE_INSTRUCTIONS, developerInstructions: HITHER_DEVELOPER_INSTRUCTIONS };
     // Dynamic tool definitions are persisted by app-server and restored on resume.
     // ThreadResumeParams deliberately has no dynamicTools field in this schema.
@@ -466,7 +502,7 @@ export async function runCodex({ workspace, settings, apiKey, prompt='', images=
       input: [...(prompt.trim()?[{type:'text',text:prompt,text_elements:[]}]:[]),...imageInput], model: settings.model.trim(),
       ...(['low', 'medium', 'high', 'max'].includes(settings.reasoningEffort) ? { effort: settings.reasoningEffort } : {}),
       approvalPolicy: policy.approvalPolicy, approvalsReviewer: policy.approvalsReviewer,
-      ...(approvalMode === 'full' ? { sandboxPolicy: { type: 'dangerFullAccess' } } : {}) });
+      ...(extractOnly?{environments:[],permissions:'hither',...(outputSchema!==undefined?{outputSchema}:{})}:approvalMode === 'full' ? { sandboxPolicy: { type: 'dangerFullAccess' } } : {}) });
     currentTurn = turn.turn?.id || currentTurn;
     if (!currentTurn) throw runtimeError('Codex 未返回执行轮次标识。', 'CODEX_PROTOCOL_ERROR');
     await Promise.race([done.promise, stopped.promise]);

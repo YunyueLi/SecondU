@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '@openai/apps-sdk-ui/components/Button';
 import { LoadingIndicator } from '@openai/apps-sdk-ui/components/Indicator';
 import { Desktop, Document, CloseBold, ArrowRight, Stop, Code, CheckCircle, Clock, ChevronRight, User } from '@openai/apps-sdk-ui/components/Icon';
@@ -9,7 +9,7 @@ import { buildTaskActivityModel } from './design-system/taskActivityModel';
 import { activityActionStatusLabel, activityElapsedLabel, activityEventLabel, activityStatusLabel } from './design-system/taskActivityPresentation';
 import { taskConversationTurns } from './taskConversation';
 import { ArtifactCard } from './design-system/ArtifactCard';
-import { ErrorNotice } from './components';
+import { ScreenContextPanel } from './ScreenContextPanel';
 import { t, getLocale } from './i18n';
 import './task-workbench.css';
 import {TeamRunGraph} from './agents/TeamRunGraph';
@@ -46,7 +46,7 @@ export function TaskProgress({task, fileCount, onOpen, onEvent}:{task:Task;fileC
   </div>;
 }
 
-export function TaskWorkbench({data,task,tab,eventId,onEvent,onTab,onArtifact}:{data:Bootstrap;task:Task;tab:WorkbenchTab;eventId?:string;onEvent:(event:TaskEvent)=>void;onTab:(tab:WorkbenchTab)=>void;onArtifact:(id:string)=>void}) {
+export function TaskWorkbench({data,task,tab,eventId,onEvent,onTab,onArtifact,onRefresh}:{data:Bootstrap;task:Task;tab:WorkbenchTab;eventId?:string;onEvent:(event:TaskEvent)=>void;onTab:(tab:WorkbenchTab)=>void;onArtifact:(id:string)=>void;onRefresh:()=>Promise<void>}) {
   const currentTask=currentActivityTask(task), now=useTaskClock(currentTask);
   const activity=buildTaskActivityModel(currentTask,now), history=buildTaskActivityModel(task,now);
   const artifacts=data.artifacts.filter(item=>item.taskId===task.id&&item.classification!=='reply_snapshot');
@@ -71,36 +71,7 @@ export function TaskWorkbench({data,task,tab,eventId,onEvent,onTab,onArtifact}:{
         {selected?<><div className="workbench-event-meta" data-status={selectedAction?.status}><span>{t(operationStatus.zh,operationStatus.en)}</span><time>{new Date(selected.createdAt).toLocaleTimeString(getLocale(),{hour:'2-digit',minute:'2-digit'})}</time></div><div className="workbench-operation"><TaskEventDetails event={selected}/></div>{artifacts.filter(file=>file.origin?.eventIds?.includes(selected.id)).map(file=><ArtifactCard key={file.id} artifact={file} onOpen={()=>onArtifact(file.id)}/>)}</>:!task.teamRuns?.length&&<p className="workbench-note">{t('这轮还没有操作记录。','No operations have been recorded for this turn.')}</p>}
         {events.length>1&&<details className="workbench-history"><summary>{t('其他操作','Other operations')}<span>{events.length}</span></summary><ol>{[...events].reverse().map(event=>{const label=activityEventLabel(event);return <li key={event.id}><button aria-current={selected?.id===event.id?'step':undefined} onClick={()=>onEvent(event)}><span>{t(label.zh,label.en)}</span><time>{new Date(event.createdAt).toLocaleTimeString(getLocale(),{hour:'2-digit',minute:'2-digit'})}</time></button></li>;})}</ol></details>}
       </>}
-      {tab==='computer'&&<><div className="workbench-computer"><Desktop/><div><strong>{data.computer.name}</strong><span className="workbench-computer-state"><span>{t('本机执行','Local execution')}</span><span>{data.computer.status==='online'?t('在线','Online'):t('离线','Offline')}</span></span></div></div>{project&&<a className="workbench-project" href={`#projects/${project.id}`}>{project.name}<ArrowRight/></a>}<ScreenPreview key={task.id}/><Button color="secondary" variant="ghost" size="sm" onClick={()=>onTab('activity')}><Code/>{t('查看本次操作记录','View task operations')}</Button><details className="workbench-details"><summary>{t('执行位置','Execution location')}</summary><dl><dt>{t('工作目录','Workspace')}</dt><dd>{project?.path||data.computer.workspace}</dd><dt>{t('执行环境','Runtime')}</dt><dd>{task.mode==='demo'?t('示例记录','Example record'):data.computer.codexAvailable?'Codex app-server':t('尚未配置','Not configured')}</dd></dl></details></>}
+      {tab==='computer'&&<><div className="workbench-computer"><Desktop/><div><strong>{data.computer.name}</strong><span className="workbench-computer-state"><span>{t('本机执行','Local execution')}</span><span>{data.computer.status==='online'?t('在线','Online'):t('离线','Offline')}</span></span></div></div>{project&&<a className="workbench-project" href={`#projects/${project.id}`}>{project.name}<ArrowRight/></a>}<ScreenContextPanel key={task.id} task={task} onRefresh={onRefresh}/><Button color="secondary" variant="ghost" size="sm" onClick={()=>onTab('activity')}><Code/>{t('查看本次操作记录','View task operations')}</Button><details className="workbench-details"><summary>{t('执行位置','Execution location')}</summary><dl><dt>{t('工作目录','Workspace')}</dt><dd>{project?.path||data.computer.workspace}</dd><dt>{t('执行环境','Runtime')}</dt><dd>{task.mode==='demo'?t('示例记录','Example record'):data.computer.codexAvailable?'Codex app-server':t('尚未配置','Not configured')}</dd></dl></details></>}
     </div>
   </section>;
-}
-
-function ScreenPreview() {
-  const video=useRef<HTMLVideoElement>(null);
-  const stream=useRef<MediaStream|null>(null);
-  const request=useRef(0);
-  const mounted=useRef(true);
-  const [sharing,setSharing]=useState(false);
-  const [choosing,setChoosing]=useState(false);
-  const [error,setError]=useState('');
-  const available=typeof navigator.mediaDevices?.getDisplayMedia==='function';
-  function stop(){request.current+=1;const current=stream.current;stream.current=null;current?.getTracks().forEach(track=>track.stop());if(video.current)video.current.srcObject=null;if(mounted.current){setSharing(false);setChoosing(false);}}
-  useEffect(()=>{mounted.current=true;return()=>{mounted.current=false;stop();};},[]);
-  async function start(){
-    if(choosing||sharing||!available)return;
-    const id=++request.current;setChoosing(true);setError('');
-    try {
-      const selected=await navigator.mediaDevices.getDisplayMedia({video:true,audio:false});
-      if(!mounted.current||request.current!==id){selected.getTracks().forEach(track=>track.stop());return;}
-      stream.current=selected;
-      selected.getVideoTracks().forEach(track=>track.addEventListener('ended',stop,{once:true}));
-      if(!selected.getVideoTracks().some(track=>track.readyState==='live')){stop();return;}
-      if(video.current){video.current.srcObject=selected;await video.current.play();}
-      if(mounted.current&&request.current===id)setSharing(true);
-    } catch (e) {
-      if(mounted.current&&request.current===id){stop();const name=e instanceof Error?e.name:'';setError(name==='NotAllowedError'?t('没有开始共享。你可以重新选择窗口，或检查系统的屏幕录制权限。','Sharing did not start. Choose a window again or check screen recording permissions.'):t('画面暂时无法打开，请重试或使用桌面应用。','Could not open the preview. Try again or use the desktop app.'));}
-    } finally {if(mounted.current&&request.current===id)setChoosing(false);}
-  }
-  return <div className="screen-preview"><div className={`screen-preview-stage ${sharing?'is-sharing':''}`}><video ref={video} autoPlay muted playsInline aria-label={t('所选窗口的实时画面','Live preview of the selected window')}/>{!sharing&&<div className="screen-preview-placeholder"><Desktop/><strong>{t('看见正在操作的窗口','See the window you are working in')}</strong><p>{t('选择一个窗口或屏幕，在对话旁查看实时画面。','Choose a window or screen to see its live view beside the conversation.')}</p></div>}</div><div className="screen-preview-controls">{sharing?<><span role="status">{t('正在本机预览','Live local preview')}</span><Button color="secondary" variant="outline" size="sm" onClick={stop}><Stop/>{t('停止共享','Stop sharing')}</Button></>:<Button color="primary" size="sm" disabled={!available||choosing} loading={choosing} onClick={()=>void start()}><Desktop/>{choosing?t('正在选择窗口','Choosing a window'):t('选择窗口或屏幕','Choose a window or screen')}</Button>}</div><ErrorNotice error={error}/><p className="workbench-note">{available?t('画面仅在本机预览，不会发送给模型或保存。关闭此面板即停止共享。','This view stays on your computer. It is not sent to a model or saved. Closing this panel stops sharing.'):t('当前浏览器不支持画面共享，请在 SecondU 桌面应用中打开。','This browser does not support screen sharing. Open SecondU desktop to use it.')}</p></div>;
 }

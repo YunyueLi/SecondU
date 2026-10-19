@@ -26,7 +26,7 @@ function ModelTriggerView(option: BrandedOption) {
   return <span className="model-provider-choice" title={option.label}>{option.provider && <ProviderMark provider={option.provider} size={19} />}<span>{option.label}</span></span>;
 }
 
-export function ModelOnboarding({ onSaved, onDone, initialConnection }: { onSaved: (connection: ModelConnection) => Promise<void>; onDone: () => void; initialConnection?: ModelConnection }) {
+export function ModelOnboarding({ onSaved, onDone, initialConnection, presentation='desktop' }: { onSaved: (connection: ModelConnection) => Promise<void>; onDone: () => void; initialConnection?: ModelConnection;presentation?:'desktop'|'mobile' }) {
   const providers = getProviders();
   const [stored, setStored] = useState(initialConnection);
   const storedRef = useRef(stored); storedRef.current = stored;
@@ -116,8 +116,8 @@ export function ModelOnboarding({ onSaved, onDone, initialConnection }: { onSave
   }
 
   return <div className="model-onboarding">
-    <Button className="model-back" color="secondary" variant="ghost" size="sm" disabled={!!busy} onClick={leave}><ArrowLeft />{t('所有连接', 'All connections')}</Button>
-    <header className="model-onboarding-heading"><h2 id="settings-model-title">{t('连接模型', 'Connect a model')}</h2><p>{t('选择服务商，填入 API Key，再选择要使用的模型。', 'Choose a provider, enter your API key, then choose a model.')}</p></header>
+    {presentation!=='mobile'&&<Button className="model-back" color="secondary" variant="ghost" size="sm" disabled={!!busy} onClick={leave}><ArrowLeft />{t('所有连接', 'All connections')}</Button>}
+    <header className="model-onboarding-heading"><h2 id="settings-model-title">{t('连接模型', 'Connect a model')}</h2>{presentation==='mobile'&&<Button className="model-connections-link" color="secondary" variant="ghost" size="sm" disabled={!!busy} onClick={leave}>{t('连接列表','Connections')}</Button>}<p>{t('选择服务商，填入 API Key，再选择要使用的模型。', 'Choose a provider, enter your API key, then choose a model.')}</p></header>
     {confirmLeave && <div className="model-confirm" role="alert"><strong>{t('放弃尚未保存的内容？', 'Discard unsaved input?')}</strong><div><Button color="secondary" variant="ghost" onClick={() => setConfirmLeave(false)}>{t('继续填写', 'Keep editing')}</Button><Button color="secondary" variant="outline" onClick={onDone}>{t('放弃', 'Discard')}</Button></div></div>}
     <form onSubmit={event => { event.preventDefault(); void finish(true); }}>
       <div className="model-onboarding-access"><fieldset className="model-onboarding-providers"><legend>{t('模型服务商', 'Provider')}</legend><div className="model-onboarding-provider-grid">{providers.map(provider=><Button key={provider.id} type="button" color="secondary" variant={draft.provider===provider.id?'soft':'outline'} className="model-onboarding-provider" aria-pressed={draft.provider===provider.id} disabled={!!busy} onClick={()=>chooseProvider(provider.id)}><span className="model-onboarding-provider-content"><ProviderMark provider={provider.id} size={22}/><span>{provider.name}</span></span>{draft.provider===provider.id&&<Check className="model-onboarding-provider-check" aria-hidden="true"/>}</Button>)}</div></fieldset>

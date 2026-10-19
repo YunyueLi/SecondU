@@ -73,6 +73,8 @@ export class ExampleRuntime {
         return url.searchParams.get('format') === 'markdown' ? digitalTwinMarkdown(data) : data;
       }
       if (resource === 'bootstrap') { this.refreshActivity(); return clone(this.data); }
+      if (resource === 'twin-building' && !key) return clone(this.data.twinBuilding);
+      if (resource === 'settings' && key === 'proactive') return clone(this.data.twinBuilding.proactive);
       if (resource === 'daily-activity') { this.refreshActivity(); return clone(this.data.dailyActivities); }
       if (resource === 'model-connections' && !key) return clone({ connections: this.data.modelConnections, defaultConnectionId: this.data.defaultConnectionId });
       if (resource === 'settings' && key === 'execution') return clone(this.data.executionSettings);
@@ -108,6 +110,7 @@ export class ExampleRuntime {
     }
     if (body.mode === 'live' || resource === 'projects' && key === 'choose-directory' || ['computers', 'delegations', 'model-catalogue', 'imports', 'attachments', 'avatars', 'im-setup'].includes(resource) || ['run', 'message', 'messages', 'approval', 'test', 'probe', 'send', 'prepare', 'oauth'].includes(action)) unavailable();
     if (resource === 'spaces') unavailable();
+    if (resource === 'twin-building' || resource === 'settings' && key === 'proactive') unavailable();
     if (resource === 'settings' && key === 'appearance' && method === 'PUT') { this.appearance = { ...this.appearance, ...clone(body) }; return clone(this.appearance); }
     if (resource === 'settings' && key === 'execution' && method === 'PUT') {
       if (!['ask', 'auto', 'full'].includes(body.approvalMode)) fail('Invalid permission setting.');

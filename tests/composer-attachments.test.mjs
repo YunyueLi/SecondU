@@ -42,3 +42,13 @@ test('empty and oversized files remain visible errors without making an upload r
   await f.store.addFiles([new File([],'empty.txt'),image('large.png')]);
   assert.equal(calls,0);assert.deepEqual(f.store.getSnapshot().items.map(item=>item.error.code),['empty','too_large']);assert.deepEqual(f.created,[]);
 });
+
+test('media imports can retain larger video originals without expanding chat limits',async()=>{
+  const file=new File([new Uint8Array(9*1024*1024)],'local-video.mp4',{type:'video/mp4'});
+  let calls=0;const upload=async value=>{calls++;return {...attachment(value),kind:'file'};};
+  const chat=fixture(upload);await chat.store.addFiles([file]);
+  assert.equal(chat.store.getSnapshot().items[0].error.code,'too_large');assert.equal(calls,0);assert.deepEqual(chat.created,[]);
+  const media=fixture(upload,{maxBytes:64*1024*1024});await media.store.addFiles([file]);
+  const saved=media.store.getSnapshot().items[0];assert.equal(saved.status,'ready');assert.equal(saved.file,file);assert.equal(saved.previewUrl,'blob:local-video.mp4');assert.equal(calls,1);
+  media.store.clear();assert.deepEqual(media.revoked,['blob:local-video.mp4']);
+});

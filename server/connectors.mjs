@@ -95,7 +95,7 @@ export function saveConnector(store, body, existing) {
 
 export function deleteConnector(store, connectorId) {
   store.require('connectors', connectorId);
-  if (['tasks', 'agentRooms'].some(collection => store.list(collection).some(item => item.connectorIds?.includes(connectorId)))) {
+  if (['tasks', 'agentRooms', 'automations'].some(collection => store.list(collection).some(item => item.connectorIds?.includes(connectorId)))) {
     throw new HttpError(409, '已有对话引用这个连接器，请停用以保留历史；不会删除原始资料。', 'connector_in_use');
   }
   store.credentialTransaction(() => { store.delete('connectors', connectorId); store.deleteConnectionKeys(`connector:${connectorId}`); });

@@ -1,0 +1,9 @@
+.composer-model-sheet-option{display:flex;width:100%;height:auto;min-height:64px;padding:12px 8px;text-align:left;justify-content:flex-start}
+.composer-model-sheet-option>span{display:flex;min-width:0;width:100%}
+.composer-model-sheet-row{display:flex;align-items:center;gap:12px;min-width:0;width:100%;white-space:normal}
+.composer-model-sheet-row>.model-provider-mark{flex:none}
+.composer-model-sheet-copy{display:flex;flex-direction:column;gap:3px;flex:1;min-width:0;text-align:left}
+.composer-model-sheet-copy strong{display:block;font-size:max(16px,var(--hither-font-label));font-weight:500;line-height:1.5;overflow-wrap:anywhere}
+.composer-model-sheet-copy small{display:block;font-size:max(14px,var(--hither-font-caption));font-weight:400;line-height:1.6;color:var(--color-text-secondary);overflow-wrap:anywhere}
+.composer-model-sheet-check{display:grid;place-items:center;flex:0 0 20px;width:20px;height:20px}
+.composer-model-sheet-check svg{width:18px;height:18px}

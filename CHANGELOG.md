@@ -2,6 +2,27 @@
 
 User-visible changes are recorded here. Detailed decisions and scoped checks remain in [Development](docs/DEVELOPMENT.md) and [Iteration](docs/ITERATION.md). Published releases are tied to a tag and commit; subsequent changes remain under Unreleased.
 
+## 0.2.0 — Unreleased
+
+### Added
+
+- Build a personal digital twin from seven material entries: existing sources, text and notes, photos and video, conversations, imported memory, connections, and direct writing. A shared 3D portrait reflects saved materials and confirmed understanding.
+- Preserve original files before processing. Inspect source records, review extracted candidates against their evidence, correct or skip suggestions, and carry confirmed context into a new task draft.
+- Choose whether direct input is used only for the current task or contributes to personal understanding. Local source changes can trigger an explicitly enabled, read-only assessment and an optional suggestion in the associated conversation.
+- Open the dedicated mobile interface from the desktop. Mobile navigation, source reading, imports, conversation tools and settings reuse the same local service and data model.
+- Explore twin building in a new bilingual homepage feature section and through the current interactive product example.
+
+### Changed
+
+- Restore the selected Cover Flow material treatment; use dot-and-line navigation and show existing-material or connected status only when the underlying state supports it.
+- Unify model, attachment and permission controls across desktop and mobile; use the shared Notion icon and a generic “View full profile” action.
+- Update the bilingual README and shared product development record to describe current features and their limits.
+
+### Validation and delivery
+
+- Release preparation is in progress. The final local source check passed 830 of 843 tests, with 13 environment-dependent skips and no failures. An isolated native build saved a session-only synthetic material and retained it after a normal quit and restart; strict signatures and package source correspondence passed. Public delivery is recorded separately.
+- Material processing requires a configured provider. The mobile page does not add cloud synchronization, background push, continuous camera capture or system sharing extensions. Proactive assessment requires the local service to remain available.
+
 ## 0.1.5 — 2026-10-10
 
 ### Added

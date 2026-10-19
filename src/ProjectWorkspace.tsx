@@ -1,3 +1,4 @@
+import {ComposerToolRow,useComposerToolView} from './composer/ComposerToolNavigation';
 import { useEffect, useRef, useState } from 'react';
 import { useUnsavedChanges } from './useUnsavedChanges';
 import type { Bootstrap, Project } from '../shared/contracts';
@@ -5,7 +6,7 @@ import { Button, ButtonLink } from '@openai/apps-sdk-ui/components/Button';
 import { Input } from '@openai/apps-sdk-ui/components/Input';
 import { Textarea } from '@openai/apps-sdk-ui/components/Textarea';
 import { Menu } from '@openai/apps-sdk-ui/components/Menu';
-import { Folder, Plus, ArrowRight, ArrowLeft, Chat, Document, Edit, Archive, ChevronDown, DotsHorizontalMoreMenu } from '@openai/apps-sdk-ui/components/Icon';
+import { Folder, Plus, ArrowRight, ArrowLeft, Chat, Document, Edit, Archive, Check, ChevronDown, DotsHorizontalMoreMenu } from '@openai/apps-sdk-ui/components/Icon';
 import { Dialog, Field, ErrorNotice, Empty, PageHeading, when } from './components';
 import { api, write, messageOf, APIError } from './api';
 import { t } from './i18n';
@@ -13,9 +14,11 @@ import { SpotIllustration } from './SpotIllustration';
 import './projects.css';
 
 export function ProjectPicker({data,value,onChange,disabled=false}:{data:Pick<Bootstrap,'projects'>;value?:string;onChange:(id:string|undefined)=>void;disabled?:boolean}){
+  const mobile=useComposerToolView(t('所属项目','Project'));
   const projects=(data.projects||[]).filter(project=>!project.archived||project.id===value);
   const selected=projects.find(project=>project.id===value);
   const label=selected?.name||t('选择项目','Choose project');
+  if(mobile)return mobile.hidden?null:mobile.active?<div className="composer-tool-options" role="radiogroup" aria-label={t('所属项目','Project')}>{[{id:'',name:t('不关联项目','No project')},...projects].map(project=><Button type="button" key={project.id} color="secondary" variant="ghost" pill={false} className="composer-tool-option" role="radio" aria-checked={(value||'')===project.id} disabled={disabled} onClick={()=>{onChange(project.id||undefined);mobile.back();}}><Folder/><span className="composer-tool-copy"><strong>{project.name}</strong></span><span className="composer-tool-check">{(value||'')===project.id&&<Check/>}</span></Button>)}</div>:<ComposerToolRow icon={<Folder/>} label={t('所属项目','Project')} detail={selected?.name||t('未关联','No project')} disabled={disabled} onClick={mobile.show}/>;
   return <Menu><Menu.Trigger><Button type="button" color="secondary" variant="ghost" size="sm" pill={false} className="project-picker" disabled={disabled} aria-label={t(`所属项目：${label}`,`Project: ${label}`)}><Folder/><span>{label}</span><ChevronDown/></Button></Menu.Trigger><Menu.Content side="top" align="start" minWidth={210} maxHeight={320}><Menu.RadioGroup value={value||'none'} onChange={next=>onChange(next==='none'?undefined:next)}><Menu.RadioItem className="project-picker-option" value="none"><span className="project-picker-option-copy"><Folder/><span>{t('不关联项目','No project')}</span></span></Menu.RadioItem>{projects.map(project=><Menu.RadioItem className="project-picker-option" key={project.id} value={project.id}><span className="project-picker-option-copy"><Folder/><span>{project.name}{project.archived?t('（已归档）',' (archived)'):''}</span></span></Menu.RadioItem>)}</Menu.RadioGroup></Menu.Content></Menu>;
 }
 export function ProjectEditor({project,onClose,onSaved}:{project?:Project;onClose:()=>void;onSaved:(p:Project)=>Promise<void>}){

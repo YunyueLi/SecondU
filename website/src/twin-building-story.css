@@ -1,0 +1,16 @@
+.cap-story.twin-building-story{grid-template-columns:minmax(0,1.55fr) minmax(0,.76fr)}
+.twin-building-story>.cap-story-intro{grid-column:2;grid-row:1}.twin-building-story>.twin-building-visual{grid-column:1;grid-row:1}
+.twin-building-story h2{white-space:pre-line}
+.twin-building-story .cap-story-links a{font:13px/1.5 var(--site-font);color:var(--site-muted);padding:2px 0;text-decoration:underline;text-decoration-color:var(--site-line);text-underline-offset:5px}.twin-building-story .cap-story-links a:is(:hover,:focus-visible){color:var(--site-ink);text-decoration-color:var(--site-ink)}
+.twin-building-visual{position:relative;padding:32px;background:#e7e3e7;min-width:0}
+.twin-building-preview-viewport{position:relative;width:100%;aspect-ratio:1160/850;border-radius:7px;overflow:hidden;box-shadow:0 16px 40px -20px #342c4655;background:var(--site-surface)}
+.twin-building-preview-viewport iframe{position:absolute;left:0;top:0;width:1160px;height:850px;max-width:none;border:0;transform:scale(var(--twin-preview-scale,1));transform-origin:top left;pointer-events:none}
+.twin-building-preview-open{position:absolute;inset:0;padding:0;border:0;background:transparent;border-radius:12px}
+.twin-building-preview-open:is(:hover,:focus-visible) .product-preview-enter{opacity:1;transform:none}
+.twin-building-visual .product-preview-motion{z-index:2}
+.twin-building-preview-loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:26px;color:var(--site-muted);font:14px/1.7 var(--site-font)}
+.twin-building-preview-retry{position:absolute;bottom:12px;left:14px;z-index:2;padding:5px 9px;background:var(--site-surface);border:1px solid var(--site-line);border-radius:6px;font:12px/1.5 var(--site-font)}
+[data-theme=dark] .twin-building-visual{background:#29262c}
+@media(min-width:1500px){.twin-building-visual{padding:48px}}
+@media(max-width:1000px){.cap-story.twin-building-story{grid-template-columns:minmax(0,1.3fr) minmax(0,.85fr)}.twin-building-visual{padding:25px}}
+@media(max-width:720px){.twin-building-story{display:flex;flex-direction:column}.twin-building-visual{padding:20px;border-radius:8px}.twin-building-preview-viewport{border-radius:5px}.twin-building-story .cap-story-links{gap:12px 18px}}

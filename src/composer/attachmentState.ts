@@ -12,6 +12,7 @@ export type AttachmentUploader=(file:File,signal:AbortSignal)=>Promise<Attachmen
 export const ATTACHMENT_LIMIT=6;
 export const ATTACHMENT_MAX_BYTES=8*1024*1024;
 export const previewableImage=(mime:string)=>/^image\/(png|jpeg|webp|gif)$/.test(mime);
+export const previewableVideo=(mime:string)=>/^video\/(mp4|quicktime|webm)$/.test(mime);
 
 /** Own uploads independently of React renders so late results cannot revive
  * removed drafts or overwrite a retry. Removing a draft never deletes a saved
@@ -52,7 +53,7 @@ export function createAttachmentDrafts({upload,maxFiles=ATTACHMENT_LIMIT,maxByte
     subscribe:(listener:()=>void)=>{listeners.add(listener);return()=>{listeners.delete(listener);};},
     async addFiles(files:Iterable<File>){
       const incoming=Array.from(files),available=Math.max(0,maxFiles-snapshot.items.length),accepted=incoming.slice(0,available);
-      const items=accepted.map(file=>({id:`attachment-draft-${++sequence}`,file,status:'uploading' as const,...(previewableImage(file.type)&&file.size<=maxBytes?{previewUrl:createUrl(file)}:{})}));
+      const items=accepted.map(file=>({id:`attachment-draft-${++sequence}`,file,status:'uploading' as const,...((previewableImage(file.type)||previewableVideo(file.type))&&file.size<=maxBytes?{previewUrl:createUrl(file)}:{})}));
       publish([...snapshot.items,...items],incoming.length>available);
       await Promise.all(items.map(item=>start(item.id)));
     },

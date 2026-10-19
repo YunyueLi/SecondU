@@ -22,8 +22,11 @@ import { LifeTimeline } from './LifeTimeline';
 import './reading.css';
 import { PersonalOverview } from './PersonalOverview';
 import { TodoWorkspace } from './TodoWorkspace';
+import { TwinBuilding } from './TwinBuilding';
+import { SourceDetail } from './SourceDetail';
+import { SourceTextImport } from './SourceImport';
 
-interface Props { view: string; data: Bootstrap; onRefresh: () => Promise<void>; onCreateTask: (prompt: string, contextFactIds?: string[], agentIds?: string[]) => void | Promise<void> }
+interface Props { presentation?:'desktop'|'mobile';view: string; data: Bootstrap; onRefresh: () => Promise<void>; onCreateTask: (prompt: string, contextFactIds?: string[], agentIds?: string[]) => void | Promise<void> }
 const statusLabels = (): Record<FactStatus, string> => ({ confirmed: t("已确认", "Confirmed"), inferred: t("推断", "Inferred"), candidate: t("待确认", "To confirm"), superseded: t("已替代", "Superseded") });
 const kindLabels = (): Record<FactKind, string> => ({ preference: t("偏好", "Preferences"), value: t("价值取向", "Values"), capability: t("能力", "Capabilities"), constraint: t("约束", "Constraints"), identity: t("身份", "Identity"), decision: t("决定", "Decisions") });
 const factOptions = () => Object.entries(kindLabels()).map(([value, label]) => ({ value, label }));
@@ -31,7 +34,7 @@ const preferenceDomainLabels = (): Record<PreferenceDomain, string> => ({ work: 
 const preferenceDomainOptions = () => Object.entries(preferenceDomainLabels()).map(([value,label])=>({value,label}));
 const statusOptions = () => Object.entries(statusLabels()).map(([value, label]) => ({ value, label }));
 
-export function CognitionWorkspace({ view, data, onRefresh, onCreateTask }: Props) {
+export function CognitionWorkspace({ view, data, onRefresh, onCreateTask, presentation='desktop' }: Props) {
   const [taskError, setTaskError] = useState('');
   const [sourceId, setSourceId] = useState<string>();
   const createTask: Props['onCreateTask'] = async (...args) => { setTaskError(''); try { await onCreateTask(...args); } catch (error) { setTaskError(messageOf(error)); } };
@@ -40,20 +43,21 @@ export function CognitionWorkspace({ view, data, onRefresh, onCreateTask }: Prop
     const title = data.sources.find(s => s.id === id)?.title || t("来源已不可用", "Source unavailable");
     return <SourcePill key={id} title={title} compact={compact} onOpen={() => setSourceId(id)} />;
   })}</div> : null;
-  return <div className={`cognition-workspace ${view === 'conversations' || view === 'relationships' ? 'is-immersive' : ''}`}><ErrorNotice error={taskError} />
-    {view === 'conversations' ? <ConversationInbox data={data} refs={refs} onRefresh={onRefresh} /> :
+  return <div className={`cognition-workspace${presentation==='mobile'?' is-mobile':''} ${view === 'conversations' || view === 'relationships' ? 'is-immersive' : ''}`}><ErrorNotice error={taskError} />
+    {view === 'building' ? <TwinBuilding data={data} onRefresh={onRefresh} onCreateTask={createTask} /> :
+      view === 'conversations' ? <ConversationInbox data={data} refs={refs} onRefresh={onRefresh} /> :
       view === 'timeline' ? <LifeTimeline data={data} refs={refs} onRefresh={onRefresh} onAsk={prompt=>createTask(prompt,[])} /> :
       view === 'relationships' ? <RelationshipGraph data={data} refs={refs} onRefresh={onRefresh} /> :
       view === 'life' ? <Life data={data} refs={refs} onRefresh={onRefresh} onCreateTask={createTask} /> :
       view === 'sources' ? <Sources data={data} onRefresh={onRefresh} onSelect={setSourceId} /> :
       view === 'agents' ? <Agents data={data} onRefresh={onRefresh} onCreateTask={createTask} /> :
-      <Self data={data} refs={refs} onRefresh={onRefresh} onCreateTask={createTask} />}
-    {source && <Dialog title={t("查看来源", "View source")} onClose={() => setSourceId(undefined)}><div className="cog-stack"><div><h3>{source.title}</h3><p className="cog-muted"><span>{when(source.createdAt)}</span><span>{source.demo ? t("虚构示例资料", "Fictional sample") : t("本机导入资料", "Imported locally")}</span></p></div><pre className="source-text">{source.text}</pre><p className="cog-muted">{t("来源保留原始表述。引用它的推断需要分别确认。", "Original wording is preserved. Interpretations need separate confirmation.")}</p></div></Dialog>}
+      <Self data={data} refs={refs} onRefresh={onRefresh} onCreateTask={createTask} presentation={presentation} />}
+    {source && <SourceDetail source={source} attachments={data.attachments} facts={data.facts} onClose={()=>setSourceId(undefined)}/>}
   </div>;
 }
 type Refs = { refs: (ids: string[], compact?: boolean) => React.ReactNode };
 
-function Self({ data, refs, onRefresh, onCreateTask }: Pick<Props, 'data'|'onRefresh'|'onCreateTask'> & Refs) {
+function Self({ data, refs, onRefresh, onCreateTask,presentation }: Pick<Props, 'data'|'onRefresh'|'onCreateTask'|'presentation'> & Refs) {
   const [filter, setFilter] = useState('all'); const [editing, setEditing] = useState<Fact>(); const [history, setHistory] = useState<Fact>();
   const [preferenceDomain, setPreferenceDomain] = useState<PreferenceDomain>('general');
   const [statement, setStatement] = useState(''); const [reason, setReason] = useState(''); const [status, setStatus] = useState<FactStatus>('confirmed'); const [error, setError] = useState(''); const [busy, setBusy] = useState(false);
@@ -64,7 +68,7 @@ function Self({ data, refs, onRefresh, onCreateTask }: Pick<Props, 'data'|'onRef
   const groups = (['confirmed', 'candidate', 'inferred', 'superseded'] as FactStatus[]).map(value => ({ status: value, facts: facts.filter(f => f.status === value) })).filter(group => group.facts.length);
   const descriptions: Record<FactStatus, string> = { confirmed: t("用于助理判断的个人背景", "Confirmed personal context"), candidate: t("等待你确认后，再作为事实使用", "Confirm before using as a fact"), inferred: t("已有依据，仍需要你的核实", "Supported by evidence; still needs your review"), superseded: t("保留过去的表述与修订过程", "Earlier statements and revisions are retained") };
   return <section className="cog-reading-page">
-    <PersonalOverview data={data} onRefresh={onRefresh} refs={refs} onEdit={fact=>{setBaseline(JSON.stringify([fact.statement,fact.status,fact.preferenceDomain||'general','']));setEditing(fact);setStatement(fact.statement);setStatus(fact.status);setPreferenceDomain(fact.preferenceDomain||'general');setReason('');setError('');}} onHistory={setHistory} onCreateTask={onCreateTask}/>
+    <PersonalOverview presentation={presentation} data={data} onRefresh={onRefresh} refs={refs} onEdit={fact=>{setBaseline(JSON.stringify([fact.statement,fact.status,fact.preferenceDomain||'general','']));setEditing(fact);setStatement(fact.statement);setStatus(fact.status);setPreferenceDomain(fact.preferenceDomain||'general');setReason('');setError('');}} onHistory={setHistory} onCreateTask={onCreateTask}/>
     <details className="twin-management"><summary><span>{t('管理全部理解','Manage all personal context')}</span><span>{data.facts.length}</span><ChevronDown/></summary><div className="twin-management-content">
     <div className="cog-reading-filters" aria-label={t('认知状态', 'Insight status')}>{[{value:'all',label:t('当前理解','Current')},...statusOptions()].map(option=><Button key={option.value} color="secondary" variant="ghost" size="sm" selected={filter===option.value} onClick={()=>setFilter(option.value)}>{option.label}</Button>)}</div>
     <div className="cog-reading-groups">{groups.map(group=><section key={group.status} className="cog-reading-group"><h2>{statusLabels()[group.status]}<span>{group.facts.length}</span></h2>{group.status!=='confirmed'&&<p className="cog-reading-group-note">{descriptions[group.status]}</p>}
@@ -81,14 +85,14 @@ function Life(props: Pick<Props, 'data'|'onRefresh'|'onCreateTask'> & Refs) {
 }
 
 function Sources({ data, onRefresh, onSelect }: { data: Bootstrap; onRefresh: () => Promise<void>; onSelect: (id: string) => void }) {
-  const [adding, setAdding] = useState(false); const [candidate, setCandidate] = useState<Source>(); const [title, setTitle] = useState(''); const [text, setText] = useState(''); const [kind, setKind] = useState<Source['kind']>('note'); const [factKind, setFactKind] = useState<FactKind>('preference'); const [error, setError] = useState(''); const [busy, setBusy] = useState(false);
-  const snapshot=JSON.stringify(adding?[title,text,kind]:[text,factKind]);
+  const [adding, setAdding] = useState(false); const [candidate, setCandidate] = useState<Source>(); const [text, setText] = useState(''); const [factKind, setFactKind] = useState<FactKind>('preference'); const [error, setError] = useState(''); const [busy, setBusy] = useState(false);
+  const snapshot=JSON.stringify([text,factKind]);
   const [baseline,setBaseline]=useState(snapshot);
-  useUnsavedChanges({unsaved:(adding||!!candidate)&&snapshot!==baseline,busy});
+  useUnsavedChanges({unsaved:!!candidate&&snapshot!==baseline,busy});
   return <section className="cog-reading-page">
-    <PageHeading title={t('资料来源','Sources')} description={t('管理导入资料，核对内容与原始来源。','Manage imported records and inspect their sources.')} compactDescription={t('管理资料并核对原始来源。','Manage records and sources.')} illustration="/art/page-sources-v1.png" action={<Button color="secondary" variant="outline" size="sm" onClick={()=>{setBaseline(JSON.stringify(['','',kind]));setAdding(true);setTitle('');setText('');setError('');}}>{t('导入文字','Import text')}</Button>}/>
+    <PageHeading title={t('资料来源','Sources')} description={t('管理导入资料，核对内容与原始来源。','Manage imported records and inspect their sources.')} compactDescription={t('管理资料并核对原始来源。','Manage records and sources.')} illustration="/art/page-sources-v1.png" action={<Button color="secondary" variant="outline" size="sm" onClick={()=>setAdding(true)}>{t('导入文字','Import text')}</Button>}/>
     <div className="cog-reading-source-list">{data.sources.map(source=><details key={source.id} className="cog-reading-row cog-reading-source"><summary><Document aria-hidden="true"/><span className="cog-reading-statement">{source.title}</span>{source.demo&&<span className="cog-reading-source-kind">{t('示例','Sample')}</span>}<ChevronDown className="cog-reading-chevron" aria-hidden="true"/></summary><div className="cog-reading-detail"><p>{source.text.length>200?t('这条资料较长，可打开原文查看完整内容。','Open the source to read the full text.'):source.text}</p><div className="cog-reading-meta"><time>{when(source.createdAt)}</time><span>{t(`${data.facts.filter(f=>f.sourceIds.includes(source.id)).length} 条相关理解`,`${data.facts.filter(f=>f.sourceIds.includes(source.id)).length} related insights`)}</span><span>{source.demo?t('虚构示例资料','Fictional sample'):t('本机资料','Local source')}</span></div><div className="cog-reading-actions"><Button color="secondary" variant="ghost" size="sm" onClick={()=>onSelect(source.id)}>{t('查看原文','View original')}</Button><Button color="secondary" variant="ghost" size="sm" onClick={()=>{setBaseline(JSON.stringify(['',factKind]));setCandidate(source);setText('');setError('');}}>{t('补充一条理解','Add an insight')}</Button></div></div></details>)}</div>{!data.sources.length&&<Empty title={t('还没有资料','No sources yet')}/>}
-    {adding && <Dialog className="record-dialog" title={t("导入文字资料", "Import text")} onClose={() => setAdding(false)}><form className="cog-stack record-form" onSubmit={async e => { e.preventDefault(); setBusy(true); setError(''); try { await write('/sources', { title, text, kind }); setBaseline(snapshot); await onRefresh(); setAdding(false); } catch (err) { setError(messageOf(err)); } finally { setBusy(false); } }}><Field label={t("资料标题", "Source title")}><Input aria-label={t("资料标题", "Source title")} required value={title} onChange={e => setTitle(e.target.value)} /></Field><Field label={t("资料类型", "Source type")}><Select align="start" listMinWidth={180} listMaxWidth={260} value={kind} options={[{ value: 'note', label: t("笔记", "Note") }, { value: 'conversation', label: t("对话记录", "Conversation records") }, { value: 'document', label: t("文档", "Document") }, { value: 'feedback', label: t("我的反馈", "My feedback") }]} onChange={o => setKind(o.value as Source['kind'])} /></Field><Field label={t("原始文字", "Original text")}><Textarea aria-label={t("原始文字", "Original text")} required rows={9} value={text} onChange={e => setText(e.target.value)} /></Field><p className="cog-muted">{t("资料保存在这台电脑。导入不会自动生成已确认的事实。", "Saved on this computer. Importing does not confirm facts automatically.")}</p><ErrorNotice error={error} /><Button color="primary" type="submit" loading={busy}>{t("保存资料", "Save source")}</Button></form></Dialog>}
+    {adding && <SourceTextImport onClose={()=>setAdding(false)} onRefresh={onRefresh}/>}
     {candidate && <Dialog className="record-dialog" title={t("补充一条待确认的理解", "Add an insight to review")} onClose={() => setCandidate(undefined)}><form className="cog-stack record-form" onSubmit={async e => { e.preventDefault(); setBusy(true); setError(''); try { await write('/facts', { kind: factKind, statement: text, sourceIds: [candidate.id], status: 'candidate' }); setBaseline(snapshot); await onRefresh(); setCandidate(undefined); } catch (err) { setError(messageOf(err)); } finally { setBusy(false); } }}><p className="cog-muted">{t("来源：", "Source: ")}{candidate.title}</p><Select align="start" listMinWidth={180} listMaxWidth={260} value={factKind} options={factOptions()} onChange={o => setFactKind(o.value as FactKind)} /><Textarea aria-label={t("新的理解", "New insight")} required rows={4} placeholder={t("这份资料说明了什么？", "What does this source suggest?")} value={text} onChange={e => setText(e.target.value)} /><ErrorNotice error={error} /><Button color="primary" type="submit" loading={busy}>{t("保存为待确认", "Save for review")}</Button></form></Dialog>}
   </section>;
 }

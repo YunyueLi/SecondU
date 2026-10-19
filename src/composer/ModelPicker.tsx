@@ -1,3 +1,5 @@
+import {useState} from 'react';
+import {BottomSheet} from '../shared/BottomSheet';
 import { t } from '../i18n';
 import type { ProviderSettings, ModelConnection } from '../../shared/contracts';
 import { Button } from '@openai/apps-sdk-ui/components/Button';
@@ -5,8 +7,10 @@ import { Menu } from '@openai/apps-sdk-ui/components/Menu';
 import { ChevronDown, Settings, Code, Group, Check } from '@openai/apps-sdk-ui/components/Icon';
 import { ProviderMark } from '../models/providers';
 import './composer.css';
+import './model-picker.css';
 
 export interface ModelPickerProps {
+  presentation?: 'menu'|'sheet';
   settings: ProviderSettings;
   mode: 'demo'|'live';
   onMode: (mode:'demo'|'live') => void | boolean | Promise<void | boolean>;
@@ -21,7 +25,8 @@ export interface ModelPickerProps {
   onAgent?: (id:string) => void;
 }
 
-export function ModelPicker({settings,mode,onMode,onSettings,disabled=false,example=false,connections,defaultConnectionId,connectionId,onConnection,agentModels,onAgent}:ModelPickerProps) {
+export function ModelPicker({settings,mode,onMode,onSettings,disabled=false,example=false,connections,defaultConnectionId,connectionId,onConnection,agentModels,onAgent,presentation='menu'}:ModelPickerProps) {
+  const [open,setOpen]=useState(false);
   const grouped=!!agentModels?.length;
   const selected=connections?.find(connection=>connection.id===(connectionId||defaultConnectionId))||settings;
   const label=grouped?t('按角色模型','Each agent’s model'):selected.model.trim()||t('尚未选择模型','No model selected');
@@ -31,10 +36,12 @@ export function ModelPicker({settings,mode,onMode,onSettings,disabled=false,exam
   const value=grouped?'agents':explicitConnection||'default';
   const alternatives=connections?.filter(connection=>connection.id!==defaultConnectionId)||[];
   async function choose(next:string){
-    if(!grouped&&onConnection){const updated=await onConnection(next==='default'?undefined:next);if(updated===false)return;}
+    if(!grouped&&onConnection){const updated=await onConnection(next==='default'?undefined:next);if(updated===false)return false;}
     if(!example)await onMode('live');
+    return true;
   }
   const connectionDetail=(connection:ProviderSettings)=>connection.hasKey?connection.model||t('尚未选择模型','No model selected'):t(`${connection.model||'未选择模型'}，待连接`,`${connection.model||'No model selected'} — not connected`);
+  if(presentation==='sheet')return <><Button color="secondary" variant="ghost" size="sm" className="composer-model-picker" disabled={disabled} title={label} aria-label={t(`选择模型，当前${label}`,`Choose model, currently ${label}`)} onClick={()=>setOpen(true)}>{grouped?<Group/>:<ProviderMark provider={selected.provider} size={16}/>}<span className="composer-model-name">{triggerLabel}</span><ChevronDown/></Button>{open&&<BottomSheet title={t('模型','Models')} onClose={()=>setOpen(false)}>{grouped?<><p>{t('使用各位助理已配置的模型。','Each agent uses its configured model.')}</p>{agentModels.map(agent=><Button key={agent.id} color="secondary" variant="ghost" className="composer-model-sheet-option" disabled={!onAgent} onClick={()=>{setOpen(false);onAgent?.(agent.id);}}><span className="composer-model-sheet-row"><span className="composer-model-sheet-copy"><strong>{agent.name}</strong><small>{agent.model}{agent.hasKey?'':t('，待连接',' — not connected')}</small></span></span></Button>)}</>:<>{[{id:'default',name:t('继承默认','Use default'),provider:settings.provider,description:connectionDetail(settings)},...alternatives.map(connection=>({id:connection.id,name:connection.model||connection.name,provider:connection.provider,description:connection.name+(connection.hasKey?'':t('，待连接',' — not connected'))}))].map(connection=><Button key={connection.id} color="secondary" variant="ghost" className="composer-model-sheet-option" role="radio" aria-checked={value===connection.id} onClick={()=>void choose(connection.id).then(saved=>{if(saved)setOpen(false);})}><span className="composer-model-sheet-row"><ProviderMark provider={connection.provider} size={22}/><span className="composer-model-sheet-copy"><strong>{connection.name}</strong><small>{connection.description}</small></span><span className="composer-model-sheet-check">{value===connection.id&&<Check/>}</span></span></Button>)}</>}<Button color="secondary" variant="ghost" className="composer-add-files" onClick={()=>{setOpen(false);onSettings();}}><Settings/>{t('管理模型','Manage models')}</Button></BottomSheet>}</>;
   return <Menu><Menu.Trigger><Button color="secondary" variant="ghost" size="sm" className="composer-model-picker" disabled={disabled} title={label} aria-label={t(`选择模型，当前${label}`,`Choose model, currently ${label}`)}>
     {grouped?<Group/>:<ProviderMark provider={selected.provider} size={16}/>}<span className="composer-model-name">{triggerLabel}</span><ChevronDown/>
   </Button></Menu.Trigger><Menu.Content side="top" align="end" width={300} minWidth="auto">

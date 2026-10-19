@@ -25,6 +25,7 @@ import { publicProject, listProjectFiles } from './projects.mjs';
 import { chooseProjectDirectory } from './directory-picker.mjs';
 import { createEntity, createTask, assertDeletable, text, choice, bool, refs, addEvent } from './domain.mjs';
 import { TaskRunner } from './runner.mjs';
+import { TwinBuildingService } from './twin-building.mjs';
 import { saveTaskReaction } from './task-reactions.mjs';
 import { saveRoomReaction } from './room-reactions.mjs';
 import { artifactBytes, artifactAtVersion, binaryArtifactMime, isBinaryArtifact, BINARY_ARTIFACT_JSON_LIMIT } from './artifact-content.mjs';
@@ -44,7 +45,7 @@ import { runtimeCapabilities, taskTrace } from './runtime-observation.mjs';
 import { saveAgentAvatar, getAvatar, batchAvatarStyle, defaultAgentAvatarStyle } from './avatars.mjs';
 import { ENGINEER_SPACE, LEGACY_ENGINEER_SPACE, US_SPACE, isExampleSpace, PERSONAL_SPACE, localSpaceDirectory } from './demo-space.mjs';
 import { getAppearance, saveAppearance, getArtwork, getArtworkInfo, saveArtwork } from './local-appearance.mjs';
-import { saveAttachment, getAttachment, publicAttachment, ATTACHMENT_LIMIT } from './attachments.mjs';
+import { saveAttachment, getAttachment, publicAttachment, attachmentResponse, STORED_ATTACHMENT_LIMIT } from './attachments.mjs';
 import { UpdateLifecycle, installQuitIpc } from './update-lifecycle.mjs';
 
 const here=path.dirname(fileURLToPath(import.meta.url));
@@ -76,7 +77,9 @@ export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJEC
   const imSetup=new ImSetupService(store,{im,executionPolicy:policy,...imSetupOptions});
   const twinMcpGrants=new TwinMcpGrants(store);
   const resources=new AgentResourcesService(store,{im,runCli:runResourceCli});
-  const runner=new TaskRunner(store,{runCodex,scheduler,connectors,executionPolicy:policy,canSchedule:()=>updateLifecycle.accepting});
+  let twinBuilding;
+  const runner=new TaskRunner(store,{runCodex,scheduler,connectors,executionPolicy:policy,canSchedule:()=>updateLifecycle.accepting,onSourcesChanged:()=>twinBuilding?.syncSources()});
+  twinBuilding=new TwinBuildingService(store,{runner,executionPolicy:policy});
   const delegations=new DelegationService(store,{executionPolicy:policy,requestGate:(req,work)=>updateLifecycle.runRequest(req,work)});
   const remoteTasks=new RemoteTaskBridge(store);
   const remoteComputers=new RemoteComputerService(store,{executionPolicy:policy,...(remoteTransport?{transport:remoteTransport}:{}),onRunChanged:run=>remoteTasks.sync(run)});
@@ -85,7 +88,7 @@ export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJEC
   const previewOffice=createOfficePreviewer(store,officePreviewOptions);
   remoteTasks.connect(remoteComputers);
   const computer={id:'local',name:os.hostname(),platform:process.platform,status:'online',workspace:store.workspace,...(computerInfo??detectCodex())};
-  const bootstrap=()=>({version:VERSION,executionSettings:executionSettings(store),...(policy?{executionPolicy:policy}:{}),connectors:connectors.list(),attachments:store.list('attachments').map(publicAttachment),defaultAgentAvatarStyle:defaultAgentAvatarStyle(store),dailyActivities:dailyActivity(store),profile:store.meta('profile'),...Object.fromEntries(collections.map(c=>[c,c==='projects'?store.list(c).map(project=>publicProject(project,store.protectedDataDirectory)):store.list(c)])),settings:store.settings(),modelConnections:store.connectionList(),defaultConnectionId:store.defaultConnectionId(),computer});
+  const bootstrap=()=>({version:VERSION,executionSettings:executionSettings(store),...(policy?{executionPolicy:policy}:{}),connectors:connectors.list(),attachments:store.list('attachments').map(publicAttachment),defaultAgentAvatarStyle:defaultAgentAvatarStyle(store),dailyActivities:dailyActivity(store),twinBuilding:twinBuilding.snapshot(),profile:store.meta('profile'),...Object.fromEntries(collections.map(c=>[c,c==='projects'?store.list(c).map(project=>publicProject(project,store.protectedDataDirectory)):store.list(c)])),settings:store.settings(),modelConnections:store.connectionList(),defaultConnectionId:store.defaultConnectionId(),computer});
   let server;
   const childApps=new Map();
   function localApp(space,create=false){
@@ -139,7 +142,7 @@ export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJEC
     const artworkUpload=resource==='settings'&&key==='artwork'&&parts.length===3&&method==='PUT';
     const binaryArtifactUpload=resource==='artifacts'&&!key&&method==='POST';
     const attachmentUpload=resource==='attachments'&&!key&&parts.length===2&&method==='POST';
-    const body=['POST','PUT','PATCH','DELETE'].includes(method)?await readJson(req,binaryArtifactUpload?BINARY_ARTIFACT_JSON_LIMIT:attachmentUpload?Math.ceil(ATTACHMENT_LIMIT/3)*4+4096:artworkUpload?12*1024*1024:(avatarUpload||profileUpload)?4*1024*1024+4096:2*1024*1024):{};
+    const body=['POST','PUT','PATCH','DELETE'].includes(method)?await readJson(req,binaryArtifactUpload?BINARY_ARTIFACT_JSON_LIMIT:attachmentUpload?Math.ceil(STORED_ATTACHMENT_LIMIT/3)*4+4096:artworkUpload?12*1024*1024:(avatarUpload||profileUpload)?4*1024*1024+4096:2*1024*1024):{};
     if(profileUpload&&!Object.hasOwn(body,'avatarDataUrl')&&Buffer.byteLength(JSON.stringify(body))>2*1024*1024)throw new HttpError(413,'请求内容过大','body_too_large');
     guardExecutionRoute(policy,{resource,key,action,operation:parts[4],method,body},store);
     if(resource==='computers')return respond(res,200,await remoteComputers.owner(method,parts.slice(2),body));
@@ -148,9 +151,8 @@ export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJEC
     if(resource==='attachments'){
       if(attachmentUpload)return respond(res,201,saveAttachment(store,body));
       if(key&&parts.length===3&&['GET','HEAD'].includes(method)){
-        const attachment=getAttachment(store,key),filename=encodeURIComponent(attachment.name).replaceAll("'",'%27');
-        res.writeHead(200,{'Content-Type':attachment.kind==='image'?attachment.mime:'application/octet-stream','Content-Length':attachment.size,'Content-Disposition':`${attachment.kind==='image'?'inline':'attachment'}; filename*=UTF-8''${filename}`,'Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff','Cross-Origin-Resource-Policy':'same-origin','Content-Security-Policy':"default-src 'none'; sandbox"});
-        return res.end(method==='HEAD'?undefined:attachment.data);
+        const response=attachmentResponse(getAttachment(store,key),{range:req.headers.range,method});
+        res.writeHead(response.status,response.headers);return res.end(method==='HEAD'?undefined:response.data);
       }
       throw new HttpError(405,'附件仅支持本地添加和读取。','attachment_method_not_allowed');
     }
@@ -158,6 +160,19 @@ export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJEC
     if(avatarUpload)return respond(res,200,saveAgentAvatar(store,key,body));
     if(resource==='health'&&method==='GET')return respond(res,200,{application:'hither-desktop',version:VERSION,revision:runtimeRevision,status:'ok',spaceId});
     if(resource==='bootstrap'&&method==='GET')return respond(res,200,bootstrap());
+    if(resource==='twin-building'){
+      if(parts.length===2&&method==='GET')return respond(res,200,twinBuilding.snapshot());
+      if(key==='captures'&&parts.length===3&&method==='POST')return respond(res,201,twinBuilding.create(body));
+      if(key==='captures'&&parts.length===4&&method==='GET')return respond(res,200,twinBuilding.get(action));
+      if(key==='captures'&&parts.length===5&&method==='POST'){
+        if(parts[4]==='process')return respond(res,200,twinBuilding.process(action));
+        if(parts[4]==='retry')return respond(res,200,twinBuilding.process(action,{retry:true}));
+        if(parts[4]==='review')return respond(res,200,twinBuilding.review(action,body));
+      }
+      if(key==='suggestions'&&parts.length===5&&parts[4]==='respond'&&method==='POST')return respond(res,200,twinBuilding.respond(action,body));
+      if(key==='sources'&&parts.length===5&&parts[4]==='explore'&&method==='POST')return respond(res,200,twinBuilding.explore(action,body));
+      throw new HttpError(404,'分身建设接口不存在。','not_found');
+    }
     if(resource==='daily-activity'&&method==='GET')return respond(res,200,dailyActivity(store));
     if(resource==='imports'&&key==='memory'&&method==='POST'&&parts.length===4){
       if(action==='preview')return respond(res,200,previewMemoryImport(store,body));
@@ -263,6 +278,11 @@ export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJEC
     if(resource==='settings'&&key==='execution'&&parts.length===3){
       if(method==='GET')return respond(res,200,executionSettings(store));
       if(method==='PUT')return respond(res,200,saveExecutionSettings(store,body));
+    }
+    if(resource==='settings'&&key==='proactive'&&parts.length===3){
+      if(method==='GET')return respond(res,200,twinBuilding.proactiveSettings());
+      if(method==='PUT')return respond(res,200,twinBuilding.saveProactiveSettings(body));
+      throw new HttpError(405,'主动消息设置不支持该操作');
     }
     if(resource==='settings'&&key==='appearance'&&parts.length===3){
       if(method==='GET')return respond(res,200,getAppearance(store));
@@ -370,6 +390,7 @@ export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJEC
       if(resource==='conversations'&&method==='PUT'&&store.require('conversations',key).externalId)throw new HttpError(405,'导入的聊天记录不可改写，请保留原文件并导入新的反馈来源。','immutable_import');
       if(method==='GET')return respond(res,200,key?store.require(resource,key):store.list(resource));
       if(method==='DELETE'&&key){
+        if(resource==='tasks'&&store.list('twinCaptures').some(capture=>capture.taskIds.includes(key)))throw new HttpError(409,'材料整理仍引用这项任务，请保留处理记录。','record_in_use');
         if(resource==='sources'&&store.list('dailyActivities').some(activity=>activity.sourceIds.includes(key)))throw new HttpError(409,'日常活动仍引用这份原始来源，不能删除。','record_in_use');
         assertDeletable(store,resource,key);
         if(resource==='tasks'){
@@ -379,7 +400,7 @@ export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJEC
         if(resource==='artifacts'){const a=store.require('artifacts',key);if(store.require('tasks',a.taskId).projectId)throw new HttpError(405,'项目原文件不会从资料库删除，请在项目目录中管理。','project_file_retained');if(runner.active.has(a.taskId))throw new HttpError(409,'请先停止运行中的任务');const file=store.artifactPath(a);if(existsSync(file))unlinkSync(file);runner.mutate(a.taskId,t=>{t.artifactIds=t.artifactIds.filter(x=>x!==key);});}
         store.delete(resource,key);return respond(res,200,{ok:true});
       }
-      if(method==='POST'&&!key || method==='PUT'&&key){const entity=createEntity(store,resource,body,key?store.require(resource,key):undefined);store.put(resource,entity);if(resource==='sources'&&method==='POST')runner.sourceImported(entity);return respond(res,method==='POST'?201:200,entity);}
+      if(method==='POST'&&!key || method==='PUT'&&key){const entity=createEntity(store,resource,body,key?store.require(resource,key):undefined);store.put(resource,entity);if(resource==='sources'){if(method==='POST')runner.sourceImported(entity);else twinBuilding.syncSources();}return respond(res,method==='POST'?201:200,entity);}
     }
     throw new HttpError(404,'接口不存在','not_found');
   }
@@ -388,7 +409,7 @@ export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJEC
   server=http.createServer(handleRequest);
   server.requestTimeout=30000;server.headersTimeout=10000;
   let closing;
-  return {server,store,runner,connectors,delegations,remoteComputers,remoteTasks,bootstrap,handleRequest,updateLifecycle,close(){return closing??=(async()=>{for(const app of childApps.values())await app.close();await connectors.close();await imSetup.close();remoteComputers.close();await runner.close();await delegations.close();if(server.listening)await new Promise((resolve,reject)=>server.close(error=>error?reject(error):resolve()));store.close();if(!_updateLifecycle)updateLifecycle.dispose();})();}};
+  return {server,store,runner,twinBuilding,connectors,delegations,remoteComputers,remoteTasks,bootstrap,handleRequest,updateLifecycle,close(){return closing??=(async()=>{for(const app of childApps.values())await app.close();await connectors.close();await imSetup.close();remoteComputers.close();await runner.close();await twinBuilding.settled();await delegations.close();if(server.listening)await new Promise((resolve,reject)=>server.close(error=>error?reject(error):resolve()));store.close();if(!_updateLifecycle)updateLifecycle.dispose();})();}};
 }
 
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){

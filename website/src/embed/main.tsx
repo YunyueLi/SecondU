@@ -1,5 +1,5 @@
 /// <reference path="../../../src/desktop.d.ts" />
-import React,{useSyncExternalStore} from 'react';
+import React,{lazy,Suspense,useSyncExternalStore} from 'react';
 import { createRoot } from 'react-dom/client';
 import { AppsSDKUIProvider } from '@openai/apps-sdk-ui/components/AppsSDKUIProvider';
 import { App } from '../../../src/App';
@@ -15,8 +15,12 @@ import '../../../src/composer/conversation-composer.css';
 import '../../../src/agents/conversation-bubbles.css';
 import '../../../src/design-system/page-layout.css';
 import './standalone.css';
+import '../../../src/mobile/mobile.css';
 
 const query = new URLSearchParams(location.search);
+const mobile = query.get('surface') === 'mobile';
+document.body.classList.toggle('mobile-root', mobile);
+const MobileSurface = lazy(() => import('../../../src/mobile/MobileApp').then(module => ({default:module.MobileApp})));
 const standalone = parent === window;
 let expanded = standalone;
 let standalonePreference: 'light'|'dark'|'system' = query.get('theme') === 'dark' ? 'dark' : query.get('theme') === 'light' ? 'light' : 'system';
@@ -33,6 +37,7 @@ function syncLanguage(value: 'zh' | 'en') {
   url.searchParams.set('space', nextSpace); url.searchParams.set('lang', value);
   history.replaceState(null, '', url);
   syncExampleLanguage(value);
+  if (mobile) { if (!location.hash) replaceExampleRoute(window, 'new'); return; }
   if (location.hash === '#example-decision' || isDecisionExampleTask(location.hash.replace(/^#task\//,''))) replaceExampleRoute(window, exampleDecisionRoute(value));
   else if (location.hash === '#example-chat' || !location.hash || previous !== nextSpace && /^#(?:task|agents|projects|artifacts)\//.test(location.hash)) replaceExampleRoute(window, exampleChatRoute(value));
 }
@@ -44,15 +49,32 @@ const themeObserver = new MutationObserver(applyTheme);
 themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 function StandaloneExample() {
  const locale=useSyncExternalStore(subscribeLocale,getLocale),english=locale==='en';
+ if (mobile) return <div className="website-mobile-product"><Suspense fallback={<div role="status" className="website-mobile-loading">{english?'Opening SecondU…':'正在打开 SecondU…'}</div>}><MobileSurface/></Suspense></div>;
  return <div className="website-standalone-example"><nav className="website-example-navigation" aria-label={english?'Example navigation':'示例导航'}><a href={`../?lang=${english?'en':'zh'}`}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true"><path d="m10 5-7 7 7 7M3 12h18"/></svg>{english?'SecondU home':'返回官网'}</a><span>{english?'Explore the example workspace':'探索示例空间'}</span><a href="https://github.com/YunyueLi/SecondU/releases/latest" target="_blank" rel="noopener noreferrer">{english?'Download for desktop':'下载桌面版'}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M4 15v5h16v-5"/></svg></a></nav><div className="website-standalone-product"><App/></div></div>;
 }
 let started = false;
+let buildingPreviewTimer:ReturnType<typeof setInterval>|undefined;
+function setBuildingPreview(playing:boolean){
+  clearInterval(buildingPreviewTimer);buildingPreviewTimer=undefined;
+  const portrait=document.querySelector<HTMLButtonElement>('.twin-portrait figcaption > button');
+  const label=portrait?.getAttribute('aria-label')||'';
+  if(portrait&&((playing&&/^(恢复|Resume)/.test(label))||(!playing&&/^(暂停|Pause)/.test(label))))portrait.click();
+  if(!playing||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  buildingPreviewTimer=setInterval(()=>{
+    const items=Array.from(document.querySelectorAll<HTMLButtonElement>('.material-gallery-indicator'));
+    const current=items.findIndex(item=>item.getAttribute('aria-current')==='true');
+    if(items.length)items[(current+1)%items.length].click();
+  },4200);
+}
 function startProduct() {
   if (started) return;
   started = true;
   createRoot(document.getElementById('root')!).render(<React.StrictMode><AppsSDKUIProvider linkComponent="a"><ErrorBoundary>{standalone?<StandaloneExample/>:<App />}</ErrorBoundary></AppsSDKUIProvider></React.StrictMode>);
 }
 window.addEventListener('message', event => {
+  if(!standalone&&query.get('presentation')==='building'&&event.source===parent&&event.origin===location.origin&&event.data?.type==='secondu-building-preview'){
+    setBuildingPreview(event.data.playing===true);return;
+  }
   if (standalone && event.source===window && event.origin===location.origin && event.data?.type==='secondu-example-preferences') {
     const value=event.data;
     if(value.theme==='dark'||value.theme==='light'||value.theme==='system') {standalonePreference=value.theme;setWebsiteThemePreference(value.theme);activeTheme=value.theme==='system'?(systemTheme.matches?'dark':'light'):value.theme;applyTheme();}

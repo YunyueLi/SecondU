@@ -1,4 +1,5 @@
 import { t } from './i18n';
+import type { TwinProactiveSettings } from '../shared/twin-building';
 import { apiUrl } from './space';
 export { apiUrl } from './space';
 
@@ -151,6 +152,8 @@ export const write = <T,>(path: string, body?: unknown, method = 'POST') => {
   return api<T>(path, { method, ...(['POST','PUT','PATCH'].includes(method.toUpperCase()) || body !== undefined ? { body: JSON.stringify(body ?? {}) } : {}) });
 };
 export const messageOf = (error: unknown) => error instanceof APIError ? translatedMessage(error.rawMessage) : error instanceof Error ? translatedMessage(error.message) : t('操作未完成，请重试。', 'The operation did not finish. Please try again.');
+export const loadProactiveSettings = () => api<TwinProactiveSettings>('/settings/proactive');
+export const saveProactiveSettings = (enabled: boolean, baseRevision: number) => write<TwinProactiveSettings>('/settings/proactive', {enabled, baseRevision}, 'PUT');
 
 /** Read a same-workspace binary response without treating JSON errors as file data. */
 export async function getArrayBuffer(path: string, mime: string, signal?: AbortSignal): Promise<ArrayBuffer> {

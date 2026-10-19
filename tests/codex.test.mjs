@@ -5,7 +5,7 @@ import { PassThrough } from 'node:stream';
 import { mkdtemp, mkdir, rm, realpath, writeFile, readFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
-import { AppServerTransport, probeCodex, runCodex } from '../server/codex.mjs';
+import { AppServerTransport, probeCodex, runCodex, EXTRACTION_DISABLED_FEATURES } from '../server/codex.mjs';
 import { TEAM_TOOLS } from '../server/team-runs.mjs';
 import { HITHER_BASE_INSTRUCTIONS, HITHER_DEVELOPER_INSTRUCTIONS } from '../server/identity.mjs';
 
@@ -32,8 +32,8 @@ class FixtureTransport extends EventEmitter {
       if (answer !== undefined) return answer;
     }
     if (method === 'initialize') return { userAgent: 'hither/fixture' };
-    if (method === 'config/read') return { config: { features: {multi_agent:!this.options.args.includes('features.multi_agent=false'),multi_agent_v2:!this.options.args.includes('features.multi_agent_v2=false')}, approval_policy: 'on-request', approvals_reviewer: 'user', default_permissions: 'hither', permissions: { hither: {
-      filesystem: { ':minimal': 'read', [this.options.cwd]: 'write' }, network: { enabled: false },
+    if (method === 'config/read') return { config: { features: {multi_agent:!this.options.args.includes('features.multi_agent=false'),multi_agent_v2:!this.options.args.includes('features.multi_agent_v2=false'),...(this.options.args.includes('features.shell_tool=false')?Object.fromEntries(EXTRACTION_DISABLED_FEATURES.map(feature=>[feature,false])):{})}, approval_policy: this.options.args.includes('approval_policy="never"')?'never':'on-request', approvals_reviewer: 'user', default_permissions: 'hither', permissions: { hither: {
+      filesystem: { ':minimal': 'read', [this.options.cwd]: this.options.args.includes('features.shell_tool=false')?'read':'write' }, network: { enabled: false },
     } } } };
     if (method === 'thread/start' || method === 'thread/resume') return { thread: { id: params.threadId || 'thread-fixture' } };
     if (method === 'turn/start') {
@@ -501,4 +501,39 @@ test('native collaboration events preserve actual child states without replacing
  assert.equal(collab.length,2);assert.equal(collab[0].agentsStates['child-thread'].status,'running');assert.equal(collab[1].agentsStates['child-thread'].status,'completed');assert.ok(JSON.stringify(collab).length<8000);
  const activity=run.events.filter(e=>e.type==='runtime.subagent_activity');assert.equal(activity.length,1);assert.equal(JSON.parse(activity[0].detail).kind,'completed');
  assert.ok(!JSON.stringify(run.events).includes(secret));
+});
+
+const extractionSchema={type:'object',properties:{summary:{type:'string'}},required:['summary'],additionalProperties:false};
+const extractionOptions={extractOnly:true,outputSchema:extractionSchema,verifyExtraction:async()=>{}};
+test('material extraction uses verified read-only native scope and per-turn outputSchema without changing regular turns',async t=>{
+  const run=await fixtureRun(t,{},extractionOptions);await run.promise;
+  const thread=run.transport.calls.find(call=>call.method==='thread/start').params,turn=run.transport.calls.find(call=>call.method==='turn/start').params;
+  assert.deepEqual(thread.environments,[]);assert.deepEqual(turn.environments,[]);assert.equal(thread.permissions,'hither');assert.equal(turn.permissions,'hither');assert.equal(turn.approvalPolicy,'never');assert.deepEqual(turn.outputSchema,extractionSchema);assert.equal(thread.dynamicTools,undefined);
+  for(const feature of EXTRACTION_DISABLED_FEATURES)assert.ok(run.transport.options.args.includes(`features.${feature}=false`));
+  const ordinary=await fixtureRun(t);await ordinary.promise;const ordinaryTurn=ordinary.transport.calls.find(call=>call.method==='turn/start').params;
+  for(const key of ['environments','permissions','outputSchema'])assert.equal(Object.hasOwn(ordinaryTurn,key),false,key);assert.equal(ordinaryTurn.approvalPolicy,'on-request');
+});
+test('material extraction fails before model execution on unsupported native schema or unconfirmed tool settings',async t=>{
+  const unsupported=await fixtureRun(t,{}, {...extractionOptions,verifyExtraction:async()=>{throw Object.assign(new Error('Unsupported native extraction'),{code:'CODEX_EXTRACTION_UNSUPPORTED'});}});
+  await assert.rejects(unsupported.promise,{code:'CODEX_EXTRACTION_UNSUPPORTED'});assert.equal(unsupported.transport,undefined);
+  const unconfirmed=await fixtureRun(t,{request:method=>method==='config/read'?{config:{features:{multi_agent:false,multi_agent_v2:false}}}:undefined},extractionOptions);
+  await assert.rejects(unconfirmed.promise,{code:'CODEX_EXTRACTION_UNSUPPORTED'});assert.ok(!unconfirmed.transport.calls.some(call=>call.method==='turn/start'));
+});
+test('material extraction rejects every host tool request without invoking approval or dynamic tool callbacks',async t=>{
+  for(const method of ['item/tool/requestUserInput','item/commandExecution/requestApproval','item/fileChange/requestApproval','item/permissions/requestApproval','item/tool/call']){
+    let approvals=0,tools=0;
+    const run=await fixtureRun(t,{start:tr=>tr.serverRequest(method,{command:'must-not-run',questions:[],tool:'must-not-run',callId:'blocked'})},{...extractionOptions,onApproval:()=>{approvals++;return 'approve';},onDynamicTool:()=>{tools++;}});
+    await assert.rejects(run.promise,{code:'CODEX_EXTRACTION_TOOL_DENIED'});assert.equal(approvals,0);assert.equal(tools,0);assert.equal(run.transport.responses.length,1);assert.ok(run.transport.calls.some(call=>call.method==='turn/interrupt'));
+  }
+});
+test('material extraction treats unexpected native action or delegation notifications as failure',async t=>{
+  for(const type of ['commandExecution','fileChange','collabAgentToolCall']){
+    const run=await fixtureRun(t,{start:tr=>tr.notification('item/started',{item:{id:'unexpected',type}})},extractionOptions);
+    await assert.rejects(run.promise,{code:'CODEX_EXTRACTION_TOOL_DENIED'});assert.equal(run.transport.closed,true);
+  }
+});
+test('material extraction cannot restore a tool-bearing thread or install dynamic tools',async t=>{
+  for(const overrides of [{threadId:'previous'},{dynamicTools:TEAM_TOOLS}]){
+    const run=await fixtureRun(t,{}, {...extractionOptions,...overrides});await assert.rejects(run.promise,{code:'INVALID_EXTRACTION_SCOPE'});assert.equal(run.transport,undefined);
+  }
 });

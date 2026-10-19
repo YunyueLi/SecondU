@@ -9,7 +9,7 @@ import { api, write, messageOf } from '../api';
 import { t } from '../i18n';
 import { useUnsavedChanges } from '../useUnsavedChanges';
 import { modelIdIssue } from '../../shared/model-validation.mjs';
-import { ProviderMark, protocolName } from './providers';
+import { ProviderMark, providerName, protocolName } from './providers';
 import { ModelOnboarding } from './ModelOnboarding';
 import './models.css';
 
@@ -19,7 +19,28 @@ function modelIssueMessage(provider: ProviderSettings['provider'], model: string
   return issue === 'provider_name' ? t('请填写具体模型 ID，不能填写服务商名称。', 'Enter a specific model ID, not the provider name.') : issue === 'openrouter_format' ? t('请填写 OpenRouter 完整模型 ID，格式通常为提供方/模型。', 'Enter a complete OpenRouter model ID, usually provider/model.') : '';
 }
 
-export function ModelSettings({ data, onRefresh }: { data: Bootstrap; onRefresh: () => Promise<void> }) {
+type ModelSettingsProps = { data: Bootstrap; onRefresh: () => Promise<void>; presentation?: 'desktop' | 'mobile' };
+
+export function ModelSettings(props: ModelSettingsProps) {
+  if (props.data.executionPolicy === 'showcase') return <ModelShowcase data={props.data}/>;
+  return <PersonalModelSettings {...props}/>;
+}
+
+function ModelShowcase({ data }: { data: Bootstrap }) {
+  return <div className="model-settings">
+    <header className="model-overview-heading"><div><h2 id="settings-model-title">{t('模型连接', 'Model connections')}</h2></div></header>
+    <div className="model-feedback"><p className="model-testing-note" role="status">{t('示例空间仅展示模型配置。请在桌面版的个人空间中连接和测试模型。', 'The example space displays model settings. Connect and test models in your personal space in the desktop app.')}</p></div>
+    <div className="model-connections">{(data.modelConnections || []).map(connection => <article key={connection.id} className="model-connection">
+      <span className="model-connection-mark"><ProviderMark provider={connection.provider} size={25}/></span>
+      <div className="model-connection-copy"><div className="model-connection-name"><h3>{connection.name}</h3>{connection.id === data.defaultConnectionId && <Badge color="secondary" variant="soft" size="sm">{t('默认', 'Default')}</Badge>}</div><p className="model-connection-model">{providerName(connection.provider)} · {connection.model}</p></div>
+      <span className="model-connection-state">{t('示例配置', 'Example configuration')}</span>
+    </article>)}</div>
+    {!data.modelConnections?.length && <p className="model-local-note">{t('此示例尚未配置模型。', 'This example has no model configuration.')}</p>}
+    <p className="model-local-note">{t('Agent 默认使用全局设置，也可在其模型页单独指定。', 'Agents use the global default unless you choose a connection on their Model page.')}</p>
+  </div>;
+}
+
+function PersonalModelSettings({ data, onRefresh, presentation='desktop' }: ModelSettingsProps) {
   const [connections, setConnections] = useState<ModelConnection[]>(data.modelConnections || []);
   const [defaultId, setDefaultId] = useState(data.defaultConnectionId || '');
   const [onboarding, setOnboarding] = useState<{ connection?: ModelConnection; key: number } | undefined>(() => data.modelConnections?.some(connection => connection.hasKey) ? undefined : { key: 0 });
@@ -59,7 +80,7 @@ export function ModelSettings({ data, onRefresh }: { data: Bootstrap; onRefresh:
     } catch(err){setError(messageOf(err));} finally {setBusy('');}
   }
 
-  if (onboarding) return <ModelOnboarding key={onboarding.key} initialConnection={onboarding.connection} onSaved={saved} onDone={() => setOnboarding(undefined)} />;
+  if (onboarding) return <ModelOnboarding key={onboarding.key} initialConnection={onboarding.connection} onSaved={saved} onDone={() => setOnboarding(undefined)} presentation={presentation}/>;
   return <div className="model-settings">
     <header className="model-overview-heading"><div><h2 id="settings-model-title">{t("模型连接", "Model connections")}</h2><p>{t("保存常用模型，为不同的助理选择合适的连接。", "Save your models and choose a connection for each assistant.")}</p></div><Button color="secondary" variant="outline" size="md" disabled={!!busy} onClick={() => edit()}><Plus />{t("添加连接", "Add connection")}</Button></header>
     <div className="model-feedback" aria-live="polite"><ErrorNotice error={error} />{notice && <p className="model-saved"><Check />{notice}</p>}</div>
