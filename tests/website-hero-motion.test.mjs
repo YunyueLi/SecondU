@@ -9,7 +9,8 @@ const three=new URL('../website/node_modules/three/build/three.module.js',import
 let sequence=0;
 
 async function loadSource(name,links={}) {
- let source=await readFile(new URL(`../website/src/${name}`,import.meta.url),'utf8');
+ const shared=['hero-particles.ts','hero-pigment.ts','portrait-events.ts'].includes(name);
+ let source=await readFile(new URL(`../${shared?'src/shared':'website/src'}/${name}`,import.meta.url),'utf8');
  source=source.replace(/^import ['"].*\.css['"];?$/gm,'');
  for(const [specifier,url] of Object.entries({react,...links})) source=source.replaceAll(`'${specifier}'`,JSON.stringify(url));
  const {outputText}=ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022,jsx:ts.JsxEmit.ReactJSX}});
@@ -52,7 +53,7 @@ async function harness(t) {
   render(scene){
    let portrait;
    scene.traverse(item=>{if(item.material?.uniforms?.uRelease)portrait=item.material.uniforms;});
-   state.rendered.push({time:portrait.uTime.value,release:portrait.uRelease.value,theme:portrait.uThemeDark.value});
+   state.rendered.push({time:portrait.uTime.value,release:portrait.uRelease.value,theme:portrait.uThemeDark.value,build:portrait.uBuild.value});
   }
   dispose(){}
  }
@@ -75,12 +76,13 @@ async function harness(t) {
  const key=`__heroMotionTest${++sequence}`;install(key,{Renderer});
  t.after(()=>{for(const [name,descriptor] of originals)if(descriptor)Object.defineProperty(globalThis,name,descriptor);else delete globalThis[name];});
  const rendererModule=moduleUrl(`export * from ${JSON.stringify(three)};export const WebGLRenderer=globalThis[${JSON.stringify(key)}].Renderer;`);
+ const events=await loadSource('portrait-events.ts');
  const alpha=await loadSource('hero-alpha-distance.ts');
- const clearance=await loadSource('hero-clearance.ts',{'./hero-alpha-distance':alpha});
+ const clearance=await loadSource('hero-clearance.ts',{'./hero-alpha-distance':alpha,'../../src/shared/portrait-events':events});
  const textClearance=await loadSource('hero-text-clearance.ts',{'./hero-alpha-distance':alpha});
  const pigment=await loadSource('hero-pigment.ts',{three:rendererModule});
  const motion=await loadSource('site-motion.tsx');
- const particles=await import(await loadSource('hero-particles.ts',{three:rendererModule,'./hero-pigment':pigment,'./hero-clearance':clearance}));
+ const particles=await import(await loadSource('hero-particles.ts',{three:rendererModule,'./hero-pigment':pigment,'./portrait-events':events}));
  const backdrop=await import(await loadSource('HeroBackdrop.tsx',{'./hero-clearance':clearance,'./hero-text-clearance':textClearance,'./site-motion':motion}));
  return {...state,state,document,Element,Canvas,pointer,particles,backdrop,
   advance(time){state.now=time;const callbacks=[...state.raf.values()];state.raf.clear();for(const callback of callbacks)callback(time);},
@@ -151,4 +153,21 @@ test('pausing clears transient character trails once and they cannot return with
  h.pointer(host);assert.ok(h.state.raf.size);h.state.media[0].matches=true;h.state.media[0].dispatchEvent(new Event('change'));
  assert.equal(canvas.dataset.motion,'disabled');assert.equal(h.state.raf.size,0);h.pointer(host);assert.equal(h.state.raf.size,0);
  scene.dispose();assert.ok(h.state.observers.every(observer=>observer.disconnected));h.pointer(host);assert.equal(h.state.raf.size,0);
+});
+
+test('product formation changes only when supplied evidence changes and stays stable while paused',async t=>{
+ const h=await harness(t),host=new h.Element();
+ const scene=await h.particles.createHeroParticles(host,'synthetic-artwork',{signal:new AbortController().signal,formation:.2,onReady(){},onError:()=>assert.fail('unexpected renderer failure')});
+ for(let now=100;now<5000;now+=40)h.advance(now);
+ assert.equal(h.state.rendered.at(-1).build,.2);
+ assert.equal(host.dataset.formation,'partial');
+ scene.setFormation(.6);
+ for(let now=5040;now<9000;now+=40)h.advance(now);
+ assert.ok(h.state.rendered.at(-1).build>.59&&h.state.rendered.at(-1).build<=.6);
+ scene.setPaused(true);const before=h.state.rendered.at(-1);h.advance(16000);
+ assert.deepEqual(h.state.rendered.at(-1),before);
+ scene.setFormation(.8);h.advance(16040);assert.equal(h.state.rendered.at(-1).build,.8);assert.equal(h.state.raf.size,0);
+ h.document.documentElement.dataset.theme='dark';h.notify('mutation');h.advance(16080);
+ assert.equal(h.state.rendered.at(-1).build,.8);assert.equal(host.dataset.formation,'partial');
+ scene.dispose();
 });

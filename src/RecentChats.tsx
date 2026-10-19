@@ -12,9 +12,10 @@ import {recentChatEntries,recentChatStatus} from './recentChatEntries';
 import { t } from './i18n';
 import { useUnsavedChanges } from './useUnsavedChanges';
 import './sidebarScroll.css';
+import './recent-chats-mobile.css';
 function statusText(status:TaskStatus){return status==='running'?t('正在处理','Working'):status==='queued'?t('尚未开始','Not started'):status==='awaiting_approval'?t('等待你确认','Needs approval'):status==='needs_input'?t('等待你补充','Needs input'):status==='completed'?t('已完成','Completed'):status==='cancelled'?t('已停止','Stopped'):status==='interrupted'?t('已中断，可继续','Interrupted, ready to resume'):t('执行未完成','Run failed');}
 type RecentEntry=ReturnType<typeof recentChatEntries>[number];
-export function RecentChats({data,query,view,id,onRefresh}:{data:Bootstrap;query:string;view:string;id?:string;onRefresh?:()=>Promise<void>}) {
+export function RecentChats({presentation='desktop',data,query,view,id,onRefresh}:{presentation?:'desktop'|'mobile';data:Bootstrap;query:string;view:string;id?:string;onRefresh?:()=>Promise<void>}) {
  const [editing,setEditing]=useState<RecentEntry>(),[name,setName]=useState(''),[busy,setBusy]=useState<string>(),[error,setError]=useState('');
  const baseline=useRef('');
  useUnsavedChanges(()=>({unsaved:!!editing&&name!==baseline.current,busy:!!busy}));
@@ -25,7 +26,7 @@ export function RecentChats({data,query,view,id,onRefresh}:{data:Bootstrap;query
    catch(error){setError(messageOf(error));}
    finally{setBusy(undefined);}
  }
- return <><nav aria-label={t('最近对话','Recent chats')}>
+ return <><nav className={presentation==='mobile'?'recent-chats-mobile':undefined} aria-label={t('最近对话','Recent chats')}>
    {error&&!editing&&<p className="recent-chat-error" role="alert">{error}</p>}
    {entries.map(entry=>{
      const members=entry.room?.agentIds.flatMap(id=>data.agents.find(a=>a.id===id)||[])||[];

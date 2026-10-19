@@ -12,11 +12,12 @@ import { Textarea } from '@openai/apps-sdk-ui/components/Textarea';
 import { AppearanceSettings } from './AppearanceSettings';
 import { GeneralSettings } from './GeneralSettings';
 import type { Appearance, AppearanceStatus } from './appearance';
-import { Download, Check, ApiKey, MoonSunSystem, User, Desktop, Folder, ChevronDown, ArrowRight, Group, Document, SettingsSlider } from '@openai/apps-sdk-ui/components/Icon';
+import { Download, Check, ApiKey, MoonSunSystem, User, Desktop, Folder, ChevronDown, ChevronRight, ArrowRight, Group, Document, SettingsSlider } from '@openai/apps-sdk-ui/components/Icon';
 import { ErrorNotice, Field } from './components';
 import { api, apiUrl, write, messageOf } from './api';
 import { LocalSpaces } from './LocalSpaces';
 import './settings.css';
+import './settings-mobile.css';
 import { ModelSettings } from './models/ModelSettings';
 import { RecentChatArchives } from './RecentChatArchives';
 import { MemoryImportEntry } from './cognition/MemoryImport';
@@ -112,28 +113,30 @@ function PersonalSpace({ data, onRefresh }: { data: Bootstrap; onRefresh: () => 
   </>;
 }
 
-export function SettingsWorkspace({ data, onRefresh, theme, onTheme, initialCategory, appearance, appearanceStatus, onAppearance }: { data: Bootstrap; onRefresh: () => Promise<void>; theme: Theme; onTheme: (theme: Theme) => void; initialCategory?:string; appearance:Appearance; appearanceStatus:AppearanceStatus; onAppearance:(update:Partial<Appearance>)=>void }) {
+export function SettingsWorkspace({ data, onRefresh, theme, onTheme, initialCategory, appearance, appearanceStatus, onAppearance,presentation='desktop' }: { presentation?:'desktop'|'mobile';data: Bootstrap; onRefresh: () => Promise<void>; theme: Theme; onTheme: (theme: Theme) => void; initialCategory?:string; appearance:Appearance; appearanceStatus:AppearanceStatus; onAppearance:(update:Partial<Appearance>)=>void }) {
   const categories = getCategories();
+  const mobile=presentation==='mobile';
+  const mobileDetail=mobile&&categories.some(item=>item.id===initialCategory);
   const [category, setCategory] = useState<SettingsCategory>('general');
   const platformName=({darwin:'macOS',win32:'Windows',linux:'Linux'} as Record<string,string>)[data.computer.platform]||data.computer.platform;
   useEffect(()=>{if(categories.some(item=>item.id===initialCategory))setCategory(initialCategory as SettingsCategory);},[initialCategory]);
 
-  return <div className="settings-workspace settings-type-scale">
+  return <div className={`settings-workspace settings-type-scale${mobile?' is-mobile':''}`}>
 
     <div className="settings-layout">
-      <aside className="settings-navigation"><h1>{t("设置", "Settings")}</h1>
+      <aside className="settings-navigation" hidden={mobileDetail}><h1>{t("设置", "Settings")}</h1>
         <nav aria-label={t("设置分类", "Settings categories")}>
-          {categories.map(({ id, label, Icon }) => <Button key={id} color="secondary" variant="ghost" size="md" pill={false} className="settings-category" selected={category === id} aria-current={category === id ? 'page' : undefined} aria-controls={`settings-${id}`} onClick={() => { setCategory(id); location.hash=`settings/${id}`; }}><Icon /><span>{label}</span></Button>)}
+          {categories.map(({ id, label, Icon }) => <Button key={id} color="secondary" variant="ghost" size="md" pill={false} className="settings-category" selected={!mobile&&category === id} aria-current={!mobile&&category === id ? 'page' : undefined} aria-controls={!mobile?`settings-${id}`:undefined} onClick={() => { setCategory(id); location.hash=`settings/${id}`; }}><Icon /><span className="settings-category-label">{label}</span>{mobile&&<ChevronRight className="settings-category-chevron" aria-hidden="true"/>}</Button>)}
         </nav>
         <div className="settings-space-note"><span>{data.profile.demo ? t("示例空间", "Demo space") : t("个人空间", "Personal space")}</span><strong>{displayProfileName(data.profile)}</strong><p>{t("资料保存在当前电脑", "Data stays on this computer")}</p></div>
       </aside>
-      <div className="settings-detail">
+      <div className="settings-detail" hidden={mobile&&!mobileDetail}>
         {/* Keep each category mounted with its own scroll container, preserving unsaved input and reading position. */}
         <section id="settings-general" className="settings-panel" hidden={category !== 'general'} aria-labelledby="settings-general-title"><GeneralSettings value={appearance} status={appearanceStatus} onChange={onAppearance} data={data} onRefresh={onRefresh} /></section>
         <section id="settings-personal" className="settings-panel" hidden={category !== 'personal'} aria-labelledby="settings-personal-title"><PersonalSpace data={data} onRefresh={onRefresh} /></section>
 
         <section id="settings-model" className="settings-panel" hidden={category !== 'model'} aria-labelledby="settings-model-title">
-          <ModelSettings data={data} onRefresh={onRefresh} />
+          <ModelSettings data={data} onRefresh={onRefresh} presentation={presentation}/>
         </section>
 
         <section id="settings-connectors" className="settings-panel" hidden={category !== 'connectors'} aria-labelledby="settings-connectors-title"><ConnectorsSettings data={data} onRefresh={onRefresh}/></section>

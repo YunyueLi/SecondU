@@ -9,6 +9,7 @@ import {approvalOptions} from './composer/ExecutionControls';
 import {write,messageOf} from './api';
 import { UpdateSettings } from './UpdateSettings';
 import { useUnsavedChanges } from './useUnsavedChanges';
+import { ProactiveContactSetting } from './ProactiveContactSetting';
 
 export function GeneralSettings({ value, status, onChange, data, onRefresh }: { value: Appearance; status: AppearanceStatus; onChange: (update: Partial<Appearance>) => void;data:Bootstrap;onRefresh:()=>Promise<void> }) {
   const [executionSaving,setExecutionSaving]=useState(false),[executionError,setExecutionError]=useState('');
@@ -31,6 +32,7 @@ export function GeneralSettings({ value, status, onChange, data, onRefresh }: { 
         <div><h3><label htmlFor="settings-approval-mode">{t('默认操作权限','Default permissions')}</label></h3><p>{options.find(option=>option.value===approvalMode)?.description}</p></div>
         <Select {...compactSelectProps} id="settings-approval-mode" value={approvalMode} disabled={executionSaving} onChange={option=>{void changeApproval(option.value as ApprovalMode);}} options={options.map(({value,label})=>({value,label}))}/>
       </div>
+      <ProactiveContactSetting data={data} onRefresh={onRefresh} />
     </div>
     {executionError&&<p role="alert" className="artwork-error">{executionError}</p>}
     <p className="general-save-status settings-save-status" role="status">{status.error ? t('保存未完成', 'Not saved') : status.saving ? t('正在保存', 'Saving') : <><Check />{t('已保存', 'Saved')}</>}</p>

@@ -6,7 +6,7 @@ import os from 'node:os';
 import path from 'node:path';
 import {Store} from '../server/store.mjs';
 import {createApp} from '../server/index.mjs';
-import {saveAttachment,getAttachment,messageInput,taskAttachmentInput,ATTACHMENT_LIMIT} from '../server/attachments.mjs';
+import {saveAttachment,getAttachment,messageInput,taskAttachmentInput,videoMime,ATTACHMENT_LIMIT,STORED_ATTACHMENT_LIMIT} from '../server/attachments.mjs';
 import {createTask} from '../server/domain.mjs';
 import {startChatBridge,toChatRequest,toMessagesRequest,runConfiguredCodex} from '../server/chat-bridge.mjs';
 
@@ -14,6 +14,9 @@ import {startChatBridge,toChatRequest,toMessagesRequest,runConfiguredCodex} from
 const png='iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGP4z8DwHwAFAAH/iZk9HQAAAABJRU5ErkJggg==';
 const imageUrl=`data:image/png;base64,${png}`;
 const upload={name:'合成像素.png',mime:'image/png',data:png};
+// Container-only protocol fixture; no claim of playable frames or video analysis.
+const box=(type,...parts)=>{const payload=Buffer.concat(parts),header=Buffer.alloc(8);header.writeUInt32BE(payload.length+8);header.write(type,4,'ascii');return Buffer.concat([header,payload]);};
+const mp4=Buffer.concat([box('ftyp',Buffer.from('isom\0\0\0\0isom','binary')),box('moov',box('trak',box('mdia',box('hdlr',Buffer.concat([Buffer.alloc(8),Buffer.from('vide'),Buffer.alloc(12)]))))),box('mdat',Buffer.from([1,2,3,4]))]);
 function storeFixture(t){const directory=mkdtempSync(path.join(os.tmpdir(),'hither-attachments-')),store=new Store(directory,{seed:false});t.after(()=>{store.close();rmSync(directory,{recursive:true,force:true});});return {store,directory};}
 async function fixture(t,{runCodex}={}){
  const directory=mkdtempSync(path.join(os.tmpdir(),'hither-attachment-api-')),calls=[];
@@ -38,10 +41,40 @@ test('attachment storage retains exact originals, private permissions and metada
 test('uploads reject spoofed images and oversize input, while unsupported files remain stored without claiming understanding',t=>{
  const {store}=storeFixture(t);
  for(const body of [{...upload,data:Buffer.from('<svg onload="alert(1)">').toString('base64')},{...upload,name:'../a.png'},{...upload,data:'!!!!'},{...upload,mime:'text/plain\r\nX-Test:x'}])assert.throws(()=>saveAttachment(store,body));
- assert.throws(()=>saveAttachment(store,{...upload,data:Buffer.alloc(ATTACHMENT_LIMIT+1).toString('base64')}),error=>error.status===413);
+ assert.throws(()=>saveAttachment(store,{...upload,data:Buffer.alloc(STORED_ATTACHMENT_LIMIT+1).toString('base64')}),error=>error.status===413);
+ assert.throws(()=>saveAttachment(store,{name:'spoofed.mp4',mime:'video/mp4',data:Buffer.from([0,1,2,3]).toString('base64')}),error=>error.code==='invalid_attachment');
  assert.equal(store.list('attachments').length,0);
- const file=saveAttachment(store,{name:'synthetic.mp4',mime:'video/mp4',data:Buffer.from([0,1,2,3]).toString('base64')});assert.equal(file.kind,'file');assert.equal(getAttachment(store,file.id).data.length,4);
+ const file=saveAttachment(store,{name:'synthetic.mp4',mime:'video/mp4',data:mp4.toString('base64')});assert.equal(file.kind,'file');assert.equal(getAttachment(store,file.id).data.length,mp4.length);
  assert.throws(()=>createTask(store,{prompt:'Explain this',mode:'live',attachmentIds:[file.id]}),error=>error.code==='unsupported_attachment');assert.equal(store.list('tasks').length,0);
+});
+
+test('sources retain media originals without model processing and reject empty or foreign references',async t=>{
+ const f=await fixture(t),attachment=(await f.api('attachments',{name:'container.mp4',mime:'video/mp4',data:mp4.toString('base64')})).value;
+ const saved=await f.api('sources',{title:'Container test original',kind:'document',text:'',attachmentIds:[attachment.id]});assert.equal(saved.status,201);assert.equal(saved.value.text,'');assert.deepEqual(saved.value.attachmentIds,[attachment.id]);assert.equal(f.calls.length,0);
+ const read=(await f.api(`sources/${saved.value.id}`)).value;assert.deepEqual(read,saved.value);assert.equal((await f.api(`sources/${saved.value.id}`,{text:'overwrite'},'PUT')).status,405);
+ assert.equal((await f.api('sources',{title:'Empty',text:''})).status,400);assert.equal((await f.api('sources',{title:'Unknown',text:'',attachmentIds:['attachment-missing']})).status,404);
+ const textAttachment=(await f.api('attachments',{name:'large.txt',mime:'text/plain',data:Buffer.alloc(ATTACHMENT_LIMIT+1,65).toString('base64')}));assert.equal(textAttachment.status,201);
+ assert.equal((await f.api('sources',{title:'Large original',attachmentIds:[textAttachment.value.id]})).status,201);
+ const task=await f.api('tasks',{mode:'live',prompt:'Read',attachmentIds:[textAttachment.value.id]});assert.equal(task.status,413);assert.equal(task.value.code,'model_attachment_too_large');assert.equal(f.calls.length,0);
+});
+
+test('validated video originals support exact ranges and HEAD while unvalidated files remain downloads',async t=>{
+ const f=await fixture(t),saved=(await f.api('attachments',{name:'container.mp4',mime:'video/mp4',data:mp4.toString('base64')})).value;
+ assert.equal(videoMime(mp4),'video/mp4');assert.equal(videoMime(mp4.subarray(0,20)),undefined);assert.equal(videoMime(Buffer.from('not a video')),undefined);
+ const url=f.base+saved.url,full=await fetch(url);assert.equal(full.status,200);assert.equal(full.headers.get('content-type'),'video/mp4');assert.match(full.headers.get('content-disposition'),/^inline;/);assert.deepEqual(Buffer.from(await full.arrayBuffer()),mp4);
+ for(const [range,start,end] of [['bytes=0-7',0,7],['bytes=8-',8,mp4.length-1],['bytes=-4',mp4.length-4,mp4.length-1],['bytes=0-99999',0,mp4.length-1]]){const response=await fetch(url,{headers:{Range:range}});assert.equal(response.status,206);assert.equal(response.headers.get('content-range'),`bytes ${start}-${end}/${mp4.length}`);assert.deepEqual(Buffer.from(await response.arrayBuffer()),mp4.subarray(start,end+1));}
+ for(const range of ['bytes=9999-','bytes=7-2','bytes=0-1,4-5','bytes=-0','bytes=-']){const response=await fetch(url,{headers:{Range:range}});assert.equal(response.status,416);assert.equal(response.headers.get('content-range'),`bytes */${mp4.length}`);assert.equal((await response.arrayBuffer()).byteLength,0);}
+ const head=await fetch(url,{method:'HEAD',headers:{Range:'bytes=0-3'}});assert.equal(head.status,200);assert.equal(head.headers.get('content-length'),String(mp4.length));assert.equal((await head.arrayBuffer()).byteLength,0);
+ const unknown=(await f.api('attachments',{name:'file.bin',mime:'application/octet-stream',data:Buffer.from('unparsed original').toString('base64')})).value,download=await fetch(f.base+unknown.url);assert.equal(download.headers.get('content-type'),'application/octet-stream');assert.match(download.headers.get('content-disposition'),/^attachment;/);
+});
+
+test('video container identification distinguishes QuickTime and WebM and rejects audio/image brands or malformed boxes',()=>{
+ const mov=Buffer.from(mp4);mov.write('qt  ',8,'ascii');assert.equal(videoMime(mov),'video/quicktime');
+ const webm=Buffer.from('1a45dfa3874282847765626d1853806780','hex');assert.equal(videoMime(webm),'video/webm');
+ assert.equal(videoMime(Buffer.from('1a45dfa3874282847765626d185380','hex')),undefined);
+ const audio=Buffer.from(mp4);audio.write('soun',audio.indexOf(Buffer.from('vide')),'ascii');assert.equal(videoMime(audio),undefined);
+ const avif=Buffer.from(mp4);avif.write('avif',8,'ascii');assert.equal(videoMime(avif),undefined);
+ const overflow=Buffer.from(mp4);overflow.writeUInt32BE(0xffffffff,0);assert.equal(videoMime(overflow),undefined);
 });
 
 test('replaced attachment symlinks never read outside the attachment directory',t=>{

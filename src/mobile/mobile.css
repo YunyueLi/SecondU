@@ -1,0 +1,158 @@
+/* Phone layout adapts the product workspaces; typography and colors inherit SDK and product tokens. */
+html:has(body.mobile-root),body.mobile-root{height:100%;overflow:hidden;overscroll-behavior:none}
+body.mobile-root #root{height:var(--mobile-viewport-height,100dvh);overflow:hidden}
+.mobile-root{--mobile-reading-font:max(16px,var(--hither-font-body));--mobile-control-size:44px}
+.mobile-shell{height:var(--mobile-viewport-height,100dvh);width:100%;max-width:600px;margin:0 auto;display:flex;position:relative;overflow:hidden;color:var(--color-text);background:var(--color-surface);font-family:var(--font-sans)}
+.mobile-shell [hidden]{display:none!important}
+.mobile-workspace{display:flex;flex:1;flex-direction:column;min-width:0;min-height:0;overflow:hidden}
+.mobile-chat-host{display:flex;flex:1;min-width:0;min-height:0;overflow:hidden}
+.mobile-header{display:flex;align-items:center;gap:var(--hither-space-2);padding:calc(var(--hither-space-2) + env(safe-area-inset-top)) var(--hither-space-3) var(--hither-space-2);flex:none;min-height:60px;background:var(--color-surface)}
+.mobile-header h1{flex:1;min-width:0;font-size:var(--hither-font-settings-title);font-weight:550;line-height:1.5;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin:0}
+.mobile-shell .mobile-nav-button{width:var(--mobile-control-size);height:var(--mobile-control-size);min-width:var(--mobile-control-size);min-height:var(--mobile-control-size);padding:10px;flex:none}
+.mobile-main{flex:1;min-width:0;min-height:0;overflow:auto;overscroll-behavior:contain;padding:0 0 env(safe-area-inset-bottom)}
+.mobile-offline{display:flex;align-items:center;gap:var(--hither-space-2);padding:var(--hither-space-2) var(--hither-space-4);background:var(--color-surface-secondary);font-size:var(--hither-font-caption);line-height:1.7;flex:none}
+.mobile-offline>span{flex:1}
+.mobile-shell button,.mobile-shell a{touch-action:manipulation}
+.mobile-start{min-height:100dvh;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:var(--hither-space-5);padding:var(--hither-space-5)}
+.mobile-start>svg{width:40px;height:40px}
+.mobile-start>.hither-wordmark{width:130px;height:33px}
+.mobile-empty{padding:var(--hither-space-6) 0;display:flex;flex-direction:column;align-items:flex-start;gap:var(--hither-space-4)}
+
+/* The same AssistantWorkspace and composer remain mounted across navigation. */
+.mobile-shell .assistant-workspace.is-mobile{display:flex;flex:1;min-width:0;min-height:0;height:100%;width:100%;overflow:hidden;position:relative;background:var(--color-surface)}
+.mobile-shell .assistant-workspace.is-mobile .assistant-home-drag{display:none}
+.mobile-shell .assistant-workspace.is-mobile .conversation-pane{display:flex;flex-direction:column;flex:1;min-width:0;min-height:0;width:100%;overflow:hidden;position:relative}
+.mobile-shell .assistant-workspace.is-mobile .conversation-header{position:relative;display:flex;align-items:center;gap:var(--hither-space-1);flex:none;min-height:60px;height:auto;padding:calc(var(--hither-space-2) + env(safe-area-inset-top)) var(--hither-space-3) var(--hither-space-2);border-bottom:0;background:var(--color-surface)}
+.mobile-shell .assistant-workspace.is-mobile .conversation-header h1{flex:1;min-width:0;font-size:var(--hither-font-settings-title);font-weight:550;margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mobile-shell .assistant-workspace.is-mobile .conversation-header-actions{display:flex;gap:0;flex:none}
+.mobile-shell .assistant-workspace.is-mobile .conversation-header-actions>button{width:40px;min-width:40px;min-height:44px;height:44px;padding:10px}
+.mobile-shell .assistant-workspace.is-mobile .conversation-scroll{position:relative;flex:1;min-height:0;width:100%;overflow:auto;overscroll-behavior:contain;padding:0}
+.mobile-shell .assistant-workspace.is-mobile.is-home .conversation-scroll{display:flex;align-items:center;justify-content:center}
+.mobile-shell .assistant-workspace.is-mobile .assistant-welcome{max-width:100%;width:100%;padding:var(--hither-space-4);margin:0}
+.mobile-shell .assistant-workspace.is-mobile .welcome-start{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--hither-space-5);min-height:0}
+.mobile-shell .assistant-workspace.is-mobile .welcome-artwork{position:relative;width:100%;height:100px;max-height:none;margin:0;overflow:hidden}
+.mobile-shell .assistant-workspace.is-mobile .welcome-intro{padding:0;margin:0;text-align:center}
+.mobile-shell .assistant-workspace.is-mobile .welcome-intro h1{font-size:var(--hither-font-page-title-compact);font-weight:550;line-height:1.5;margin:0}
+.mobile-shell .assistant-workspace.is-mobile .task-thread{padding:var(--hither-space-4) var(--hither-space-5) var(--hither-space-5);max-width:100%;margin:0;min-width:0}
+.mobile-shell .assistant-workspace.is-mobile .message-content{font-size:var(--mobile-reading-font);line-height:1.8}
+.mobile-shell .assistant-workspace.is-mobile .message-user{max-width:90%;margin-left:auto}
+.mobile-shell .assistant-workspace.is-mobile .message-user-bubble{background:var(--color-surface-secondary);padding:var(--hither-space-3) var(--hither-space-4)}
+.mobile-shell .assistant-workspace.is-mobile .message-actions button{width:44px;min-width:44px;height:44px;min-height:44px}
+.mobile-shell .assistant-workspace.is-mobile .message-user-actions{opacity:1}
+.mobile-shell .assistant-workspace.is-mobile .task-context-trigger{min-height:44px}
+.mobile-shell .assistant-workspace.is-mobile .task-context-review{min-height:44px}
+.mobile-shell .assistant-workspace.is-mobile .composer-wrap{position:relative;inset:auto;transform:none;width:100%;max-width:none;margin:0;padding:var(--hither-space-2) var(--hither-space-3) calc(var(--hither-space-3) + env(safe-area-inset-bottom));flex:none;background:var(--color-surface)}
+.mobile-shell .assistant-workspace.is-mobile .composer{display:block;width:100%;border:1px solid var(--color-border);border-radius:var(--hither-radius-composer);padding:0;background:var(--color-surface);box-shadow:0 3px 13px color-mix(in srgb,var(--color-text) 5%,transparent)}
+.mobile-shell .assistant-workspace.is-mobile .composer textarea{font-family:var(--font-sans);font-size:var(--mobile-reading-font);line-height:1.6;min-height:40px;max-height:140px;padding:var(--hither-space-2) var(--hither-space-3);background:transparent}
+.mobile-shell .assistant-workspace.is-mobile .composer-add-trigger,.mobile-shell .assistant-workspace.is-mobile .composer-voice-trigger{width:44px;height:44px;min-height:44px;min-width:44px;padding:10px}
+.mobile-shell .assistant-workspace.is-mobile .composer-trailing>button:last-child{width:40px;height:40px;min-height:40px;min-width:40px}
+.mobile-shell .assistant-workspace.is-mobile .composer-context-usage{width:30px;height:44px}
+.mobile-shell .assistant-workspace.is-mobile .mobile-latest{position:absolute;bottom:140px;left:50%;transform:translateX(-50%);z-index:4;white-space:nowrap;background:var(--color-surface)}
+.mobile-shell .artifact-message-card{max-width:100%;width:100%;min-width:0}
+.mobile-shell .artifact-card-copy{min-width:0}
+.mobile-shell .artifact-card-copy strong{white-space:normal;overflow-wrap:anywhere}
+.mobile-shell .approval-actions{flex-wrap:wrap}
+.mobile-shell .approval-actions button{min-height:44px}
+.mobile-shell :is(pre,table){max-width:100%;overflow:auto}
+.mobile-shell .message-content table{display:block}
+
+
+.mobile-shell .composer-main-layer-phone{display:flex;flex-direction:column;align-items:stretch;gap:0;padding:var(--hither-space-2);border:0;box-shadow:none;background:transparent}
+.mobile-shell .composer.composer-phone{display:block;width:100%;min-width:0}
+.mobile-shell .mobile-main[data-mobile-layout=conversation]{padding:0;overflow:hidden}
+.mobile-shell .mobile-main[data-mobile-layout=conversation] .ag-conversation{min-height:0;height:100%;overflow:hidden}
+.mobile-root .mobile-sheet-actions>a{display:flex;align-items:center;gap:var(--hither-space-3);width:100%;min-height:48px;padding:var(--hither-space-3);text-align:left;text-decoration:none;font-size:16px}
+.mobile-shell .composer-phone-attachments:empty{display:none}
+.mobile-shell .composer-phone-attachments{min-width:0;max-height:140px;overflow:auto}
+.mobile-shell .composer-phone-input{min-width:0;width:100%}
+.mobile-shell .composer-phone-input .composer-input{width:100%;min-height:40px}
+.mobile-shell .composer-phone-tools{display:flex;align-items:center;gap:var(--hither-space-1);min-width:0}
+.mobile-shell .composer-phone-tools .composer-leading{display:flex;flex:none;align-items:center;width:auto;margin:0}
+.mobile-shell .composer-phone-tools .composer-trailing{display:flex;flex:1;align-items:center;gap:var(--hither-space-1);min-width:0;margin:0}
+.mobile-shell .composer-phone-tools .composer-model-picker{margin-right:auto;flex:0 1 auto;min-width:0;max-width:none;height:44px;padding-inline:var(--hither-space-2)}
+.mobile-shell .composer-phone-tools .composer-model-name{max-width:100%;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mobile-shell .mobile-history{padding:var(--page-padding-top) var(--page-padding-inline) var(--hither-space-6)}
+
+/* Drawer uses the same product objects and SDK controls. */
+.mobile-drawer-layer{position:absolute;inset:0;z-index:50;display:flex;overflow:hidden}
+.mobile-drawer-scrim{position:absolute;inset:0;border:0;background:color-mix(in srgb,var(--color-text) 26%,transparent)}
+.mobile-drawer{position:relative;display:flex;flex-direction:column;width:min(88%,330px);height:100%;min-height:0;background:var(--color-surface-secondary);padding:calc(var(--hither-space-2) + env(safe-area-inset-top)) var(--hither-space-3) 0;outline:0;animation:mobile-drawer-in var(--hither-motion-fast) ease-out}
+.mobile-drawer>header{display:flex;align-items:center;gap:var(--hither-space-2);min-height:48px;padding:0 var(--hither-space-2) var(--hither-space-2);flex:none}
+.mobile-drawer>header>svg{width:24px;height:24px}
+.mobile-drawer>header>.hither-wordmark{width:100px;height:26px}
+.mobile-drawer>header>button{margin-left:auto;min-width:44px;min-height:44px}
+.mobile-drawer-scroll{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;padding-bottom:var(--hither-space-4)}
+.mobile-shell .mobile-drawer-action{display:flex;align-items:center;justify-content:flex-start;width:100%;gap:var(--hither-space-3);min-height:44px;height:auto;padding:var(--hither-space-3);font-size:var(--mobile-reading-font);font-weight:400;line-height:1.5;border-radius:var(--hither-radius-control)}
+.mobile-drawer-action>svg{width:20px;height:20px;flex:none}
+.mobile-drawer-action>svg:last-child:not(:first-child){margin-left:auto;width:16px;height:16px;transition:transform var(--hither-motion-fast)}
+.mobile-drawer-action>.is-collapsed{transform:rotate(-90deg)}
+.mobile-drawer-subnav{padding-left:var(--hither-space-4)}
+.mobile-recent-chats{padding-top:var(--hither-space-4);margin-top:var(--hither-space-3);border-top:1px solid var(--color-border-subtle)}
+.mobile-recent-chats>a{display:flex;align-items:center;padding:var(--hither-space-3);min-height:44px;text-decoration:none;font-size:var(--hither-font-label);line-height:1.5;border-radius:var(--hither-radius-control);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mobile-recent-chats>a:first-child{color:var(--color-text-secondary);font-size:var(--hither-font-caption);justify-content:space-between}
+.mobile-recent-chats>a:first-child>svg{width:14px;height:14px}
+.mobile-recent-chats>a[aria-current=page]{background:var(--color-surface-tertiary)}
+.mobile-drawer>footer{border-top:1px solid var(--color-border-subtle);padding:var(--hither-space-3) var(--hither-space-2) calc(var(--hither-space-3) + env(safe-area-inset-bottom));flex:none}
+.mobile-drawer>footer>a{display:flex;align-items:center;gap:var(--hither-space-3);text-decoration:none;min-height:44px}
+.mobile-drawer>footer>a>span:nth-child(2){flex:1;font-size:var(--hither-font-label)}
+.mobile-drawer>footer small{display:block;font-size:var(--hither-font-meta);color:var(--color-text-secondary);margin-top:var(--hither-space-1)}
+.mobile-drawer>footer svg{width:16px;height:16px;color:var(--color-text-secondary)}
+
+/* All personal-understanding sections remain present, with existing source and revision actions. */
+.mobile-shell .portrait-fact-text{font-size:var(--mobile-reading-font);line-height:1.8}
+.mobile-shell .portrait-fact-row{min-height:44px;padding-block:var(--hither-space-3)}
+.mobile-shell .portrait-person-row,.mobile-shell .portrait-career button,.mobile-shell .portrait-more{min-height:44px}
+.mobile-root .portrait-detail-sheet .portrait-detail{border:0;padding:0;max-width:none;width:100%;position:static;background:transparent}
+.mobile-root .portrait-detail-sheet .portrait-detail>header{display:none}
+.mobile-root .portrait-detail-sheet .portrait-detail-statement{font-size:var(--mobile-reading-font);line-height:1.8}
+.mobile-root .portrait-detail-sheet .portrait-detail-actions{flex-wrap:wrap}
+.mobile-root .portrait-detail-sheet .portrait-detail-actions button{min-height:44px}
+.mobile-root .bottom-sheet .source-text{font-size:var(--mobile-reading-font);line-height:1.8}
+.mobile-root .bottom-sheet textarea{font-size:var(--mobile-reading-font)}
+.mobile-root .bottom-sheet .source-pill{min-height:44px}
+.mobile-shell .source-pill{min-height:44px}
+.mobile-root .twin-material-dialog.bottom-sheet{height:min(84dvh,720px);max-height:calc(100dvh - 32px)}
+.mobile-root .twin-material-dialog>.bottom-sheet-content{display:flex;flex-direction:column;overflow:hidden;flex:1;min-height:0}
+.mobile-root .twin-material-dialog .bottom-sheet-content>.twin-material-dialog-body{flex:1;min-height:0;overflow:auto}
+.mobile-root .twin-material-dialog .bottom-sheet-content>footer{flex:none}
+
+/* Existing settings become a category list followed by its real detail page. */
+.mobile-shell .mobile-view-settings{padding:0;overflow:hidden}
+.mobile-shell .settings-workspace{height:100%;min-height:0;width:100%;max-width:none}
+.mobile-shell .settings-layout{display:flex;flex-direction:column;min-height:0;height:100%;width:100%}
+.mobile-shell .settings-navigation{width:100%;min-width:0;padding:var(--hither-space-3) var(--hither-space-5) var(--hither-space-5);border:0;overflow:auto;min-height:0}
+.mobile-shell .settings-navigation>h1{display:none}
+.mobile-shell .settings-navigation nav{display:flex;flex-direction:column;gap:var(--hither-space-1);overflow:visible}
+.mobile-shell .settings-category{width:100%;min-height:52px;justify-content:flex-start;padding-inline:var(--hither-space-3);font-size:var(--hither-font-label)}
+.mobile-shell .settings-detail{width:100%;min-width:0;flex:1;min-height:0;padding:0;overflow:hidden}
+.mobile-shell .settings-panel{padding:var(--hither-space-4) var(--hither-space-5) calc(var(--hither-space-5) + env(safe-area-inset-bottom));height:100%;min-height:0;overflow:auto}
+.mobile-shell .settings-panel h2{font-size:var(--hither-font-page-title-compact)}
+.mobile-shell .settings-panel input,.mobile-shell .settings-panel textarea{font-size:var(--mobile-reading-font)}
+.mobile-shell .settings-device-summary,.mobile-shell .settings-data-summary{padding:var(--hither-space-4)}
+.mobile-shell .settings-device-identity,.mobile-shell .settings-runtime-row,.mobile-shell .settings-data-actions .settings-data-action{flex-wrap:wrap}
+.mobile-shell .settings-device-identity h3{overflow-wrap:anywhere}
+.mobile-shell .settings-space-note{margin-top:var(--hither-space-5)}
+.mobile-shell .project-topline{flex-wrap:wrap}
+.mobile-shell .artifact-workspace{min-width:0;max-width:none}
+.mobile-shell .artifact-editor{min-width:0;max-width:100%}
+.mobile-root .bottom-sheet :is(img,canvas,iframe),.mobile-shell :is(img,canvas,iframe){max-width:100%}
+@keyframes mobile-drawer-in{from{transform:translateX(-20px);opacity:.6}to{transform:none;opacity:1}}
+@media(min-width:761px){.mobile-shell{border-inline:1px solid var(--color-border-subtle)}}
+@media(max-width:360px){.mobile-shell .assistant-workspace.is-mobile .task-thread{padding-inline:var(--hither-space-4)}}
+[data-motion=reduced] .mobile-drawer{animation:none}
+
+/* SDK buttons wrap their contents in a label span; align that shared primitive too. */
+.mobile-shell .mobile-drawer-action>span,.mobile-shell .settings-category>span{width:100%;justify-content:flex-start;gap:var(--hither-space-3)}
+.mobile-shell .mobile-drawer-action>span>svg:last-child:not(:first-child){margin-left:auto}
+.mobile-shell .mobile-history>nav{padding-top:var(--hither-space-4)}
+.mobile-root .mobile-sheet-actions{display:flex;flex-direction:column;gap:var(--hither-space-2)}
+.mobile-root .mobile-sheet-actions>button{min-height:48px;justify-content:flex-start}
+.mobile-root .mobile-sheet-actions>button>span{width:100%;justify-content:flex-start}
+.mobile-root .task-resources-sheet section{padding:var(--hither-space-3) 0;border-bottom:1px solid var(--color-border-subtle)}
+.mobile-root .task-resources-sheet h3{display:flex;justify-content:space-between;font-size:var(--mobile-reading-font);font-weight:550}
+.mobile-root .task-resources-sheet p{font-size:var(--mobile-reading-font);color:var(--color-text-secondary);line-height:1.8}
+.mobile-root .task-resources-sheet .task-resource-row{width:100%;min-height:48px}
+.mobile-root .task-resources-sheet footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:var(--hither-space-2);padding-top:var(--hither-space-3)}
+.mobile-shell .remote-task-workspace{width:100%;min-width:0;flex:1}
+.mobile-shell .remote-task-workspace>.conversation-header{padding-inline:var(--hither-space-3);gap:var(--hither-space-1)}
+.mobile-shell .remote-task-workspace>.conversation-header h1{font-size:var(--hither-font-settings-title);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}

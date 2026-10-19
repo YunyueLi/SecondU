@@ -1,0 +1,9 @@
+/* Explicit phone presentation. The desktop sidebar keeps its existing density. */
+.recent-chats-mobile .recent-chat-row{min-height:44px;max-width:100%;padding:0}
+.recent-chats-mobile .recent-chat-row .recent-room-link{flex:1;min-width:0;max-width:100%;width:100%;min-height:44px;padding:var(--hither-space-2) 44px var(--hither-space-2) var(--hither-space-3)}
+.recent-chats-mobile .recent-room-link>span{width:100%;min-width:0;gap:var(--hither-space-2);justify-content:flex-start}
+.recent-chats-mobile .recent-chat-copy{flex:1;min-width:0}
+.recent-chats-mobile .recent-chat-copy strong{display:block;font-size:var(--hither-font-label);font-weight:400;line-height:1.6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.recent-chats-mobile .recent-hither-avatar{width:22px;height:22px;flex:0 0 22px}
+.recent-chats-mobile .recent-hither-avatar svg{width:17px;height:17px}
+.recent-chats-mobile .recent-chat-menu{opacity:1;pointer-events:auto;width:44px;height:44px;right:0}

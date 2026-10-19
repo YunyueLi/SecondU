@@ -17,3 +17,5 @@
 @media(prefers-reduced-motion:reduce){.cap-story-visual,.cap-story-visual>img,.cap-visual-enter{transition:none}.cap-story-visual:hover>img{transform:none}}
 
 .cap-story.without-screen{grid-template-columns:1fr}.cap-story.without-screen .cap-story-intro{grid-column:1;max-width:720px}
+
+.cap-config a{color:inherit;font:inherit;text-underline-offset:5px;text-decoration-thickness:1px;padding:10px 0;white-space:nowrap}.cap-config a:focus-visible{outline:2px solid currentColor;outline-offset:5px}

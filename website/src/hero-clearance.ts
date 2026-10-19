@@ -1,7 +1,7 @@
 import {alphaDistance} from './hero-alpha-distance';
 
-export const PORTRAIT_ALPHA_REQUEST = 'secondu:portrait-alpha-request';
-export const PORTRAIT_ALPHA_FRAME = 'secondu:portrait-alpha-frame';
+import {PORTRAIT_ALPHA_REQUEST,PORTRAIT_ALPHA_FRAME} from '../../src/shared/portrait-events';
+export {PORTRAIT_ALPHA_REQUEST,PORTRAIT_ALPHA_FRAME};
 
 const SAMPLE_INTERVAL = 250;
 const SAMPLE_SIZE = 256;

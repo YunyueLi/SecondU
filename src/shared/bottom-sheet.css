@@ -1,0 +1,19 @@
+.bottom-sheet-overlay{position:fixed;inset:0 0 auto;height:var(--mobile-viewport-height,100dvh);z-index:100;display:flex;align-items:flex-end;justify-content:center;background:color-mix(in srgb,var(--color-text) 26%,transparent)}
+.bottom-sheet{width:min(100%,600px);max-height:calc(var(--mobile-viewport-height,100dvh) - 24px - env(safe-area-inset-top));display:flex;flex-direction:column;background:var(--color-surface);color:var(--color-text);border-radius:var(--hither-radius-composer) var(--hither-radius-composer) 0 0;padding:var(--hither-space-2) var(--hither-space-5) calc(var(--hither-space-5) + env(safe-area-inset-bottom));box-shadow:var(--shadow-xl);outline:0;animation:bottom-sheet-enter var(--hither-motion-fast) ease-out}
+.bottom-sheet-handle{flex:none;width:36px;height:4px;border-radius:var(--hither-radius-control);background:var(--color-border);margin:0 auto var(--hither-space-2)}
+.bottom-sheet>header{display:flex;align-items:center;gap:var(--hither-space-3);padding-bottom:var(--hither-space-3);flex:none}
+.bottom-sheet>header h2{font-size:var(--hither-font-settings-title);font-weight:550;line-height:1.5;flex:1;margin:0}
+.bottom-sheet>header>button{width:44px;height:44px;min-height:44px;min-width:44px}
+.bottom-sheet-content{min-height:0;overflow:auto;overscroll-behavior:contain;font-size:max(16px,var(--hither-font-body));line-height:1.65}
+.bottom-sheet .composer-add-files{width:100%;justify-content:flex-start;min-height:48px}
+.bottom-sheet .composer-menu-tools{display:flex;flex-direction:column;gap:var(--hither-space-2);border-top:1px solid var(--color-border-subtle);padding-top:var(--hither-space-3);margin-top:var(--hither-space-2)}
+.bottom-sheet .composer-menu-tools>button{width:100%;justify-content:flex-start;min-height:48px}
+.bottom-sheet .composer-voice-content{padding:0}
+.bottom-sheet .composer-voice-content h3{font-size:var(--hither-font-section-title);font-weight:550}
+.bottom-sheet .composer-voice-content p{font-size:max(16px,var(--hither-font-body));line-height:1.65}
+.bottom-sheet .composer-voice-actions button{min-height:44px}
+@keyframes bottom-sheet-enter{from{transform:translateY(20px);opacity:.6}to{transform:none;opacity:1}}
+@media(prefers-reduced-motion:reduce){.bottom-sheet{animation:none}}
+[data-motion=reduced] .bottom-sheet{animation:none}
+
+.bottom-sheet-overlay[hidden]{display:none}

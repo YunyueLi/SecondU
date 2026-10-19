@@ -60,5 +60,5 @@ export default defineConfig({
     // them restarts an open conversation or guide while results are being saved.
     watch: { ignored: ['**/.hither/**', '**/.local/**', '**/docs/**', '**/tests/**', '**/desktop-build/**'] },
   },
-  build: { outDir: 'dist', sourcemap: true },
+  build: { outDir: 'dist', sourcemap: true, rollupOptions: { input: { main: fileURLToPath(new URL('./index.html', import.meta.url)), mobile: fileURLToPath(new URL('./mobile.html', import.meta.url)) } } },
 });

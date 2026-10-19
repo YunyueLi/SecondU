@@ -1,0 +1,1 @@
+.screen-context-question{display:flex;flex-direction:column;gap:12px;margin-top:16px}.screen-context-question>button{align-self:flex-start}.screen-context-question>p{font-size:12px;line-height:1.6;color:var(--color-text-secondary);margin:0}.screen-context-question textarea{resize:vertical;min-height:88px}

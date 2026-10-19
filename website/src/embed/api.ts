@@ -2,6 +2,7 @@ import { getLocale, t } from '../../../src/i18n';
 import { createWebsiteExample, loadWebsiteDevelopment, type ExampleLanguage } from './fixture';
 import { ExampleRuntime, ExampleError } from './memory-runtime.mjs';
 import type { Bootstrap } from '../../../shared/contracts';
+import type { TwinProactiveSettings } from '../../../shared/twin-building';
 import { decisionExampleTaskId } from '../../../shared/demo-decision.mjs';
 
 const stores = new Map<ExampleLanguage, ExampleRuntime>();
@@ -60,6 +61,8 @@ export async function api<T>(path: string, init: RequestInit = {}, _originalSpac
   }
 }
 export const write = <T,>(path: string, body?: unknown, method = 'POST') => api<T>(path, { method, body: JSON.stringify(body ?? {}) });
+export const loadProactiveSettings = () => api<TwinProactiveSettings>('/settings/proactive');
+export const saveProactiveSettings = (enabled: boolean, baseRevision: number) => write<TwinProactiveSettings>('/settings/proactive', {enabled, baseRevision}, 'PUT');
 export async function getArrayBuffer(_path: string, _mime: string, signal?: AbortSignal): Promise<ArrayBuffer> {
   if (signal?.aborted) throw new DOMException('Aborted', 'AbortError');
   // Canonical examples contain authored Markdown. Office conversion requires the

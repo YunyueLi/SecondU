@@ -40,6 +40,7 @@ export function deleteConnection(store,connectionId,runner) {
   if(connectionId===store.defaultConnectionId())throw new HttpError(409,'请先选择另一条默认连接，再删除这条连接。','connection_in_use');
   if(store.list('agents').some(agent=>agent.connectionId===connectionId))throw new HttpError(409,'仍有 Agent 使用这条连接，请先修改其模型选择。','connection_in_use');
   if(store.list('tasks').some(task=>task.connectionId===connectionId))throw new HttpError(409,'已有任务记录绑定这条连接，为保留继续执行的能力，暂时不能删除。可以修改连接配置，或先删除对应任务。','connection_in_use');
+  if(['automations','twinCaptures'].some(collection=>store.list(collection).some(item=>item.connectionId===connectionId)))throw new HttpError(409,'自动化或材料整理仍引用这条连接，请先调整对应配置。','connection_in_use');
   if([...runner.active.values()].some(record=>record.models?.some(model=>model.settings.id===connectionId)))throw new HttpError(409,'这条连接仍在执行任务，请等任务结束或先中断。','connection_in_use');
   store.credentialTransaction(()=>{store.delete('modelConnections',connectionId);store.deleteConnectionKeys(connectionId);});return {ok:true};
 }

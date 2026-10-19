@@ -38,7 +38,7 @@ export function createProject(store,body,existing) {
   const project={id:existing?.id??`project-${randomUUID()}`,name:field(value.name,'name',100),kind,description:field(value.description??'','description',3000,true),archived:value.archived??false,createdAt:existing?.createdAt??stamp,updatedAt:stamp};
   if(kind==='local')project.path=existing?.kind==='local'&&value.path===existing.path?existing.path:resolveProjectDirectory(value.path);
   else {const raw=field(value.url,'url',2000);let url;try{url=new URL(raw);}catch{fail(400,'远端项目请填写完整的 HTTPS、SSH 或 Git 链接。');}if(!['https:','http:','ssh:','git:'].includes(url.protocol)||url.password||url.search||url.hash||(url.protocol!=='ssh:'&&url.username))fail(400,'远端链接不能携带凭据、查询参数或片段。');project.url=url.href;}
-  const referenced=existing&&(store.list('tasks').some(task=>task.projectId===existing.id)||store.list('agentRooms').some(room=>room.projectId===existing.id));
+  const referenced=existing&&['tasks','agentRooms','automations'].some(collection=>store.list(collection).some(item=>item.projectId===existing.id));
   if(referenced&&(project.kind!==existing.kind||project.path!==existing.path||project.url!==existing.url))fail(409,'这个项目已关联对话或任务。请新建项目来绑定其他位置，保留原文件与历史任务的对应关系。','project_in_use');
   if(kind==='local'&&overlapsData(project.path,store.protectedDataDirectory??store.directory))fail(400,`项目目录不能与 ${brand.name} 的数据和密钥目录重叠，请选择独立项目目录。`,'invalid_project_path');
   return project;

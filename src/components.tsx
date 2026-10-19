@@ -1,3 +1,4 @@
+import {BottomSheet} from './shared/BottomSheet';
 import './design-system/settings-type-scale.css';
 import { t, getLocale } from './i18n';
 import React, { useEffect, useRef, useId } from 'react';
@@ -39,9 +40,11 @@ const contentComponents = {
 };
 export function RichText({children,className}:{children:string;className?:string}) { return <Markdown className={`rich-text ${className || ''}`} components={contentComponents} remarkPlugins={[remarkHitherLinks]}>{children}</Markdown>; }
 export function Dialog({ title, children, onClose, className = '' }: { title: string; children: React.ReactNode; onClose: () => void; className?:string }) {
+  const mobile=document.body.classList.contains('mobile-root');
   const ref = useRef<HTMLDivElement>(null);
   const closeRef = useRef(onClose); closeRef.current = onClose;
   useEffect(() => {
+    if(mobile)return;
     const opener = document.activeElement as HTMLElement | null;
     const shell = document.querySelector<HTMLElement>('.app-shell');
     const wasInert = shell?.inert || false;
@@ -68,6 +71,7 @@ export function Dialog({ title, children, onClose, className = '' }: { title: st
     document.addEventListener('keydown', keys);
     return () => { document.removeEventListener('keydown', keys); if (shell) shell.inert = wasInert; if (opener?.isConnected) opener.focus(); };
   }, []);
+  if(mobile)return <BottomSheet title={title} onClose={onClose} className={className}>{children}</BottomSheet>;
   return createPortal(<div className="dialog-overlay" onMouseDown={event => { if (event.target === event.currentTarget) onClose(); }}><div ref={ref} className={`app-dialog ${className}`} role="dialog" aria-modal="true" aria-label={title} tabIndex={-1}><header><h2>{title}</h2><Button color="secondary" variant="ghost" uniform aria-label={t("关闭", "Close")} onClick={onClose}><CloseBold /></Button></header>{children}</div></div>, document.body);
 }
 export function Field({ label, hint, children }: { label: string; hint?: string; children: React.ReactNode }) {

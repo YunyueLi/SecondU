@@ -29,7 +29,7 @@ export function WorkbenchPanel({data,task,tab,artifactId,eventId,onTab,onClose,o
     </header>
     <div id={`${id}-content`} className="workbench-panel-content" role="tabpanel" aria-labelledby={`${id}-${tab}`}>
       {artifact&&<div className="workbench-document" hidden={tab!=='files'}><ArtifactEditor key={artifact.id} artifact={artifact} compact readOnly={false} onDirtyChange={onDirtyChange} onRefresh={onRefresh} onBack={()=>onArtifact(undefined)} viewState={editorView} onViewStateChange={onEditorViewChange}/></div>}
-      {(!artifact||tab!=='files')&&<TaskWorkbench data={data} task={task} tab={tab} eventId={eventId} onEvent={onEvent} onTab={onTab} onArtifact={onArtifact}/>}
+      {(!artifact||tab!=='files')&&<TaskWorkbench data={data} task={task} tab={tab} eventId={eventId} onEvent={onEvent} onTab={onTab} onArtifact={onArtifact} onRefresh={onRefresh}/>}
     </div>
   </div>;
 }

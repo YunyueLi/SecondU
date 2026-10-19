@@ -44,7 +44,7 @@
 .app-sidebar .recent-chat-row .recent-hither-avatar svg { width:16px;height:16px; }
 .app-sidebar .recent-chat-row .recent-chat-copy { min-width:0;flex:1; }
 .app-sidebar .recent-chat-row .recent-room-link strong { display:block;font-size:14px;line-height:20px;font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;overflow-wrap:normal; }
-.recent-chat-menu { position:absolute!important;right:3px;top:50%;transform:translateY(-50%);width:25px!important;height:28px!important;opacity:0;pointer-events:none; }
+.recent-chat-menu { position:absolute!important;right:3px;top:50%;transform:translateY(-50%);width:25px;height:28px;opacity:0;pointer-events:none; }
 .recent-chat-row:hover .recent-chat-menu,.recent-chat-row:focus-within .recent-chat-menu,.recent-chat-menu[data-state=open] { pointer-events:auto; }
 .app-sidebar .recent-chat-row:hover .recent-room-link,.app-sidebar .recent-chat-row:focus-within .recent-room-link { padding-right:33px; }
 .recent-chat-menu>span>svg { width:15px;height:15px; }.recent-chat-row:hover .recent-chat-menu,.recent-chat-row:focus-within .recent-chat-menu,.recent-chat-menu[data-state=open] { opacity:1; }

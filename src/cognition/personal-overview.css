@@ -81,3 +81,11 @@
 @media(max-width:1100px){.personal-overview .portrait-layout{grid-template-columns:minmax(0,1.7fr) minmax(230px,1fr);gap:24px}.personal-overview .portrait-context,.personal-overview .portrait-detail{padding-left:20px}.personal-overview .portrait-fact-group{grid-template-columns:72px minmax(0,1fr);gap:10px}.personal-overview .portrait-understandings{grid-template-columns:minmax(0,1fr);gap:20px}}
 @media(max-width:800px){.personal-overview .portrait-layout{grid-template-columns:minmax(0,1fr);gap:24px}.personal-overview .portrait-context,.personal-overview .portrait-detail{border-left:0;padding-left:0;border-top:1px solid var(--color-border-subtle);padding-top:20px}.personal-overview .portrait-context{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px}.personal-overview .portrait-circumstances{margin:0;padding:0;border:0}.personal-overview .portrait-understandings{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
 @media(max-width:540px){.personal-overview .portrait-fact-group{display:block}.personal-overview .portrait-fact-group>h3{padding-top:0}.personal-overview .portrait-understandings,.personal-overview .portrait-context{grid-template-columns:minmax(0,1fr);gap:20px}.personal-overview .portrait-circumstances{padding-top:20px;border-top:1px solid var(--color-border-subtle)}.personal-overview .portrait-career>li{grid-template-columns:74px minmax(0,1fr);gap:10px}.personal-overview .portrait-career time{font-size:12px}}
+
+/* Portalled phone details keep the profile's reading hierarchy without replacing the page beneath them. */
+.mobile-root .portrait-sheet-reading .portrait-detail{position:static;border:0;padding:0;scroll-margin:0}
+.mobile-root .portrait-sheet-reading .portrait-detail p{font-size:var(--mobile-reading-font,16px);line-height:1.75}
+.mobile-root .portrait-sheet-reading .portrait-detail h3{font-size:18px;line-height:26px}
+.mobile-root .portrait-sheet-reading .portrait-detail-actions{gap:8px;margin-top:24px}
+.mobile-root .portrait-sheet-reading :is(button,a){min-height:44px}
+.mobile-root .personal-overview.is-mobile .portrait-import-hint{font-size:14px;line-height:22px}

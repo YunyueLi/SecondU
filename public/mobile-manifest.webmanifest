@@ -1,0 +1,13 @@
+{
+  "id": "/mobile.html?space=demo-cn-v1",
+  "name": "SecondU 随身入口",
+  "short_name": "SecondU",
+  "description": "带来材料，继续与你的个人分身协作。",
+  "start_url": "/mobile.html?space=demo-cn-v1",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "lang": "zh-CN",
+  "icons": [{"src": "/brand/secondu-app-icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any"}]
+}

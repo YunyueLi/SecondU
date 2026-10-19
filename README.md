@@ -44,9 +44,17 @@ The **runnable desktop prototype** establishes this foundation. Cross-device con
 
 ## From personal context to useful work
 
-### Understand the person behind the task
+### Grow your twin from one piece of material
 
-Bring in an existing summary, review and correct its entries, then carry confirmed context into an editable task draft that you choose when to send. Your profile, timeline, relationships and sources make that understanding inspectable. For choices about a home, education, work or relationships, discuss facts, trade-offs and uncertainty in light of your experiences, values and long-term goals. The decision remains yours. [Follow the five-minute walkthrough](docs/PROTOTYPE.md#五分钟体验主线), or inspect the [synthetic context comparison](docs/CONTEXT-BENCHMARK.md).
+The **Grow your twin** workspace brings together seven entry points: **existing sources, text and notes, photos and videos, conversations, existing memory, connected sources, and your own thoughts**. Existing materials stay in the same library. The connection entry manages services; it does not imply that their data has already synced.
+
+For direct input, choose **Help understand me** or **Only this time**. In personal space, submitting saves the material and starts processing when a model and local runtime are configured; otherwise, it saves the material for later. Other imports preserve originals first, and you start processing from the source details. Photos and videos share the library; video storage and playback are supported, but video understanding is not yet available.
+
+**Save material → model processing → your review → a new task draft.** Suggested facts, people and experiences include their evidence. Accept, correct or skip each item. Confirmed personal material joins your records; session-only material keeps its processing and review history outside your long-term profile. Failures retain the material and reason, and retries are explicit.
+
+### Bring personal understanding into a task
+
+Your profile, timeline, relationships and sources make understanding inspectable and correctable. Choose context for a task and check what was actually used. Reviewed understanding can become an editable task draft that you finish and send. For work, learning or life choices, use your experiences, preferences and current constraints to discuss trade-offs. The decision remains yours. [Follow the five-minute walkthrough](docs/PROTOTYPE.md#连接模型后五分钟验证主线), or inspect the [synthetic context comparison](docs/CONTEXT-BENCHMARK.md).
 
 <p><a href="https://yunyueli.github.io/SecondU/product/embed.html?space=demo-us-v1&lang=en#self"><picture>
       <source media="(prefers-reduced-motion: reduce) and (prefers-color-scheme: dark)" srcset="docs/readme-assets/personal-context-en-dark.jpg">
@@ -57,7 +65,7 @@ Bring in an existing summary, review and correct its entries, then carry confirm
 
 ### Think through an important choice
 
-[Open the career discussion example](https://yunyueli.github.io/SecondU/product/embed.html?space=demo-us-v1&lang=en#example-decision) to see Caspian compare possible directions in light of his experience, working preferences and life outside work. Four exchanges and an editable outline live in the real task workspace. This is an authored fictional example: no model was called, no career preference became a profile fact, and no outreach or application was sent.
+[Open the career discussion example](https://yunyueli.github.io/SecondU/product/embed.html?space=demo-us-v1&lang=en#example-decision) to see how experience, working preferences and life outside work inform a comparison of possible directions. Four exchanges and an editable outline live in the real task workspace. This is an authored fictional example: no model was called, no career preference became a profile fact, and no outreach or application was sent.
 
 <p><a href="https://yunyueli.github.io/SecondU/product/embed.html?space=demo-us-v1&lang=en#example-decision"><picture>
       <source media="(prefers-color-scheme: dark)" srcset="docs/readme-assets/decision-support-en-dark.jpg">
@@ -85,6 +93,14 @@ Edit files beside the conversation, save versions and revisit earlier content. R
 | Projects and routines | Project materials, directories, goals and locally scheduled tasks. |
 | Limited capability sharing | Local text delegation and an A2A subset, with scoped authorization, approval and revocation. [Scope](docs/DELEGATION.md) |
 | A workspace you can inspect | Bilingual examples, themes, a component catalogue and an updateable development timeline. |
+
+### Continue when relevant material changes
+
+Enable **Let my twin contact me** in settings to consider new or updated sources in the current local space alongside active work. A read-only model evaluation prepares a sourced analysis, draft or judgment before deciding whether a new contribution belongs in a normal, replyable conversation. The setting is off by default; failed or deferred evaluations do not automatically replay. The local service must be running. Phone push notifications and proactive messages through external channels are not included. [Implementation and limits](docs/PROACTIVE_CONTACT.md)
+
+### Continue on a smaller screen
+
+The mobile entry reuses the same sources, twin-building flow and task components to view material, review understanding and continue conversations. It is available in the local browser; connecting an actual phone requires a separately configured private connection. Opening the view does not expose the service or establish cloud synchronization or background wake-up.
 
 ## Personal-context benchmark
 
@@ -138,7 +154,7 @@ The [12-direction roadmap](docs/ROADMAP.md) describes current foundations, next 
 | Context beyond one screen | Communication and real-world resources; multimodal continuity across devices; authorized expertise distribution |
 | A network built around people | A2A collaboration and service transactions; social and relationship discovery; continuously improving personal assets |
 
-**Development status:** the desktop supports context, tasks, teams and files. Automation needs the local service online. Cross-device, marketplace and Dating experiences are **Dev**; synchronization, calls, payments and matching remain planned. macOS arm64 has native delivery; Linux CI covers source builds and tests. [Verified scope](docs/PROTOTYPE.md#当前证据与限制)
+**Development status:** current source includes twin building, an original-material library, candidate review, task drafts, a mobile layout and local proactive contact. Context, tasks, teams and files continue to share the existing data and execution runtime. Automation and proactive contact require the local service to be running. Physical devices, remote hosts and external accounts need separate acceptance. Synchronization, cloud observation, calls, payments and matching remain planned; marketplace and Dating retain their **Dev** labels. macOS arm64 has native delivery; Linux CI covers source builds and tests. [Verified scope](docs/PROTOTYPE.md#当前证据与限制)
 
 ## How it works
 

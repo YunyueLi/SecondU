@@ -11,25 +11,26 @@ import { getGuideChapters, readGuideProgress, saveGuideProgress, completeGuideCh
 import { GuideFilm } from './GuideFilms';
 import './guide.css';
 export { hasSeenProductGuide } from './guideContent';
-export type ProductGuideProps = {onClose:()=>void;onNavigate:(target:string)=>void;initialChapter?:GuideChapterId};
+export type ProductGuideProps = {presentation?:'desktop'|'mobile';onClose:()=>void;onNavigate:(target:string)=>void;initialChapter?:GuideChapterId};
 
 const chapterIcons = { vision: User, cognition: Brain, life: Desktop, experts: Group, projects: Folder, devices: Glasses, world: Link, history: Loop };
 
-export function ProductGuide({onClose,onNavigate,initialChapter}:ProductGuideProps) {
+export function ProductGuide({presentation='desktop',onClose,onNavigate,initialChapter}:ProductGuideProps) {
+  const [scopeOpen,setScopeOpen]=useState(false);
   const [index,setIndex]=useState(()=>initialChapter?Math.max(0,getGuideChapters().findIndex(chapter=>chapter.id===initialChapter)):readGuideProgress().index);
   const [completed,setCompleted]=useState(()=>readGuideProgress().completed);
   const [openingExample,setOpeningExample]=useState(false),[exampleError,setExampleError]=useState('');
   const scrollRef=useRef<HTMLDivElement>(null);
   const chapters=getGuideChapters();const chapter=chapters[index];
   useEffect(()=>{saveGuideProgress(index,readGuideProgress().seen);scrollRef.current?.scrollTo({top:0});},[index]);
-  function chapterTo(next:number){setIndex(next);}
+  function chapterTo(next:number){setScopeOpen(false);setIndex(next);}
   function close(){saveGuideProgress(index,true);onClose();}
   async function explore(){if(index===chapters.length-1&&!isExampleSpace(currentSpace())){saveGuideProgress(index,true);onNavigate('self/import');onClose();return;}if(chapter.id==='vision'){setOpeningExample(true);setExampleError('');try{saveGuideProgress(index,true);await enterLocalSpace(isExampleSpace(currentSpace())?PERSONAL_SPACE:exampleSpaceForLocale(getLocale()));}catch(error){setExampleError(messageOf(error));setOpeningExample(false);}return;}if(!chapter.target){chapterTo(Math.min(index+1,chapters.length-1));return;}saveGuideProgress(index,true);onNavigate(chapter.target);onClose();}
   return <Dialog title={t('探索 SecondU','Explore SecondU')} onClose={close} className="product-guide-dialog">
     <div className="product-guide">
       <aside className="guide-chapters"><nav aria-label={t('产品介绍章节','Product guide chapters')}>{chapters.map((item,i)=>{const Icon=chapterIcons[item.id];return <button type="button" key={item.id} aria-current={i===index?'step':undefined} onClick={()=>chapterTo(i)}><Icon className="guide-chapter-icon" aria-hidden="true"/><span>{item.label}</span>{completed.includes(item.id)&&<CheckCircleFilled className="guide-chapter-check" aria-label={t('已看完','Completed')}/>}</button>;})}</nav><Button color="secondary" variant="ghost" size="sm" onClick={close}>{t('先去使用','Explore on my own')}</Button></aside>
       <section className="guide-page" aria-labelledby="guide-chapter-title">
-        <div className="guide-page-scroll" ref={scrollRef}><header className="guide-copy"><div className="guide-title-line"><h3 id="guide-chapter-title">{chapter.title}</h3><Popover key={chapter.id}><Popover.Trigger><Button className="guide-scope-trigger" color="secondary" variant="ghost" size="sm" aria-label={t('查看演示说明','About this demo')}><span>{chapter.preview?'Dev':t('操作演示','Product demo')}</span><InfoCircle/></Button></Popover.Trigger><Popover.Content side="bottom" align="end" width={340} className="guide-scope-popover"><p>{chapter.note}</p></Popover.Content></Popover></div><p>{chapter.description}</p><ErrorNotice error={exampleError}/></header>
+        <div className="guide-page-scroll" ref={scrollRef}><header className="guide-copy"><div className="guide-title-line"><h3 id="guide-chapter-title">{chapter.title}</h3>{presentation==='mobile'?<Button className="guide-scope-trigger" color="secondary" variant="ghost" size="sm" aria-label={t('查看演示说明','About this demo')} aria-expanded={scopeOpen} onClick={()=>setScopeOpen(value=>!value)}><span>{chapter.preview?'Dev':t('操作演示','Product demo')}</span><InfoCircle/></Button>:<Popover key={chapter.id}><Popover.Trigger><Button className="guide-scope-trigger" color="secondary" variant="ghost" size="sm" aria-label={t('查看演示说明','About this demo')}><span>{chapter.preview?'Dev':t('操作演示','Product demo')}</span><InfoCircle/></Button></Popover.Trigger><Popover.Content side="bottom" align="end" width={340} className="guide-scope-popover"><p>{chapter.note}</p></Popover.Content></Popover>}</div><p>{chapter.description}</p>{presentation==='mobile'&&scopeOpen&&<p>{chapter.note}</p>}<ErrorNotice error={exampleError}/></header>
         <div className="guide-media-space"><div className="guide-preview" data-scene={chapter.id}>
           <GuideFilm key={chapter.id} id={chapter.id} onComplete={()=>setCompleted(completeGuideChapter(chapter.id))}/>
         </div></div>

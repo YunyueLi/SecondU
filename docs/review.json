@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "baselineCommit": "33b0889b927f29322cef6e2faf4aa40f347b4fb6",
   "title": "SecondU 的产品判断、实现与验证",
-  "summary": "v0.1.5 已公开发布，提供侧栏图标、通用设置和原生窗口中的应用内更新。本机已安装并确认最新版本，草稿阻止重启、隔离两版本升级和数据保留已实测；双平台 CI、网站工作流、生产签名及匿名公开下载核验通过。未测原生异常、真实 provider 新执行和用户最终采纳保留各自边界。",
+  "summary": "本轮 0.2.0 候选围绕分身建设，接通七项材料入口、原件保存、模型候选、本人审阅与新任务草稿，并提供复用同一资料的手机布局和默认关闭的本机主动联系。10 月 19 日的源码、浏览器与隔离包验证保留各自范围；新的 0.2.0 发布、公开资产和更新源核验仍待完成。当前公开版本记录保持 v0.1.5。",
   "stages": [
     {
       "id": "research",
@@ -50,22 +50,22 @@
     {
       "id": "current-review",
       "title": "按最新反馈修订",
-      "summary": "本轮应用内更新已随 v0.1.5 交付：真实侧栏下载入口、原有通用设置、错误签名拒绝、草稿保护及升级后数据保留均有对应实测；没有独立更新页面，未测异常和用户最终采纳另列。",
+      "summary": "分身建设复用同一资料库，明确用途、保存、处理与审阅的状态。当前候选包含手机布局与本机主动联系；界面与合成材料运行证据分别记录。",
       "status": "partial",
       "document": "DEVELOPMENT.md",
-      "summaryEn": "v0.1.5 delivers in-app updates with scoped native evidence for the sidebar download entry, existing General settings, invalid-signature rejection, draft protection and post-upgrade data preservation. There is no standalone update page; unchecked edge cases and final user acceptance remain separate.",
+      "summaryEn": "Twin building reuses one source library and separates purpose, storage, processing and review. The candidate includes a mobile layout and local proactive contact, with UI and synthetic-material execution evidence recorded separately.",
       "titleEn": "Refine the current experience",
-      "section": "2026-10-10 v0.1.5 公开交付"
+      "section": "2026-10-19 最终界面与本地候选验收"
     },
     {
       "id": "delivery",
       "title": "验证并交付本机版本",
-      "summary": "v0.1.5 已公开发布。本机标准安装 App 与 Dock 已更新，正式 feed 实际检查为最新版本；双平台 CI、网站工作流、公开资产字节和 Ed25519 验签通过。封包保留冻结时文档；ad-hoc 签名不等于 Apple 公证。",
-      "status": "verified",
+      "summary": "历史公开版本 v0.1.5 的交付证据保留。本轮源码完成分项构建与隔离候选包检查，新的 0.2.0 正式包、CI、公开发布与更新源仍需核验。",
+      "status": "partial",
       "document": "DEVELOPMENT.md",
-      "summaryEn": "v0.1.5 is public. The canonical local app and Dock entry are updated, and an actual production-feed check reports the current version. CI on both platforms, the website workflow, public asset bytes and Ed25519 verification passed. The archive retains its frozen documentation; ad-hoc signing is not Apple notarization.",
+      "summaryEn": "The v0.1.5 public-delivery evidence is retained. Scoped source builds and an isolated candidate-package check cover this round; the new 0.2.0 package, CI, public release and update feed still require verification.",
       "titleEn": "Verify and deliver",
-      "section": "2026-10-10 v0.1.5 公开交付"
+      "section": "2026-10-19 最终界面与本地候选验收"
     }
   ],
   "iterations": [
@@ -385,6 +385,21 @@
       ],
       "document": "DEVELOPMENT.md",
       "section": "2026-10-10 v0.1.5 公开交付"
+    },
+    {
+      "id": "personal-twin-growth-v020",
+      "date": "2026-10-20",
+      "title": "从材料建设到持续协作",
+      "titleEn": "From personal material to ongoing collaboration",
+      "summary": "0.2.0 候选将七项材料入口、原件资料库、用途选择、模型提取与本人审阅连接到新任务草稿。手机布局复用现有资料与任务；主动联系先做只读评估，再把有来源的结果带入普通对话。公开发布仍待最终核验。",
+      "summaryEn": "The 0.2.0 candidate connects seven entry points, one original-material library, purpose selection, model extraction and personal review to new task drafts. The mobile layout shares existing sources and tasks; proactive contact first evaluates read-only, then brings sourced work into a normal conversation. Public release awaits final verification.",
+      "status": "partial",
+      "evidence": [
+        "twin-growth-source-v020",
+        "twin-growth-browser-v020"
+      ],
+      "document": "DEVELOPMENT.md",
+      "section": "2026-10-19 最终界面与本地候选验收"
     }
   ],
   "capabilities": [
@@ -463,10 +478,42 @@
     },
     {
       "id": "devices",
-      "title": "同一任务的跨端体验",
-      "summary": "眼镜记录、电脑改稿和手机确认以可交互 Dev 演示呈现；真实设备传输尚未接入。",
-      "status": "demo",
-      "document": "DEVICE-SIMULATOR.md"
+      "title": "同一资料与任务的手机入口",
+      "summary": "手机布局复用分身建设、资料与对话组件，可在本机浏览器使用；实体手机需单独配置私有访问。视口验收不代表真实设备传输、后台唤醒或云端同步。",
+      "status": "partial",
+      "document": "DEVICE-SIMULATOR.md",
+      "titleEn": "Mobile access to shared sources and tasks",
+      "summaryEn": "The mobile layout reuses twin-building, source and conversation components in the local browser. A physical phone needs separately configured private access. Viewport checks do not prove device transport, background wake-up or cloud sync.",
+      "evidence": [
+        "twin-growth-browser-v020"
+      ]
+    },
+    {
+      "id": "twin-building",
+      "title": "从材料建设个人理解",
+      "titleEn": "Build understanding from personal material",
+      "summary": "七项入口复用现有来源与导入；直接输入区分个人和本次用途。模型先生成有依据的候选，由本人审阅；已确认内容可带入新任务草稿。视频仅保存与回看，未完成内容理解。",
+      "summaryEn": "Seven entry points reuse existing sources and imports. Direct input separates personal and session-only purposes. The model produces evidenced candidates for your review, and confirmed context can start a task draft. Videos can be saved and played, but not understood.",
+      "status": "partial",
+      "evidence": [
+        "twin-growth-source-v020",
+        "twin-growth-browser-v020"
+      ],
+      "document": "DEVELOPMENT.md",
+      "section": "2026-10-19 原件统一与主动联系状态补录"
+    },
+    {
+      "id": "proactive-contact",
+      "title": "有准备结果的主动联系",
+      "titleEn": "Proactive contact with prepared work",
+      "summary": "当前空间默认关闭；来源变化经只读模型评估、来源检查与去重后进入普通对话。依赖本机服务；尚无云端观察、手机推送或外部渠道主动发送。",
+      "summaryEn": "Off by default in each space. Source changes enter normal conversations after a read-only model evaluation, evidence checks and deduplication. Requires the local service; cloud observation, phone push and proactive external-channel sending are not included.",
+      "status": "partial",
+      "evidence": [
+        "twin-growth-source-v020"
+      ],
+      "document": "DEVELOPMENT.md",
+      "section": "2026-10-19 原件统一与主动联系状态补录"
     }
   ],
   "evidence": [
@@ -913,6 +960,30 @@
       "detailEn": "Published at 2026-10-09T16:48:45Z, or October 10 at 00:48:45 in Beijing, with tag commit 2cef8a6ab17ca30aa7c6a7094b2eddf2f85fd7eb. CI 37960044495 and Product website 37960044610 succeeded. Platform digests and anonymous downloads of the 223,094,255-byte ZIP, 2,106-byte appcast and 175-byte SHA256SUMS match the sealed assets. Independent Ed25519 verification of the public ZIP passed with the production key. The latest feed matches version, arm64, macOS 13.0.0 and the fixed download URL; the production app confirmed it is current.",
       "document": "DEVELOPMENT.md",
       "section": "2026-10-10 v0.1.5 公开交付"
+    },
+    {
+      "id": "twin-growth-source-v020",
+      "title": "材料审阅与主动联系的分项证据",
+      "titleEn": "Scoped evidence for material review and proactive contact",
+      "scope": "2026-10-19 本轮来源统一后的源码与回归；同日前序模型回执仅对应当时版本。",
+      "scopeEn": "October 19 source and regression checks after source unification; earlier model receipts cover their recorded versions only.",
+      "status": "partial",
+      "detail": "来源统一后 twin-building 30 项检查通过，覆盖原件保存、已有来源复用、仅本次隔离、本人审阅、失败保留与主动联系状态。材料提取和主动联系各有一次真实 DeepSeek Responses 合成材料运行；不证明所有格式、提供方或长期理解质量。",
+      "detailEn": "Thirty twin-building checks passed after source unification, covering originals, reuse, session-only isolation, review, failure retention and proactive state. Extraction and proactive contact each have one real DeepSeek Responses run on synthetic material; this does not establish all-format, all-provider or long-term understanding quality.",
+      "document": "DEVELOPMENT.md",
+      "section": "2026-10-19 原件统一与主动联系状态补录"
+    },
+    {
+      "id": "twin-growth-browser-v020",
+      "title": "桌面、手机视口与隔离候选包",
+      "titleEn": "Desktop, mobile viewport and isolated candidate package",
+      "scope": "2026-10-19 最终组合；候选包仍标 0.1.5，不作为 0.2.0 发布证据。",
+      "scopeEn": "The October 19 final combination; the candidate package was still labelled 0.1.5 and is not evidence of a 0.2.0 release.",
+      "status": "partial",
+      "detail": "应用及官网构建通过；相关检查 124 通过、5 条条件跳过。桌面浅深色与 390×844 视口完成实屏，未横向溢出；独立候选包完成静态文件一致性、签名和启动退出检查。没有实体手机、真实媒体理解、公开发布或成功外部视觉评审结论。",
+      "detailEn": "App and website builds passed, with 124 related checks passed and five conditional checks skipped. Desktop light/dark and a 390×844 viewport were inspected without horizontal overflow. An isolated candidate package passed static-file consistency, signing and launch/exit checks. No physical-phone, real-media understanding, public-release or successful external visual-review result is claimed.",
+      "document": "DEVELOPMENT.md",
+      "section": "2026-10-19 最终界面与本地候选验收"
     }
   ],
   "boundaries": [
@@ -936,16 +1007,18 @@
     },
     {
       "id": "devices-boundary",
-      "title": "跨端当前为 Dev 演示",
-      "detail": "手机、眼镜与持续屏幕采集的真实授权、传输和设备条件尚未验证。",
-      "status": "demo"
+      "title": "手机布局与设备能力分别验收",
+      "detail": "手机布局已实现并完成本机视口检查；实体设备连接、系统分享、相机与屏幕授权、持续采集、后台唤醒和跨端同步仍需逐项集成与实测。",
+      "status": "demo",
+      "titleEn": "Mobile layout and device capabilities have separate checks",
+      "detailEn": "The mobile layout is implemented and has local viewport checks. Physical connections, system sharing, camera/screen permissions, continuous capture, background wake-up and cross-device sync require separate integration and testing."
     },
     {
       "id": "delivery-boundary",
       "title": "本机交付与公开发布分开",
-      "detail": "公开版本 v0.1.2 发布于北京时间 2026-10-01 20:54:12，代码基线为 33b0889；提交时间、版本发布时间和发布后文档补录分别记录。双平台 CI、Pages 与公开包已有证据，但 macOS 包仍仅临时签名，未获 Apple 公证。发布不代表用户最终视觉认可或所有真实账号、设备和模型任务均已验收。",
+      "detail": "公开版本以 latestRelease 的实际发布时间与标签提交为准；currentProgress 只记录当前源码候选，不生成提交或发布事实。macOS 包采用 ad-hoc 签名，尚未 Apple 公证。发布也不代表所有模型、真实账号、设备与长期使用均已验收。",
       "status": "documented",
-      "detailEn": "Public v0.1.2 was published on October 1, 2026 at 12:54:12 UTC from 33b0889. Commit time, publication time and post-release documentation are distinct. CI, Pages and public package checks exist, but the macOS package remains ad-hoc signed and is not Apple-notarized. Publication does not imply final user acceptance or validation of all real accounts, devices and model tasks."
+      "detailEn": "Public delivery follows the actual publication time and tag commit in latestRelease. currentProgress records source work only and creates no commit or publication claim. macOS packages use ad-hoc signing and are not Apple-notarized. Publication does not validate every model, external account, device or long-term outcome."
     }
   ],
   "milestones": [
@@ -1071,11 +1144,63 @@
     }
   ],
   "titleEn": "SecondU: product decisions, implementation and evidence",
-  "summaryEn": "v0.1.5 is public with in-app updates through a sidebar icon, General settings and the native updater. The installed app confirms it is current; native tests cover draft-protected restarts, an isolated two-version upgrade and data preservation. CI on both platforms, the website workflow, production signing and anonymous public-download verification passed. Unchecked native edge cases, new real-provider execution and final user acceptance retain their separate scope.",
+  "summaryEn": "The 0.2.0 candidate connects seven material entry points, preserved originals, model candidates, personal review and new task drafts. A mobile layout shares the same data, and local proactive contact is off by default. Source, browser and isolated-package evidence from October 19 retains its scope. The 0.2.0 release, public assets and update feed remain to be verified; the public-release record stays at v0.1.5.",
   "latestRelease": {
     "version": "v0.1.5",
     "publishedAt": "2026-10-09T16:48:45Z",
     "commit": "2cef8a6ab17ca30aa7c6a7094b2eddf2f85fd7eb",
     "url": "https://github.com/YunyueLi/SecondU/releases/tag/v0.1.5"
+  },
+  "currentProgress": {
+    "id": "personal-twin-growth-current",
+    "date": "2026-10-20",
+    "status": "partial",
+    "title": "建设自己的数字分身",
+    "titleEn": "Grow your personal digital twin",
+    "summary": "从一份材料开始，保留原件，审阅有依据的理解，再把确认内容带入下一项任务。0.2.0 候选同步手机入口与本机主动联系，发布验收正在完成。",
+    "summaryEn": "Start with one piece of material, preserve the original, review evidenced understanding and bring confirmed context into the next task. The 0.2.0 candidate also includes mobile access and local proactive contact; release checks are in progress.",
+    "highlights": [
+      {
+        "zh": "七项材料入口复用同一资料库与导入流程。",
+        "en": "Seven material entry points reuse one library and existing imports."
+      },
+      {
+        "zh": "用途、模型候选和本人审阅分开，确认内容可进入新任务草稿。",
+        "en": "Purpose, model candidates and personal review stay distinct; confirmed context can start a task draft."
+      },
+      {
+        "zh": "手机布局复用相同数据；主动联系准备结果后回到普通对话。",
+        "en": "The mobile layout shares the same data; proactive contact returns prepared work to normal conversations."
+      }
+    ],
+    "completed": [
+      {
+        "zh": "10 月 19 日应用与官网构建通过；相关回归 124 项通过、5 项按条件跳过。",
+        "en": "October 19 app and website builds passed; 124 related checks passed and five conditional checks were skipped."
+      },
+      {
+        "zh": "同轮桌面浅深色与 390 像素手机视口已实屏，保留独立范围。",
+        "en": "That round includes desktop light/dark and 390-pixel mobile viewport checks with bounded scope."
+      },
+      {
+        "zh": "材料提取与主动联系各有一次真实模型回执，均使用公开虚构材料。",
+        "en": "Material extraction and proactive contact each have one real-model receipt using public fictional material."
+      },
+      {
+        "zh": "中英文 README、产品路线说明与本轮构建记录已同步当前机制。",
+        "en": "English and Chinese READMEs, the product walkthrough and current build record describe the implemented mechanisms."
+      }
+    ],
+    "pending": [
+      {
+        "zh": "0.2.0 最终安装包、公开发布、CI 与更新源核验。",
+        "en": "Verify the final 0.2.0 package, public release, CI and update feed."
+      },
+      {
+        "zh": "实体手机、真实媒体理解与长期使用效果仍需独立验证。",
+        "en": "Physical-phone operation, real-media understanding and long-term outcomes need separate validation."
+      }
+    ],
+    "iteration": "personal-twin-growth-v020"
   }
 }

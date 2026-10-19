@@ -1,0 +1,21 @@
+/* The phone uses a category page and one detail page. Desktop dialog geometry stays unchanged. */
+.mobile-root .settings-workspace.is-mobile{height:100%;margin:0;min-height:0;container-type:normal}
+.mobile-root .settings-workspace.is-mobile .settings-layout{height:100%;min-height:0;display:flex;flex-direction:column}
+.mobile-root .settings-workspace.is-mobile .settings-navigation{height:100%;width:100%;border:0;background:var(--color-surface);padding:8px 16px 24px;overflow:auto}
+.mobile-root .settings-workspace.is-mobile .settings-navigation nav{display:flex;flex-direction:column;gap:0}
+.mobile-root .settings-workspace.is-mobile .settings-category{height:auto;min-height:56px;padding:12px 8px;font-size:16px;line-height:24px;justify-content:flex-start;border-radius:8px}
+.mobile-root .settings-workspace.is-mobile .settings-category>span{width:100%;justify-content:flex-start;gap:14px}
+.mobile-root .settings-workspace.is-mobile .settings-category svg{display:block;width:20px;height:20px;flex:none}
+.mobile-root .settings-workspace.is-mobile .settings-category-label{flex:1;text-align:left}
+.mobile-root .settings-workspace.is-mobile .settings-category .settings-category-chevron{width:16px;height:16px;color:var(--color-text-secondary)}
+.mobile-root .settings-workspace.is-mobile .settings-space-note{display:block;margin:24px 8px 0;padding-top:20px}
+.mobile-root .settings-workspace.is-mobile .settings-detail{height:100%;width:100%;min-height:0;flex:1;overflow:hidden}
+.mobile-root .settings-workspace.is-mobile .settings-panel{height:100%;min-height:0;padding:16px 20px calc(28px + env(safe-area-inset-bottom));overflow:auto;scrollbar-gutter:auto}
+.mobile-root .settings-workspace.is-mobile .settings-panel>header:first-child{margin-top:0}
+.mobile-root .settings-workspace.is-mobile :is(.settings-panel-heading,.model-overview-heading,.model-editor-heading){margin-bottom:24px}
+.mobile-root .settings-workspace.is-mobile :is(.settings-panel-heading,.model-overview-heading,.model-editor-heading,.model-onboarding-heading) h2{font-size:22px;line-height:30px;font-weight:550}
+.mobile-root .settings-workspace.is-mobile .model-onboarding-heading{display:flex;align-items:center;flex-wrap:wrap;gap:8px 12px;margin-bottom:24px}
+.mobile-root .settings-workspace.is-mobile .model-onboarding-heading h2{flex:1;margin:0}
+.mobile-root .settings-workspace.is-mobile .model-onboarding-heading p{flex-basis:100%;margin:0;font-size:14px;line-height:22px}
+.mobile-root .settings-workspace.is-mobile .model-connections-link{min-height:44px;font-size:14px;padding-inline:8px;margin-right:-8px}
+.mobile-root .settings-workspace.is-mobile :is(.settings-navigation,.settings-detail,.settings-panel)[hidden]{display:none}

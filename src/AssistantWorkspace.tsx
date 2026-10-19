@@ -1,3 +1,4 @@
+import {spaceStorageKey} from './space';
 import {ExampleExecutionNotice} from './ExampleExecutionNotice';
 import { useUnsavedChanges } from './useUnsavedChanges';
 import {MemoryImportWelcome} from './cognition/MemoryImport';
@@ -44,7 +45,7 @@ import { MessageRevision, RevisionNavigation } from './composer/MessageRevision'
 
 const getStatusDescription = (): Partial<Record<Task['status'], string>> => ({ queued: t("任务已保存，等待开始。", "Saved and ready to start."), needs_input: t("补充下面的信息后，可以继续这项工作。", "Add the requested information to continue."), interrupted: t("上一次执行已中断。已保存的对话和成果仍在。", "The last run was interrupted. Your saved messages and files are still available."), cancelled: t("任务已停止。你可以补充新要求后继续。", "Stopped. Add instructions whenever you want to continue.") });
 export type TaskComposition = { projectId?: string; id: string; prompt: string; factIds?: string[]; agentIds: string[] };
-type Props = { navigation?:ReactNode; data: Bootstrap; taskId?: string; composition?: TaskComposition; onRefresh: () => Promise<void>; onCreateTask: (prompt: string, facts?: string[], agents?: string[], mode?: 'demo'|'live', connectionId?: string, projectId?: string, attachmentIds?: string[], connectorIds?: string[], digitalTwinEnabled?:boolean, approvalMode?:ApprovalMode|null) => Promise<void> };
+type Props = { presentation?:'desktop'|'mobile'; active?:boolean; connected?:boolean; headerActions?:ReactNode; navigation?:ReactNode; data: Bootstrap; taskId?: string; composition?: TaskComposition; onRefresh: () => Promise<void>; onCreateTask: (prompt: string, facts?: string[], agents?: string[], mode?: 'demo'|'live', connectionId?: string, projectId?: string, attachmentIds?: string[], connectorIds?: string[], digitalTwinEnabled?:boolean, approvalMode?:ApprovalMode|null) => Promise<void> };
 
 export function ContextFacts({ facts, queued }: { facts: ConversationContextFact[]; queued: boolean }) {
   const [open, setOpen] = useState(false);
@@ -56,13 +57,17 @@ export function ContextFacts({ facts, queued }: { facts: ConversationContextFact
   </>;
 }
 
-export function AssistantWorkspace({ navigation, data, taskId, composition, onRefresh, onCreateTask }: Props) {
+export function AssistantWorkspace({ presentation='desktop', active=true, connected=true, headerActions, navigation, data, taskId, composition, onRefresh, onCreateTask }: Props) {
+  const mobile=presentation==='mobile';
+  const savedDrafts=useRef<Record<string,string>>((()=>{if(!mobile)return {};try{return JSON.parse(sessionStorage.getItem(spaceStorageKey('secondu.mobile.shared-drafts'))||'{}');}catch{return {};}})());
+  const draftContext=useRef(taskId||'new');
+  const persistDraft=(key:string,value:string)=>{if(!mobile)return;savedDrafts.current[key]=value;try{sessionStorage.setItem(spaceStorageKey('secondu.mobile.shared-drafts'),JSON.stringify(savedDrafts.current));}catch{}};
   const task = data.tasks.find(item => item.id === taskId);
   const attachments = useAttachments({contextKey:taskId || composition?.id || 'new'});
   const statusDescription=getStatusDescription();
-  const [prompt, setPrompt] = useState('');
+  const [prompt, setPrompt] = useState(()=>mobile?savedDrafts.current[draftContext.current]||'':'');
   const promptRevision = useRef(0);
-  function replacePrompt(value: string) { promptRevision.current += 1; setPrompt(value); }
+  function replacePrompt(value: string) { promptRevision.current += 1; setPrompt(value);persistDraft(draftContext.current,value); }
   const [mode, setMode] = useState<'demo'|'live'>('live');
   const [connectionId, setConnectionId] = useState<string>();
   const [approvalMode,setApprovalMode]=useState<ApprovalMode|null>(null);
@@ -85,7 +90,9 @@ export function AssistantWorkspace({ navigation, data, taskId, composition, onRe
   const artifactOpenerRef = useRef<HTMLElement | null>(null);
   const composerRef = useRef<HTMLTextAreaElement>(null);
   const endRef = useRef<HTMLDivElement>(null);
+  const scrollRef=useRef<HTMLDivElement>(null),followLatest=useRef(true);const [unread,setUnread]=useState(false);
   const initialTask = useRef(taskId);
+  const appliedComposition=useRef<string|undefined>(undefined);
   const exampleRevision = !!task?.forkedFrom && (!!data.profile.demo || task.mode === 'demo');
   const working = !exampleRevision && (task?.status === 'running' || task?.status === 'queued');
   const currentMode = task?.mode || mode;
@@ -95,25 +102,26 @@ export function AssistantWorkspace({ navigation, data, taskId, composition, onRe
   const selectedAgents=(task?.agentIds || agentIds).flatMap(id=>data.agents.find(agent=>agent.id===id)||[]);
   const agentModels=selectedAgents.map(agent=>{const conn=agent.connectionId?data.modelConnections?.find(item=>item.id===agent.connectionId):selectedConnection;return{id:agent.id,name:agent.name,model:conn?.model||t("连接已不可用", "Connection unavailable"),connectionName:agent.connectionId?data.modelConnections?.find(item=>item.id===agent.connectionId)?.name||t("连接已移除", "Connection removed"):currentConnectionId?t("本次任务模型", "Task model"):t("默认连接", "Default connection"),hasKey:!!conn?.hasKey};});
   const modelReady=agentModels.length?agentModels.every(agent=>agent.hasKey):!!selectedConnection?.hasKey;
-  const configurationMissing = !example && ((currentMode === 'live' && (!modelReady || !data.computer.codexAvailable)) || (!!project && project.execution.status!=='ready'));
+  const configurationMissing = (mobile&&!connected)||(!example && ((currentMode === 'live' && (!modelReady || !data.computer.codexAvailable)) || (!!project && project.execution.status!=='ready')));
   const artifact = data.artifacts.find(item => item.id === openArtifactId);
   const panelOpen=workbenchOpen&&(!!artifact||!!workbenchTab);
   const turns=task?taskConversationTurns(task,data.facts):[];
   function rememberWorkbenchOpener(){if(panelOpen)return;const active=document.activeElement;artifactOpenerRef.current=active instanceof HTMLElement&&!active.closest('[data-radix-popper-content-wrapper]')?active:document.querySelector<HTMLElement>('[data-task-resources-trigger]');}
   function openWorkbench(tab:WorkbenchTab){rememberWorkbenchOpener();setWorkbenchOpen(true);setWorkbenchTab(tab);if(tab==='activity')setWorkbenchEventId(undefined);}
-  function closeWorkbench(){if(artifactDirty&&!window.confirm(t('还有未保存的修改，仍然关闭？','You have unsaved changes. Close anyway?')))return;setWorkbenchOpen(false);requestAnimationFrame(()=>{if(artifactOpenerRef.current?.isConnected)artifactOpenerRef.current.focus();});}
+  function closeWorkbench(){if(artifactDirty&&!window.confirm(t('还有未保存的修改，仍然关闭？','You have unsaved changes. Close anyway?')))return;setWorkbenchOpen(false);requestAnimationFrame(()=>{if(artifactOpenerRef.current?.isConnected)artifactOpenerRef.current.focus({preventScroll:true});});}
   function openEvent(event:TaskEvent){openWorkbench('activity');setWorkbenchEventId(event.id);}
   const taskArtifacts = data.artifacts.filter(item => item.taskId === task?.id && item.classification !== 'reply_snapshot');
-  useEffect(() => { if (initialTask.current !== taskId) { replacePrompt(''); setError(''); setOpenArtifactId(undefined); setWorkbenchTab(undefined); setWorkbenchOpen(false); initialTask.current = taskId; } }, [taskId]);
-  useEffect(() => { if (composition && !taskId) { setProjectId(composition.projectId);setConnectorIds([]);setDigitalTwinEnabled(true); replacePrompt(composition.prompt); setFactIds(composition.factIds??data.facts.filter(f=>f.status==='confirmed').map(f=>f.id));setAutomaticContext(composition.factIds===undefined); setAgentIds(composition.agentIds); setError(''); composerRef.current?.focus(); } }, [composition?.id]);
-  useEffect(() => { endRef.current?.scrollIntoView({ behavior: document.documentElement.dataset.motion === 'reduced' || matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'end' }); }, [task?.messages.length, task?.approvals.length]);
+  useEffect(() => { if (initialTask.current !== taskId) { draftContext.current=taskId||'new';replacePrompt(mobile?savedDrafts.current[draftContext.current]||'':'');followLatest.current=true;setUnread(false); setError(''); setOpenArtifactId(undefined); setWorkbenchTab(undefined); setWorkbenchOpen(false); initialTask.current = taskId; } }, [taskId]);
+  useEffect(() => { if (composition && !taskId && appliedComposition.current!==composition.id) { appliedComposition.current=composition.id;setProjectId(composition.projectId);setConnectorIds([]);setDigitalTwinEnabled(true); replacePrompt(composition.prompt); setFactIds(composition.factIds??data.facts.filter(f=>f.status==='confirmed').map(f=>f.id));setAutomaticContext(composition.factIds===undefined); setAgentIds(composition.agentIds); setError(''); composerRef.current?.focus({preventScroll:true}); } }, [composition?.id,taskId]);
+  useEffect(() => {if(!active)return;if(mobile){if(followLatest.current){const viewport=scrollRef.current;if(viewport)viewport.scrollTop=viewport.scrollHeight;setUnread(false);}else setUnread(true);}else endRef.current?.scrollIntoView({behavior:document.documentElement.dataset.motion==='reduced'||matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'end'});},[task?.messages.length,task?.messages.at(-1)?.content,task?.approvals.length,active]);
   async function send() {
     if ((!prompt.trim() && !attachments.items.length) || busy || attachments.busy || attachments.hasErrors || configurationMissing) return;
     if(example){setExampleNotice(true);return;}
     const submittedRevision = promptRevision.current;
+    const submittedContext=draftContext.current;
     const submittedAttachments = attachments.items.map(item=>item.id);
     setBusy(true); setError('');
-    try { if (task) { await write<Task>(`/tasks/${task.id}/message`, { content: prompt.trim(), attachmentIds:attachments.attachmentIds }); await onRefresh(); } else { await onCreateTask(prompt.trim(), digitalTwinEnabled?(automaticContext?selectDigitalTwinContext(data.facts,prompt):factIds):[], agentIds, mode, connectionId, projectId, attachments.attachmentIds, connectorIds, digitalTwinEnabled, approvalMode); } submittedAttachments.forEach(attachments.remove); if (promptRevision.current === submittedRevision) replacePrompt(''); }
+    try { if (task) { await write<Task>(`/tasks/${task.id}/message`, { content: prompt.trim(), attachmentIds:attachments.attachmentIds }); await onRefresh(); } else { await onCreateTask(prompt.trim(), digitalTwinEnabled?(automaticContext?selectDigitalTwinContext(data.facts,prompt):factIds):[], agentIds, mode, connectionId, projectId, attachments.attachmentIds, connectorIds, digitalTwinEnabled, approvalMode); } submittedAttachments.forEach(attachments.remove);persistDraft(submittedContext,''); if (promptRevision.current === submittedRevision) replacePrompt(''); }
     catch (e) { setError(messageOf(e)); } finally { setBusy(false); }
   }
   async function action(path: string, body?: unknown) {
@@ -124,53 +132,55 @@ export function AssistantWorkspace({ navigation, data, taskId, composition, onRe
     catch (e) { setError(messageOf(e)); } finally { setBusy(false); }
   }
   function openArtifact(id?:string){if(id!==openArtifactId&&artifactDirty&&!window.confirm(t('还有未保存的修改，仍然切换？','You have unsaved changes. Switch anyway?')))return;rememberWorkbenchOpener();setWorkbenchTab('files');setWorkbenchOpen(true);setOpenArtifactId(id);}
-  const controlsLocked=busy||working||task?.status==='awaiting_approval';
+  const controlsLocked=busy||working||task?.status==='awaiting_approval'||(mobile&&!connected);
   async function updateTaskConfig(body:Record<string,unknown>){if(!task||controlsLocked)return false;setBusy(true);setError('');try{await write(`/tasks/${task.id}`,body,'PUT');await onRefresh();return true;}catch(e){setError(messageOf(e));return false;}finally{setBusy(false);}}
   async function chooseConnection(id:string|undefined){if(task)return updateTaskConfig({connectionId:id||null});setConnectionId(id);setMode('live');}
   async function chooseMode(value:'live'|'demo'){if(example)return;if(task){if(task.mode!==value)return updateTaskConfig({mode:value});return;}setMode(value);}
   const contextTools=<><ConnectorPicker data={data} value={task?.connectorIds||connectorIds} onChange={controlsLocked?undefined:task?ids=>{void updateTaskConfig({connectorIds:ids});}:setConnectorIds} disabled={controlsLocked}/><DigitalTwinMode enabled={task?task.digitalTwinEnabled!==false:digitalTwinEnabled} onChange={controlsLocked?undefined:enabled=>{if(task){void updateTaskConfig({digitalTwinEnabled:enabled});}else{setDigitalTwinEnabled(enabled);setAutomaticContext(true);}}} disabled={controlsLocked}/></>;
   const exampleStories=data.profile.demo?(data.profile.exampleTaskIds?.length?data.profile.exampleTaskIds.flatMap(id=>{const story=data.tasks.find(item=>item.id===id&&!item.archived);return story?[story]:[];}):data.tasks.filter(item=>!item.archived&&!item.roomId&&item.status==='completed').slice(0,3)):[];
 
-  const compactComposer = !task && !prompt.includes('\n') && prompt.length < 48 && !attachments.items.length;
+  const compactComposer = (!task||mobile) && !prompt.includes('\n') && prompt.length < 48 && !attachments.items.length;
+  const composerAttachments=<AttachmentDrafts controller={attachments} disabled={busy}/>;
+  const composerLeading=<div className="composer-leading"><ComposerTools presentation={mobile?'sheet':'popover'} onAttach={()=>attachments.inputRef.current?.click()} disabled={busy}>{mobile?<>{!task&&<ProjectPicker data={data} value={projectId} onChange={setProjectId} disabled={busy}/>} {contextTools}<ApprovalPicker value={task?(Object.hasOwn(task,'approvalMode')?task.approvalMode:'ask'):approvalMode} defaultValue={data.executionSettings?.approvalMode} onChange={value=>{if(task)void updateTaskConfig({approvalMode:value});else setApprovalMode(value);}} disabled={controlsLocked}/></>:task&&contextTools}</ComposerTools>{task&&!mobile&&<ApprovalPicker value={Object.hasOwn(task,'approvalMode')?task.approvalMode:'ask'} defaultValue={data.executionSettings?.approvalMode} onChange={value=>{if(task)void updateTaskConfig({approvalMode:value});else setApprovalMode(value);}} disabled={controlsLocked}/>}</div>;
+  const composerInput=<div className="composer-input"><Textarea ref={composerRef} variant="soft" aria-label={task?t('补充任务要求','Additional instructions'):t('发送消息','Message SecondU')} placeholder={task?t('继续对话','Message SecondU'):t('询问 SecondU','Ask SecondU')} rows={1} maxRows={7} autoResize disabled={busy} value={prompt} onPaste={event=>{if(!attachments.onPaste(event))pasteComposerLinks(event,prompt,replacePrompt);}} onChange={event=>replacePrompt(event.target.value)} onKeyDown={event=>{if(shouldSend(event)){event.preventDefault();void send();}}}/></div>;
+  const composerTrailing=<div className="composer-trailing"><ModelPicker presentation={mobile?'sheet':'menu'} example={example} settings={data.settings} connections={data.modelConnections} defaultConnectionId={data.defaultConnectionId} connectionId={currentConnectionId} onConnection={chooseConnection} agentModels={agentModels.length?agentModels:undefined} mode={currentMode} onMode={chooseMode} onSettings={()=>{location.hash='settings/model';}} disabled={controlsLocked}/><ContextUsage usage={task?.contextUsage}/><VoiceInput presentation={mobile?'sheet':'popover'} disabled={busy||working} contextKey={taskId||'new'} onTranscript={text=>{replacePrompt(`${prompt}${prompt&&!/\s$/.test(prompt)?' ':''}${text}`);composerRef.current?.focus({preventScroll:true});}}/>{working?<Button type="button" color="primary" uniform aria-label={t('停止任务','Stop task')} disabled={busy} onClick={()=>action('cancel')}><Stop/></Button>:<Button type="submit" color="primary" uniform aria-label={task?t('发送补充要求','Send instructions'):t('发送消息','Send message')} disabled={(!prompt.trim()&&!attachments.items.length)||busy||attachments.busy||attachments.hasErrors||configurationMissing} loading={busy}><ArrowUp/></Button>}</div>;
   const composer = <div className="composer-wrap">
     <ErrorNotice error={error}/>
-    {exampleNotice&&<ExampleExecutionNotice onClose={()=>setExampleNotice(false)}/>}
-    <ComposerSurface compact={compactComposer} context={!task&&<ComposerContextBar><ProjectPicker data={data} value={projectId} onChange={setProjectId} disabled={busy}/>{contextTools}<ApprovalPicker value={approvalMode} defaultValue={data.executionSettings?.approvalMode} onChange={setApprovalMode} disabled={controlsLocked}/></ComposerContextBar>} onDragOver={attachments.onDragOver} onDrop={event=>{if(!busy)attachments.onDrop(event);else event.preventDefault();}} onSubmit={event=>{event.preventDefault();void send();}}>
-      <AttachmentDrafts controller={attachments} disabled={busy}/>
-      <div className="composer-leading"><ComposerTools onAttach={()=>attachments.inputRef.current?.click()} disabled={busy}>{task&&contextTools}</ComposerTools>{task&&<ApprovalPicker value={Object.hasOwn(task,'approvalMode')?task.approvalMode:'ask'} defaultValue={data.executionSettings?.approvalMode} onChange={value=>{if(task)void updateTaskConfig({approvalMode:value});else setApprovalMode(value);}} disabled={controlsLocked}/>}</div>
-      <div className="composer-input"><Textarea ref={composerRef} variant="soft" aria-label={task?t('补充任务要求','Additional instructions'):t('发送消息','Message SecondU')} placeholder={task?t('继续对话','Message SecondU'):t('询问 SecondU','Ask SecondU')} rows={1} maxRows={7} autoResize disabled={busy} value={prompt} onPaste={event=>{if(!attachments.onPaste(event))pasteComposerLinks(event,prompt,replacePrompt);}} onChange={event=>replacePrompt(event.target.value)} onKeyDown={event=>{if(shouldSend(event)){event.preventDefault();void send();}}}/></div>
-      <div className="composer-trailing"><ModelPicker example={example} settings={data.settings} connections={data.modelConnections} defaultConnectionId={data.defaultConnectionId} connectionId={currentConnectionId} onConnection={chooseConnection} agentModels={agentModels.length?agentModels:undefined} mode={currentMode} onMode={chooseMode} onSettings={()=>{location.hash='settings/model';}} disabled={controlsLocked}/><ContextUsage usage={task?.contextUsage}/><VoiceInput disabled={busy||working} contextKey={taskId||'new'} onTranscript={text=>{replacePrompt(`${prompt}${prompt&&!/\s$/.test(prompt)?' ':''}${text}`);composerRef.current?.focus();}}/>{working?<Button type="button" color="primary" uniform aria-label={t('停止任务','Stop task')} disabled={busy} onClick={()=>action('cancel')}><Stop/></Button>:<Button type="submit" color="primary" uniform aria-label={task?t('发送补充要求','Send instructions'):t('发送消息','Send message')} disabled={(!prompt.trim()&&!attachments.items.length)||busy||attachments.busy||attachments.hasErrors||configurationMissing} loading={busy}><ArrowUp/></Button>}</div>
+    {exampleNotice&&(mobile?<Alert color="info" variant="soft" title={t('这份资料目前开放阅读','This material is available to read')} description={t('你可以继续查看已有对话与原文。新增消息和任务需要在自己的空间进行。','Read the existing conversations and sources. New messages and tasks need your own workspace.')} actions={<Button color="secondary" variant="ghost" size="sm" onClick={()=>setExampleNotice(false)}>{t('知道了','Got it')}</Button>}/>:<ExampleExecutionNotice onClose={()=>setExampleNotice(false)}/>) }
+    <ComposerSurface mobileSlots={mobile?{attachments:composerAttachments,input:composerInput,leading:composerLeading,trailing:composerTrailing}:undefined} compact={compactComposer} context={!task&&!mobile&&<ComposerContextBar><ProjectPicker data={data} value={projectId} onChange={setProjectId} disabled={busy}/>{contextTools}<ApprovalPicker value={approvalMode} defaultValue={data.executionSettings?.approvalMode} onChange={setApprovalMode} disabled={controlsLocked}/></ComposerContextBar>} onDragOver={attachments.onDragOver} onDrop={event=>{if(!busy)attachments.onDrop(event);else event.preventDefault();}} onSubmit={event=>{event.preventDefault();void send();}}>
+      {composerAttachments}{composerLeading}{composerInput}{composerTrailing}
     </ComposerSurface>
-    {configurationMissing&&<SetupHint href={!modelReady?'#settings/model':'#settings'} action={!modelReady?t('连接模型','Connect a model'):t('前往设置','Open settings')}>{project&&project.execution.status!=='ready'?t('请先为项目选择本地目录。','Choose a local folder for this project.'):!modelReady?t('连接后即可开始对话。','Connect to start a conversation.'):t('请先启用本机执行环境。','Set up the runtime on this computer.')}</SetupHint>}
+    {configurationMissing&&(!mobile||connected)&&<SetupHint href={!modelReady?'#settings/model':'#settings'} action={!modelReady?t('连接模型','Connect a model'):t('前往设置','Open settings')}>{project&&project.execution.status!=='ready'?t('请先为项目选择本地目录。','Choose a local folder for this project.'):!modelReady?t('连接后即可开始对话。','Connect to start a conversation.'):t('请先启用本机执行环境。','Set up the runtime on this computer.')}</SetupHint>}
   </div>;
-  return <div className={`assistant-workspace ${panelOpen ? 'with-artifact' : ''} ${task ? 'has-task' : 'is-home'}`}>
+  return <div className={`assistant-workspace ${mobile?'is-mobile':''} ${panelOpen ? 'with-artifact' : ''} ${task ? 'has-task' : 'is-home'}`}>
     {!task&&<div className="assistant-home-drag" aria-hidden="true"/>}
     <div className="conversation-pane">
-      {(task||navigation)&&<header className="conversation-header">{navigation}<h1 title={task?.title}>{task?.title||'SecondU'}</h1>{task&&<div className="conversation-header-actions"><TaskChatActions task={task} onRefresh={onRefresh}/><TaskResources data={data} tasks={[task]} projectId={task.projectId} agentIds={task.agentIds} onOpen={(_task,tab,id)=>id?openArtifact(id):openWorkbench(tab)}/></div>}</header>}
-      <div className="conversation-scroll">
+      {(task||navigation)&&<header className="conversation-header">{navigation}<h1 title={task?.title}>{task?.title||'SecondU'}</h1>{(!mobile||!task)&&headerActions}{task&&<div className="conversation-header-actions"><TaskChatActions presentation={mobile?'sheet':'menu'} task={task} onRefresh={onRefresh} resources={mobile?(dismiss)=><TaskResources presentation="inline" data={data} tasks={[task]} projectId={task.projectId} agentIds={task.agentIds} onOpen={(_task,tab,id)=>{dismiss();if(id)openArtifact(id);else openWorkbench(tab);}}/>:undefined}/>{!mobile&&<TaskResources data={data} tasks={[task]} projectId={task.projectId} agentIds={task.agentIds} onOpen={(_task,tab,id)=>id?openArtifact(id):openWorkbench(tab)}/>}</div>}</header>}
+      <div ref={scrollRef} className="conversation-scroll" onScroll={()=>{if(!mobile)return;const element=scrollRef.current;if(element){followLatest.current=element.scrollHeight-element.scrollTop-element.clientHeight<80;if(followLatest.current)setUnread(false);}}}>
         {!task ? <section className="assistant-welcome">
           <div className="welcome-start"><div className="welcome-artwork"><WelcomeLettering /></div><div className="welcome-intro"><h1>{t("今天想做些什么？", "What shall we work on?")}</h1></div>
-          {composer}
+          {!mobile&&composer}
           {!data.profile.demo&&!data.facts.length&&!data.tasks.length&&<MemoryImportWelcome/>}
-          {exampleStories.length>0&&<nav className="assistant-example-stories" aria-label={t("示例任务", "Example tasks")}>{exampleStories.map(story=><SuggestionRow key={story.id} href={`#task/${story.id}`}>{story.title}</SuggestionRow>)}</nav>}
+          {!mobile&&exampleStories.length>0&&<nav className="assistant-example-stories" aria-label={t("示例任务", "Example tasks")}>{exampleStories.map(story=><SuggestionRow key={story.id} href={`#task/${story.id}`}>{story.title}</SuggestionRow>)}</nav>}
 
           </div></section> : <div className="task-thread"><RevisionNavigation task={task} tasks={data.tasks} rooms={data.agentRooms}/>{project&&<a className="task-project-reference" href={`#projects/${project.id}`}><Folder/>{project.name}<ArrowRight/></a>}
-          {example && <span className="demo-thread-note">{t("示例", "Example")}</span>}
+          {example&&!mobile && <span className="demo-thread-note">{t("示例", "Example")}</span>}
           {task.interaction==='task' && task.agentIds.length > 1 && <div className="task-agents"><Agent />{task.agentIds.map(id => data.agents.find(agent => agent.id === id)?.name || t("未命名角色", "Unnamed agent")).join(t('、', ', '))} {t("参与此任务", "on this task")}</div>}
           <div className="messages">{turns.map(turn=>{
             const replies=turn.messages.filter(message=>message.role==='assistant');
             const firstReply=replies[0]?.id,lastReply=replies.at(-1)?.id;
             const turnTask={...task,events:turn.events,status:turn.status};
             return <Fragment key={turn.id}>{turn.messages.map(message=>{
+              const applicationNotice=message.origin?.kind==='proactive'&&message.origin.generator==='application';
               const author=message.agentId&&message.agentId!=='hither'?data.agents.find(agent=>agent.id===message.agentId):undefined;
               return <div className={`message message-${message.role}`} key={message.id}>
-                {message.id===firstReply&&<TaskActivity task={turnTask} agents={data.agents} onEvent={openEvent}/>}
-                {author&&<div className="message-author">{author.name}</div>}
+                {message.id===firstReply&&!applicationNotice&&<TaskActivity task={turnTask} agents={data.agents} onEvent={openEvent}/>}
+                {applicationNotice?<div className="message-author">{t('SecondU 应用提示','SecondU notification')}</div>:author&&<div className="message-author">{author.name}</div>}
                 {message.role==='user'?<MessageRevision key={`${task.id}:${message.id}`} task={task} messageId={message.id} content={message.content} busy={busy} example={example} onRefresh={onRefresh}>{({editor,editAction})=><>{editor||<div className="message-user-bubble"><MessageAttachments attachments={(data.attachments||[]).filter(item=>message.attachmentIds?.includes(item.id))}/><RichText className="message-content">{message.content}</RichText></div>}{editAction&&<div className="message-actions message-user-actions" aria-label={t('消息操作','Message actions')}>{editAction}</div>}</>}</MessageRevision>:<><MessageAttachments attachments={(data.attachments||[]).filter(item=>message.attachmentIds?.includes(item.id))}/>{message.content&&<RichText className="message-content">{message.content}</RichText>}</>}
-                {message.role==='assistant'&&<div className="message-footer"><div className="message-actions" aria-label={t('答复操作','Reply actions')}>
-                  {message.content&&<CopyButton copyValue={message.content} color="secondary" variant="ghost" uniform size="sm" aria-label={t('复制答复','Copy reply')} title={t('复制答复','Copy reply')}/>}
-                  {!example&&<FeedbackAction task={task} messageId={message.id} artifacts={taskArtifacts} onRefresh={onRefresh} onRevise={()=>{const quote=message.content.slice(0,4000)+(message.content.length>4000?'…':'');replacePrompt(`${prompt?`${prompt}\n\n`:''}${t('请修改以下答复：','Please revise the following reply:')}\n${quote.split('\n').map(line=>`> ${line}`).join('\n')}\n\n${t('修改要求：','Requested changes: ')}`);composerRef.current?.focus();}}/>}
-                </div>{message.id===lastReply&&<ContextFacts facts={turn.context} queued={false}/>}</div>}
+                {message.role==='assistant'&&<div className="message-footer"><div className="message-actions" aria-label={applicationNotice?t('提示操作','Notification actions'):t('答复操作','Reply actions')}>
+                  {message.content&&<CopyButton copyValue={message.content} color="secondary" variant="ghost" uniform size="sm" aria-label={applicationNotice?t('复制提示','Copy notification'):t('复制答复','Copy reply')} title={applicationNotice?t('复制提示','Copy notification'):t('复制答复','Copy reply')}/>}
+                  {!example&&!applicationNotice&&<FeedbackAction task={task} messageId={message.id} artifacts={taskArtifacts} onRefresh={onRefresh} onRevise={()=>{const quote=message.content.slice(0,4000)+(message.content.length>4000?'…':'');replacePrompt(`${prompt?`${prompt}\n\n`:''}${t('请修改以下答复：','Please revise the following reply:')}\n${quote.split('\n').map(line=>`> ${line}`).join('\n')}\n\n${t('修改要求：','Requested changes: ')}`);composerRef.current?.focus({preventScroll:true});}}/>}
+                </div>{message.id===lastReply&&!applicationNotice&&<ContextFacts facts={turn.context} queued={false}/>}</div>}
               </div>;
             })}{!replies.length&&<div className="message message-assistant message-pending">
               {!exampleRevision&&<TaskActivity task={turnTask} agents={data.agents} onEvent={openEvent}/>}
@@ -185,9 +195,10 @@ export function AssistantWorkspace({ navigation, data, taskId, composition, onRe
           <div ref={endRef} />
         </div>}
       </div>
-      {task && composer}
+      {mobile&&unread&&<Button color="secondary" variant="outline" className="mobile-latest" onClick={()=>{followLatest.current=true;scrollRef.current?.scrollTo({top:scrollRef.current.scrollHeight,behavior:'smooth'});setUnread(false);}}>{t('查看最新消息','Latest messages')}<ArrowUp/></Button>}
+      {(task||mobile) && composer}
     </div>
-    {panelOpen && task && <WorkbenchPane title={t("任务工作区","Task workspace")} onClose={closeWorkbench}><WorkbenchPanel data={data} task={task} tab={workbenchTab||'files'} artifactId={openArtifactId} eventId={workbenchEventId} onEvent={openEvent} onTab={setWorkbenchTab} onClose={closeWorkbench} onArtifact={openArtifact} onDirtyChange={setArtifactDirty} onRefresh={onRefresh}/></WorkbenchPane>}
+    {panelOpen && task && <WorkbenchPane presentation={mobile?'mobile':'desktop'} title={t("任务工作区","Task workspace")} onClose={closeWorkbench}><WorkbenchPanel data={data} task={task} tab={workbenchTab||'files'} artifactId={openArtifactId} eventId={workbenchEventId} onEvent={openEvent} onTab={setWorkbenchTab} onClose={closeWorkbench} onArtifact={openArtifact} onDirtyChange={setArtifactDirty} onRefresh={onRefresh}/></WorkbenchPane>}
     {taskId && !task && <div className="missing-task"><Empty title={t("找不到这个任务", "Task not found")} description={t("它可能不属于当前本地空间。", "It may belong to another workspace.")} action={<ButtonLink as="a" color="primary" href="#assistant">{t("回到助理", "New chat")}</ButtonLink>} /></div>}
   </div>;
 }
