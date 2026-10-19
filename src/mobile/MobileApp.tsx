@@ -123,18 +123,18 @@ export function MobileApp(){
         }}/>}
       </div></WorkspaceVisibility.Provider>
       <><header hidden={isChat||isAgentRoom} className="mobile-header"><Button color="secondary" variant="ghost" uniform className="mobile-nav-button" aria-label={t('返回','Back')} onClick={back}><ArrowLeft/></Button><h1>{title}</h1></header>{Object.values(workspaceRoutes).map(workspaceRoute=><WorkspaceVisibility.Provider key={workspaceRoute.view} value={!isChat&&workspaceRoute.view===route.view}><main hidden={isChat||workspaceRoute.view!==route.view} ref={node=>{if(workspaceRoute.view===route.view)mainRef.current=node;}} className={'mobile-main mobile-view-'+workspaceRoute.view} data-mobile-layout={workspaceRoute.view==='agents'&&workspaceRoute.id&&!['market','network','dating','discover'].includes(workspaceRoute.id)?'conversation':undefined} >
-        {cognitionNav.some(item=>item.id===workspaceRoute.view)&&<CognitionWorkspace presentation="mobile" view={workspaceRoute.view} data={data} onRefresh={refresh} onCreateTask={prepareTask}/>} 
-        {workspaceRoute.view==='projects'&&<ProjectWorkspace data={data} id={workspaceRoute.id} onRefresh={refresh} onChat={id=>prepareTask('',undefined,[],id)}/>} 
-        {workspaceRoute.view==='artifacts'&&<ArtifactWorkspace data={data} id={workspaceRoute.id} onRefresh={refresh}/>} 
-        {workspaceRoute.view==='automations'&&<AutomationWorkspace data={data} onRefresh={refresh} onTask={id=>go('task',id)}/>} 
-        {workspaceRoute.view==='agents'&&<AgentWorkspace presentation="mobile" navigation={navigation} data={data} onRefresh={refresh} onTask={id=>go('task',id)} initialRoomId={workspaceRoute.id}/>} 
-        {workspaceRoute.view==='settings'&&<SettingsWorkspace presentation="mobile" data={data} onRefresh={refresh} theme={appearance.theme} onTheme={theme=>updateAppearance({theme})} initialCategory={workspaceRoute.id} appearance={appearance} appearanceStatus={appearanceStatus} onAppearance={updateAppearance}/>} 
+        {cognitionNav.some(item=>item.id===workspaceRoute.view)&&<CognitionWorkspace presentation="mobile" view={workspaceRoute.view} data={data} onRefresh={refresh} onCreateTask={prepareTask}/>}
+        {workspaceRoute.view==='projects'&&<ProjectWorkspace data={data} id={workspaceRoute.id} onRefresh={refresh} onChat={id=>prepareTask('',undefined,[],id)}/>}
+        {workspaceRoute.view==='artifacts'&&<ArtifactWorkspace data={data} id={workspaceRoute.id} onRefresh={refresh}/>}
+        {workspaceRoute.view==='automations'&&<AutomationWorkspace data={data} onRefresh={refresh} onTask={id=>go('task',id)}/>}
+        {workspaceRoute.view==='agents'&&<AgentWorkspace presentation="mobile" navigation={navigation} data={data} onRefresh={refresh} onTask={id=>go('task',id)} initialRoomId={workspaceRoute.id}/>}
+        {workspaceRoute.view==='settings'&&<SettingsWorkspace presentation="mobile" data={data} onRefresh={refresh} theme={appearance.theme} onTheme={theme=>updateAppearance({theme})} initialCategory={workspaceRoute.id} appearance={appearance} appearanceStatus={appearanceStatus} onAppearance={updateAppearance}/>}
         {workspaceRoute.view==='history'&&<MobileHistory data={data} onRefresh={refresh}/>}
         {workspaceRoute.view==='development'&&<DevelopmentWorkspace onExplore={()=>setGuideOpen(true)}/>}
         {workspaceRoute.view==='components'&&<ComponentCatalogue appearance={appearance}/>}
         {workspaceRoute.view==='devices'&&<DeviceSimulator/>}
         {workspaceRoute.view==='graph-lab'&&<section className="graph-lab"><header><ButtonLink as="a" href="#components" color="secondary" variant="ghost" size="sm">{t('返回组件目录','Back to components')}</ButtonLink><span>{t(`${graphFixture.people.length} 位虚构人物，仅供交互体验`,`${graphFixture.people.length} fictional people for interaction testing`)}</span></header><RelationshipGraph data={graphFixture} refs={()=>null} onRefresh={async()=>{}} readOnly/></section>}
- 
+
         {!cognitionNav.some(item=>item.id===workspaceRoute.view)&&!['projects','artifacts','automations','agents','settings','history','development','components','devices','graph-lab'].includes(workspaceRoute.view)&&<div className="mobile-empty"><h2>{t('这条记录暂时不可用','This record is unavailable')}</h2><ButtonLink as="a" href="#assistant" color="secondary">{t('回到对话','Back to chat')}</ButtonLink></div>}
       </main></WorkspaceVisibility.Provider>)}</>
     </div>
