@@ -2,7 +2,7 @@
 
 User-visible changes are recorded here. Detailed decisions and scoped checks remain in [Development](docs/DEVELOPMENT.md) and [Iteration](docs/ITERATION.md). Published releases are tied to a tag and commit; subsequent changes remain under Unreleased.
 
-## 0.2.0 — Unreleased
+## 0.2.0 — 2026-10-20
 
 ### Added
 
@@ -20,7 +20,12 @@ User-visible changes are recorded here. Detailed decisions and scoped checks rem
 
 ### Validation and delivery
 
-- Release preparation is in progress. The final local source check passed 830 of 843 tests, with 13 environment-dependent skips and no failures. An isolated native build saved a session-only synthetic material and retained it after a normal quit and restart; strict signatures and package source correspondence passed. Public delivery is recorded separately.
+- The pre-package local source check passed 830 of 843 tests, with 13 environment-dependent skips and no failures. An isolated native build saved a session-only synthetic material and retained it after a normal quit and restart; strict signatures and package source correspondence passed. This isolated acceptance does not verify an in-place upgrade of existing user data, and no real-provider checks were rerun.
+- After packaging, the embedded development example's automatic scrolling was confined to its iframe and covered by additional regression tests. The final source check passed 833 of 846 tests, with 13 environment-dependent skips and no failures. This development entry is separate from the native production entry; the frozen native runtime was unchanged.
+- [v0.2.0](https://github.com/YunyueLi/SecondU/releases/tag/v0.2.0) was published as a stable release at **2026-10-19 16:47:35 UTC / October 20 00:47:35 in Beijing**, tagged at `5185f9163cf50ea6a559326c40b8c142ffe905dd`. All three uploaded assets and anonymous downloads from the fixed `/releases/download/v0.2.0/` URLs match the frozen sizes and SHA-256 digests. The public ZIP passed CRC checks for all 5,475 entries; feed version, ZIP URL and length checks and independent Ed25519 verification using the public key inside the downloaded app passed. The latest `appcast.xml` and `SHA256SUMS` aliases also returned matching files; the latest ZIP alias was not downloaded again, and its feed points to the verified fixed-version ZIP. See the [release notes](docs/releases/v0.2.0.md).
+- The ZIP will not be repackaged: its embedded development record ends at build time, and its unreleased status is a historical snapshot. When these publication receipts were added, the live website had deployed main commit `e9a89928abda00a737b148c5c29b48575edba89c`; the added receipts follow subsequent documentation commits and deployments in the repository and website.
+- [Source CI 39286999562](https://github.com/YunyueLi/SecondU/actions/runs/39286999562) succeeded on macOS and Ubuntu for main commit `e9a89928abda00a737b148c5c29b48575edba89c`; this is separate from the release tag's commit. [Pages 39286999215](https://github.com/YunyueLi/SecondU/actions/runs/39286999215) succeeded for that main commit: its build completed at **2026-10-19 16:38:54 UTC** and deployment at **16:49:22 UTC**. The live index and its 406,062-byte entry script `main-Bd378_FR.js` returned HTTP 200; the script matches the locally verified website build byte for byte and contains `TwinBuilding`. A live browser recheck remains incomplete because the Mac is locked; earlier website UI acceptance covers the local build.
+- Kimi K3 max visual review returned HTTP 401 and produced no conclusion. Browser acceptance and automated checks do not count as a successful K3 review.
 - Material processing requires a configured provider. The mobile page does not add cloud synchronization, background push, continuous camera capture or system sharing extensions. Proactive assessment requires the local service to remain available.
 
 ## 0.1.5 — 2026-10-10
