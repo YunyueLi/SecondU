@@ -86,4 +86,4 @@ Cue 群聊宣传图中存在 Tokyo 请求与 Kyoto 成果不一致，因此只�
 
 ## 保留的研究入口
 
-已有私有研究档案中的 `cue-video-observations.md`、`grok-ui-breakdown.md`、`muse-ui-breakdown.md` 和 `competitors.md` 保留全部观察边界、原图索引与视频时间点；这里仅登记设计采用关系，不复制私人档案或媒体到产品仓库。研究总索引见 [RESEARCH.md](../RESEARCH.md)。
+本文记录公开资料支持的设计采用关系；具体观察范围与视频时间点见上文，不据此推断未经验证的产品能力。研究总索引见 [RESEARCH.md](../RESEARCH.md)。
