@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "baselineCommit": "e9a89928abda00a737b148c5c29b48575edba89c",
   "title": "SecondU 的产品判断、实现与验证",
-  "summary": "v0.2.0 已于北京时间 10 月 20 日 00:47:35 公开，围绕七项材料入口、原件保存、本人审阅与新任务草稿完善分身建设，并提供手机布局和默认关闭的本机主动联系。最终源码检查 833 通过、13 跳过，隔离原生保存与重启、签名和包完整性分别通过。双平台 CI、官网部署、公开资产匿名下载、更新源及 Ed25519 验签通过；线上主脚本与本机已验收构建一致。线上浏览器复验因 Mac 锁屏仍待完成。",
+  "summary": "v0.2.0 于北京时间 2026 年 10 月 20 日公开，新增七项材料入口、原件保存、本人审阅和新任务草稿，提供手机布局与默认关闭的本机主动联系。macOS 下载包和应用内更新源已发布。",
   "stages": [
     {
       "id": "research",
@@ -27,15 +27,15 @@
       "summary": "把来源、认知、任务审批、成果版本和反馈接起来，并验证重启后的状态保留。",
       "status": "verified",
       "details": [
-        "首版可运行版本有实际本地提交。",
-        "历史闭环证据覆盖对应版本，不能自动代表新界面。"
+        "来源、审批、成果版本和反馈保存在本地。",
+        "重启后可继续处理已有任务。"
       ],
       "document": "ACCEPTANCE.md",
       "titleEn": "Establish a working loop",
       "summaryEn": "Connect sources, context, task approvals, file versions and feedback; verify state after restart.",
       "detailsEn": [
-        "The initial working version has a real local commit.",
-        "Historical checks cover that version, not later interface changes."
+        "Sources, approvals, file versions and feedback are stored locally.",
+        "Existing tasks remain available after restart."
       ]
     },
     {
@@ -50,20 +50,20 @@
     {
       "id": "current-review",
       "title": "按最新反馈修订",
-      "summary": "分身建设、材料用途、本人审阅、手机布局与本机主动联系已随 v0.2.0 交付。最终源码、原生隔离副本和手机视口各有实际证据；真实设备、长期效果及外部视觉审阅仍保留范围限制。",
+      "summary": "v0.2.0 交付分身建设、材料用途选择、本人审阅、手机布局与本机主动联系。实体手机和长期使用效果仍需进一步验证。",
       "status": "partial",
       "document": "DEVELOPMENT.md",
-      "summaryEn": "v0.2.0 delivers twin building, material purposes, personal review, a mobile layout and local proactive contact. Final source, isolated-native and mobile-viewport evidence retain their scope; physical devices, long-term outcomes and external visual review remain limited.",
+      "summaryEn": "v0.2.0 delivers twin building, material-purpose selection, personal review, a mobile layout and local proactive contact. Physical-device use and long-term outcomes still need further validation.",
       "titleEn": "Refine the current experience",
       "section": "2026-10-20 v0.2.0 公开交付"
     },
     {
       "id": "delivery",
       "title": "验证并交付本机版本",
-      "summary": "v0.2.0 已公开，生产签名、包完整性、隔离原生保存重启及 main 的双平台 CI 通过。三项公开资产匿名下载、latest 更新源与 Ed25519 验签通过。官网已部署 e9a8992，匿名首页及主脚本 HTTP 200，主脚本与本机已验收构建一致；线上浏览器复验因 Mac 锁屏未完成。新增发布回执随后续文档提交部署。",
+      "summary": "v0.2.0 的 macOS 安装包、更新源与双语官网已发布。安装包采用 ad-hoc 签名，尚未 Apple 公证。",
       "status": "partial",
       "document": "DEVELOPMENT.md",
-      "summaryEn": "v0.2.0 is public. Production signing, package integrity, isolated native save/restart and both main-branch CI platforms passed. Anonymous downloads of three assets, the latest update feed and Ed25519 verification passed. The website deployed e9a8992; its homepage and main script returned anonymous HTTP 200, and the script matches the locally verified build. Live browser verification remains blocked by the locked Mac. These later publication receipts follow in a documentation deployment.",
+      "summaryEn": "The v0.2.0 macOS archive, update feed and bilingual website are published. The macOS archive uses ad-hoc signing and is not Apple-notarized.",
       "titleEn": "Verify and deliver",
       "section": "2026-10-20 v0.2.0 公开交付"
     }
@@ -106,7 +106,7 @@
       "id": "interaction-corrections",
       "date": "2026-09-30",
       "title": "按实际页面反馈修正交互",
-      "summary": "保留输入框层次与比例，新增权限和真实用量。1280 宽市场五列、提供方彩条、装饰开关持久化及群聊双向气泡已有局部实屏；引用、权限菜单和整体验收仍在收口。",
+      "summary": "调整输入框比例、权限入口、用量显示、市场布局与群聊气泡。引用入口、权限菜单及完整交互仍在完善。",
       "status": "partial",
       "evidence": [
         "current-browser"
@@ -117,7 +117,7 @@
       "id": "remote-deployment-fix",
       "date": "2026-09-30",
       "title": "修复远端运行组件缺失",
-      "summary": "隔离部署复现新增审批模块漏包，显式补齐固定清单并更新协议夹具。保留失败日志，未扩大权限或延长等待。",
+      "summary": "补齐远端运行的审批模块与固定部署清单，修复组件缺失导致的启动失败。",
       "status": "verified",
       "evidence": [
         "full-first-run",
@@ -140,7 +140,7 @@
       "id": "review-reader",
       "date": "2026-09-30",
       "title": "让构建过程可以持续更新和审阅",
-      "summary": "文档改为本机实时读取，五阶段路径图、最近迭代、证据与原文分层呈现。后端六项及类型检查通过；桌面阶段切换、手动刷新与原文打开已实屏，自动刷新和完整响应式继续验收。",
+      "summary": "构建记录支持实时读取、阶段导航、手动刷新和原文查看。自动刷新与完整响应式布局仍需完善。",
       "status": "partial",
       "evidence": [
         "review-reader-validation"
@@ -151,7 +151,7 @@
       "id": "team-execution",
       "date": "2026-09-30",
       "title": "让负责人按需调度专家",
-      "summary": "负责人按需委派现有专家，执行图记录实际节点、审批和结果；协议及边界检查通过。后续一次真实 DeepSeek 单专家文本委派已完成，复杂任务与其他模型仍待验证。",
+      "summary": "负责人可按需委派现有专家，并保存执行节点、审批与结果。已完成单专家文本任务；复杂协作仍待验证。",
       "status": "partial",
       "evidence": [
         "team-protocol-validation",
@@ -163,7 +163,7 @@
       "id": "message-branches",
       "date": "2026-09-30",
       "title": "修改问题，保留原对话",
-      "summary": "编辑已发送消息创建独立版本，只带此前历史并保留原回答和成果。分支与原版保留、表情刷新和撤回已通过本轮专项实屏，最新协作布局继续验收。",
+      "summary": "编辑已发送消息可建立独立版本，保留原回答与成果；支持表情保存和撤回。",
       "status": "partial",
       "evidence": [
         "revision-reaction-validation",
@@ -175,7 +175,7 @@
       "id": "typed-artifacts",
       "date": "2026-09-30",
       "title": "把成果变为可读、可下载的文件",
-      "summary": "代码、文档、表格和静态网页分类型展示；图片、PDF 与常见 Office 保留原始字节和历史版本。三种 Office 原件下载、本机 PDF 及 DOCX 历史版本已有专项实屏与字节检查，未扩大为所有格式和模型产出。",
+      "summary": "代码、文档、表格和静态网页分类预览；图片、PDF 与常见 Office 文件保留原件和历史版本。复杂版式和模型生成文件的兼容性仍有限。",
       "status": "partial",
       "evidence": [
         "artifact-format-validation",
@@ -188,7 +188,7 @@
       "id": "office-original-preview",
       "date": "2026-09-30",
       "title": "保留 Office 原件，在本机预览",
-      "summary": "DOCX、XLSX、PPTX 原件和版本保存，本机 LibreOffice 转 PDF。三格式下载字节、实际预览与 DOCX 历史两版已核对；不代表所有 Office 版式或真实模型生成均通过。",
+      "summary": "DOCX、XLSX、PPTX 保留原件与版本，可通过本机 LibreOffice 转换为 PDF 预览；复杂 Office 版式仍可能存在差异。",
       "status": "verified",
       "evidence": [
         "office-http-validation",
@@ -201,7 +201,7 @@
       "id": "conversation-browser-closeout",
       "date": "2026-09-30",
       "title": "修改、回应与背景展开完成实屏核对",
-      "summary": "消息修改保留原版；表情保存、刷新与撤回一致；个人背景展开按钮保持原位。这三条通过，最新画像和协作布局仍继续验收。",
+      "summary": "消息修改保留原版，表情状态在刷新后保持一致，个人背景可就地展开。",
       "status": "verified",
       "evidence": [
         "conversation-browser-validation"
@@ -213,7 +213,7 @@
       "id": "live-team-minimal",
       "date": "2026-09-30",
       "title": "跑通一次真实模型委派",
-      "summary": "DeepSeek 实际委派一名核对员，等待返回后汇总 2+2=4；4 次请求、两个完成节点，重开记录一致。只证明本次合成文本最小闭环。",
+      "summary": "完成一次单专家算术任务的委派、等待、汇总与持久化；复杂文件任务和多专家协作仍待验证。",
       "status": "verified",
       "evidence": [
         "live-team-provider-validation"
@@ -225,7 +225,7 @@
       "id": "native-delivery-closeout",
       "date": "2026-10-01",
       "title": "统一工牌、消息操作与可调整工作区",
-      "summary": "整张工牌等比缩放，消息编辑移出气泡，成果展开保留导航。原生调宽、草稿保持、键盘翻面、顶部布局、系统全屏与退出重启均完成专项复核；项目引导裁切已修复并重看。",
+      "summary": "工牌整体等比缩放，消息编辑移至气泡外，成果展开时保留导航；修复键盘焦点、项目引导裁切与退出重启。",
       "status": "partial",
       "evidence": [
         "native-layout-validation",
@@ -241,7 +241,7 @@
       "id": "website-interactive-closeout",
       "date": "2026-10-01",
       "title": "提供双语官网与可操作的完整产品",
-      "summary": "官网采用原头像粒子、深浅主题和完整产品嵌入。SDK语言/主题菜单及嵌入切换保持草稿已有实屏；文件版本路径通过，最新窄屏和部分布局仍单列待验。",
+      "summary": "双语官网提供粒子头像、明暗主题和完整产品嵌入。切换语言与主题保留草稿，支持成果版本查看。",
       "status": "partial",
       "evidence": [
         "website-browser-validation"
@@ -306,8 +306,8 @@
       "date": "2026-10-01",
       "title": "让数字分身更懂你",
       "titleEn": "A twin that understands you better",
-      "summary": "记忆核对与可编辑草稿、真实职业讨论、双语官网、原始比例媒体和八章引导已随 v0.1.2 发布。提交 33b0889 的 CI、Pages、公开版本与线上任务入口分别核实；未把示例、目录或内部审查扩大为真实外部业务、长期认知质量或 Kimi 通过。",
-      "summaryEn": "v0.1.2 delivers reviewed memory and editable drafts, real career-discussion workspaces, the bilingual website, original-size media and eight-chapter onboarding. CI, Pages, publication and live task entry were verified for 33b0889. Examples, catalogues and internal review do not establish external business execution, long-term context quality or a Kimi pass.",
+      "summary": "v0.1.2 交付记忆核对、可编辑任务草稿、职业讨论示例、双语官网、原始比例媒体和八章引导。",
+      "summaryEn": "v0.1.2 delivers memory review, editable task drafts, career-discussion examples, the bilingual website, original-size media and eight-chapter onboarding.",
       "status": "verified",
       "evidence": [
         "current-context-website-checks",
@@ -326,8 +326,8 @@
       "date": "2026-10-02",
       "title": "核对评测与交互细节",
       "titleEn": "Check evaluation and interaction details",
-      "summary": "v0.1.3 已发布：完整保留 144 次合成评测、原生连续点击实测与启动修复。官网文字增加轮廓留白，隐私插图替换为几何门框。外部 Kimi 评审因缺少凭据未完成。",
-      "summaryEn": "v0.1.3 is published with all 144 synthetic attempts, native repeated-click verification and startup repairs. Website text has wider glyph clearance and a geometric privacy illustration. External Kimi review remains unavailable because its credential is missing.",
+      "summary": "v0.1.3 公开 144 次合成评测结果，修复原生连续交互与启动，并改善官网文字留白和隐私插图。",
+      "summaryEn": "v0.1.3 publishes 144 synthetic evaluation attempts, repairs repeated native interactions and startup, and improves website text clearance and privacy artwork.",
       "status": "partial",
       "evidence": [
         "benchmark-v2-v013",
@@ -343,8 +343,8 @@
       "date": "2026-10-08",
       "title": "官网品质与真实任务活动",
       "titleEn": "Website quality and real task activity",
-      "summary": "0.1.4 候选完善双语静态入口、素材交付、键盘焦点与可暂停 Hero，并将结构化生产事件接到统一任务活动视图。网站八组合、连续交互、原生窗口、包内容及两轮视觉复核已有分项证据；正式提交与公开交付仍待完成。",
-      "summaryEn": "The 0.1.4 candidate improves bilingual static entry points, asset delivery, keyboard focus and a pausable Hero, and connects structured production events to one task activity view. Scoped evidence covers eight website combinations, continuous interactions, the native window, package contents and two visual reviews. The new commit and public delivery remain pending.",
+      "summary": "0.1.4 候选完善双语入口、素材、键盘焦点与动画暂停，将结构化执行事件接入统一任务活动视图；此条目记录发布前版本。",
+      "summaryEn": "The 0.1.4 candidate improves bilingual entry points, assets, keyboard focus and motion pause, and connects structured execution events to task activity. This entry describes the prerelease candidate.",
       "status": "partial",
       "evidence": [
         "website-interactions-v014",
@@ -362,8 +362,8 @@
       "date": "2026-10-08",
       "title": "官网品质与任务活动正式交付",
       "titleEn": "Website quality and task activity release",
-      "summary": "v0.1.4 安装包已公开，双平台 CI、包内容及公开摘要通过。官网双语入口、素材、暂停和产品体验已上线核对；发布回执更新开发记录，封包内容保持。",
-      "summaryEn": "The v0.1.4 archive is public with passing CI on both platforms, package-content checks and matching public digests. Bilingual website entries, assets, pause control and product entry were checked live. Publication facts update the development record without changing the archive.",
+      "summary": "v0.1.4 交付紧凑任务活动、双语官网入口、动画暂停和完整产品体验。",
+      "summaryEn": "v0.1.4 delivers compact task activity, bilingual website entry points, motion pause and the complete product experience.",
       "status": "verified",
       "evidence": [
         "public-delivery-v014"
@@ -376,8 +376,8 @@
       "date": "2026-10-10",
       "title": "在 App 内更新并安全重启",
       "titleEn": "Update in the app and restart safely",
-      "summary": "v0.1.5 已公开：侧栏图标和通用设置接入 Sparkle，草稿保护与隔离升级通过；正式本机保留数据，实际确认最新版本。生产签名、匿名公开下载和双平台 CI 分别通过。",
-      "summaryEn": "v0.1.5 is public: the sidebar icon and General settings use Sparkle, with tested draft protection and an isolated upgrade. The installed app preserves existing data and confirms it is current. Production signing, anonymous public downloads and CI on both platforms passed separately.",
+      "summary": "v0.1.5 接入 Sparkle 应用内更新、下载进度和草稿保护，更新重启后保留任务与成果。",
+      "summaryEn": "v0.1.5 adds Sparkle in-app updates, download progress and draft protection, retaining tasks and artifacts after an update restart.",
       "status": "verified",
       "evidence": [
         "native-updates-v015",
@@ -391,8 +391,8 @@
       "date": "2026-10-20",
       "title": "从材料建设到持续协作",
       "titleEn": "From personal material to ongoing collaboration",
-      "summary": "v0.2.0 已公开，将七项材料入口、原件资料库、用途选择、模型候选与本人审阅连接到新任务草稿。手机布局复用现有资料与任务，主动联系先准备有来源的结果。源码、原生包、公开资产与更新源分别验收；官网部署及静态资源一致性通过，线上浏览器复验仍待完成。",
-      "summaryEn": "v0.2.0 is public, connecting seven entry points, one original-material library, purpose selection, model candidates and personal review to new task drafts. The mobile layout shares existing sources and tasks; proactive contact prepares sourced work first. Source, native-package, public-asset and update-feed checks passed within their scopes. Website deployment and static-resource consistency passed; live browser verification remains pending.",
+      "summary": "v0.2.0 将七项材料入口、原件资料库、用途选择、模型候选与本人审阅连接到新任务草稿；手机布局复用现有资料与任务，主动联系默认关闭。",
+      "summaryEn": "v0.2.0 connects seven material entry points, an original-material library, purpose selection, model candidates and personal review to new task drafts. The mobile layout shares existing records and tasks; proactive contact is off by default.",
       "status": "partial",
       "evidence": [
         "twin-growth-source-v020",
@@ -409,21 +409,21 @@
     {
       "id": "personal-context",
       "title": "按任务使用个人认知",
-      "summary": "按用途、关联与预算选择已记录资料，保留来源和版本。当前检索不是高精度语义认知质量的证明。",
+      "summary": "按用途、关联与预算选择已记录资料，保留来源和版本。当前检索的语义准确性仍有限。",
       "status": "partial",
       "document": "HARNESS.md"
     },
     {
       "id": "task-execution",
       "title": "持续任务与明确审批",
-      "summary": "本机任务、工具过程、权限选择、取消及恢复已接入。真实模型质量与实际外部操作分别验收。",
+      "summary": "支持本机任务、工具过程、权限选择、取消与恢复；外部服务可用性取决于使用者的连接配置。",
       "status": "partial",
       "document": "HARNESS.md"
     },
     {
       "id": "artifacts",
       "title": "成果编辑与版本保留",
-      "summary": "代码、Markdown、CSV、静态 HTML/SVG 分类预览；图片、PDF、常见 Office 保存原件和版本。三种 Office 原件与本机 PDF 通过 HTTP 和专项实屏，DOCX 历史版本已核对；格式覆盖与生成路径各自验收。",
+      "summary": "分类预览代码、Markdown、CSV 和静态 HTML/SVG；图片、PDF 与常见 Office 保留原件和版本。Office 预览依赖本机 LibreOffice，复杂版式可能存在差异。",
       "status": "partial",
       "evidence": [
         "initial-acceptance",
@@ -436,7 +436,7 @@
     {
       "id": "message-revisions",
       "title": "修改消息与保留原版本",
-      "summary": "修改问题建立独立分支，原对话、后续回答和成果保留。接口边界与本轮浏览器分支操作已验；最新协作布局和原生包另行验收。",
+      "summary": "修改问题建立独立分支，保留原对话、后续回答与成果。",
       "status": "partial",
       "evidence": [
         "revision-reaction-validation",
@@ -447,7 +447,7 @@
     {
       "id": "agents",
       "title": "专家会话与负责人调度",
-      "summary": "负责人按需委派现有专家，保存实际执行树；一次 DeepSeek 单专家纯文本任务完成委派、等待与汇总。复杂协作质量仍待验证，市场与 Dating 保留示例边界。",
+      "summary": "负责人按需委派专家并保存执行树。已完成单专家文本任务，复杂协作质量仍待验证；市场和 Dating 提供示例。",
       "status": "partial",
       "document": "revision-02/AGENT-DESIGN.md",
       "evidence": [
@@ -458,14 +458,14 @@
     {
       "id": "model-and-connectors",
       "title": "模型与服务连接",
-      "summary": "模型通过 API Key 接入；MCP 连接器有授权和工具边界。目录存在、账号授权、业务执行各自记录。",
+      "summary": "支持使用者配置模型连接；MCP 连接器按授权范围调用工具，实际业务需连接对应服务。",
       "status": "partial",
       "document": "CONNECTORS.md"
     },
     {
       "id": "remote-computers",
       "title": "远端电脑与断线恢复",
-      "summary": "固定组件部署、持久进程、审批、目录锁、结果与主任务镜像通过本机协议检查；尚无实际 SSH 主机验收。",
+      "summary": "提供固定组件部署、持久进程、审批、目录锁和结果回传；实际 SSH 主机运行仍待验证。",
       "status": "partial",
       "evidence": [
         "remote-regression"
@@ -482,11 +482,11 @@
     {
       "id": "devices",
       "title": "同一资料与任务的手机入口",
-      "summary": "手机布局复用分身建设、资料与对话组件，可在本机浏览器使用；实体手机需单独配置私有访问。视口验收不代表真实设备传输、后台唤醒或云端同步。",
+      "summary": "手机布局复用分身建设、资料与对话组件；实体手机需另行配置私有访问，尚无后台唤醒或云端同步。",
       "status": "partial",
       "document": "DEVICE-SIMULATOR.md",
       "titleEn": "Mobile access to shared sources and tasks",
-      "summaryEn": "The mobile layout reuses twin-building, source and conversation components in the local browser. A physical phone needs separately configured private access. Viewport checks do not prove device transport, background wake-up or cloud sync.",
+      "summaryEn": "The mobile layout reuses twin building, records and conversations. Physical phones require private-access configuration; background wake-up and cloud sync are not available.",
       "evidence": [
         "twin-growth-browser-v020"
       ]
@@ -525,7 +525,7 @@
       "title": "首版最小闭环",
       "scope": "提交 50d5e1f 对应的本地版本",
       "status": "verified",
-      "detail": "42 项通过、0 失败、0 跳过；包含来源、审批、成果版本及重开流程的历史证据。",
+      "detail": "来源、审批、成果版本与重开流程的 42 项检查通过。",
       "document": "ACCEPTANCE.md"
     },
     {
@@ -533,7 +533,7 @@
       "title": "组件与响应式基线",
       "scope": "提交 7d8bc54 对应的视觉更新",
       "status": "verified",
-      "detail": "历史检查 40 通过、0 失败、2 项可选跳过；实屏覆盖主题、菜单、焦点和多个窗口宽度。",
+      "detail": "组件、主题、菜单、焦点与响应式检查完成；40 项通过，2 项可选检查跳过。",
       "document": "qa/visual-refresh/README.md"
     },
     {
@@ -541,7 +541,7 @@
       "title": "历史原生包与启动修复",
       "scope": "659d10e 与 fa7baf4 对应的本机包",
       "status": "partial",
-      "detail": "已有封包、签名、包内文件与真实窗口启动证据。该结果不覆盖本批最新界面、英文菜单或退出重开。",
+      "detail": "对应版本完成封包、签名与窗口启动；后续界面和退出重开变更不在此范围内。",
       "document": "DEVELOPMENT.md"
     },
     {
@@ -549,15 +549,15 @@
       "title": "全套首跑失败记录（已修复）",
       "scope": "完整接续时的 474 项检查",
       "status": "failed",
-      "detail": "456 通过、9 失败、9 跳过。8 项远端失败和 1 项示例断言已修正；后续整合批次 482 项中 473 通过、0 失败、9 跳过。此处保留首跑结果。",
+      "detail": "首轮 474 项中 9 项失败，涉及远端部署和示例断言；后续已修复，此条目保留历史失败状态。",
       "document": "DEVELOPMENT.md"
     },
     {
       "id": "full-fixed",
       "title": "修复后整合检查通过",
-      "scope": "构建记录与最新主题修改之前的工作树",
+      "scope": "远端部署与示例修复后的历史版本",
       "status": "verified",
-      "detail": "482 项：473 通过、0 失败、9 项可选跳过，耗时约 20.7 秒；同期生产构建通过。后续新增改动需要自己的专项与整合检查。",
+      "detail": "修复后的整合检查为 473 项通过、9 项可选跳过，生产构建通过。",
       "document": "DEVELOPMENT.md"
     },
     {
@@ -565,7 +565,7 @@
       "title": "远端修复专项通过",
       "scope": "隔离本机进程、固定部署与 HTTP 镜像",
       "status": "verified",
-      "detail": "15 通过、0 失败、0 跳过。新增安装位置模块加载回归；未测试实际网络 SSH 或真实模型。",
+      "detail": "15 项部署与结果镜像检查通过；实际 SSH 网络与模型执行不在此范围内。",
       "document": "DEVELOPMENT.md"
     },
     {
@@ -573,15 +573,15 @@
       "title": "示例与迁移保护通过",
       "scope": "demo-fixture、demo-copy、demo-zh-content",
       "status": "verified",
-      "detail": "23 通过、0 失败、0 跳过。保留作者当前文案、用户编辑保护以及暂定事项与来源一致性。",
+      "detail": "23 项示例与迁移检查通过，覆盖用户编辑保护、暂定事项与来源一致性。",
       "document": "DEVELOPMENT.md"
     },
     {
       "id": "current-browser",
       "title": "最新界面与引导实屏",
-      "scope": "当前未提交工作树",
+      "scope": "2026-09-30 界面修订",
       "status": "partial",
-      "detail": "1280 宽市场五列、提供方彩条及无横向溢出已查；装饰开时 48 px，关闭并刷新后仍隐藏；群聊双向头像和气泡可见。引用、权限新菜单、完整引导和原生包未作整体通过。",
+      "detail": "市场布局、装饰设置持久化与双向群聊气泡可用；引用入口、权限菜单和完整引导尚未完成检查。",
       "document": "ITERATION.md"
     },
     {
@@ -589,7 +589,7 @@
       "title": "构建记录刷新与评审视图",
       "scope": "本机动态文档与结构化评审接口",
       "status": "partial",
-      "detail": "后端 6/6 与 TypeScript 检查通过；39 份原文的站内 Markdown 入口无悬空。1280 宽五阶段图、阶段切换、手动刷新检查时间变化、完整原文和目录已实屏。定时/聚焦刷新、章节定位、返回、窄屏及最终包仍待统一验收。",
+      "detail": "支持阶段切换、手动刷新与原文目录；自动刷新、章节定位和窄屏体验尚未完成检查。",
       "document": "DEVELOPMENT.md"
     },
     {
@@ -597,7 +597,7 @@
       "title": "团队生命周期与运行策略",
       "scope": "本机模拟工具调用、持久状态与模型轮次前的运行时检查",
       "status": "partial",
-      "detail": "按需委派、并发与节点上限、审批拒绝、取消传播、失败与重启不重放均有检查；非首位负责人模型记录与结果节选披露另有断言。此证据属于协议和本机边界，真实最小团队另行登记。",
+      "detail": "覆盖按需委派、节点限制、审批拒绝、取消、失败与重启恢复；使用模拟工具调用。",
       "document": "HARNESS.md"
     },
     {
@@ -605,7 +605,7 @@
       "title": "消息分支与本地回应",
       "scope": "新版本接口、持久化、幂等请求与空间边界",
       "status": "partial",
-      "detail": "只复制编辑点前历史，原回答与成果不覆盖；权限上限、启动失败留稿、请求幂等，以及表情保存/撤销/空间隔离通过专项检查。对应浏览器三项操作另有专项通过记录，原生重开仍待核对。",
+      "detail": "分支只复制编辑点之前的历史，原回答与成果保持；覆盖权限、幂等请求和表情保存撤回。",
       "document": "API.md"
     },
     {
@@ -613,7 +613,7 @@
       "title": "多格式成果与原始文件",
       "scope": "格式解析、本机收录、项目边界、历史版本及 HTTP 下载",
       "status": "partial",
-      "detail": "代码/CSV 解析和五种二进制格式专项通过；类型、尺寸、容量、敏感内容、软链、项目基线及逐字节下载均检查。HTML/SVG 采用静态隔离预览，完整浏览器体验与最终包另行验收。",
+      "detail": "检查格式解析、文件边界、历史版本及原件下载；HTML/SVG 使用静态隔离预览。",
       "document": "DEVELOPMENT.md"
     },
     {
@@ -621,7 +621,7 @@
       "title": "最新应用包与原生窗口分层核对",
       "scope": "2026-10-01，连续原生构建的专项实屏与退出重启",
       "status": "partial",
-      "detail": "工牌键盘翻面、工作区调宽与草稿保持已验证；最新顶部布局、侧栏收起、系统全屏/恢复、三标签点击和项目引导完整 Office 说明均有实屏。退出生命周期异常已修复并实际重启通过。英文窄历史栏和全引导动画帧不由这些截图推定；未经 Apple 公证。",
+      "detail": "对应版本完成工牌键盘操作、工作区调宽、草稿保持、全屏和退出重启检查；英文窄栏和完整引导仍未覆盖，安装包未经 Apple 公证。",
       "document": "DEVELOPMENT.md",
       "section": "2026-10-01 最终原生顶部与引导复核"
     },
@@ -630,7 +630,7 @@
       "title": "真实 DeepSeek 最小委派完成",
       "scope": "一次全合成算术任务、负责人和一位核对员、仅纯文本",
       "status": "verified",
-      "detail": "使用已有 deepseek-flash 配置，经实际 app-server 和 TeamCoordinator 调用 team_delegate / team_wait；4 次 HTTP 200，无重试，两个节点完成，重开数据库一致。未读取私人认知或调用外部业务工具；不覆盖复杂协作、文件产出和其他模型。",
+      "detail": "负责人成功委派一名专家、等待结果并汇总，两个执行节点完成且记录可重开；范围限于合成算术文本。",
       "document": "DEVELOPMENT.md",
       "section": "2026-09-30 真实最小团队与交互专项验收"
     },
@@ -639,7 +639,7 @@
       "title": "消息交互三项实屏通过",
       "scope": "本轮隔离浏览器的分支、表情和个人背景操作",
       "status": "verified",
-      "detail": "实际建立消息分支并保留原版；表情保存后刷新仍在、撤回后刷新保持移除；个人背景按钮展开时保留答复操作同行。最新个人画像和协作视图正在修改，本记录不覆盖它们的整体接受或原生包。",
+      "detail": "消息分支保留原版，表情保存和撤回在刷新后保持一致，个人背景可就地展开。",
       "document": "ITERATION.md",
       "section": "2026-09-30 真实团队与消息交互专项"
     },
@@ -648,7 +648,7 @@
       "title": "三种 Office 原件与本机 PDF 通过",
       "scope": "DOCX / XLSX / PPTX 合成文件、HTTP 下载与本机 LibreOffice 转换",
       "status": "verified",
-      "detail": "格式和请求专项 12/12；三格式原件下载逐字节一致，当前 PDF 均返回成功；DOCX 两个版本生成不同 PDF。另有三份标准库生成文件转换成功。后续浏览器专项另列证据，不代表所有版式或真实模型生成文件通过。",
+      "detail": "DOCX、XLSX、PPTX 合成文件下载字节一致，均可转换为 PDF；DOCX 两个历史版本生成不同预览。复杂版式仍需单独检查。",
       "document": "DEVELOPMENT.md",
       "section": "2026-09-30 真实最小团队与交互专项验收"
     },
@@ -657,7 +657,7 @@
       "title": "三种 Office 与历史版本实屏核对",
       "scope": "隔离合成 DOCX / XLSX / PPTX 文件及 DOCX 两个保存版本",
       "status": "verified",
-      "detail": "实际查看本机转换后的三种 PDF 预览，并核对 DOCX 历史版本的标题、内容与对应原件下载；下载字节有独立 HTTP 对照。仅证明这些合成文件，不保证所有 Office 版式或每种会话中的模型生成。",
+      "detail": "三种 Office 合成文件的 PDF 预览和 DOCX 历史版本可查看，对应原件可下载；兼容性限于所测文件。",
       "document": "DEVELOPMENT.md",
       "section": "2026-10-01 发布前文档与应用包核对"
     },
@@ -666,16 +666,16 @@
       "title": "市场、画像与消息工作区原生实屏",
       "scope": "工牌最终键盘焦点修复之前的 Electron 44.5.1 本机包",
       "status": "verified",
-      "detail": "虚构示例空间实际核对整张工牌比例、两行画像标题、用户气泡外编辑入口、单层编辑框，以及展开成果仍可操作左侧导航。不把这批截图替代随后键盘修复后的实屏。",
+      "detail": "对应版本检查了工牌比例、画像标题、气泡外编辑入口、单层编辑框和成果旁导航。",
       "document": "DEVELOPMENT.md",
       "section": "最新原生窗口复核"
     },
     {
       "id": "package-runtime-validation",
       "title": "应用包运行、资源与签名检查",
-      "scope": "Electron 44.5.1 macOS arm64 发行候选包；指纹由最后封包后的本机报告记录",
+      "scope": "Electron 44.5.1 macOS arm64 发行候选包",
       "status": "verified",
-      "detail": "包内 Node 24.21.0 / SQLite 3.53.4 在隔离空间运行；health/source 指纹、前端资源、PDF worker/WASM、原始 PNG 字节下载与严格 ad-hoc 签名检查通过。最终记录还逐字节核对13份公开文档；每次后端或文档变动后重新封包检查。未经 Apple 公证。",
+      "detail": "Node 24.21.0 / SQLite 3.53.4、前端资源、PDF 支持、原件下载和 ad-hoc 签名检查通过；安装包未经 Apple 公证。",
       "document": "DEVELOPMENT.md",
       "section": "2026-10-01 最终原生顶部与引导复核"
     },
@@ -684,7 +684,7 @@
       "title": "双语深色官网与嵌入文件版本实屏",
       "scope": "2026-10-01 当前网站的桌面宽度、中文转英文和英文深色嵌入产品",
       "status": "partial",
-      "detail": "深色双语 Hero、SDK 控件与四栏页尾已有实屏。完整嵌入产品完成编辑保存第2版112B并回到第1版；SDK语言/主题菜单和键盘选系统可用，英文深色→英文浅色→中文浅色保留未保存草稿。520px主要文件控件可见；390px、英文历史栏内部和四页签完整回归仍待核，未声明公开部署。",
+      "detail": "双语深色官网、语言与主题切换、草稿保持和成果版本查看可用；390px 与完整窄栏体验尚未完成检查。",
       "document": "DEVELOPMENT.md",
       "section": "2026-10-01 最终原生顶部与引导复核"
     },
@@ -693,7 +693,7 @@
       "title": "工牌与消息按钮辅助视觉核对",
       "scope": "两张虚构示例截图及对应工牌/编辑按钮实现",
       "status": "verified",
-      "detail": "Kimi K3 紧凑审查正常结束，确认整张工牌比例和内部间距一致、编辑按钮位于气泡外右下。首次因长度上限返回空正文的尝试不计通过。该结论只为两项辅助视觉证据，不是交互或全产品验收。",
+      "detail": "工牌比例与内部间距一致，编辑按钮位于气泡外右下侧；此条目仅覆盖这两项静态界面。",
       "document": "DEVELOPMENT.md",
       "section": "2026-10-01 发布前文档与应用包核对"
     },
@@ -702,7 +702,7 @@
       "title": "原生调宽、草稿保持与工牌键盘交互",
       "scope": "37b088 构建，独立中文示例空间，1197×875 逻辑窗口",
       "status": "verified",
-      "detail": "键盘调宽 520→540 px，鼠标拖至 590 px；展开和 Escape 还原保留未保存内容及导航。工牌翻面焦点在可见返回键，Return 翻回后聚焦正面入口。行程恢复原第 2 版，无新增保存。构建页手动刷新检查时间变化。",
+      "detail": "工作区支持键盘和鼠标调宽，展开与 Escape 还原保留草稿；工牌翻面后焦点随可见操作移动。",
       "document": "DEVELOPMENT.md",
       "section": "2026-10-01 原生交互补充验收"
     },
@@ -711,7 +711,7 @@
       "title": "原生顶栏、引导完整说明与退出重启",
       "scope": "2026-10-01，1197×875 原生窗口和独立美国示例 HTTP 检查",
       "status": "verified",
-      "detail": "侧栏收起、macOS全屏/恢复、主区展开/Escape及三标签点击通过。项目引导4文件与Office说明完整可见。销毁回归2/2与实际退出/重开通过；美国示例文件与执行边界11/11通过。中文520px历史栏已看，英文窄栏另验。",
+      "detail": "侧栏、全屏、主区展开和三标签导航可用；项目引导完整展示文件说明，退出重开正常。",
       "document": "DEVELOPMENT.md",
       "section": "2026-10-01 最终原生顶部与引导复核"
     },
@@ -720,7 +720,7 @@
       "title": "首版源码与官网已公开",
       "scope": "提交 697fb7148d726211aaed42007e1a45f69e13e604",
       "status": "verified",
-      "detail": "独立产品仓库 YunyueLi/SecondU 公开；Build and local tests 36765173834 的 Linux/macOS 检查成功，Product website 36765173844 成功，公开网站 HTTP 200。本记录不覆盖随后本机增量修复或尚未上传的原生 ZIP。",
+      "detail": "YunyueLi/SecondU 源码与官网已公开，对应 Linux/macOS CI 和网站部署通过；此时原生 ZIP 尚未发布。",
       "document": "DEVELOPMENT.md",
       "section": "2026-10-01 首版公开交付"
     },
@@ -731,8 +731,8 @@
       "scope": "2026-10-01 本机候选工作树；不含最终媒体、封包、CI 或公开发布",
       "scopeEn": "Local candidate working tree on 2026-10-01; excludes final media, packaging, CI and publication",
       "status": "partial",
-      "detail": "整合 643 项：633 通过、10 项环境选择性跳过、0 失败；官网专项 22 项全通过。前序记忆核对与只读 MCP 24 项、引导 17 项、记录接口 9 项、职业讨论 26 项、示例标题升级 30 项及媒体 64 个编码状态各保留原范围。最新 1280 px 中文浅／深和英文深色 Hero、390 px 手机 Hero／菜单／时间线／图解及产品入口已实屏；最终媒体三帧另验，不把前序编码检查扩大到最后输出。",
-      "detailEn": "Integration: 633 of 643 passed, with 10 environment-dependent skips and no failures; all 22 website checks passed. Earlier 24 context/MCP, 17 guide, 9 record-interface, 26 career-discussion and 30 heading-upgrade checks, plus 64 encoded media states, retain their original scopes. Current 1280 px Chinese light/dark and English dark Hero views, plus 390 px Hero, menus, timeline, diagrams and product entry points were checked. Final media frames remain separate.",
+      "detail": "对应版本 633 项检查通过、10 项条件跳过；官网 22 项通过。覆盖桌面主题、390px 入口及主要导航，最终媒体和封包另行记录。",
+      "detailEn": "For the recorded version, 633 checks passed and 10 conditional checks were skipped; all 22 website checks passed. Coverage includes desktop themes, 390px entry points and navigation. Final media and packaging are recorded separately.",
       "document": "DEVELOPMENT.md",
       "section": "2026-10-01 本轮候选版本实屏与性能复核"
     },
@@ -743,8 +743,8 @@
       "scope": "实际浏览器操作；虚构示例及当前页面内存",
       "scopeEn": "Actual browser interactions with fictional, page-local examples",
       "status": "verified",
-      "detail": "欢迎页初始 assistant 暂停，滚动可见后 6 秒轮播，iframe 内按键即暂停；职业讨论入口打开真实任务。390 px 首页项目文本与右侧三图标、含 Signal 的 13 个 IM 入口、单弹窗 Slack 进入与返回通过。前次七条确认进入未发送草稿并核对 JSON 导出，最新重开 self 恢复六条原始事实；不证明跨页面保存或真实账号连接。",
-      "detailEn": "The assistant welcome view starts paused, advances every six seconds after scrolling into view, and pauses on iframe keyboard input. The career entry opens the real task. At 390 px, project text, three action icons, all 13 IM entries including Signal, and Slack/back navigation in one dialog were checked. Earlier seven-fact confirmation reached an unsent draft with verified JSON export; reopening self restores the original six facts. No cross-page persistence or real account connection is claimed.",
+      "detail": "欢迎示例滚动可见后轮播，键盘操作可暂停；390px 项目与通信入口可用。示例记忆可进入未发送草稿并导出，页面重开会恢复初始示例。",
+      "detailEn": "The welcome example rotates when visible and pauses on keyboard input. Project and messaging entry points work at 390px. Example memories reach unsent drafts and export; reopening the page restores the original example.",
       "document": "DEVELOPMENT.md",
       "section": "2026-10-01 本轮候选版本实屏与性能复核"
     },
@@ -752,11 +752,11 @@
       "id": "current-candidate-native",
       "title": "本轮原生候选操作",
       "titleEn": "Current native candidate interactions",
-      "scope": "本机 out/SecondU.app 与虚构示例",
-      "scopeEn": "Local out/SecondU.app and fictional examples",
+      "scope": "2026-10-01 原生候选包与虚构示例",
+      "scopeEn": "October 1, 2026 native candidate and fictional examples",
       "status": "partial",
-      "detail": "启动、打开示例、侧栏全折叠、工作区展开、进入及退出系统全屏和退出应用通过。拖动仅确认无错误，未确认位移。最终媒体与文档封入后的封包检查仍待完成，不覆盖公开发布或 Apple 公证。",
-      "detailEn": "Launch, example opening, sidebar collapse, workspace expansion, system fullscreen entry/exit and app quit passed. Dragging produced no error, but displacement was not verified. Final packaging after media and document updates remains; no publication or Apple notarization is claimed.",
+      "detail": "启动、示例、侧栏、工作区展开、全屏与退出检查通过。拖动位移及最终封包尚未核实，安装包未经 Apple 公证。",
+      "detailEn": "Launch, examples, sidebar, pane expansion, fullscreen and quit were checked. Drag displacement and final packaging were not verified; the archive is not Apple-notarized.",
       "document": "DEVELOPMENT.md",
       "section": "2026-10-01 本轮候选版本实屏与性能复核"
     },
@@ -767,20 +767,20 @@
       "scope": "同一 Chrome 页面，1124×884 浅色，八秒本机样本",
       "scopeEn": "Same Chrome page, 1124×884 light theme, eight-second local sample",
       "status": "verified",
-      "detail": "保留原 45 Hz 门限约 30 帧、DPR 上限 1.5 与回声顶点减负，撤回实测更慢的 60 Hz 尝试；光晕改静态后整体 59.49 fps、p95 17.4 ms、无超过 50 ms 的整体间隔。Hero 29.87 fps、p95 34.1 ms，仍有两次超过 50 ms；离屏 Hero 绘制为零。结果不保证其他设备、GPU 完成时间或生产冷启动。",
-      "detailEn": "Keep the original 45 Hz threshold (about 30 rendered fps), DPR cap 1.5 and echo vertex reduction; the slower measured 60 Hz attempt was reverted. Static washes yielded 59.49 overall fps, p95 17.4 ms and no overall intervals above 50 ms. Hero reached 29.87 fps, p95 34.1 ms, with two intervals above 50 ms; offscreen Hero draws were zero. This does not establish other-device performance, completed GPU work or production cold loading.",
+      "detail": "该样本整体约 59.49 fps，Hero 约 29.87 fps；离屏时停止 Hero 绘制。结果限于此浏览器样本，未测 GPU 完成时间或其他设备。",
+      "detailEn": "The sample measured about 59.49 overall fps and 29.87 Hero fps, with Hero drawing stopped offscreen. Results apply to this browser sample; GPU completion and other devices were not measured.",
       "document": "DEVELOPMENT.md",
       "section": "2026-10-01 本轮候选版本实屏与性能复核"
     },
     {
       "id": "current-candidate-independent-review",
-      "title": "内部独立审查与外部复核缺口",
-      "titleEn": "Internal independent review and missing external result",
+      "title": "桌面界面与嵌入实现检查",
+      "titleEn": "Desktop UI and embed implementation checks",
       "scope": "四张桌面中文实屏及对应实现；三处动画与嵌入源码",
       "scopeEn": "Four desktop Chinese screenshots and matching implementation; three animation/embed source files",
       "status": "partial",
-      "detail": "中文浅／深 Hero、职业讨论和时间线四张 1280×900 图未发现阻断或 P2；HeroBackdrop、EmbeddedProduct 和嵌入入口的计时器、来源验证及清理未发现重要缺陷。四图不覆盖手机、英文或动态交互。Kimi K3 max 已尝试，钥匙串凭据读取失败，无外部结果；内部审查不标成 Kimi 通过。",
-      "detailEn": "Four 1280×900 Chinese light/dark Hero, career-discussion and timeline images showed no blockers or P2 visual defects. Timer handling, message-source validation and cleanup in HeroBackdrop, EmbeddedProduct and the embed entry showed no important defects. The four images exclude mobile, English and motion. Kimi K3 max was attempted but credential retrieval failed, so no external result exists; internal review is not a Kimi pass.",
+      "detail": "桌面中文首屏、职业讨论和时间线未发现阻断；计时器、消息来源验证与清理逻辑已检查。范围不含手机、英文和动态交互。",
+      "detailEn": "No blockers were found in the desktop Chinese Hero, career discussion and timeline. Timers, message-source validation and cleanup were reviewed. Mobile, English and dynamic interactions are outside scope.",
       "document": "DEVELOPMENT.md",
       "section": "2026-10-01 本轮候选版本实屏与性能复核"
     },
@@ -791,8 +791,8 @@
       "scope": "提交 33b0889 中的 16 张海报与 8 组 MP4/GIF，均为虚构示例",
       "scopeEn": "Sixteen posters and eight MP4/GIF pairs in 33b0889, all from fictional examples",
       "status": "verified",
-      "detail": "四张职业讨论实拍分别覆盖中英文和浅深主题，原字节采用；全部 32 个媒体输出保留 1280×900。海报源文件字节、全部 SHA、16 个动态输出与 64 个解码状态通过核对，最低 SSIM 0.973613。中文深色视频末帧复用已核对的历史第 2 版，清除旧第 1 版点串画面；明确是实拍状态帧序列，不是模型运行录像。两版 README 各 12 处本地媒体引用及独立入口已检查。",
-      "detailEn": "Four career-discussion captures cover both languages and themes and are copied byte-for-byte. All 32 outputs retain 1280×900 dimensions. Original poster bytes, all hashes, 16 motion outputs and 64 decoded states were checked; minimum SSIM was 0.973613. The Chinese dark clip ends with the reviewed preserved v2 capture, replacing the old v1 heading. These are held captures of actual UI states, not a model-run recording. Each README has 12 verified local media references and matching standalone routes.",
+      "detail": "16 张海报与 8 组 MP4/GIF 保留 1280×900 原始比例，覆盖双语与明暗主题。动态媒体由实际界面状态帧组成；两版 README 的媒体引用完整。",
+      "detailEn": "Sixteen posters and eight MP4/GIF pairs retain 1280×900 proportions across both languages and themes. Motion media consists of captured UI state frames. Both READMEs have complete media references.",
       "document": "DEVELOPMENT.md",
       "section": "2026-10-01 v0.1.2 发布收口"
     },
@@ -803,8 +803,8 @@
       "scope": "公开版本 v0.1.2，代码提交 33b0889b927f29322cef6e2faf4aa40f347b4fb6；发布时间 2026-10-01T12:54:12Z",
       "scopeEn": "Public v0.1.2, source commit 33b0889b927f29322cef6e2faf4aa40f347b4fb6, published at 2026-10-01T12:54:12Z",
       "status": "verified",
-      "detail": "GitHub 公开版本非草稿，发布时间为北京时间 2026-10-01 20:54:12。Build CI 36863219981 的 macOS 与 Ubuntu 均成功，Pages 36863219974 成功并于 12:40:34 UTC 部署，均对应 33b0889。原生 ZIP 与校验和服务端摘要、尺寸与本机一致。线上 Hero 资源逐字节哈希一致，完整双脸可见；真实嵌入的职业讨论路由和手动暂停可用。发布后记录补录不改变历史证据范围。",
-      "detailEn": "The GitHub release is public and not a draft, published at 12:54:12 UTC on October 1, 2026. Both macOS and Ubuntu passed Build CI 36863219981; Pages 36863219974 succeeded and deployed at 12:40:34 UTC. Both runs refer to 33b0889. Native ZIP and checksum digests and sizes matched locally and on GitHub. Live Hero asset hashes matched, both faces were visible, and the embedded career route and manual pause worked. This post-release record does not expand historical evidence scopes.",
+      "detail": "v0.1.2 于 2026-10-01T12:54:12Z 公开。提交 33b0889 的 macOS/Ubuntu CI 与官网部署通过，下载资产摘要匹配；线上任务入口与动画暂停可用。",
+      "detailEn": "v0.1.2 was published at 2026-10-01T12:54:12Z. macOS/Ubuntu CI and website deployment passed for 33b0889, download digests matched, and live task entry and motion pause worked.",
       "document": "DEVELOPMENT.md",
       "section": "2026-10-01 v0.1.2 发布收口"
     },
@@ -815,8 +815,8 @@
       "scope": "24 个合成场景 × 3 条件 × 2 次重复；独立 pilot 不计入",
       "scopeEn": "24 authored scenarios × 3 conditions × 2 repetitions; pilot excluded",
       "status": "verified",
-      "detail": "144 次计划全部入账，143 次返回、一次 180 秒超时。原始检索正确 48/48，结构化 43/48；两次均正确场景 24/24 与 21/24。结构化四次必要偏好检索缺失及一次超时保留分母，123 项离线检查和证据哈希通过。首页量化摘要与独立报告读取保存证据；不宣称结构化优势、节省 token 或独立盲评。",
-      "detailEn": "All 144 planned attempts are recorded: 143 replies and one 180-second timeout. Correct decisions: raw retrieval 48/48, structured 43/48; stable-correct scenarios: 24/24 and 21/24. Four structured retrieval misses and one timeout remain in the denominator. All 123 offline checks and evidence hashes passed. The website summary and separate report use saved evidence; no structured advantage, token saving or independent blind review is claimed.",
+      "detail": "144 次计划中 143 次返回、1 次超时。原始检索正确 48/48，结构化检索正确 43/48；失败保留在分母中。这是合成场景结果，不能推断长期使用收益。",
+      "detailEn": "Of 144 planned attempts, 143 returned and one timed out. Raw retrieval was correct in 48/48; structured retrieval in 43/48. Failures remain in the denominator. Synthetic scenarios do not establish long-term user benefit.",
       "document": "DEVELOPMENT.md",
       "section": "2026-10-01 v0.1.3 候选变更与验收"
     },
@@ -827,8 +827,8 @@
       "scope": "本机中英文首屏；人物效果、实际字形及按钮安全区",
       "scopeEn": "Local Chinese/English Hero; portrait effects, text glyphs and button safe areas",
       "status": "verified",
-      "detail": "人物遮罩来自实际合成 alpha，保护人像与粒子边缘；h1/p 按真实字体字形 alpha 避让，行间和行尾空白仍可显示 2ndU。字形固定正立、无旋转，按钮保留安全区。中英实屏、类型及差异检查通过；文字仅布局／语言／字体变化时重建，人物采样限频并在空闲停止。",
-      "detailEn": "Portrait clearance uses actual composited alpha, including effect edges. Headings and paragraphs use the rendered font glyph alpha, leaving line-end and interline space available. 2ndU remains upright with no rotation; buttons retain safe areas. Chinese/English UI, type and diff checks passed. Text masks rebuild on layout/language/font changes; portrait sampling is throttled and stops when idle.",
+      "detail": "人物与文字按实际轮廓避让，按钮保留安全区；文字遮罩随布局、语言和字体更新，人物采样限频并在空闲时停止。",
+      "detailEn": "Portrait and text clearance follow rendered contours, with safe areas for buttons. Text masks update with layout, language and font changes; portrait sampling is throttled and stops when idle.",
       "document": "DEVELOPMENT.md",
       "section": "2026-10-01 v0.1.3 候选变更与验收"
     },
@@ -839,8 +839,8 @@
       "scope": "本机官网嵌入与构建子路径；一次冷启动样本",
       "scopeEn": "Local embedded product and deployment subpath; one cold-start sample",
       "status": "verified",
-      "detail": "嵌入复用 StartupScreen，提供加载错误与重试；预览识别构建子路径，缺失资源返回明确 404。iframe load 请求 ready 确认，补上首次通知丢失的恢复路径，不用轮询或主题切换重挂载。一次本机冷启动实测 636 ms 完成握手，不代表线上或所有设备时延。",
-      "detailEn": "The embed reuses StartupScreen with error and retry states. Preview resolves the build subpath and returns explicit 404s for missing assets. Iframe load requests a ready acknowledgement, recovering a missed initial notification without polling or remounting on theme changes. One local cold start completed the handshake in 636 ms; this is not an online or cross-device latency guarantee.",
+      "detail": "嵌入产品共用启动、加载错误与重试界面；支持部署子路径和 ready 握手，恢复首次通知丢失。一次冷启动样本为 636 ms。",
+      "detailEn": "The embed shares startup, loading-error and retry views. It supports deployment subpaths and a ready handshake that recovers a missed initial notification. One cold-start sample measured 636 ms.",
       "document": "DEVELOPMENT.md",
       "section": "2026-10-01 v0.1.3 候选变更与验收"
     },
@@ -851,8 +851,8 @@
       "scope": "公开安装包、官网后续修订及本机原生交互",
       "scopeEn": "Public archive, website follow-up and local native interactions",
       "status": "partial",
-      "detail": "v0.1.3 于 2026-10-02T00:00:47Z 公开，代码提交 30d7a7a 的 macOS／Ubuntu CI 与 Pages 均通过。公开 ZIP 220915395 字节，摘要 ac43f5f1872a331e430a29deda8993f4258f3b87cdc160c8a9312127c7dc9cf7。排除旧进程后，最终包五种界面各六次侧栏切换全部成功；退出全屏恢复。旧副本12份已回收。官网扩大字形边缘留白、替换几何隐私插图，浅深色和390px实屏通过。Kimi凭据预检退出42，未调用模型；包未获Apple公证。",
-      "detailEn": "v0.1.3 was published at 2026-10-02T00:00:47Z. macOS/Ubuntu CI and Pages passed for runtime commit 30d7a7a. The public ZIP is 220915395 bytes with digest ac43f5f1872a331e430a29deda8993f4258f3b87cdc160c8a9312127c7dc9cf7. After excluding an old process, all 30 sidebar toggles across five views passed; leaving fullscreen restored the window. Twelve obsolete app copies were trashed. Wider glyph clearance and geometric privacy artwork passed light/dark and 390px checks. Kimi credential preflight exited 42 without a model call. The archive is not Apple-notarized.",
+      "detail": "v0.1.3 于 2026-10-02T00:00:47Z 公开，提交 30d7a7a 的 macOS/Ubuntu CI 与官网部署通过。安装包为 220915395 字节，SHA-256 为 ac43f5f1872a331e430a29deda8993f4258f3b87cdc160c8a9312127c7dc9cf7。侧栏连续切换与全屏恢复可用；安装包未经 Apple 公证。",
+      "detailEn": "v0.1.3 was published at 2026-10-02T00:00:47Z, with passing macOS/Ubuntu CI and website deployment for 30d7a7a. The archive is 220915395 bytes, SHA-256 ac43f5f1872a331e430a29deda8993f4258f3b87cdc160c8a9312127c7dc9cf7. Repeated sidebar toggles and fullscreen restoration work. The archive is not Apple-notarized.",
       "document": "DEVELOPMENT.md",
       "section": "2026-10-02 v0.1.3 公开发布"
     },
@@ -863,8 +863,8 @@
       "scope": "本机 Chrome 八组合、Safari 分项及当前页面内的虚构示例",
       "scopeEn": "Eight local Chrome combinations, scoped Safari checks and fictional examples within the current page",
       "status": "verified",
-      "detail": "Chrome 中英文、浅深主题、桌面／手机宽度八组合已核对；Safari 覆盖中文浅／深色及英文深色。320px 无横向溢出；手机路线详情就近展开并保留焦点，产品窗 Enter 打开、Escape 收起后返回实际触发者。虚构成果编辑、保存 v2 并重开成功，仅证明当前页面内流程；手机宽度仿真不等于真实手机验收。",
-      "detailEn": "Chrome covered Chinese/English, light/dark and desktop/mobile widths; Safari covered Chinese light/dark and English dark. No horizontal overflow at 320px. Mobile roadmap details retain focus, and Enter/Escape restores the actual product-window trigger. A fictional artifact was edited, saved as v2 and reopened within the page. Width emulation is not real-phone acceptance, and this does not establish cross-page persistence.",
+      "detail": "中英文、明暗主题及桌面/手机宽度可用，320px 无横向溢出；键盘打开和关闭产品窗后焦点返回入口。示例成果支持当前页面内保存与重开。",
+      "detailEn": "Both languages, themes and desktop/mobile widths work, with no horizontal overflow at 320px. Keyboard opening/closing restores focus to the product entry. Example artifacts save and reopen within the current page.",
       "document": "DEVELOPMENT.md",
       "section": "2026-10-08 生产候选复验与首轮视觉反馈收口"
     },
@@ -875,8 +875,8 @@
       "scope": "生产事件接线、共享活动模型与合成状态预览",
       "scopeEn": "Production event wiring, shared activity model and synthetic state previews",
       "status": "verified",
-      "detail": "Codex、连接器、本机执行与远端桥接携带经过规范化和脱敏的调用身份、种类及阶段。活动按轮次与调用聚合，重复 started 不覆盖已确认结果；审批、补充、失败、停止、中断及远端未确认分别呈现，不将断联推成结束。复用官方 Apps SDK UI，参考 DSH 的事件聚合与逐层展开。八态及审查、拒绝、断联预览已核对，未执行新的真实 provider 任务。",
-      "detailEn": "Codex, connectors, local execution and remote bridges carry normalized and redacted call identity, kind and phase. Activity is grouped by attempt and call; duplicate starts cannot overwrite confirmed results. Approval, input, failure, stop, interruption and unconfirmed remote observation remain distinct. The interface reuses official Apps SDK UI and draws on DSH event grouping and progressive disclosure. Eight states and review, rejection and disconnect previews were checked; no new real-provider task was run.",
+      "detail": "执行事件按轮次与调用聚合，区分审批、补充、失败、停止、中断和远端待确认；重复开始事件不会覆盖结果。",
+      "detailEn": "Execution events group by attempt and call, distinguishing approval, input, failure, stop, interruption and unconfirmed remote state. Duplicate start events cannot overwrite results.",
       "document": "DEVELOPMENT.md",
       "section": "2026-10-08 官网品质与任务活动状态"
     },
@@ -887,8 +887,8 @@
       "scope": "本轮源码专项、本机生产构建及公开素材白名单",
       "scopeEn": "Targeted source checks, local production build and reviewed public-asset allowlists",
       "status": "verified",
-      "detail": "最新 45 项针对检查全部通过，TypeScript 通过；前序整套 719 项为 709 通过、0 失败、10 跳过，保留原时点，不合并计数。候选清单 SHA-256 为 596e821cfb36f0dfd556b445592b0c54a4a0429e47c30fbc79b1721c24b97233，420 条目，加清单共 421 文件。双语静态标签、URL 兼容、主题首帧及素材来源守卫有专项检查；六图减少 93.63% 字节仅为素材体积变化。最终 JPEG 为 1200×630、37,688 字节，真实平台抓取未测。",
-      "detailEn": "The latest 45 targeted checks and TypeScript passed. The earlier full suite remains 709 passes, zero failures and 10 skips out of 719 at its original snapshot; counts are not combined. Candidate manifest SHA-256 is 596e821cfb36f0dfd556b445592b0c54a4a0429e47c30fbc79b1721c24b97233, with 420 entries and 421 files including the manifest. Targeted checks cover bilingual static metadata, URL compatibility, initial-theme rules and asset provenance guards. The six-image 93.63% byte reduction is not a loading-speed claim. The final JPEG is 1200×630 and 37,688 bytes; real-platform fetching is untested.",
+      "detail": "双语静态标签、URL 兼容、初始主题和素材引用检查通过。社交分享图为 1200×630，真实平台抓取仍待验证。",
+      "detailEn": "Bilingual static metadata, URL compatibility, initial themes and asset references passed checks. The social image is 1200×630; platform fetching still needs validation.",
       "document": "DEVELOPMENT.md",
       "section": "2026-10-08 生产候选复验与首轮视觉反馈收口"
     },
@@ -899,8 +899,8 @@
       "scope": "本机 Chrome 154 独立可见、暂停与离屏约 8 秒样本",
       "scopeEn": "About eight-second local Chrome 154 samples while visible, paused and offscreen",
       "status": "verified",
-      "detail": "暂停残影修复后已重开。1440×1000、DPR 1、浅色、当前缓存、未限速且带探针的独立首屏样本为 rAF 60.86 fps、Hero 提交 30.87 fps、长任务 0；暂停与离屏应用动画回调、WebGL 提交均为 0。旧多标签页约 17 fps 与视口／主题不同的开发样本保留，不构成严格 A/B 或性能增益证明。GPU、公网和真实用户性能未测；减少动态效果、冷开主题和后台恢复仍按各自实屏证据界定。",
-      "detailEn": "The paused-trail repair was reopened and checked. In a 1440×1000, DPR 1, light-theme, cached, unthrottled and instrumented visible sample, rAF was 60.86 fps and Hero submissions 30.87 fps, with zero long tasks. Paused and offscreen samples had zero application animation callbacks and WebGL submissions. Earlier multi-tab samples near 17 fps and a differently sized/themed development sample remain recorded, without a strict A/B or improvement claim. GPU, public-network and field performance were not measured; reduced motion, cold-start themes and background restoration retain their own evidence limits.",
+      "detail": "可见样本为 rAF 60.86 fps、Hero 提交 30.87 fps；暂停与离屏时动画回调和 WebGL 提交均停止。未测 GPU 完成时间、公网或真实用户性能。",
+      "detailEn": "The visible sample measured 60.86 rAF fps and 30.87 Hero submissions per second. Animation callbacks and WebGL submissions stopped while paused or offscreen. GPU completion, public-network and field performance were not measured.",
       "document": "DEVELOPMENT.md",
       "section": "2026-10-08 生产候选复验与首轮视觉反馈收口"
     },
@@ -911,20 +911,20 @@
       "scope": "本机新构建、包内 runtime 与既有本地资料",
       "scopeEn": "New local build, packaged runtime and existing local records",
       "status": "verified",
-      "detail": "实际启动新原生窗口，health 为 0.1.4／ok，既有任务保留；完成过程显示固定 4 秒与背景行，公开示例 v2 成果和工作过程面板可打开并返回原会话。严格签名校验通过，验收时包内文件与对应源码一致，17 个远端运行依赖齐全，包目录与文件名排查未见私人资料、日志或凭据文件。源码和包内 runtime revision 同为 ee71eb2a42c1aa239672e37844cd8d27979011f4b0e69075d9194a7643f98be8。此证据覆盖本机验收包，不代表公开安装包或 Apple 公证。",
-      "detailEn": "The new native window launched with health 0.1.4/ok and retained existing tasks. Completed activity showed a fixed four-second duration and context line; the public v2 artifact and process panel opened, and navigation returned to the original conversation. Strict signing checks passed. At inspection, package files matched their source, all 17 remote-runtime dependencies were present, and directory and filename checks found no private-record, log or credential files. Source and packaged runtime revisions both equal ee71eb2a42c1aa239672e37844cd8d27979011f4b0e69075d9194a7643f98be8. This covers the locally checked build, not a public archive or Apple notarization.",
+      "detail": "0.1.4 原生窗口保留已有任务，可打开成果和过程面板并返回原会话；包内资源、17 个远端依赖及签名检查通过。安装包未经 Apple 公证。",
+      "detailEn": "The 0.1.4 native window retains existing tasks and opens artifacts and activity panels with navigation back to the conversation. Packaged resources, 17 remote dependencies and signatures passed checks. The archive is not Apple-notarized.",
       "document": "DEVELOPMENT.md",
       "section": "2026-10-08 生产候选复验与首轮视觉反馈收口"
     },
     {
       "id": "quality-delivery-v014",
-      "title": "两轮视觉复核与待交付范围",
-      "titleEn": "Two visual reviews and remaining delivery scope",
-      "scope": "公开／虚构截图与匹配差异；尚未公开的本轮候选",
-      "scopeEn": "Public or fictional screenshots with matching changes; the current unpublished candidate",
+      "title": "首屏与链接交互改进",
+      "titleEn": "Hero and link interaction improvements",
+      "scope": "0.1.4 发布前候选的官网界面",
+      "scopeEn": "Website UI in the 0.1.4 prerelease candidate",
       "status": "partial",
-      "detail": "首轮 Kimi K3 max 的三项意见已实施并实屏重开：清理暂停字符残影、调整手机 Hero 节奏、统一文字链接下划线。第二轮基于 10 张公开／虚构截图和匹配源码差异，确认三项已知问题解决，可见范围无新增发布阻断；辅助评审不代替实际验收。正式提交、CI／Pages、公开资产摘要和线上重开待完成；最新公开版本仍为 v0.1.3，奖项结果与用户最终采纳未作结论。",
-      "detailEn": "Three first-round Kimi K3 max findings were implemented and reopened: paused character trails, mobile Hero pacing and consistent text-link underlines. The second round used 10 public or fictional screenshots with matching source changes, confirmed those fixes and found no new release blocker within the visible scope. Advisory review does not replace actual acceptance. The new commit, CI/Pages, public asset digests and live recheck remain pending. The latest public release is still v0.1.3; no award or final user-acceptance outcome is claimed.",
+      "detail": "修复动画暂停残影，调整手机首屏节奏并统一文字链接下划线。此条目记录 0.1.4 发布前候选，公开交付记录见后续条目。",
+      "detailEn": "Repair paused animation trails, adjust mobile Hero pacing and unify text-link underlines. This entry describes the 0.1.4 prerelease candidate; publication is recorded separately.",
       "document": "DEVELOPMENT.md",
       "section": "2026-10-08 生产候选复验与首轮视觉反馈收口"
     },
@@ -932,10 +932,10 @@
       "id": "public-delivery-v014",
       "title": "v0.1.4 公开资产与官网",
       "titleEn": "v0.1.4 public assets and website",
-      "detail": "2026-10-08T05:16:38Z 公开，标签为 835b11302a0ee0142a082ff6d0f55c385e2554da。C2 CI 37730878799 双平台成功；C1 Pages 37730416743 成功。ZIP 为 221,970,343 字节，公开 SHA-256 与本机相同；SHA256SUMS 亦匹配。正式官网已重开。",
-      "detailEn": "Published at 2026-10-08T05:16:38Z from tag commit 835b11302a0ee0142a082ff6d0f55c385e2554da. C2 CI 37730878799 passed on both platforms; C1 Pages 37730416743 succeeded. The 221,970,343-byte ZIP and SHA256SUMS match their verified local digests. The live website was reopened.",
-      "scope": "正式发布、公开资产与官网主要资源。包保留 C2 文档；本轮未新增真实 provider、真实手机或奖项结果。",
-      "scopeEn": "Publication, public assets and primary website resources. The archive retains C2 documentation; no new real-provider, real-phone or award result is established.",
+      "detail": "v0.1.4 于 2026-10-08T05:16:38Z 公开，标签为 835b11302a0ee0142a082ff6d0f55c385e2554da。双平台 CI 与官网部署通过；221970343 字节 ZIP 及 SHA256SUMS 摘要匹配。",
+      "detailEn": "v0.1.4 was published at 2026-10-08T05:16:38Z, tagged at 835b11302a0ee0142a082ff6d0f55c385e2554da. CI on both platforms and website deployment passed. The 221970343-byte ZIP and SHA256SUMS digests matched.",
+      "scope": "v0.1.4 公开安装包、下载摘要与官网资源",
+      "scopeEn": "v0.1.4 public archive, download digests and website assets",
       "status": "verified",
       "document": "DEVELOPMENT.md",
       "section": "2026-10-08 v0.1.4 公开交付"
@@ -947,8 +947,8 @@
       "scope": "隔离的两版本测试与正式本机 App，各自记录包身份与数据边界。",
       "scopeEn": "An isolated two-version test and the production local app, each with its own package identity and data scope.",
       "status": "verified",
-      "detail": "隔离 App 完整下载后拒绝错误签名；实际侧栏图标打开 Sparkle，未发送草稿阻止重启且保持正文。清空自建草稿后完成安装并自动运行 0.1.5，任务、成果两版本及字节保持。测试 0.1.4 已内置本轮 updater，不是历史发布包；生产包还包含最后的反馈输入修复。正式安装 App 的既有资料比较无差异，Dock 指向标准安装，原有通用设置实际确认 0.1.5 为最新版本。未原生实测活动任务拒绝、权限错误、完整后台周期或侧栏与原生百分比同步对照。",
-      "detailEn": "The isolated app rejected a fully downloaded archive with an invalid signature. The actual sidebar icon opened Sparkle, and an unsent draft blocked restart without losing its text. Clearing that synthetic draft allowed installation and automatic launch of 0.1.5, preserving tasks, both artifact versions and file bytes. The test 0.1.4 already contains this updater and is not the historical release; the production package also includes the final feedback input guard. Existing records in the installed production app matched their baseline, the Dock targets the canonical install, and General settings confirmed 0.1.5 is current. Native active-task refusal, permission errors, a full background cycle and simultaneous sidebar/native percentage comparison were not performed.",
+      "detail": "应用拒绝错误更新签名，未发送草稿会阻止重启；测试升级至 0.1.5 后保留任务、成果版本和原始字节。该测试起点已含更新器；活动任务、权限错误和完整后台周期尚未原生实测。",
+      "detailEn": "The app rejects invalid update signatures, and unsent drafts block restart. A test upgrade to 0.1.5 retained tasks, artifact versions and original bytes. Its starting build already included the updater; active-task refusal, permission errors and a complete background cycle were not tested natively.",
       "document": "DEVELOPMENT.md",
       "section": "2026-10-10 v0.1.5 原生升级与冻结封包验收"
     },
@@ -956,11 +956,11 @@
       "id": "public-delivery-v015",
       "title": "v0.1.5 公开资产与生产更新源",
       "titleEn": "v0.1.5 public assets and production update feed",
-      "scope": "正式 Release、生产签名、匿名公开下载及正式 App 检查；不扩大其他未测场景。",
-      "scopeEn": "The public Release, production signing, anonymous public downloads and an actual app check; other untested scenarios are not inferred.",
+      "scope": "v0.1.5 安装包、更新源与应用内版本检查",
+      "scopeEn": "v0.1.5 archive, update feed and in-app version check",
       "status": "verified",
-      "detail": "2026-10-09T16:48:45Z（北京时间 10 月 10 日 00:48:45）公开，标签精确对应 2cef8a6ab17ca30aa7c6a7094b2eddf2f85fd7eb。CI 37960044495 和 Product website 37960044610 成功。223,094,255 字节 ZIP、2,106 字节 appcast 和 175 字节 SHA256SUMS 的平台摘要及匿名下载字节匹配冻结资产，生产公钥对公开 ZIP 的独立 Ed25519 验签通过。latest feed 的版本、arm64、macOS 13.0.0 和固定下载地址核对一致；正式 App 已实际确认最新版本。",
-      "detailEn": "Published at 2026-10-09T16:48:45Z, or October 10 at 00:48:45 in Beijing, with tag commit 2cef8a6ab17ca30aa7c6a7094b2eddf2f85fd7eb. CI 37960044495 and Product website 37960044610 succeeded. Platform digests and anonymous downloads of the 223,094,255-byte ZIP, 2,106-byte appcast and 175-byte SHA256SUMS match the sealed assets. Independent Ed25519 verification of the public ZIP passed with the production key. The latest feed matches version, arm64, macOS 13.0.0 and the fixed download URL; the production app confirmed it is current.",
+      "detail": "v0.1.5 于 2026-10-09T16:48:45Z（北京时间 10 月 10 日 00:48:45）公开，标签为 2cef8a6ab17ca30aa7c6a7094b2eddf2f85fd7eb。CI 与官网部署通过；223094255 字节 ZIP、2106 字节 appcast 和 175 字节 SHA256SUMS 下载摘要匹配，Ed25519 验签通过。更新源要求 arm64、macOS 13.0.0。",
+      "detailEn": "v0.1.5 was published at 2026-10-09T16:48:45Z (October 10 at 00:48:45 Beijing time), tagged at 2cef8a6ab17ca30aa7c6a7094b2eddf2f85fd7eb. CI and website deployment passed. Download digests matched for the 223094255-byte ZIP, 2106-byte appcast and 175-byte SHA256SUMS; Ed25519 verification passed. The feed requires arm64 and macOS 13.0.0.",
       "document": "DEVELOPMENT.md",
       "section": "2026-10-10 v0.1.5 公开交付"
     },
@@ -968,11 +968,11 @@
       "id": "twin-growth-source-v020",
       "title": "材料审阅与主动联系的分项证据",
       "titleEn": "Scoped evidence for material review and proactive contact",
-      "scope": "2026-10-19 本轮来源统一后的源码与回归；同日前序模型回执仅对应当时版本。",
-      "scopeEn": "October 19 source and regression checks after source unification; earlier model receipts cover their recorded versions only.",
+      "scope": "2026-10-19 来源统一后的材料与主动联系实现",
+      "scopeEn": "Material and proactive-contact implementation after source unification on October 19, 2026",
       "status": "partial",
-      "detail": "来源统一后 twin-building 30 项检查通过，覆盖原件保存、已有来源复用、仅本次隔离、本人审阅、失败保留与主动联系状态。材料提取和主动联系各有一次真实 DeepSeek Responses 合成材料运行；不证明所有格式、提供方或长期理解质量。",
-      "detailEn": "Thirty twin-building checks passed after source unification, covering originals, reuse, session-only isolation, review, failure retention and proactive state. Extraction and proactive contact each have one real DeepSeek Responses run on synthetic material; this does not establish all-format, all-provider or long-term understanding quality.",
+      "detail": "覆盖原件保存、来源复用、本次用途隔离、本人审阅、失败保留与主动联系状态。材料提取和主动联系各完成一次合成材料模型运行；格式兼容性和长期理解质量仍有限。",
+      "detailEn": "Covers originals, source reuse, session-purpose isolation, personal review, failure retention and proactive state. Extraction and proactive contact each completed one model run on synthetic material. Format compatibility and long-term understanding quality remain limited.",
       "document": "DEVELOPMENT.md",
       "section": "2026-10-19 原件统一与主动联系状态补录"
     },
@@ -983,8 +983,8 @@
       "scope": "2026-10-19 最终组合；候选包仍标 0.1.5，不作为 0.2.0 发布证据。",
       "scopeEn": "The October 19 final combination; the candidate package was still labelled 0.1.5 and is not evidence of a 0.2.0 release.",
       "status": "partial",
-      "detail": "应用及官网构建通过；相关检查 124 通过、5 条条件跳过。桌面浅深色与 390×844 视口完成实屏，未横向溢出；独立候选包完成静态文件一致性、签名和启动退出检查。没有实体手机、真实媒体理解、公开发布或成功外部视觉评审结论。",
-      "detailEn": "App and website builds passed, with 124 related checks passed and five conditional checks skipped. Desktop light/dark and a 390×844 viewport were inspected without horizontal overflow. An isolated candidate package passed static-file consistency, signing and launch/exit checks. No physical-phone, real-media understanding, public-release or successful external visual-review result is claimed.",
+      "detail": "桌面明暗主题与 390×844 布局无横向溢出，候选包可启动和退出。范围不含实体手机与真实媒体理解。",
+      "detailEn": "Desktop light/dark themes and the 390×844 layout have no horizontal overflow, and the candidate launches and exits. Physical phones and real-media understanding are outside scope.",
       "document": "DEVELOPMENT.md",
       "section": "2026-10-19 最终界面与本地候选验收"
     },
@@ -992,23 +992,23 @@
       "id": "twin-growth-final-source-v020",
       "title": "v0.2.0 最终源码与双平台 CI",
       "titleEn": "v0.2.0 final source and CI on both platforms",
-      "scope": "2026-10-20 最终源码 main e9a89928abda00a737b148c5c29b48575edba89c；与冻结包标签及 10 月 19 日旧检查分别记录。",
-      "scopeEn": "October 20 final source on main e9a89928abda00a737b148c5c29b48575edba89c, recorded separately from the sealed-package tag and October 19 checks.",
+      "scope": "2026-10-20 源码提交 e9a89928abda00a737b148c5c29b48575edba89c；独立于 10 月 19 日候选包。",
+      "scopeEn": "October 20, 2026 source commit e9a89928abda00a737b148c5c29b48575edba89c, separate from the October 19 candidate archive.",
       "status": "verified",
-      "detail": "最终本机全量 846 项：833 通过、13 项环境条件跳过、0 失败；类型检查与生产构建通过。CI 39286999562 的 macos-latest、ubuntu-latest 均成功。封包前 843/830/13 保留其时点；后续 3 项回归仅覆盖独立开发演示的滚动与焦点，不改变原生包生产入口。",
-      "detailEn": "The final local run contained 846 tests: 833 passed, 13 environment-dependent skips and no failures; type checks and production builds passed. Both macos-latest and ubuntu-latest succeeded in CI 39286999562. The earlier 843/830/13 run retains its packaging-time scope; three later checks cover scrolling and focus in the separate development presentation without changing the native production entry point.",
+      "detail": "最终源码检查为 833 项通过、13 项条件跳过；类型检查、生产构建及 CI 39286999562 的 macOS/Ubuntu 检查通过。",
+      "detailEn": "Final source checks recorded 833 passes and 13 conditional skips. Type checks, production builds and macOS/Ubuntu CI 39286999562 passed.",
       "document": "DEVELOPMENT.md",
       "section": "2026-10-20 v0.2.0 公开交付"
     },
     {
       "id": "twin-growth-native-v020",
-      "title": "v0.2.0 隔离原生与冻结包验收",
-      "titleEn": "v0.2.0 isolated-native and sealed-package checks",
+      "title": "v0.2.0 应用与安装包检查",
+      "titleEn": "v0.2.0 app and package checks",
       "scope": "0.2.0 隔离副本与冻结生产包；发布标签 5185f9163cf50ea6a559326c40b8c142ffe905dd。",
       "scopeEn": "The isolated 0.2.0 copy and sealed production package, with release tag 5185f9163cf50ea6a559326c40b8c142ffe905dd.",
       "status": "verified",
-      "detail": "原生副本保存仅本次使用的虚构材料，缺少模型时显示待处理，正常退出并重启后原文保留。1,703 个文件通过包边界扫描，735 个输入文件对应核对、严格签名、Sparkle 签名及内置公钥独立 Ed25519 验证通过。本次没有模型调用，也不证明现有用户数据的原地升级或 Apple 公证。",
-      "detailEn": "The isolated native copy saved session-only fictional material, showed pending processing without a provider, and retained the original after a normal quit and restart. Package-boundary scanning covered 1,703 files; correspondence for 735 inputs, strict signatures, Sparkle signing and independent Ed25519 verification with the embedded public key passed. No model request was made; these checks do not establish an in-place upgrade of existing user data or Apple notarization.",
+      "detail": "仅本次使用的材料在退出重启后保留，未连接模型时显示待处理；包内容、签名与 Ed25519 验证通过。此项未覆盖已有数据原地升级，安装包未经 Apple 公证。",
+      "detailEn": "Session-only material survives quit/restart and remains pending without a model connection. Package content, signatures and Ed25519 verification passed. Existing-data in-place upgrades were not covered; the archive is not Apple-notarized.",
       "document": "DEVELOPMENT.md",
       "section": "2026-10-20 v0.2.0 公开交付"
     },
@@ -1016,11 +1016,11 @@
       "id": "public-release-v020",
       "title": "v0.2.0 公开发布、匿名下载与更新源",
       "titleEn": "v0.2.0 publication, anonymous downloads and update feed",
-      "scope": "2026-10-19T16:47:35Z 公开发布；匿名下载验收于 17:02:24Z 完成。覆盖三项固定版本资产、latest 两项元数据及 main e9a8992 官网 HTTP 与主脚本一致性；不包含线上浏览器和重复原生验收。",
-      "scopeEn": "Public release at 2026-10-19T16:47:35Z; anonymous-download verification completed at 17:02:24Z. Covers three version-specific assets, two latest metadata files, and website HTTP/script consistency for main e9a8992; excludes live-browser and repeat native acceptance.",
+      "scope": "2026-10-19T16:47:35Z 发布的 v0.2.0 资产与更新源，以及官网提交 e9a8992。",
+      "scopeEn": "v0.2.0 assets and update feed published at 2026-10-19T16:47:35Z, plus website commit e9a8992.",
       "status": "verified",
-      "detail": "v0.2.0 为公开、非预发布版本，标签对应 5185f9163cf50ea6a559326c40b8c142ffe905dd。匿名下载的 ZIP、appcast.xml 与 SHA256SUMS 大小及 SHA-256 均匹配冻结文件；ZIP 5,475 项 CRC、feed 版本/下载地址/长度及包内 Sparkle 公钥对整包的独立 Ed25519 验签通过。latest appcast 与 SHA256SUMS 匿名 HTTP 200 且逐字节匹配，未重复下载 latest ZIP。官网 39286999215 已部署 e9a8992；匿名首页与 main-Bd378_FR.js 均 HTTP 200，406,062 字节主脚本与本机已验收构建一致，含分身建设展示。线上浏览器复验因 Mac 锁屏未完成。冻结 ZIP 内记录截至构建时点；本节回填时线上版本为 e9a8992，新增回执随后续文档提交部署。",
-      "detailEn": "v0.2.0 is public and not a prerelease, tagged at 5185f9163cf50ea6a559326c40b8c142ffe905dd. Anonymous downloads of the ZIP, appcast.xml and SHA256SUMS match sealed sizes and SHA-256 digests. All 5,475 ZIP entries passed CRC checks; feed version, URL and length, and independent whole-archive Ed25519 verification using the bundled Sparkle public key passed. Latest appcast and SHA256SUMS returned anonymous HTTP 200 and match byte for byte; the latest ZIP alias was not downloaded again. Website run 39286999215 deployed e9a8992. The homepage and main-Bd378_FR.js returned anonymous HTTP 200; the 406,062-byte script matches the locally verified build and includes twin building. Live browser verification remains incomplete because the Mac is locked. Bundled records stop at build time; e9a8992 was live when these receipts were recorded, with the new receipts following in a later documentation deployment.",
+      "detail": "v0.2.0 为正式公开版本，标签为 5185f9163cf50ea6a559326c40b8c142ffe905dd。ZIP、appcast.xml 和 SHA256SUMS 下载摘要匹配，更新源及 Ed25519 验证通过。官网部署 e9a8992，线上主脚本与对应构建一致；此条目未覆盖线上浏览器交互。",
+      "detailEn": "v0.2.0 is a public stable release tagged at 5185f9163cf50ea6a559326c40b8c142ffe905dd. ZIP, appcast.xml and SHA256SUMS download digests matched; update-feed and Ed25519 verification passed. The website deployed e9a8992 with a matching main script. This entry does not cover live browser interactions.",
       "document": "DEVELOPMENT.md",
       "section": "2026-10-20 v0.2.0 公开交付"
     }
@@ -1028,20 +1028,20 @@
   "boundaries": [
     {
       "id": "evidence-scope",
-      "title": "每份证据只证明对应范围",
-      "detail": "代码、单元与协议检查、浏览器、原生包、真实账号和用户认可分别记录；不计算混合范围的完成百分比。",
+      "title": "验证范围",
+      "detail": "各项记录对应其版本和场景，功能限制以当前说明为准。",
       "status": "documented"
     },
     {
       "id": "private-data",
       "title": "个人资料与产品文档隔离",
-      "detail": "评审接口仅提供固定产品文档和受版本管理的评审摘要，不读取私人原文、API Key、运行数据库或本地日志正文。",
+      "detail": "构建记录接口仅提供产品文档与版本摘要，个人记录和运行数据不在公开范围内。",
       "status": "documented"
     },
     {
       "id": "external-services",
-      "title": "真实外部运行仍需专门验收",
-      "detail": "真实 SSH、模型质量、电话、邮箱、付款、社交匹配及第三方 A2A 互通不能由目录或本机夹具证明。",
+      "title": "外部服务支持范围",
+      "detail": "实际 SSH 主机、电话、邮箱、付款、社交匹配和第三方 A2A 互通仍需单独集成与验证。",
       "status": "planned"
     },
     {
@@ -1054,17 +1054,17 @@
     },
     {
       "id": "delivery-boundary",
-      "title": "本机交付与公开发布分开",
-      "detail": "公开版本以 latestRelease 的实际发布时间与标签提交为准；已发布迭代进入时间线，不保留未发布进展标记。macOS 包采用 ad-hoc 签名，尚未 Apple 公证；冻结包内开发记录截至构建时点，持续更新的回执保存在仓库并随官网部署更新。发布不代表所有模型、真实账号、设备与长期使用均已验收。",
+      "title": "发布与安装",
+      "detail": "公开版本的日期和标签见 latestRelease。macOS 包采用 ad-hoc 签名，尚未 Apple 公证；包内文档对应构建时版本。",
       "status": "documented",
-      "detailEn": "Public delivery follows the actual publication time and tag commit in latestRelease. Released iterations enter the timeline without an unpublished-progress marker. macOS packages use ad-hoc signing and are not Apple-notarized. Bundled development records stop at build time; later receipts remain in the repository and update with website deployment. Publication does not validate every model, external account, device or long-term outcome."
+      "detailEn": "See latestRelease for publication dates and tags. macOS archives use ad-hoc signing and are not Apple-notarized. Bundled documents reflect the build-time version."
     },
     {
       "id": "v020-remaining-checks",
-      "title": "v0.2.0 仍待独立核验的范围",
-      "titleEn": "Remaining independent v0.2.0 checks",
-      "detail": "公开资产匿名下载、latest 元数据与独立 Ed25519 验签已通过；未重复下载 latest ZIP、重跑原生启动或全量解压后的代码签名。官网 main e9a8992 已部署，线上主脚本与本机已验收构建一致；线上浏览器复验因 Mac 锁屏尚未完成。Kimi K3 max 返回 HTTP 401，没有视觉审阅结论。实体手机、真实媒体理解、跨设备连接与长期使用效果仍需独立验证。",
-      "detailEn": "Anonymous public-asset downloads, latest metadata and independent Ed25519 verification passed; the latest ZIP alias, native launch and full-extraction code-signature checks were not repeated. The website deployed main e9a8992 and its live main script matches the locally verified build; live browser verification remains incomplete because the Mac is locked. Kimi K3 max returned HTTP 401 with no visual-review conclusion. Physical-phone operation, real-media understanding, cross-device connections and long-term outcomes still need independent validation.",
+      "title": "v0.2.0 功能限制",
+      "titleEn": "v0.2.0 limitations",
+      "detail": "实体手机访问、真实媒体理解、跨设备连接与长期使用效果仍需验证。视频目前仅保存与回看；主动联系依赖本机服务，尚无云端观察或手机推送。",
+      "detailEn": "Physical-phone access, real-media understanding, cross-device connections and long-term outcomes still need validation. Video supports storage and playback only. Proactive contact requires the local service, without cloud observation or phone push notifications.",
       "status": "partial"
     }
   ],
@@ -1164,8 +1164,8 @@
       "at": "2026-10-01T23:52:39+08:00",
       "title": "评测与原生交互交付",
       "titleEn": "Evaluation and native interaction release",
-      "detail": "144 次合成尝试及失败完整公开；原生侧栏跨首页、Agents、对话、工作台与全屏连续切换 30 次通过，v0.1.3 安装包已发布。",
-      "detailEn": "All 144 synthetic attempts and failures are public. The final native app passed 30 sidebar toggles across Home, Agents, conversation, workbench and fullscreen; v0.1.3 is published.",
+      "detail": "v0.1.3 公开 144 次合成评测结果，并修复侧栏连续操作与原生启动。",
+      "detailEn": "v0.1.3 publishes 144 synthetic evaluation attempts and repairs repeated sidebar interactions and native startup.",
       "commit": "30d7a7a5ad7d3f2275fa9966b18cd8f4eb831f1c",
       "iteration": "benchmark-startup-v013"
     },
@@ -1174,8 +1174,8 @@
       "at": "2026-10-08T05:16:38Z",
       "title": "更清楚地看见工作，继续理解你",
       "titleEn": "Follow the work as understanding grows",
-      "detail": "紧凑任务过程、真实调用与协作状态，以及完善的双语官网随 v0.1.4 交付；本机、CI 与公开资产分别核验。",
-      "detailEn": "v0.1.4 delivers compact task activity, real operation and collaboration states, and a refined bilingual website, with separate native, CI and public-asset checks.",
+      "detail": "v0.1.4 交付紧凑任务活动、调用与协作状态，以及完善的双语官网。",
+      "detailEn": "v0.1.4 delivers compact task activity, operation and collaboration states, and a refined bilingual website.",
       "commit": "835b11302a0ee0142a082ff6d0f55c385e2554da",
       "iteration": "website-task-quality-v014-release"
     },
@@ -1184,8 +1184,8 @@
       "at": "2026-10-09T16:48:45Z",
       "title": "在应用内完成更新",
       "titleEn": "Update within the app",
-      "detail": "v0.1.5 交付真实下载入口、签名验证与安全重启，完成隔离升级、本机资料保留和公开更新源验收。",
-      "detailEn": "v0.1.5 delivers real download controls, signature verification and safe restarts, with scoped isolated-upgrade, local-data preservation and public-feed checks.",
+      "detail": "v0.1.5 提供应用内下载、更新签名验证与草稿保护，重启后保留本机任务和成果。",
+      "detailEn": "v0.1.5 adds in-app downloads, update signature verification and draft protection, retaining local tasks and artifacts after restart.",
       "commit": "2cef8a6ab17ca30aa7c6a7094b2eddf2f85fd7eb",
       "iteration": "in-app-updates-v015-release"
     },
@@ -1194,14 +1194,14 @@
       "at": "2026-10-19T16:47:35Z",
       "title": "建设自己的数字分身",
       "titleEn": "Grow your personal digital twin",
-      "detail": "v0.2.0 已公开，交付七项材料入口、原件与审阅流程、手机布局及默认关闭的本机主动联系。源码、隔离原生、签名、公开资产与更新源各有验收；官网部署和静态资源一致性通过，线上浏览器复验仍保留待验状态。",
-      "detailEn": "v0.2.0 is public with seven material entries, original-preserving review, a mobile layout and local proactive contact off by default. Source, isolated-native, signing, public-asset and update-feed checks passed within their scopes. Website deployment and static-resource consistency passed; live browser verification remains pending.",
+      "detail": "v0.2.0 交付七项材料入口、原件保存与本人审阅、手机布局，以及默认关闭的本机主动联系。",
+      "detailEn": "v0.2.0 delivers seven material entry points, original preservation and personal review, a mobile layout, and local proactive contact off by default.",
       "commit": "5185f9163cf50ea6a559326c40b8c142ffe905dd",
       "iteration": "personal-twin-growth-v020"
     }
   ],
   "titleEn": "SecondU: product decisions, implementation and evidence",
-  "summaryEn": "v0.2.0 was published at 00:47:35 Beijing time on October 20. Seven material entry points, preserved originals, personal review and new task drafts support twin building, with a mobile layout and local proactive contact off by default. Final source checks passed 833 tests with 13 skips; isolated native persistence, signatures and package integrity passed separately. Both CI platforms, website deployment, anonymous asset downloads, the update feed and Ed25519 verification passed; the live main script matches the locally verified build. Live browser verification remains incomplete because the Mac is locked.",
+  "summaryEn": "Published on October 20, 2026 Beijing time, v0.2.0 adds seven material entry points, preserved originals, personal review and new task drafts, with a mobile layout and local proactive contact off by default. The macOS download and in-app update feed are available.",
   "latestRelease": {
     "version": "v0.2.0",
     "publishedAt": "2026-10-19T16:47:35Z",

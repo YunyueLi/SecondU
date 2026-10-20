@@ -53,13 +53,13 @@ SecondU 据此采用“真实变化 → 评估与准备 → 判断是否值得�
 
 ## 验证
 
-本轮使用仓库既有万叶资料和临时 Store，不读取真人来源、人物、对话或事实，不改变真实空间设置。
+以下检查使用仓库中的虚构万叶示例，未使用真人资料或修改个人空间设置。
 
 - `node --test tests/twin-building.test.mjs`：28 项通过，覆盖原有建设闭环、默认关闭和基线、缺少模型、quiet/defer、错误与旧证据、并发去重、普通回复、关闭中止、资料/事项竞态、处理中暂缓、派送原子性、排队期间刷新联系摘要和重启不重放。
 - `node --test tests/codex.test.mjs`：35 项通过、4 项需显式开启的本机探测跳过。包含原生只读权限核验、禁止工具与委派、配置不被确认时停止，以及不改变普通执行权限。
 - `node --test tests/execution-policy.test.mjs tests/execution-settings.test.mjs`：12 项通过。
 - `npx tsc --noEmit`：通过。
 
-真实模型回执位于本机 `.local/growth-acceptance/wanye-proactive-real.json`。2026-10-19 11:25:09–11:25:14 UTC，使用已有 DeepSeek Flash / Responses 配置，经 Codex 原生 `outputSchema` 运行一次，耗时 5.232 秒。以万叶青岛相册资料后四行的真实增加作为触发，模型返回 4 条可匹配的新引文，整理选片、顺序、裁边、美化设置和待地址事项，并进入普通对话。重复检查没有再次调用或派送；没有工具调用、外部文件产物或个人记录写入。临时 Store 和密钥副本已清理，真实凭据文件哈希未变。回执保留当时实现文件哈希和原生运行事件；没有把这一回执当作新界面的视觉验收。
+2026-10-19 的一次真实模型检查使用 DeepSeek Flash、Responses 协议与 Codex 原生 `outputSchema`。虚构相册资料的新增内容触发一次评估，结果包含 4 条可匹配的新引文，并整理为可继续回复的普通对话。重复检查没有再次调用或派送；未发生工具调用、外部文件写入或长期个人记录变更。该结果验证单次处理与去重路径，不代表长期联系质量或所有模型的表现。
 
 实现入口：`server/proactive.mjs` 管理一次评估与派送，`server/twin-building.mjs` 管理设置/来源基线与入队，`server/runner.mjs` 复用执行和调度，`server/domain.mjs` 建立有来源的普通对话。

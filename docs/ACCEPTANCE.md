@@ -28,7 +28,7 @@
 
 ## 证据
 
-`docs/qa/` 中保存实际浏览器截图与二维码验收材料，以及原生窗口的 `native-desktop.png`（任务审批与第二版成果）、`native-feedback.png`（带来源的候选认知）、`native-artifact.png`（切页恢复后保存第三版）。截图使用虚构资料，不是效果图。测试输出保留在本机忽略文件 `.local-tests.log`，构建日志在 `.local-build.log`。
+`docs/qa/` 中保存实际浏览器截图与二维码验收材料，以及原生窗口的 `native-desktop.png`（任务审批与第二版成果）、`native-feedback.png`（带来源的候选认知）、`native-artifact.png`（切页恢复后保存第三版）。截图使用虚构资料，不是效果图。
 
 ## 仍有明确边界
 
@@ -40,4 +40,4 @@
 
 ## 后续视觉与组件更新
 
-同日完成的桌面视觉更新及 26 类可交互组件目录，详见 [本轮验收](qa/visual-refresh/README.md) 与 [设计规范](DESIGN.md)。本轮应用包已生成并通过签名与构建一致性检查；解锁后已重启原生应用，实屏复查新版首页和组件目录。
+同日完成的桌面视觉更新及 26 类可交互组件目录，详见 [本轮验收](qa/visual-refresh/README.md) 与 [设计规范](DESIGN.md)。本轮应用包已生成并通过签名与构建一致性检查，并已在原生应用中检查新版首页和组件目录。
