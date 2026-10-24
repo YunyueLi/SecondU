@@ -18,7 +18,8 @@ import path from 'node:path';
 import os from 'node:os';
 import { fileURLToPath } from 'node:url';
 import { readFileSync, existsSync, statSync, unlinkSync } from 'node:fs';
-import { execFileSync } from 'node:child_process';
+import { execFile, execFileSync } from 'node:child_process';
+import { promisify } from 'node:util';
 import { createHash } from 'node:crypto';
 import { Store, HttpError, collections, now, id } from './store.mjs';
 import { publicProject, listProjectFiles } from './projects.mjs';
@@ -45,8 +46,10 @@ import { runtimeCapabilities, taskTrace } from './runtime-observation.mjs';
 import { saveAgentAvatar, getAvatar, batchAvatarStyle, defaultAgentAvatarStyle } from './avatars.mjs';
 import { ENGINEER_SPACE, LEGACY_ENGINEER_SPACE, US_SPACE, isExampleSpace, PERSONAL_SPACE, localSpaceDirectory } from './demo-space.mjs';
 import { getAppearance, saveAppearance, getArtwork, getArtworkInfo, saveArtwork } from './local-appearance.mjs';
+import { getNavigationPreferences, saveNavigationPreferences } from './navigation-preferences.mjs';
 import { saveAttachment, getAttachment, publicAttachment, attachmentResponse, STORED_ATTACHMENT_LIMIT } from './attachments.mjs';
 import { UpdateLifecycle, installQuitIpc } from './update-lifecycle.mjs';
+import { FinanceService } from './finance/service.mjs';
 
 const here=path.dirname(fileURLToPath(import.meta.url));
 const PROJECT=path.resolve(here,'..');
@@ -60,9 +63,28 @@ async function readJson(req,maxBytes=2*1024*1024){
   if(bytes>maxBytes)throw new HttpError(413,`请求超过 ${maxBytes/1024/1024} MB`);
   try {const value=JSON.parse(Buffer.concat(parts).toString()||'{}');if(!value||typeof value!=='object'||Array.isArray(value))throw new Error();return value;}catch{throw new HttpError(400,'JSON 请求格式无效');}
 }
-function detectCodex(){try{const version=execFileSync(codexCommand(),['--version'],{encoding:'utf8',timeout:5000,stdio:['ignore','pipe','ignore']}).trim();return version.startsWith('codex-cli ')?{codexAvailable:true,codexVersion:version}:{codexAvailable:false};}catch{return {codexAvailable:false};}}
+const execFileAsync=promisify(execFile);
+const codexVersionInfo=output=>{const version=typeof output==='string'?output.trim():'';return /^codex-cli [^\r\n]{1,200}$/.test(version)?{codexAvailable:true,codexVersion:version}:{codexAvailable:false};};
+function detectCodex(){try{return codexVersionInfo(execFileSync(codexCommand(),['--version'],{encoding:'utf8',timeout:5000,maxBuffer:16*1024,stdio:['ignore','pipe','ignore']}));}catch{return {codexAvailable:false};}}
+export async function probeLocalComputer(run=execFileAsync){
+  try{return codexVersionInfo((await run(codexCommand(),['--version'],{encoding:'utf8',timeout:5000,maxBuffer:16*1024,killSignal:'SIGKILL',windowsHide:true})).stdout);}
+  catch{return {codexAvailable:false};}
+}
+function createComputerRuntime(computerInfo,probeComputer){
+  const result=value=>({codexAvailable:value?.codexAvailable===true,...(value?.codexAvailable===true&&typeof value.codexVersion==='string'&&value.codexVersion.trim()?{codexVersion:value.codexVersion.trim()}:{}),checkedAt:now()});
+  // Injected fixtures must never fall through to the host's installed runtime.
+  let current=result(computerInfo??(probeComputer?{codexAvailable:false}:detectCodex())),pending;
+  const check=probeComputer??(computerInfo?()=>computerInfo:probeLocalComputer);
+  return {
+    snapshot:()=>({...current}),
+    probe(){
+      if(!pending)pending=Promise.resolve().then(()=>check()).then(value=>{current=result(value);},()=>{current=result({codexAvailable:false});}).finally(()=>{pending=undefined;});
+      return pending;
+    }
+  };
+}
 
-export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJECT,'.hither'),seed=true,seedLocale='zh-CN',runCodex,runImCli,runResourceCli,scheduler=true,computerInfo,chooseDirectory=chooseProjectDirectory,distDir=path.join(PROJECT,'dist'),executionPolicy,modelFetch=fetch,remoteTransport,developmentRoot=PROJECT,officePreviewOptions,imSetupOptions,_allowDemoSpace=true,_parentPort,_protectedDataDirectory,_updateLifecycle}={}) {
+export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJECT,'.hither'),seed=true,seedLocale='zh-CN',runCodex,runImCli,runResourceCli,scheduler=true,computerInfo,probeComputer,chooseDirectory=chooseProjectDirectory,distDir=path.join(PROJECT,'dist'),executionPolicy,modelFetch=fetch,remoteTransport,developmentRoot=PROJECT,officePreviewOptions,imSetupOptions,financeOptions,_allowDemoSpace=true,_parentPort,_protectedDataDirectory,_updateLifecycle,_computerRuntime,_spaceKey='main'}={}) {
   const updateLifecycle=_updateLifecycle??new UpdateLifecycle();
   const store=new Store(dataDir,{seed,seedLocale,protectedDataDirectory:_protectedDataDirectory});
   const policy=resolveExecutionPolicy(executionPolicy,store.meta('profile'));
@@ -87,23 +109,26 @@ export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJEC
   const development=createDevelopmentReader({projectRoot:developmentRoot});
   const previewOffice=createOfficePreviewer(store,officePreviewOptions);
   remoteTasks.connect(remoteComputers);
-  const computer={id:'local',name:os.hostname(),platform:process.platform,status:'online',workspace:store.workspace,...(computerInfo??detectCodex())};
-  const bootstrap=()=>({version:VERSION,executionSettings:executionSettings(store),...(policy?{executionPolicy:policy}:{}),connectors:connectors.list(),attachments:store.list('attachments').map(publicAttachment),defaultAgentAvatarStyle:defaultAgentAvatarStyle(store),dailyActivities:dailyActivity(store),twinBuilding:twinBuilding.snapshot(),profile:store.meta('profile'),...Object.fromEntries(collections.map(c=>[c,c==='projects'?store.list(c).map(project=>publicProject(project,store.protectedDataDirectory)):store.list(c)])),settings:store.settings(),modelConnections:store.connectionList(),defaultConnectionId:store.defaultConnectionId(),computer});
+  const computerRuntime=_computerRuntime??createComputerRuntime(computerInfo,probeComputer);
+  const computer=()=>({id:'local',name:os.hostname(),platform:process.platform,status:'online',workspace:store.workspace,...computerRuntime.snapshot()});
+  const bootstrap=()=>({version:VERSION,executionSettings:executionSettings(store),...(policy?{executionPolicy:policy}:{}),connectors:connectors.list(),attachments:store.list('attachments').map(publicAttachment),defaultAgentAvatarStyle:defaultAgentAvatarStyle(store),dailyActivities:dailyActivity(store),twinBuilding:twinBuilding.snapshot(),profile:store.meta('profile'),...Object.fromEntries(collections.map(c=>[c,c==='projects'?store.list(c).map(project=>publicProject(project,store.protectedDataDirectory)):store.list(c)])),settings:store.settings(),modelConnections:store.connectionList(),defaultConnectionId:store.defaultConnectionId(),computer:computer()});
   let server;
+  const finance=new FinanceService(store,{...financeOptions,executionPolicy:policy,space:_spaceKey,origin:()=>`http://127.0.0.1:${server?.address()?.port??_parentPort?.()}`,routePrefix:_spaceKey==='main'?'/api/finance':`/api/spaces/${_spaceKey}/finance`});
   const childApps=new Map();
   function localApp(space,create=false){
     if(childApps.has(space))return childApps.get(space);
     const directory=localSpaceDirectory(store.directory,space,{create});
     if(!directory||(!create&&!existsSync(path.join(directory,'hither.sqlite'))))throw new HttpError(404,'尚未创建此空间，请从设置进入。','space_missing');
-    const app=createApp({dataDir:directory,seed:isExampleSpace(space),seedLocale:space===US_SPACE?'en':'zh-CN',executionPolicy:isExampleSpace(space)?'showcase':'personal',runCodex,runImCli,runResourceCli,scheduler,chooseDirectory,computerInfo:{codexAvailable:computer.codexAvailable,codexVersion:computer.codexVersion},distDir,modelFetch,remoteTransport,developmentRoot,officePreviewOptions,imSetupOptions,_allowDemoSpace:false,_parentPort:()=>server.address()?.port,_protectedDataDirectory:store.protectedDataDirectory,_updateLifecycle:updateLifecycle});
+    const app=createApp({dataDir:directory,seed:isExampleSpace(space),seedLocale:space===US_SPACE?'en':'zh-CN',executionPolicy:isExampleSpace(space)?'showcase':'personal',runCodex,runImCli,runResourceCli,scheduler,chooseDirectory,distDir,modelFetch,remoteTransport,developmentRoot,officePreviewOptions,imSetupOptions,financeOptions,_allowDemoSpace:false,_parentPort:()=>server.address()?.port,_protectedDataDirectory:store.protectedDataDirectory,_updateLifecycle:updateLifecycle,_computerRuntime:computerRuntime,_spaceKey:space});
     childApps.set(space,app);return app;
   }
   function guard(req) {
     const ports=new Set([String(server.address()?.port??58645),'58645','58644',String(_parentPort?.()??'')]);
     let host;try{host=new URL(`http://${req.headers.host}`);}catch{throw new HttpError(403,'无效本机请求','origin_denied');}
     if(!['127.0.0.1','localhost','[::1]'].includes(host.hostname)||!ports.has(host.port))throw new HttpError(403,'仅接受本机应用请求','origin_denied');
-    if(req.headers['sec-fetch-site']==='cross-site')throw new HttpError(403,'不接受跨站请求','origin_denied');
-    if(req.headers.origin){let origin;try{origin=new URL(req.headers.origin);}catch{throw new HttpError(403,'来源无效','origin_denied');}if(origin.protocol!=='http:'||!['127.0.0.1','localhost','[::1]'].includes(origin.hostname)||!ports.has(origin.port))throw new HttpError(403,'来源不在本机应用范围','origin_denied');}
+    const financeCallback=req.method==='GET'&&req.headers['sec-fetch-mode']==='navigate'&&req.headers['sec-fetch-dest']==='document'&&/^\/api\/(?:spaces\/personal\/)?finance\/connections\/(?:moomoo|truelayer)\/callback(?:\?|$)/.test(req.url||'');
+    if(req.headers['sec-fetch-site']==='cross-site'&&!financeCallback)throw new HttpError(403,'不接受跨站请求','origin_denied');
+    if(req.headers.origin){let origin;try{origin=new URL(req.headers.origin);}catch{throw new HttpError(403,'来源无效','origin_denied');}if(!(financeCallback&&((req.url||'').includes('/moomoo/callback')?origin.origin==='https://webapi.moomoo.com':['https://app.truelayer.com','https://app.truelayer-sandbox.com'].includes(origin.origin)))&&(origin.protocol!=='http:'||!['127.0.0.1','localhost','[::1]'].includes(origin.hostname)||!ports.has(origin.port)))throw new HttpError(403,'来源不在本机应用范围','origin_denied');}
   }
   async function route(req,res) {
     guard(req);
@@ -131,6 +156,16 @@ export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJEC
       const data=readFileSync(file);res.writeHead(200,{'Content-Type':mime,'Cache-Control':'no-cache','X-Content-Type-Options':'nosniff'});return res.end(req.method==='HEAD'?undefined:data);
     }
     const [,resource,key,action]=parts,method=req.method;
+    if(resource==='finance'&&/^connections\/(?:moomoo|truelayer)\/callback$/.test(parts.slice(2).join('/'))){
+      if(method!=='GET'||req.url.length>5000)throw new HttpError(400,'授权回调格式无效。','finance_callback_invalid');
+      await (parts[3]==='moomoo'?finance.completeCallback(url.searchParams):finance.providers.callback(parts[3],url.searchParams)).catch(error=>{if(error.code==='showcase_read_only'||error.code==='finance_callback_invalid')throw error;});
+      const destination=(_spaceKey==='main'?'/':`/?space=${_spaceKey}`)+'#settings/connectors';
+      const script=`location.replace(${JSON.stringify(destination)})`,hash=createHash('sha256').update(script).digest('base64');
+      // Render a local completion document before navigating; unlike a redirect
+      // chain, the new navigation is same-origin and needs no broad CSRF bypass.
+      res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','Referrer-Policy':'no-referrer','X-Content-Type-Options':'nosniff','Content-Security-Policy':`default-src 'none'; script-src 'sha256-${hash}'; base-uri 'none'; frame-ancestors 'none'`});
+      return res.end(`<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>返回 SecondU</title><p>授权处理已结束，正在返回连接设置。</p><a href="${destination}">返回 SecondU</a><script>${script}</script></html>`);
+    }
     if(resource==='development'){
       if(method!=='GET')throw new HttpError(405,'构建记录仅支持本机读取。','development_read_only');
       if(parts.length===3&&key==='review')return respond(res,200,development.review());
@@ -145,6 +180,21 @@ export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJEC
     const body=['POST','PUT','PATCH','DELETE'].includes(method)?await readJson(req,binaryArtifactUpload?BINARY_ARTIFACT_JSON_LIMIT:attachmentUpload?Math.ceil(STORED_ATTACHMENT_LIMIT/3)*4+4096:artworkUpload?12*1024*1024:(avatarUpload||profileUpload)?4*1024*1024+4096:2*1024*1024):{};
     if(profileUpload&&!Object.hasOwn(body,'avatarDataUrl')&&Buffer.byteLength(JSON.stringify(body))>2*1024*1024)throw new HttpError(413,'请求内容过大','body_too_large');
     guardExecutionRoute(policy,{resource,key,action,operation:parts[4],method,body},store);
+    if(resource==='computer'){
+      if(key!=='probe'||parts.length!==3)throw new HttpError(404,'本机检测接口不存在。','not_found');
+      if(method!=='POST')throw new HttpError(405,'重新检测需要 POST 请求。','computer_probe_method_not_allowed');
+      if(Object.keys(body).length)throw new HttpError(400,'本机检测不接受命令或其他参数。','computer_probe_invalid_request');
+      // This only reads the fixed local CLI version; showcase spaces may also
+      // refresh it. No model, remote connection or persistent data is changed.
+      await computerRuntime.probe();return respond(res,200,computer());
+    }
+    if(resource==='finance'){
+      const route=parts.slice(2).join('/');
+      if(route==='events'&&method==='GET')return finance.stream(req,res);
+      const result=await finance.request(route,method,body);
+      if(result.bytes){res.writeHead(result.status,{'Content-Type':result.contentType,'Content-Length':result.bytes.length,'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});return res.end(result.bytes);}
+      return respond(res,result.status,result.value);
+    }
     if(resource==='computers')return respond(res,200,await remoteComputers.owner(method,parts.slice(2),body));
     if(resource==='delegations')return respond(res,200,await delegations.owner(method,parts.slice(2),body));
     if(resource==='model-catalogue'&&parts.length===2&&method==='POST')return respond(res,200,await discoverModels(catalogueSettings(body),body.apiKey,{fetchImpl:modelFetch}));
@@ -203,7 +253,7 @@ export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJEC
       if(action==='preview')return respond(res,200,previewActivityImport(store,body));
       if(action==='commit')return respond(res,200,commitActivityImport(store,body.previewId));
     }
-    if(resource==='runtime'&&key==='capabilities'&&method==='GET')return respond(res,200,runtimeCapabilities(store,computer));
+    if(resource==='runtime'&&key==='capabilities'&&method==='GET')return respond(res,200,runtimeCapabilities(store,computer()));
     if(resource==='export'&&method==='GET'){
       const data=bootstrap();data.settings={...store.meta('settings'),hasKey:false};delete data.settings.keyHint;delete data.settings.lastTest;data.modelConnections=store.connectionList().map(({keyHint,lastTest,...connection})=>({...connection,hasKey:false}));data.connectors=data.connectors.map(({lastTest,...connector})=>({...connector,hasToken:false}));delete data.computer;
       return respond(res,200,{exportVersion:1,exportedAt:now(),...data,taskFeedback:store.list('taskFeedback')},{'Content-Disposition':'attachment; filename="hither-export.json"'});
@@ -288,6 +338,11 @@ export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJEC
       if(method==='GET')return respond(res,200,getAppearance(store));
       if(method==='PUT')return respond(res,200,saveAppearance(store,body));
       throw new HttpError(405,'外观设置不支持该操作');
+    }
+    if(resource==='settings'&&key==='navigation'&&parts.length===3){
+      if(method==='GET')return respond(res,200,getNavigationPreferences(store));
+      if(method==='PUT')return respond(res,200,saveNavigationPreferences(store,body));
+      throw new HttpError(405,'侧栏设置不支持该操作');
     }
     if(resource==='settings'&&key==='artwork'){
       if(method==='GET'&&action==='info'&&parts.length===4)return respond(res,200,getArtworkInfo(store));
@@ -409,7 +464,7 @@ export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJEC
   server=http.createServer(handleRequest);
   server.requestTimeout=30000;server.headersTimeout=10000;
   let closing;
-  return {server,store,runner,twinBuilding,connectors,delegations,remoteComputers,remoteTasks,bootstrap,handleRequest,updateLifecycle,close(){return closing??=(async()=>{for(const app of childApps.values())await app.close();await connectors.close();await imSetup.close();remoteComputers.close();await runner.close();await twinBuilding.settled();await delegations.close();if(server.listening)await new Promise((resolve,reject)=>server.close(error=>error?reject(error):resolve()));store.close();if(!_updateLifecycle)updateLifecycle.dispose();})();}};
+  return {server,store,runner,twinBuilding,connectors,finance,delegations,remoteComputers,remoteTasks,bootstrap,handleRequest,updateLifecycle,close(){return closing??=(async()=>{await finance.close();for(const app of childApps.values())await app.close();await connectors.close();await imSetup.close();remoteComputers.close();await runner.close();await twinBuilding.settled();await delegations.close();if(server.listening)await new Promise((resolve,reject)=>server.close(error=>error?reject(error):resolve()));store.close();if(!_updateLifecycle)updateLifecycle.dispose();})();}};
 }
 
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){

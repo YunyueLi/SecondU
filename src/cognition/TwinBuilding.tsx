@@ -24,6 +24,7 @@ import './twin-building.css';
 interface Props {
   data:Bootstrap;
   profileHref?:string;
+  showProfileLink?:boolean;
   onRefresh:()=>Promise<void>;
   onCreateTask:(prompt:string,contextFactIds?:string[],agentIds?:string[])=>void|Promise<void>;
 }
@@ -33,7 +34,7 @@ const candidateText=(candidate:TwinCandidate)=>'statement'in candidate.value?can
 const candidateKind=(candidate:TwinCandidate)=>({fact:t('关于你','About you'),person:t('与你有关的人','A person in your life'),event:t('一段经历','An experience')}[candidate.kind]);
 const reviewLabel=(status:TwinCandidate['status'])=>({pending:t('待你确认','Awaiting your review'),accepted:t('已确认','Confirmed'),corrected:t('已按你的表述修订','Corrected by you'),rejected:t('未采用','Not adopted')}[status]);
 
-export function TwinBuilding({data,profileHref='#self',onRefresh,onCreateTask}:Props) {
+export function TwinBuilding({data,profileHref='#self',showProfileLink=true,onRefresh,onCreateTask}:Props) {
   const [snapshot,setSnapshot]=useState<TwinBuildingSnapshot>(emptySnapshot);
   const [loaded,setLoaded]=useState(false),[loadError,setLoadError]=useState(''),[error,setError]=useState(''),[notice,setNotice]=useState('');
   const [text,setText]=useState(''),[purpose,setPurpose]=useState<CapturePurpose>('personal');
@@ -141,7 +142,7 @@ export function TwinBuilding({data,profileHref='#self',onRefresh,onCreateTask}:P
 
 
   return <section className="twin-building" aria-label={t('分身建设','Grow your twin')}>
-    <ButtonLink className="twin-profile-link" as="a" href={profileHref} color="secondary" variant="ghost" size="sm">{t('查看完整画像','View full profile')}<ArrowRight/></ButtonLink>
+    {showProfileLink&&<ButtonLink className="twin-profile-link" as="a" href={profileHref} color="secondary" variant="ghost" size="sm">{t('查看完整画像','View full profile')}<ArrowRight/></ButtonLink>}
     <div className="twin-building-stage">
       <TwinPortrait evidence={evidence} caption={portraitCaption} progress={progress} onProgressClick={progress==='review'?()=>select(reviewCaptures[0].id):undefined}/>
       <div className="twin-entry-dock"><MaterialGallery items={galleryItems} onOpen={openMaterial}/></div>

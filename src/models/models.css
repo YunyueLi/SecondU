@@ -26,9 +26,9 @@
 .model-provider-custom { color:var(--color-text-secondary); font-size:14px; letter-spacing:0; }
 .model-connection h3 { font-size:var(--hither-font-body,14px); font-weight:550;     white-space:normal;overflow-wrap:anywhere;}
 .model-connection-model {    font-size:var(--hither-font-caption,12px); line-height:1.7; margin-top:3px; color:var(--color-text-secondary);  white-space:normal;overflow-wrap:anywhere;}
-.model-connection-state { display:flex; align-items:center; gap:5px; max-width:118px; color:var(--color-text-secondary); font-size:var(--hither-font-meta); line-height:1.5; }
-.model-connection-state>i { width:5px; height:5px; border-radius:50%; background:var(--color-text-tertiary); flex-shrink:0; }
-.model-connection-state.is-passed>i { background:var(--color-text-success,#38845e); }
+.model-connection-state { display:flex; align-items:center; max-width:180px; color:var(--color-text-secondary); font-size:var(--hither-font-meta); line-height:1.5; }
+.model-connection-state svg { width:15px; height:15px; flex:none; }
+.model-connection-test-error { grid-column:2/-1; margin:7px 0 0; font-size:12px; line-height:1.6; color:var(--color-text-danger); overflow-wrap:anywhere; }
 .model-connection-actions { display:flex; align-items:center; gap:1px; }
 .model-connection-actions button { font-size:12px; }
 .model-provider-availability { margin-top:30px; padding-top:24px; border-top:1px solid var(--color-border-subtle); }

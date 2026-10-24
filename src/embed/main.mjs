@@ -1,5 +1,6 @@
 import { installScrollBridge } from './scroll-bridge.mjs';
 import { installPresentation } from './presentation.mjs';
+import './presentation.css';
 
 // This separate local entry leaves existing product tabs and their drafts mounted.
 // Both surfaces import the real application and use the existing local API.

@@ -43,7 +43,7 @@ export function SiteLanguageProvider({ children }: { children: ReactNode }) {
   return <Context.Provider value={{ language, setLanguage, t: (zh, en) => language === 'zh' ? zh : en }}>{children}</Context.Provider>;
 }
 export function useSiteLanguage() { return useContext(Context); }
-export function LanguageSwitcher({side='bottom'}:{side?:'top'|'bottom'}) {
+export function LanguageSwitcher({side='bottom',showIcon=true,surface='page'}:{side?:'top'|'bottom';showIcon?:boolean;surface?:'page'|'dark'}) {
  const {language,setLanguage,t}=useSiteLanguage();
- return <SiteChoice compact side={side} label={t('网站语言','Website language')} value={language} icon={<Globe/>} options={[{value:'zh',label:'中文'},{value:'en',label:'English'}]} onChange={next=>{if(next==='zh'||next==='en')setLanguage(next);}}/>;
+ return <SiteChoice compact side={side} surface={surface} label={t('网站语言','Website language')} value={language} icon={showIcon?<Globe/>:undefined} options={[{value:'zh',label:'中文'},{value:'en',label:'English'}]} onChange={next=>{if(next==='zh'||next==='en')setLanguage(next);}}/>;
 }

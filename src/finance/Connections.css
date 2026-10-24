@@ -1,0 +1,38 @@
+/* Account-specific controls use the same connector detail shell and type scale. */
+.connections-form.connector-form-dialog { width:100%; }
+.connections-summary-meta { margin-left:10px; color:var(--color-text-secondary); font-size:var(--hither-font-meta,12px); }
+.connections-scope code { font:inherit; overflow-wrap:anywhere; }
+.connections-error { display:grid; justify-items:start; gap:12px; min-width:0; }
+.connections-error > [role="alert"] { width:100%; }
+.connections-file-input { box-sizing:border-box; width:100%; max-width:100%; padding:5px; border:1px solid var(--color-border); border-radius:8px; color:var(--color-text-secondary); background:var(--color-surface); font:inherit; }
+.connections-file-input::file-selector-button { margin-right:8px; padding:2px 8px; border:0; border-radius:6px; color:var(--color-text); background:var(--color-surface-secondary); font:inherit; cursor:pointer; }
+.connections-file-input:focus-visible { outline:2px solid var(--color-text); outline-offset:2px; }
+.connections-file-input:disabled { opacity:.5; cursor:not-allowed; }
+
+/* Account preview is specific to finance; its typography follows connector facts. */
+.connections-preview { display:flex; flex-direction:column; gap:17px; min-width:0; }
+.connections-preview-heading { display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:8px; }
+.connections-preview h4 { margin:0; font-size:var(--hither-font-caption,13px); font-weight:550; }
+.connections-preview-heading time { color:var(--color-text-secondary); font-size:var(--hither-font-meta,12px); }
+.connections-preview-account { display:flex; flex-direction:column; gap:17px; min-width:0; }
+.connections-preview-account + .connections-preview-account { padding-top:17px; border-top:1px solid var(--color-border-subtle); }
+.connections-preview-account > header { display:flex; align-items:baseline; flex-wrap:wrap; gap:8px 12px; }
+.connections-preview-account > header strong { font-size:var(--hither-font-caption,13px); font-weight:550; }
+.connections-preview-account > header > span { color:var(--color-text-secondary); font-size:var(--hither-font-meta,12px); }
+.connections-funds.connector-detail-facts,.connections-position-details.connector-detail-facts { grid-template-columns:repeat(2,minmax(0,1fr)); }
+.connections-positions-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; font-size:var(--hither-font-caption,13px); }
+.connections-positions-heading > strong { font-weight:550; }
+.connections-positions-heading > span { color:var(--color-text-secondary); font-size:var(--hither-font-meta,12px); }
+.connections-position + .connections-position { border-top:1px solid var(--color-border-subtle); }
+.connections-position summary { display:flex; align-items:center; gap:8px; padding:12px 0; list-style:none; cursor:pointer; }
+.connections-position summary::-webkit-details-marker { display:none; }
+.connections-position summary:focus-visible { outline:2px solid var(--color-text); outline-offset:3px; }
+.connections-position summary > svg { width:14px; height:14px; flex-shrink:0; color:var(--color-text-secondary); }
+.connections-position[open] summary > svg { transform:rotate(180deg); }
+.connections-position-name { flex:1; min-width:0; }
+.connections-position-name strong,.connections-position-value strong { display:block; font-size:var(--hither-font-caption,13px); font-weight:550; }
+.connections-position-name > span,.connections-position-value > span { display:block; color:var(--color-text-secondary); font-size:var(--hither-font-meta,12px); }
+.connections-position-name > span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.connections-position-value { min-width:0; max-width:56%; text-align:right; font-variant-numeric:tabular-nums; overflow-wrap:anywhere; }
+.connections-position-details.connector-detail-facts { border:0; padding:0 0 17px; }
+.connections-empty { margin:0; color:var(--color-text-secondary); font-size:var(--hither-font-caption,13px); }

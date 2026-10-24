@@ -36,6 +36,25 @@ process.stdin.on('data',x=>{input+=x;if(input.length>10000)process.exit(1)});pro
 const paths=(process.env.PATH||'').split(path.delimiter).map(x=>path.join(x,'codex')).concat(['/opt/homebrew/bin/codex','/usr/local/bin/codex',path.join(os.homedir(),'Applications','Codex.app','Contents','Resources','codex'),'/Applications/Codex.app/Contents/Resources/codex']);let command;for(const c of paths){try{fs.accessSync(c,fs.constants.X_OK);if(fs.statSync(c).isFile()){command=c;break}}catch{}}
 if(!command)throw Error('远端未找到 Codex CLI；准备运行组件不会安装第三方软件。');const r=cp.spawnSync(command,['--version'],{encoding:'utf8',timeout:8000,maxBuffer:8192});if(r.status!==0)throw Error('远端 Codex CLI 无法启动。');process.stdout.write(JSON.stringify({ok:true,result:{protocol:${PROTOCOL},node:process.versions.node,nodePath:process.execPath,platform:process.platform,codex:r.stdout.trim().slice(0,200),codexPath:command,workspaceRoot,checkedAt:new Date().toISOString()}}));}catch(e){process.stdout.write(JSON.stringify({ok:false,error:{code:'remote_prerequisites',message:e.message,status:409}}));process.exitCode=1;}});`;
 
+// Rechecking readiness only reads the exact deployment manifest. Missing or
+// changed files require a separately authorized prepare; this never installs.
+export const VERIFY_RUNTIME = `
+const fs=require('node:fs'),path=require('node:path'),os=require('node:os'),crypto=require('node:crypto');
+const allowed=${JSON.stringify(RUNTIME_FILES)};let input='',bytes=0;
+function hash(value){return crypto.createHash('sha256').update(value).digest('hex')}
+function directory(value){let current=path.parse(value).root;for(const part of value.slice(current.length).split(path.sep).filter(Boolean)){current=path.join(current,part);const stat=fs.lstatSync(current);if(stat.isSymbolicLink()||!stat.isDirectory())throw Error('Unsafe runtime directory');}}
+process.stdin.on('data',chunk=>{bytes+=chunk.length;if(bytes>65536)process.exit(1);input+=chunk});
+process.stdin.on('end',()=>{let p;try{
+p=JSON.parse(input);if(p.protocol!==${PROTOCOL}||!/^[a-f0-9]{64}$/.test(p.version)||!Array.isArray(p.files)||p.files.length!==allowed.length||new Set(p.files.map(file=>file.path)).size!==allowed.length||hash(JSON.stringify(p.files))!==p.version)throw Error('Invalid runtime manifest');
+for(const file of p.files)if(!allowed.includes(file.path)||!Number.isSafeInteger(file.size)||file.size<0||file.size>2097152||!/^[a-f0-9]{64}$/.test(file.sha256))throw Error('Invalid runtime file');
+const root=path.join(os.homedir(),'.local','share','secondu-remote','releases',p.version);
+let valid=p.runtimePath===path.join(root,'server','remote','rpc.mjs');
+if(valid)try{directory(root);for(const file of p.files){const target=path.join(root,file.path);directory(path.dirname(target));const fd=fs.openSync(target,fs.constants.O_RDONLY|fs.constants.O_NOFOLLOW);try{const stat=fs.fstatSync(fd);if(!stat.isFile()||stat.size!==file.size||hash(fs.readFileSync(fd))!==file.sha256){valid=false;break;}}finally{fs.closeSync(fd);}}}catch{valid=false;}
+process.stdout.write(JSON.stringify({ok:true,result:{protocol:p.protocol,version:p.version,valid}}));
+}catch{process.stdout.write(JSON.stringify({ok:false,error:{code:'remote_runtime_check_failed',message:'无法核对远端运行组件。',status:502}}));process.exitCode=1;}});`;
+
+export function runtimeVerificationInput(computer,pkg){return {protocol:pkg.protocol,version:pkg.version,runtimePath:computer.runtime.runtimePath,files:pkg.files.map(({data,...file})=>file)};}
+
 export function shellQuote(value) { return "'"+String(value).replaceAll("'","'\\''")+"'"; }
 export function sshArgs(computer, command) {
   if(!/^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,252}$/.test(computer.host)||computer.user&&!/^[a-zA-Z0-9_][a-zA-Z0-9_.-]{0,63}$/.test(computer.user))throw fail('远端主机或用户名无效。');
@@ -60,6 +79,7 @@ export async function processJson(command,args,input,{timeoutMs=30000,env,secret
 export class SshRemoteTransport {
   async execute(computer,command,input,options) { return processJson('ssh',sshArgs(computer,command),input,options); }
   async probe(computer) { return this.execute(computer,`node -e ${shellQuote(PROBE)}`,{workspaceRoot:computer.workspaceRoot}); }
+  async verifyRuntime(computer,pkg) { return this.execute(computer,`${shellQuote(computer.probe.nodePath)} -e ${shellQuote(VERIFY_RUNTIME)}`,runtimeVerificationInput(computer,pkg)); }
   async prepare(computer,pkg) { return this.execute(computer,`${shellQuote(computer.probe.nodePath)} -e ${shellQuote(INSTALLER)}`,pkg); }
   async call(computer,request) {
     const command=`${shellQuote(computer.probe.nodePath)} ${shellQuote(computer.runtime.runtimePath)}`;

@@ -11,155 +11,163 @@
       "locale": "zh-CN",
       "theme": "light",
       "fictional": true,
-      "capture": "Actual SecondU canonical fictional example, original 1280x900 full window. Captured and reviewed on 2026-10-01.",
-      "description": "Actual product interaction state sequence assembled from reviewed captures. Preview, editor, saved-version picker and preserved history; no new save is demonstrated.",
+      "capture": "Actual SecondU canonical fictional example, original 1280x900 full window. Captured and individually reviewed on 2026-10-25; unconnected Kimi K3.1 Pro example.",
+      "description": "Actual product interaction state sequence assembled from reviewed captures: saved v2 preview, editor, saved-version view, picker, and preserved v1. No new save or model run is demonstrated.",
       "poster": "task-workspace-zh.jpg",
       "frames": [
         {
           "sourceFile": "task-workspace-zh.jpg",
-          "sourceSha256": "e4fa6f937e5dbe66402dcf050c8c830b844951b5ac20f3d4cbeb6b9672cc2792",
+          "sourceSha256": "bb57df4b7215fa9f0f2653f923df548a26ad772f7e5045c206b2c50d59a4a8ab",
           "holdSeconds": 3,
-          "state": "Preview of saved v3"
+          "state": "Preview of saved v2"
         },
         {
-          "sourceFile": "zh-02-edit.jpg",
-          "sourceSha256": "6c135a97e286314cb35c33293c07546b4431279ce0a7c4b6cb6f552ae81e7681",
+          "sourceFile": "task-workspace-zh-02-edit.jpg",
+          "sourceSha256": "f28c12871fdb5c8c9e748cc0ccaddd79ed0fc2eefba94213b7d730c6120b31f0",
           "holdSeconds": 2,
-          "state": "Editor showing already-saved v3; no new save in this sequence"
+          "state": "Editor showing already-saved v2; no new save in this sequence"
         },
         {
-          "sourceFile": "zh-03-versions.jpg",
-          "sourceSha256": "fe1b78e20588404cfbd58e13c0b0326c8d5bdf514aa52bcb37eefd161d472ada",
+          "sourceFile": "task-workspace-zh-03-versions.jpg",
+          "sourceSha256": "a01a208afcd81e00171f13f94e3b8a1750c6c45942629d08cc61b3b54738aa63",
           "holdSeconds": 2,
-          "state": "Versions tab showing v3"
+          "state": "Versions tab showing v2"
         },
         {
-          "sourceFile": "zh-04-select.jpg",
-          "sourceSha256": "42d3ddc883ac5edfb722d4b03904d8b6bb78addab02cb66e594e399d8d7cf306",
+          "sourceFile": "task-workspace-zh-04-select.jpg",
+          "sourceSha256": "adb64b2ec6d32cf321c604cc4dae555c5c580dd2b2aec35d3f3c859aaa7da35f",
           "holdSeconds": 2,
-          "state": "Version picker with v3 selected"
+          "state": "Version picker with v2 selected"
         },
         {
-          "sourceFile": "zh-05-history.jpg",
-          "sourceSha256": "2bc8c4e7def5b69cb0bb4fad2168002dd9b7a3ff6ade603cc42bf63b2a91af12",
+          "sourceFile": "task-workspace-zh-05-history.jpg",
+          "sourceSha256": "b75ecd2c8ccc2759d1c10157bedac5f93c81d24a82618d5b02ca3a9f2df024af",
           "holdSeconds": 3,
-          "state": "Open preserved v2"
+          "state": "Open preserved v1"
         }
       ],
       "firstFrame": "task-workspace-zh.jpg",
-      "lastFrame": "zh-05-history.jpg",
+      "lastFrame": "task-workspace-zh-05-history.jpg",
       "outputs": [
         {
           "file": "task-workspace-zh.mp4",
-          "bytes": 289746,
-          "sha256": "87e64731adaa235e39a6f234d711c04abe4376a95deb29e544180c91d8dd7e2e",
+          "bytes": 249862,
+          "sha256": "2b7e27b2a4ae8242eaed6f1781f4814c213ce5b7c71c351d04a6893504b99908",
           "durationSeconds": 12.0,
           "codec_name": "h264",
           "width": 1280,
           "height": 900,
-          "avg_frame_rate": "15/1"
+          "avg_frame_rate": "15/1",
+          "side_data_list": [
+            {}
+          ]
         },
         {
           "file": "task-workspace-zh.gif",
-          "bytes": 546456,
-          "sha256": "16a704751ef82a685f088e76a4d9d73e3e2f98948bd3eec24670babff07fa05d",
+          "bytes": 445851,
+          "sha256": "b991d94b6a2931226b23aaa36c69b5e5c8438a75865c5609194ebab7592c9e93",
           "durationSeconds": 12.0,
           "codec_name": "gif",
           "width": 1280,
           "height": 900,
           "avg_frame_rate": "10/1"
         }
-      ]
+      ],
+      "visualReview": "All five source states individually viewed in the matching theme. Model label, version selector, saved v2 and preserved v1 are readable. No cropping, scaling or image retouching."
     },
     {
       "id": "task-workspace-zh-dark",
       "locale": "zh-CN",
       "theme": "dark",
       "fictional": true,
-      "capture": "Actual SecondU canonical fictional example, original 1280x900 full window. Captured and reviewed on 2026-10-01.",
-      "description": "Actual product state sequence assembled from reviewed captures: saved v3 preview and editor, preserved v2, version picker, then the same preserved v2. The final held frame reuses the reviewed v2 capture. No new save or model run is demonstrated.",
+      "capture": "Actual SecondU canonical fictional example, original 1280x900 full window. Captured and individually reviewed on 2026-10-25; unconnected Kimi K3.1 Pro example.",
+      "description": "Actual product interaction state sequence assembled from reviewed captures: saved v2 preview, editor, saved-version view, picker, and preserved v1. No new save or model run is demonstrated.",
       "poster": "task-workspace-zh-dark.jpg",
       "frames": [
         {
           "sourceFile": "task-workspace-zh-dark.jpg",
-          "sourceSha256": "1001baba683141f674aa1bc315b8d425eb46c231cec49d6e063d0989518251c6",
+          "sourceSha256": "500144a4b13a7b96918c01723d3641169fb6afb0ece14e455e0df2f4424db3e4",
           "holdSeconds": 3,
-          "state": "Preview of saved v3"
+          "state": "Preview of saved v2"
         },
         {
-          "sourceFile": "zh-dark-02-edit.jpg",
-          "sourceSha256": "cbc19038a63d0109bd30ff2150652ac26e3afaa69512fe1294cc348ff626bfeb",
+          "sourceFile": "task-workspace-zh-dark-02-edit.jpg",
+          "sourceSha256": "4804adf54957dbb6c92468f04dfdb40b95826e1a13895b39a9f34f39e5821403",
           "holdSeconds": 2,
-          "state": "Editor showing already-saved v3; no new save in this sequence"
+          "state": "Editor showing already-saved v2; no new save in this sequence"
         },
         {
-          "sourceFile": "zh-dark-03-versions.jpg",
-          "sourceSha256": "df03d417cf5615d34edcb415b24e9128e5de926878c0782630839267436dba1c",
+          "sourceFile": "task-workspace-zh-dark-03-versions.jpg",
+          "sourceSha256": "410a943fae503146fe0d457d7509fb26214d32b90dab553abdf99b0d1e89b783",
           "holdSeconds": 2,
           "state": "Versions tab showing v2"
         },
         {
-          "sourceFile": "zh-dark-04-select.jpg",
-          "sourceSha256": "d0d7ce47e2b2657e3bd94ff6bb7d0018ef93e42ff3cd7c469aa2c7a0e356d6da",
+          "sourceFile": "task-workspace-zh-dark-04-select.jpg",
+          "sourceSha256": "868c274a4c6010ff4fe5135c06db6539ddec19f4ec64e3882fc8170ce8eb1c4f",
           "holdSeconds": 2,
           "state": "Version picker with v2 selected"
         },
         {
-          "sourceFile": "zh-dark-03-versions.jpg",
-          "sourceSha256": "df03d417cf5615d34edcb415b24e9128e5de926878c0782630839267436dba1c",
+          "sourceFile": "task-workspace-zh-dark-05-history.jpg",
+          "sourceSha256": "411c3be1691f2202389ac70d9171c11e85b88bb95e3ad6a153d4dee8a32c9240",
           "holdSeconds": 3,
-          "state": "Return to preserved v2 after closing the version picker; original reviewed v2 capture reused"
+          "state": "Open preserved v1"
         }
       ],
       "firstFrame": "task-workspace-zh-dark.jpg",
-      "lastFrame": "zh-dark-03-versions.jpg",
+      "lastFrame": "task-workspace-zh-dark-05-history.jpg",
       "outputs": [
         {
           "file": "task-workspace-zh-dark.mp4",
-          "bytes": 289746,
-          "sha256": "225ffc7b4a3ea81d4801eb90070c8b3f1e0da026b8ce07f9dc453171f5838ab3",
+          "bytes": 261510,
+          "sha256": "2238245e4c916120d92be5a095c4d09b01d737145ce345ec8e6703cdaf75e50a",
           "durationSeconds": 12.0,
           "codec_name": "h264",
           "width": 1280,
           "height": 900,
-          "avg_frame_rate": "15/1"
+          "avg_frame_rate": "15/1",
+          "side_data_list": [
+            {}
+          ]
         },
         {
           "file": "task-workspace-zh-dark.gif",
-          "bytes": 613463,
-          "sha256": "4d1b30ce2c2f27e329dc5120ec6480c5fbcf5a9cd8ce58cbb3717e9ed6413f14",
+          "bytes": 480721,
+          "sha256": "15566343f3761d988056b66a3ce60ad5136d6120693f4a643f7e1dbb4c5dc702",
           "durationSeconds": 12.0,
           "codec_name": "gif",
           "width": 1280,
           "height": 900,
           "avg_frame_rate": "10/1"
         }
-      ]
+      ],
+      "visualReview": "All five source states individually viewed in the matching theme. Model label, version selector, saved v2 and preserved v1 are readable. No cropping, scaling or image retouching."
     },
     {
       "id": "personal-context-zh",
       "locale": "zh-CN",
       "theme": "light",
       "fictional": true,
-      "capture": "Actual SecondU canonical fictional example, original 1280x900 full window. Captured and reviewed on 2026-10-01.",
+      "capture": "Actual SecondU v0.2.1 canonical fictional example, original 1280x900 product viewport. Captured and individually reviewed on 2026-10-25.",
       "description": "Actual product interaction state sequence assembled from reviewed captures. Profile, confirmed understanding detail and correction form; no correction is submitted.",
       "poster": "personal-context-zh.jpg",
       "frames": [
         {
           "sourceFile": "personal-context-zh.jpg",
-          "sourceSha256": "37cea250391f3130bc57a2203a1299df2ad7b0dc1d81baa37bd2cfc0550f4713",
+          "sourceSha256": "e56b15199f85601c9b21b8d7bf9533b0111ec3bf6d5eb292834e76d45e56c597",
           "holdSeconds": 3,
           "state": "Personal profile overview"
         },
         {
           "sourceFile": "personal-zh-02-detail.jpg",
-          "sourceSha256": "a5701881dd459620e199ce07c68a9c65428a3479de97ba6cc5f83a35a3993d56",
+          "sourceSha256": "38cd0639b8f5969859e67e42a094347db8d7880a29271080e65ef8b65aa14a80",
           "holdSeconds": 3,
           "state": "Confirmed preference detail with source and revision"
         },
         {
           "sourceFile": "personal-zh-03-edit.jpg",
-          "sourceSha256": "71ddf0e9f305f2fcad59a6f789c2324b2c86fe405bcb79e772f0a78e83024107",
+          "sourceSha256": "79a03cc592dcf8d2b89be9f937d72d8a2b47bde2944ceec266e2b0e7ee983c0d",
           "holdSeconds": 3,
           "state": "Correction form opened; no correction saved in this sequence"
         }
@@ -169,8 +177,8 @@
       "outputs": [
         {
           "file": "personal-context-zh.mp4",
-          "bytes": 162386,
-          "sha256": "57186adeb5baa975d8cb451269df38562592549772e910f102a08eeb3e5aafd9",
+          "bytes": 149590,
+          "sha256": "7a785e91d5f1d3dda2c9b6801f2a1b23084585c208df4ab655e839b5b1766ec3",
           "durationSeconds": 9.0,
           "codec_name": "h264",
           "width": 1280,
@@ -179,40 +187,41 @@
         },
         {
           "file": "personal-context-zh.gif",
-          "bytes": 455626,
-          "sha256": "5070bcfbd66cb363e73a36489e0cbb2dcaff499d00e4d333d9fc4126f7e22ce8",
+          "bytes": 359523,
+          "sha256": "3b8e53c905208bc687596ea65ed9f2c578cf546c40871e711660dd42d938e6d2",
           "durationSeconds": 9.0,
           "codec_name": "gif",
           "width": 1280,
           "height": 900,
           "avg_frame_rate": "10/1"
         }
-      ]
+      ],
+      "visualReview": "Every source state individually viewed in the matching language and theme. Native navigation, readable content, and actual controls retained. No cropping within the product viewport, scaling or image retouching."
     },
     {
       "id": "personal-context-zh-dark",
       "locale": "zh-CN",
       "theme": "dark",
       "fictional": true,
-      "capture": "Actual SecondU canonical fictional example, original 1280x900 full window. Captured and reviewed on 2026-10-01.",
+      "capture": "Actual SecondU v0.2.1 canonical fictional example, original 1280x900 product viewport. Captured and individually reviewed on 2026-10-25.",
       "description": "Actual product interaction state sequence assembled from reviewed captures. Profile, confirmed understanding detail and correction form; no correction is submitted.",
       "poster": "personal-context-zh-dark.jpg",
       "frames": [
         {
           "sourceFile": "personal-context-zh-dark.jpg",
-          "sourceSha256": "740b69874a4a6d4c05418332ff19d56ff87b61602b0f7cc687c409e958a375a3",
+          "sourceSha256": "6d510af068ff7dd646265c8e14f804b6985be9e845a4f82afbbce98588b06ac7",
           "holdSeconds": 3,
           "state": "Personal profile overview"
         },
         {
           "sourceFile": "personal-zh-dark-02-detail.jpg",
-          "sourceSha256": "f9802f1e8b60338975d43a20cfcc3f1ce12148c2de7af2141e3bc00e99638893",
+          "sourceSha256": "24df36a848fe13eeef7eb30bdae9cb1f0be3a7b1e0755eb2cde004c9cb43145d",
           "holdSeconds": 3,
           "state": "Confirmed preference detail with source and revision"
         },
         {
           "sourceFile": "personal-zh-dark-03-edit.jpg",
-          "sourceSha256": "c68e2e49cb4b59a571fc1a195c30b9c4b0c84f4ccc817694bd749817d6da1f48",
+          "sourceSha256": "eae9357572a6d0c6e53cee38a1f98e8f51d0890da7cdbab9827123a8548f32fa",
           "holdSeconds": 3,
           "state": "Correction form opened; no correction saved in this sequence"
         }
@@ -222,8 +231,8 @@
       "outputs": [
         {
           "file": "personal-context-zh-dark.mp4",
-          "bytes": 162027,
-          "sha256": "cfa42172f311985a6eabe1e6cdf7cfa7c2f5b44aba894672455b213288329565",
+          "bytes": 149772,
+          "sha256": "2f0f2509df976f46e11fc91e2029cf48f27dbf4546af13f09f58a9d454f7fd9d",
           "durationSeconds": 9.0,
           "codec_name": "h264",
           "width": 1280,
@@ -232,63 +241,64 @@
         },
         {
           "file": "personal-context-zh-dark.gif",
-          "bytes": 508184,
-          "sha256": "92bf7c107879cee52ed4caecfe038ec6c0d1faa99fefff27e1e54bb4761ec8fd",
+          "bytes": 388670,
+          "sha256": "07fb2f84b4c75f329ec68d615b1b23c6c9002310b672b759e2930e68076fc0d5",
           "durationSeconds": 9.0,
           "codec_name": "gif",
           "width": 1280,
           "height": 900,
           "avg_frame_rate": "10/1"
         }
-      ]
+      ],
+      "visualReview": "Every source state individually viewed in the matching language and theme. Native navigation, readable content, and actual controls retained. No cropping within the product viewport, scaling or image retouching."
     },
     {
       "id": "task-workspace-en",
       "locale": "en-US",
       "theme": "light",
       "fictional": true,
-      "capture": "Actual SecondU canonical fictional example, original 1280x900 full window. Captured and reviewed on 2026-10-01.",
-      "description": "Actual product interaction state sequence assembled from reviewed captures. Preview, editor, saved-version picker and preserved history; no new save is demonstrated.",
+      "capture": "Actual SecondU v0.2.1 canonical fictional example, original 1280x900 product viewport. Captured and individually reviewed on 2026-10-25.",
+      "description": "Actual product interaction state sequence assembled from reviewed captures: saved v2 preview, editor, saved-version view, picker, and preserved v1. No new save or model run is demonstrated.",
       "poster": "task-workspace-en.jpg",
       "frames": [
         {
           "sourceFile": "task-workspace-en.jpg",
-          "sourceSha256": "7de0a2ee17bb1297199bb6ab79f8f8aac6751cb1eedd62bdfd1996356cd32c12",
+          "sourceSha256": "1e5de7dc3b1d27c25ae6a825779f3f75fde9b7ec2eb7d4cd8d2ee1f756380b34",
           "holdSeconds": 3,
           "state": "Preview of saved v2"
         },
         {
-          "sourceFile": "en-02-edit.jpg",
-          "sourceSha256": "f9d7aaee8995af529c0abd8a7d3fe125891a4b4f3e725291016975799f276cab",
+          "sourceFile": "task-workspace-en-02-edit.jpg",
+          "sourceSha256": "96f59a2b4270f6040c19516f5e502684c1927ef42c7081e6b37315f67a68587f",
           "holdSeconds": 2,
           "state": "Editor showing already-saved v2; no new save in this sequence"
         },
         {
-          "sourceFile": "en-03-versions.jpg",
-          "sourceSha256": "2da8a20787e64e796d683c3564b487a6c36667345fc2604df94834c4cbea4a14",
+          "sourceFile": "task-workspace-en-03-versions.jpg",
+          "sourceSha256": "9cb0316ef8242b68334a1f4928ec674a7833bf93a49e368cbfb3376f5a134dc3",
           "holdSeconds": 2,
           "state": "Versions tab showing v2"
         },
         {
-          "sourceFile": "en-04-select.jpg",
-          "sourceSha256": "951fdc9eb47a429fa4d9974feb930965fc3b65b10ea894b80b7538f45501e1af",
+          "sourceFile": "task-workspace-en-04-select.jpg",
+          "sourceSha256": "62b215f62ced8e18ccc464fab6d5efb231459b998476b746204c2919d63b6034",
           "holdSeconds": 2,
           "state": "Version picker with v2 selected"
         },
         {
-          "sourceFile": "en-05-history.jpg",
-          "sourceSha256": "7d3a08b81ae8e2262e63ea57b1c1fd4af8cdae00832688f023554581d4ab0345",
+          "sourceFile": "task-workspace-en-05-history.jpg",
+          "sourceSha256": "e7daa2e5a6e1d3b33df5a1535e3fb725f1914b1d06ace45b36e027910afe7f30",
           "holdSeconds": 3,
           "state": "Open preserved v1"
         }
       ],
       "firstFrame": "task-workspace-en.jpg",
-      "lastFrame": "en-05-history.jpg",
+      "lastFrame": "task-workspace-en-05-history.jpg",
       "outputs": [
         {
           "file": "task-workspace-en.mp4",
-          "bytes": 319466,
-          "sha256": "392dc0dd27361312255eecf039d62ea509614aec9a6af5404f95030be6196621",
+          "bytes": 288689,
+          "sha256": "10d360c60fa47533a7c5203bf3ad350274248c7a5e50e06862cc4ca7e9497649",
           "durationSeconds": 12.0,
           "codec_name": "h264",
           "width": 1280,
@@ -297,40 +307,41 @@
         },
         {
           "file": "task-workspace-en.gif",
-          "bytes": 764061,
-          "sha256": "ac568bd6f6b4f00da41b0a541ae1cb249ef75efb59c71f87ff1ef4b85b957eb3",
+          "bytes": 502537,
+          "sha256": "6e7b29411d87b32eb840fcd3a54863674b39a57f3c28500b5f8d8b21e8f0d7d8",
           "durationSeconds": 12.0,
           "codec_name": "gif",
           "width": 1280,
           "height": 900,
           "avg_frame_rate": "10/1"
         }
-      ]
+      ],
+      "visualReview": "Every source state individually viewed in the matching language and theme. Native navigation, readable content, and actual controls retained. No cropping within the product viewport, scaling or image retouching."
     },
     {
       "id": "personal-context-en",
       "locale": "en-US",
       "theme": "light",
       "fictional": true,
-      "capture": "Actual SecondU canonical fictional example, original 1280x900 full window. Captured and reviewed on 2026-10-01.",
+      "capture": "Actual SecondU v0.2.1 canonical fictional example, original 1280x900 product viewport. Captured and individually reviewed on 2026-10-25.",
       "description": "Actual product interaction state sequence assembled from reviewed captures. Profile, confirmed understanding detail and correction form; no correction is submitted.",
       "poster": "personal-context-en.jpg",
       "frames": [
         {
           "sourceFile": "personal-context-en.jpg",
-          "sourceSha256": "d35107f41c01a11c74f1627a5174fc8e9f0503b54a5c33056d9808134e4f5a2a",
+          "sourceSha256": "6b78ed4ee207a511cf322bae2512b66642842e38e2afec358b1ce07cab2cd77d",
           "holdSeconds": 3,
           "state": "Personal profile overview"
         },
         {
           "sourceFile": "personal-en-02-detail.jpg",
-          "sourceSha256": "e5313e34ed7ff6495d792b26fcea5df843a483b7901912d5e38b1fd056d4db5b",
+          "sourceSha256": "bc740dc75633992d68942755808149915deb86acf251198f7aef5fc1c4419f59",
           "holdSeconds": 3,
           "state": "Confirmed preference detail with source and revision"
         },
         {
           "sourceFile": "personal-en-03-edit.jpg",
-          "sourceSha256": "5f8a87f85290e861cff8eba1fe22424bf9d9c9115c757808f1bc9a3ee7798c0f",
+          "sourceSha256": "cbe7fd3aa15bef31c6208d6afcdb63b3cce366a7bea112e7a0b01547cb4caaa6",
           "holdSeconds": 3,
           "state": "Correction form opened; no correction saved in this sequence"
         }
@@ -340,8 +351,8 @@
       "outputs": [
         {
           "file": "personal-context-en.mp4",
-          "bytes": 248287,
-          "sha256": "9280a58030adb802654c52b2d3edfb20c192e3f55d5f7707deb904a55c3e74c1",
+          "bytes": 201312,
+          "sha256": "e5e5f7cc27c0c0441a5ed7e7bb6bbf75dd67194621bf81e4b26f26ddfa279374",
           "durationSeconds": 9.0,
           "codec_name": "h264",
           "width": 1280,
@@ -350,63 +361,64 @@
         },
         {
           "file": "personal-context-en.gif",
-          "bytes": 669244,
-          "sha256": "9322c51a62b15d53ff78c308621462bc4ce7497342177f2ed6c0226a2ab8f61a",
+          "bytes": 456470,
+          "sha256": "3dea904d6cdee952be1be3e7eab092eeadaddeff461f6c66b6ff3be30659bb9c",
           "durationSeconds": 9.0,
           "codec_name": "gif",
           "width": 1280,
           "height": 900,
           "avg_frame_rate": "10/1"
         }
-      ]
+      ],
+      "visualReview": "Every source state individually viewed in the matching language and theme. Native navigation, readable content, and actual controls retained. No cropping within the product viewport, scaling or image retouching."
     },
     {
       "id": "task-workspace-en-dark",
       "locale": "en-US",
       "theme": "dark",
       "fictional": true,
-      "capture": "Actual SecondU canonical fictional example, original 1280x900 full window. Captured and reviewed on 2026-10-01.",
-      "description": "Actual product interaction state sequence assembled from reviewed captures. Preview, editor, saved-version picker and preserved history; no new save is demonstrated.",
+      "capture": "Actual SecondU v0.2.1 canonical fictional example, original 1280x900 product viewport. Captured and individually reviewed on 2026-10-25.",
+      "description": "Actual product interaction state sequence assembled from reviewed captures: saved v2 preview, editor, saved-version view, picker, and preserved v1. No new save or model run is demonstrated.",
       "poster": "task-workspace-en-dark.jpg",
       "frames": [
         {
           "sourceFile": "task-workspace-en-dark.jpg",
-          "sourceSha256": "cdfc488baeea695628d427b93038ed4aa81189c7a6c8e0b6ab3abe345ffdb8fc",
+          "sourceSha256": "6b675f65aa33833761c064a9ca9e8b7d99be48d113bd2c1e420471869761367c",
           "holdSeconds": 3,
           "state": "Preview of saved v2"
         },
         {
-          "sourceFile": "en-dark-02-edit.jpg",
-          "sourceSha256": "a4ace69454bc08f7bbd180f0954a765a8066f9aa5ba8105ab58136d97367ab92",
+          "sourceFile": "task-workspace-en-dark-02-edit.jpg",
+          "sourceSha256": "5fd08156f685ed35bc4dc91a2a211c3e85387a99ee16193fa05b20c28bdd351c",
           "holdSeconds": 2,
           "state": "Editor showing already-saved v2; no new save in this sequence"
         },
         {
-          "sourceFile": "en-dark-03-versions.jpg",
-          "sourceSha256": "386bef693b7f30f098a11b49c241eecd0be21f5b94a5a5a629d338971869aec1",
+          "sourceFile": "task-workspace-en-dark-03-versions.jpg",
+          "sourceSha256": "5615368d46b8f169198a1ce0ba857c20d1130f7489f3ba4a742d25932bbe6062",
           "holdSeconds": 2,
           "state": "Versions tab showing v2"
         },
         {
-          "sourceFile": "en-dark-04-select.jpg",
-          "sourceSha256": "c482830e0145545b1a24b6b04ae7ba3901fbfbea59470117aec015e96a22d5d8",
+          "sourceFile": "task-workspace-en-dark-04-select.jpg",
+          "sourceSha256": "9edc24a705d4d96115d9d31a59f95338784d454c0c845949eed0be70b441992d",
           "holdSeconds": 2,
           "state": "Version picker with v2 selected"
         },
         {
-          "sourceFile": "en-dark-05-history.jpg",
-          "sourceSha256": "a83c86df149345cdcacc053b68d95a222f23c7122f4d67673c32ba92db9a4f63",
+          "sourceFile": "task-workspace-en-dark-05-history.jpg",
+          "sourceSha256": "d16efe903c53cf0600338f2d1dcfa6d45f4bb83a91b2da1e3c984cf1a418dc3a",
           "holdSeconds": 3,
           "state": "Open preserved v1"
         }
       ],
       "firstFrame": "task-workspace-en-dark.jpg",
-      "lastFrame": "en-dark-05-history.jpg",
+      "lastFrame": "task-workspace-en-dark-05-history.jpg",
       "outputs": [
         {
           "file": "task-workspace-en-dark.mp4",
-          "bytes": 326388,
-          "sha256": "3d7422c1c7262adc212c26463fef661697676780dfc002f294440bf469b2f906",
+          "bytes": 297617,
+          "sha256": "01e1658c9c10d6217796bcf996c4f5dd94b1ff94a7155900341e391a198ddde2",
           "durationSeconds": 12.0,
           "codec_name": "h264",
           "width": 1280,
@@ -415,40 +427,41 @@
         },
         {
           "file": "task-workspace-en-dark.gif",
-          "bytes": 657391,
-          "sha256": "3bfd60d65b6a3597907eb6830e939a8e0f22c02077e2a5b40e8a4ce58b7d8794",
+          "bytes": 579737,
+          "sha256": "2191109f30b06bcbda2f4a0a649ceb11f7b5777bbebcb769682638d50098232f",
           "durationSeconds": 12.0,
           "codec_name": "gif",
           "width": 1280,
           "height": 900,
           "avg_frame_rate": "10/1"
         }
-      ]
+      ],
+      "visualReview": "Every source state individually viewed in the matching language and theme. Native navigation, readable content, and actual controls retained. No cropping within the product viewport, scaling or image retouching."
     },
     {
       "id": "personal-context-en-dark",
       "locale": "en-US",
       "theme": "dark",
       "fictional": true,
-      "capture": "Actual SecondU canonical fictional example, original 1280x900 full window. Captured and reviewed on 2026-10-01.",
+      "capture": "Actual SecondU v0.2.1 canonical fictional example, original 1280x900 product viewport. Captured and individually reviewed on 2026-10-25.",
       "description": "Actual product interaction state sequence assembled from reviewed captures. Profile, confirmed understanding detail and correction form; no correction is submitted.",
       "poster": "personal-context-en-dark.jpg",
       "frames": [
         {
           "sourceFile": "personal-context-en-dark.jpg",
-          "sourceSha256": "6fafbf0a4c2cd9f7faca51ded3daa4776f6b91ea3245943b460365c2479ec02b",
+          "sourceSha256": "3f07956e3047e8df25daf033faed81049170f7fda9a3bf8d633435b405ea61a8",
           "holdSeconds": 3,
           "state": "Personal profile overview"
         },
         {
           "sourceFile": "personal-en-dark-02-detail.jpg",
-          "sourceSha256": "6096f78c77c6320ab6d9f8b9e3a296a510c7b54901208ccec864681349319b83",
+          "sourceSha256": "95440e757986d50f899895fe0854160359e7d030928e7d6772e673686291d839",
           "holdSeconds": 3,
           "state": "Confirmed preference detail with source and revision"
         },
         {
           "sourceFile": "personal-en-dark-03-edit.jpg",
-          "sourceSha256": "93e6173b92febbc761c14d339cbf4fc61397f06ae5263b8be64f04ce92380e5b",
+          "sourceSha256": "956916fbdac3673af1ba05eeb5cd181fa1ecfed805015364586d3ab25e6a37cc",
           "holdSeconds": 3,
           "state": "Correction form opened; no correction saved in this sequence"
         }
@@ -458,8 +471,8 @@
       "outputs": [
         {
           "file": "personal-context-en-dark.mp4",
-          "bytes": 252536,
-          "sha256": "ff94c2a823f5046ab52c80b020ac0ba39f3e6d01f024b549f13e2f9d7a45fc74",
+          "bytes": 204834,
+          "sha256": "58231e7556d89a1f1b913ae8a344fc72a91cd2dbda3d1e378a217cb1c03cb738",
           "durationSeconds": 9.0,
           "codec_name": "h264",
           "width": 1280,
@@ -468,27 +481,34 @@
         },
         {
           "file": "personal-context-en-dark.gif",
-          "bytes": 750650,
-          "sha256": "2a0ca7398397d2cb11a9f84779c932607eda824353c8497dffee6fc6236c1289",
+          "bytes": 497181,
+          "sha256": "c17bbd0527f0a0929aee5ded752579f7e3de566c6d8bb6d111559ff597102047",
           "durationSeconds": 9.0,
           "codec_name": "gif",
           "width": 1280,
           "height": 900,
           "avg_frame_rate": "10/1"
         }
-      ]
+      ],
+      "visualReview": "Every source state individually viewed in the matching language and theme. Native navigation, readable content, and actual controls retained. No cropping within the product viewport, scaling or image retouching."
     }
   ],
   "verification": {
-    "posters": 16,
+    "posters": 24,
     "motionOutputs": 16,
     "decodedStatesCompared": 64,
-    "minimumSsim": 0.973613,
-    "originalSize": {
+    "minimumSsim": 0.998937,
+    "originalMotionSize": {
       "width": 1280,
       "height": 900
     },
+    "financePosterSize": {
+      "width": 1160,
+      "height": 850
+    },
     "hashesVerified": true,
-    "darkTaskHistory": "The last held frame reuses the reviewed preserved v2 capture, matching the version selected in the picker. No source pixels were edited."
-  }
+    "sourceReview": "Every source state was individually reviewed. All eight current clips were compared against every held source frame in both MP4 and GIF; unchanged Chinese task source hashes were rechecked.",
+    "taskHistory": "Each task clip previews saved v2 and opens preserved v1. No source pixels were edited, and no new save or model execution is demonstrated."
+  },
+  "updatedAt": "2026-10-25"
 }

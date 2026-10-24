@@ -8,6 +8,7 @@ import {t} from '../i18n';
 import { useUnsavedChanges } from '../useUnsavedChanges';
 import {createAttachmentDrafts,previewableImage,previewableVideo,type AttachmentRef,type AttachmentUploader,type DraftAttachment} from './attachmentState';
 import './attachments.css';
+import {FinanceContextCard,isFinanceContextAttachment} from '../finance/FinanceContextCard';
 export type {AttachmentRef,DraftAttachment,AttachmentUploader} from './attachmentState';
 
 function base64File(file:File,signal:AbortSignal):Promise<string>{
@@ -41,7 +42,14 @@ export function useAttachments({onUpload=uploadAttachment,maxFiles,maxBytes,cont
     return { unsaved: items.length > 0, busy: items.some(item => item.status === 'uploading') };
   });
   const inputRef=useRef<HTMLInputElement>(null);
-  useEffect(()=>()=>{for(const draft of stores.values())draft.clear();},[stores]);
+  const cleanupVersion=useRef(0);
+  useEffect(()=>{
+    const version=++cleanupVersion.current;
+    // StrictMode rehearses cleanup and setup before the next microtask. Keep
+    // imported composition files during that rehearsal; a real unmount still
+    // cancels pending uploads and releases every draft's object URLs.
+    return()=>{queueMicrotask(()=>{if(cleanupVersion.current===version)for(const draft of stores.values())draft.clear();});};
+  },[stores]);
   const readyAttachments=snapshot.items.flatMap(item=>item.status==='ready'&&item.attachment?[item.attachment]:[]);
   const onPaste=(event:ClipboardEvent<HTMLElement>)=>{
     const files=Array.from(event.clipboardData.files);
@@ -66,12 +74,13 @@ function draftError(item:DraftAttachment,maxBytes:number){
 export function AttachmentDrafts({controller,disabled=false,accept,media=false}:{controller:AttachmentsController;disabled?:boolean;accept?:string;media?:boolean}){
   return <><input type="file" multiple hidden accept={accept} ref={controller.inputRef} onChange={controller.onFiles} disabled={disabled} aria-label={t('选择附件','Choose attachments')}/>
     {!!controller.items.length&&<div className={`attachment-drafts${media?' is-media':''}`} aria-label={t('待保存附件','Attachments to save')}>
-      {controller.items.map(item=><div key={item.id} className={`attachment-draft ${item.previewUrl?'has-image':''} is-${item.status}`}>
+      {controller.items.map(item=><div key={item.id} className={`attachment-draft ${item.previewUrl?'has-image':''} ${isFinanceContextAttachment({name:item.file.name,mime:item.file.type,size:item.file.size})?'has-finance-context':''} is-${item.status}`}>
         {item.previewUrl?previewableVideo(item.file.type)?<video src={item.previewUrl} aria-label={item.file.name} controls={media} muted={!media} playsInline preload="metadata"/>:<img src={item.previewUrl} alt={item.file.name}/>:<span className="attachment-file-icon"><Paperclip/></span>}
         <div className="attachment-draft-description"><strong title={item.file.name}>{item.file.name}</strong><span className="attachment-draft-meta"><span>{fileSize(item.file.size)}</span>{item.status==='uploading'&&<span>{t('正在保存','Saving')}</span>}</span>{item.error&&<p role="alert">{draftError(item,controller.maxBytes)}</p>}</div>
         {item.status==='uploading'&&<LoadingIndicator/>}
         {item.error?.code==='upload_failed'&&<Button type="button" color="secondary" variant="ghost" size="sm" uniform disabled={disabled} aria-label={t(`重试 ${item.file.name}`,`Retry ${item.file.name}`)} onClick={()=>void controller.retry(item.id)}><Reload/></Button>}
         <Button type="button" color="secondary" variant="ghost" size="sm" uniform disabled={disabled} aria-label={t(`移除 ${item.file.name}`,`Remove ${item.file.name}`)} onClick={()=>controller.remove(item.id)}><CloseBold/></Button>
+        {isFinanceContextAttachment({name:item.file.name,mime:item.file.type,size:item.file.size})&&<details className="attachment-finance-preview"><summary>预览发送内容</summary><div className="attachment-finance-preview-scroll"><FinanceContextCard file={item.file}/></div></details>}
       </div>)}
     </div>}
     {controller.limitReached&&<p className="attachment-limit" role="alert">{t(`每条消息最多添加 ${controller.maxFiles} 个附件，超出的文件未添加。`,`Each message accepts up to ${controller.maxFiles} attachments. Extra files were not added.`)}</p>}
@@ -90,6 +99,7 @@ export function MessageAttachments({attachments}:{attachments:AttachmentRef[]}){
   return <><div className="message-attachments" aria-label={t('消息附件','Message attachments')}>
     {attachments.map(attachment=>{
       const url=attachmentUrl(attachment);if(!url)return <span className="message-file" key={attachment.id}><Paperclip/>{attachment.name}</span>;
+      if(isFinanceContextAttachment(attachment))return <div className="finance-context-attachment" key={attachment.id}><FinanceContextCard url={url}/><a className="message-file" href={url} download={attachment.name}><Paperclip/><span>{attachment.name}<small>{fileSize(attachment.size)}</small></span><Download/></a></div>;
       return attachment.kind==='image'&&previewableImage(attachment.mime)?<button type="button" className="message-image" key={attachment.id} aria-label={t(`预览 ${attachment.name}`,`Preview ${attachment.name}`)} title={attachment.name} onClick={()=>setPreview(attachment)}><img src={url} alt={attachment.name} loading="lazy"/></button>:previewableVideo(attachment.mime)?<figure className="message-video" key={attachment.id}><video src={url} aria-label={attachment.name} controls playsInline preload="metadata"/><figcaption><span>{attachment.name}</span><a href={url} download={attachment.name}>{t('下载原件','Download original')}</a></figcaption></figure>:<a className="message-file" key={attachment.id} href={url} download={attachment.name}><Paperclip/><span>{attachment.name}<small>{fileSize(attachment.size)}</small></span><Download/></a>;
     })}
   </div>{preview&&<Dialog title={preview.name} className="attachment-preview" onClose={()=>setPreview(undefined)}><img src={attachmentUrl(preview)} alt={preview.name}/><a href={attachmentUrl(preview)} download={preview.name}>{t('下载原图','Download original')}</a></Dialog>}</>;

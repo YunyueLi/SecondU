@@ -1,0 +1,42 @@
+.home-suggestions{--home-suggestion-font-size:14px;width:100%;max-width:768px;margin:24px auto 0;padding:0 2px;text-align:left;min-width:0}
+.home-suggestions-list{display:flex;flex-direction:column;gap:0;list-style:none;margin:0;padding:0}
+.home-suggestion-row{position:relative;display:grid;grid-template-columns:18px minmax(0,1fr) 24px;align-items:center;column-gap:12px;min-width:0;min-height:44px;padding:9px 12px;border-radius:16px;color:var(--color-text-secondary);font-size:var(--home-suggestion-font-size);font-weight:400;line-height:1.65;transition:background-color var(--hither-motion-fast),color var(--hither-motion-fast)}
+.home-suggestion-row:is(:hover,:focus-within,[data-preview]){background:var(--color-surface-secondary);color:var(--color-text);font-weight:500}
+.home-suggestions .home-suggestion-action{position:absolute;inset:0;z-index:0;width:100%;max-width:none;height:100%;min-height:0;margin:0;padding:0;border:0;border-radius:inherit;background:transparent;color:inherit;line-height:inherit;font:inherit}
+/* The row owns the single hover surface; SDK button shapes must not add pills. */
+.home-suggestions :is(.home-suggestion-action,.home-suggestion-context-trigger,.home-suggestion-dismiss)::before{display:none!important}
+.home-suggestions :is(.home-suggestion-action,.home-suggestion-context-trigger,.home-suggestion-dismiss):is(:hover,:active,[data-state=open]){background:transparent;box-shadow:none;color:inherit}
+.home-suggestion-copy{position:relative;z-index:1;min-width:0;pointer-events:none;overflow-wrap:anywhere}
+.home-suggestion-reference{display:inline;white-space:nowrap;pointer-events:auto}
+.home-suggestions .home-suggestion-context-trigger{display:inline;vertical-align:baseline;height:auto;min-height:0;max-width:100%;margin:0;padding:0;border:0;border-radius:2px;background:transparent;color:inherit;font:inherit;line-height:inherit;white-space:normal}
+.home-suggestion-context-trigger>span:last-child{display:inline;line-height:inherit}
+.home-suggestion-source-name{display:inline-block;vertical-align:bottom;max-width:20ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-decoration-line:underline;text-decoration-style:dotted;text-decoration-thickness:1px;text-underline-offset:5px}
+.home-suggestion-source-destination{display:inline-flex;align-items:center;justify-content:center;vertical-align:baseline;width:14px;height:20px;margin-inline:3px 0;color:inherit;pointer-events:auto;border-radius:2px}
+.home-suggestion-source-destination svg{width:11px;height:11px}
+.home-suggestion-icon{display:grid;place-items:center;width:18px;height:24px;color:inherit;pointer-events:none}
+.home-suggestion-icon-link{position:relative;z-index:1;pointer-events:auto;border-radius:3px}
+.home-suggestion-icon :is(.recommendation-icon,.connector-service-icon),.home-suggestion-icon svg,.home-suggestion-icon img{width:18px;height:18px;object-fit:contain}
+.home-suggestion-icon .is-monochrome img{filter:var(--platform-monochrome-filter,none);opacity:.55;transition:opacity var(--hither-motion-fast)}
+.home-suggestion-row:is(:hover,:focus-within,[data-preview]) .is-monochrome img{opacity:1}
+.home-suggestion-body{color:inherit;pointer-events:none}
+.home-suggestions .home-suggestion-dismiss{position:relative;z-index:1;width:24px;height:28px;min-height:28px;margin:0;padding:0;background:transparent;color:inherit;opacity:0;transition:opacity var(--hither-motion-fast)}
+.home-suggestion-dismiss svg{width:14px;height:14px}
+.home-suggestion-row:is(:hover,:focus-within,[data-preview]) .home-suggestion-dismiss{opacity:1}
+.home-suggestions-restore-row{display:flex;justify-content:flex-end;min-height:26px;margin-top:7px;padding-inline:7px}
+.home-suggestions .home-suggestions-restore{height:26px;min-height:26px;padding-inline:7px;color:var(--color-text-secondary);font-size:var(--hither-font-caption);font-weight:400}
+.home-suggestion-popover{position:relative;display:flex;flex-direction:column;max-width:min(500px,calc(100vw - 40px));padding:0;border-radius:20px;color:var(--color-text);overflow:hidden}
+.home-suggestion-preview{position:relative;display:flex;min-height:0;min-width:0}
+.home-suggestion-preview[data-overflow]::after{content:"";position:absolute;pointer-events:none;inset:auto 0 0;height:34px;background:linear-gradient(to bottom,transparent,var(--color-surface-elevated) 90%)}
+.home-suggestion-popover-scroll{box-sizing:border-box;flex:1 1 auto;min-height:0;max-height:min(220px,calc(100dvh - 40px),var(--radix-popover-content-available-height,220px));overflow:auto;overscroll-behavior:contain;padding:22px 24px;min-width:0;font-size:14px;font-weight:400;line-height:1.65;scrollbar-width:thin;scrollbar-color:var(--color-border) transparent}
+.home-suggestion-popover-scroll:focus-visible{outline:2px solid var(--color-ring);outline-offset:-4px;border-radius:18px}
+.home-suggestion-preview-text{margin:0;white-space:pre-wrap;overflow-wrap:anywhere;font:inherit;line-height:inherit}
+.home-suggestions-empty,.home-suggestions-storage-note{margin:12px;font-size:var(--hither-font-caption);line-height:1.75;color:var(--color-text-secondary)}
+.home-suggestion-sr-only,.home-suggestions-announcement{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.catalogue-home-suggestions .home-suggestions{margin-top:0}
+.catalogue-home-suggestion-draft{display:flex;flex-direction:column;gap:8px;margin-top:20px}
+.catalogue-home-suggestion-draft>label{font-size:var(--hither-font-caption);color:var(--color-text-secondary)}
+@media(hover:none){.home-suggestions .home-suggestion-dismiss{opacity:1}}
+@media(max-width:600px){.home-suggestions{margin-top:22px;padding-inline:0}.home-suggestion-row{padding:9px 8px;column-gap:11px;grid-template-columns:18px minmax(0,1fr) 24px}.home-suggestions .home-suggestion-dismiss{min-height:32px;height:32px}.home-suggestion-source-name{max-width:14ch}.home-suggestion-popover-scroll{padding:20px}}
+@media(prefers-reduced-motion:reduce){.home-suggestion-row,.home-suggestions .home-suggestion-dismiss,.home-suggestion-icon img{transition:none}}
+[data-motion=reduced] .home-suggestion-row,[data-motion=reduced] .home-suggestions .home-suggestion-dismiss,[data-motion=reduced] .home-suggestion-icon img{transition:none}
+@media(forced-colors:active){.home-suggestion-row:is(:hover,:focus-within,[data-preview]){outline:1px solid Highlight}.home-suggestion-source-destination{color:LinkText}.home-suggestions .home-suggestion-dismiss{opacity:1}.home-suggestion-preview::after{display:none}.home-suggestion-popover-scroll:focus-visible{outline-color:Highlight}}

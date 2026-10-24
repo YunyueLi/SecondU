@@ -1,0 +1,43 @@
+:where(.finance-workspace,.finance-settings) .brand-icon {
+  --brand-size:var(--brand-default-size,32px);
+  display:inline-grid;
+  place-items:center;
+  flex:0 0 auto;
+  inline-size:var(--brand-size,32px);
+  block-size:var(--brand-size,32px);
+  border:0;
+  border-radius:var(--hither-radius-control);
+  background:transparent;
+  overflow:hidden;
+  vertical-align:middle;
+}
+:where(.finance-workspace,.finance-settings) .brand-icon>img {
+  display:block;
+  inline-size:calc(var(--brand-size,32px) * .75 - 1px);
+  block-size:calc(var(--brand-size,32px) * .75 - 1px);
+  object-fit:contain;
+  max-inline-size:none;
+}
+/* These source images have an opaque white canvas; blend that canvas into
+   the row while leaving transparent assets and their white logo details alone. */
+:where(.finance-workspace,.finance-settings) .brand-icon>img:is([src$="/bank-bochk.png"],[src$="/bank-hsbc.png"],[src$="/bank-chase.jpg"],[src$="/stock-invesco.png"],[src$="/stock-mrna.png"]) {
+  mix-blend-mode:multiply;
+}
+/* Preserve the source canvas on dark surfaces, where multiplying would hide it. */
+[data-theme="dark"] :where(.finance-workspace,.finance-settings) .brand-icon>img:is([src$="/bank-bochk.png"],[src$="/bank-hsbc.png"],[src$="/bank-chase.jpg"],[src$="/stock-invesco.png"],[src$="/stock-mrna.png"]) {
+  mix-blend-mode:normal;
+  border-radius:3px;
+}
+[data-theme="dark"] :where(.finance-workspace,.finance-settings) .brand-icon>img[src$="/stock-aapl.svg"] { filter:invert(1); }
+/* The transparent black iShares mark needs its own light plate on dark surfaces. */
+[data-theme="dark"] :where(.finance-workspace,.finance-settings) .brand-icon>img[src$="/stock-ishares.ico"] {
+  box-sizing:content-box;
+  padding:2px;
+  border-radius:3px;
+  background:#fff;
+}
+:where(.finance-workspace,.finance-settings) .brand-icon>svg {
+  inline-size:56%;
+  block-size:56%;
+  color:var(--color-text-secondary,#414141);
+}

@@ -10,7 +10,7 @@ function previewFrame(duration:number){
 }
 function frameTime(clock:FilmClock){return filmFrameAt(clock.timing,clock.elapsed,clock.reduced,clock.stillAt);}
 // Only changes that replace content enter React. Motion and typing never repaint the scene tree.
-const edits=[0,2800,3300,3500,3800,4800,5000,6500,8300,9400,9600,11400,12300,12900,13000,13300,13900,14400,14600,15900,18000,19700,20100,21400,22400,24000];
+const edits=[0,2800,3300,3500,3800,4800,5000,5500,6500,8300,9400,9600,11000,11400,12000,12300,12900,13000,13300,13900,14400,14600,15900,18000,19700,20100,21400,22400,24000];
 export function useFilmDriver(duration:number,onComplete:()=>void,introUntil=0){
  const stillAt=previewFrame(duration);
  const clock=useMemo<FilmClock>(()=>({duration,timing:createFilmTiming(duration,introUntil),elapsed:0,reduced:matchMedia('(prefers-reduced-motion: reduce)').matches||document.documentElement.dataset.motion==='reduced',completed:false,animations:new Set(),writers:new Set(),stillAt}),[duration,introUntil,stillAt]);

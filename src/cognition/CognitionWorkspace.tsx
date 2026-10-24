@@ -44,7 +44,7 @@ export function CognitionWorkspace({ view, data, onRefresh, onCreateTask, presen
     return <SourcePill key={id} title={title} compact={compact} onOpen={() => setSourceId(id)} />;
   })}</div> : null;
   return <div className={`cognition-workspace${presentation==='mobile'?' is-mobile':''} ${view === 'conversations' || view === 'relationships' ? 'is-immersive' : ''}`}><ErrorNotice error={taskError} />
-    {view === 'building' ? <TwinBuilding data={data} onRefresh={onRefresh} onCreateTask={createTask} /> :
+    {view === 'building' ? <TwinBuilding data={data} showProfileLink={presentation!=='mobile'} onRefresh={onRefresh} onCreateTask={createTask} /> :
       view === 'conversations' ? <ConversationInbox data={data} refs={refs} onRefresh={onRefresh} /> :
       view === 'timeline' ? <LifeTimeline data={data} refs={refs} onRefresh={onRefresh} onAsk={prompt=>createTask(prompt,[])} /> :
       view === 'relationships' ? <RelationshipGraph data={data} refs={refs} onRefresh={onRefresh} /> :

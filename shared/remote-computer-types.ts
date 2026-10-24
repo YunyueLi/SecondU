@@ -26,6 +26,7 @@ export interface RemoteComputer {
   lastError?: RemoteError;
   createdAt: string;
   updatedAt: string;
+  archivedAt?: string;
 }
 export interface RemoteInputFile { attachmentId: string; path: string; size: number; sha256: string }
 export interface RemoteArtifactFile { path: string; size: number; sha256: string; modifiedAt: string }
@@ -76,6 +77,7 @@ export interface RemoteRunStart {
 }
 export interface RemoteComputersResponse {
   computers: RemoteComputer[];
+  archivedComputers: RemoteComputer[];
   connections: Array<ModelConnection & { revision: number }>;
   readOnly: boolean;
   protocol: number;

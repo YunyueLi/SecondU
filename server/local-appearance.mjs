@@ -1,26 +1,26 @@
 import { createHash } from 'node:crypto';
 import { HttpError } from './store.mjs';
+import { isAppearanceAccent, appearanceChoices as options, appearanceRanges as ranges, defaultAppearance } from '../shared/appearance-options.mjs';
+
+export { defaultAppearance } from '../shared/appearance-options.mjs';
 
 export const ARTWORK_LIMIT = 8 * 1024 * 1024;
-export const defaultAppearance = Object.freeze({ theme:'system', atmosphere:'pencil', decorativeArtwork:false, accent:'blue', opacity:96, fontSize:14, motion:'system', sendKey:'enter', language:'zh-CN' });
-const options = {
-  theme:['light','dark','system'], atmosphere:['plain','pencil','tidal','night','custom'],
-  decorativeArtwork:[true,false],
-  accent:['graphite','blue','violet','green'], motion:['system','reduced'], sendKey:['enter','modifier'], language:['zh-CN','en'],
-};
-const ranges = { opacity:[70,100], fontSize:[12,18] };
 
-export function getAppearance(store) { return store.get('meta','appearance')?.value ?? null; }
+export function getAppearance(store) { const value=store.get('meta','appearance')?.value; if(!value)return null; const {activityPalette,...appearance}=value; return appearance; }
 export function saveAppearance(store, body) {
   for (const [key,value] of Object.entries(body)) {
-    if (Object.hasOwn(options,key)) {
+    if (key==='accent') {
+      if (!isAppearanceAccent(value)) throw new HttpError(400,'请选择预设色或输入六位十六进制颜色','invalid_appearance');
+    } else if (Object.hasOwn(options,key)) {
       if (!options[key].includes(value)) throw new HttpError(400,`外观选项 ${key} 无效`,'invalid_appearance');
     } else if (Object.hasOwn(ranges,key)) {
       const [min,max]=ranges[key];
       if (typeof value!=='number' || !Number.isFinite(value) || value<min || value>max) throw new HttpError(400,`外观选项 ${key} 需要在 ${min} 至 ${max} 之间`,'invalid_appearance');
     } else throw new HttpError(400,`不支持的外观选项：${key}`,'invalid_appearance');
   }
-  return store.setMeta('appearance',{...defaultAppearance,...getAppearance(store),...body});
+  const {activityPalette,...patch}=body; // Accept valid legacy clients without retaining a second palette.
+  if (typeof patch.accent==='string' && patch.accent.startsWith('#')) patch.accent=patch.accent.toLowerCase();
+  return store.setMeta('appearance',{...defaultAppearance,...getAppearance(store),...patch});
 }
 
 // Validate the file signature; browser image decoding remains responsible for full image validity.

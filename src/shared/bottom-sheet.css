@@ -17,3 +17,6 @@
 [data-motion=reduced] .bottom-sheet{animation:none}
 
 .bottom-sheet-overlay[hidden]{display:none}
+.bottom-sheet{min-width:0;max-width:100%}
+.bottom-sheet>header h2{min-width:0;overflow-wrap:anywhere}
+.bottom-sheet-content{min-width:0}

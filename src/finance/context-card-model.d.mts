@@ -1,0 +1,9 @@
+export type ContextSnapshot=Record<string,any>;
+export function contextText(value:unknown):string;
+export function contextRows(value:unknown):ContextSnapshot[];
+export function contextAmount(value:unknown):string|null;
+export function parseFinanceContext(content:string):ContextSnapshot;
+export function contextViews(snapshot:ContextSnapshot):Array<{value:string;label:string}>;
+export function initialContextView(snapshot:ContextSnapshot):string;
+export function contextAccountValues(row:ContextSnapshot):{recorded:{amount:string|null;currency:string;date:string};estimated:{amount:string;currency:string;date:string}|null;stale:boolean;reconciliationRequired:boolean};
+export function contextScope(snapshot:ContextSnapshot):Array<{label:string;count:number}>;

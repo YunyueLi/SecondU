@@ -30,6 +30,10 @@
   --hither-color-hover: var(--color-surface-tertiary);
   --hither-color-line: var(--color-border-subtle);
   --hither-motion-fast: 150ms;
+  --hither-motion-activity-cycle: 3.6s;
+  --hither-motion-edge-width: 1px;
+  --hither-motion-edge-quiet: .58;
+  --hither-motion-edge-expressive: .9;
 }
 :root, [data-theme=light] {
   --color-text-secondary: var(--gray-600);

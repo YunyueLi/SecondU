@@ -108,3 +108,14 @@ Saved connections reuse `/api/im-connections/:id/preview` and `/commit`, preserv
 The response extends `MemoryImportResult` with `facts: Fact[]`. Retries bind the full selected IDs, wording and layers to the preview. The same request returns current fact revisions, preserving later corrections; changed content on the same preview receives `409`. The original `/commit` endpoint retains candidate-only semantics.
 
 The interface prepares a conversation with the confirmed fact IDs and editable task text. Preparation does not call a model or a task-run endpoint. Explicit IDs receive priority in the existing bounded context selector; they are not an exclusive allowlist of all context. See [Memory import](MEMORY-IMPORT.md).
+
+
+## Finance, navigation and appearance — v0.2.1
+
+Finance is scoped to the current space. `GET /api/finance/state` returns accounts, liabilities, positions, market observations, valuation and journal state; `GET /api/finance/connections` returns sanitized provider states without credentials. These reads do not authorize a provider sync. Provider configuration, consent, preview, mapping and explicit synchronization remain separate actions, with provider-specific schemas in [the finance service](../server/finance/service.mjs) and [connection adapter](../server/finance/provider-connections.mjs).
+
+`POST /api/finance/journal/analysis` accepts a month and currency; `POST /api/finance/journal/weekly` accepts a reporting end date and currency. Both calculate from local saved records. Journal record saves, archive/restore, CSV confirmation, net-asset snapshots and dashboard order use the journal endpoints and revision rules in [the journal module](../server/finance/journal.mjs). Account/position mutations preserve their version and idempotency contracts. Unknown values, stale revisions and incomplete provider observations reject instead of silently overwriting data. [The finance guide](FINANCE.md) defines source coverage, currencies, dates and unsupported operations.
+
+Navigation preferences persist per space: optional-module pinning and Finance/Agents expansion are separate values; migration applies only when no server preference already exists. [The navigation contract](../server/navigation-preferences.mjs) rejects unknown or combined mutation fields.
+
+Appearance uses the [shared option definitions](../shared/appearance-options.mjs) for client defaults and server validation. Six solid accents, Spectrum and a six-digit hexadecimal accent share one persisted field. `activityEffect` is `off`, `subtle` or `expressive`; new values default to Spectrum plus Subtle. The old independent palette is accepted only for compatibility validation and is not persisted as a second preference. Invalid patches reject atomically; existing valid settings are preserved. Computer checks and remote archive/restore are documented in [Remote computers](REMOTE-COMPUTERS.md).

@@ -1,14 +1,12 @@
 import { useUnsavedChanges } from '../useUnsavedChanges';
 import {ExampleExecutionNotice} from '../ExampleExecutionNotice';
 import { t } from '../i18n';
-import { lazy, Suspense, useEffect, useState } from 'react';
+import { lazy, Suspense, useContext, useEffect, useState, type ReactNode } from 'react';
 import type { AgentProfile, AgentRoom, AgentRoomTaskResult, Bootstrap } from '../../shared/contracts';
 import { Button } from '@openai/apps-sdk-ui/components/Button';
 import { Textarea } from '@openai/apps-sdk-ui/components/Textarea';
-import { Select } from '@openai/apps-sdk-ui/components/Select';
-import { SegmentedControl } from '@openai/apps-sdk-ui/components/SegmentedControl';
-import { Plus, Group, Document, Heart, Suitcase } from '@openai/apps-sdk-ui/components/Icon';
-import { Dialog, ErrorNotice, Field, PageHeading } from '../components';
+import { Plus, Group, Document } from '@openai/apps-sdk-ui/components/Icon';
+import { Dialog, ErrorNotice, Field, PageHeading, PageNavigationContext } from '../components';
 import { write, messageOf } from '../api';
 import { AgentAvatar } from './AgentIdentity';
 import { selectTaskContext } from '../contextSelection';
@@ -17,20 +15,23 @@ import { ExpertLibrary } from './ExpertLibrary';
 import { BulkAvatarStyle } from './BulkAvatarStyle';
 import { SavedAgentBrowser } from './SavedAgentBrowser';
 import type { OpenAgentDetails } from './AgentQuickActions';
+import { AGENTS_SECTIONS, agentHref } from '../agents-navigation-model.mjs';
+import './directory-layout.css';
 import { Popover } from '@openai/apps-sdk-ui/components/Popover';
 
 const ProfessionalNetwork=lazy(()=>import('../future/ProfessionalNetwork').then(module=>({default:module.ProfessionalNetwork})));
 const DatingNetwork=lazy(()=>import('../future/DatingNetwork').then(module=>({default:module.DatingNetwork})));
 
-export function AgentDirectory({initialTab='mine',data,onOpen,onTrial,onWork,onCreate,onImport,onGroup,onExpertCreated,onRefresh}:{initialTab?:string;data:Bootstrap;onOpen:OpenAgentDetails;onTrial:(agent:AgentProfile)=>void;onWork:(agent:AgentProfile)=>void;onCreate:()=>void;onImport:()=>void;onGroup:()=>void;onExpertCreated:(agent:AgentProfile)=>Promise<void>;onRefresh:()=>Promise<void>}) {
+export function AgentDirectory({navigation,initialTab='mine',data,onOpen,onTrial,onWork,onCreate,onImport,onGroup,onExpertCreated,onRefresh}:{navigation?:ReactNode;initialTab?:string;data:Bootstrap;onOpen:OpenAgentDetails;onTrial:(agent:AgentProfile)=>void;onWork:(agent:AgentProfile)=>void;onCreate:()=>void;onImport:()=>void;onGroup:()=>void;onExpertCreated:(agent:AgentProfile)=>Promise<void>;onRefresh:()=>Promise<void>}) {
   const [tab,setTab]=useState(initialTab),[groupsOpen,setGroupsOpen]=useState(false);
   useEffect(()=>setTab(initialTab),[initialTab]);
-  function selectTab(value:string){setTab(value);location.hash=value==='mine'?'agents':`agents/${value}`;}
+  const inheritedNavigation=useContext(PageNavigationContext);
+  const pageNavigation=navigation?{button:navigation,register:()=>()=>{}}:inheritedNavigation;
+  const section=AGENTS_SECTIONS.find(item=>item.id===tab)||AGENTS_SECTIONS[0];
   const groups=data.agentRooms.filter(room=>room.kind==='group');
-  const directoryTabs=<div className="ag-directory-view-navigation"><SegmentedControl className="ag-directory-view-tabs" value={tab} onChange={selectTab} size="md" aria-label={t('助理目录视图','Agent directory view')}><SegmentedControl.Option value="mine">{t('我的 Agent','My agents')}</SegmentedControl.Option><SegmentedControl.Option value="discover">{t('专家库','Expert library')}</SegmentedControl.Option><SegmentedControl.Option value="market"><span className="ag-future-tab-label is-market"><Suitcase/>{t('Agent 市场','Agent market')}<small>Dev</small></span></SegmentedControl.Option><SegmentedControl.Option value="dating"><span className="ag-future-tab-label is-dating"><Heart/>Agent Dating<small>Dev</small></span></SegmentedControl.Option></SegmentedControl><BulkAvatarStyle compact agents={data.agents} defaultStyle={data.defaultAgentAvatarStyle} onRefresh={onRefresh}/></div>;
-  return <section className={`ag-directory is-discover`}><PageHeading className="ag-directory-intro" title="Agents" description={t("管理专业 Agent，按领域与任务选择协作对象。","Manage specialist agents and select collaborators.")} compactDescription={t("管理 Agent 与专业协作。","Manage agents and collaboration.")} illustration="/art/page-agents-v1.png" action={<div className="ag-directory-actions"><Popover open={groupsOpen} onOpenChange={setGroupsOpen}><Popover.Trigger><Button color="secondary" variant="ghost"><Group/>{t('群聊','Groups')}</Button></Popover.Trigger><Popover.Content side="bottom" align="end" width={270} minWidth="auto" className="ag-directory-groups">{groups.map(room=><a key={room.id} href={`#agents/${room.id}`} onClick={()=>setGroupsOpen(false)}><Group/><span>{room.title}</span></a>)}<Button color="secondary" variant="ghost" onClick={()=>{setGroupsOpen(false);onGroup();}}><Plus/>{t('创建群聊','New group chat')}</Button></Popover.Content></Popover><Button color="secondary" variant="outline" onClick={onImport}><ScanIcon/>{t("扫码创建", "Scan QR code")}</Button><Button color="primary" onClick={onCreate}><Plus/>{t("创建 Agent", "Create agent")}</Button></div>} />
+  return <section className="ag-directory is-discover"><PageNavigationContext.Provider value={pageNavigation}><PageHeading className="ag-directory-intro" title={t(section.zh,section.en)} description={t("管理专业 Agent，按领域与任务选择协作对象。","Manage specialist agents and select collaborators.")} compactDescription={t("管理 Agent 与专业协作。","Manage agents and collaboration.")} illustration="/art/page-agents-v1.png" action={<div className="ag-directory-actions"><BulkAvatarStyle compact agents={data.agents} defaultStyle={data.defaultAgentAvatarStyle} onRefresh={onRefresh}/><Popover open={groupsOpen} onOpenChange={setGroupsOpen}><Popover.Trigger><Button color="secondary" variant="ghost"><Group/>{t('群聊','Groups')}</Button></Popover.Trigger><Popover.Content side="bottom" align="end" width={270} minWidth="auto" className="ag-directory-groups">{groups.map(room=><a key={room.id} href={`#agents/${room.id}`} onClick={()=>setGroupsOpen(false)}><Group/><span>{room.title}</span></a>)}<Button color="secondary" variant="ghost" onClick={()=>{setGroupsOpen(false);onGroup();}}><Plus/>{t('创建群聊','New group chat')}</Button></Popover.Content></Popover><Button color="secondary" variant="outline" onClick={onImport}><ScanIcon/>{t("扫码创建", "Scan QR code")}</Button><Button color="primary" onClick={onCreate}><Plus/>{t("创建 Agent", "Create agent")}</Button></div>} /></PageNavigationContext.Provider>
 
-    {tab==='market'||tab==='dating'?<div className="ag-future-shell"><div className="ag-directory-toolbar expert-directory-toolbar">{directoryTabs}</div><div className="ag-future-viewport"><Suspense fallback={<p className="ag-future-loading" role="status">{t('正在打开…','Opening…')}</p>}>{tab==='market'?<ProfessionalNetwork avatarStyle={data.defaultAgentAvatarStyle}/>:<DatingNetwork/>}</Suspense></div></div>:tab==='discover'?<ExpertLibrary navigation={directoryTabs} data={data} onOpen={onOpen} onRefresh={onRefresh} onCreated={async agent=>{await onExpertCreated(agent);setTab('mine');}}/>:<SavedAgentBrowser data={data} navigation={directoryTabs} onOpen={onOpen} onTrial={onTrial} onRefresh={onRefresh}/>}
+    {tab==='market'||tab==='dating'?<div className="ag-future-shell"><div className="ag-future-viewport"><Suspense fallback={<p className="ag-future-loading" role="status">{t('正在打开…','Opening…')}</p>}>{tab==='market'?<ProfessionalNetwork avatarStyle={data.defaultAgentAvatarStyle}/>:<DatingNetwork/>}</Suspense></div></div>:tab==='discover'?<ExpertLibrary data={data} onOpen={onOpen} onRefresh={onRefresh} onCreated={async agent=>{await onExpertCreated(agent);setTab('mine');location.hash=agentHref('mine');}}/>:<SavedAgentBrowser data={data} onOpen={onOpen} onTrial={onTrial} onRefresh={onRefresh}/>}
 
   </section>;
 }

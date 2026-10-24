@@ -1,0 +1,13 @@
+/* SDK ghost buttons retain hover/selected colors and the keyboard focus ring.
+   Expanding a section reveals destinations; it does not select that section. */
+.navigation-parent[aria-expanded=true]:not(:hover):not([data-selected])::before{opacity:0}
+.navigation-parent[aria-expanded=true]:not(:hover):not([data-selected]){color:var(--button-text-color)}
+.app-sidebar .nav-item svg,.mobile-drawer .mobile-drawer-action svg{color:inherit}
+.app-sidebar .nav-item[aria-current=page],.mobile-drawer .mobile-drawer-action[aria-current=page]{font-weight:500}
+.agents-navigation-label{display:flex;align-items:center;gap:8px;min-width:0;flex:1}
+.agents-navigation-label>[data-size]{margin-left:auto;flex:none}
+/* Destinations have near-primary contrast; section labels retain their quieter text role. */
+.app-sidebar :is(.nav-item,.new-task-button):not([data-disabled]){--button-text-color:var(--gray-900)}
+.app-sidebar .nav-item,.mobile-drawer .mobile-drawer-action{color:var(--button-text-color)}
+.app-sidebar .nav-item[data-selected],.mobile-drawer .mobile-drawer-action[data-selected]{color:var(--button-text-color-hover)}
+@media(hover:hover) and (pointer:fine){.app-sidebar .nav-item:hover,.mobile-drawer .mobile-drawer-action:hover{color:var(--button-text-color-hover)}}

@@ -1,0 +1,93 @@
+/* Layout only. Reading rhythm, rows and expansion surfaces come from finance-data-view.css. */
+:where(.finance-workspace,.finance-settings) .holdings-page { min-width:0; container:finance-holdings / inline-size; }
+:where(.finance-workspace,.finance-settings) .holdings-icon { width:18px; height:18px; flex:0 0 18px; }
+:where(.finance-workspace,.finance-settings) .holdings-toolbar :is(button:not([data-state]),input:not([aria-hidden="true"]),[role="button"],[role="combobox"]),:where(.finance-workspace,.finance-settings) .holdings-position-controls :is(button,[role="button"],[role="combobox"]),:where(.finance-workspace,.finance-settings) .holdings-position-detail-heading>button { min-height:32px; height:32px; border-radius:var(--hither-radius-control,8px); font-size:14px; line-height:22px; }
+:where(.finance-workspace,.finance-settings) .holdings-heading h2 { display:flex; align-items:center; gap:8px; }
+:where(.finance-workspace,.finance-settings) .holdings-heading h2>.holdings-icon { color:var(--color-text-secondary); }
+:where(.finance-workspace,.finance-settings) .holdings-count { font-variant-numeric:tabular-nums; }
+:where(.finance-workspace,.finance-settings) .holdings-facts { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px 24px; margin:0; padding:8px 0; }
+:where(.finance-workspace,.finance-settings) .holdings-facts dt { margin-bottom:4px; color:var(--color-text-secondary); font-size:12px; line-height:18px; }
+:where(.finance-workspace,.finance-settings) .holdings-facts dd { margin:0; overflow-wrap:anywhere; }
+:where(.finance-workspace,.finance-settings) .holdings-account-summary .holdings-position-money { justify-content:flex-start; flex-wrap:wrap; }
+:where(.finance-workspace,.finance-settings) .holdings-positions>.table-wrap { padding:0; margin:0; overflow:visible; border:0; border-radius:0; background:none; }
+:where(.finance-workspace,.finance-settings) .holdings-securities-table { --holding-brand-size:28px; --holding-name-gap:12px; }
+:where(.finance-workspace,.finance-settings) .holdings-securities-table thead th:first-child { width:31%; }
+:where(.finance-workspace,.finance-settings) .holdings-securities-table thead th:nth-child(2) { width:15%; }
+:where(.finance-workspace,.finance-settings) .holdings-securities-table thead th:nth-child(3) { width:20%; }
+:where(.finance-workspace,.finance-settings) .holdings-securities-table thead th:nth-child(4) { width:22%; }
+:where(.finance-workspace,.finance-settings) .holdings-securities-table thead th:nth-child(5) { width:12%; }
+:where(.finance-workspace,.finance-settings) .holdings-securities-table :is(th,td) { text-align:left; }
+:where(.finance-workspace,.finance-settings) .holdings-securities-table .holdings-number { text-align:right; }
+:where(.finance-workspace,.finance-settings) .holdings-securities-table thead th { position:sticky; top:calc(var(--finance-header-height,64px) + var(--finance-toolbar-height,48px)); z-index:12; background:var(--color-surface); }
+:where(.finance-workspace,.finance-settings) .holdings-securities-table td { font-variant-numeric:tabular-nums; white-space:nowrap; }
+:where(.finance-workspace,.finance-settings) .holdings-sort-heading { display:inline-flex; align-items:center; justify-content:flex-end; gap:4px; min-height:18px; padding:0; border:0; border-radius:var(--hither-radius-control,8px); background:none; color:inherit; font:inherit; cursor:pointer; }
+:where(.finance-workspace,.finance-settings) .holdings-sort-heading>svg { width:14px; height:14px; }
+:where(.finance-workspace,.finance-settings) .holdings-sort-idle { opacity:.4; }
+:where(.finance-workspace,.finance-settings) .holdings-sort-heading:hover { color:var(--color-text); }
+:where(.finance-workspace,.finance-settings) .holdings-sort-heading:focus-visible { outline:2px solid var(--color-text); outline-offset:2px; }
+:where(.finance-workspace,.finance-settings) .holdings-page .holdings-stock-open { width:100%; height:auto; min-height:0; padding:0; justify-content:flex-start; background:transparent; text-align:left; }
+:where(.finance-workspace,.finance-settings) .holdings-stock-open>span { width:100%; min-width:0; justify-content:flex-start; gap:8px; white-space:normal; }
+:where(.finance-workspace,.finance-settings) .holdings-stock-open .holdings-stock-identity { flex:1; min-width:0; }
+:where(.finance-workspace,.finance-settings) .holdings-stock-open .brand-icon { --brand-size:var(--holding-brand-size); }
+:where(.finance-workspace,.finance-settings) .holdings-stock-open .holdings-icon { width:12px; height:12px; flex-basis:12px; margin:0; color:var(--color-text-secondary); }
+/* Shared table rows paint hover and selection; the SDK retains its focus ring. */
+:where(.finance-workspace,.finance-settings) .holdings-stock-open::before { content:none; }
+:where(.finance-workspace,.finance-settings) .holdings-stock-identity { display:flex; align-items:center; gap:var(--holding-name-gap,12px); min-width:0; text-align:left; }
+:where(.finance-workspace,.finance-settings) .holdings-stock-name { display:block; min-width:0; }
+:where(.finance-workspace,.finance-settings) .holdings-stock-name>strong { display:block; overflow-wrap:anywhere; }
+:where(.finance-workspace,.finance-settings) .holdings-stock-ticker { display:block; margin-top:2px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+:where(.finance-workspace,.finance-settings) .holdings-position-money { display:flex; flex-direction:row; align-items:baseline; justify-content:flex-end; gap:4px; }
+:where(.finance-workspace,.finance-settings) .holdings-position-money>span,:where(.finance-workspace,.finance-settings) .holdings-position-money>small { display:block; white-space:nowrap; }
+:where(.finance-workspace,.finance-settings) .holdings-position-subvalue { display:block; margin-top:2px; font-variant-numeric:tabular-nums; }
+:where(.finance-workspace,.finance-settings) .holdings-position-status { display:block; margin:0 0 0 calc(var(--holding-brand-size) + var(--holding-name-gap)); }
+:where(.finance-workspace,.finance-settings) .holdings-positions .is-up,:where(.finance-workspace,.finance-settings) .holdings-positions .is-up>.holdings-position-subvalue { color:var(--color-text-success); }
+:where(.finance-workspace,.finance-settings) .holdings-positions .is-down,:where(.finance-workspace,.finance-settings) .holdings-positions .is-down>.holdings-position-subvalue { color:var(--color-text-danger); }
+:where(.finance-workspace,.finance-settings) .holdings-position-detail-heading { display:flex; align-items:baseline; flex-wrap:wrap; gap:4px 8px; margin-bottom:8px; }
+:where(.finance-workspace,.finance-settings) .holdings-position-detail-heading>button { margin-left:auto; }
+:where(.finance-workspace,.finance-settings) .holdings-position-detail-facts { display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 24px; padding:0; margin:0; }
+:where(.finance-workspace,.finance-settings) .holdings-position-detail-facts>div { display:flex; align-items:baseline; gap:8px; min-width:0; }
+:where(.finance-workspace,.finance-settings) .holdings-position-detail-facts dt { color:var(--color-text-secondary); font-size:12px; line-height:18px; }
+:where(.finance-workspace,.finance-settings) .holdings-position-detail-facts dd { margin:0; font-size:12px; line-height:18px; }
+:where(.finance-workspace,.finance-settings) .holdings-mobile { display:none; }
+:where(.finance-workspace,.finance-settings) .holdings-empty-state { padding:48px 24px; }
+:where(.finance-workspace,.finance-settings) .holdings-position-controls h2 { flex-shrink:0; }
+:where(.finance-workspace,.finance-settings) .holdings-position-controls>div { display:flex; align-items:center; gap:4px; min-width:0; }
+:where(.finance-workspace,.finance-settings) .holdings-position-controls>div>[role="button"] { min-width:0; flex:1 1 auto; }
+:where(.finance-workspace,.finance-settings) .holdings-position-controls>div>button { flex:0 0 auto; }
+:where(.finance-workspace,.finance-settings) .holdings-position-list-head,:where(.finance-workspace,.finance-settings) .holdings-position-row { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,.8fr) minmax(0,1.5fr); column-gap:8px; align-items:center; }
+:where(.finance-workspace,.finance-settings) .holdings-position-list-head { position:sticky; top:calc(var(--finance-header-height,64px) + var(--finance-toolbar-height,48px)); z-index:12; background:var(--color-surface); }
+:where(.finance-workspace,.finance-settings) .holdings-position-list-head>span:not(:first-child) { text-align:right; }
+:where(.finance-workspace,.finance-settings) .holdings-position-row { cursor:pointer; }
+:where(.finance-workspace,.finance-settings) .holdings-position-mobile-identity { display:flex; align-items:center; gap:8px; min-width:0; }
+:where(.finance-workspace,.finance-settings) .holdings-position-mobile-identity>span { min-width:0; }
+:where(.finance-workspace,.finance-settings) .holdings-position-mobile-identity strong { display:flex; align-items:center; gap:4px; min-width:0; overflow-wrap:anywhere; }
+:where(.finance-workspace,.finance-settings) .holdings-position-mobile-identity strong>svg { width:12px; height:12px; color:var(--color-text-secondary); }
+:where(.finance-workspace,.finance-settings) .holdings-position-item.is-expanded .holdings-position-mobile-identity strong>svg { transform:rotate(180deg); }
+:where(.finance-workspace,.finance-settings) .holdings-position-mobile-identity .holdings-position-subvalue { overflow-wrap:anywhere; }
+:where(.finance-workspace,.finance-settings) .holdings-position-cell { min-width:0; text-align:right; }
+:where(.finance-workspace,.finance-settings) .holdings-position-return { display:flex; flex-wrap:wrap; justify-content:flex-end; column-gap:4px; margin-top:2px; font-size:12px; line-height:18px; font-variant-numeric:tabular-nums; }
+:where(.finance-workspace,.finance-settings) .holdings-position-return>span { white-space:nowrap; }
+:where(.finance-workspace,.finance-settings) .holdings-position-mobile-status { display:block; margin-top:4px; }
+:where(.finance-workspace,.finance-settings) .holdings-historical-funds { margin-top:16px; border-top:1px solid var(--color-border-subtle); }
+:where(.finance-workspace,.finance-settings) .holdings-historical-funds>summary { display:flex; align-items:center; gap:12px; min-height:48px; padding:12px 0; list-style:none; cursor:pointer; }
+:where(.finance-workspace,.finance-settings) .holdings-historical-funds>summary::-webkit-details-marker { display:none; }
+:where(.finance-workspace,.finance-settings) .holdings-historical-funds>summary>svg { width:16px; height:16px; margin-left:auto; color:var(--color-text-secondary); }
+:where(.finance-workspace,.finance-settings) .holdings-historical-funds[open]>summary>svg { transform:rotate(180deg); }
+:where(.finance-workspace,.finance-settings) .holdings-historical-funds>summary:focus-visible { outline:2px solid var(--color-text); outline-offset:4px; border-radius:var(--hither-radius-control,8px); }
+:where(.finance-workspace,.finance-settings) .holdings-history-note { margin:0 0 16px; color:var(--color-text-secondary); font-size:12px; line-height:18px; }
+@container(max-width:680px) {
+  :where(.finance-workspace,.finance-settings) .holdings-securities-table { --holding-brand-size:24px; --holding-name-gap:8px; }
+  :where(.finance-workspace,.finance-settings) .holdings-stock-open>span { gap:4px; }
+}
+@container(max-width:600px) {
+  :where(.finance-workspace,.finance-settings) .holdings-positions>.holdings-desktop { display:none; }
+  :where(.finance-workspace,.finance-settings) .holdings-position-list { display:block; }
+  :where(.finance-workspace,.finance-settings) .holdings-empty-state { padding:32px 16px; }
+}
+@container finance-holdings (max-width:600px) {
+  :where(.finance-workspace,.finance-settings) .holdings-account-summary { grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px 16px; }
+}
+@container finance-holdings (max-width:380px) {
+  :where(.finance-workspace,.finance-settings) .holdings-position-list-head,:where(.finance-workspace,.finance-settings) .holdings-position-row { column-gap:6px; grid-template-columns:minmax(0,.95fr) minmax(0,.75fr) minmax(0,1.5fr); }
+  :where(.finance-workspace,.finance-settings) .holdings-position-controls h2 { gap:6px; }
+}

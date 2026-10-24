@@ -1,0 +1,59 @@
+{
+  "checkedAt": "2026-10-24",
+  "assets": [
+    {
+      "id": "plaid",
+      "file": "plaid.svg",
+      "sourcePage": "https://plaid.com/",
+      "assetUrl": "https://plaid.com/assets/img/favicons/safari-pinned-tab.svg",
+      "format": "image/svg+xml",
+      "width": "512pt",
+      "height": "512pt",
+      "viewBox": "0 0 512 512",
+      "bytes": 1844,
+      "sha256": "4e9187891fd62d9fad057d95503bc508fdc53a5e17b1fd49587d537d978d4d8b",
+      "notes": "Original SVG downloaded unchanged from the icon URL referenced by the official homepage. Monochrome black on transparent; invert in dark mode.",
+      "rights": "Provider brand asset; rights retained by provider."
+    },
+    {
+      "id": "teller",
+      "file": "teller.svg",
+      "sourcePage": "https://teller.io/docs/",
+      "assetUrl": null,
+      "format": "image/svg+xml",
+      "width": "43",
+      "height": "43",
+      "viewBox": "0 0 43 43",
+      "bytes": 1753,
+      "sha256": "cc35bc8fe9ff083d1e4cffd1e8977fb5f2efdd1f5ff9d1536d0465ad8fa40353",
+      "notes": "Extracted the five original colored symbol paths from the official Home logo SVG (#Full-Logo-Horizontal-Dark), preserving path geometry and colors; wordmark excluded and original 0 0 43 43 symbol bounds retained. No generated or redrawn artwork.",
+      "rights": "Provider brand asset; rights retained by provider."
+    },
+    {
+      "file": "snaptrade.svg",
+      "url": "https://snaptrade.com/brand/snaptrade-icon_master.svg",
+      "source": "https://snaptrade.com/brand",
+      "bytes": 1826,
+      "sha256": "dbf9823cace1700a853f8c1ce6bc9fabae03ecf00812c1a6c4cb2e90e1e92f81",
+      "note": "Official full-colour icon, downloaded without modification.",
+      "contentType": "image/svg+xml",
+      "width": 69,
+      "height": 72,
+      "viewBox": "0 0 69 72",
+      "transparent": true
+    },
+    {
+      "file": "truelayer.svg",
+      "url": "https://truelayer.com/favicon.svg?v=5db58021c7b05029ddf717674d5b768e",
+      "source": "https://truelayer.com/",
+      "bytes": 1765,
+      "sha256": "7b91dd0d2f9251e721bf2bb9cd4b5382d48170a65daec74d7f32ca2ac00b3551",
+      "note": "Official transparent favicon SVG. Embedded prefers-color-scheme CSS uses black #060606 in light mode and white #ffffff in dark mode; no additional inversion required.",
+      "contentType": "image/svg+xml",
+      "width": 512,
+      "height": 512,
+      "viewBox": "0 0 512 512",
+      "transparent": true
+    }
+  ]
+}

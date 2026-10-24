@@ -8,7 +8,7 @@ import brand from '../shared/brand.json' with {type:'json'};
 // Product documentation only. Runtime logs, personal records and arbitrary paths
 // are never exposed, even when a Markdown document links to them.
 export const DEVELOPMENT_DOCUMENTS=Object.freeze([
-  'DEVELOPMENT.md','ITERATION.md','PRODUCT.md','RESEARCH.md','HARNESS.md','revision-02/ACCEPTANCE.md','DEVICES.md',
+  'DEVELOPMENT.md','ITERATION.md','PRODUCT.md', 'FINANCE.md','RESEARCH.md','HARNESS.md','revision-02/ACCEPTANCE.md','DEVICES.md',
   'ACCEPTANCE.md','ANTHROPIC.md','API.md','BRANDING.md','COMMUNICATIONS.md','COMPOSER-ACCEPTANCE.md',
   'CONNECTORS.md','DAILY-ACTIVITY.md','DELEGATION.md','DESIGN.md','DEVICE-SIMULATOR.md','IMPORTS.md',
   'MODEL-PRESETS.md','OPENJARVIS.md','PERSON-PORTRAITS.md','PROJECTS.md','REMOTE-COMPUTERS.md',

@@ -14,7 +14,7 @@
 
 ## Use a macOS release archive
 
-If a macOS app archive is attached on [Releases](https://github.com/YunyueLi/SecondU/releases), download and extract it, then open `SecondU.app`. This build is for **Apple Silicon (arm64), macOS 13+**; it is not an Intel or universal build. It includes the Electron and Node runtime, so browsing the example does not require a separate Node installation.
+Download the macOS app archive from the [v0.2.1 release page](https://github.com/YunyueLi/SecondU/releases/tag/v0.2.1), extract it, then open `SecondU.app`. This build is for **Apple Silicon (arm64), macOS 13+**; it is not an Intel or universal build. It includes the Electron and Node runtime, so browsing the example does not require a separate Node installation.
 
 The app is **ad-hoc signed, without a Developer ID signature or Apple notarization**. macOS may block the first launch. Follow macOS's per-application opening controls only if you trust the downloaded source; do not disable system-wide protections. Source archives are also available from GitHub and use the installation steps below.
 
@@ -32,7 +32,21 @@ npm start
 
 Open <http://127.0.0.1:58645>. Choose the Chinese or English fictional example. Browse a person's context, a conversation, an artifact and its versions. Example spaces do not run real tasks, connect accounts or trigger automations. The examples are separate namespaces from your personal records.
 
+The displayed **Kimi K3.1 Pro** configuration is unconnected. Example conversations are prewritten, and the example model does not replace your saved personal connection.
+
 See [the review walkthrough](docs/PROTOTYPE.md) for the intended experience and implementation boundaries.
+
+## Explore v0.2.1
+
+The ten-chapter product guide includes **Personal finance** and **Set up your workspace**, with direct entry points into the new workspaces. [Version highlights](docs/releases/v0.2.1.md)
+
+1. Open the sidebar's module chooser and pin **Finance**, **Agents** or **Library**. Expand a group to browse its sections; your choice belongs to the current space.
+2. In personal space, open **Finance**. Start with a manually recorded account or review the available read-only account providers in **Settings → Connectors**. Record the original currency and date. Add holdings, transactions or a CSV import as needed, then browse bills, subscriptions, budgets, goals and planning. [Finance guide](docs/FINANCE.md)
+3. For a ready-made walkthrough, explore **Overview, Portfolio, Structure, Allocation, Details and Holdings** in the [website's finance story](https://yunyueli.github.io/SecondU/?lang=en#finance), then [open the full finance workspace](https://yunyueli.github.io/SecondU/product/embed.html?space=demo-us-v1&lang=en#finance). The independent fictional Finance persona, Alex Morgan, is an AI infrastructure engineer in San Mateo. The USD snapshot dated October 25, 2026 contains 11 asset accounts, 19 positions, 119 transactions and 22 recurring plans. Both languages use the same records; the person, prices and exchange rates are simulated. Finance is read-only in this website example; use the desktop app to add records, connect accounts or update quotes. Desktop example spaces and personal space retain their own records.
+4. Open **Settings → Computer** to inspect local runtime availability or configure an SSH computer. Verify the intended host and its runtime before selecting it in a task draft. The computer chooser does not establish a connection by itself.
+5. Use home suggestions to start a task, browse tool and research connections in the directory, and adjust backgrounds, theme or motion in **Settings → Appearance**.
+
+Provider setup requires the user's own account and permissions. An available connector is not an active connection. Finance reads and stores records; it does not place trades, move funds or pay bills. Real model tasks still require the model/runtime setup below.
 
 ## Run a real task
 

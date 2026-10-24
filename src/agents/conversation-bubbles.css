@@ -3,11 +3,13 @@
 .ag-conversation .ag-message{gap:10px;margin-bottom:18px}
 .ag-conversation .ag-message-body{flex:0 1 auto;max-width:min(640px,calc(100% - 44px))}
 .ag-conversation .ag-message-user .ag-message-body{max-width:min(640px,calc(100% - 44px))}
+/* Quotes and author details may be wider than a short reply. Size the bubble independently. */
+.ag-conversation .ag-message-user .ag-message-body>.ag-reply-reference{width:fit-content;max-width:min(420px,100%);margin-inline-start:auto}
 .ag-conversation .ag-message-author{height:auto;min-height:22px;gap:8px;margin-bottom:5px;flex-wrap:wrap}
 .ag-conversation .ag-message-author strong{font-size:13px;font-weight:500}
 .ag-conversation .ag-message-author time{font-size:11px}
 .ag-conversation .ag-message-assistant .ag-message-bubble{padding:11px 15px;border-radius:4px 17px 17px;background:var(--color-surface-secondary)}
-.ag-conversation .ag-message-user .ag-message-bubble{padding:11px 15px;border-radius:17px 4px 17px 17px;background:color-mix(in srgb,var(--color-text) 9%,var(--color-surface))}
+.ag-conversation .ag-message-user .ag-message-bubble{width:fit-content;max-width:100%;margin-inline-start:auto;box-sizing:border-box;padding:11px 15px;border-radius:17px 4px 17px 17px;background:color-mix(in srgb,var(--color-text) 9%,var(--color-surface))}
 .ag-conversation .ag-message-bubble .rich-text{line-height:1.75}
 .ag-conversation .ag-message-bubble{transition:background-color .18s ease-out}
 .ag-conversation .ag-message-bubble pre{max-width:100%;overflow:auto}

@@ -1,6 +1,6 @@
 import {ThemeDecoration,decorationKinds} from './themes/ThemeDecoration';
 import { t, getLocale } from './i18n';
-import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from 'react';
+import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from 'react';
 import { Button, ButtonLink, CopyButton } from '@openai/apps-sdk-ui/components/Button';
 import { Input } from '@openai/apps-sdk-ui/components/Input';
 import { Textarea } from '@openai/apps-sdk-ui/components/Textarea';
@@ -30,9 +30,11 @@ import { SourcePill } from './design-system/SourcePill';
 import {BadgeExample,ComposerExample,PlatformFilterExample,IllustrationExample,StartupExample} from './catalogue/ProductExamples';
 import {GraphExample} from './catalogue/GraphExample';
 import { SettingsScaleExample } from './catalogue/SettingsScaleExample';
+import { ActivityEdgeExample, LightStudyExample, ConnectorIconExample } from './catalogue/MotionExamples';
+import { catalogueMatches, catalogueGroupFromHash, catalogueGroupAtScroll, normalizeCatalogueQuery } from './catalogue/catalogue-model.mjs';
 import { SetupHint } from './design-system/SetupHint';
 import { SectionLink } from './design-system/SectionLink';
-import { SuggestionRow, type SuggestionKind } from './design-system/SuggestionRow';
+import { HomeSuggestionExample } from './catalogue/HomeSuggestionExample';
 import { RecommendationIconCatalogue } from './design-system/RecommendationIconCatalogue';
 import { PlatformSelect } from './cognition/PlatformSelect';
 import type {Appearance} from './appearance';
@@ -43,6 +45,7 @@ const getGroups = () => [
   { id: 'controls', title: t("输入与选择", "Input and selection"), description: t("标签说明要做什么，状态说明现在能做什么。先操作，再观察变化。", "Labels explain the action. States show what is available. Try the controls to see their behavior.") },
   { id: 'navigation', title: t("导航与浮层", "Navigation and overlays"), description: t("切换、补充信息和需要专注的操作，采用不同的交互层级。", "Switch views, reveal context, and focus on a task at the appropriate interaction level.") },
   { id: 'feedback', title: t("反馈与状态", "Feedback and states"), description: t("让进行、等待、完成和失败可区分；有问题时给出具体的下一步。", "Distinguish progress, waiting, completion, and failure. Provide a clear next step when something goes wrong.") },
+  { id: 'motion', title: t('光效与动效', 'Light and motion'), description: t('从参考素材到可操作的本地样本。先比较形态、强度与状态，再决定使用位置。', 'From references to interactive local studies. Compare form, intensity, and state before choosing an application.') },
   { id: 'patterns', title: t("业务组合", "Product patterns"), description: t("将基础控件用于任务、个人认知和成果。以下均为页面内演示，不执行真实任务。", "Combine controls for tasks, personal context, and artifacts. These examples stay on this page and run no real tasks.") },
 ] as const;
 type GroupId = ReturnType<typeof getGroups>[number]['id'];
@@ -53,6 +56,7 @@ const getSpecs = () => [
   ['color', 'foundations', t("语义颜色", "Semantic colors"), 'Tokens', t("白灰表面与细分隔组织内容；状态色只用于确有含义的反馈。", "Neutral surfaces and subtle borders organize content. Status colors communicate specific meaning.")],
   ['identity', 'foundations', t("图标与身份", "Icons and identity"), 'Icon，Avatar', t("使用官方图标和头像组件。图标操作需有文字标签或可访问名称。", "Use official icons and avatars. Icon actions need a visible label or accessible name.")],
   ['recommendation-icons', 'foundations', t('推荐图标目录','Recommendation icon catalogue'), 'RecommendationIconCatalogue', t('28 种任务语义与 18 个应用品牌共用一套图标。按场景、名字筛选，或输入推荐文字检查自动匹配结果。','One registry covers 28 task types and 18 app brands. Filter by category or name, then try text to inspect automatic matching.')],
+  ['connector-icons', 'foundations', t('连接器品牌图标','Connector brand icons'), 'ServiceIcon', t('复用连接目录中的原素材与组件，在实际显示尺寸下检查清晰度。','The same assets and component used in the connector directory, at their actual display size.')],
   ['button', 'controls', t("操作按钮", "Buttons"), 'Button', t("主要操作保持单一，次要操作降一级。加载与禁用状态明确阻止重复操作。", "Give one action primary emphasis. Loading and disabled states prevent duplicate actions.")],
   ['input', 'controls', t("单行输入", "Text input"), 'Input', t("保留可见标签，提示文字提供例子，错误信息说明如何改正。", "Keep a visible label, show examples in placeholders, and explain how to fix errors.")],
   ['textarea', 'controls', t("长文本", "Long text"), 'Textarea', t("多行内容随输入增长。说明与字数保持在输入区域附近。", "Multiline fields grow with content. Keep guidance and character counts nearby.")],
@@ -74,10 +78,12 @@ const getSpecs = () => [
   ['loading', 'feedback', t("加载与等待", "Loading and waiting"), 'Indicator', t("有真实等待才显示加载；未知进度不展示虚构百分比。此处可手动切换示例。", "Show loading only during real waits. Never invent progress percentages. Toggle this example manually.")],
   ['recovery', 'feedback', t("错误与恢复", "Errors and recovery"), 'Input，Alert', t("保留用户输入，指出具体问题。这里仅校验地址格式，不连接服务。", "Preserve input and identify the problem. This example checks URL format without connecting to a service.")],
   ['empty', 'feedback', t("空白与无匹配", "Empty and no results"), 'EmptyMessage', t("区分尚无内容和没有搜索结果，给出对应的下一步。", "Distinguish missing content from empty search results and offer an appropriate next step.")],
+  ['activity-edge', 'motion', t('呼吸柔光','Breathing glow'), 'ActivityEdge', t('稳定的圆角轮廓与缓慢明灭、迁移的柔光阴影，仅在任务执行时显示。','A stable rounded outline with soft shadows that slowly breathe and drift, visible only while a task runs.')],
+  ['light-families', 'motion', t('七类光效研究','Seven light families'), 'LightStudy', t('默认展示当前呼吸柔光，并比较渐变轮廓、指针聚光、占位扫光、镜面扫光与轮廓显现；沿边光束保留为独立研究类别。','Start with the current breathing glow, then compare gradient border, spotlight, skeleton shimmer, specular sweep, and contour reveal. Border beam remains a separate study category.')],
   ['agent-badge', 'patterns', t('Agent 工牌','Agent badges'), 'AgentBadgeStage', t('与我的 Agents、角色发现共用工牌。切换单行与两行介绍，头像、名称和底栏位置保持固定。','The badge shared by My Agents and role discovery. One- and two-line roles keep the avatar, name, and footer in place.')],
   ['composer', 'patterns', t('对话输入框','Conversation composer'), 'ComposerSurface', t('新对话和已有对话使用同一输入、模型、工具与背景组件。示例草稿不会发送。','New and existing chats share the input, model, tool, and context components. Example drafts are never sent.')],
   ['platform-filter', 'patterns', t('平台筛选','Platform filters'), 'PlatformFilter', t('与聊天记录和时间轴使用相同的平台菜单；选中状态与显示内容同步。','The same platform menu used by conversations and the timeline, with a visible selected state.')],
-  ['suggestion-row', 'patterns', t('推荐任务','Suggested tasks'), 'SuggestionRow', t('与首页共用的整行链接。18px 图标从完整任务语义与应用品牌目录自动匹配，文字完整保留。','The same full-row link used on Home. An 18px icon is resolved from the shared task and app registry while preserving the full text.')],
+  ['suggestion-row', 'patterns', t('推荐任务','Suggested tasks'), 'HomeSuggestions', t('与首页共用的三行建议：悬停高亮、来源详情、品牌链接、收起与恢复。点击建议将内容追加到下方草稿，保留已有文字。','The same three suggestions used on Home: hover feedback, source details, brand links, dismissal and restore. Choosing one appends it to the draft below, preserving existing text.')],
   ['illustrations', 'patterns', t('局部插画','Spot illustrations'), 'SpotIllustration', t('原始透明插画用于交流、项目、人生记录与自动任务的局部引导。','Original transparent illustrations for conversations, projects, moments, and routines.')],
   ['startup', 'patterns', t('启动与重试','Startup and retry'), 'StartupScreen', t('与应用启动共用加载和错误界面，重试在本页切换状态。','The loading and error surface shared with app startup. Retry changes this local example only.')],
   ['graph', 'patterns', t('关系图谱','Relationship graph'), 'RelationshipGraph', t('真实图谱组件，包含常规、空白与 800 人虚构样本；支持筛选、搜索与缩放。','The real graph with standard, empty, and 800-person fictional samples, including filters, search, and zoom.')],
@@ -88,7 +94,7 @@ const getSpecs = () => [
 ] as const;
 type SpecId = ReturnType<typeof getSpecs>[number][0];
 const CatalogueQuery = createContext('');
-const matches = (spec: ReturnType<typeof getSpecs>[number], query: string) => !query || spec.join(' ').toLowerCase().includes(query.toLowerCase());
+const matches = catalogueMatches;
 
 function Spec({ id, children, note }: { id: SpecId; children: ReactNode; note?: ReactNode }) {
   const query = useContext(CatalogueQuery);
@@ -109,29 +115,79 @@ function DemoBadge() { return <Badge color="secondary" variant="outline" size="s
 export function ComponentCatalogue({appearance}:{appearance?:Partial<Appearance>}) {
   const groups = getGroups(), specs = getSpecs();
   const [query, setQuery] = useState('');
-  const [active, setActive] = useState<GroupId>('foundations');
+  const [active, setActive] = useState<GroupId | null>(() => catalogueGroupFromHash(location.hash, getGroups().map(group => group.id)) || 'foundations');
   const [revision, setRevision] = useState(0);
+  const [destination, setDestination] = useState<{id: GroupId; initial: boolean} | null>(null);
+  const catalogueRef = useRef<HTMLDivElement>(null);
+  const locale = getLocale();
   const resultCount = specs.filter(spec => matches(spec, query)).length;
-  function jump(id: GroupId) {
+  const requestNavigation = useCallback((id: GroupId, initial = false) => {
+    // A direct section link must also work when the current filter hides it.
+    setQuery(current => getSpecs().some(spec => spec[1] === id && matches(spec, current)) ? current : '');
     setActive(id);
-    const heading = document.getElementById(`ui-heading-${id}`);
-    heading?.scrollIntoView({ block: 'start', behavior: document.documentElement.dataset.motion === 'reduced' || window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
-    heading?.focus({ preventScroll: true });
-  }
+    setDestination({id, initial});
+  }, []);
   useEffect(() => {
-    const visible = groups.filter(group => specs.some(spec => spec[1] === group.id && matches(spec, query)));
-    if (!visible.some(group => group.id === active) && visible[0]) setActive(visible[0].id);
-  }, [query, active]);
-  return <div className="page-content ui-catalogue">
+    const followHash = (initial = false) => {
+      const id = catalogueGroupFromHash(location.hash, getGroups().map(group => group.id));
+      if (id) requestNavigation(id, initial);
+    };
+    followHash(true);
+    const onHashChange = () => followHash();
+    window.addEventListener('hashchange', onHashChange);
+    return () => window.removeEventListener('hashchange', onHashChange);
+  }, [requestNavigation]);
+  useEffect(() => {
+    if (!destination) return;
+    const frame = requestAnimationFrame(() => {
+      const heading = catalogueRef.current?.querySelector<HTMLElement>(`#ui-heading-${destination.id}`);
+      if (heading) {
+        const reduced = document.documentElement.dataset.motion === 'reduced' || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        heading.scrollIntoView({block: 'start', behavior: destination.initial || reduced ? 'auto' : 'smooth'});
+        heading.focus({preventScroll: true});
+      }
+      setDestination(null);
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [destination]);
+  useEffect(() => {
+    const catalogue = catalogueRef.current;
+    if (!catalogue) return;
+    const viewport = catalogue.closest<HTMLElement>('.main-workspace');
+    const scrollTarget = viewport || window;
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const headings = getGroups().flatMap(group => {
+        const heading = catalogue.querySelector<HTMLElement>(`#ui-heading-${group.id}`);
+        return heading ? [{id: group.id, top: heading.getBoundingClientRect().top}] : [];
+      });
+      const readingLine = Math.max(0, viewport?.getBoundingClientRect().top || 0) + 32;
+      setActive(catalogueGroupAtScroll(headings, readingLine) || null);
+    };
+    const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
+    scrollTarget.addEventListener('scroll', schedule, {passive: true});
+    window.addEventListener('resize', schedule);
+    const observer = new ResizeObserver(schedule);
+    observer.observe(catalogue);
+    schedule();
+    return () => {
+      scrollTarget.removeEventListener('scroll', schedule);
+      window.removeEventListener('resize', schedule);
+      observer.disconnect();
+      if (frame) cancelAnimationFrame(frame);
+    };
+  }, [query, revision, locale]);
+  return <div className="page-content ui-catalogue" ref={catalogueRef}>
     <PageHeading title={t("界面规范", "UI guidelines")} description={t("一套让理解、操作与反馈保持一致的界面语言。", "A consistent language for content, controls, and feedback.")} action={<Button color="secondary" variant="outline" size="lg" onClick={() => { setRevision(value => value + 1); setQuery(''); }}>{t("重置演示", "Reset demos")}</Button>} />
     <div className="ui-catalogue-intro"><p>{t(`${specs.length} 项交互示例，操作仅在本页生效。`, `${specs.length} interactive examples. Changes stay on this page.`)}</p><ButtonLink as="a" href="#graph-lab" color="secondary" variant="outline" size="sm">{t("关系图演示", "Graph demo")}<ArrowRight/></ButtonLink></div>
     <CatalogueQuery value={query}><div className="ui-catalogue-layout"><aside className="ui-catalogue-nav" aria-label={t("界面规范分类", "UI guideline categories")}>
       <Input aria-label={t("查找组件或模式", "Find a component or pattern")} size="lg" variant="soft" startAdornment={<Search />} placeholder={t("查找组件", "Find components")} value={query} onChange={event => setQuery(event.target.value)} />
-      <nav>{groups.map(group => { const count = specs.filter(spec => spec[1] === group.id && matches(spec, query)).length; return <TextLink key={group.id} as="a" href={`#catalogue/${group.id}`} underline={false} className={active === group.id ? 'is-active' : ''} aria-current={active === group.id ? 'location' : undefined} aria-disabled={!count} onClick={event => { event.preventDefault(); if (count) jump(group.id); }}><span>{group.title}</span><small>{count}</small></TextLink>; })}</nav>
+      <nav>{groups.map(group => { const count = specs.filter(spec => spec[1] === group.id && matches(spec, query)).length; const href = `#components/${group.id}`; return <TextLink key={group.id} as="a" href={href} underline={false} className={active === group.id ? 'is-active' : ''} aria-current={active === group.id ? 'location' : undefined} aria-disabled={!count} onClick={event => { if (!count) { event.preventDefault(); return; } if (event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey && location.hash === href) { event.preventDefault(); requestNavigation(group.id); } }}><span>{group.title}</span><small>{count}</small></TextLink>; })}</nav>
       <details className="ui-catalogue-about"><summary>{t("组件与演示说明", "About these examples")}<ChevronDown/></summary><p>{t("复用应用实际组件与官方 Apps SDK UI。示例不保存个人资料、不创建任务。", "Uses the app’s real components and the official Apps SDK UI. Examples save no personal data and create no tasks.")}</p><p>{t("悬停查看反馈，按 Tab 检查焦点。明暗主题跟随应用设置。", "Hover to inspect feedback and press Tab to check focus. The theme follows app settings.")}</p></details>
     </aside><div className="ui-catalogue-content" key={`${revision}-${getLocale()}`}>
-      {query && <div className="ui-search-result" role="status">{t(`找到 ${resultCount} 项匹配`, `${resultCount} matches`)}<Button color="secondary" variant="ghost" size="sm" onClick={() => setQuery('')}>{t("清除搜索", "Clear search")}</Button></div>}
-      {resultCount ? <><Foundations /><Controls /><Navigation /><Feedback /><BusinessPatterns appearance={appearance}/></> : <EmptyMessage fill="none"><EmptyMessage.Icon><Search /></EmptyMessage.Icon><EmptyMessage.Title>{t("没有找到对应模式", "No matching patterns")}</EmptyMessage.Title><EmptyMessage.Description>{t("试试“输入”“审批”或组件英文名。", "Try “input”, “approval”, or a component name.")}</EmptyMessage.Description><EmptyMessage.ActionRow><Button color="secondary" variant="outline" onClick={() => setQuery('')}>{t("查看全部", "View all")}</Button></EmptyMessage.ActionRow></EmptyMessage>}
+      {normalizeCatalogueQuery(query) && <div className="ui-search-result" role="status">{t(`找到 ${resultCount} 项匹配`, `${resultCount} matches`)}<Button color="secondary" variant="ghost" size="sm" onClick={() => setQuery('')}>{t("清除搜索", "Clear search")}</Button></div>}
+      {resultCount ? <><Foundations /><Controls /><Navigation /><Feedback /><Motion /><BusinessPatterns appearance={appearance}/></> : <EmptyMessage fill="none"><EmptyMessage.Icon><Search /></EmptyMessage.Icon><EmptyMessage.Title>{t("没有找到对应模式", "No matching patterns")}</EmptyMessage.Title><EmptyMessage.Description>{t("试试“输入”“审批”或组件英文名。", "Try “input”, “approval”, or a component name.")}</EmptyMessage.Description><EmptyMessage.ActionRow><Button color="secondary" variant="outline" onClick={() => setQuery('')}>{t("查看全部", "View all")}</Button></EmptyMessage.ActionRow></EmptyMessage>}
     </div></div></CatalogueQuery>
   </div>;
 }
@@ -151,7 +207,12 @@ function Foundations() {
     <Spec id="color"><div className="ui-color-grid">{[{ name: t("主表面", "Primary surface"), token: 'surface' }, { name: t("次级表面", "Secondary surface"), token: 'surface-secondary' }, { name: t("悬停表面", "Hover surface"), token: 'surface-tertiary' }, { name: t("主文字", "Primary text"), token: 'text' }, { name: t("次级文字", "Secondary text"), token: 'text-secondary' }, { name: t("细分隔", "Subtle border"), token: 'border-subtle' }].map(item => <div key={item.token}><span className="ui-color-swatch" style={{ background: `var(--color-${item.token})` }} /><strong>{item.name}</strong><small>{item.token}</small></div>)}</div></Spec>
     <Spec id="identity"><div className="ui-icon-grid">{icons.map(({ label, Icon }) => <div key={label}><Icon aria-hidden="true" /><span>{label}</span></div>)}</div><div className="ui-identity-row"><Avatar name={t("示例人物", "Example person")} size={36} /><div><strong>{t("示例人物", "Example person")}</strong><p className="ui-muted">{t("没有图片时使用姓名首字", "Use initials when no image is available")}</p></div><Avatar Icon={Agent} size={36} /><div><strong>{t("资料助理", "Research agent")}</strong><p className="ui-muted">{t("角色与个人使用不同标识", "Distinguish agents from people")}</p></div></div></Spec>
     <Spec id="recommendation-icons"><RecommendationIconCatalogue/></Spec>
+    <Spec id="connector-icons"><ConnectorIconExample/></Spec>
   </CatalogueSection>;
+}
+
+function Motion() {
+  return <CatalogueSection id="motion"><Spec id="activity-edge"><ActivityEdgeExample/></Spec><Spec id="light-families"><LightStudyExample/></Spec></CatalogueSection>;
 }
 
 function Controls() {
@@ -174,7 +235,7 @@ function Controls() {
     <Spec id="select"><Field label={t("回答深度", "Response depth")}><Select value={choice} options={[{value:'brief',label:t("简短", "Brief"),description:t("只保留结论与下一步", "Conclusions and next steps only")},{value:'balanced',label:t("均衡", "Balanced"),description:t("说明重点及必要依据", "Key points with supporting evidence")},{value:'deep',label:t("深入", "Detailed"),description:t("展开背景、取舍与依据", "Context, trade-offs, and evidence")}]} onChange={option => setChoice(option.value)} disabled={disabled} /></Field><p className="ui-muted">{t("当前选择：", "Selected: ")}{{brief:t("简短", "Brief"),balanced:t("均衡", "Balanced"),deep:t("深入", "Detailed")}[choice]}</p></Spec>
     <Spec id="platform-select"><Field label={t('通信平台', 'Platform')}><PlatformSelect value={platform} onChange={setPlatform} disabled={disabled} /></Field></Spec>
     <Spec id="checkbox"><div className="ui-stack"><Checkbox checked={checks[0]} disabled={disabled} label={t("这条理解符合我的情况", "This understanding fits my situation")} onCheckedChange={value => setChecks([value, checks[1]])} /><Checkbox checked={checks[1]} disabled={disabled} label={t("在本次任务中使用这条背景", "Use this context for this task")} onCheckedChange={value => setChecks([checks[0], value])} /></div><p className="ui-muted">{t(`已选 ${checks.filter(Boolean).length} 项，彼此独立。`, `${checks.filter(Boolean).length} independent options selected.`)}</p></Spec>
-    <Spec id="switch"><div className="ui-setting-row"><div><strong>{t("示例提醒", "Demo reminder")}</strong><p>{t("只切换显示状态，不设置真实提醒。", "Changes the displayed state only. No reminder is created.")}</p></div><Switch checked={enabled} onCheckedChange={setEnabled} disabled={disabled} label={enabled ? t("已开启", "On") : t("已关闭", "Off")} /></div></Spec>
+    <Spec id="switch"><div className="ui-setting-row"><div><strong><label htmlFor="ui-reminder-switch">{t("示例提醒", "Demo reminder")}</label></strong><p id="ui-reminder-hint">{enabled ? t("已开启。仅演示状态，不设置真实提醒。", "On. This example does not create a reminder.") : t("已关闭。仅演示状态，不设置真实提醒。", "Off. This example does not create a reminder.")}</p></div><Switch id="ui-reminder-switch" aria-describedby="ui-reminder-hint" checked={enabled} onCheckedChange={setEnabled} disabled={disabled} /></div></Spec>
     <Spec id="radio"><RadioGroup value={scope} onChange={setScope} aria-label={t("演示使用范围", "Demo permission scope")} disabled={disabled} direction="col"><RadioGroup.Item value="once">{t("仅这一次", "Only this once")}</RadioGroup.Item><RadioGroup.Item value="session">{t("当前演示会话", "This demo session")}</RadioGroup.Item><RadioGroup.Item value="permanent" disabled>{t("长期授权（此例不可用）", "Ongoing permission (unavailable here)")}</RadioGroup.Item></RadioGroup></Spec>
     <Spec id="slider"><Slider label={t("计划时长", "Planned duration")} value={range} min={15} max={120} step={15} resetValue={30} resetTooltip={t("恢复 30 分钟", "Reset to 30 minutes")} unit={t("分钟", "min")} disabled={disabled} onChange={setRange} /><p className="ui-muted">{t(`当前 ${range} 分钟，每步 15 分钟`, `${range} minutes, in 15-minute steps`)}</p></Spec>
   </CatalogueSection>;
@@ -209,7 +270,7 @@ function Feedback() {
   const alert = alerts[message as keyof typeof alerts];
   function validate() { try { const url = new URL(address); setValidation(url.protocol === 'https:' || url.protocol === 'http:' ? 'valid' : 'error'); } catch { setValidation('error'); } }
   return <CatalogueSection id="feedback">
-    <Spec id="badges"><div className="ui-inline"><Badge color="secondary" size="sm">{t("已确认", "Confirmed")}</Badge><Badge color="secondary" variant="outline" size="sm">{t("推断", "Inferred")}</Badge><Badge color="warning" size="sm">{t("待确认", "Needs confirmation")}</Badge></div><div className="ui-inline">{(['queued','running','awaiting_approval','completed','failed','cancelled','interrupted'] as TaskStatus[]).map(status => <TaskBadge key={status} status={status} />)}</div></Spec>
+    <Spec id="badges"><div className="ui-inline"><Badge color="secondary" size="sm">{t("已确认", "Confirmed")}</Badge><Badge color="secondary" variant="outline" size="sm">{t("推断", "Inferred")}</Badge><Badge color="warning" size="sm">{t("待确认", "Needs confirmation")}</Badge></div><div className="ui-inline">{(['queued','running','needs_input','awaiting_approval','completed','failed','cancelled','interrupted'] as TaskStatus[]).map(status => <TaskBadge key={status} status={status} />)}</div></Spec>
     <Spec id="alert"><Select aria-label={t("反馈样式", "Feedback style")} value={message} options={[{value:'info',label:t("提示", "Information")},{value:'success',label:t("成功", "Success")},{value:'warning',label:t("等待确认", "Awaiting confirmation")},{value:'danger',label:t("错误", "Error")}]} onChange={option => setMessage(option.value)} /><Alert color={alert.color} variant="soft" title={alert.title} description={alert.description} /></Spec>
     <Spec id="setup-hint"><SetupHint href="#settings/model" action={t('连接模型', 'Connect a model')}>{t('连接后即可开始对话。', 'Connect to start a conversation.')}</SetupHint></Spec>
     <Spec id="loading"><div className="ui-inline ui-spread"><span className="ui-muted">{t("手动控制演示状态", "Manually control the demo state")}</span><Switch label={t("显示等待", "Show waiting")} checked={loading} onCheckedChange={setLoading} /></div><div className="ui-loading-demo" aria-live="polite">{loading ? <><LoadingIndicator /><span>{t("等待示例内容", "Waiting for example content")}</span><LoadingDots /></> : <><Check /><span>{t("已切换到内容状态", "Content state selected")}</span></>}</div></Spec>
@@ -219,7 +280,6 @@ function Feedback() {
 }
 
 function BusinessPatterns({appearance}:{appearance?:Partial<Appearance>}) {
-  const [selectedSuggestion,setSelectedSuggestion]=useState('');
   const [step, setStep] = useState(0);
   const [details, setDetails] = useState(false);
   const [approval, setApproval] = useState<'pending'|'approved'|'rejected'>('pending');
@@ -247,7 +307,7 @@ function BusinessPatterns({appearance}:{appearance?:Partial<Appearance>}) {
   return <CatalogueSection id="patterns">
     <Spec id="agent-badge"><BadgeExample/></Spec>
     <Spec id="composer"><ComposerExample/></Spec>
-    <Spec id="suggestion-row"><div className="suggestion-row-preview">{([{kind:'feedback',label:t('整理用户反馈，确定下一版的三个重点','Review user feedback and choose three priorities for the next version')},{kind:'trip',label:t('安排国庆回杭州陪父母的四天行程','Plan a four-day National Day trip home to Hangzhou')},{kind:'presentation',label:t('准备一段三分钟的 SecondU 功能演示','Prepare a three-minute SecondU feature demo')}] satisfies {kind:SuggestionKind;label:string}[]).map(item=><SuggestionRow key={item.kind} kind={item.kind} href="#ui-suggestion-row" onClick={event=>{event.preventDefault();setSelectedSuggestion(item.label);}}>{item.label}</SuggestionRow>)}</div>{selectedSuggestion&&<p className="ui-example-note" role="status">{t('已选择：','Selected: ')}{selectedSuggestion}</p>}</Spec>
+    <Spec id="suggestion-row"><HomeSuggestionExample/></Spec>
     <Spec id="platform-filter"><PlatformFilterExample/></Spec>
     <Spec id="illustrations"><ThemeDecorationCatalogue/><IllustrationExample/></Spec>
     <Spec id="startup"><StartupExample appearance={appearance}/></Spec>

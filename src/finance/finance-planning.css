@@ -1,0 +1,50 @@
+.finance-planning-tabs { min-width:0;overflow:auto; }
+.finance-planning-select { display:none;min-width:0; }
+.finance-planning>.finance-page-toolbar>button { flex-shrink:0; }
+.finance-plan-list { display:grid;gap:16px;margin-top:12px; }
+.finance-plan-item { min-width:0;padding:16px;border:1px solid var(--color-border-subtle);border-radius:var(--hither-radius-panel); }
+.finance-plan-item-heading { display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px; }
+.finance-plan-item-heading>div:first-child { min-width:0;overflow-wrap:anywhere; }
+.finance-plan-actions { display:flex;align-items:center;gap:4px; }
+.finance-plan-actions { flex-shrink:0; }
+.finance-plan-value { display:flex;align-items:baseline;gap:8px;flex-wrap:wrap; }
+.finance-plan-value>strong { font-size:24px;line-height:32px;font-weight:550;font-variant-numeric:tabular-nums; }
+.finance-plan-value>span { color:var(--color-text-secondary);font-size:12px; }
+.finance-plan-item>progress,.finance-credit-scale>progress { display:block;width:100%;height:7px;margin:12px 0;appearance:none;border:0;border-radius:8px;overflow:hidden;background:var(--color-surface-tertiary); }
+.finance-plan-item>progress::-webkit-progress-bar,.finance-credit-scale>progress::-webkit-progress-bar { background:var(--color-surface-tertiary); }
+.finance-plan-item>progress::-webkit-progress-value,.finance-credit-scale>progress::-webkit-progress-value { background:var(--blue-500);border-radius:8px; }
+.finance-memory-text { white-space:pre-wrap;overflow-wrap:anywhere; }
+.finance-plan-form { gap:20px; }
+.finance-settings.finance-plan-dialog { width:min(540px,100%); }
+.finance-settings.finance-plan-dialog-memories { width:min(480px,100%); }
+.finance-settings.finance-plan-dialog-creditRecords { width:min(620px,100%); }
+.finance-settings .finance-plan-form>.dialog-actions { margin-top:4px; }
+.finance-plan-field { display:flex;flex-direction:column;gap:8px;min-width:0; }
+.finance-plan-field>label { font-size:var(--hither-font-label,14px);line-height:22px;font-weight:500; }
+.finance-plan-field-pair { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px; }
+.finance-credit-factor-editor { display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;gap:8px;align-items:center; }
+.finance-credit-factor-add { display:flex;align-items:center;justify-content:space-between;gap:12px; }
+.finance-scenario-form { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 24px;margin:12px 0 24px;max-width:760px; }
+.finance-scenario-form>.dialog-actions { grid-column:1/-1; }
+.finance-scenario-result { max-width:900px; }
+.finance-scenario-totals { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-bottom:20px!important; }
+.finance-scenario-totals dt { font-size:12px;line-height:18px;color:var(--color-text-secondary); }
+.finance-scenario-totals dd { margin:8px 0 0;font-size:16px;line-height:24px;font-weight:550;font-variant-numeric:tabular-nums; }
+.finance-credit-value { display:flex;align-items:baseline;gap:12px;margin:16px 0 8px; }
+.finance-credit-value>strong { font-size:32px;line-height:40px;font-weight:550; }
+.finance-credit-value>span { color:var(--color-text-secondary);font-size:12px; }
+.finance-credit-scale>div { display:flex;justify-content:space-between;font-size:12px;color:var(--color-text-secondary); }
+.finance-credit-factors { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 24px;margin-top:20px!important; }
+.finance-credit-factors dt { font-size:12px;line-height:18px;color:var(--color-text-secondary); }
+.finance-credit-factors dd { margin:4px 0 0;font-size:14px;line-height:22px;overflow-wrap:anywhere; }
+@container finance (max-width:600px) { .finance-planning>.finance-page-toolbar { flex-wrap:wrap; } .finance-planning-tabs { width:100%; } .finance-scenario-form { gap:16px 12px; } .finance-scenario-totals { grid-template-columns:1fr;gap:12px; } .finance-scenario-totals>div { display:flex;align-items:baseline;justify-content:space-between;gap:12px; } .finance-scenario-totals dd { margin:0; } .finance-plan-item { padding:12px; } }
+@container finance (max-width:680px) { .finance-planning-tabs { display:none; } .finance-planning-select { display:block;flex:1;max-width:240px; } .finance-planning-select>* { width:100%;min-width:0; } }
+@media(max-width:540px) { .finance-credit-factor-editor { grid-template-columns:minmax(0,1fr) auto; } .finance-credit-factor-editor>:first-child { grid-column:1/-1; } }
+
+@media(max-width:540px) { .finance-plan-field-pair { grid-template-columns:1fr;gap:20px; } .mobile-root .finance-settings.finance-plan-dialog { width:100%; } }
+
+@container finance-dialog (max-width:480px) {
+  .finance-plan-field-pair { grid-template-columns:minmax(0,1fr); gap:20px; }
+  .finance-credit-factor-editor { grid-template-columns:minmax(0,1fr) auto; }
+  .finance-credit-factor-editor>:first-child { grid-column:1/-1; }
+}

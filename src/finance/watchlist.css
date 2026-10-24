@@ -1,0 +1,6 @@
+.finance-watchlist-row { display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px;border-radius:8px; }
+.finance-watchlist-row:hover { background:var(--color-surface-secondary); }
+.finance-watchlist-row>span { min-width:0;overflow-wrap:anywhere; }
+.finance-watchlist-row strong { font-size:14px;line-height:22px;font-weight:500; }
+.finance-watchlist-row small { display:block;font-size:12px;line-height:18px;color:var(--color-text-secondary); }
+.finance-watchlist-form { margin-top:16px; }

@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "baselineCommit": "e9a89928abda00a737b148c5c29b48575edba89c",
   "title": "SecondU 的产品判断、实现与验证",
-  "summary": "v0.2.0 于北京时间 2026 年 10 月 20 日公开，新增七项材料入口、原件保存、本人审阅和新任务草稿，提供手机布局与默认关闭的本机主动联系。macOS 下载包和应用内更新源已发布。",
+  "summary": "财务、项目与官网体验已完成本地检查，用户确认预览后进入 v0.2.1 最终交付，正在核对文档素材、原生安装包、官网和更新源。",
   "stages": [
     {
       "id": "research",
@@ -49,23 +49,23 @@
     },
     {
       "id": "current-review",
-      "title": "按最新反馈修订",
-      "summary": "v0.2.0 交付分身建设、材料用途选择、本人审阅、手机布局与本机主动联系。实体手机和长期使用效果仍需进一步验证。",
-      "status": "partial",
+      "title": "完善当前体验",
+      "summary": "美国虚构财务示例、六视图、项目页及官网明暗与窄屏检查完成，最新预览已由用户确认。",
+      "status": "verified",
       "document": "DEVELOPMENT.md",
-      "summaryEn": "v0.2.0 delivers twin building, material-purpose selection, personal review, a mobile layout and local proactive contact. Physical-device use and long-term outcomes still need further validation.",
+      "summaryEn": "The fictional US finance example, six views, project page, website themes and narrow layouts have been checked, and the latest preview accepted.",
       "titleEn": "Refine the current experience",
-      "section": "2026-10-20 v0.2.0 公开交付"
+      "section": "2026-10-25 最终交付与发布"
     },
     {
       "id": "delivery",
       "title": "验证并交付本机版本",
-      "summary": "v0.2.0 的 macOS 安装包、更新源与双语官网已发布。安装包采用 ad-hoc 签名，尚未 Apple 公证。",
-      "status": "partial",
+      "summary": "正在完成 v0.2.1 的文档素材、原生包、公开下载、官网和更新源交付。",
+      "status": "in_progress",
       "document": "DEVELOPMENT.md",
-      "summaryEn": "The v0.2.0 macOS archive, update feed and bilingual website are published. The macOS archive uses ad-hoc signing and is not Apple-notarized.",
+      "summaryEn": "Completing v0.2.1 documentation, media, native packaging, public downloads, website and update-feed delivery.",
       "titleEn": "Verify and deliver",
-      "section": "2026-10-20 v0.2.0 公开交付"
+      "section": "2026-10-25 最终交付与发布"
     }
   ],
   "iterations": [
@@ -403,6 +403,46 @@
       ],
       "document": "DEVELOPMENT.md",
       "section": "2026-10-20 v0.2.0 公开交付"
+    },
+    {
+      "id": "finance-workspace-v021",
+      "date": "2026-10-25",
+      "title": "财务工作区与全产品整理",
+      "titleEn": "Finance workspace and product-wide refinement",
+      "summary": "加入七页财务、账户与研究服务；改进导航、电脑、首页、外观、对话及响应式，并更新十章引导和使用说明。",
+      "summaryEn": "Add seven finance pages and account and research services; refine navigation, computers, home, appearance, conversations and responsive layouts, with ten-chapter onboarding and updated guidance.",
+      "status": "partial",
+      "evidence": [
+        "finance-source-v021",
+        "finance-ui-v021"
+      ],
+      "document": "DEVELOPMENT.md",
+      "section": "2026-10-25 v0.2.1 发布准备"
+    },
+    {
+      "id": "project-local-preview-20261025",
+      "date": "2026-10-25",
+      "title": "先查看本地项目页改版",
+      "titleEn": "Review the revised project page locally",
+      "summary": "记录对前版整体样式的再次否定，重排项目标题、操作、页签与文件工具栏；先检查本地预览，暂停发布。",
+      "summaryEn": "Record rejection of the previous overall layout and reorganize project headings, actions, tabs and file tools; review locally with publication paused.",
+      "status": "in_progress",
+      "evidence": [
+        "project-local-layout-20261025"
+      ],
+      "document": "DEVELOPMENT.md",
+      "section": "2026-10-25 项目页再次修正与本地预览"
+    },
+    {
+      "id": "finance-website-local-review-20261025",
+      "date": "2026-10-25",
+      "title": "完善资产管理与工作区体验",
+      "titleEn": "Improve asset management and the workspace",
+      "summary": "补齐多机构、多币种、多类型资产的演示，统一官网产品展示与项目文件布局。当前版本处于本地预览。",
+      "summaryEn": "Expand the demo across institutions, currencies and asset types, and align the website presentation with the project file workspace. This version is in local preview.",
+      "status": "in_progress",
+      "document": "DEVELOPMENT.md",
+      "section": "2026-10-25 官网财务展示与示例数据继续修正"
     }
   ],
   "capabilities": [
@@ -517,6 +557,20 @@
       ],
       "document": "DEVELOPMENT.md",
       "section": "2026-10-19 原件统一与主动联系状态补录"
+    },
+    {
+      "id": "finance-workspace",
+      "title": "有来源与时间的财务工作区",
+      "titleEn": "Finance with traceable sources and dates",
+      "summary": "七页财务连接账户、资产、负债、收支和规划；本机周报与范围快照进入现有任务。只读来源和手动记录分别保留原币、日期及数据范围。",
+      "summaryEn": "Seven finance pages connect accounts, assets, liabilities, income, spending and planning; local reports and scoped snapshots use existing tasks. Read-only sources and manual records preserve currencies, dates and coverage.",
+      "status": "partial",
+      "evidence": [
+        "finance-source-v021",
+        "finance-ui-v021"
+      ],
+      "document": "PRODUCT.md",
+      "section": "2026-10-24 财务模块的产品定位"
     }
   ],
   "evidence": [
@@ -1023,6 +1077,42 @@
       "detailEn": "v0.2.0 is a public stable release tagged at 5185f9163cf50ea6a559326c40b8c142ffe905dd. ZIP, appcast.xml and SHA256SUMS download digests matched; update-feed and Ed25519 verification passed. The website deployed e9a8992 with a matching main script. This entry does not cover live browser interactions.",
       "document": "DEVELOPMENT.md",
       "section": "2026-10-20 v0.2.0 公开交付"
+    },
+    {
+      "id": "finance-source-v021",
+      "title": "财务、连接与外观源码检查",
+      "titleEn": "Finance, connection and appearance source checks",
+      "scope": "当前 v0.2.1 候选源码与隔离数据检查。",
+      "scopeEn": "Current v0.2.1 candidate source and isolated data checks.",
+      "status": "partial",
+      "detail": "依赖修补后的最终源码回归 1,179 项：1,166 通过、13 跳过、0 失败；官网 23 项财务与展示测试全部通过，类型检查与应用和官网生产构建通过。覆盖账户预览与对应、流水去重、财务记录和估值、周报、外观保存、电脑检查及运行状态。新供应商使用隔离数据，不表示所有真实账号已接通。",
+      "detailEn": "Final source regression after dependency patches: 1,179 tests, 1,166 passed, 13 skipped, no failures. All 23 website finance/presentation tests, type checks and app/website builds passed. Coverage includes account preview/mapping, transaction reconciliation, journals, valuations, reports, appearance, computer checks and activity state. Isolated provider data does not establish production access for every account.",
+      "document": "DEVELOPMENT.md",
+      "section": "2026-10-25 最终交付与发布"
+    },
+    {
+      "id": "finance-ui-v021",
+      "title": "桌面与窄屏路径核对",
+      "titleEn": "Desktop and narrow-layout checks",
+      "scope": "实际应用页面与独立虚构任务。",
+      "scopeEn": "Actual app pages and isolated fictional tasks.",
+      "status": "partial",
+      "detail": "已检查首页 390px 与 320px、消息气泡、电脑检测、全景三种内容宽度、全屏视图及账户／负债筛选。光效已检查减少动态、关闭和任务结束；这些结果不代替实体手机、所有浏览器或用户最终接受。 新增引导完成中英文桌面与 390px 检查及实际财务跳转；连接行通过暗色 1280px／390px 检查及管理详情打开。",
+      "detailEn": "Checked 390px and 320px home layouts, message bubbles, computer checks, three panorama content layouts, fullscreen views and account/liability filters. Activity checks include reduced motion, off and task completion, without claiming physical-device, all-browser or final user acceptance. New onboarding passed Chinese and English desktop/390px checks and finance navigation; connection rows passed dark 1280px/390px checks and opening management details.",
+      "document": "DEVELOPMENT.md",
+      "section": "2026-10-25 首页、设置与对话布局继续修正"
+    },
+    {
+      "id": "project-local-layout-20261025",
+      "title": "项目文件页桌面与窄屏布局",
+      "titleEn": "Desktop and narrow project file layouts",
+      "scope": "项目页改版的实际 1280 × 720 与 390 × 844 本地页面。",
+      "scopeEn": "Actual local revised project pages at 1280 × 720 and 390 × 844.",
+      "status": "partial",
+      "detail": "文件页已查看；390px 视口的内容宽度同为 390px，无横向溢出。文件夹返回及页签键盘操作仍在核对，尚未获得用户接受；此前全量回归不覆盖这次后续修正。",
+      "detailEn": "The file page has been inspected, with a 390px content width at a 390px viewport and no horizontal overflow. Folder return and keyboard tab interaction are still being checked. User acceptance is pending; the preceding full regression does not cover this later revision.",
+      "document": "DEVELOPMENT.md",
+      "section": "2026-10-25 项目页再次修正与本地预览"
     }
   ],
   "boundaries": [
@@ -1065,6 +1155,14 @@
       "titleEn": "v0.2.0 limitations",
       "detail": "实体手机访问、真实媒体理解、跨设备连接与长期使用效果仍需验证。视频目前仅保存与回看；主动联系依赖本机服务，尚无云端观察或手机推送。",
       "detailEn": "Physical-phone access, real-media understanding, cross-device connections and long-term outcomes still need validation. Video supports storage and playback only. Proactive contact requires the local service, without cloud observation or phone push notifications.",
+      "status": "partial"
+    },
+    {
+      "id": "finance-v021-boundaries",
+      "title": "财务与设备范围",
+      "titleEn": "Finance and computer scope",
+      "detail": "账户连接只读，地区、产品和许可决定可用性；IBKR Flex 与 SnapTrade 不导入交易流水，信用与非证券估值由本人记录。新供应商主要用隔离数据验收；没有下单、付款、自动征信、设备配对或跨设备屏幕控制。",
+      "detailEn": "Account connections are read-only and depend on region, products and permissions. IBKR Flex and SnapTrade do not import transactions; credit and non-security valuations are user-recorded. New providers mainly use isolated validation. Trading, payments, automatic credit reports, device pairing and cross-device screen control are not provided.",
       "status": "partial"
     }
   ],
@@ -1201,11 +1299,49 @@
     }
   ],
   "titleEn": "SecondU: product decisions, implementation and evidence",
-  "summaryEn": "Published on October 20, 2026 Beijing time, v0.2.0 adds seven material entry points, preserved originals, personal review and new task drafts, with a mobile layout and local proactive contact off by default. The macOS download and in-app update feed are available.",
+  "summaryEn": "Local finance, project and website checks are complete. Following preview acceptance, v0.2.1 delivery is verifying documentation, media, the native package, website and update feed.",
   "latestRelease": {
     "version": "v0.2.0",
     "publishedAt": "2026-10-19T16:47:35Z",
     "commit": "5185f9163cf50ea6a559326c40b8c142ffe905dd",
     "url": "https://github.com/YunyueLi/SecondU/releases/tag/v0.2.0"
+  },
+  "currentProgress": {
+    "id": "v021-final-delivery",
+    "date": "2026-10-25",
+    "status": "in_progress",
+    "title": "完成财务与工作区更新交付",
+    "titleEn": "Deliver finance and workspace updates",
+    "summary": "财务、项目与官网体验已完成本地检查，用户确认预览后进入 v0.2.1 最终交付，正在核对文档素材、原生安装包、官网和更新源。",
+    "summaryEn": "Local finance, project and website checks are complete. Following preview acceptance, v0.2.1 delivery is verifying documentation, media, the native package, website and update feed.",
+    "completed": [
+      {
+        "zh": "七个财务页面、六个官网展示视图及完整美元虚构数据已检查。",
+        "en": "Seven finance pages, six website views and the complete fictional USD dataset have been checked."
+      },
+      {
+        "zh": "最新页脚、导航、项目页、明暗主题及窄屏预览完成检查，用户确认继续整体交付。",
+        "en": "The latest footer, navigation, project page, themes and narrow preview were checked; the user approved completion of the delivery."
+      },
+      {
+        "zh": "依赖修补及锁文件重新安装完成，财务测试与图标部署触发纳入持续检查。",
+        "en": "Dependency patches and locked clean installs completed; finance tests and asset deployment triggers are included in CI."
+      },
+      {
+        "zh": "中英文 README 与指南同步完成，24 张海报、16 个动效及全部引用和校验值通过核对。",
+        "en": "Bilingual READMEs and guides are aligned; 24 posters, 16 motion files, references and checksums have been verified."
+      }
+    ],
+    "pending": [
+      {
+        "zh": "原生安装包、安装后运行及公开交付检查。",
+        "en": "Native packaging, installed-app runtime and public-delivery checks."
+      },
+      {
+        "zh": "GitHub 发布、官网部署、匿名下载与更新源验证。",
+        "en": "GitHub release, website deployment, anonymous downloads and update-feed verification."
+      }
+    ],
+    "iteration": "finance-workspace-v021"
   }
 }

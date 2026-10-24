@@ -38,6 +38,16 @@ export interface TaskActivityModel {
 }
 
 const taskStates = new Set<TaskStatus>(['queued', 'running', 'needs_input', 'awaiting_approval', 'completed', 'failed', 'cancelled', 'interrupted']);
+
+/** Only confirmed execution earns a moving activity treatment. */
+export function isActivityModelRunning(model:TaskActivityModel) {
+  const reviewBlocked=!!model.review&&['running','rejected','failed','cancelled'].includes(model.review.status)&&!model.activeActions.length;
+  return model.status==='running'&&!model.stopping&&!model.remote?.unconfirmed&&!reviewBlocked;
+}
+
+export function isTaskActivityRunning(task:Task|undefined) {
+  return !!task&&task.status==='running'&&isActivityModelRunning(buildTaskActivityModel(task));
+}
 const terminalTypes = new Set(['completed', 'failed', 'interrupted', 'cancelled', 'needs_input', 'configuration_required', 'write_rejected']);
 const actionKinds = new Set<ActivityKind>(['command', 'file_change', 'tool', 'web_search', 'connector']);
 const actionPhases = new Set<ActivityActionStatus>(['running', 'completed', 'failed', 'rejected']);

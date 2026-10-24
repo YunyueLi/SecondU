@@ -2,6 +2,14 @@
 
 这里的连接器接入资料和工具；模型服务仍由原有模型连接管理。本实现沿用 Codex app-server 的执行循环，没有新增模型循环。
 
+## v0.2.1 服务目录与财务连接
+
+设置中的目录采用紧凑服务行与统一详情，常用工作服务和财务服务保留各自用途分组。先说明地区、订阅、凭据及客户端准入，再进入配置；品牌图标和目录位置不承担“已连接”的语义。服务行将名称、说明、状态及操作区保持在同一布局中，已保存财务连接整行进入管理详情，不再叠加重复齿轮。MCP 的配置与检查仍按各自实际动作呈现。暗色桌面及 390px 窄屏已检查，新行可进入 Moomoo 详情；该操作不写入账户。
+
+账户连接包含 Moomoo、Plaid、Teller、TrueLayer、Interactive Brokers Flex 和 SnapTrade。它们使用专门的只读适配器，授权、预览、账户对应和同步按服务能力区分，不把账户读取当作普通 MCP 工具发现。流水去重与来源撤回保留审计范围；IBKR Flex 和 SnapTrade 不导入交易流水。完整字段、地区、时效和验收边界见[财务说明](FINANCE.md)。
+
+金融研究目录包含 Alpha Vantage、Morningstar、FactSet、Daloopa、Fiscal.ai、Quartr Pro、Crunchbase、Financial Modeling Prep 和 LSEG。服务商权限、订阅和数据许可仍需使用者具备；LSEG 保留预览状态，Quartr Pro 受个人订阅资格限定。FMP 的 API key 单独保存且只发送到精确官方端点，Daloopa 的 Bearer 栏接收 MCP token。工具发现保留数量、分页、响应大小和网络限制。
+
 ## 官方参照与取舍
 
 2026-09-29 查阅的官方资料：

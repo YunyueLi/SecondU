@@ -6,6 +6,7 @@ import {Switch} from '@openai/apps-sdk-ui/components/Switch';
 import {Checkbox} from '@openai/apps-sdk-ui/components/Checkbox';
 import {Camera,Mic,Desktop,Mobile,Check,ArrowRight,Document} from '@openai/apps-sdk-ui/components/Icon';
 import {t} from './i18n';
+import {PageNavigation} from './components';
 import {deviceSimulationReducer,initialDeviceSimulation,type SimDevice,type SimStatus,type SimCapability} from './deviceSimulation';
 import './devices.css';
 
@@ -46,7 +47,7 @@ export function DeviceSimulator({embedded=false,onComplete}:{embedded?:boolean;o
  const title=device==='glasses'?t('采集现场信息','Capture field context'):device==='desktop'?t('在桌面继续处理','Continue on desktop'):state.status==='complete'?t('确认已同步至任务','Approval synced to the task'):t('在手机审阅最新成果','Review the latest result on phone');
  const subtitle=device==='glasses'?t('在现场说句话、拍张图。回到电脑时，刚才的内容和正在做的事都还在。','Say something or take a photo while you are there. At your computer, pick up with the same information and task.'):device==='desktop'?t('现场的那句话跟着你回来了。先改成自己认可的清单，再交给手机确认。','The field note is here with you. Edit the checklist until it feels right, then review it on your phone.'):state.status==='complete'?t('从现场的一句话，到你看过的清单。换了设备，这件事仍然完整。','From a thought in the field to a checklist you reviewed. Different devices, the same task.'):t('离开电脑也能审阅。只确认眼前这份内容；桌面改过，手机就要重新看一次。','Review away from your desk. Approval covers this exact draft. If it changes on desktop, review it again.');
  return <section className="device-simulator device-story">
-  <header className="device-story-heading"><div><h1>{embedded?t('工作台试点评审','Workspace pilot review'):t('随身接续','Pick up where you left off')}</h1><Badge size="sm" color="secondary" variant="outline">{t('交互演示','Interactive demo')}</Badge></div><Button size="sm" color="secondary" variant="ghost" onClick={reset}>{t('重新体验','Start again')}</Button></header>
+  <header className="device-story-heading"><div><PageNavigation/><h1>{embedded?t('工作台试点评审','Workspace pilot review'):t('随身接续','Pick up where you left off')}</h1><Badge size="sm" color="secondary" variant="outline">{t('交互演示','Interactive demo')}</Badge></div><Button size="sm" color="secondary" variant="ghost" onClick={reset}>{t('重新体验','Start again')}</Button></header>
   <div className="device-shared-context"><div><strong>{t('同一任务上下文','One shared task context')}</strong><span>{t('项目资料、现场输入与成果版本连续保留','Project sources, field inputs and result revisions stay together')}</span></div><Button color="secondary" variant="ghost" size="sm" onClick={()=>setShowContext(!showContext)} aria-expanded={showContext}>{t(`${3+state.inputs.length} 项来源与状态`,`${3+state.inputs.length} sources and state records`)}<ArrowRight/></Button></div>
   {showContext&&<section className="device-context-ledger" aria-label={t('跨设备上下文清单','Cross-device context inventory')}>
    <article><Document/><div><strong>{t('项目概览.md','Project overview.md')}</strong><small>{t('文字原件，来自桌面，9 月 30 日 09:10','Original text from desktop, 30 September at 09:10')}</small><p>{t('目标：验证请求、执行与可编辑成果的完整流程。','Goal: validate the complete journey from request to execution and editable result.')}</p><span>{t('已关联工作台试点评审，并完成确认。','Linked to the workspace pilot review and confirmed.')}</span></div></article>

@@ -35,6 +35,9 @@ test('website exports the complete desktop canonical spaces without user state o
     assert.ok(Object.keys(example.responses).some(route => route.startsWith('/development/documents?')));
     assert.ok(d.projects.every(project => project.path.startsWith(`/examples/${example.space}/`)));
     assert.ok(d.modelConnections.every(connection => !connection.hasKey));
+    assert.equal(d.settings.provider, 'moonshot'); assert.equal(d.settings.model, 'kimi-k3.1-pro');
+    assert.equal(d.settings.api, 'chat_completions'); assert.equal(d.settings.hasKey, false);
+    assert.ok(d.modelConnections.every(connection => connection.model === 'kimi-k3.1-pro' && !connection.lastTest));
     assert.equal(d.computer.status, 'offline'); assert.equal(d.computer.workspace, '');
     assert.doesNotMatch(JSON.stringify(example), /secondu-public-examples-|\/Users\/|\/private\/var\/|website-weekend|website-planner/);
   }

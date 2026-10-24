@@ -11,6 +11,7 @@ const key='synthetic-integration-key',fileData=Buffer.from('Remote fixture resul
 class FixtureRemoteTransport {
   constructor(){this.calls=[];this.states=new Map();}
   async probe(computer){this.calls.push({op:'probe'});return {protocol:1,node:'22.13.0',nodePath:'/fixture/node',platform:'linux',codex:'codex fixture',codexPath:'/fixture/codex',workspaceRoot:computer.workspaceRoot,checkedAt:stamp()};}
+  async verifyRuntime(_computer,pkg){this.calls.push({op:'verifyRuntime'});return {protocol:pkg.protocol,version:pkg.version,valid:true};}
   async prepare(_computer,pkg){this.calls.push({op:'prepare'});return {protocol:1,version:pkg.version,runtimePath:`/fixture/.local/share/secondu-remote/releases/${pkg.version}/server/remote/rpc.mjs`};}
   event(record,type,label){record.state.sequence++;record.state.updatedAt=stamp();record.events.push({sequence:record.state.sequence,at:record.state.updatedAt,type,label,detail:'Synthetic event.'});}
   async call(computer,request){
@@ -82,6 +83,90 @@ test('HTTP showcase space exposes read-only computer settings and blocks every r
   const f=await fixture(t,{executionPolicy:'showcase'});const list=await f.api('computers');assert.equal(list.status,200);assert.equal(list.value.readOnly,true);
   for(const route of ['computers','computers/fixture/probe','computers/fixture/prepare','computers/fixture/runs','computers/fixture/runs/fixture/poll','computers/fixture/runs/fixture/cancel'])assert.equal((await f.api(route,{})).status,403);
   assert.equal(f.transport.calls.length,0);assert.equal(f.localCalls,0);
+});
+
+test('idle computer removal is a reversible local archive and restoring requires a new runtime check',async t=>{
+  const f=await fixture(t),{computer,body}=await configured(f),route=`computers/${computer.id}`,calls=f.transport.calls.length;
+  assert.equal((await f.api(route,{},'DELETE')).status,409);
+  assert.equal((await f.api(route,{expectedRevision:computer.revision,force:true},'DELETE')).status,400);
+  const removed=await f.api(route,{expectedRevision:computer.revision},'DELETE');
+  assert.equal(removed.status,200);assert.ok(removed.value.computer.archivedAt);assert.equal(removed.value.computer.revision,computer.revision+1);
+  let list=(await f.api('computers')).value;assert.equal(list.computers.length,0);assert.equal(list.archivedComputers.length,1);assert.equal(list.archivedComputers[0].id,computer.id);
+  assert.ok(f.app.store.require('remoteComputers',computer.id),'the local connection record is retained');
+  for(const [suffix,payload,method] of [
+    ['',{name:'Cannot edit',expectedRevision:removed.value.computer.revision},'PUT'],
+    ['/probe',{},'POST'],['/prepare',{installRuntime:true},'POST'],['/runs',body,'POST'],
+  ]){
+    const response=await f.api(route+suffix,payload,method);assert.equal(response.status,409);assert.equal(response.value.code,'remote_computer_archived');
+  }
+  assert.equal(f.transport.calls.length,calls,'archiving and blocked operations never connect to the remote host');
+  await f.restart();list=(await f.api('computers')).value;assert.equal(list.computers.length,0);assert.equal(list.archivedComputers.length,1);
+  assert.equal((await f.api(`${route}/restore`,{expectedRevision:computer.revision})).status,409);
+  const restored=(await f.api(`${route}/restore`,{expectedRevision:removed.value.computer.revision})).value.computer;
+  assert.equal(restored.id,computer.id);assert.equal(restored.revision,computer.revision+2);assert.equal(restored.status,'saved');assert.equal(restored.archivedAt,undefined);assert.equal(restored.probe,undefined);assert.equal(restored.runtime,undefined);
+  const freshBody={...body,computerRevision:restored.revision};
+  assert.equal((await f.api(`${route}/prepare`,{installRuntime:true})).value.code,'remote_not_probed');
+  assert.equal((await f.api(`${route}/runs`,freshBody)).value.code,'remote_not_prepared');
+  assert.equal((await f.api(`${route}/probe`,{})).status,200);
+  assert.equal((await f.api(`${route}/runs`,freshBody)).value.code,'remote_not_prepared');
+  assert.equal((await f.api(`${route}/prepare`,{installRuntime:true})).status,200);
+  assert.equal((await f.api(`${route}/runs`,freshBody)).status,200);await dispatched(f);
+  list=(await f.api('computers')).value;assert.equal(list.computers.length,1);assert.equal(list.archivedComputers.length,0);
+});
+
+test('computer archive blocks active or uncertain runs and keeps completed task history and artifacts accessible',async t=>{
+  const f=await fixture(t),{computer,body}=await configured(f),route=`computers/${computer.id}`;
+  const run=(await f.api(`${route}/runs`,body)).value.run;await dispatched(f);
+  assert.equal((await f.api(route,{expectedRevision:computer.revision},'DELETE')).value.code,'remote_computer_busy');
+  await f.api(`tasks/${run.taskId}/approval`,{approvalId:'fixture-approval',decision:'approve'});
+  const completed=structuredClone(f.app.store.require('remoteRuns',run.id));assert.equal(completed.status,'completed');
+  const calls=f.transport.calls.length;
+  for(const patch of [
+    {status:'starting'},{status:'running'},{status:'awaiting_approval'},
+    {dispatch:'pending'},{dispatch:'uncertain'},{observation:{status:'pending'}},{observation:{status:'disconnected'}},
+    {executorUnconfirmed:true},{approvals:[{id:'still-pending'}]},
+  ]){
+    f.app.store.put('remoteRuns',{...completed,...patch});
+    const response=await f.api(route,{expectedRevision:computer.revision},'DELETE');assert.equal(response.status,409);assert.equal(response.value.code,'remote_computer_busy');
+  }
+  f.app.store.put('remoteRuns',completed);
+  for(const operations of [f.app.remoteComputers.pending,f.app.remoteComputers.observing]){
+    operations.set(run.id,Promise.resolve());
+    assert.equal((await f.api(route,{expectedRevision:computer.revision},'DELETE')).value.code,'remote_computer_busy');operations.delete(run.id);
+  }
+  assert.equal(f.transport.calls.length,calls,'archive checks neither restart nor stop remote tasks');
+  const removed=await f.api(route,{expectedRevision:computer.revision},'DELETE');assert.equal(removed.status,200);
+  assert.deepEqual(f.app.store.require('remoteRuns',run.id),completed,'archiving does not change the task or its original remote binding');
+  assert.equal((await f.api(`${route}/runs`)).value.runs[0].id,run.id);
+  assert.equal((await f.api(`tasks/${run.taskId}/remote`)).value.run.id,run.id);
+  assert.equal((await f.api(`tasks/${run.taskId}/poll`,{})).value.status,'completed');
+  const artifact=await f.api(`${route}/runs/${run.id}/file`,{path:'result.txt'});assert.equal(artifact.status,200);assert.equal(artifact.value.dataBase64,fileData.toString('base64'));
+  await f.restart();assert.equal((await f.api('computers')).value.archivedComputers[0].id,computer.id);assert.equal((await f.api(`tasks/${run.taskId}`)).value.status,'completed');
+  assert.equal(f.transport.calls.filter(call=>call.op==='start').length,1);assert.equal(f.localCalls,0);
+});
+
+test('showcase policy denies archive and restore for existing computer records',async t=>{
+  const f=await fixture(t,{executionPolicy:'showcase'}),computer={id:'fixture-computer',name:'Fixture computer',host:'fixture.invalid',port:22,workspaceRoot:'/fixture/project',revision:1,status:'saved',createdAt:stamp(),updatedAt:stamp()};
+  f.app.store.put('remoteComputers',computer);
+  assert.equal((await f.api(`computers/${computer.id}`,{expectedRevision:1},'DELETE')).status,403);
+  f.app.store.put('remoteComputers',{...computer,archivedAt:stamp()});
+  assert.equal((await f.api(`computers/${computer.id}/restore`,{expectedRevision:1})).status,403);
+  assert.equal(f.transport.calls.length,0);
+});
+
+test('computer listing exposes a runtime update before starting a task without contacting the remote host',async t=>{
+  const f=await fixture(t),{computer,body}=await configured(f),stored=f.app.store.require('remoteComputers',computer.id),calls=f.transport.calls.length;
+  f.app.store.put('remoteComputers',{...stored,runtime:{...stored.runtime,version:'0'.repeat(64)}});
+  for(let attempt=0;attempt<2;attempt++){
+    const listed=(await f.api('computers')).value.computers[0];
+    assert.equal(listed.status,'saved');assert.equal(listed.lastError.code,'remote_runtime_changed');assert.match(listed.lastError.message,/更新/);assert.equal(listed.runtime.version,'0'.repeat(64));
+  }
+  assert.equal(f.transport.calls.length,calls,'listing and refreshing never probe or install remotely');
+  assert.equal(f.app.store.require('remoteComputers',computer.id).status,'ready','the last confirmed installation record stays intact');
+  assert.equal((await f.api(`computers/${computer.id}/runs`,body)).value.code,'remote_runtime_changed');
+  assert.equal(f.transport.calls.length,calls);assert.equal(f.app.store.list('remoteRuns').length,0);
+  assert.equal((await f.api(`computers/${computer.id}/prepare`,{installRuntime:true})).status,200);
+  const refreshed=(await f.api('computers')).value.computers[0];assert.equal(refreshed.status,'ready');assert.equal(refreshed.lastError,undefined);
 });
 
 test('a failed mirror write rolls back local task creation and restart recovers exactly one mirror without replay',async t=>{

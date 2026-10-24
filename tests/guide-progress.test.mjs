@@ -12,8 +12,10 @@ test('a completed chapter persists independently from current selection and is i
 });
 test('legacy, malformed, and unknown completion values are handled without inventing completion',()=>{
  memory.clear();memory.set(currentKey,JSON.stringify({version:GUIDE_VERSION,index:2,seen:true}));assert.deepEqual(readGuideProgress().completed,[]);
- memory.set(currentKey,JSON.stringify({version:GUIDE_VERSION,index:20,completed:['world','unknown','world']}));assert.deepEqual(readGuideProgress(),{index:7,seen:false,completed:['world']});
+ memory.set(currentKey,JSON.stringify({version:GUIDE_VERSION,index:20,completed:['world','unknown','world']}));assert.deepEqual(readGuideProgress(),{index:9,seen:false,completed:['world']});
  memory.set(currentKey,'bad');assert.deepEqual(readGuideProgress(),{index:0,seen:false,completed:[]});
 });
 
 test('the new guide does not mark revised chapters complete from an older edition',()=>{memory.clear();memory.set('hither.product-guide.v3',JSON.stringify({version:3,index:7,seen:true,completed:['world']}));assert.deepEqual(readGuideProgress(),{index:0,seen:false,completed:[]});});
+
+test('finance and workspace setup chapters preserve independent completion across reopen',()=>{memory.clear();saveGuideProgress(5,false);completeGuideChapter('finance');saveGuideProgress(6,true);completeGuideChapter('setup');assert.deepEqual(readGuideProgress(),{index:6,seen:true,completed:['finance','setup']});});

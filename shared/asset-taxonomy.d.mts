@@ -1,0 +1,12 @@
+export type FinanceAssetType='cash'|'investment'|'real_estate'|'vehicle'|'valuable'|'insurance'|'receivable'|'business'|'other';
+export type FinanceLiabilityType='credit_card'|'mortgage'|'vehicle_loan'|'personal_loan'|'other';
+export type FinancePositionType='stock'|'etf'|'fund'|'bond'|'gold'|'crypto'|'cash'|'option'|'futures'|'other';
+export type FinanceAssetDetails={totalValue:string;ownershipPercent:string;acquiredAmount:string|null;acquiredOn:string|null;valuationSource:string;valuationAsOf:string;linkedLiabilityIds:string[];valueBasis:'market_value'|'cash_value'};
+type ClassifiedAccount={kind?:string;assetType?:FinanceAssetType;liabilityType?:FinanceLiabilityType;provider?:string};
+export const ASSET_TYPES:ReadonlyArray<{value:FinanceAssetType;label:string}>;
+export const LIABILITY_TYPES:ReadonlyArray<{value:FinanceLiabilityType;label:string}>;
+export const POSITION_TYPES:ReadonlyArray<{value:FinancePositionType;label:string}>;
+export function accountTypeOf(account:ClassifiedAccount):FinanceAssetType|FinanceLiabilityType;
+export function accountTypeLabel(account:ClassifiedAccount):string;
+export function isValuedAssetType(value:string):boolean;
+export function ownedAssetValue(totalValue:string,ownershipPercent:string):string|null;

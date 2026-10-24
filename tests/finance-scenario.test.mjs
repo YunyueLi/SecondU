@@ -1,0 +1,7 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {calculateFinanceScenario} from '../src/finance/scenario.mjs';
+const example={startingAmount:'1000',monthlyIncome:'100',monthlyExpense:'80',plannedIncome:'90',plannedExpense:'80',oneTimeExpense:'500',annualReturn:'0',months:12};
+test('scenario distinguishes existing and changed cash flow without mutating inputs',()=>{const input={...example},result=calculateFinanceScenario(input);assert.equal(result.baselineEnd,'1240.00');assert.equal(result.plannedEnd,'620.00');assert.equal(result.difference,'-620.00');assert.equal(result.firstNegativeMonth,null);assert.deepEqual(input,example);});
+test('scenario records the first negative month and does not invent negative-balance interest',()=>{const result=calculateFinanceScenario({...example,startingAmount:'0',monthlyIncome:'0',monthlyExpense:'0',plannedIncome:'0',plannedExpense:'10',oneTimeExpense:'0',annualReturn:'12',months:3});assert.equal(result.plannedEnd,'-30.00');assert.equal(result.firstNegativeMonth,1);});
+test('monthly returns round cents exactly; invalid assumptions are rejected',()=>{const result=calculateFinanceScenario({...example,startingAmount:'100',monthlyIncome:'0',monthlyExpense:'0',plannedIncome:'0',plannedExpense:'0',oneTimeExpense:'0',annualReturn:'12',months:2});assert.equal(result.plannedEnd,'102.01');for(const patch of [{months:0},{months:601},{startingAmount:'NaN'},{annualReturn:'101'},{plannedIncome:'-1'}])assert.throws(()=>calculateFinanceScenario({...example,...patch}));});

@@ -23,7 +23,7 @@ export function appearanceAfterPatch(current: Appearance, patch: Partial<Appeara
   return { ...current, language: locale, ...patch };
 }
 
-export function reconcileAppearanceLoad(defaults: Appearance, saved: Appearance | null, cached: Appearance, edits: Partial<Appearance>, locale: Locale, localeChanged: boolean) {
+export function reconcileAppearanceLoad(defaults: Appearance, saved: Partial<Appearance> | null, cached: Appearance, edits: Partial<Appearance>, locale: Locale, localeChanged: boolean) {
   const appearance = { ...defaults, ...(saved || cached), ...edits };
   if (localeChanged || (!saved?.language && !edits.language)) appearance.language = locale;
   // Existing settings receive only this window's edits. An unrelated theme change

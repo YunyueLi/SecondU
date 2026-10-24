@@ -1,19 +1,19 @@
-/* The home tray shares one inset, one pill shape and one icon-to-label rhythm. */
-.assistant-workspace.is-home .composer>.composer-context-bar{display:flex;align-items:center;flex-wrap:wrap;gap:4px;min-height:52px;width:calc(100% - 36px);margin:-10px 18px 0;padding:12px 8px 8px;border-radius:0 0 16px 16px;background:color-mix(in srgb,var(--color-text) 4%,var(--color-surface));font-size:13px;font-weight:400;position:relative;z-index:0}
-.assistant-workspace.is-home .composer>.composer-context-bar>button{--button-radius:999px;--button-gap:6px;height:32px;min-height:32px;padding-inline:12px;border-radius:999px;gap:6px;font-size:inherit;font-weight:400;line-height:20px}
-.assistant-workspace.is-home .composer>.composer-context-bar>button::before,.assistant-workspace.is-home .composer>.composer-context-bar>button::after{border-radius:inherit}
-.assistant-workspace.is-home .composer>.composer-context-bar>button>span{gap:6px}
-.assistant-workspace.is-home .composer>.composer-context-bar>button svg{width:18px;height:18px;flex:none}
-.assistant-workspace.is-home .composer>.composer-context-bar .project-picker>span>svg:last-child,.assistant-workspace.is-home .composer>.composer-context-bar .composer-approval-picker>span>svg:last-child{width:12px;height:12px}
-@media(max-width:520px){.assistant-workspace.is-home .composer>.composer-context-bar{width:calc(100% - 20px);margin-inline:10px;padding-inline:8px;font-size:12px;gap:4px}.assistant-workspace.is-home .composer>.composer-context-bar>button{padding-inline:10px}}
+/* The inset utility layer adds 40px below the input; its top 10px sits behind it. */
+:is(.assistant-workspace,.catalogue-composer-stage).is-home .composer>.composer-context-bar{display:flex;align-items:center;flex-wrap:wrap;gap:4px;min-height:50px;width:calc(100% - 36px);margin:-10px 18px 0;padding:14px 8px 4px;border-radius:0 0 16px 16px;background:color-mix(in srgb,var(--color-text) 4%,var(--color-surface));font-size:13px;font-weight:400;position:relative;z-index:0}
+:is(.assistant-workspace,.catalogue-composer-stage).is-home .composer>.composer-context-bar>button{--button-radius:999px;--button-gap:6px;height:32px;min-height:32px;padding-inline:12px;border-radius:999px;gap:6px;font-size:inherit;font-weight:400;line-height:20px}
+:is(.assistant-workspace,.catalogue-composer-stage).is-home .composer>.composer-context-bar>button::before,:is(.assistant-workspace,.catalogue-composer-stage).is-home .composer>.composer-context-bar>button::after{border-radius:inherit}
+:is(.assistant-workspace,.catalogue-composer-stage).is-home .composer>.composer-context-bar>button>span{gap:6px}
+:is(.assistant-workspace,.catalogue-composer-stage).is-home .composer>.composer-context-bar>button svg{width:18px;height:18px;flex:none}
+:is(.assistant-workspace,.catalogue-composer-stage).is-home .composer>.composer-context-bar .project-picker>span>svg:last-child,:is(.assistant-workspace,.catalogue-composer-stage).is-home .composer>.composer-context-bar .composer-approval-picker>span>svg:last-child{width:12px;height:12px}
+@media(max-width:520px){:is(.assistant-workspace,.catalogue-composer-stage).is-home .composer>.composer-context-bar{width:calc(100% - 20px);margin-inline:10px;padding-inline:8px;font-size:12px;gap:4px}:is(.assistant-workspace,.catalogue-composer-stage).is-home .composer>.composer-context-bar>button{padding-inline:10px}}
 
 /* Compact home actions stay on one line; their popovers retain full labels. */
 @media(max-width:700px){
- .assistant-workspace.is-home .composer>.composer-context-bar{flex-wrap:nowrap;gap:2px;min-height:56px;padding:10px 6px 4px}
- .assistant-workspace.is-home .composer>.composer-context-bar .project-picker{flex:1 1 auto;min-width:0;max-width:none;justify-content:flex-start;height:40px;min-height:40px;padding-inline:10px}
- .assistant-workspace.is-home .composer>.composer-context-bar .project-picker>span{min-width:0;overflow:hidden}
- .assistant-workspace.is-home .composer>.composer-context-bar :is(.composer-connectors-trigger,.composer-twin-trigger,.composer-approval-picker){position:relative;flex:0 0 40px;width:40px;height:40px;min-height:40px;padding:0;justify-content:center;margin:0}
- .assistant-workspace.is-home .composer>.composer-context-bar :is(.composer-connectors-label,.composer-twin-label,.composer-approval-label,.connector-count){display:none}
- .assistant-workspace.is-home .composer>.composer-context-bar .composer-approval-picker svg:last-child{display:none}
- .assistant-workspace.is-home .composer>.composer-context-bar .composer-twin-trigger i{position:absolute;top:7px;right:6px;width:4px;height:4px;margin:0}
+ :is(.assistant-workspace,.catalogue-composer-stage).is-home .composer>.composer-context-bar{flex-wrap:nowrap;gap:2px;min-height:54px;padding:14px 6px 4px}
+ :is(.assistant-workspace,.catalogue-composer-stage).is-home .composer>.composer-context-bar .project-picker{flex:0 1 auto;min-width:0;max-width:calc(100% - 116px);width:max-content;justify-content:flex-start;height:36px;min-height:36px;padding-inline:10px}
+ :is(.assistant-workspace,.catalogue-composer-stage).is-home .composer>.composer-context-bar .project-picker>span{min-width:0;overflow:hidden;justify-content:flex-start}
+ :is(.assistant-workspace,.catalogue-composer-stage).is-home .composer>.composer-context-bar :is(.composer-connectors-trigger,.composer-twin-trigger,.composer-approval-picker){position:relative;flex:0 0 36px;width:36px;height:36px;min-height:36px;padding:0;justify-content:center;margin:0}
+ :is(.assistant-workspace,.catalogue-composer-stage).is-home .composer>.composer-context-bar :is(.composer-connectors-label,.composer-twin-label,.composer-approval-label,.connector-count){display:none}
+ :is(.assistant-workspace,.catalogue-composer-stage).is-home .composer>.composer-context-bar .composer-approval-picker svg:last-child{display:none}
+ :is(.assistant-workspace,.catalogue-composer-stage).is-home .composer>.composer-context-bar .composer-twin-trigger i{position:absolute;top:7px;right:6px;width:4px;height:4px;margin:0}
 }

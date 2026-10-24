@@ -1,5 +1,5 @@
 import type {GuideChapterId} from './guideContent';
-export declare const GUIDE_VERSION=3;
+export declare const GUIDE_VERSION=5;
 export type GuideProgress={index:number;seen:boolean;completed:GuideChapterId[]};
 export declare function readGuideProgress():GuideProgress;
 export declare function hasSeenProductGuide():boolean;

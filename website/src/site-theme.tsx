@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useLayoutEffect, useState, type ReactNode } from 'react';
-import {Sun,Moon,MoonSunSystem} from '@openai/apps-sdk-ui/components/Icon';
+import {Sun,Moon} from '@openai/apps-sdk-ui/components/Icon';
 import {SiteChoice} from './SiteChoice';
 import { useSiteLanguage } from './site-language';
 import { themeColors, themeQuery, themeStorageKey } from '../theme-bootstrap.mjs';
@@ -45,9 +45,10 @@ export function SiteThemeProvider({ children }: { children: ReactNode }) {
 
 export function useSiteTheme() { return useContext(Context); }
 
-export function ThemeSwitcher({side='bottom'}:{side?:'top'|'bottom'}) {
+function SystemThemeIcon(){return <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="5.5" stroke="currentColor" strokeWidth="1.3"/><path d="M8 2.5a5.5 5.5 0 0 1 0 11Z" fill="currentColor"/></svg>;}
+export function ThemeSwitcher({side='bottom',iconOnly=false,surface='page'}:{side?:'top'|'bottom';iconOnly?:boolean;surface?:'page'|'dark'}) {
  const {preference,setPreference}=useSiteTheme();
  const {t}=useSiteLanguage();
- const options=[{value:'light',label:t('浅色','Light'),icon:<Sun/>},{value:'dark',label:t('深色','Dark'),icon:<Moon/>},{value:'system',label:t('跟随系统','System'),icon:<MoonSunSystem/>}];
- return <SiteChoice compact side={side} label={t('网站外观','Website appearance')} value={preference} icon={options.find(item=>item.value===preference)?.icon} options={options} onChange={next=>{if(isPreference(next))setPreference(next);}}/>;
+ const options=[{value:'system',label:t('跟随系统','System'),icon:<SystemThemeIcon/>},{value:'light',label:t('浅色','Light'),icon:<Sun/>},{value:'dark',label:t('深色','Dark'),icon:<Moon/>}];
+ return <SiteChoice compact iconOnly={iconOnly} side={side} surface={surface} label={t('网站外观','Website appearance')} value={preference} icon={options.find(item=>item.value===preference)?.icon} options={options} onChange={next=>{if(isPreference(next))setPreference(next);}}/>;
 }

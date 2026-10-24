@@ -1,0 +1,50 @@
+.finance-panorama .asset-flow { width:100%; max-width:none; margin-inline:0; min-width:0; container-type:inline-size; padding:8px 0 4px; }
+.finance-panorama .asset-flow-canvas { --asset-flow-stacked:0; position:relative; display:grid; grid-template-columns:minmax(300px,1.15fr) minmax(340px,1fr); column-gap:var(--panorama-visual-gap); align-items:center; min-width:0; }
+.finance-panorama .asset-flow-without-funding { grid-template-columns:minmax(180px,.8fr) minmax(340px,1fr); }
+.finance-panorama .asset-flow-svg { position:absolute; inset:0; z-index:0; display:block; width:100%; height:100%; overflow:visible; pointer-events:none; }
+.finance-panorama .asset-flow-origins { display:grid; grid-template-columns:128px minmax(154px,1fr); gap:var(--panorama-visual-gap); align-items:center; align-self:stretch; min-width:0; }
+.finance-panorama .asset-flow-without-funding .asset-flow-origins { grid-template-columns:minmax(0,1fr); }
+.finance-panorama .asset-flow-funding,.finance-panorama .asset-flow-total,.finance-panorama .asset-flow-institutions { position:relative; z-index:1; min-width:0; }
+.finance-panorama .asset-flow-funding { display:grid; gap:28px; align-content:center; }
+.finance-panorama .asset-flow-funding-node { display:flex; flex-direction:column; justify-content:center; min-height:64px; min-width:0; }
+.finance-panorama .asset-flow-funding-node>span:first-child,.finance-panorama .asset-flow-total-summary>span:first-child { display:block; color:var(--color-text-secondary); font-size:12px; line-height:18px; margin-bottom:4px; }
+.finance-panorama .asset-flow-funding-node>.panorama-money,.finance-panorama .asset-flow-total-summary>.panorama-money { flex-direction:row; align-items:baseline; justify-content:flex-start; gap:6px; white-space:nowrap; }
+.finance-panorama .asset-flow-funding-node .panorama-money>strong { font-size:14px; }
+.finance-panorama .asset-flow-total { display:block; position:relative; width:154px; justify-self:center; }
+.finance-panorama .asset-flow-total-summary { display:flex; align-items:baseline; gap:12px; min-width:0; margin-bottom:16px; }
+.finance-panorama .asset-flow-total-summary>span:first-child { margin:0; font-size:14px; line-height:22px; }
+.finance-panorama .asset-flow-total-summary .panorama-money>strong { font-size:18px; }
+.finance-panorama .asset-flow-trunk-anchor { width:8px; height:96px; }
+.finance-panorama .asset-flow-institutions { display:grid; gap:2px; }
+.finance-panorama .asset-flow-institution { min-width:0; }
+.finance-panorama .asset-flow .panorama-money>strong { overflow-wrap:normal; }
+.finance-panorama .asset-flow .panorama-institution-heading { min-height:48px; padding:8px; gap:10px; }
+.finance-panorama .asset-flow .panorama-institution-heading>.brand-icon { width:26px!important; height:26px!important; flex-basis:26px; }
+.finance-panorama .asset-flow .panorama-institution-name { display:flex; flex-wrap:wrap; align-items:baseline; gap:2px 8px; }
+.finance-panorama .asset-flow-institution[data-account-count="1"] .panorama-institution-name small>span:first-child,.finance-panorama .asset-flow .panorama-products { display:none; }
+.finance-panorama .asset-flow .panorama-institution-name strong { white-space:normal; overflow-wrap:anywhere; }
+.finance-panorama .asset-flow .panorama-institution-name small { font-size:12px; white-space:nowrap; }
+.finance-panorama .asset-flow .panorama-institution-heading>.panorama-money { flex-shrink:0; flex-direction:row; align-items:baseline; gap:6px; }
+.finance-panorama .asset-flow-share { display:none; }
+@container(max-width:740px) {
+  .finance-panorama .asset-flow-canvas { --asset-flow-stacked:1; display:flex; flex-direction:column; align-items:stretch; gap:16px; }
+  .finance-panorama .asset-flow-origins { display:contents; }
+  .finance-panorama .asset-flow-svg,.finance-panorama .asset-flow-trunk-anchor { display:none; }
+  .finance-panorama .asset-flow-funding { grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+  .finance-panorama .asset-flow-funding-node { min-height:0; padding:0 0 4px; }
+  .finance-panorama .asset-flow-total { display:none; }
+  .finance-panorama .asset-flow-total-summary { flex-wrap:wrap; gap:4px 12px; }
+  .finance-panorama .asset-flow-total-summary>.panorama-money { align-items:baseline; }
+  .finance-panorama .asset-flow-institutions { gap:8px; }
+  .finance-panorama .asset-flow-share { display:flex; align-items:center; gap:12px; margin:2px 8px 0; color:var(--color-text-secondary); font-size:12px; line-height:1.6; font-variant-numeric:tabular-nums; }
+  .finance-panorama .asset-flow-share-track { display:block; flex:1; height:4px; overflow:hidden; border-radius:2px; background:var(--color-surface-tertiary); }
+  .finance-panorama .asset-flow-share-track>span { display:block; height:100%; border-radius:inherit; }
+  .finance-panorama .asset-flow-share>span:last-child { min-width:42px; text-align:right; }
+  .finance-panorama .asset-flow .panorama-institution-heading { display:flex; min-height:40px; }
+}
+@container(max-width:420px) {
+  .finance-panorama .asset-flow .panorama-institution-heading { display:grid; grid-template-columns:26px minmax(0,1fr) 16px; gap:3px 10px; }
+  .finance-panorama .asset-flow .panorama-institution-heading>.panorama-money { grid-column:2; grid-row:2; flex-direction:row; align-items:baseline; justify-content:flex-start; gap:6px; }
+  .finance-panorama .asset-flow .panorama-institution-heading>svg { grid-column:3; grid-row:1/3; }
+  .finance-panorama .asset-flow .panorama-institution-heading>.brand-icon { grid-row:1/3; }
+}

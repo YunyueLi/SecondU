@@ -3894,7 +3894,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 ========================================================================
-katex@0.16.47
+katex@0.18.2
 License metadata: MIT
 Source: https://github.com/KaTeX/KaTeX.git
 

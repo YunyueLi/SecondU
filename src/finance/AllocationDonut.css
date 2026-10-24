@@ -1,0 +1,43 @@
+:where(.finance-workspace,.finance-settings) .allocation-donut { min-width:0;width:100%;container:allocation-donut / inline-size;padding:20px;border:1px solid var(--color-border-subtle);border-radius:var(--hither-radius-panel,16px);color:var(--color-text);font-size:14px; }
+:where(.finance-workspace,.finance-settings) .allocation-donut-embedded { max-width:none;margin-inline:0;padding:8px 0 0;border:0;border-radius:0; }
+:where(.finance-workspace,.finance-settings) .allocation-donut-caption { display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:20px; }
+:where(.finance-workspace,.finance-settings) .allocation-donut-caption>span { font-size:16px;line-height:24px;font-weight:550; }
+:where(.finance-workspace,.finance-settings) .allocation-donut-caption>strong { font-size:18px;font-weight:550;line-height:26px;font-variant-numeric:tabular-nums;white-space:nowrap; }
+:where(.finance-workspace,.finance-settings) .allocation-donut-caption small { color:var(--color-text-secondary);font-size:12px;font-weight:400; }
+:where(.finance-workspace,.finance-settings) .allocation-donut-layout { display:grid;grid-template-columns:280px minmax(0,1fr);align-items:center;gap:32px; }
+:where(.finance-workspace,.finance-settings) .allocation-donut-plot { position:relative;width:100%;max-width:280px;aspect-ratio:1;margin:0 auto; }
+/* Give the chart a stable share of the available page and cap the actual ring;
+   the legend receives the remaining width and remains vertically aligned. */
+.finance-panorama .allocation-donut-layout { grid-template-columns:minmax(240px,.8fr) minmax(0,1.2fr); gap:var(--panorama-visual-gap); }
+.finance-panorama .allocation-donut-plot { width:clamp(240px,28cqi,340px); max-width:100%; }
+:where(.finance-workspace,.finance-settings) .allocation-donut-svg { display:block;width:100%;height:100%;overflow:visible; }
+:where(.finance-workspace,.finance-settings) .allocation-donut-track { stroke:var(--color-surface-tertiary); }
+:where(.finance-workspace,.finance-settings) .allocation-donut-segment { cursor:pointer;transition:opacity 150ms ease,stroke-width 150ms ease; }
+:where(.finance-workspace,.finance-settings) .allocation-donut-segment:focus-visible { outline:none;stroke-width:54px; }
+:where(.finance-workspace,.finance-settings) .allocation-donut-center { position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;width:54%;margin-inline:auto;text-align:center;pointer-events:none; }
+:where(.finance-workspace,.finance-settings) .allocation-donut-center>span,:where(.finance-workspace,.finance-settings) .allocation-donut-center>small { color:var(--color-text-secondary);font-size:12px;line-height:18px;overflow-wrap:anywhere; }
+:where(.finance-workspace,.finance-settings) .allocation-donut-center>strong { font-size:18px;line-height:26px;font-weight:550;font-variant-numeric:tabular-nums;white-space:nowrap; }
+:where(.finance-workspace,.finance-settings) .allocation-donut-legend { min-width:0;display:grid;gap:2px; }
+:where(.finance-workspace,.finance-settings) .allocation-donut-row { display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:2px 16px;width:100%;min-height:48px;padding:4px 8px;border:0;border-radius:var(--hither-radius-control,8px);background:transparent;color:inherit;text-align:left;cursor:pointer; }
+:where(.finance-workspace,.finance-settings) .allocation-donut-row:hover,:where(.finance-workspace,.finance-settings) .allocation-donut-row.is-active { background:var(--color-surface-secondary); }
+:where(.finance-workspace,.finance-settings) .allocation-donut-row:focus-visible { outline:2px solid var(--color-ring);outline-offset:1px; }
+:where(.finance-workspace,.finance-settings) .allocation-donut-identity { display:flex;align-items:center;gap:8px;min-width:0; }
+:where(.finance-workspace,.finance-settings) .allocation-donut-identity>span:last-child { display:flex;align-items:baseline;gap:8px;min-width:0; }
+:where(.finance-workspace,.finance-settings) .allocation-donut-identity>.brand-icon,:where(.finance-workspace,.finance-settings) .allocation-donut-type-icon { flex-shrink:0; }
+:where(.finance-workspace,.finance-settings) .allocation-donut-type-icon { display:grid;place-items:center;width:20px;height:20px; }
+:where(.finance-workspace,.finance-settings) .allocation-donut-type-icon>svg { width:18px;height:18px; }
+:where(.finance-workspace,.finance-settings) .allocation-donut-name { font-size:14px;font-weight:400;line-height:22px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap; }
+:where(.finance-workspace,.finance-settings) .allocation-donut-identity small { font-size:12px;line-height:18px;color:var(--color-text-secondary);white-space:nowrap; }
+:where(.finance-workspace,.finance-settings) .allocation-donut-amount { font-size:14px;line-height:22px;font-weight:500;white-space:nowrap;text-align:right;font-variant-numeric:tabular-nums; }
+:where(.finance-workspace,.finance-settings) .allocation-donut-bar { display:block;height:3px;margin-left:28px;border-radius:2px;background:var(--color-border-subtle);overflow:hidden; }
+:where(.finance-workspace,.finance-settings) .allocation-donut-bar>i { display:block;width:var(--allocation-share);height:100%;background:var(--allocation-color);border-radius:inherit; }
+:where(.finance-workspace,.finance-settings) .allocation-donut-share { color:var(--color-text-secondary);font-size:12px;line-height:18px;text-align:right;font-variant-numeric:tabular-nums; }
+:where(.finance-workspace,.finance-settings) .allocation-donut-more { justify-self:end;margin-top:6px; }
+:where(.finance-workspace,.finance-settings) .allocation-donut-note { margin:8px 8px 0;text-align:right;color:var(--color-text-secondary);font-size:12px;line-height:18px; }
+:where(.finance-workspace,.finance-settings) .allocation-donut-empty { color:var(--color-text-secondary);font-size:14px;line-height:22px; }
+@container allocation-donut (max-width:700px) { :where(.finance-workspace,.finance-settings) .allocation-donut-layout { grid-template-columns:260px minmax(0,1fr);gap:20px; } :where(.finance-workspace,.finance-settings) .allocation-donut-identity small { display:none; } }
+@container allocation-donut (max-width:700px) { .finance-panorama .allocation-donut-layout { grid-template-columns:minmax(220px,.8fr) minmax(0,1.2fr);gap:20px; } .finance-panorama .allocation-donut-plot { width:220px; } }
+@container allocation-donut (max-width:600px) { .finance-panorama .allocation-donut-layout { grid-template-columns:minmax(0,1fr);align-items:start;gap:12px; } .finance-panorama .allocation-donut-plot { width:min(100%,220px); } .finance-panorama .allocation-donut-identity small { display:inline; } }
+@container allocation-donut (max-width:520px) { :where(.finance-workspace,.finance-settings) .allocation-donut-layout { grid-template-columns:minmax(0,1fr);align-items:start;gap:12px; } :where(.finance-workspace,.finance-settings) .allocation-donut-plot { width:min(100%,220px);margin-top:0; } :where(.finance-workspace,.finance-settings) .allocation-donut-row { gap:2px 10px;padding-inline:4px; } :where(.finance-workspace,.finance-settings) .allocation-donut-caption { flex-wrap:wrap;gap:4px;margin-bottom:12px; } :where(.finance-workspace,.finance-settings) .allocation-donut-identity small { display:inline; } }
+@container allocation-donut (max-width:360px) { :where(.finance-workspace,.finance-settings) .allocation-donut { padding:16px; } :where(.finance-workspace,.finance-settings) .allocation-donut-embedded { padding:4px 0 0; } :where(.finance-workspace,.finance-settings) .allocation-donut-identity small,.finance-panorama .allocation-donut-identity small { display:none; } }
+@media (prefers-reduced-motion:reduce) { :where(.finance-workspace,.finance-settings) .allocation-donut-segment { transition:none; } }

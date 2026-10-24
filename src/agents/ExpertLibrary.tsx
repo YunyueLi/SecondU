@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import type { AgentProfile, Bootstrap } from '../../shared/contracts';
+import { SegmentedControl } from '@openai/apps-sdk-ui/components/SegmentedControl';
 import { Button } from '@openai/apps-sdk-ui/components/Button';
 import { Input } from '@openai/apps-sdk-ui/components/Input';
 import { ExpertDomainPicker } from './ExpertDomainPicker';
@@ -10,9 +11,9 @@ import { EXPERT_CATEGORIES, expertText, existingExpert, recommendExperts, expert
 import { ExpertPreview } from './ExpertPreview';
 import './experts.css';
 
-type Props={navigation:ReactNode;data:Bootstrap;onCreated:(agent:AgentProfile)=>Promise<void>;onOpen:(agent:AgentProfile)=>void;onRefresh:()=>Promise<void>};
+type Props={data:Bootstrap;onCreated:(agent:AgentProfile)=>Promise<void>;onOpen:(agent:AgentProfile)=>void;onRefresh:()=>Promise<void>};
 
-export function ExpertLibrary({navigation,data,onCreated,onOpen,onRefresh}:Props){
+export function ExpertLibrary({data,onCreated,onOpen,onRefresh}:Props){
   const results=useRef<HTMLDivElement>(null),stage=useRef<HTMLElement>(null);
   const [preview,setPreview]=useState<ExpertRecommendation>();
   const [query,setQuery]=useState(''),[category,setCategory]=useState('all'),[view,setView]=useState('suggested'),[selectedId,setSelectedId]=useState('');
@@ -32,8 +33,8 @@ export function ExpertLibrary({navigation,data,onCreated,onOpen,onRefresh}:Props
   useEffect(()=>{setFace('identity');},[selected?.template.id]);
   function flip(next:'identity'|'role'|'history'){setFace(next);requestAnimationFrame(()=>stage.current?.querySelector<HTMLButtonElement>(next==='identity'?'.ag-pass-face-front footer button':'.ag-pass-face-back header button')?.focus());}
   return <div className="expert-library-shell">
-    <div className="ag-directory-toolbar expert-directory-toolbar">{navigation}<ExpertDomainPicker value={category} onChange={value=>{setCategory(value);setView('all');setSelectedId('');results.current?.scrollTo({top:0});}}/><Input size="md" variant="soft" startAdornment={<Search/>} aria-label={t('搜索专家和使用场景','Search experts and scenarios')} placeholder={t('搜索专家或要做的事','Search a role or task')} value={query} onChange={event=>{setQuery(event.target.value);if(event.target.value.trim())setView('all');setSelectedId('');results.current?.scrollTo({top:0});}}/>
-        <div className="expert-view-modes"><div aria-label={t('专家浏览范围','Expert view')}>{[{id:'suggested',label:hasMatches?t('推荐','For you'):t('常用','Common')},{id:'all',label:t('全部','All')}].map(item=><button key={item.id} type="button" aria-pressed={view===item.id} onClick={()=>{setView(item.id);setCategory('all');setQuery('');setSelectedId('');results.current?.scrollTo({top:0});}}>{item.label}</button>)}</div></div>
+    <div className="ag-directory-toolbar expert-directory-toolbar"><ExpertDomainPicker value={category} onChange={value=>{setCategory(value);setView('all');setSelectedId('');results.current?.scrollTo({top:0});}}/><div className="agent-directory-search"><Input size="md" variant="soft" startAdornment={<Search/>} aria-label={t('搜索专家和使用场景','Search experts and scenarios')} placeholder={t('搜索专家或要做的事','Search a role or task')} value={query} onChange={event=>{setQuery(event.target.value);if(event.target.value.trim())setView('all');setSelectedId('');results.current?.scrollTo({top:0});}}/></div>
+        <div className="agent-directory-options"><SegmentedControl size="md" value={view} aria-label={t('专家浏览范围','Expert view')} onChange={value=>{setView(value);setCategory('all');setQuery('');setSelectedId('');results.current?.scrollTo({top:0});}}><SegmentedControl.Option value="suggested">{hasMatches?t('推荐','For you'):t('常用','Common')}</SegmentedControl.Option><SegmentedControl.Option value="all">{t('全部','All')}</SegmentedControl.Option></SegmentedControl></div>
 
       </div>
     <div className="expert-browser expert-badge-browser"><section className="expert-choice-panel" aria-label={t('专家目录','Expert catalogue')}>

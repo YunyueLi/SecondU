@@ -1,0 +1,159 @@
+{
+  "checkedAt": "2026-10-24",
+  "purpose": "Official service identity assets for connector discovery. Names and trademarks belong to their respective owners.",
+  "assets": [
+    {
+      "file": "alpha-vantage-256.png",
+      "url": "https://files.openai.com/content?cdn=1&cid=8&cp=pi&id=file_00000000dd8c71f4abe11bb5f40b2cb0&ma=31795200&p=pi&sig=5ac205192aa9eeb490cced00afc1c825b253d032a68c60e6cf5bb45f2a69d58a&ts=0&v=0",
+      "source": "https://openai.com/business/plugins/alpha-vantage/",
+      "bytes": 10072,
+      "contentType": "image/png",
+      "replaces": {
+        "file": "alpha-vantage.png",
+        "url": "https://cdn.alphavantage.co/logo.png",
+        "width": 128,
+        "height": 128
+      },
+      "note": "Official service identity image copied byte-for-byte. No scaling, tracing, recoloring, or image generation.",
+      "sha256": "8c34327e3ecc20d8be13cd59cf8c37d31ed34815e562523adabc10d931f6c7b1",
+      "width": 256,
+      "height": 256,
+      "format": "png",
+      "alphaChannel": true,
+      "minimumSourcePixelsPerCssPixelAt32px": 8.0
+    },
+    {
+      "file": "morningstar.svg",
+      "url": "https://developer.morningstar.com/favicon.svg",
+      "source": "https://developer.morningstar.com/",
+      "bytes": 1089,
+      "contentType": "image/svg+xml",
+      "sha256": "be2376c7bff0c1b5558acad7667235d35573f4190f667e9882e2c0d16e499d88",
+      "format": "svg",
+      "vector": true,
+      "viewBox": "0 0 700.000000 700.000000"
+    },
+    {
+      "file": "daloopa-256.png",
+      "url": "https://files.openai.com/content?cdn=1&cid=1&cp=pi&id=file_00000000af747230bc1606d46c839ee8&ma=31449600&p=pi&sig=c8a8bc6383ae28c34005525b223aab157382f62b2c5ff707b76f4a38b1b33e32&ts=0&v=0",
+      "source": "https://openai.com/business/plugins/daloopa/",
+      "bytes": 18722,
+      "contentType": "image/png",
+      "replaces": {
+        "file": "daloopa.png",
+        "url": "https://docs.daloopa.com/apple-touch-icon.png?v=dfc133264c37",
+        "width": 180,
+        "height": 180
+      },
+      "note": "Official service identity image copied byte-for-byte. No scaling, tracing, recoloring, or image generation.",
+      "sha256": "1c060cc2ddb657983ac0a8325ea4661d8eca3bbc133651f54d886466d0b7b8df",
+      "width": 256,
+      "height": 256,
+      "format": "png",
+      "alphaChannel": true,
+      "minimumSourcePixelsPerCssPixelAt32px": 8.0
+    },
+    {
+      "file": "fiscal-ai.png",
+      "url": "https://docs.fiscal.ai/icon.png?icon.0m.8f225_ag9k.png",
+      "source": "https://docs.fiscal.ai/docs/guides/mcp-integration",
+      "bytes": 12083,
+      "contentType": "image/png",
+      "sha256": "2ca4faa6f71fe2805e55d360b9e013e541e7f2b051e267b9ce0d66fe7d98a638",
+      "width": 512,
+      "height": 512,
+      "format": "png",
+      "alphaChannel": true,
+      "minimumSourcePixelsPerCssPixelAt32px": 16.0,
+      "note": "Existing official 512x512 documentation icon retained after native-resolution visual review; already 16 source pixels per 32px CSS icon."
+    },
+    {
+      "file": "quartr.svg",
+      "url": "https://mcp.quartr.com/favicon.svg",
+      "source": "https://mcp.quartr.com/docs",
+      "bytes": 705,
+      "contentType": "image/svg+xml",
+      "sha256": "9c64dd675b3d9906cea71abacca84960be527f9cdb312c56750248847d7ea75c",
+      "format": "svg",
+      "vector": true,
+      "viewBox": "0 0 512 512"
+    },
+    {
+      "file": "crunchbase-512.png",
+      "url": "https://data.crunchbase.com/icon-512.png?v=ec94dfd0bb6d",
+      "source": "https://data.crunchbase.com/site.webmanifest?v=ec94dfd0bb6d",
+      "bytes": 3443,
+      "contentType": "image/png",
+      "replaces": {
+        "file": "crunchbase.png",
+        "url": "https://data.crunchbase.com/apple-touch-icon.png?v=ec94dfd0bb6d",
+        "width": 180,
+        "height": 180
+      },
+      "note": "Official service identity image copied byte-for-byte. No scaling, tracing, recoloring, or image generation.",
+      "sha256": "3bdbdd960f098c3d9e728b5da1cc6e12fd8eb73709a5f01e3b87d4d263317895",
+      "width": 512,
+      "height": 512,
+      "format": "png",
+      "alphaChannel": true,
+      "minimumSourcePixelsPerCssPixelAt32px": 16.0
+    },
+    {
+      "file": "factset-256.png",
+      "url": "https://files.openai.com/content?cdn=1&cid=8&cp=pi&id=file_00000000054071f6a741dd5d7b628fa2&ma=31795200&p=pi&sig=211ad3867a45dd32cdebba1d0492d56ee9800c4a2d0eba5e1ed2657f5dd4ec65&ts=0&v=0",
+      "source": "https://openai.com/business/plugins/factset/",
+      "bytes": 3928,
+      "contentType": "image/png",
+      "replaces": {
+        "file": "factset.png",
+        "url": "https://developer.factset.com/favicon.ico",
+        "width": 16,
+        "height": 16
+      },
+      "note": "Official service identity image copied byte-for-byte. No scaling, tracing, recoloring, or image generation.",
+      "sha256": "9473b27b9cb6906a23ebe0fea83bd198b012965c00fa9a25bcf575d54a57ca2f",
+      "width": 256,
+      "height": 256,
+      "format": "png",
+      "alphaChannel": true,
+      "minimumSourcePixelsPerCssPixelAt32px": 8.0
+    },
+    {
+      "file": "lseg.png",
+      "url": "https://app-office-addin.analytics.lseg.com/public/lseg-logo",
+      "source": "https://ai.azure.com/catalog/tools/lseg/version/1/apiCenter/registry-prod-bl/eastus",
+      "bytes": 12009,
+      "contentType": "image/png",
+      "sha256": "56ec72c102f2cf2daac0f5ede96e83d34fa3065c15ee19ad18a4077b490e5c5e",
+      "width": 205,
+      "height": 205,
+      "format": "png",
+      "alphaChannel": true,
+      "minimumSourcePixelsPerCssPixelAt32px": 6.40625,
+      "note": "Existing official 205x205 image retained after visual comparison. It is sharper than the alternative 256x256 plugin thumbnail and provides over 6 source pixels per 32px CSS icon."
+    },
+    {
+      "file": "fmp.png",
+      "url": "https://site.financialmodelingprep.com//images/logo/fmp-new-logo.png",
+      "source": "https://site.financialmodelingprep.com/",
+      "bytes": 197378,
+      "sha256": "840955f9e6fcebd05cf49338a82d60d2e402123bf7116f43ef069c0ec89d3982",
+      "note": "Official shortcut icon linked in homepage head, downloaded through browser without modification.",
+      "contentType": "image/png",
+      "width": 4374,
+      "height": 4374,
+      "bitDepth": 8,
+      "colorType": 6,
+      "transparent": true,
+      "format": "png",
+      "alphaChannel": true,
+      "minimumSourcePixelsPerCssPixelAt32px": 136.6875
+    }
+  ],
+  "qualityReview": {
+    "checkedAt": "2026-10-24",
+    "targetCssSize": 32,
+    "minimumRasterDpr": 3,
+    "policy": "Use official vector assets or original raster images with at least 96 pixels per side. Do not upscale low-resolution logos. Compare actual pixels, not dimensions alone."
+  }
+}

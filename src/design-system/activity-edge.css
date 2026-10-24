@@ -1,0 +1,95 @@
+/* The surface border stays still. Broad, diffused patches breathe independently. */
+.activity-edge[data-activity-edge] {
+  --activity-edge-play-state: paused;
+  --activity-edge-strength: .48;
+  --activity-edge-color: var(--hither-accent, var(--color-primary, var(--color-text)));
+  --activity-edge-light-one: var(--activity-edge-color);
+  --activity-edge-light-two: var(--activity-edge-color);
+  --activity-edge-light-three: var(--activity-edge-color);
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  display: block;
+  border-radius: var(--activity-edge-radius);
+  overflow: visible;
+  pointer-events: none;
+  user-select: none;
+  opacity: var(--activity-edge-strength);
+}
+.activity-edge[data-intensity=expressive],
+html[data-activity-effect=expressive] .activity-edge:not([data-intensity]) {
+  --activity-edge-strength: .8;
+}
+html[data-activity-effect=off] .activity-edge:not([data-intensity]) {
+  display: none;
+  --activity-edge-play-state: paused;
+}
+.activity-edge[data-palette=graphite] { --activity-edge-color: var(--activity-edge-palette-graphite); }
+.activity-edge[data-palette=violet] { --activity-edge-color: var(--activity-edge-palette-violet); }
+.activity-edge[data-palette=teal] { --activity-edge-color: var(--activity-edge-palette-teal); }
+.activity-edge[data-palette=amber] { --activity-edge-color: var(--activity-edge-palette-amber); }
+.activity-edge[data-palette=spectrum],
+html[data-accent=spectrum] .activity-edge:not([data-palette]) {
+  --activity-edge-light-one: #719ce8;
+  --activity-edge-light-two: #c88bbd;
+  --activity-edge-light-three: #e5ad7c;
+}
+.activity-edge[data-visible=true][data-paused=false] { --activity-edge-play-state: running; }
+.activity-edge__light {
+  position: absolute;
+  inset: -1px;
+  border-radius: calc(var(--activity-edge-radius) + 1px);
+  box-sizing: border-box;
+  filter: blur(6px);
+  opacity: .5;
+  animation: activity-glow-breathe 6.8s cubic-bezier(.45, 0, .55, 1) infinite;
+  animation-play-state: var(--activity-edge-play-state);
+}
+.activity-edge__light::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 5px;
+  background: var(--activity-edge-patch);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+.activity-edge__light--one {
+  --activity-edge-patch: radial-gradient(ellipse 46% 100% at 2% 30%, var(--activity-edge-light-one), transparent 82%);
+  transform-origin: left center;
+}
+.activity-edge__light--two {
+  --activity-edge-patch: radial-gradient(ellipse 48% 100% at 98% 60%, var(--activity-edge-light-two), transparent 82%);
+  animation-delay: -2.5s;
+  animation-duration: 7.6s;
+  transform-origin: right center;
+}
+.activity-edge__light--three {
+  --activity-edge-patch: radial-gradient(ellipse 36% 70% at 56% 100%, var(--activity-edge-light-three), transparent 86%);
+  animation-delay: -4.4s;
+  animation-duration: 8.4s;
+  transform-origin: center bottom;
+}
+@keyframes activity-glow-breathe {
+  0%, 100% { opacity: .3; transform: translateY(-1px) scale(1); }
+  50% { opacity: .86; transform: translateY(1px) scale(1.012, 1.035); }
+}
+.activity-edge__accessible-outline { display: none; }
+[data-motion=reduced] .activity-edge__light { animation: none; opacity: .42; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .activity-edge__light { animation: none; opacity: .42; transform: none; }
+}
+@media (forced-colors: active) {
+  .activity-edge[data-activity-edge] { opacity: 1; }
+  .activity-edge__light { display: none; animation: none; }
+  .activity-edge__accessible-outline {
+    display: block;
+    position: absolute;
+    inset: 0;
+    border: 1px solid Highlight;
+    border-radius: inherit;
+  }
+}

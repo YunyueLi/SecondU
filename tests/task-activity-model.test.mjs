@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { buildTaskActivityModel } from '../src/design-system/taskActivityModel.ts';
+import { buildTaskActivityModel, isActivityModelRunning, isTaskActivityRunning } from '../src/design-system/taskActivityModel.ts';
 
 const at = seconds => new Date(Date.UTC(2026, 9, 8, 10, 0, seconds)).toISOString();
 const event = (id, type, seconds, extra = {}) => ({ id, type, label: type, createdAt: at(seconds), ...extra });
@@ -215,6 +215,69 @@ test('confirmed remote terminal outcomes and their elapsed interval survive late
     const model = buildTaskActivityModel(task(events, status, { remoteExecution: remote('disconnected', 'uncertain') }), Date.parse(at(9999)));
     assert.equal(model.status, status); assert.equal(model.remote.unconfirmed, false);
     assert.equal(model.elapsed.milliseconds, 12000); assert.equal(model.elapsed.running, false);
+  }
+});
+
+test('composer activity follows actual execution, not queue state, approval elapsed time or stale tool starts', () => {
+  assert.equal(isTaskActivityRunning(undefined), false);
+  const events = [event('start', 'started', 0), action('call', 'running', 1)];
+  for (const status of ['queued', 'running', 'needs_input', 'awaiting_approval', 'completed', 'failed', 'cancelled', 'interrupted']) {
+    const input = task(events, status);
+    const model = buildTaskActivityModel(input, Date.parse(at(10)));
+    assert.equal(isActivityModelRunning(model), status === 'running', `model: ${status}`);
+    assert.equal(isTaskActivityRunning(input), status === 'running', `task: ${status}`);
+    if (status === 'awaiting_approval') assert.equal(model.elapsed.running, true, 'approval time can keep accruing while execution motion is off');
+  }
+  const generating = task([event('start', 'started', 0), event('progress', 'runtime.progress', 1, { detail: 'Preparing a response.' })]);
+  assert.deepEqual(buildTaskActivityModel(generating).activeActions, []);
+  assert.equal(isTaskActivityRunning(generating), true, 'response generation does not require a running tool');
+});
+
+test('local and remote cancellation requests stop composer motion before task status settles, and a real retry can resume it', () => {
+  const events = [event('start', 'started', 0), action('call', 'running', 1), event('stop', 'cancel_requested', 2)];
+  const stopping = task(events);
+  assert.equal(stopping.status, 'running');
+  assert.equal(buildTaskActivityModel(stopping).stopping, true);
+  assert.equal(isActivityModelRunning(buildTaskActivityModel(stopping)), false);
+  assert.equal(isTaskActivityRunning(stopping), false);
+  const remoteStopping = task(events.slice(0, 2), 'running', { remoteExecution: { ...remote(), cancelRequested: true } });
+  assert.equal(isTaskActivityRunning(remoteStopping), false, 'remote cancellation is effective before its terminal receipt');
+  const retried = task([...events, event('stopped', 'cancelled', 3), event('retry', 'started', 10)]);
+  assert.equal(buildTaskActivityModel(retried).stopping, false);
+  assert.equal(isActivityModelRunning(buildTaskActivityModel(retried)), true);
+  assert.equal(isTaskActivityRunning(retried), true, 'the previous attempt cancellation does not suppress a new run');
+});
+
+test('remote composer motion requires connected observation and submitted dispatch, and returns after confirmation', () => {
+  const events = [remoteEvent('start', 'remote.started', 0), action('call', 'running', 1)];
+  for (const [observation, dispatch] of [['disconnected', 'submitted'], ['pending', 'submitted'], ['connected', 'uncertain'], ['connected', 'pending'], ['connected', 'submitted']]) {
+    const input = task(events, 'running', { remoteExecution: remote(observation, dispatch) });
+    const confirmed = observation === 'connected' && dispatch === 'submitted';
+    assert.equal(isActivityModelRunning(buildTaskActivityModel(input)), confirmed, `${observation}/${dispatch}`);
+    assert.equal(isTaskActivityRunning(input), confirmed, `${observation}/${dispatch}`);
+  }
+  const completed = task([...events, remoteEvent('end', 'remote.completed', 3)], 'completed', { remoteExecution: remote() });
+  assert.equal(isTaskActivityRunning(completed), false, 'a live remote connection does not imply a running completed task');
+});
+
+test('automatic review blocks composer motion, while a released call or separately confirmed new work can resume it', () => {
+  for (const status of ['inProgress', 'denied', 'timedOut', 'aborted']) {
+    const events = [event('start', 'started', 0), action('reviewed-call', 'running', 1), event('review', 'runtime.auto_review', 2, { agentId: 'lead', detail: JSON.stringify({ reviewId: 'review-one', status }) })];
+    const blocked = task(events);
+    assert.equal(blocked.status, 'running');
+    assert.deepEqual(buildTaskActivityModel(blocked).activeActions, []);
+    assert.equal(isActivityModelRunning(buildTaskActivityModel(blocked)), false, status);
+    assert.equal(isTaskActivityRunning(blocked), false, status);
+    const approved = task([...events, event('approved', 'runtime.auto_review', 3, { agentId: 'lead', detail: '{"reviewId":"review-one","status":"approved"}' })]);
+    assert.equal(isTaskActivityRunning(approved), true, `${status}: the same review released its call`);
+    if (status !== 'inProgress') {
+      const differentWork = task([...events, action('new-call', 'running', 4)]);
+      assert.deepEqual(buildTaskActivityModel(differentWork).activeActions.map(item => item.id), ['new-call-running-4']);
+      assert.equal(isActivityModelRunning(buildTaskActivityModel(differentWork)), true, `${status}: a new call is running independently`);
+      assert.equal(isTaskActivityRunning(differentWork), true);
+    }
+    const retry = task([...events, event('end', 'failed', 5), event('retry', 'started', 20)]);
+    assert.equal(isTaskActivityRunning(retry), true, `${status}: an old review does not block a new attempt`);
   }
 });
 

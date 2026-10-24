@@ -1,0 +1,31 @@
+.finance-account-source-details { margin-block:16px; }
+.finance-source-disclosure { margin-top:12px; }
+
+.finance-source-disclosure>summary { display:flex; align-items:center; justify-content:space-between; gap:12px; min-height:44px; padding-block:10px; list-style:none; cursor:pointer; font-size:14px; font-weight:500; }
+.finance-source-disclosure>summary::-webkit-details-marker { display:none; }
+.finance-source-disclosure>summary>span { display:flex; align-items:center; gap:8px; }
+.finance-source-disclosure>summary small { font-size:12px; font-weight:400; color:var(--color-text-secondary); }
+.finance-source-disclosure>summary>svg { width:16px; height:16px; flex-shrink:0; transition:transform .15s ease; }
+.finance-source-disclosure[open]>summary>svg { transform:rotate(180deg); }
+.finance-source-group { padding:8px 0 16px; }
+.finance-source-group+.finance-source-group { padding-top:12px; }
+.finance-source-group>header { display:flex; align-items:baseline; justify-content:space-between; gap:8px; flex-wrap:wrap; margin-bottom:7px; }
+.finance-source-group h4 { margin:0; font-size:13px; font-weight:500; line-height:1.5; overflow-wrap:anywhere; }
+.finance-source-group>header>small,.finance-source-note { color:var(--color-text-secondary); font-size:12px; }
+.finance-source-group dl { display:grid; gap:9px; margin:0; font-size:13px; }
+.finance-source-group dl>div { display:flex; justify-content:space-between; align-items:baseline; gap:16px; }
+.finance-source-group dt { color:var(--color-text-secondary); min-width:0; overflow-wrap:anywhere; }
+.finance-source-group dt>small { display:block; font-size:11px; }
+.finance-source-group dd { display:flex; align-items:baseline; justify-content:flex-end; gap:5px; margin:0; text-align:right; font-variant-numeric:tabular-nums; overflow-wrap:anywhere; }
+.finance-source-group dd>small { color:var(--color-text-secondary); font-size:11px; }
+.finance-source-plan>p { margin:0 0 7px; font-size:13px; line-height:1.65; overflow-wrap:anywhere; }
+.finance-source-plan>dl { margin-top:12px; }
+@media(prefers-reduced-motion:reduce) { .finance-source-disclosure>summary>svg { transition:none; } }
+
+.finance-account-source-details,.finance-source-group,.finance-source-group dl>div { min-width:0; }
+.finance-source-disclosure>summary>span { min-width:0; flex-wrap:wrap; }
+.finance-source-group dd { min-width:0; flex-wrap:wrap; }
+@container finance-dialog (max-width:360px) {
+  .finance-source-group dl>div { gap:12px; }
+  .finance-source-group :is(dt,dd) { flex:1; }
+}

@@ -1,0 +1,27 @@
+:where(.finance-workspace,.finance-settings) .recurring-payments { min-width:0; container-type:inline-size; }
+:where(.finance-workspace,.finance-settings) .recurring-equivalents { display:flex; flex-wrap:wrap; align-items:baseline; gap:8px 16px; padding:8px 0 12px; }
+:where(.finance-workspace,.finance-settings) .recurring-equivalents>dl { display:flex; flex-wrap:wrap; gap:8px 24px; margin:0; }
+:where(.finance-workspace,.finance-settings) .recurring-equivalents>dl>div { display:flex; align-items:baseline; gap:6px; }
+:where(.finance-workspace,.finance-settings) .recurring-equivalents dd { margin:0; }
+:where(.finance-workspace,.finance-settings) .recurring-equivalents>p { width:100%; margin:0; }
+:where(.finance-workspace,.finance-settings) .recurring-records>ul { margin:0; padding:0; list-style:none; }
+:where(.finance-workspace,.finance-settings) .recurring-columns,:where(.finance-workspace,.finance-settings) .recurring-record { display:grid; grid-template-columns:minmax(0,1.5fr) minmax(120px,1fr) minmax(100px,1fr) 16px; align-items:center; gap:12px; }
+:where(.finance-workspace,.finance-settings) .recurring-columns>span:nth-child(3) { text-align:right; }
+:where(.finance-workspace,.finance-settings) .recurring-record-identity,:where(.finance-workspace,.finance-settings) .recurring-record-next { display:flex; flex-direction:column; min-width:0; gap:2px; }
+:where(.finance-workspace,.finance-settings) .recurring-record-identity>strong { overflow-wrap:anywhere; }
+:where(.finance-workspace,.finance-settings) .recurring-record-money { display:flex; align-items:baseline; justify-content:flex-end; gap:4px; flex-wrap:wrap; }
+:where(.finance-workspace,.finance-settings) .recurring-record>svg { width:16px; height:16px; color:var(--color-text-secondary); }
+:where(.finance-workspace,.finance-settings) .recurring-linked { margin-top:20px; }
+:where(.finance-workspace,.finance-settings) .recurring-linked h3 { margin:0 0 8px; font-size:16px; line-height:24px; font-weight:550; }
+:where(.finance-workspace,.finance-settings) .recurring-linked ul { list-style:none; margin:0; padding:0; }
+:where(.finance-workspace,.finance-settings) .recurring-linked li { display:flex; align-items:baseline; justify-content:space-between; gap:12px; padding:8px 0; }
+:where(.finance-workspace,.finance-settings) .recurring-linked li>span:first-child { min-width:0; }
+:where(.finance-workspace,.finance-settings) .recurring-linked li small { display:block; }
+@container(max-width:600px) {
+  :where(.finance-workspace,.finance-settings) .recurring-columns { display:none; }
+  :where(.finance-workspace,.finance-settings) .recurring-record { grid-template-columns:minmax(0,1fr) minmax(88px,.8fr) 12px; gap:4px 12px; }
+  :where(.finance-workspace,.finance-settings) .recurring-record-identity { grid-column:1; grid-row:1; }
+  :where(.finance-workspace,.finance-settings) .recurring-record-next { grid-column:1; grid-row:2; font-size:12px; line-height:18px; color:var(--color-text-secondary); }
+  :where(.finance-workspace,.finance-settings) .recurring-record-money { grid-column:2; grid-row:1 / 3; flex-direction:column; align-items:flex-end; gap:0; }
+  :where(.finance-workspace,.finance-settings) .recurring-record>svg { grid-column:3; grid-row:1 / 3; width:12px; }
+}

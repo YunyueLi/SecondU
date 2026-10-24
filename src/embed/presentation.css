@@ -1,0 +1,27 @@
+/* These crops apply only to isolated report presentations of the native UI. */
+html[data-secondu-presentation="sources"] .app-sidebar,
+html[data-secondu-presentation="sources"] .sidebar-resize-handle,
+html[data-secondu-presentation="sources"] .app-topbar,
+html[data-secondu-presentation="sources"] .shell-sidebar-toggle,
+html[data-secondu-presentation="proactive"] .app-sidebar,
+html[data-secondu-presentation="proactive"] .sidebar-resize-handle,
+html[data-secondu-presentation="proactive"] .shell-sidebar-toggle { display: none; }
+html[data-secondu-presentation="sources"] .app-shell,
+html[data-secondu-presentation="proactive"] .app-shell { grid-template-columns: minmax(0, 1fr); }
+html[data-secondu-presentation="sources"] .main-workspace { padding: 16px 20px; }
+html[data-secondu-presentation="sources"] .cognition-workspace { max-width: none; }
+html[data-secondu-presentation="sources"] .twin-building { padding: 0; }
+html[data-secondu-presentation="sources"] .twin-building-stage { display: block; padding: 0; border: 0; }
+html[data-secondu-presentation="sources"] .twin-building-stage > .twin-portrait,
+html[data-secondu-presentation="sources"] .twin-profile-link,
+html[data-secondu-presentation="sources"] .twin-records-toggle { display: none; }
+html[data-secondu-presentation="sources"] .twin-entry-dock { min-width: 0; width: 100%; margin: 0; }
+html[data-secondu-presentation="sources"] .material-gallery { width: 100%; margin: 0; }
+html[data-secondu-presentation="proactive"] .dialog-overlay:has(> .settings-dialog) { padding: 0; background: var(--color-surface); }
+html[data-secondu-presentation="proactive"] .settings-dialog { width: 100%; height: 100dvh; max-height: 100dvh; border: 0; border-radius: 0; box-shadow: none; }
+html[data-secondu-presentation="proactive"] .settings-layout { grid-template-columns: minmax(0, 1fr); }
+html[data-secondu-presentation="proactive"] .settings-navigation { display: none; }
+html[data-secondu-presentation="proactive"] .task-thread { padding-top: 12px; }
+@media(max-width:600px) {
+  html[data-secondu-presentation="sources"] .main-workspace { padding: 14px 12px; }
+}

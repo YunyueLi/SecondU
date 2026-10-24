@@ -36,6 +36,8 @@ export const messageOf = (error: unknown) => error instanceof Error ? error.mess
 export async function api<T>(path: string, init: RequestInit = {}, _originalSpace = false): Promise<T> {
   if (init.signal?.aborted) throw new DOMException('Aborted', 'AbortError');
   try {
+    // Only the two public example namespaces may share this language-switched view.
+    path = path.replace(/^\/spaces\/(?:demo-cn-v1|demo-us-v1)(?=\/)/, '');
     const method = (init.method || 'GET').toUpperCase();
     const body = typeof init.body === 'string' ? JSON.parse(init.body) : {};
     const requestedLanguage = language(), target = runtime(requestedLanguage);

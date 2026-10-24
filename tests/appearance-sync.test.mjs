@@ -59,3 +59,28 @@ test('old settings migrate only the missing language, and explicit language edit
   const explicit=reconcileAppearanceLoad(defaultAppearance,defaultAppearance,defaultAppearance,{language:'en',fontSize:16},'en',false);
   assert.equal(explicit.appearance.language,'en');assert.deepEqual(explicit.patch,{language:'en',fontSize:16});
 });
+
+test('existing themes and accents receive edge defaults without overwriting a choice made during load',()=>{
+  const {activityEffect,...legacy}=defaultAppearance;
+  legacy.theme='dark';legacy.accent='green';
+  const loaded=reconcileAppearanceLoad(defaultAppearance,legacy,defaultAppearance,{},'zh-CN',false);
+  assert.equal(loaded.appearance.theme,'dark');assert.equal(loaded.appearance.accent,'green');
+  assert.equal(loaded.appearance.activityEffect,'subtle');assert.equal(Object.hasOwn(loaded.appearance,'activityPalette'),false);
+  assert.deepEqual(loaded.patch,{});
+  const edited=reconcileAppearanceLoad(defaultAppearance,legacy,defaultAppearance,{accent:'#aabbcc',activityEffect:'off'},'zh-CN',false);
+  assert.equal(edited.appearance.accent,'#aabbcc');assert.equal(edited.appearance.activityEffect,'off');
+  assert.deepEqual(edited.patch,{accent:'#aabbcc',activityEffect:'off'});
+});
+
+test('failed edge settings are retried with later edits and an old response cannot clear newer choices',()=>{
+  const pending=createAppearancePendingChanges();
+  pending.stage({activityEffect:'subtle',accent:'teal'});
+  const first=pending.snapshot('zh-CN');
+  pending.stage({accent:'#aabbcc'});
+  assert.deepEqual(pending.snapshot('zh-CN'),{activityEffect:'subtle',accent:'#aabbcc'});
+  pending.acknowledge(first);
+  assert.equal(pending.dirty,true);
+  const retry=pending.snapshot('zh-CN');
+  assert.deepEqual(retry,{accent:'#aabbcc'});
+  pending.acknowledge(retry);assert.equal(pending.dirty,false);
+});

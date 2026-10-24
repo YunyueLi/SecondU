@@ -36,9 +36,9 @@ export function ProactiveContactSetting({ data, onRefresh }: { data: Bootstrap; 
   }
 
   return <>
-    <div className="preference-line">
+    <div className="preference-line settings-toggle-preference">
       <div><h3>{t('允许分身主动联系我', 'Let my twin contact me')}</h3><p>{t('新资料与正在关注的目标或任务有关时，在对话中提醒我。', 'Send a message when new information relates to my goals or tasks.')}</p></div>
-      <Switch label={t('允许分身主动联系我', 'Let my twin contact me')} checked={setting?.enabled ?? false} disabled={busy || !setting || readonly} onCheckedChange={enabled => { void change(enabled); }} />
+      <Switch aria-label={t('允许分身主动联系我', 'Let my twin contact me')} checked={setting?.enabled ?? false} disabled={busy || !setting || readonly} onCheckedChange={enabled => { void change(enabled); }} />
     </div>
     {readonly && <p className="settings-data-note">{t('可在自己的个人空间中开启。', 'Available in your personal workspace.')}</p>}
     {error && <div role="alert" className="artwork-error"><p>{error}</p><Button size="sm" color="secondary" variant="ghost" disabled={busy} onClick={() => { setError(''); setSetting(null); }}>{t('重新读取', 'Reload')}</Button></div>}

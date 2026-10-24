@@ -1,0 +1,6 @@
+.composer{--composer-activity-radius:30px}
+.composer.is-expanded{--composer-activity-radius:24px}
+.composer.composer-home{--composer-activity-radius:26px}
+.composer.composer-phone{--composer-activity-radius:var(--hither-radius-composer,24px)}
+.composer>.activity-edge,.composer-main-layer>.activity-edge{z-index:2}
+@media(max-width:700px){.composer.composer-home{--composer-activity-radius:24px}}

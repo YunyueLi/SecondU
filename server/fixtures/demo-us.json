@@ -15,12 +15,12 @@
     "description": "I'm Caspian Reed. I grew up in Madison, studied design in Minneapolis, and spent five years in Chicago before moving to Portland. I design software for neighborhood recreation centers at Cedar Loop. Outside work I help run a repair café, play bass with friends, and take too many pictures on walks. I'm trying to keep a full life without making every evening a catch-up session."
   },
   "settings": {
-    "provider": "openai",
-    "model": "gpt-4.1",
-    "baseUrl": "https://api.openai.com/v1",
-    "api": "responses",
+    "provider": "moonshot",
+    "model": "kimi-k3.1-pro",
+    "baseUrl": "https://api.moonshot.cn/v1",
+    "api": "chat_completions",
     "hasKey": false,
-    "reasoningEffort": "medium"
+    "reasoningEffort": "max"
   },
   "projects": [
     {

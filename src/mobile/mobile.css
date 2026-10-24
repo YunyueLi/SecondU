@@ -8,6 +8,8 @@ body.mobile-root #root{height:var(--mobile-viewport-height,100dvh);overflow:hidd
 .mobile-chat-host{display:flex;flex:1;min-width:0;min-height:0;overflow:hidden}
 .mobile-header{display:flex;align-items:center;gap:var(--hither-space-2);padding:calc(var(--hither-space-2) + env(safe-area-inset-top)) var(--hither-space-3) var(--hither-space-2);flex:none;min-height:60px;background:var(--color-surface)}
 .mobile-header h1{flex:1;min-width:0;font-size:var(--hither-font-settings-title);font-weight:550;line-height:1.5;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin:0}
+.mobile-header .mobile-profile-link{flex:none;min-height:var(--mobile-control-size);padding-inline:var(--hither-space-1);font-size:var(--hither-font-caption);white-space:nowrap}
+.mobile-header .mobile-profile-link>svg{width:14px;height:14px}
 .mobile-shell .mobile-nav-button{width:var(--mobile-control-size);height:var(--mobile-control-size);min-width:var(--mobile-control-size);min-height:var(--mobile-control-size);padding:10px;flex:none}
 .mobile-main{flex:1;min-width:0;min-height:0;overflow:auto;overscroll-behavior:contain;padding:0 0 env(safe-area-inset-bottom)}
 .mobile-offline{display:flex;align-items:center;gap:var(--hither-space-2);padding:var(--hither-space-2) var(--hither-space-4);background:var(--color-surface-secondary);font-size:var(--hither-font-caption);line-height:1.7;flex:none}
@@ -39,8 +41,6 @@ body.mobile-root #root{height:var(--mobile-viewport-height,100dvh);overflow:hidd
 .mobile-shell .assistant-workspace.is-mobile .message-user-bubble{background:var(--color-surface-secondary);padding:var(--hither-space-3) var(--hither-space-4)}
 .mobile-shell .assistant-workspace.is-mobile .message-actions button{width:44px;min-width:44px;height:44px;min-height:44px}
 .mobile-shell .assistant-workspace.is-mobile .message-user-actions{opacity:1}
-.mobile-shell .assistant-workspace.is-mobile .task-context-trigger{min-height:44px}
-.mobile-shell .assistant-workspace.is-mobile .task-context-review{min-height:44px}
 .mobile-shell .assistant-workspace.is-mobile .composer-wrap{position:relative;inset:auto;transform:none;width:100%;max-width:none;margin:0;padding:var(--hither-space-2) var(--hither-space-3) calc(var(--hither-space-3) + env(safe-area-inset-bottom));flex:none;background:var(--color-surface)}
 .mobile-shell .assistant-workspace.is-mobile .composer{display:block;width:100%;border:1px solid var(--color-border);border-radius:var(--hither-radius-composer);padding:0;background:var(--color-surface);box-shadow:0 3px 13px color-mix(in srgb,var(--color-text) 5%,transparent)}
 .mobile-shell .assistant-workspace.is-mobile .composer textarea{font-family:var(--font-sans);font-size:var(--mobile-reading-font);line-height:1.6;min-height:40px;max-height:140px;padding:var(--hither-space-2) var(--hither-space-3);background:transparent}
@@ -82,8 +82,8 @@ body.mobile-root #root{height:var(--mobile-viewport-height,100dvh);overflow:hidd
 .mobile-drawer>header>.hither-wordmark{width:100px;height:26px}
 .mobile-drawer>header>button{margin-left:auto;min-width:44px;min-height:44px}
 .mobile-drawer-scroll{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;padding-bottom:var(--hither-space-4)}
-.mobile-shell .mobile-drawer-action{display:flex;align-items:center;justify-content:flex-start;width:100%;gap:var(--hither-space-3);min-height:44px;height:auto;padding:var(--hither-space-3);font-size:var(--mobile-reading-font);font-weight:400;line-height:1.5;border-radius:var(--hither-radius-control)}
-.mobile-drawer-action>svg{width:20px;height:20px;flex:none}
+.mobile-shell .mobile-drawer-action,.mobile-shell .mobile-drawer .optional-modules-trigger.is-mobile{display:flex;align-items:center;justify-content:flex-start;width:100%;gap:var(--hither-space-3);min-height:44px;height:auto;padding:var(--hither-space-3);font-size:var(--mobile-reading-font);font-weight:400;line-height:1.5;border-radius:var(--hither-radius-control)}
+.mobile-drawer-action>svg,.mobile-drawer .optional-modules-trigger.is-mobile svg{width:20px;height:20px;flex:none}
 .mobile-drawer-action>svg:last-child:not(:first-child){margin-left:auto;width:16px;height:16px;transition:transform var(--hither-motion-fast)}
 .mobile-drawer-action>.is-collapsed{transform:rotate(-90deg)}
 .mobile-drawer-subnav{padding-left:var(--hither-space-4)}
@@ -142,7 +142,7 @@ body.mobile-root #root{height:var(--mobile-viewport-height,100dvh);overflow:hidd
 [data-motion=reduced] .mobile-drawer{animation:none}
 
 /* SDK buttons wrap their contents in a label span; align that shared primitive too. */
-.mobile-shell .mobile-drawer-action>span,.mobile-shell .settings-category>span{width:100%;justify-content:flex-start;gap:var(--hither-space-3)}
+.mobile-shell .mobile-drawer-action>span,.mobile-shell .mobile-drawer .optional-modules-trigger.is-mobile>span,.mobile-shell .settings-category>span{width:100%;justify-content:flex-start;gap:var(--hither-space-3)}
 .mobile-shell .mobile-drawer-action>span>svg:last-child:not(:first-child){margin-left:auto}
 .mobile-shell .mobile-history>nav{padding-top:var(--hither-space-4)}
 .mobile-root .mobile-sheet-actions{display:flex;flex-direction:column;gap:var(--hither-space-2)}
@@ -156,3 +156,6 @@ body.mobile-root #root{height:var(--mobile-viewport-height,100dvh);overflow:hidd
 .mobile-shell .remote-task-workspace{width:100%;min-width:0;flex:1}
 .mobile-shell .remote-task-workspace>.conversation-header{padding-inline:var(--hither-space-3);gap:var(--hither-space-1)}
 .mobile-shell .remote-task-workspace>.conversation-header h1{font-size:var(--hither-font-settings-title);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+.mobile-shell .navigation-parent>span>span{flex:1;text-align:left}
+.mobile-shell .navigation-parent .rotated{transform:rotate(-90deg)}

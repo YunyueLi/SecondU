@@ -6,7 +6,7 @@
 <p align="center">以个人数字分身为核心的开源智能体产品。</p>
 <p align="center">
   <a href="https://yunyueli.github.io/SecondU/product/embed.html?space=demo-cn-v1&lang=zh#example-chat"><strong>在线体验</strong></a>&nbsp;&nbsp;&nbsp;
-  <a href="https://github.com/YunyueLi/SecondU/releases/latest"><strong>下载 macOS 版</strong></a>&nbsp;&nbsp;&nbsp;
+  <a href="https://github.com/YunyueLi/SecondU/releases/tag/v0.2.1"><strong>下载 macOS 版</strong></a>&nbsp;&nbsp;&nbsp;
   <a href="QUICKSTART.md">快速开始</a>&nbsp;&nbsp;&nbsp;
   <a href="https://yunyueli.github.io/SecondU/benchmark/?lang=zh">Benchmark</a>&nbsp;&nbsp;&nbsp;
   <a href="README.md">English</a>
@@ -85,12 +85,40 @@ SecondU 持续理解你的背景、经历、价值观、偏好、关系和长期
       <img src="docs/readme-assets/specialists-zh.jpg" width="1280" alt="SecondU 中文虚构示例空间中的专业 Agent">
     </picture></a></p>
 
+### 把财务放回生活全景
+
+财务工作区包含**总览、账户、持仓、行情、负债、收支和计划**七个入口。记录现金、投资和其他资产，保留原币与记录日期，查看汇率折算，区分账户记录与行情估算。总览提供 13 类可配置组件；交易支持手工记录和 CSV 导入，并可整理账单、订阅、预算、储蓄目标、信用记录、财务周报与情景计划。选中的记录可作为可检查的上下文快照带入对话。[财务能力与边界](docs/FINANCE.md)
+
+受支持的账户服务使用只读连接，需明确配置并由服务商授权；是否可用取决于地区、账户权限和服务商条件。目录中的入口不表示账户已经连接，金融研究来源与账户连接分别展示。当前不支持交易下单、资金转账或代付账单。
+
+[官网财务展示](https://yunyueli.github.io/SecondU/?lang=zh#finance)采用独立虚构人物 **Alex Morgan**：一位居住在 San Mateo 的 AI 基础设施工程师。中英文共用截至 2026 年 10 月 25 日的同一份记录，包含 11 个资产账户、19 条持仓、119 条交易和 22 项周期计划，覆盖退休储蓄、已归属公司股票与外币资产。**总资产 729,096.75 美元，已记录负债 16,480.75 美元，净资产 712,616.00 美元**。财务示例只读，人物、记录、价格与汇率均为预先编写的虚构数据，不连接真实账户。
+
+可连续查看**概览、投资、结构、占比、明细、持仓**六个视图。概览展示净资产变化、分类支出、本月支出与即将到期；投资展示投资组合、持仓行情与已记录的信用评分。点击预览在原处打开完整工作区，关闭后回到之前的阅读位置。示例行情使用太平洋时区，完整时间提示保留实际时区。
+
+<p><a href="https://yunyueli.github.io/SecondU/product/embed.html?space=demo-cn-v1&lang=zh#finance"><picture>
+      <source media="(prefers-color-scheme: dark)" srcset="docs/readme-assets/finance-overview-zh-dark.jpg">
+      <img src="docs/readme-assets/finance-overview-zh.jpg" width="1160" alt="Alex Morgan 虚构财务的实际概览：净资产变化、分类支出、本月支出和即将到期">
+    </picture></a></p>
+
+<p><a href="https://yunyueli.github.io/SecondU/product/embed.html?space=demo-cn-v1&lang=zh#finance"><picture>
+      <source media="(prefers-color-scheme: dark)" srcset="docs/readme-assets/finance-portfolio-zh-dark.jpg">
+      <img src="docs/readme-assets/finance-portfolio-zh.jpg" width="1160" alt="SecondU 原生投资组件展示 Alex Morgan 的虚构投资组合、持仓行情与信用记录">
+    </picture></a></p>
+
+### 按自己的工作方式配置
+
+十章产品引导新增「财务」与「工作区配置」，可从引导直接进入相关功能。
+
+在侧栏固定「财务」「Agents」「资料库」，按需展开财务与 Agents 分组。首页建议提供具体任务的起点；连接器目录区分工具、财务账户与研究来源。在「设置 → 电脑」检查本机执行环境、管理 SSH 电脑，并在任务草稿中选择已配置的执行电脑。外观设置统一提供语言、主题、背景和动态效果选项。
+
 ### 继续使用和修改成果
 
 在对话旁查看文件，编辑支持的文本格式，保存新版本，再回看之前的内容。修改已发送的问题会建立新会话分支，保留原始讨论。反馈和修正可以继续查阅与确认。
 
 | 其他能力 | 当前范围 |
 | --- | --- |
+| 个人财务 | 账户、资产、持仓、行情、收支和计划；手工／CSV 记录及受支持的只读账户连接。[详细范围](docs/FINANCE.md) |
+| 执行电脑 | 本机环境检查、SSH 电脑管理与明确的任务电脑选择；远程访问需要单独配置和验证。 |
 | 文件与预览 | Markdown、代码、CSV/TSV、静态 HTML/SVG、图片和 PDF。DOCX/XLSX/PPTX 保留原件，可通过本机 LibreOffice 转为只读 PDF 预览。 |
 | 通信接入 | 内置 OpenClaw 连接向导，限定账号与会话，先预览再导入，发送逐条确认。13 个渠道提供授权配置，Slack／Discord 支持记录读取，其余已列渠道支持确认后发送。 |
 | 向其他 AI 提供上下文 | 导出带版本的认知封装，或明确授权只读 MCP 快照，仅开放所选已确认条目。[互操作说明](docs/INTEROPERABILITY.md) |
@@ -128,7 +156,7 @@ SecondU 持续理解你的背景、经历、价值观、偏好、关系和长期
 | 方式 | 可以做什么 |
 | --- | --- |
 | **[在线体验](https://yunyueli.github.io/SecondU/product/embed.html?space=demo-cn-v1&lang=zh#example-chat)** | 实际应用界面，内置中英文虚构示例，可在本页导入摘要。导入内容与修改刷新后清空；不执行模型任务或连接外部账号。 |
-| **[下载桌面版](https://github.com/YunyueLi/SecondU/releases/latest)** | 适用于 Apple Silicon Mac，要求 macOS 13+，已内置 Node 运行时。原型采用本机临时签名，尚未通过 Apple 公证。 |
+| **[下载桌面版](https://github.com/YunyueLi/SecondU/releases/tag/v0.2.1)** | 适用于 Apple Silicon Mac，要求 macOS 13+，已内置 Node 运行时。原型采用本机临时签名，尚未通过 Apple 公证。 |
 | **从源码运行** | 需要 Node.js 22.18+ 和 npm。执行下方命令后，打开 [localhost:58645](http://127.0.0.1:58645)。 |
 
 ```sh
@@ -140,6 +168,8 @@ npm start
 ```
 
 进入示例空间即可无密钥浏览。真实任务需要进入个人空间，另行安装 **Codex CLI**，并配置自己的模型连接。[安装与排错](QUICKSTART.md)
+
+示例显示 **Kimi K3.1 Pro** 的未连接模型配置，对话为预先编写的内容；浏览示例不会调用模型，也不会替换个人空间已保存的连接。
 
 ## 资料与权限由你掌握
 
@@ -160,7 +190,7 @@ API 只监听回环地址；凭据保存于限制权限的独立本机文件。�
 | 延伸到不同场景的上下文 | 通信与现实资源；跨设备多模态体验；获准的专业能力分发 |
 | 围绕人的协作网络 | A2A 协作与服务交易；社交和恋爱匹配；持续更新的个人资产 |
 
-**开发状态：**当前源码已包含分身建设、原件资料库、候选审阅、任务草稿、手机布局与本机主动联系。个人认知、任务、团队与成果工作区继续共用现有数据和执行器。自动化与主动联系需要本机服务在线；实体设备、远程主机及真实外部账号分别验收。设备同步、云端观察、通话、支付和真实撮合仍在规划中；服务市场与 Dating 保留 **Dev** 标识。原生桌面面向 macOS arm64，Linux 持续集成覆盖源码构建与本地测试。[已验证范围](docs/PROTOTYPE.md#当前证据与限制)
+**开发状态：**[v0.2.1](docs/releases/v0.2.1.md) 新增财务工作区、可配置侧栏、本机与 SSH 电脑设置、扩展的连接器目录、首页建议与外观改进。分身建设、原件资料库、候选审阅、任务草稿、手机布局与本机主动联系继续保留。个人认知、任务、团队与成果工作区继续共用现有数据和执行器。自动化与主动联系需要本机服务在线；实体设备、远程主机及真实外部账号分别验收。设备同步、云端观察、通话、支付和真实撮合仍在规划中；服务市场与 Dating 保留 **Dev** 标识。原生桌面面向 macOS arm64，Linux 持续集成覆盖源码构建与本地测试。[已验证范围](docs/PROTOTYPE.md#当前证据与限制)
 
 ## 实现结构
 

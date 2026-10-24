@@ -163,40 +163,40 @@
 @media(prefers-reduced-motion:reduce){.twin-building *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 
 /* The portrait is the workspace. Material tools appear only when chosen. */
-.cognition-workspace:has(.twin-building){max-width:none;width:100%;padding-top:18px}
-.twin-building{max-width:1280px;margin:0 auto;padding:0 16px 40px}
+.cognition-workspace:not(.is-immersive):has(.twin-building){max-width:none;width:100%;height:100%;padding-block:16px}
+.twin-building{display:flex;flex-direction:column;max-width:1280px;height:100%;margin:0 auto;padding:0 16px}
 .twin-building-heading{position:relative;justify-content:center;align-items:center;min-height:64px;margin:0;text-align:center}
 .twin-building-heading h1{font-size:clamp(24px,2.5vw,32px);font-weight:500;margin:5px 0 0;letter-spacing:-.035em}
 .twin-building-kicker{font-size:11px;letter-spacing:.08em;color:var(--twin-muted)}
 .twin-building-heading>a{position:absolute;right:0;top:4px;font-size:12px}
-.twin-building-stage{display:flex;flex-direction:column;gap:0;border:0;padding:0;min-height:0}
-.twin-building-stage>.twin-portrait{width:min(100%,960px);align-self:center;display:flex;flex-direction:column;margin:-8px auto 0}
-.twin-building-stage .twin-portrait-art{width:100%;height:clamp(390px,61svh,660px);min-height:0;max-height:none;overflow:visible}
+.twin-building-stage{display:flex;flex:1 0 440px;flex-direction:column;gap:0;border:0;padding:0;min-height:440px}
+.twin-building-stage>.twin-portrait{width:min(100%,960px);flex:1;min-height:0;align-self:center;display:flex;flex-direction:column;margin:0 auto}
+.twin-building-stage .twin-portrait-art{width:100%;flex:1;height:auto;min-height:0;max-height:none;overflow:visible}
 .twin-portrait-art>.hero-particle-canvas{display:block;position:absolute;inset:0;width:100%;height:100%;opacity:0;touch-action:pan-y;transition:opacity .4s ease}
 .twin-portrait-art>.hero-portrait-fallback{padding:0;object-fit:contain}
 .twin-portrait[data-ready=true] .hero-particle-canvas{opacity:1}
 .twin-portrait[data-ready=true] .hero-portrait-fallback{opacity:0}
-.twin-building-stage .twin-portrait figcaption{font-size:13px;line-height:1.8;min-height:32px;margin-top:-6px}
+.twin-building-stage .twin-portrait figcaption{flex:none;font-size:13px;line-height:1.8;min-height:32px;margin-top:0}
 .twin-building-stage .twin-portrait figcaption>span{max-width:40em}
-.twin-entry-dock{width:100%;padding:8px 0 0;text-align:center}
-.twin-entry-panel{max-width:700px;margin:24px auto 0;border-top:1px solid var(--twin-line);padding-top:18px}
+.twin-entry-dock{flex:none;width:100%;padding:8px 0 0;text-align:center}
+.twin-entry-panel{flex:none;width:100%;max-width:700px;margin:24px auto 0;border-top:1px solid var(--twin-line);padding-top:18px}
 .twin-entry-panel-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
 .twin-entry-panel-heading h2{font-size:15px;font-weight:500;color:var(--twin-ink)}
 .twin-entry-panel .twin-capture-area{padding:0}
-.twin-records-toggle{margin:28px auto 0;display:flex;align-items:center;gap:8px;background:transparent;border:0;color:var(--twin-muted);font-size:12px;padding:8px;cursor:pointer}
+.twin-records-toggle{flex:none;margin:8px auto 0;display:flex;align-items:center;gap:8px;background:transparent;border:0;color:var(--twin-muted);font-size:12px;padding:8px;cursor:pointer}
 .twin-records-toggle>span{font-variant-numeric:tabular-nums;color:var(--twin-ink)}
 .twin-records-toggle svg{width:14px;height:14px}
 .twin-records-toggle[aria-expanded=true] svg{transform:rotate(180deg)}
-.twin-building-body{border-top:1px solid var(--twin-line);padding-top:22px;max-width:1040px;margin:14px auto 0}
-.twin-feedback{max-width:700px;margin-inline:auto}
+.twin-building-body{flex:none;width:100%;border-top:1px solid var(--twin-line);padding-top:22px;max-width:1040px;margin:14px auto 0}
+.twin-feedback{flex:none;width:100%;max-width:700px;margin-inline:auto}
 @media(max-width:700px){
- .cognition-workspace:has(.twin-building){padding-top:8px}
- .twin-building{padding:0 10px 30px}
+ .cognition-workspace:not(.is-immersive):has(.twin-building){padding-block:12px}
+ .twin-building{padding:0 10px}
  .twin-building-heading{padding-top:28px;min-height:86px}
  .twin-building-heading>a{top:0;right:0;font-size:11px}
  .twin-building-heading h1{font-size:25px}
  .twin-building-stage>.twin-portrait{display:flex;grid-template-columns:none;gap:0;margin-top:0}
- .twin-building-stage .twin-portrait-art{width:100%;height:clamp(300px,49svh,460px);max-height:none}
+ .twin-building-stage .twin-portrait-art{width:100%;height:auto;max-height:none}
  .twin-building-stage .twin-portrait figcaption{font-size:12px;flex-direction:row;align-items:center;justify-content:center;flex-wrap:wrap;gap:7px;width:100%;max-width:none;margin-top:0;min-height:32px;text-align:center}
  .twin-entry-dock{padding-top:8px}
  .twin-entry-panel{margin-top:20px}

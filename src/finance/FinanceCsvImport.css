@@ -1,0 +1,60 @@
+:where(.finance-workspace,.finance-settings) .finance-csv-import { container:finance-csv / inline-size; min-width:0; }
+:where(.finance-workspace,.finance-settings) .finance-csv-import>p { margin:12px 0 0; }
+:where(.finance-workspace,.finance-settings) .finance-csv-file { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:8px 0 16px; }
+:where(.finance-workspace,.finance-settings) .finance-csv-file>div { min-width:0; }
+:where(.finance-workspace,.finance-settings) .finance-csv-file strong { display:block; overflow-wrap:anywhere; }
+:where(.finance-workspace,.finance-settings) .finance-csv-file p { margin:4px 0 0; }
+:where(.finance-workspace,.finance-settings) .finance-csv-file>button { flex-shrink:0; }
+:where(.finance-workspace,.finance-settings) .finance-csv-file-input { display:none; }
+:where(.finance-workspace,.finance-settings) .finance-csv-mapping,:where(.finance-workspace,.finance-settings) .finance-csv-defaults { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; margin:16px 0 24px; }
+:where(.finance-workspace,.finance-settings) .finance-csv-field { display:flex; flex-direction:column; gap:8px; min-width:0; }
+:where(.finance-workspace,.finance-settings) .finance-csv-field>label { display:block; font-size:14px; line-height:22px; font-weight:500; }
+:where(.finance-workspace,.finance-settings) .finance-csv-field>label>span { margin-left:4px; }
+:where(.finance-workspace,.finance-settings) .finance-csv-field>[role="button"],:where(.finance-workspace,.finance-settings) .finance-csv-field>button { min-width:0; max-width:100%; }
+:where(.finance-workspace,.finance-settings) .finance-csv-sample { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+:where(.finance-workspace,.finance-settings) .finance-csv-wide { grid-column:1/-1; }
+:where(.finance-workspace,.finance-settings) .finance-csv-errors { margin:12px 0; padding:12px 16px; border-radius:var(--hither-radius-control,8px); background:var(--color-surface-secondary); color:var(--color-text-danger); font-size:12px; line-height:18px; }
+:where(.finance-workspace,.finance-settings) .finance-csv-errors>strong { font-weight:500; }
+:where(.finance-workspace,.finance-settings) .finance-csv-errors>ul { max-height:180px; overflow:auto; margin:8px 0 0; padding-left:18px; }
+:where(.finance-workspace,.finance-settings) .finance-csv-errors li+li { margin-top:4px; }
+:where(.finance-workspace,.finance-settings) .finance-csv-errors>p { margin:8px 0 0; }
+:where(.finance-workspace,.finance-settings) .finance-csv-preview { max-width:100%; max-height:400px; overflow:auto; margin-top:8px; }
+:where(.finance-workspace,.finance-settings) .finance-csv-preview>.finance-data-table { min-width:760px; text-align:left; }
+:where(.finance-workspace,.finance-settings) .finance-csv-preview th { text-align:left; }
+:where(.finance-workspace,.finance-settings) .finance-csv-preview thead th { position:sticky; top:0; z-index:1; background:var(--color-surface); }
+:where(.finance-workspace,.finance-settings) .finance-csv-preview td { overflow-wrap:anywhere; }
+:where(.finance-workspace,.finance-settings) .finance-csv-mobile-preview { display:none; max-width:100%; max-height:400px; overflow:auto; margin-top:8px; }
+:where(.finance-workspace,.finance-settings) .finance-csv-mobile-preview>ul { list-style:none; margin:0; padding:0; }
+:where(.finance-workspace,.finance-settings) .finance-csv-mobile-row { display:flex; flex-direction:column; gap:8px; padding:12px; min-width:0; }
+:where(.finance-workspace,.finance-settings) .finance-csv-mobile-date { display:flex; align-items:center; flex-wrap:wrap; gap:4px 8px; }
+:where(.finance-workspace,.finance-settings) .finance-csv-mobile-main { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); align-items:start; gap:12px; }
+:where(.finance-workspace,.finance-settings) .finance-csv-mobile-main>div { min-width:0; overflow-wrap:anywhere; }
+:where(.finance-workspace,.finance-settings) .finance-csv-mobile-amount { text-align:right; }
+:where(.finance-workspace,.finance-settings) .finance-csv-mobile-account,:where(.finance-workspace,.finance-settings) .finance-csv-mobile-note { overflow-wrap:anywhere; }
+:where(.finance-workspace,.finance-settings) .finance-csv-mobile-note { margin:0; }
+:where(.finance-workspace,.finance-settings) .finance-csv-col-row { width:60px; }
+:where(.finance-workspace,.finance-settings) .finance-csv-col-date { width:112px; }
+:where(.finance-workspace,.finance-settings) .finance-csv-col-kind { width:72px; }
+:where(.finance-workspace,.finance-settings) .finance-csv-col-merchant { width:200px; }
+:where(.finance-workspace,.finance-settings) .finance-csv-col-amount { width:140px; }
+:where(.finance-workspace,.finance-settings) .finance-csv-col-account { width:176px; }
+:where(.finance-workspace,.finance-settings) .finance-csv-preview .finance-csv-number { text-align:right; white-space:nowrap; }
+:where(.finance-workspace,.finance-settings) .finance-csv-secondary { display:block; margin-top:2px; }
+:where(.finance-workspace,.finance-settings) .finance-csv-pagination { display:flex; flex-wrap:wrap; align-items:center; justify-content:flex-end; gap:8px; margin-top:8px; }
+:where(.finance-workspace,.finance-settings) .finance-csv-actions { display:flex; align-items:center; justify-content:flex-end; flex-wrap:wrap; gap:8px; margin-top:24px; }
+:where(.finance-workspace,.finance-settings) .finance-csv-import>[role="alert"] { margin-top:16px; }
+:where(.finance-workspace,.finance-settings) .finance-csv-preview:focus-visible,:where(.finance-workspace,.finance-settings) .finance-csv-mobile-preview:focus-visible { outline:2px solid var(--color-text); outline-offset:2px; border-radius:var(--hither-radius-control,8px); }
+@container finance-csv (max-width:600px) {
+  :where(.finance-workspace,.finance-settings) .finance-csv-preview { display:none; }
+  :where(.finance-workspace,.finance-settings) .finance-csv-mobile-preview { display:block; }
+}
+@container finance-csv (max-width:520px) {
+  :where(.finance-workspace,.finance-settings) .finance-csv-file { align-items:flex-start; flex-wrap:wrap; gap:12px; }
+  :where(.finance-workspace,.finance-settings) .finance-csv-mapping,:where(.finance-workspace,.finance-settings) .finance-csv-defaults { grid-template-columns:minmax(0,1fr); }
+  :where(.finance-workspace,.finance-settings) .finance-csv-actions>button { max-width:100%; }
+}
+
+:where(.finance-workspace,.finance-settings) .finance-csv-errors { overflow-wrap:anywhere; }
+@media(max-height:600px) {
+  :where(.finance-workspace,.finance-settings) :is(.finance-csv-preview,.finance-csv-mobile-preview) { max-height:50dvh; }
+}

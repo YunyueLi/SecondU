@@ -3,7 +3,7 @@ import { existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
-import { copyTwinMcpRuntime } from '../scripts/package-twin-mcp.mjs';
+import { copyDesktopRuntime } from '../scripts/package-twin-mcp.mjs';
 import { applyUpdaterPlist, buildUpdater, embedUpdater, signUpdaterApp, validateUpdaterConfig } from './build-updater.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -41,7 +41,7 @@ for (const relative of publicBenchmarkAttachments) {
   await mkdir(path.dirname(path.join(packaged, relative)), { recursive: true });
   await cp(path.join(root, relative), path.join(packaged, relative), { filter: includePackageFile });
 }
-await copyTwinMcpRuntime(root, packaged);
+await copyDesktopRuntime(root, packaged);
 await embedUpdater(output, {root, build: updaterBuild});
 await writeFile(path.join(packaged, 'package.json'), JSON.stringify({ name: brand.compatibility.applicationId, productName: brand.name, [brand.compatibility.packagedFlag]: true, version, type: 'module', main: 'desktop/main.cjs' }, null, 2));
 await rename(path.join(output, 'Contents/MacOS/Electron'), path.join(output, 'Contents/MacOS',brand.desktop.executable));

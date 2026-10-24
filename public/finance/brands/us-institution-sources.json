@@ -1,0 +1,88 @@
+{
+  "checkedAt": "2026-10-25",
+  "description": "Public brand identifiers used by the fictional US financial example and normal account views. Institution marks do not indicate account connectivity or endorsement.",
+  "assets": [
+    {
+      "id": "chase",
+      "name": "Chase",
+      "file": "bank-chase.jpg",
+      "sourcePage": "https://www.chase.com/",
+      "assetUrl": "https://www.chase.com/etc/designs/chase-ux/favicon-152.png",
+      "format": "JPEG",
+      "width": 152,
+      "height": 152,
+      "notes": "Official apple-touch-icon linked by the home page. The URL ends in .png but the response contains a 152×152 JPEG; the local .jpg extension matches the original bytes. No resampling, cropping, recoloring, or padding changes.",
+      "bytes": 2409,
+      "sha256": "f6412712d7ebaf5c97567947898da658801677626fdae9456305b7266acbb6bd"
+    },
+    {
+      "id": "ally",
+      "name": "Ally",
+      "file": "bank-ally.svg",
+      "sourcePage": "https://www.ally.com/",
+      "assetUrl": "https://www.ally.com/images/icons/favicon.svg",
+      "format": "SVG",
+      "width": 512,
+      "height": 512,
+      "viewBox": "0 0 512 512",
+      "notes": "Official SVG favicon linked by the home page; original paths, fill, viewBox and bytes retained.",
+      "bytes": 495,
+      "sha256": "6ee4e0d95dce849ac4383150974d76ff56e1257bf55e0ff4d56f19acbe8491a5"
+    },
+    {
+      "id": "fidelity",
+      "name": "Fidelity Investments",
+      "file": "bank-fidelity.jpg",
+      "sourcePage": "https://apps.apple.com/us/app/fidelity-investments/id348177453",
+      "officialWebsite": "https://www.fidelity.com/mobile/fidelity-investments-app/",
+      "assetUrl": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/c2/d2/7a/c2d27a9d-429f-545f-c5e9-edcf21bca5e4/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/512x512bb.jpg",
+      "publisher": "Fidelity Investments",
+      "format": "JPEG",
+      "width": 512,
+      "height": 512,
+      "notes": "Official app icon published by Fidelity Investments on the Apple App Store; original 512×512 artwork bytes retained. The fidelity.com ICO offers at most 48×48 and is not bundled as the display asset. No resampling, cropping, recoloring, or padding changes.",
+      "bytes": 44616,
+      "sha256": "f50931bb18a3c6d9cbc0ebb1799d35d482b3eeebfa0b55642bff475f4513b181"
+    },
+    {
+      "id": "schwab",
+      "name": "Charles Schwab",
+      "file": "bank-schwab.png",
+      "sourcePage": "https://www.schwab.com/",
+      "assetUrl": "https://www.schwab.com/themes/custom/sch_beacon_retail/favicons/apple-icon.png",
+      "format": "PNG",
+      "width": 956,
+      "height": 956,
+      "notes": "Official apple-touch-icon linked by the home page; actual decoded dimensions are 956×956 despite the HTML sizes hint of 180×180. Original bytes retained.",
+      "bytes": 16764,
+      "sha256": "f530c01ea7001a17c000b7a69840b5895d7620335524faf32019d3d2262fbd3b"
+    },
+    {
+      "id": "ibkr",
+      "name": "Interactive Brokers",
+      "file": "bank-ibkr.png",
+      "sourcePage": "https://www.interactivebrokers.com.hk/",
+      "assetUrl": "https://www.interactivebrokers.com.hk/images/web/favicons/home-screen-icon-192x192.png",
+      "format": "PNG",
+      "width": 192,
+      "height": 192,
+      "notes": "Reuses the existing reviewed official 192×192 home-screen icon documented in SOURCES.md. Existing bytes retained.",
+      "bytes": 7662,
+      "sha256": "5c658db5247eccd8ecda0e8fe17434b9cb4e999a501677e35910504fd0419261"
+    },
+    {
+      "id": "ishares",
+      "name": "iShares by BlackRock",
+      "file": "stock-ishares.ico",
+      "sourcePage": "https://www.ishares.com/us/products/314116/ishares-0-3-month-treasury-bond-etf",
+      "assetUrl": "https://www.ishares.com/blk-one02-c-assets/ishares-favicon.ico",
+      "format": "ICO",
+      "width": 32,
+      "height": 32,
+      "notes": "Original official favicon bytes, with 16 and 32 pixel frames. Used to identify the issuer of SGOV; no resampling or recoloring.",
+      "bytes": 5430,
+      "sha256": "73afde737c0a0b55d12f1bb09b00a194d8df01b045810c5e0e7d2375cc61091e"
+    }
+  ],
+  "rights": "All institution names and marks remain the property of their respective owners. These files identify the named institutions; no affiliation or endorsement is asserted."
+}

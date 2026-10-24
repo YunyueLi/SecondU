@@ -9,6 +9,8 @@ import { syncExampleLanguage, exampleDownloadName, exampleChatRoute, exampleDeci
 import { isDecisionExampleTask } from '../../../shared/demo-decision.mjs';
 import { isProductRoute } from '../product-navigation';
 import { replaceExampleRoute } from './navigation.mjs';
+import { installFinancePresentation } from './finance-presentation';
+import './finance-presentation.css';
 import '../../../src/styles.css';
 import '../../../src/desktop-refinement.css';
 import '../../../src/composer/conversation-composer.css';
@@ -22,6 +24,8 @@ const mobile = query.get('surface') === 'mobile';
 document.body.classList.toggle('mobile-root', mobile);
 const MobileSurface = lazy(() => import('../../../src/mobile/MobileApp').then(module => ({default:module.MobileApp})));
 const standalone = parent === window;
+const stopFinancePresentation = installFinancePresentation(window);
+addEventListener('pagehide', stopFinancePresentation, {once:true});
 let expanded = standalone;
 let standalonePreference: 'light'|'dark'|'system' = query.get('theme') === 'dark' ? 'dark' : query.get('theme') === 'light' ? 'light' : 'system';
 const systemTheme = matchMedia('(prefers-color-scheme: dark)');

@@ -1,0 +1,23 @@
+.asset-allocation { min-width:0; }
+.asset-allocation-details>header { display:flex;align-items:center;gap:10px;margin:0 0 16px; }
+.asset-allocation-details>header>svg { width:22px;height:22px; }
+.asset-allocation-details h3 { font-size:16px;line-height:24px;font-weight:550;margin:0; }
+.asset-allocation-details>header>strong { margin-left:auto;font-size:18px;font-weight:550;font-variant-numeric:tabular-nums; }
+.asset-allocation-details strong>small { color:var(--color-text-secondary);font-size:12px;font-weight:400; }
+.asset-allocation-items { display:grid;gap:4px; }
+.asset-allocation-item { display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:16px;padding:12px 8px;border-radius:8px; }
+.asset-allocation-item:hover { background:var(--color-surface-secondary); }
+.asset-allocation-item>div { display:grid;gap:2px;min-width:0; }
+.asset-allocation-item>div:first-child>strong { font-size:14px;line-height:22px;font-weight:500; }
+.asset-allocation-item>div:nth-child(2) { text-align:right;font-variant-numeric:tabular-nums; }
+.asset-allocation-item>div:nth-child(2)>strong { font-size:14px;font-weight:500;white-space:nowrap; }
+.asset-allocation-item :is(span,small),.asset-allocation-issues { color:var(--color-text-secondary);font-size:12px;line-height:18px; }
+.asset-allocation-unconverted { display:grid;gap:4px;margin-top:12px; }
+.asset-allocation-unconverted button,.asset-allocation-issues button { display:flex;align-items:center;gap:10px;padding:10px 8px;border:0;border-radius:8px;background:transparent;color:var(--color-text);text-align:left;cursor:pointer; }
+.asset-allocation-unconverted button:hover,.asset-allocation-issues button:hover { background:var(--color-surface-secondary); }
+.asset-allocation-unconverted svg,.asset-allocation-issues svg { width:18px;height:18px; }
+.asset-allocation-unconverted small,.asset-allocation-issues small { margin-left:auto;color:var(--color-text-secondary);font-size:12px; }
+.asset-allocation-issues { margin-top:12px; }
+.asset-allocation-issues summary { cursor:pointer;width:fit-content;padding:4px 0; }
+.asset-allocation-issues button { width:100%; }
+@container finance (max-width:600px) { .asset-allocation-item { grid-template-columns:minmax(0,1fr) auto;gap:6px 12px; } .asset-allocation-item>button { grid-column:1/-1;justify-self:start; } .asset-allocation-details>header { flex-wrap:wrap; } .asset-allocation-details>header>strong { font-size:16px; } }

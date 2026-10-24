@@ -1,3 +1,4 @@
+import {getNavigationPreferences,saveNavigationPreferences} from '../../../server/navigation-preferences.mjs';
 import { personalContextFor, normalizeContextRequest } from '../../../server/personal-context.mjs';
 import { taskTrace } from '../../../server/runtime-observation.mjs';
 import { saveRoomReaction } from '../../../server/room-reactions.mjs';
@@ -35,6 +36,7 @@ export class ExampleRuntime {
     Object.assign(this.example.responses, clone(responses));
   }
   list(collection) { return [...(this.data[collection] || this.extra.get(collection) || [])]; }
+  setMeta(key, value) { this.put('meta', {id:key,value:clone(value)}); return clone(value); }
   get(collection, key) { return this.list(collection).find(item => item.id === key); }
   require(collection, key) { return this.get(collection, key) || fail('记录不存在。', 404, 'not_found'); }
   put(collection, value) {
@@ -67,6 +69,11 @@ export class ExampleRuntime {
     if (secrets(body)) unavailable();
     const [resource, key, action] = url.pathname.split('/').filter(Boolean).map(decodeURIComponent);
     const collection = aliases[resource] || resource;
+    if (url.pathname === '/settings/navigation') {
+      if (method === 'GET') return clone(getNavigationPreferences(this));
+      if (method === 'PUT') return clone(saveNavigationPreferences(this, body));
+      unavailable();
+    }
     if (method === 'GET') {
       if (resource === 'digital-twin' && key === 'export') {
         const data = digitalTwinPackage(this);

@@ -1,0 +1,157 @@
+.finance-panorama .panorama-details-view {
+  width:100%;
+  max-width:none;
+  min-width:0;
+  margin-inline:0;
+}
+
+.finance-panorama .panorama-details-overview {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px 24px;
+  padding:2px 0 18px;
+  border-bottom:1px solid var(--color-border);
+}
+
+.finance-panorama .panorama-institution-picker {
+  flex:0 1 300px;
+  min-width:0;
+  max-width:100%;
+  height:38px;
+  padding-inline:10px;
+  font-size:14px;
+  font-weight:500;
+}
+
+.panorama-institution-picker>span:last-child,
+.panorama-institution-option>span:last-child {
+  display:flex;
+  align-items:center;
+  width:100%;
+  min-width:0;
+  gap:9px;
+}
+
+.panorama-picker-current,
+.panorama-picker-option-name {
+  flex:1;
+  min-width:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  text-align:left;
+}
+
+.panorama-institution-picker small,
+.panorama-institution-option small {
+  flex:none;
+  color:var(--color-text-secondary);
+  font-size:12px;
+  font-weight:400;
+}
+
+.panorama-institution-picker>span:last-child>svg,
+.panorama-institution-option>span:last-child>svg,
+.panorama-picker-check-space {
+  flex:none;
+  width:16px;
+  height:16px;
+  color:var(--color-text-secondary);
+}
+
+.panorama-institution-menu {
+  display:flex;
+  flex-direction:column;
+  max-width:calc(100vw - 40px);
+  padding:8px;
+  overflow:hidden;
+}
+
+.panorama-institution-search { flex:none; padding:0 0 6px; }
+.panorama-institution-options { min-height:0; max-height:min(320px,50dvh); overflow:auto; overscroll-behavior:contain; }
+.panorama-institution-menu .panorama-institution-option { display:flex; width:100%; height:38px; padding-inline:8px; font-size:14px; font-weight:400; }
+.panorama-institution-menu .panorama-institution-option>span:last-child { display:grid; grid-template-columns:22px minmax(0,1fr) auto 16px; gap:9px; }
+/* The SDK portal sits outside .finance-workspace, where BrandIcon's usual
+   dimensions are scoped. Keep its image and fallback SVG bounded here. */
+.panorama-institution-menu .brand-icon {
+  display:inline-grid;
+  place-items:center;
+  flex:0 0 22px;
+  width:22px;
+  height:22px;
+  inline-size:22px;
+  block-size:22px;
+  min-width:0;
+  overflow:hidden;
+  border-radius:3px;
+}
+.panorama-institution-menu .brand-icon>img,
+.panorama-institution-menu .brand-icon>svg {
+  display:block;
+  width:22px;
+  height:22px;
+  inline-size:22px;
+  block-size:22px;
+  max-width:100%;
+  max-height:100%;
+  object-fit:contain;
+}
+.panorama-institution-menu .panorama-picker-option-name { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.panorama-institution-empty { margin:8px; color:var(--color-text-secondary); font-size:13px; line-height:1.65; }
+
+.finance-panorama .panorama-details-total { display:grid; gap:2px; min-width:0; text-align:right; }
+.finance-panorama .panorama-details-total>span { color:var(--color-text-secondary); font-size:12px; line-height:1.5; }
+.finance-panorama .panorama-details-total .panorama-money strong { font-size:18px; line-height:1.4; font-weight:550; }
+.finance-panorama .panorama-details-view .panorama-inline-details { min-width:0; }
+.finance-panorama .panorama-details-view .panorama-detail-account { margin:0; padding:8px 0 14px; border-bottom:1px solid var(--color-border); scroll-margin-block:12px; }
+.finance-panorama .panorama-details-view .panorama-detail-account:last-child { border-bottom:0; }
+
+.finance-panorama .panorama-detail-account-row {
+  width:100%;
+  height:auto;
+  min-height:64px;
+  padding:10px 8px;
+  margin-inline:0;
+  text-align:left;
+  white-space:normal;
+  font-weight:400;
+}
+
+.finance-panorama .panorama-detail-account-row>span:last-child {
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto auto;
+  align-items:center;
+  width:100%;
+  gap:12px 20px;
+}
+
+.finance-panorama .panorama-detail-account-copy { display:grid; gap:4px; min-width:0; }
+.finance-panorama .panorama-detail-account-copy>strong { font-size:14px; font-weight:500; line-height:1.6; overflow-wrap:anywhere; }
+.finance-panorama .panorama-detail-account-meta { display:flex; align-items:baseline; flex-wrap:wrap; gap:2px 10px; color:var(--color-text-secondary); font-size:12px; font-weight:400; line-height:1.6; }
+.finance-panorama .panorama-detail-account-meta time { overflow-wrap:anywhere; }
+.finance-panorama .panorama-detail-account-link { display:flex; align-items:center; gap:4px; color:var(--color-text-secondary); font-size:12px; white-space:nowrap; }
+.finance-panorama .panorama-detail-account-link svg { width:16px; height:16px; flex:none; }
+.finance-panorama .panorama-details-view .panorama-account-actions { margin:0 0 4px; padding-inline:2px; }
+.finance-panorama .panorama-details-view .panorama-detail-account-note { margin:0 8px 6px; }
+.finance-panorama .panorama-details-view .finance-account-source-details { margin:4px 8px 0; }
+.finance-panorama .panorama-details-view .finance-source-disclosure { margin-top:4px; }
+.finance-panorama .panorama-details-view .finance-source-disclosure>summary { min-height:36px; padding-block:8px; font-size:13px; }
+
+/* Detail rows keep a stable reading start instead of centering sparse records. */
+.finance-panorama-fullscreen .panorama-fullscreen-content:has(>.panorama-details-view)::before,
+.finance-panorama-fullscreen .panorama-fullscreen-content:has(>.panorama-details-view)::after { display:none; }
+
+@container panorama (max-width:560px) {
+  .finance-panorama .panorama-details-overview { flex-wrap:wrap; gap:12px; padding-bottom:14px; }
+  .finance-panorama .panorama-institution-picker { flex-basis:100%; }
+  .finance-panorama .panorama-details-total { width:100%; display:flex; align-items:baseline; justify-content:space-between; gap:8px; text-align:left; }
+  .finance-panorama .panorama-details-total .panorama-money strong { font-size:16px; }
+  .finance-panorama .panorama-detail-account-row { padding:10px 4px; }
+  .finance-panorama .panorama-detail-account-row>span:last-child { grid-template-columns:minmax(0,1fr) 16px; gap:6px 8px; }
+  .finance-panorama .panorama-detail-account-copy { grid-column:1; grid-row:1; }
+  .finance-panorama .panorama-detail-account-row .panorama-money { grid-column:1; grid-row:2; justify-content:flex-start; }
+  .finance-panorama .panorama-detail-account-link { grid-column:2; grid-row:1 / 3; }
+  .finance-panorama .panorama-detail-account-link>span { display:none; }
+  .finance-panorama .panorama-details-view .finance-account-source-details { margin-inline:4px; }
+}

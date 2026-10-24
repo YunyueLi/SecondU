@@ -1,0 +1,54 @@
+:where(.finance-workspace,.finance-settings) .finance-account-list { container:finance-account-list / inline-size; width:100%; min-width:0; color:var(--color-text); }
+:where(.finance-workspace,.finance-settings) .finance-account-rows { margin:0; padding:0; list-style:none; }
+:where(.finance-workspace,.finance-settings) .finance-account-rows>li { min-width:0; }
+:where(.finance-workspace,.finance-settings) .finance-account-columns,:where(.finance-workspace,.finance-settings) .finance-account-row { display:grid; grid-template-columns:28px minmax(160px,1.6fr) minmax(100px,1fr) minmax(120px,1.1fr) minmax(120px,auto) 72px 16px; align-items:center; column-gap:var(--hither-space-3,12px); }
+:where(.finance-workspace,.finance-settings) .finance-account-columns>span:first-child { grid-column:1 / 3; }
+:where(.finance-workspace,.finance-settings) .finance-account-columns>span:nth-child(4),:where(.finance-workspace,.finance-settings) .finance-account-columns>span:nth-child(5) { text-align:right; }
+:where(.finance-workspace,.finance-settings) .finance-account-row>.brand-icon { grid-column:1; }
+:where(.finance-workspace,.finance-settings) .finance-account-identity { grid-column:2; display:flex; flex-wrap:wrap; align-items:baseline; gap:2px 8px; min-width:0; }
+:where(.finance-workspace,.finance-settings) .finance-account-identity>strong { overflow-wrap:anywhere; }
+:where(.finance-workspace,.finance-settings) .finance-account-identity>small { white-space:nowrap; }
+:where(.finance-workspace,.finance-settings) .finance-account-type { grid-column:3; font-size:14px; line-height:22px; overflow-wrap:anywhere; }
+:where(.finance-workspace,.finance-settings) .finance-account-status { grid-column:4; overflow-wrap:anywhere; }
+:where(.finance-workspace,.finance-settings) .finance-account-money { grid-column:5; display:flex; flex-wrap:wrap; justify-content:flex-end; align-items:baseline; gap:4px; min-width:0; font-variant-numeric:tabular-nums; }
+:where(.finance-workspace,.finance-settings) .finance-account-money>strong { min-width:0; overflow-wrap:anywhere; }
+:where(.finance-workspace,.finance-settings) .finance-account-share { grid-column:6; text-align:right; font-variant-numeric:tabular-nums; overflow-wrap:anywhere; }
+:where(.finance-workspace,.finance-settings) .finance-account-arrow { grid-column:7; width:16px; height:16px; color:var(--color-text-tertiary); }
+:where(.finance-workspace,.finance-settings) .finance-account-empty { margin:0; padding:24px 16px; color:var(--color-text-secondary); font-size:14px; line-height:22px; }
+@container finance-account-list (max-width:849px) {
+  :where(.finance-workspace,.finance-settings) .finance-account-list-full .finance-account-columns,:where(.finance-workspace,.finance-settings) .finance-account-list-full .finance-account-row { grid-template-columns:28px minmax(100px,1.4fr) minmax(80px,.85fr) minmax(112px,1fr) 16px; gap:2px 12px; }
+  :where(.finance-workspace,.finance-settings) .finance-account-list-full .finance-account-columns>span:nth-child(2),:where(.finance-workspace,.finance-settings) .finance-account-list-full .finance-account-columns>span:nth-child(5) { display:none; }
+  :where(.finance-workspace,.finance-settings) .finance-account-list-full .finance-account-columns>span:nth-child(3) { grid-column:3; }
+  :where(.finance-workspace,.finance-settings) .finance-account-list-full .finance-account-columns>span:nth-child(4) { grid-column:4; }
+  :where(.finance-workspace,.finance-settings) .finance-account-list-full .finance-account-columns>span:last-child { grid-column:5; }
+  :where(.finance-workspace,.finance-settings) .finance-account-list-full .finance-account-row>.brand-icon { grid-row:1 / 3; }
+  :where(.finance-workspace,.finance-settings) .finance-account-list-full .finance-account-identity { grid-column:2; grid-row:1; }
+  :where(.finance-workspace,.finance-settings) .finance-account-list-full .finance-account-type { grid-column:2; grid-row:2; color:var(--color-text-secondary); font-size:12px; line-height:18px; }
+  :where(.finance-workspace,.finance-settings) .finance-account-list-full .finance-account-status { grid-column:3; grid-row:1 / 3; }
+  :where(.finance-workspace,.finance-settings) .finance-account-list-full .finance-account-money { grid-column:4; grid-row:1; }
+  :where(.finance-workspace,.finance-settings) .finance-account-list-full .finance-account-share { grid-column:4; grid-row:2; }
+  :where(.finance-workspace,.finance-settings) .finance-account-list-full .finance-account-arrow { grid-column:5; grid-row:1 / 3; }
+}
+:where(.finance-workspace,.finance-settings) .finance-account-list-compact .finance-account-row { grid-template-columns:28px minmax(0,1.4fr) minmax(112px,1fr) 16px; gap:0 12px; }
+:where(.finance-workspace,.finance-settings) .finance-account-list-compact .finance-account-row>.brand-icon { grid-row:1 / 4; }
+:where(.finance-workspace,.finance-settings) .finance-account-list-compact .finance-account-identity { grid-column:2; grid-row:1; }
+:where(.finance-workspace,.finance-settings) .finance-account-list-compact .finance-account-identity>strong { overflow-wrap:anywhere; }
+:where(.finance-workspace,.finance-settings) .finance-account-list-compact .finance-account-identity>small { white-space:nowrap; }
+:where(.finance-workspace,.finance-settings) .finance-account-list-compact .finance-account-type { grid-column:2; grid-row:2; font-size:12px; line-height:18px; color:var(--color-text-secondary); }
+:where(.finance-workspace,.finance-settings) .finance-account-list-compact .finance-account-status { grid-column:2; grid-row:3; }
+:where(.finance-workspace,.finance-settings) .finance-account-list-compact .finance-account-money { grid-column:3; grid-row:1 / 3; }
+:where(.finance-workspace,.finance-settings) .finance-account-list-compact .finance-account-share { grid-column:3; grid-row:3; }
+:where(.finance-workspace,.finance-settings) .finance-account-list-compact .finance-account-arrow { grid-column:4; grid-row:1 / 4; }
+@container finance-account-list (max-width:520px) {
+  :where(.finance-workspace,.finance-settings) .finance-account-list-full .finance-account-columns { display:none; }
+  :where(.finance-workspace,.finance-settings) .finance-account-list .finance-account-row { grid-template-columns:28px minmax(0,1.4fr) minmax(96px,1fr) 12px; gap:0 8px; }
+  :where(.finance-workspace,.finance-settings) .finance-account-list .finance-account-row>.brand-icon { grid-column:1; grid-row:1 / 4; }
+  :where(.finance-workspace,.finance-settings) .finance-account-list .finance-account-identity { grid-column:2; grid-row:1; }
+  :where(.finance-workspace,.finance-settings) .finance-account-list .finance-account-identity>strong { overflow-wrap:anywhere; }
+  :where(.finance-workspace,.finance-settings) .finance-account-list .finance-account-identity>small { white-space:nowrap; }
+  :where(.finance-workspace,.finance-settings) .finance-account-list .finance-account-type { grid-column:2; grid-row:2; font-size:12px; line-height:18px; color:var(--color-text-secondary); }
+  :where(.finance-workspace,.finance-settings) .finance-account-list .finance-account-status { grid-column:2; grid-row:3; }
+  :where(.finance-workspace,.finance-settings) .finance-account-list .finance-account-money { grid-column:3; grid-row:1 / 3; flex-direction:column; align-items:flex-end; justify-content:center; gap:0; }
+  :where(.finance-workspace,.finance-settings) .finance-account-list .finance-account-share { grid-column:3; grid-row:3; }
+  :where(.finance-workspace,.finance-settings) .finance-account-list .finance-account-arrow { grid-column:4; grid-row:1 / 4; width:12px; }
+}

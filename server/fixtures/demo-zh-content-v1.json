@@ -396,7 +396,7 @@
     "automations": [],
     "settings": {
       "provider": "moonshot",
-      "model": "kimi-k3",
+      "model": "kimi-k3.1-pro",
       "baseUrl": "https://api.moonshot.cn/v1",
       "api": "chat_completions",
       "hasKey": false,

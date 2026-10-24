@@ -6,7 +6,7 @@
 <p align="center">An open-source agent product built around a personal digital twin.</p>
 <p align="center">
   <a href="https://yunyueli.github.io/SecondU/product/embed.html?space=demo-us-v1&lang=en#example-chat"><strong>Try SecondU</strong></a>&nbsp;&nbsp;&nbsp;
-  <a href="https://github.com/YunyueLi/SecondU/releases/latest"><strong>Download for macOS</strong></a>&nbsp;&nbsp;&nbsp;
+  <a href="https://github.com/YunyueLi/SecondU/releases/tag/v0.2.1"><strong>Download for macOS</strong></a>&nbsp;&nbsp;&nbsp;
   <a href="QUICKSTART.md">Quick start</a>&nbsp;&nbsp;&nbsp;
   <a href="https://yunyueli.github.io/SecondU/benchmark/?lang=en">Benchmark</a>&nbsp;&nbsp;&nbsp;
   <a href="README.zh-CN.md">简体中文</a>
@@ -81,12 +81,40 @@ Talk to a specialist or form a team with a lead. Follow delegated work, status a
       <img src="docs/readme-assets/specialists-en.jpg" width="1280" alt="Specialists in the English fictional workspace">
     </picture></a></p>
 
+### Keep finances in view
+
+The Finance workspace brings together **overview, accounts, holdings, market data, liabilities, transactions and planning**. Record cash, investments and other asset types; retain original currencies and observation dates; inspect exchange-rate conversions and the difference between recorded balances and quote-based estimates. Customize 13 overview components, record transactions manually or import a CSV, and manage bills, subscriptions, budgets, savings goals, credit records, weekly reports and planning scenarios. Selected records can accompany a question as an inspectable context snapshot. [Finance capabilities and boundaries](docs/FINANCE.md)
+
+Supported account providers use read-only connections with explicit setup and provider authorization. Availability depends on the provider, region and account permissions; a directory entry does not mean an account is connected. Financial research sources are listed separately from account connections. SecondU does not place trades, transfer funds or pay bills.
+
+The [website's finance story](https://yunyueli.github.io/SecondU/?lang=en#finance) follows **Alex Morgan**, a fictional AI infrastructure engineer in San Mateo. Both languages share an October 25, 2026 snapshot with 11 asset accounts, 19 positions, 119 transactions and 22 recurring plans, including retirement savings, vested employer stock and foreign-currency assets. It reconciles to **USD 729,096.75 in assets, USD 16,480.75 in recorded liabilities and USD 712,616.00 in net assets**. This is an independent, read-only Finance example; the person, records, prices and exchange rates are authored fiction, and no real account is connected.
+
+Explore six views: **Overview, Portfolio, Structure, Allocation, Details and Holdings**. Overview brings together net assets, spending categories, monthly spending and upcoming payments; Portfolio combines investments, holding quotes and a recorded credit score. Open the full workspace from any preview without losing your place on the website. Quote timestamps use the example's Pacific time zone, with the actual zone available in the full timestamp.
+
+<p><a href="https://yunyueli.github.io/SecondU/product/embed.html?space=demo-us-v1&lang=en#finance"><picture>
+      <source media="(prefers-color-scheme: dark)" srcset="docs/readme-assets/finance-overview-en-dark.jpg">
+      <img src="docs/readme-assets/finance-overview-en.jpg" width="1160" alt="Alex Morgan's fictional finance overview: net asset trend, spending categories, monthly spending and upcoming payments">
+    </picture></a></p>
+
+<p><a href="https://yunyueli.github.io/SecondU/product/embed.html?space=demo-us-v1&lang=en#finance"><picture>
+      <source media="(prefers-color-scheme: dark)" srcset="docs/readme-assets/finance-portfolio-en-dark.jpg">
+      <img src="docs/readme-assets/finance-portfolio-en.jpg" width="1160" alt="Actual SecondU portfolio components showing Alex Morgan's fictional investments, holding quotes and credit record">
+    </picture></a></p>
+
+### Choose how the workspace fits your work
+
+The ten-chapter product guide now includes dedicated **Finance** and **Workspace setup** chapters, with direct entry points into these new features.
+
+Pin **Finance, Agents and Library** in the sidebar and expand the Finance and Agents sections as needed. Home suggestions provide starting points for a task. The connector directory separates available tools, financial account providers and research sources. **Settings → Computer** shows local runtime availability and manages SSH computers; task drafts can select a configured execution computer. Appearance settings bring together language, theme, backgrounds and motion preferences.
+
 ### Keep working with the result
 
 Edit files beside the conversation, save versions and revisit earlier content. Revising a sent question creates a new branch; the original discussion and feedback remain available.
 
 | Also included | Current capability |
 | --- | --- |
+| Personal finance | Accounts, assets, holdings, quotes, spending and planning; manual/CSV records and supported read-only provider connections. [Details](docs/FINANCE.md) |
+| Execution computers | Local runtime checks, configured SSH hosts and explicit task-computer selection. Remote access requires its own setup and verification. |
 | Files and previews | Markdown, code, tables, static HTML/SVG, images and PDF. Office originals are preserved, with optional local LibreOffice PDF previews. |
 | Messaging | OpenClaw setup for 13 channels. Slack/Discord history import and confirmed sending, with explicit account and conversation scope. |
 | Context for other AI apps | Versioned context exports and explicitly authorized read-only MCP snapshots. [Interoperability](docs/INTEROPERABILITY.md) |
@@ -124,7 +152,7 @@ No-context is a separate visible-information calibration: **47 / 48** calls met 
 | Start here | What to expect |
 | --- | --- |
 | **[Try it in your browser](https://yunyueli.github.io/SecondU/product/embed.html?space=demo-us-v1&lang=en#example-chat)** | The real app with fictional bilingual examples and page-local summary import. Imported content and edits reset on refresh; no model execution or account connection. |
-| **[Download the desktop app](https://github.com/YunyueLi/SecondU/releases/latest)** | Apple Silicon Mac, macOS 13+. Includes Node. Ad-hoc signed, not Apple-notarized. |
+| **[Download the desktop app](https://github.com/YunyueLi/SecondU/releases/tag/v0.2.1)** | Apple Silicon Mac, macOS 13+. Includes Node. Ad-hoc signed, not Apple-notarized. |
 | **Run from source** | Node.js 22.18+ and npm. Use the commands below, then open [localhost:58645](http://127.0.0.1:58645). |
 
 ```sh
@@ -136,6 +164,8 @@ npm start
 ```
 
 Choose an example space to explore without credentials. To run real tasks, enter personal space, install **Codex CLI** separately and configure your own model connection. [Setup and troubleshooting](QUICKSTART.md)
+
+The examples display **Kimi K3.1 Pro** as an unconnected model configuration. Their conversations are prewritten; browsing them does not call a model or change your saved personal connections.
 
 ## Your data, your permissions
 
@@ -154,7 +184,7 @@ The [12-direction roadmap](docs/ROADMAP.md) describes current foundations, next 
 | Context beyond one screen | Communication and real-world resources; multimodal continuity across devices; authorized expertise distribution |
 | A network built around people | A2A collaboration and service transactions; social and relationship discovery; continuously improving personal assets |
 
-**Development status:** current source includes twin building, an original-material library, candidate review, task drafts, a mobile layout and local proactive contact. Context, tasks, teams and files continue to share the existing data and execution runtime. Automation and proactive contact require the local service to be running. Physical devices, remote hosts and external accounts need separate acceptance. Synchronization, cloud observation, calls, payments and matching remain planned; marketplace and Dating retain their **Dev** labels. macOS arm64 has native delivery; Linux CI covers source builds and tests. [Verified scope](docs/PROTOTYPE.md#当前证据与限制)
+**Development status:** [v0.2.1](docs/releases/v0.2.1.md) adds the Finance workspace, configurable sidebar modules, local/SSH computer settings, an expanded connector directory, home suggestions and appearance refinements. Twin building, original materials, candidate review, task drafts, mobile layouts and local proactive contact remain part of the product. Context, tasks, teams and files continue to share the existing data and execution runtime. Automation and proactive contact require the local service to be running. Physical devices, remote hosts and external accounts need separate acceptance. Synchronization, cloud observation, calls, payments and matching remain planned; marketplace and Dating retain their **Dev** labels. macOS arm64 has native delivery; Linux CI covers source builds and tests. [Verified scope](docs/PROTOTYPE.md#当前证据与限制)
 
 ## How it works
 

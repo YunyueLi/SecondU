@@ -1,0 +1,21 @@
+.optional-modules-popover { padding:6px; background:var(--color-surface); border:1px solid var(--color-border); color:var(--color-text); }
+.optional-modules-heading { padding:6px 9px 5px; color:var(--color-text-secondary); font-size:12px; line-height:1.5; }
+.optional-module-row { display:flex; align-items:center; gap:2px; }
+.optional-module-row .optional-module-open { flex:1; min-width:0; justify-content:flex-start; min-height:38px; padding:0 9px; font-size:13px; border-radius:8px; }
+.optional-module-open>span { display:flex; align-items:center; justify-content:flex-start; gap:10px; width:100%; }
+.optional-module-open svg { width:18px; height:18px; flex-shrink:0; }
+.optional-module-open[aria-current=page] { font-weight:500; }
+.optional-module-row .optional-module-pin { width:36px; height:36px; min-height:36px; flex-shrink:0; color:var(--color-text-secondary); border-radius:8px; }
+.optional-module-pin[aria-pressed=true] { color:var(--color-text); }
+.optional-module-pin svg { width:17px; height:17px; }
+.optional-modules-popover.is-mobile .optional-module-open,.optional-modules-popover.is-mobile .optional-module-pin { min-height:44px; height:44px; }
+.optional-modules-popover.is-mobile .optional-module-pin { width:44px; }
+.navigation-preference-status{min-width:0;padding:0 4px 3px}
+.navigation-preference-status .navigation-preference-status-trigger{width:100%;justify-content:flex-start;min-height:30px;padding:4px 8px;color:var(--color-text-secondary);font-size:var(--hither-font-meta);font-weight:400}
+.navigation-preference-status-trigger>span{gap:7px;min-width:0}
+.navigation-preference-status-trigger svg{width:15px;height:15px;flex:none}
+.navigation-preference-status.is-rail{padding-inline:0}
+.navigation-preference-status.is-rail .navigation-preference-status-trigger{justify-content:center;padding-inline:0}
+.navigation-preference-status-popover{max-width:calc(100vw - 24px);padding:16px;color:var(--color-text);font-size:var(--hither-font-caption);line-height:1.7}
+.navigation-preference-status-popover p{margin:0 0 12px;overflow-wrap:anywhere}
+.navigation-preference-announcement{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}

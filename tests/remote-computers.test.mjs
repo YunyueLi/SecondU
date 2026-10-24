@@ -8,7 +8,7 @@ import { Store } from '../server/store.mjs';
 import { saveConnection } from '../server/connections.mjs';
 import { saveAttachment } from '../server/attachments.mjs';
 import { RemoteComputerService } from '../server/remote/service.mjs';
-import { runtimePackage, RUNTIME_FILES, PROBE, INSTALLER, processJson, sshArgs, shellQuote } from '../server/remote/transport.mjs';
+import { runtimePackage, RUNTIME_FILES, PROBE, INSTALLER, VERIFY_RUNTIME, runtimeVerificationInput, processJson, sshArgs, shellQuote } from '../server/remote/transport.mjs';
 import { digest, terminal } from '../server/remote/common.mjs';
 
 const secret='synthetic-remote-key-never-a-real-key',pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
@@ -16,6 +16,7 @@ const settings={name:'Remote fixture',provider:'custom',model:'fixture-model',ba
 class LocalRemoteTransport {
   constructor(home){this.env={HOME:home,PATH:path.join(home,'bin')+path.delimiter+path.dirname(process.execPath)+':/usr/bin:/bin',LANG:'en_US.UTF-8'};this.calls=[];}
   probe(computer){return processJson(process.execPath,['-e',PROBE],{workspaceRoot:computer.workspaceRoot},{env:this.env});}
+  verifyRuntime(computer,pkg){return processJson(process.execPath,['-e',VERIFY_RUNTIME],runtimeVerificationInput(computer,pkg),{env:this.env});}
   prepare(_computer,pkg){return processJson(process.execPath,['-e',INSTALLER],pkg,{env:this.env});}
   call(computer,request){this.calls.push({op:request.op,runId:request.runId});return processJson(process.execPath,[computer.runtime.runtimePath],request,{env:this.env,secret:request.input?.apiKey});}
 }
@@ -132,4 +133,45 @@ test('deployed runtime loads its execution dependencies without the source check
   const script="const {pathToFileURL}=await import('node:url');await import(pathToFileURL(process.argv[1]));await import(pathToFileURL(process.argv[2]));process.stdout.write(JSON.stringify({ok:true,result:{loaded:true}}));";
   const result=await processJson(process.execPath,['--input-type=module','-e',script,path.join(runtimeRoot,'server/codex.mjs'),path.join(runtimeRoot,'server/chat-bridge.mjs')],{},{env:f.transport.env});
   assert.deepEqual(result,{loaded:true});
+});
+
+test('checking readiness verifies the deployed runtime and missing files require explicit preparation',async t=>{
+  const f=await fixture(t),runtimeRoot=path.resolve(f.computer.runtime.runtimePath,'../../..');
+  let computer=(await f.service.probe(f.computer.id)).computer;
+  assert.equal(computer.status,'ready');assert.equal(computer.revision,f.computer.revision);
+  for(const relative of ['server/remote/rpc.mjs','server/chat-bridge.mjs']){
+    const file=path.join(runtimeRoot,relative);rmSync(file);const priorRevision=computer.revision;
+    computer=(await f.service.probe(computer.id)).computer;
+    assert.equal(computer.status,'saved');assert.ok(computer.probe);assert.equal(computer.runtime,undefined);assert.equal(computer.revision,priorRevision+1);
+    assert.equal(existsSync(file),false,'a readiness check must never reinstall a missing component');
+    await assert.rejects(f.service.owner('POST',[computer.id,'runs'],f.body('Finish',{computerRevision:computer.revision})),error=>error.code==='remote_not_prepared');
+    assert.equal(f.store.list('remoteRuns').length,0,'an invalid runtime must be rejected before creating an uncertain remote run');
+    computer=(await f.service.prepare(computer.id,{installRuntime:true})).computer;
+    assert.equal(computer.status,'ready');assert.equal(existsSync(file),true);
+    computer=(await f.service.probe(computer.id)).computer;assert.equal(computer.status,'ready');
+  }
+  const {run}=await f.service.owner('POST',[computer.id,'runs'],f.body('Finish',{computerRevision:computer.revision}));
+  const completed=await until(f.service,run.id,value=>terminal(value.status));assert.equal(completed.status,'completed');
+});
+
+test('changed or outdated runtime is never reported ready and checks leave remote files unchanged',async t=>{
+  const f=await fixture(t),file=f.computer.runtime.runtimePath,original=readFileSync(file),changed=Buffer.from(original);
+  changed[0]=changed[0]===32?33:32;writeFileSync(file,changed);
+  const invalid=(await f.service.probe(f.computer.id)).computer;
+  assert.equal(invalid.status,'saved');assert.equal(invalid.runtime,undefined);assert.deepEqual(readFileSync(file),changed,'a check neither repairs nor overwrites a changed runtime');
+  writeFileSync(file,original);const prepared=(await f.service.prepare(invalid.id,{installRuntime:true})).computer;
+  f.store.put('remoteComputers',{...prepared,runtime:{...prepared.runtime,version:'0'.repeat(64)}});
+  const outdated=(await f.service.probe(prepared.id)).computer;
+  assert.equal(outdated.status,'saved');assert.equal(outdated.runtime,undefined);assert.equal(outdated.revision,prepared.revision+1);assert.deepEqual(readFileSync(file),original);
+});
+
+test('an unavailable or invalid runtime verification cannot preserve ready status',async t=>{
+  const f=await fixture(t),verify=f.transport.verifyRuntime.bind(f.transport);
+  f.transport.verifyRuntime=async()=>{throw Object.assign(new Error('Fixture verification disconnected'),{code:'remote_disconnected'});};
+  await assert.rejects(f.service.probe(f.computer.id),error=>error.code==='remote_disconnected');
+  assert.equal(f.store.require('remoteComputers',f.computer.id).status,'unavailable');
+  f.transport.verifyRuntime=async(_computer,pkg)=>({protocol:pkg.protocol,version:pkg.version,valid:'true'});
+  await assert.rejects(f.service.probe(f.computer.id),error=>error.code==='remote_invalid_response');
+  assert.equal(f.store.require('remoteComputers',f.computer.id).status,'unavailable');
+  f.transport.verifyRuntime=verify;assert.equal((await f.service.probe(f.computer.id)).computer.status,'ready');
 });

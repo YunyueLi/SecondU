@@ -1,11 +1,22 @@
 .settings-workspace {
+  position: relative;
   width: 100%;
   height: calc(100% - 48px);
   max-width: none;
   margin: 48px 0 0;
   padding: 0;
   container-type: inline-size;
+  container-name: settings-workspace;
 }
+
+.settings-compact-navigation { display:none; }
+.settings-category-picker { min-width:0; max-width:100%; }
+.settings-category-picker>span { min-width:0; gap:7px; }
+.settings-category-picker>span>span { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.settings-category-picker svg { width:14px; height:14px; flex:none; color:var(--color-text-secondary); }
+.settings-category-option { min-height:44px; font-size:var(--hither-font-label); }
+.settings-category-option-label { display:inline-flex; align-items:center; gap:10px; min-width:0; }
+.settings-category-option-label>svg { width:18px; height:18px; flex:none; }
 
 .settings-workspace-heading { margin-bottom: 24px; }
 .settings-workspace-heading h1 { font-size: var(--hither-font-page-title); font-weight: 600; line-height: 1.35; letter-spacing: -.025em; }
@@ -78,17 +89,20 @@
 .settings-export > a { flex-shrink: 0; }
 .settings-product-note { font-size:var(--hither-font-meta); color: var(--color-text-secondary); margin-top: 36px; }
 
-@container (max-width: 730px) {
+@container settings-workspace (max-width: 730px) {
   .settings-layout { display:flex; flex-direction:column; }
-  .settings-navigation { width:100%; height:auto; padding:12px 12px 10px; border-right:0; border-bottom:1px solid var(--color-border-subtle); flex-shrink:0; }
-  .settings-navigation h1 { display:none; }
-  .settings-navigation nav { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:4px; }
-  .settings-workspace .settings-category { width:100%; min-width:0; height:auto; min-height:38px; justify-content:center; padding:8px; }
-  .settings-category>span { justify-content:center; }
-  .settings-category>span>span { min-width:0; white-space:normal; line-height:1.4; }
-  .settings-space-note { display: none; }
+  /* The narrow dialog shares one top bar for Settings, its category and Close. */
+  .settings-workspace:not(.is-mobile) .settings-navigation { display:none; }
+  .settings-compact-navigation { position:absolute; top:-46px; left:76px; right:52px; z-index:4; height:44px; display:flex; align-items:center; pointer-events:none; }
+  .settings-compact-navigation:lang(en) { left:98px; }
+  .settings-category-picker { height:44px; padding-inline:9px; border-radius:8px; pointer-events:auto; }
   .settings-detail { width:100%; height:auto; flex:1; }
-  .settings-panel { padding:24px 22px 28px; }
+  .settings-panel { padding:20px 22px 28px; }
+  /* The category picker supplies the visible title. Keep headings available to
+     assistive technology, and retain category actions and object-detail titles. */
+  .settings-workspace:not(.is-mobile) :is(#settings-general-title,#settings-personal-title,#settings-model-title,#settings-connectors-title,#settings-computer-title,#settings-appearance-title,#settings-data-title) { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+  .settings-workspace:not(.is-mobile) :is(.settings-panel-heading,.model-overview-heading,.settings-profile-heading) { margin-block:0; }
+  .settings-workspace:not(.is-mobile) :is(.settings-panel-heading,.model-overview-heading):has(:is(button,a)) { margin-bottom:16px; }
 }
 
 @container (max-width: 440px) {
@@ -97,13 +111,11 @@
   .settings-detail-list > div { grid-template-columns: 90px minmax(0, 1fr); gap: 14px; }
   .settings-export { flex-direction: column; gap: 16px; }
   .settings-key-management { align-items: flex-start; }
-  .settings-category svg { display: none; }
   .settings-sample-sidebar { width: 20%; }
   .settings-sample-content { padding: 14px; }
 }
 
 @container (max-width: 330px) {
-  .settings-navigation nav { grid-template-columns:repeat(2,minmax(0,1fr)); }
   .general-preferences .preference-line { align-items:flex-start; gap:10px; }
   .general-preferences .preference-line>div:first-child { flex-basis:100%; }
 }
@@ -182,11 +194,12 @@
 .settings-workspace .appearance-block { margin-bottom:24px; }
 .settings-workspace :is(.settings-preference-row,.preference-line,.model-assignment-row) { min-width:0; }
 .settings-workspace :is(.settings-preference-row,.preference-line)>div:first-child { min-width:0; }
+.preference-line.settings-toggle-preference { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; column-gap:16px; }
+.settings-toggle-preference>[role=switch],.settings-toggle-preference>button { justify-self:end; }
 .settings-workspace .settings-technical dd { min-width:0; }
 @container(max-width:440px) { .settings-panel { padding:22px 18px 26px; } .settings-device-identity { gap:10px; } .settings-workspace .settings-device-identity h3 { font-size:15px; } .settings-technical dl>div { grid-template-columns:76px minmax(0,1fr); gap:12px; } }
 .settings-workspace .connectors-settings { width:100%; }
-.general-preferences { margin-top:0; }
-.general-save-status { margin-top:16px; }
+.settings-workspace .general-preferences { margin-top:0; }
 .settings-workspace .connector-empty-state { padding:18px 0 0; color:var(--color-text-tertiary); font-size:var(--hither-font-caption); }
 .settings-workspace .connector-add-options { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
 .settings-workspace .connector-add-options>button { min-width:0; width:100%; }
@@ -202,3 +215,25 @@
 .settings-previous-space { width:100%;margin-top:8px; }
 .settings-previous-space summary { color:var(--color-text-secondary);font-size:var(--hither-font-caption);padding-block:8px; }
 .settings-previous-space>button { margin-top:6px; }
+
+/* Appearance choices retain the existing settings rows and wrap as one control. */
+.settings-workspace .appearance-choice-preference>[role=radiogroup] { width:fit-content; max-width:100%; min-width:0; flex-shrink:0; }
+.settings-workspace .accent-options { flex-wrap:wrap; row-gap:12px; max-width:100%; padding:3px; }
+.settings-workspace .accent-options button:focus-visible { outline:2px solid var(--color-text); outline-offset:4px; }
+@container settings-workspace (max-width:600px) {
+  .settings-workspace .appearance-choice-preference { flex-direction:column; align-items:flex-start; gap:12px; }
+}
+
+
+/* One accent palette serves all states, with a compact native/custom color editor. */
+.settings-workspace .accent-options .accent-custom{background:var(--color-surface-secondary);color:var(--color-text);outline:1px dashed var(--color-border);outline-offset:0}
+.settings-workspace .accent-options .accent-custom.selected{outline:2px solid var(--color-text);outline-offset:3px}
+.accent-custom.selected svg{padding:2px;border-radius:50%;background:var(--color-surface);color:var(--color-text)}
+.custom-accent-popover{padding:16px;display:flex;flex-direction:column;gap:12px}
+.custom-accent-popover>label{font-size:14px;font-weight:500}
+.custom-accent-fields{display:flex;align-items:center;gap:10px;min-width:0}
+.custom-accent-fields>input[type=color]{width:36px;height:36px;flex:none;padding:0;border:0;background:transparent;cursor:pointer}
+.custom-accent-fields input[type=color]::-webkit-color-swatch-wrapper{padding:2px}
+.custom-accent-fields input[type=color]::-webkit-color-swatch{border:1px solid var(--color-border);border-radius:8px}
+.custom-accent-fields>div{flex:1;min-width:0}
+.custom-accent-popover>button{align-self:flex-end}

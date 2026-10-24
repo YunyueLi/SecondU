@@ -9,10 +9,11 @@ import type { Bootstrap } from '../shared/contracts';
 import { Button, ButtonLink } from '@openai/apps-sdk-ui/components/Button';
 import { Input } from '@openai/apps-sdk-ui/components/Input';
 import { Textarea } from '@openai/apps-sdk-ui/components/Textarea';
+import { Menu } from '@openai/apps-sdk-ui/components/Menu';
 import { AppearanceSettings } from './AppearanceSettings';
 import { GeneralSettings } from './GeneralSettings';
 import type { Appearance, AppearanceStatus } from './appearance';
-import { Download, Check, ApiKey, MoonSunSystem, User, Desktop, Folder, ChevronDown, ChevronRight, ArrowRight, Group, Document, SettingsSlider } from '@openai/apps-sdk-ui/components/Icon';
+import { Download, ApiKey, MoonSunSystem, User, Desktop, Folder, ChevronDown, ChevronRight, ArrowRight, Group, Document, SettingsSlider } from '@openai/apps-sdk-ui/components/Icon';
 import { ErrorNotice, Field } from './components';
 import { api, apiUrl, write, messageOf } from './api';
 import { LocalSpaces } from './LocalSpaces';
@@ -22,7 +23,7 @@ import { ModelSettings } from './models/ModelSettings';
 import { RecentChatArchives } from './RecentChatArchives';
 import { MemoryImportEntry } from './cognition/MemoryImport';
 import { TwinMcpSettings } from './cognition/TwinMcpSettings';
-import { RemoteComputers } from './remote/RemoteComputers';
+import { ComputerSettings } from './ComputerSettings';
 
 export type Theme = 'light' | 'dark' | 'system';
 type SettingsCategory = 'general' | 'personal' | 'model' | 'computer' | 'appearance' | 'data' | 'connectors';
@@ -48,7 +49,6 @@ function PersonalSpace({ data, onRefresh }: { data: Bootstrap; onRefresh: () => 
   const [description, setDescription] = useState(data.profile.description);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
-  const [saved, setSaved] = useState(false);
   const [avatar, setAvatar] = useState<string>();
   const [readingImage, setReadingImage] = useState(false);
   const avatarInput = useRef<HTMLInputElement>(null);
@@ -60,7 +60,7 @@ function PersonalSpace({ data, onRefresh }: { data: Bootstrap; onRefresh: () => 
   async function chooseAvatar(file?: File) {
     if (!file) return;
     const request = ++imageRequest.current;
-    setError(''); setSaved(false); setReadingImage(true);
+    setError(''); setReadingImage(true);
     try {
       if (!['image/png', 'image/jpeg', 'image/webp'].includes(file.type)) throw new Error(t('请选择 PNG、JPEG 或 WebP 图片', 'Choose a PNG, JPEG, or WebP image.'));
       if (file.size > 3 * 1024 * 1024) throw new Error(t('头像图片不能超过 3 MB', 'Avatar images must be 3 MB or smaller.'));
@@ -80,11 +80,11 @@ function PersonalSpace({ data, onRefresh }: { data: Bootstrap; onRefresh: () => 
   }
 
   async function save() {
-    setBusy(true); setError(''); setSaved(false);
+    setBusy(true); setError('');
     try {
       await write('/profile', { name: name.trim(), description: description.trim(), demo: data.profile.demo, ...(avatar === '' ? { clearAvatar: true } : avatar ? { avatarDataUrl: avatar } : {}) }, 'PUT');
       await onRefresh();
-      setName(name.trim()); setDescription(description.trim()); setAvatar(undefined); setSaved(true);
+      setName(name.trim()); setDescription(description.trim()); setAvatar(undefined);
     } catch (e) { setError(messageOf(e)); }
     finally { setBusy(false); }
   }
@@ -98,17 +98,17 @@ function PersonalSpace({ data, onRefresh }: { data: Bootstrap; onRefresh: () => 
       <div><strong>{t('个人头像', 'Your avatar')}</strong><div className="settings-avatar-actions">
         <input ref={avatarInput} type="file" hidden accept="image/png,image/jpeg,image/webp" aria-label={t('选择个人头像', 'Choose your avatar')} onChange={event => { void chooseAvatar(event.target.files?.[0]); event.target.value = ''; }}/>
         <Button color="secondary" variant="outline" size="sm" disabled={busy || readingImage} loading={readingImage} onClick={() => avatarInput.current?.click()}>{t('上传图片', 'Upload image')}</Button>
-        {(avatar ?? data.profile.avatarImage) && <Button color="secondary" variant="ghost" size="sm" disabled={busy || readingImage} onClick={() => { setAvatar(data.profile.avatarImage ? '' : undefined); setSaved(false); }}>{t('恢复默认', 'Use default')}</Button>}
+        {(avatar ?? data.profile.avatarImage) && <Button color="secondary" variant="ghost" size="sm" disabled={busy || readingImage} onClick={() => { setAvatar(data.profile.avatarImage ? '' : undefined); }}>{t('恢复默认', 'Use default')}</Button>}
       </div><p>{t('PNG、JPEG 或 WebP，最大 3 MB。保存后用于当前空间。', 'PNG, JPEG or WebP, up to 3 MB. Saved in this workspace.')}</p></div>
     </div>
     <div className="settings-form">
-      <Field label={t("怎么称呼你", "What should we call you?")}><Input size="md" aria-label={t("我的称呼", "Your name")} value={name} disabled={busy} onChange={event => { setName(event.target.value); setSaved(false); }} placeholder={t("你的名字或习惯的称呼", "Your name or preferred name")} /></Field>
-      <Field label={t("简单介绍自己", "A little about you")} hint={t("写下你正在做的事，以及目前对你重要的事。", "Share what you are working on and what matters to you.")}><Textarea size="md" aria-label={t("个人介绍", "Personal introduction")} value={description} disabled={busy} onChange={event => { setDescription(event.target.value); setSaved(false); }} rows={4} placeholder={t("你正在做什么，什么对你比较重要", "What are you working on? What matters to you?")} /></Field>
+      <Field label={t("怎么称呼你", "What should we call you?")}><Input size="md" aria-label={t("我的称呼", "Your name")} value={name} disabled={busy} onChange={event => { setName(event.target.value); }} placeholder={t("你的名字或习惯的称呼", "Your name or preferred name")} /></Field>
+      <Field label={t("简单介绍自己", "A little about you")} hint={t("写下你正在做的事，以及目前对你重要的事。", "Share what you are working on and what matters to you.")}><Textarea size="md" aria-label={t("个人介绍", "Personal introduction")} value={description} disabled={busy} onChange={event => { setDescription(event.target.value); }} rows={4} placeholder={t("你正在做什么，什么对你比较重要", "What are you working on? What matters to you?")} /></Field>
     </div>
     <ErrorNotice error={error} />
     <div className="settings-save-row">
       <Button color="primary" size="md" disabled={busy || readingImage || !name.trim() || !dirty} loading={busy} onClick={save}>{t("保存", "Save")}</Button>
-      <span className="settings-save-status" role="status">{saved ? <><Check />{t("个人信息已保存", "Profile saved")}</> : dirty ? t("有未保存的修改", "Unsaved changes") : ''}</span>
+      <span className="settings-save-status" role="status">{dirty ? t("有未保存的修改", "Unsaved changes") : ''}</span>
     </div>
   </>;
 }
@@ -117,16 +117,23 @@ export function SettingsWorkspace({ data, onRefresh, theme, onTheme, initialCate
   const categories = getCategories();
   const mobile=presentation==='mobile';
   const mobileDetail=mobile&&categories.some(item=>item.id===initialCategory);
-  const [category, setCategory] = useState<SettingsCategory>('general');
-  const platformName=({darwin:'macOS',win32:'Windows',linux:'Linux'} as Record<string,string>)[data.computer.platform]||data.computer.platform;
+  const [category, setCategory] = useState<SettingsCategory>(() => categories.some(item => item.id === initialCategory) ? initialCategory as SettingsCategory : 'general');
   useEffect(()=>{if(categories.some(item=>item.id===initialCategory))setCategory(initialCategory as SettingsCategory);},[initialCategory]);
+  const currentCategory = categories.find(item => item.id === category)!;
+  function selectCategory(value: string) {
+    if (!categories.some(item => item.id === value)) return;
+    setCategory(value as SettingsCategory);
+    location.hash = `settings/${value}`;
+  }
 
   return <div className={`settings-workspace settings-type-scale${mobile?' is-mobile':''}`}>
-
+    {!mobile && <nav className="settings-compact-navigation" aria-label={t('设置分类', 'Settings categories')}>
+      <Menu><Menu.Trigger><Button color="secondary" variant="ghost" size="md" pill={false} className="settings-category-picker" aria-label={t(`设置分类：${currentCategory.label}`, `Settings category: ${currentCategory.label}`)}><span>{currentCategory.label}</span><ChevronDown /></Button></Menu.Trigger><Menu.Content align="start" minWidth={224} maxHeight={360}><Menu.RadioGroup value={category} onChange={selectCategory}>{categories.map(({ id, label, Icon }) => <Menu.RadioItem className="settings-category-option" key={id} value={id}><span className="settings-category-option-label"><Icon /><span>{label}</span></span></Menu.RadioItem>)}</Menu.RadioGroup></Menu.Content></Menu>
+    </nav>}
     <div className="settings-layout">
       <aside className="settings-navigation" hidden={mobileDetail}><h1>{t("设置", "Settings")}</h1>
         <nav aria-label={t("设置分类", "Settings categories")}>
-          {categories.map(({ id, label, Icon }) => <Button key={id} color="secondary" variant="ghost" size="md" pill={false} className="settings-category" selected={!mobile&&category === id} aria-current={!mobile&&category === id ? 'page' : undefined} aria-controls={!mobile?`settings-${id}`:undefined} onClick={() => { setCategory(id); location.hash=`settings/${id}`; }}><Icon /><span className="settings-category-label">{label}</span>{mobile&&<ChevronRight className="settings-category-chevron" aria-hidden="true"/>}</Button>)}
+          {categories.map(({ id, label, Icon }) => <Button key={id} color="secondary" variant="ghost" size="md" pill={false} className="settings-category" selected={!mobile&&category === id} aria-current={!mobile&&category === id ? 'page' : undefined} aria-controls={!mobile?`settings-${id}`:undefined} onClick={() => selectCategory(id)}><Icon /><span className="settings-category-label">{label}</span>{mobile&&<ChevronRight className="settings-category-chevron" aria-hidden="true"/>}</Button>)}
         </nav>
         <div className="settings-space-note"><span>{data.profile.demo ? t("示例空间", "Demo space") : t("个人空间", "Personal space")}</span><strong>{displayProfileName(data.profile)}</strong><p>{t("资料保存在当前电脑", "Data stays on this computer")}</p></div>
       </aside>
@@ -139,15 +146,10 @@ export function SettingsWorkspace({ data, onRefresh, theme, onTheme, initialCate
           <ModelSettings data={data} onRefresh={onRefresh} presentation={presentation}/>
         </section>
 
-        <section id="settings-connectors" className="settings-panel" hidden={category !== 'connectors'} aria-labelledby="settings-connectors-title"><ConnectorsSettings data={data} onRefresh={onRefresh}/></section>
+        <section id="settings-connectors" className="settings-panel" hidden={category !== 'connectors'} aria-labelledby="settings-connectors-title"><ConnectorsSettings data={data} onRefresh={onRefresh} presentation={presentation}/></section>
 
         <section id="settings-computer" className="settings-panel" hidden={category !== 'computer'} aria-labelledby="settings-computer-title">
-          <PanelHeading id="settings-computer-title" title={t("当前电脑", "This computer")} description={t("SecondU 在这里处理任务，保存你的资料。", "SecondU runs tasks and keeps your data here.")} />
-          <div className="settings-device-summary"><div className="settings-device-identity"><span className="settings-device-icon"><Desktop/></span><div><h3>{data.computer.name}</h3><p>{platformName}<span className={`settings-device-state ${data.computer.status==='online'?'is-online':''}`}><i aria-hidden="true"/>{data.computer.status==='online'?t('在线','Online'):t('离线','Offline')}</span></p></div></div>
-          <div className="settings-runtime-row"><div><strong>{t('任务执行','Task execution')}</strong><p>{data.computer.codexAvailable?t('本机运行环境已就绪，可使用已配置的模型。','The local runtime is ready to use your configured models.'):t('尚未检测到 Codex 运行环境，模型任务暂时无法执行。','The Codex runtime was not detected. Model tasks are unavailable.')}</p></div><span className={`settings-runtime-status ${data.computer.codexAvailable?'is-ready':''}`}>{data.computer.codexAvailable?<Check/>:<Desktop/>}{data.computer.codexAvailable?t('已就绪','Ready'):t('未就绪','Not ready')}</span></div>
-          </div><p className="settings-device-note">{t('保持电脑唤醒并运行 SecondU，任务与自动化才能继续。','Keep this computer awake and SecondU running for tasks and automations to continue.')}</p>
-          <details className="settings-technical"><summary>{t('技术详情','Technical details')}<ChevronDown/></summary><dl><div><dt>{t('运行环境','Runtime')}</dt><dd>{data.computer.codexAvailable?'Codex':t('未检测到','Not detected')}</dd></div><div><dt>{t('版本','Version')}</dt><dd>{data.computer.codexVersion||t('暂无版本信息','Version unavailable')}</dd></div><div><dt>{t('系统标识','System identifier')}</dt><dd>{data.computer.platform}</dd></div><div><dt>{t('工作目录','Workspace')}</dt><dd className="settings-path">{data.computer.workspace}</dd></div></dl></details>
-          <RemoteComputers data={data} onRefresh={onRefresh}/>
+          <ComputerSettings data={data} onRefresh={onRefresh}/>
         </section>
 
         <section id="settings-appearance" className="settings-panel" hidden={category !== 'appearance'} aria-labelledby="settings-appearance-title">

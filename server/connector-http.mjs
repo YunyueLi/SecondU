@@ -5,9 +5,12 @@ import { lookup } from 'node:dns/promises';
 import { isIP } from 'node:net';
 import { randomUUID } from 'node:crypto';
 import { HttpError } from './store.mjs';
+import { findCatalogService } from '../shared/connector-catalog.mjs';
 
 const fail = (message, code = 'connector_protocol_error') => new HttpError(400, message, code);
 const MAX_BYTES = 1_048_576;
+const MAX_TOOLS = 256;
+const MAX_TOOL_PAGES = 8;
 const LOOPBACK = new Set(['localhost', '127.0.0.1', '[::1]']);
 const PROTOCOLS = new Set(['2024-11-05', '2025-03-26', '2025-06-18', '2025-11-25']);
 
@@ -73,6 +76,18 @@ export async function connectorRpc(config, token, message, { signal, timeoutMs =
   signal?.throwIfAborted();
   const target = await connectorTarget(config, { ...network, signal, timeoutMs });
   signal?.throwIfAborted();
+  // A query credential is a provider-specific transport detail. It is derived
+  // from the exact trusted catalog endpoint, never from a user-supplied URL or
+  // config flag, and this request URL is never persisted or returned.
+  const service = findCatalogService({kind: 'mcp_http', url: target.url.href, catalogId: config.catalogId});
+  const queryAuthKey = service?.queryAuthKey;
+  const requestUrl = new URL(target.url.href);
+  if (queryAuthKey) {
+    if (queryAuthKey !== 'apikey' || config.authMode && config.authMode !== 'bearer' || typeof token !== 'string' || !token) {
+      throw fail('此 MCP 服务需要在独立密钥栏填写 API key。', 'connector_api_key_required');
+    }
+    requestUrl.searchParams.set(queryAuthKey, token);
+  }
   return new Promise((resolve, reject) => {
     let settled = false, bytes = 0, buffer = '', eventBuffer = '', response;
     const done = (error, result) => {
@@ -83,9 +98,9 @@ export async function connectorRpc(config, token, message, { signal, timeoutMs =
     };
     const abort = () => done(Object.assign(new Error('连接器操作已取消。'), { name: 'AbortError' }));
     const headers = { 'Content-Type': 'application/json', Accept: 'application/json, text/event-stream',
-      ...(token ? { Authorization: `Bearer ${token}` } : {}), ...(session ? { 'Mcp-Session-Id': session } : {}),
+      ...(token && !queryAuthKey ? { Authorization: `Bearer ${token}` } : {}), ...(session ? { 'Mcp-Session-Id': session } : {}),
       ...(protocol ? { 'MCP-Protocol-Version': protocol } : {}) };
-    const req = (target.url.protocol === 'https:' ? https : http).request(target.url, {
+    const req = (target.url.protocol === 'https:' ? https : http).request(requestUrl, {
       method: 'POST', headers, agent: false,
       lookup: (_hostname, options, callback) => options.all ? callback(null, [{ address: target.address, family: target.family }]) : callback(null, target.address, target.family),
     }, res => {
@@ -144,14 +159,16 @@ export async function openConnectorSession(config, token, options = {}) {
   }
   const session = initialized.session;
   await connectorRpc(config, token, { jsonrpc: '2.0', method: 'notifications/initialized' }, { ...options, session, protocol });
-  const tools = [], cursors = new Set(); let cursor;
+  const tools = [], cursors = new Set(); let cursor, pages = 0;
   do {
+    pages += 1;
     const { result } = await request('tools/list', cursor ? { cursor } : {}, session, protocol);
     if (!Array.isArray(result?.tools)) throw fail('MCP 未返回有效工具列表。');
     tools.push(...result.tools);
-    if (tools.length > 64) throw fail('MCP 工具超过本次支持的 64 项，请在服务端限制工具范围。');
+    // Research providers such as Alpha Vantage legitimately expose 100+ tools.
+    if (tools.length > MAX_TOOLS) throw fail('MCP 工具超过本次支持的 256 项，请在服务端限制工具范围。');
     cursor = result.nextCursor;
-    if (cursor !== undefined && (typeof cursor !== 'string' || !cursor || cursor.length > 2048 || cursors.has(cursor) || cursors.size >= 8)) throw fail('MCP 工具分页标识无效或超过限制。');
+    if (cursor !== undefined && (typeof cursor !== 'string' || !cursor || cursor.length > 2048 || cursors.has(cursor) || pages >= MAX_TOOL_PAGES)) throw fail('MCP 工具分页标识无效或超过 8 页限制。');
     if (cursor) cursors.add(cursor);
   } while (cursor);
   return { tools, call: (name, args) => request('tools/call', { name, arguments: args }, session, protocol).then(value => value.result) };

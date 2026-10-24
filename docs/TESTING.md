@@ -27,6 +27,19 @@ node --test tests/startup.test.mjs tests/runtime-revision.test.mjs
 
 Choose tests for the changed contract. Do not add a test that only repeats an implementation detail, or repeatedly run an unchanged suite instead of investigating a failure.
 
+## v0.2.1 finance and interface checks
+
+Targeted suites cover account/source arithmetic, manual valuations, CSV mapping and duplicate detection, recurring plans, journal analysis, weekly reports, provider consent/preview/mapping and transaction reconciliation. Use fictional accounts and isolated stores; passing provider fixtures does not establish production access to every institution or region.
+
+```sh
+node --test tests/finance-runtime.test.mjs tests/finance-provider-runtime.test.mjs tests/finance-provider-journal.test.mjs
+node --test tests/finance-csv-import.test.mjs tests/finance-assets.test.mjs tests/finance-weekly-report.test.mjs tests/finance-weekly-automation.test.mjs
+node --test tests/appearance-sync.test.mjs tests/local-appearance.test.mjs tests/activity-edge.test.mjs
+node --test tests/navigation-preferences.test.mjs tests/computer-probe.test.mjs tests/remote-computers.test.mjs tests/remote-integration.test.mjs
+```
+
+Rendered review should cover all three panorama content layouts and fullscreen boundaries, institution selection, account/liability filters, source timestamps, hidden amounts, home prompt/source previews, narrow composer tools, settings persistence, long-quote/short-message bubbles and new onboarding chapters. Activity checks require a controlled running task, completion through normal polling, reduced motion, disabled effects and both themes. Final package, update-feed and website delivery checks remain separate from these browser paths. Current scoped results are in [Development](DEVELOPMENT.md#2026-10-25-v021-发布准备); historical totals below retain their original scope.
+
 ## Opt-in local integration
 
 With Codex CLI installed and discoverable:
@@ -59,14 +72,14 @@ Public evidence must contain only fictional data. Private logs, raw personal rec
 
 ## Dependency updates
 
-Run `npm audit` when changing dependencies. Electron is pinned to a current stable release, and the installed Apps SDK UI 0.2.2 dependency on Lodash 4.17.21 is narrowly overridden to 4.18.1. The override addresses [CVE-2026-4800](https://github.com/advisories/GHSA-r5fr-rjxr-66jc) and related prototype-pollution fixes without replacing the UI library. Electron 44.5.1 uses the maintained `@electron-internal/extract-zip` instead of the unpatched `extract-zip` package; [the upstream release](https://github.com/electron/electron/releases/tag/v44.5.1) and [platform change](https://www.electronjs.org/docs/latest/breaking-changes#removed-macos-12-support) establish the selected version and macOS 13 minimum. Regenerate license notices and repeat clean install, full tests, source build and native acceptance after updates. An audit with no findings is a dated dependency check, not a security certification.
+Run `npm audit` when changing dependencies. Electron is pinned to a current stable release, and the installed Apps SDK UI 0.2.2 dependency on Lodash 4.17.21 is narrowly overridden to 4.18.1. The override addresses [CVE-2026-4800](https://github.com/advisories/GHSA-r5fr-rjxr-66jc) and related prototype-pollution fixes without replacing the UI library. Electron 44.9.3 retains the maintained `@electron-internal/extract-zip` and includes the [certificate mitigation](https://github.com/advisories/GHSA-jr5w-w6x2-84p9); the [platform change](https://www.electronjs.org/docs/latest/breaking-changes#removed-macos-12-support) establishes the macOS 13 minimum. The release also pins MCP client/server 2.3.1, Zod 4.6.7 and Vite 8.3.5, updates transitive request/parser dependencies, and narrowly overrides the UI library’s KaTeX to 0.18.2 for its [trust-restriction fix](https://github.com/advisories/GHSA-238p-pmpm-9mq7). Regenerate license notices and repeat clean install, full tests, source build and native acceptance after updates. An audit with no findings is a dated dependency check, not a security certification.
 
 
 ## Recorded release-candidate evidence — 2026-10-01
 
 The security-dependency update was checked from a clean source copy: install and production build passed; **565 tests: 555 passed, 0 failed, 10 optional checks skipped**. This is the result for that source snapshot, before the subsequent final layout, keyboard-focus and website changes. Those later changes have their own type/build and scoped checks; the earlier suite is not presented as a full rerun of every final change.
 
-The latest local macOS arm64 package uses Electron 44.5.1, Node 24.21.0 and SQLite 3.53.4. Its actual embedded runtime passed isolated service health, source/build fingerprint matching, frontend and PDF resource loading, correct WASM MIME, byte-exact image download and strict ad-hoc signature verification. This does not establish Apple notarization.
+The previously checked local macOS arm64 package used Electron 44.5.1, Node 24.21.0 and SQLite 3.53.4; the v0.2.1 release package is verified separately. Its actual embedded runtime passed isolated service health, source/build fingerprint matching, frontend and PDF resource loading, correct WASM MIME, byte-exact image download and strict ad-hoc signature verification. This does not establish Apple notarization.
 
 Rendered checks separately cover DOCX/XLSX/PPTX previews and DOCX saved versions, plus the preceding native build's market badge proportions, profile heading, message editing and expanded artifact panel with navigation retained. The badge-focus package was subsequently opened: the visible back button received focus and Return restored the front. Pointer and keyboard panel resizing, main-area expansion and Escape restoration retained an unsaved draft; the synthetic file was restored without saving a new version. Later copy, native-titlebar and guide-layout changes require their own rebuilt acceptance. Current website interaction and deployment checks are also recorded separately. See [Development](DEVELOPMENT.md#2026-10-01-发布前文档与应用包核对) and [Iteration](ITERATION.md#2026-10-01-全部连续反馈交付核对).
 

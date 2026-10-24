@@ -32,3 +32,28 @@
 .page-toolbar .network-source-filter,.page-toolbar .network-relationship-select{margin:0;max-width:170px;flex:none}
 .page-toolbar.automations-toolbar>div:last-child{flex:1;min-width:160px;max-width:300px;margin-left:auto}
 @media(max-width:760px){.page-toolbar.page-toolbar{gap:8px;margin-bottom:20px}.page-toolbar .library-tools{min-width:0}.page-toolbar .library-tabs button{padding-inline:10px}.page-toolbar .network-search{min-width:190px;flex-basis:auto}.page-toolbar.automations-toolbar>div:last-child{min-width:150px}.network-header .network-filter-bar{margin-bottom:0}}
+
+/* Narrow workspaces keep navigation beside their own title. */
+.page-heading-navigation{display:inline-flex;flex:none;align-items:center;justify-content:center}
+@media(max-width:800px){
+  .workspace-navigation-button{width:40px;min-width:40px;height:40px;min-height:40px;flex:none}
+  .page-heading.page-heading.has-page-navigation{min-height:0;align-items:flex-start;flex-wrap:wrap;row-gap:12px}
+  .page-heading.has-page-navigation .page-heading-intro{align-items:flex-start;gap:12px;flex:1 1 100%;min-width:0}
+  .page-heading.has-page-navigation .page-heading-navigation{margin-block:-5px}
+  .page-heading.has-page-navigation .page-heading-art{display:none}
+  .page-heading.has-page-navigation .page-heading-copy{flex:1;min-width:0}
+  .page-heading.has-page-navigation h1{overflow-wrap:anywhere}
+  .page-heading.has-page-navigation .page-heading-actions{max-width:100%;margin-left:0;flex-wrap:wrap;min-width:0}
+  .app-navigation-fallback{min-height:48px;height:48px}
+}
+
+.workspace-backline{display:flex;align-items:center;gap:8px}
+@media(max-width:800px){
+  .project-topline:has(.page-heading-navigation){gap:8px}
+  .project-topline:has(.page-heading-navigation)>.project-back{margin-right:auto}
+  .inbox-list-heading:has(.page-heading-navigation){justify-content:flex-start;gap:8px}
+  .inbox-list-heading:has(.page-heading-navigation)>.theme-decoration{display:none}
+  .inbox-list-heading:has(.page-heading-navigation)>h1{flex:1;min-width:0}
+  .inbox-thread-heading>.page-heading-navigation{flex:none}
+  .device-story-heading>div:has(.page-heading-navigation){gap:8px;min-width:0;flex-wrap:wrap}
+}

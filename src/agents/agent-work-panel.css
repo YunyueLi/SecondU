@@ -4,11 +4,9 @@
 .agent-quick-actions>button:focus-visible{outline:2px solid var(--color-ring);outline-offset:-2px}
 .agent-quick-actions svg{display:block;width:18px;height:18px;flex:0 0 18px}
 .agent-quick-actions span{display:block;font-size:var(--hither-font-caption,14px);line-height:17px;white-space:nowrap}
-.saved-agent-browser .expert-showcase-stage{overflow:visible}
 @media(min-width:701px) and (max-height:820px){
   .saved-agent-browser .expert-showcase-header{padding:10px 4px 8px}
   .saved-agent-browser .expert-showcase-stage{padding:4px 12px 10px}
-  .saved-agent-browser .expert-showcase-stage>.ag-pass-stage{zoom:.95}
   .saved-agent-browser .agent-quick-actions{padding:2px 6px}
   .saved-agent-browser .agent-quick-actions>button{padding:3px 2px;gap:2px}
   .saved-agent-browser .saved-agent-actions{padding:4px 8px 10px}
@@ -57,6 +55,3 @@
 
 .ag-agent-details-dialog>header h2{font-size:var(--hither-font-settings-title)}
 .ag-agent-details-dialog .agent-details-person>p{font-size:var(--hither-font-caption)}
-
-@media(min-width:701px) and (max-height:760px){.saved-agent-browser .expert-showcase-stage>.ag-pass-stage{zoom:.80}}
-@media(min-width:701px) and (max-height:660px){.saved-agent-browser .expert-showcase{overflow-y:auto}.saved-agent-browser .expert-showcase-stage{flex:0 0 313px;min-height:313px}}

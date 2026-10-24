@@ -1,0 +1,38 @@
+.provider-connection{display:flex;flex-direction:column;gap:18px;min-width:0}
+.finance-connection-form-body{display:flex;flex-direction:column;gap:18px;min-width:0}
+.finance-connection-form-body>.dialog-actions{margin-top:0}
+.provider-connection-status{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.provider-last-synced{font-size:12px;color:var(--color-text-secondary)}
+.provider-connection-status svg{width:12px;height:12px}
+.provider-configuration{border-block:1px solid var(--color-border-tertiary);padding-block:12px}
+.provider-configuration summary{cursor:pointer;font-size:14px;font-weight:var(--font-weight-semibold)}
+.provider-configuration-body{display:flex;flex-direction:column;gap:18px;min-width:0}
+.provider-configuration>.provider-configuration-body{padding-top:18px}
+.provider-fields{display:grid;grid-template-columns:minmax(0,1fr);gap:18px;margin:0;min-width:0}
+.provider-fields>.provider-actions{grid-column:1/-1}
+/* Field is the app's .form-field wrapper. Grid owns inter-field spacing;
+   its legacy 20px block margins must not add to the explicit 18px gap. */
+.provider-fields>.form-field{min-width:0;margin:0;gap:7px}
+.provider-fields .field-hint{margin:0}
+.provider-fields .field-label{font-size:var(--hither-font-meta,12px)}
+.provider-actions{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap}
+.provider-file-input{font:inherit;font-size:12px;max-width:100%;width:100%;color:var(--color-text-secondary)}
+.provider-file-input::file-selector-button{font:inherit;padding:6px 12px;background:var(--color-background-primary);border:1px solid var(--color-border-secondary);border-radius:var(--radius-sm);color:var(--color-text-primary);margin-right:8px;cursor:pointer}
+.provider-preview-account small{color:var(--color-text-secondary);font-size:12px}
+.provider-notice{font-size:14px;color:var(--color-text-primary);margin:0}
+.provider-preview{display:flex;flex-direction:column;gap:16px;min-width:0}
+.provider-preview h4,.provider-preview p{margin:0}
+.provider-preview h4{font-size:16px;font-weight:var(--font-weight-semibold)}
+.provider-preview-accounts{display:flex;flex-direction:column;gap:12px;min-width:0}
+.provider-preview-account{display:flex;flex-direction:column;gap:12px;border:1px solid var(--color-border-tertiary);border-radius:var(--radius-lg);padding:16px;min-width:0}
+.provider-account-heading{display:flex;gap:12px;justify-content:space-between;align-items:flex-start;flex-wrap:wrap}
+.provider-account-heading strong{font-size:14px;font-weight:var(--font-weight-semibold);font-variant-numeric:tabular-nums}
+.provider-preview-account>p{font-size:12px;color:var(--color-text-secondary);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+@container connector-dialog (max-width:520px){.provider-preview-account{padding:12px}.provider-account-heading{flex-direction:column;gap:8px}}
+
+.provider-pending{display:flex;gap:12px;align-items:center;flex-wrap:wrap;font-size:14px;padding:16px;border:1px solid var(--color-border-tertiary);border-radius:var(--radius-lg)}
+.provider-pending p{flex-basis:100%;margin:0;line-height:1.5}
+.provider-pending a{display:inline-flex;align-items:center;gap:6px;color:var(--color-text-primary)}
+.provider-pending a svg{width:14px;height:14px}
+
+.provider-callback-url{display:block;overflow-wrap:anywhere;margin-top:8px;font-size:12px}

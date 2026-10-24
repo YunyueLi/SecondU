@@ -1,0 +1,19 @@
+.finance-weekly-controls,.finance-weekly-title { display:flex;align-items:center;justify-content:space-between;gap:16px;margin:12px 0 20px; }
+.finance-weekly-controls>div { display:flex;align-items:center;gap:8px; }
+.finance-weekly-controls label { font-size:12px;line-height:18px;color:var(--color-text-secondary); }
+.finance-weekly-controls label { flex-shrink:0;white-space:nowrap; }
+.finance-weekly-controls>div>div { max-width:180px; }
+.finance-weekly-title h2 { margin:0;font-size:18px;line-height:26px;font-weight:550; }
+.finance-weekly-title p { margin:6px 0 0; }
+.finance-weekly-metrics { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin:0 0 24px!important; }
+.finance-weekly-metrics dt { font-size:12px;line-height:18px;color:var(--color-text-secondary); }
+.finance-weekly-metrics dd { font-size:26px;line-height:34px;font-weight:550;margin:8px 0 12px;font-variant-numeric:tabular-nums; }
+.finance-weekly-metrics small { font-size:12px;line-height:18px;color:var(--color-text-secondary);font-weight:400; }
+.finance-weekly-metrics>div>small,.finance-weekly-metrics>div>span { display:block; }
+.finance-weekly-metrics>div>span { margin:4px 0 8px;font-size:14px;line-height:22px; }
+.finance-weekly-grid { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px; }
+.finance-weekly-grid h3 { margin:0 0 16px;font-size:16px;line-height:24px;font-weight:550; }
+.finance-weekly-sources { display:flex;justify-content:flex-end;margin-top:16px; }
+.finance-weekly-native>span { display:block;font-size:18px;line-height:26px; }
+@container finance (max-width:600px) { .finance-weekly-controls,.finance-weekly-title { align-items:flex-start;flex-wrap:wrap;gap:12px; } .finance-weekly-metrics { grid-template-columns:1fr;gap:16px; } .finance-weekly-metrics>div { display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 16px; } .finance-weekly-metrics dd { margin:0;text-align:right;font-size:22px;line-height:30px; } .finance-weekly-metrics>div>span { text-align:right;margin:0; } .finance-weekly-metrics>div>small:last-child { grid-column:1/-1;text-align:right; } .finance-weekly-grid { grid-template-columns:minmax(0,1fr);gap:16px; } }
+.finance-report-actions { display:flex;align-items:center;justify-content:space-between;gap:16px;margin:16px auto 24px;padding:0 24px;width:min(100%,800px);font-size:14px;line-height:22px;color:var(--color-text-secondary); }

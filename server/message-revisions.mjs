@@ -27,10 +27,11 @@ export function reviseTaskMessage(store,runner,taskId,body){
   const requestId=text(body.requestId,'请求标识',100),messageId=text(body.messageId,'消息标识',200);
   if(!/^[\w-]{8,100}$/.test(requestId)||body.run!==undefined&&typeof body.run!=='boolean')throw new HttpError(400,'请求标识或执行选项无效。','revision_invalid');
   const content=text(body.content,'编辑后的消息',200000,false),run=body.run===true;
+  const source=store.require('tasks',taskId);
+  if(source.financeWeekly)throw new HttpError(409,'这是本机生成的财务摘要，请从自动化重新生成。','finance_report_read_only');
   const fingerprint=createHash('sha256').update(JSON.stringify({messageId,content,run})).digest('hex');
   const receiptId=`message-revision:${taskId}:${requestId}`,receipt=store.get('messageRevisions',receiptId);
   if(receipt){if(receipt.fingerprint!==fingerprint)throw new HttpError(409,'同一编辑请求标识不能用于不同内容。','revision_request_conflict');return result(store,receipt,true);}
-  const source=store.require('tasks',taskId);
   if(source.remoteExecution)throw new HttpError(409,'远端任务不能在本机分支重跑，请重新选择执行电脑。','revision_remote_unsupported');
   if(runner.active.has(taskId)||busy.has(source.status))throw new HttpError(409,'请先停止本轮执行，再编辑已发送的消息。','revision_task_active');
   const index=source.messages.findIndex(message=>message.id===messageId&&message.role==='user');

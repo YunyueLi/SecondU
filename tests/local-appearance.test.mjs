@@ -37,15 +37,48 @@ test('appearance starts unset, merges partial updates, rejects invalid fields wi
   assert.deepEqual(await f.api('settings/appearance'),{status:200,value:null});
   assert.equal(defaultAppearance.atmosphere,'pencil');
   assert.equal(defaultAppearance.decorativeArtwork,false);
+  assert.equal(defaultAppearance.accent,'spectrum');
+  assert.equal(defaultAppearance.activityEffect,'subtle');
   assert.deepEqual((await f.api('settings/appearance',{theme:'dark'})).value,{...defaultAppearance,theme:'dark'});
   const saved=(await f.api('settings/appearance',{accent:'violet',fontSize:16,opacity:78,motion:'reduced',sendKey:'modifier',language:'en'})).value;
   assert.equal(saved.theme,'dark');assert.equal(saved.accent,'violet');assert.equal(saved.opacity,78);
   assert.equal(saved.language,'en');
-  for(const value of [{theme:'sepia'},{atmosphere:'file:///tmp/picture'},{decorativeArtwork:'true'},{decorativeArtwork:1},{decorativeArtwork:null},{accent:'red'},{opacity:69},{opacity:101},{fontSize:19},{fontSize:'14'},{motion:true},{sendKey:'anything'},{language:'fr'},{language:null},{constructor:1},{unknown:true}]) {
+  for(const value of [{theme:'sepia'},{atmosphere:'file:///tmp/picture'},{decorativeArtwork:'true'},{decorativeArtwork:1},{decorativeArtwork:null},{accent:'red'},{opacity:69},{opacity:101},{fontSize:19},{fontSize:'14'},{motion:true},{activityEffect:'quiet'},{activityEffect:true},{activityEffect:null},{activityPalette:'red'},{activityPalette:0},{accent:'amber',activityPalette:null},{sendKey:'anything'},{language:'fr'},{language:null},{constructor:1},{unknown:true}]) {
     assert.equal((await f.api('settings/appearance',value)).status,400);
     assert.deepEqual((await f.api('settings/appearance')).value,saved);
   }
   assert.equal((await f.api('settings/appearance',{},'DELETE')).status,405);
+});
+
+test('edge appearance choices merge, keep reduced motion and reset without changing language or send key',async t=>{
+  const f=await fixture(t);
+  await f.api('settings/appearance',{theme:'dark',accent:'green',motion:'reduced',language:'en',sendKey:'modifier'});
+  for(const activityEffect of ['off','subtle','expressive']){
+    const saved=await f.api('settings/appearance',{activityEffect});
+    assert.equal(saved.status,200);assert.equal(saved.value.activityEffect,activityEffect);
+    assert.equal(saved.value.motion,'reduced');assert.equal(saved.value.theme,'dark');assert.equal(saved.value.accent,'green');
+  }
+  for(const activityPalette of ['theme','graphite','violet','teal','amber','spectrum']){
+    const saved=await f.api('settings/appearance',{activityPalette});
+    assert.equal(saved.status,200);assert.equal(Object.hasOwn(saved.value,'activityPalette'),false);assert.equal(saved.value.activityEffect,'expressive');
+  }
+  for(const accent of ['teal','amber','spectrum','#12abef']){
+    const saved=await f.api('settings/appearance',{accent});
+    assert.equal(saved.status,200);assert.equal(saved.value.accent,accent);assert.equal(Object.hasOwn(saved.value,'activityPalette'),false);
+  }
+  const reset=await f.api('settings/appearance',{...defaultAppearance,language:'en',sendKey:'modifier'});
+  assert.equal(reset.status,200);
+  assert.deepEqual(reset.value,{...defaultAppearance,language:'en',sendKey:'modifier'});
+});
+
+test('legacy appearance values gain edge defaults on the next save and keep all existing choices',async t=>{
+  const f=await fixture(t);
+  const {activityEffect,...legacy}={...defaultAppearance,theme:'dark',accent:'graphite',fontSize:17};
+  f.app.store.setMeta('appearance',legacy);
+  assert.deepEqual((await f.api('settings/appearance')).value,legacy);
+  const updated=await f.api('settings/appearance',{opacity:85});
+  assert.equal(updated.status,200);
+  assert.deepEqual(updated.value,{...legacy,opacity:85,activityEffect:'subtle'});
 });
 
 test('paper garden fills an unset atmosphere while explicit atmosphere choices survive later setting changes',async t=>{
@@ -112,7 +145,7 @@ test('appearance and artwork survive Store and HTTP server restarts independentl
   const directory=mkdtempSync(path.join(os.tmpdir(),'hither-appearance-restart-'));
   t.after(()=>rmSync(directory,{recursive:true,force:true}));
   const first=await fixture(t,{dataDir:directory});
-  const appearance=(await first.api('settings/appearance',{theme:'light',atmosphere:'custom',decorativeArtwork:true,accent:'green',language:'en'})).value;
+  const appearance=(await first.api('settings/appearance',{theme:'light',atmosphere:'custom',decorativeArtwork:true,accent:'#e07fa2',activityEffect:'subtle',language:'en'})).value;
   const artwork=(await first.api('settings/artwork',upload(png))).value;
   await first.close();
   const reopened=new Store(directory,{seed:false});
@@ -147,4 +180,19 @@ test('failed artwork metadata write rolls back bytes, metadata and survives reop
   await f.close();
   const reopened=new Store(f.directory,{seed:false});
   assert.equal(getArtworkInfo(reopened).revision,before.revision);assert.deepEqual(getArtwork(reopened).data,png);reopened.close();
+});
+
+
+test('custom accent is validated atomically and superseded edge palettes are removed on save',async t=>{
+  const f=await fixture(t);
+  f.app.store.setMeta('appearance',{...defaultAppearance,accent:'spectrum',activityPalette:'amber'});
+  assert.equal((await f.api('settings/appearance')).value.accent,'spectrum');
+  assert.equal(Object.hasOwn((await f.api('settings/appearance')).value,'activityPalette'),false);
+  const saved=(await f.api('settings/appearance',{accent:'#E07FA2'})).value;
+  assert.equal(saved.accent,'#e07fa2');
+  assert.equal(Object.hasOwn(f.app.store.get('meta','appearance').value,'activityPalette'),false);
+  for(const accent of ['#abc','#12345678','red','url(https://example.com)',null,123]){
+    assert.equal((await f.api('settings/appearance',{accent,theme:'dark'})).status,400);
+    assert.deepEqual((await f.api('settings/appearance')).value,saved);
+  }
 });

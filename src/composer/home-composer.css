@@ -1,0 +1,42 @@
+/* Home keeps writing space and a stable bottom toolbar, even with an empty draft. */
+.is-home .composer.composer-home.is-expanded .composer-main-layer {
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  row-gap: 8px;
+  padding: 14px 12px 10px;
+  border-radius: 26px;
+}
+.is-home .composer.composer-home .composer-input {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  padding: 0 6px;
+}
+.is-home .composer.composer-home .composer-input textarea {
+  min-height: 44px !important;
+  padding-block: 0 !important;
+}
+.is-home .composer.composer-home .composer-leading { grid-column: 1; grid-row: 2; gap: 3px; }
+.is-home .composer.composer-home .composer-trailing { grid-column: 3; grid-row: 2; }
+.is-home .composer.composer-home:has(.attachment-drafts,.attachment-limit) .composer-input { grid-row: 2; }
+.is-home .composer.composer-home:has(.attachment-drafts,.attachment-limit) :is(.composer-leading,.composer-trailing) { grid-row: 3; }
+.is-home .composer.composer-home .composer-approval-picker { font-size: 13px; }
+.is-home .composer.composer-home>.composer-context-bar .composer-computer-trigger { margin-left: auto; padding: 0; width: 32px; flex: 0 0 32px; }
+.composer-computer-popover { padding: 16px; }
+.composer-computer-popover>strong { font-size: 14px; overflow-wrap: anywhere; }
+.composer-computer-popover>p { margin: 6px 0 12px; color: var(--color-text-secondary); font-size: 13px; line-height: 1.65; }
+@media (max-width: 700px) {
+  .is-home .composer.composer-home>.composer-context-bar .composer-computer-trigger { width:36px; min-height:36px; flex-basis:36px; }
+  .is-home .composer.composer-home.is-expanded .composer-main-layer { padding: 12px 8px 8px; border-radius: 24px; }
+  .is-home .composer.composer-home .composer-input textarea { min-height: 38px !important; }
+  .is-home .composer.composer-home .composer-approval-label { display:none; }
+  .is-home .composer.composer-home .composer-approval-picker { width:32px; padding-inline:0; }
+  .is-home .composer.composer-home .composer-approval-picker>span>svg:last-child { display:none; }
+}
+@media (max-width: 380px) {
+  .is-home .composer.composer-home>.composer-context-bar { width:calc(100% - 16px); margin-inline:8px; padding-inline:4px; gap:0; }
+  .is-home .composer.composer-home>.composer-context-bar .project-picker { padding-inline:6px; }
+  .is-home .composer.composer-home>.composer-context-bar :is(.composer-connectors-trigger,.composer-twin-trigger,.composer-computer-trigger) { width:34px; flex-basis:34px; }
+}
+
+/* Retain chat drafts and attachment uploads while another workspace is visible. */
+.assistant-chat-host{display:contents}
+.assistant-chat-host[hidden]{display:none}

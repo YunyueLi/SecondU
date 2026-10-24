@@ -1,0 +1,47 @@
+/* A crop of native product content, restricted to the website story iframe. */
+html[data-website-presentation=finance],
+html[data-website-presentation=finance] body{overflow:hidden;overscroll-behavior:none}
+html[data-website-presentation=finance] .app-sidebar,
+html[data-website-presentation=finance] .sidebar-resize-handle,
+html[data-website-presentation=finance] .shell-sidebar-toggle{display:none}
+html[data-website-presentation=finance] .main-workspace{padding:32px}
+html[data-website-presentation=finance] .dialog-overlay:has(>.finance-panorama-fullscreen){padding:0;background:var(--color-surface)}
+html[data-website-presentation=finance] .dialog-overlay>.app-dialog.finance-panorama-fullscreen{width:100%;height:100dvh;max-height:100dvh;border:0;border-radius:0;box-shadow:none;padding:32px}
+
+/* Two authored selections of the native dashboard. The real widgets, values,
+   charts, sources and dates remain intact; only the story framing is compact. */
+html[data-website-presentation=finance]:is([data-finance-preview-view=overview],[data-finance-preview-view=portfolio]) .main-workspace{padding:24px;overflow:hidden}
+html[data-website-presentation=finance]:is([data-finance-preview-view=overview],[data-finance-preview-view=portfolio]) .finance-page-overview{max-width:none;padding:0}
+html[data-website-presentation=finance]:is([data-finance-preview-view=overview],[data-finance-preview-view=portfolio]) .finance-page-overview>:not(.finance-dashboard){display:none}
+html[data-website-presentation=finance]:is([data-finance-preview-view=overview],[data-finance-preview-view=portfolio]) :is(.finance-dashboard-controls,.finance-dashboard-start,.finance-widget-actions,.finance-chart-data){display:none}
+html[data-website-presentation=finance]:is([data-finance-preview-view=overview],[data-finance-preview-view=portfolio]) .finance-dashboard-grid{gap:16px;align-items:stretch}
+html[data-website-presentation=finance]:is([data-finance-preview-view=overview],[data-finance-preview-view=portfolio]) .finance-widget{padding:18px;gap:12px}
+html[data-website-presentation=finance]:is([data-finance-preview-view=overview],[data-finance-preview-view=portfolio]) .finance-widget-content{gap:12px}
+
+html[data-website-presentation=finance][data-finance-preview-view=overview] .finance-dashboard-grid{grid-template-areas:"trend categories" "spending upcoming"}
+html[data-website-presentation=finance][data-finance-preview-view=overview] .finance-dashboard-grid>:not(.finance-widget-net-worth,.finance-widget-spend-by-category,.finance-widget-spend-this-month,.finance-widget-upcoming-payments){display:none}
+html[data-website-presentation=finance][data-finance-preview-view=overview] .finance-widget-net-worth{grid-area:trend}
+html[data-website-presentation=finance][data-finance-preview-view=overview] .finance-widget-spend-by-category{grid-area:categories}
+html[data-website-presentation=finance][data-finance-preview-view=overview] .finance-widget-spend-this-month{grid-area:spending}
+html[data-website-presentation=finance][data-finance-preview-view=overview] .finance-widget-upcoming-payments{grid-area:upcoming}
+html[data-website-presentation=finance][data-finance-preview-view=overview] .finance-chart-plot>svg{height:164px}
+html[data-website-presentation=finance][data-finance-preview-view=overview] .finance-category-stack{height:24px;margin:0 0 10px}
+html[data-website-presentation=finance][data-finance-preview-view=overview] .finance-category-row{min-height:44px;padding:6px;gap:10px}
+html[data-website-presentation=finance][data-finance-preview-view=overview] .finance-category-icon{width:30px;height:30px;flex-basis:30px}
+html[data-website-presentation=finance][data-finance-preview-view=overview] .finance-category-bar{margin-top:5px}
+html[data-website-presentation=finance][data-finance-preview-view=overview] .finance-chart-show-more{margin-top:8px;padding:6px 12px}
+html[data-website-presentation=finance][data-finance-preview-view=overview] .finance-widget-rows>button{padding-block:6px}
+
+html[data-website-presentation=finance][data-finance-preview-view=portfolio] .finance-dashboard-grid{grid-template-areas:"portfolio portfolio" "quotes credit"}
+html[data-website-presentation=finance][data-finance-preview-view=portfolio] .finance-dashboard-grid>:not(.finance-dashboard-portfolio,.finance-widget-market-update,.finance-widget-credit-score){display:none}
+html[data-website-presentation=finance][data-finance-preview-view=portfolio] .finance-dashboard-portfolio{grid-area:portfolio}
+html[data-website-presentation=finance][data-finance-preview-view=portfolio] .finance-widget-market-update{grid-area:quotes}
+html[data-website-presentation=finance][data-finance-preview-view=portfolio] .finance-widget-credit-score{grid-area:credit}
+html[data-website-presentation=finance][data-finance-preview-view=portfolio] .finance-dashboard-portfolio .allocation-donut{padding:18px}
+html[data-website-presentation=finance][data-finance-preview-view=portfolio] .finance-dashboard-portfolio .allocation-donut-caption{margin-bottom:12px}
+html[data-website-presentation=finance][data-finance-preview-view=portfolio] .finance-dashboard-portfolio .allocation-donut-layout{grid-template-columns:220px minmax(0,1fr);gap:32px}
+html[data-website-presentation=finance][data-finance-preview-view=portfolio] .finance-dashboard-portfolio .allocation-donut-plot{max-width:220px}
+html[data-website-presentation=finance][data-finance-preview-view=portfolio] .finance-widget-rows>button{padding-block:8px}
+html[data-website-presentation=finance][data-finance-preview-view=portfolio] .credit-overview{gap:14px}
+html[data-website-presentation=finance][data-finance-preview-view=portfolio] .credit-overview-panel{gap:16px}
+html[data-website-presentation=finance][data-finance-preview-view=portfolio] .credit-overview-factors{gap:16px 24px}

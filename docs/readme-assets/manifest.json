@@ -3,21 +3,20 @@
   "assets": [
     {
       "file": "personal-context-zh.jpg",
-      "sha256": "37cea250391f3130bc57a2203a1299df2ad7b0dc1d81baa37bd2cfc0550f4713",
+      "sha256": "e56b15199f85601c9b21b8d7bf9533b0111ec3bf6d5eb292834e76d45e56c597",
       "format": "image/jpeg",
       "width": 1280,
       "height": 900,
       "locale": "zh-CN",
       "theme": "light",
       "space": "demo-cn-v1",
-      "captureDate": "2026-10-01",
-      "source": "Actual SecondU interface, canonical fictional example. Original 1280x900 capture copied without alteration.",
+      "captureDate": "2026-10-25",
+      "source": "Actual SecondU v0.2.1 interface and authored fictional data. Original 1280x900 product viewport copied without alteration.",
       "fixtureReferences": [
-        "server/fixtures/demo-showcase.json",
-        "server/fixtures/demo-copy-v3.json"
+        "server/fixtures/demo-zh-content-v1.json"
       ],
       "fictional": true,
-      "visualReview": "Individually viewed: actual Chinese 万叶 canonical fictional workspace, correct theme, no private records, credentials, browser chrome or developer tools. Full original window retained.",
+      "visualReview": "Individually viewed at original size in the matching language and theme. Current navigation and native controls retained. No private records, credentials, browser chrome or developer tools.",
       "metadata": [
         {
           "marker": "0xe0",
@@ -28,21 +27,20 @@
     },
     {
       "file": "specialists-zh.jpg",
-      "sha256": "a5f0e281e385d924a4281ac45493f452d072f8d336708c89edc4f311d24a59f9",
+      "sha256": "2d414e56fb254bf2ba418166e39735e267c42edda420e94fea4733ed807923c0",
       "format": "image/jpeg",
       "width": 1280,
       "height": 900,
       "locale": "zh-CN",
       "theme": "light",
       "space": "demo-cn-v1",
-      "captureDate": "2026-10-01",
-      "source": "Actual SecondU interface, canonical fictional example. Original 1280x900 capture copied without alteration.",
+      "captureDate": "2026-10-25",
+      "source": "Actual SecondU v0.2.1 interface and authored fictional data. Original 1280x900 product viewport copied without alteration.",
       "fixtureReferences": [
-        "server/fixtures/demo-showcase.json",
-        "server/fixtures/demo-copy-v3.json"
+        "server/fixtures/demo-zh-content-v1.json"
       ],
       "fictional": true,
-      "visualReview": "Individually viewed: actual Chinese 万叶 canonical fictional workspace, correct theme, no private records, credentials, browser chrome or developer tools. Full original window retained.",
+      "visualReview": "Individually viewed at original size in the matching language and theme. Current navigation and native controls retained. No private records, credentials, browser chrome or developer tools.",
       "metadata": [
         {
           "marker": "0xe0",
@@ -53,21 +51,21 @@
     },
     {
       "file": "task-workspace-zh.jpg",
-      "sha256": "e4fa6f937e5dbe66402dcf050c8c830b844951b5ac20f3d4cbeb6b9672cc2792",
+      "sha256": "bb57df4b7215fa9f0f2653f923df548a26ad772f7e5045c206b2c50d59a4a8ab",
       "format": "image/jpeg",
       "width": 1280,
       "height": 900,
       "locale": "zh-CN",
       "theme": "light",
       "space": "demo-cn-v1",
-      "captureDate": "2026-10-01",
-      "source": "Actual SecondU interface, canonical fictional example. Original 1280x900 capture copied without alteration.",
+      "captureDate": "2026-10-25",
+      "source": "Actual SecondU interface, freshly initialized canonical fictional example. Original 1280x900 capture copied without alteration; Kimi K3.1 Pro is an unconnected example configuration.",
       "fixtureReferences": [
-        "server/fixtures/demo-showcase.json",
-        "server/fixtures/demo-copy-v3.json"
+        "server/fixtures/demo-zh-content-v1.json",
+        "server/demo-agent-sessions.mjs"
       ],
       "fictional": true,
-      "visualReview": "Individually viewed: actual Chinese 万叶 canonical fictional workspace, correct theme, no private records, credentials, browser chrome or developer tools. Full original window retained.",
+      "visualReview": "Individually viewed at original size: correct language and theme, readable Kimi K3.1 Pro label, actual saved artifact and version controls. No private records, credentials, browser chrome, developer tools or model execution.",
       "metadata": [
         {
           "marker": "0xe0",
@@ -78,21 +76,21 @@
     },
     {
       "file": "task-workspace-zh-dark.jpg",
-      "sha256": "1001baba683141f674aa1bc315b8d425eb46c231cec49d6e063d0989518251c6",
+      "sha256": "500144a4b13a7b96918c01723d3641169fb6afb0ece14e455e0df2f4424db3e4",
       "format": "image/jpeg",
       "width": 1280,
       "height": 900,
       "locale": "zh-CN",
       "theme": "dark",
       "space": "demo-cn-v1",
-      "captureDate": "2026-10-01",
-      "source": "Actual SecondU interface, canonical fictional example. Original 1280x900 capture copied without alteration.",
+      "captureDate": "2026-10-25",
+      "source": "Actual SecondU interface, freshly initialized canonical fictional example. Original 1280x900 capture copied without alteration; Kimi K3.1 Pro is an unconnected example configuration.",
       "fixtureReferences": [
-        "server/fixtures/demo-showcase.json",
-        "server/fixtures/demo-copy-v3.json"
+        "server/fixtures/demo-zh-content-v1.json",
+        "server/demo-agent-sessions.mjs"
       ],
       "fictional": true,
-      "visualReview": "Individually viewed: actual Chinese 万叶 canonical fictional workspace, correct theme, no private records, credentials, browser chrome or developer tools. Full original window retained.",
+      "visualReview": "Individually viewed at original size: correct language and theme, readable Kimi K3.1 Pro label, actual saved artifact and version controls. No private records, credentials, browser chrome, developer tools or model execution.",
       "metadata": [
         {
           "marker": "0xe0",
@@ -103,21 +101,20 @@
     },
     {
       "file": "personal-context-zh-dark.jpg",
-      "sha256": "740b69874a4a6d4c05418332ff19d56ff87b61602b0f7cc687c409e958a375a3",
+      "sha256": "6d510af068ff7dd646265c8e14f804b6985be9e845a4f82afbbce98588b06ac7",
       "format": "image/jpeg",
       "width": 1280,
       "height": 900,
       "locale": "zh-CN",
       "theme": "dark",
       "space": "demo-cn-v1",
-      "captureDate": "2026-10-01",
-      "source": "Actual SecondU interface, canonical fictional example. Original 1280x900 capture copied without alteration.",
+      "captureDate": "2026-10-25",
+      "source": "Actual SecondU v0.2.1 interface and authored fictional data. Original 1280x900 product viewport copied without alteration.",
       "fixtureReferences": [
-        "server/fixtures/demo-showcase.json",
-        "server/fixtures/demo-copy-v3.json"
+        "server/fixtures/demo-zh-content-v1.json"
       ],
       "fictional": true,
-      "visualReview": "Individually viewed: actual Chinese 万叶 canonical fictional workspace, correct theme, no private records, credentials, browser chrome or developer tools. Full original window retained.",
+      "visualReview": "Individually viewed at original size in the matching language and theme. Current navigation and native controls retained. No private records, credentials, browser chrome or developer tools.",
       "metadata": [
         {
           "marker": "0xe0",
@@ -128,21 +125,20 @@
     },
     {
       "file": "specialists-zh-dark.jpg",
-      "sha256": "1c1004d1a2d8d4efaa9d70df6f7d2e9367b3b96170f0aadbf5f7f113df6945fd",
+      "sha256": "37533a2498bc226526f375ead17b9e672f67d44763238e369e36ecff554d44bd",
       "format": "image/jpeg",
       "width": 1280,
       "height": 900,
       "locale": "zh-CN",
       "theme": "dark",
       "space": "demo-cn-v1",
-      "captureDate": "2026-10-01",
-      "source": "Actual SecondU interface, canonical fictional example. Original 1280x900 capture copied without alteration.",
+      "captureDate": "2026-10-25",
+      "source": "Actual SecondU v0.2.1 interface and authored fictional data. Original 1280x900 product viewport copied without alteration.",
       "fixtureReferences": [
-        "server/fixtures/demo-showcase.json",
-        "server/fixtures/demo-copy-v3.json"
+        "server/fixtures/demo-zh-content-v1.json"
       ],
       "fictional": true,
-      "visualReview": "Individually viewed: actual Chinese 万叶 canonical fictional workspace, correct theme, no private records, credentials, browser chrome or developer tools. Full original window retained.",
+      "visualReview": "Individually viewed at original size in the matching language and theme. Current navigation and native controls retained. No private records, credentials, browser chrome or developer tools.",
       "metadata": [
         {
           "marker": "0xe0",
@@ -153,20 +149,20 @@
     },
     {
       "file": "personal-context-en.jpg",
-      "sha256": "d35107f41c01a11c74f1627a5174fc8e9f0503b54a5c33056d9808134e4f5a2a",
+      "sha256": "6b78ed4ee207a511cf322bae2512b66642842e38e2afec358b1ce07cab2cd77d",
       "format": "image/jpeg",
       "width": 1280,
       "height": 900,
       "locale": "en-US",
       "theme": "light",
       "space": "demo-us-v1",
-      "captureDate": "2026-10-01",
-      "source": "Actual SecondU interface, canonical fictional example. Original 1280x900 capture copied without alteration.",
+      "captureDate": "2026-10-25",
+      "source": "Actual SecondU v0.2.1 interface and authored fictional data. Original 1280x900 product viewport copied without alteration.",
       "fixtureReferences": [
         "server/fixtures/demo-us.json"
       ],
       "fictional": true,
-      "visualReview": "Individually viewed: actual English Caspian canonical fictional workspace, correct theme, no private records, credentials, browser chrome or developer tools. Full original window retained.",
+      "visualReview": "Individually viewed at original size in the matching language and theme. Current navigation and native controls retained. No private records, credentials, browser chrome or developer tools.",
       "metadata": [
         {
           "marker": "0xe0",
@@ -177,20 +173,20 @@
     },
     {
       "file": "specialists-en.jpg",
-      "sha256": "70ffa3f1808a665b509e94e51fc95401c70ddb2c3686d38dce734fdc1384181c",
+      "sha256": "a311400540f165aa9146c79cc773847a2ed27062064d9d28382105c7d8b2cfba",
       "format": "image/jpeg",
       "width": 1280,
       "height": 900,
       "locale": "en-US",
       "theme": "light",
       "space": "demo-us-v1",
-      "captureDate": "2026-10-01",
-      "source": "Actual SecondU interface, canonical fictional example. Original 1280x900 capture copied without alteration.",
+      "captureDate": "2026-10-25",
+      "source": "Actual SecondU v0.2.1 interface and authored fictional data. Original 1280x900 product viewport copied without alteration.",
       "fixtureReferences": [
         "server/fixtures/demo-us.json"
       ],
       "fictional": true,
-      "visualReview": "Individually viewed: actual English Caspian canonical fictional workspace, correct theme, no private records, credentials, browser chrome or developer tools. Full original window retained.",
+      "visualReview": "Individually viewed at original size in the matching language and theme. Current navigation and native controls retained. No private records, credentials, browser chrome or developer tools.",
       "metadata": [
         {
           "marker": "0xe0",
@@ -201,20 +197,20 @@
     },
     {
       "file": "task-workspace-en.jpg",
-      "sha256": "7de0a2ee17bb1297199bb6ab79f8f8aac6751cb1eedd62bdfd1996356cd32c12",
+      "sha256": "1e5de7dc3b1d27c25ae6a825779f3f75fde9b7ec2eb7d4cd8d2ee1f756380b34",
       "format": "image/jpeg",
       "width": 1280,
       "height": 900,
       "locale": "en-US",
       "theme": "light",
       "space": "demo-us-v1",
-      "captureDate": "2026-10-01",
-      "source": "Actual SecondU interface, canonical fictional example. Original 1280x900 capture copied without alteration.",
+      "captureDate": "2026-10-25",
+      "source": "Actual SecondU v0.2.1 interface and authored fictional data. Original 1280x900 product viewport copied without alteration.",
       "fixtureReferences": [
         "server/fixtures/demo-us.json"
       ],
       "fictional": true,
-      "visualReview": "Individually viewed: actual English Caspian canonical fictional workspace, correct theme, no private records, credentials, browser chrome or developer tools. Full original window retained.",
+      "visualReview": "Individually viewed at original size in the matching language and theme. Current navigation and native controls retained. No private records, credentials, browser chrome or developer tools.",
       "metadata": [
         {
           "marker": "0xe0",
@@ -225,20 +221,20 @@
     },
     {
       "file": "personal-context-en-dark.jpg",
-      "sha256": "6fafbf0a4c2cd9f7faca51ded3daa4776f6b91ea3245943b460365c2479ec02b",
+      "sha256": "3f07956e3047e8df25daf033faed81049170f7fda9a3bf8d633435b405ea61a8",
       "format": "image/jpeg",
       "width": 1280,
       "height": 900,
       "locale": "en-US",
       "theme": "dark",
       "space": "demo-us-v1",
-      "captureDate": "2026-10-01",
-      "source": "Actual SecondU interface, canonical fictional example. Original 1280x900 capture copied without alteration.",
+      "captureDate": "2026-10-25",
+      "source": "Actual SecondU v0.2.1 interface and authored fictional data. Original 1280x900 product viewport copied without alteration.",
       "fixtureReferences": [
         "server/fixtures/demo-us.json"
       ],
       "fictional": true,
-      "visualReview": "Individually viewed: actual English Caspian canonical fictional workspace, correct theme, no private records, credentials, browser chrome or developer tools. Full original window retained.",
+      "visualReview": "Individually viewed at original size in the matching language and theme. Current navigation and native controls retained. No private records, credentials, browser chrome or developer tools.",
       "metadata": [
         {
           "marker": "0xe0",
@@ -249,20 +245,20 @@
     },
     {
       "file": "specialists-en-dark.jpg",
-      "sha256": "9aae59225444aa29b550b74924afa9778e39c46258aa283396c1aae7767a3ba9",
+      "sha256": "9ac79e8a26706e134d2726c282f6c1f6758c4dbaf1c699797f116bea64a9b2a4",
       "format": "image/jpeg",
       "width": 1280,
       "height": 900,
       "locale": "en-US",
       "theme": "dark",
       "space": "demo-us-v1",
-      "captureDate": "2026-10-01",
-      "source": "Actual SecondU interface, canonical fictional example. Original 1280x900 capture copied without alteration.",
+      "captureDate": "2026-10-25",
+      "source": "Actual SecondU v0.2.1 interface and authored fictional data. Original 1280x900 product viewport copied without alteration.",
       "fixtureReferences": [
         "server/fixtures/demo-us.json"
       ],
       "fictional": true,
-      "visualReview": "Individually viewed: actual English Caspian canonical fictional workspace, correct theme, no private records, credentials, browser chrome or developer tools. Full original window retained.",
+      "visualReview": "Individually viewed at original size in the matching language and theme. Current navigation and native controls retained. No private records, credentials, browser chrome or developer tools.",
       "metadata": [
         {
           "marker": "0xe0",
@@ -273,20 +269,20 @@
     },
     {
       "file": "task-workspace-en-dark.jpg",
-      "sha256": "cdfc488baeea695628d427b93038ed4aa81189c7a6c8e0b6ab3abe345ffdb8fc",
+      "sha256": "6b675f65aa33833761c064a9ca9e8b7d99be48d113bd2c1e420471869761367c",
       "format": "image/jpeg",
       "width": 1280,
       "height": 900,
       "locale": "en-US",
       "theme": "dark",
       "space": "demo-us-v1",
-      "captureDate": "2026-10-01",
-      "source": "Actual SecondU interface, canonical fictional example. Original 1280x900 capture copied without alteration.",
+      "captureDate": "2026-10-25",
+      "source": "Actual SecondU v0.2.1 interface and authored fictional data. Original 1280x900 product viewport copied without alteration.",
       "fixtureReferences": [
         "server/fixtures/demo-us.json"
       ],
       "fictional": true,
-      "visualReview": "Individually viewed: actual English Caspian canonical fictional workspace, correct theme, no private records, credentials, browser chrome or developer tools. Full original window retained.",
+      "visualReview": "Individually viewed at original size in the matching language and theme. Current navigation and native controls retained. No private records, credentials, browser chrome or developer tools.",
       "metadata": [
         {
           "marker": "0xe0",
@@ -297,24 +293,23 @@
     },
     {
       "file": "decision-support-zh.jpg",
-      "sha256": "5ea83b22cbc87c16458f86ca8b57868514e7018af185d5790eae49f41b1e57e5",
+      "sha256": "475da9aeca26e59c613a522ec2ba88a3546b13807d06c6453b354390c20da7e6",
       "format": "image/jpeg",
       "width": 1280,
       "height": 900,
       "locale": "zh-CN",
       "theme": "light",
       "space": "demo-cn-v1",
-      "captureDate": "2026-10-01",
-      "source": "Actual SecondU career-discussion task and Markdown outline in the canonical fictional workspace. Original JPEG capture copied byte-for-byte at 1280x900; its source filename used a .png suffix. No crop, scaling, padding or re-encoding.",
+      "captureDate": "2026-10-25",
+      "source": "Actual SecondU interface, freshly initialized canonical fictional example. Original 1280x900 capture copied without alteration; Kimi K3.1 Pro is an unconnected example configuration.",
       "sourceCapture": "decision-support-zh.png",
       "sourceSha256": "5ea83b22cbc87c16458f86ca8b57868514e7018af185d5790eae49f41b1e57e5",
       "fixtureReferences": [
-        "server/demo-decision.mjs",
-        "shared/demo-decision.mjs",
-        "server/fixtures/demo-zh-content-v1.json"
+        "server/fixtures/demo-zh-content-v1.json",
+        "server/demo-decision.mjs"
       ],
       "fictional": true,
-      "visualReview": "Individually viewed: actual Chinese 万叶 fictional conversation with its editable outline, matching locale and theme. No private records, credentials, browser chrome or developer tools. Authored example; no model call or outreach.",
+      "visualReview": "Individually viewed at original size: correct language and theme, readable Kimi K3.1 Pro label, actual saved artifact and version controls. No private records, credentials, browser chrome, developer tools or model execution.",
       "metadata": [
         {
           "marker": "0xe0",
@@ -325,24 +320,23 @@
     },
     {
       "file": "decision-support-zh-dark.jpg",
-      "sha256": "f8e88926c43b7b754f9b98b2b706a28ca1634fb6d76e0c4fdbe08aeb6b523d26",
+      "sha256": "8db7de55c5608f957193e9907a1825431e9287709a3db35bf4c2b7c31cbcacd3",
       "format": "image/jpeg",
       "width": 1280,
       "height": 900,
       "locale": "zh-CN",
       "theme": "dark",
       "space": "demo-cn-v1",
-      "captureDate": "2026-10-01",
-      "source": "Actual SecondU career-discussion task and Markdown outline in the canonical fictional workspace. Original JPEG capture copied byte-for-byte at 1280x900; its source filename used a .png suffix. No crop, scaling, padding or re-encoding.",
+      "captureDate": "2026-10-25",
+      "source": "Actual SecondU interface, freshly initialized canonical fictional example. Original 1280x900 capture copied without alteration; Kimi K3.1 Pro is an unconnected example configuration.",
       "sourceCapture": "decision-support-zh-dark.png",
       "sourceSha256": "f8e88926c43b7b754f9b98b2b706a28ca1634fb6d76e0c4fdbe08aeb6b523d26",
       "fixtureReferences": [
-        "server/demo-decision.mjs",
-        "shared/demo-decision.mjs",
-        "server/fixtures/demo-zh-content-v1.json"
+        "server/fixtures/demo-zh-content-v1.json",
+        "server/demo-decision.mjs"
       ],
       "fictional": true,
-      "visualReview": "Individually viewed: actual Chinese 万叶 fictional conversation with its editable outline, matching locale and theme. No private records, credentials, browser chrome or developer tools. Authored example; no model call or outreach.",
+      "visualReview": "Individually viewed at original size: correct language and theme, readable Kimi K3.1 Pro label, actual saved artifact and version controls. No private records, credentials, browser chrome, developer tools or model execution.",
       "metadata": [
         {
           "marker": "0xe0",
@@ -353,24 +347,23 @@
     },
     {
       "file": "decision-support-en.jpg",
-      "sha256": "7cc64ad23d7736fedc149203afe17c1e98cb55bc4f5643aefbbd684f9dffe7d4",
+      "sha256": "c136db552b31b762210c858300614a24a6c3d58eeaf79d7e00d9f254c009a39a",
       "format": "image/jpeg",
       "width": 1280,
       "height": 900,
       "locale": "en-US",
       "theme": "light",
       "space": "demo-us-v1",
-      "captureDate": "2026-10-01",
-      "source": "Actual SecondU career-discussion task and Markdown outline in the canonical fictional workspace. Original JPG capture copied byte-for-byte at 1280x900. No crop, scaling, padding or re-encoding.",
+      "captureDate": "2026-10-25",
+      "source": "Actual SecondU interface, freshly initialized canonical fictional example. Original 1280x900 capture copied without alteration; Kimi K3.1 Pro is an unconnected example configuration.",
       "sourceCapture": "decision-en-light.jpg",
       "sourceSha256": "7cc64ad23d7736fedc149203afe17c1e98cb55bc4f5643aefbbd684f9dffe7d4",
       "fixtureReferences": [
-        "server/demo-decision.mjs",
-        "shared/demo-decision.mjs",
-        "server/fixtures/demo-us.json"
+        "server/fixtures/demo-us.json",
+        "server/demo-decision.mjs"
       ],
       "fictional": true,
-      "visualReview": "Individually viewed: actual English Caspian fictional conversation with its editable outline, matching locale and theme. No private records, credentials, browser chrome or developer tools. Authored example; no model call or outreach.",
+      "visualReview": "Individually viewed at original size: correct language and theme, readable Kimi K3.1 Pro label, actual saved artifact and version controls. No private records, credentials, browser chrome, developer tools or model execution.",
       "metadata": [
         {
           "marker": "0xe0",
@@ -381,24 +374,23 @@
     },
     {
       "file": "decision-support-en-dark.jpg",
-      "sha256": "9f3e1bb6c4ef7e6b5027aaf088b0411ff6c386d2d4c89bae00b2c869db03b47c",
+      "sha256": "c3621bbbf1792a19cc2b1e7b1ac3f5e6841826999c43f8c79b1dd36873abadb9",
       "format": "image/jpeg",
       "width": 1280,
       "height": 900,
       "locale": "en-US",
       "theme": "dark",
       "space": "demo-us-v1",
-      "captureDate": "2026-10-01",
-      "source": "Actual SecondU career-discussion task and Markdown outline in the canonical fictional workspace. Original JPG capture copied byte-for-byte at 1280x900. No crop, scaling, padding or re-encoding.",
+      "captureDate": "2026-10-25",
+      "source": "Actual SecondU interface, freshly initialized canonical fictional example. Original 1280x900 capture copied without alteration; Kimi K3.1 Pro is an unconnected example configuration.",
       "sourceCapture": "decision-en-dark.jpg",
       "sourceSha256": "9f3e1bb6c4ef7e6b5027aaf088b0411ff6c386d2d4c89bae00b2c869db03b47c",
       "fixtureReferences": [
-        "server/demo-decision.mjs",
-        "shared/demo-decision.mjs",
-        "server/fixtures/demo-us.json"
+        "server/fixtures/demo-us.json",
+        "server/demo-decision.mjs"
       ],
       "fictional": true,
-      "visualReview": "Individually viewed: actual English Caspian fictional conversation with its editable outline, matching locale and theme. No private records, credentials, browser chrome or developer tools. Authored example; no model call or outreach.",
+      "visualReview": "Individually viewed at original size: correct language and theme, readable Kimi K3.1 Pro label, actual saved artifact and version controls. No private records, credentials, browser chrome, developer tools or model execution.",
       "metadata": [
         {
           "marker": "0xe0",
@@ -406,6 +398,206 @@
           "type": "JFIF"
         }
       ]
+    },
+    {
+      "file": "finance-overview-en.jpg",
+      "sha256": "158ea013f895e9d293313dddcdf96981b629cb497632e6c2f340de6fe0c9d739",
+      "format": "image/jpeg",
+      "width": 1160,
+      "height": 850,
+      "locale": "en-US",
+      "theme": "light",
+      "space": "demo-us-v1",
+      "captureDate": "2026-10-25",
+      "fictional": true,
+      "metadata": [
+        {
+          "marker": "0xe0",
+          "bytes": 14,
+          "type": "JFIF"
+        }
+      ],
+      "fixtureReferences": [
+        "website/finance-example.mjs"
+      ],
+      "source": "Actual SecondU v0.2.1 interface and authored fictional data. Original 1160x850 product viewport copied without alteration. Native Finance cards shown through the website presentation layout; illustrative values and authored example prices, with no live connection or trading.",
+      "visualReview": "Individually viewed at original size in the matching language and theme. Current navigation and native controls retained. No private records, credentials, browser chrome or developer tools. All displayed cards, numerical totals, dates, data sources and illustrative-credit explanation fit the viewport.",
+      "presentation": "overview"
+    },
+    {
+      "file": "finance-overview-en-dark.jpg",
+      "sha256": "f3998ffb0ed84f3898c159b23e0929774a30f5f820e021f737bfdc4d35e334ee",
+      "format": "image/jpeg",
+      "width": 1160,
+      "height": 850,
+      "locale": "en-US",
+      "theme": "dark",
+      "space": "demo-us-v1",
+      "captureDate": "2026-10-25",
+      "fictional": true,
+      "metadata": [
+        {
+          "marker": "0xe0",
+          "bytes": 14,
+          "type": "JFIF"
+        }
+      ],
+      "fixtureReferences": [
+        "website/finance-example.mjs"
+      ],
+      "source": "Actual SecondU v0.2.1 interface and authored fictional data. Original 1160x850 product viewport copied without alteration. Native Finance cards shown through the website presentation layout; illustrative values and authored example prices, with no live connection or trading.",
+      "visualReview": "Individually viewed at original size in the matching language and theme. Current navigation and native controls retained. No private records, credentials, browser chrome or developer tools. All displayed cards, numerical totals, dates, data sources and illustrative-credit explanation fit the viewport.",
+      "presentation": "overview"
+    },
+    {
+      "file": "finance-overview-zh.jpg",
+      "sha256": "ca96d4df263c587393e808005c15f6c54afe166fd40fadba3b9aba7853dea2f4",
+      "format": "image/jpeg",
+      "width": 1160,
+      "height": 850,
+      "locale": "zh-CN",
+      "theme": "light",
+      "space": "demo-cn-v1",
+      "captureDate": "2026-10-25",
+      "fictional": true,
+      "metadata": [
+        {
+          "marker": "0xe0",
+          "bytes": 14,
+          "type": "JFIF"
+        }
+      ],
+      "fixtureReferences": [
+        "website/finance-example.mjs"
+      ],
+      "source": "Actual SecondU v0.2.1 interface and authored fictional data. Original 1160x850 product viewport copied without alteration. Native Finance cards shown through the website presentation layout; illustrative values and authored example prices, with no live connection or trading.",
+      "visualReview": "Individually viewed at original size in the matching language and theme. Current navigation and native controls retained. No private records, credentials, browser chrome or developer tools. All displayed cards, numerical totals, dates, data sources and illustrative-credit explanation fit the viewport.",
+      "presentation": "overview"
+    },
+    {
+      "file": "finance-overview-zh-dark.jpg",
+      "sha256": "0fa35820b353b1e2beae802ce4cb676288166d12f6ff69743c7067215b080d9f",
+      "format": "image/jpeg",
+      "width": 1160,
+      "height": 850,
+      "locale": "zh-CN",
+      "theme": "dark",
+      "space": "demo-cn-v1",
+      "captureDate": "2026-10-25",
+      "fictional": true,
+      "metadata": [
+        {
+          "marker": "0xe0",
+          "bytes": 14,
+          "type": "JFIF"
+        }
+      ],
+      "fixtureReferences": [
+        "website/finance-example.mjs"
+      ],
+      "source": "Actual SecondU v0.2.1 interface and authored fictional data. Original 1160x850 product viewport copied without alteration. Native Finance cards shown through the website presentation layout; illustrative values and authored example prices, with no live connection or trading.",
+      "visualReview": "Individually viewed at original size in the matching language and theme. Current navigation and native controls retained. No private records, credentials, browser chrome or developer tools. All displayed cards, numerical totals, dates, data sources and illustrative-credit explanation fit the viewport.",
+      "presentation": "overview"
+    },
+    {
+      "file": "finance-portfolio-en.jpg",
+      "sha256": "80cede225a3494c7ef04968c67eace6b243da432353b23240f34bb95b82d1646",
+      "format": "image/jpeg",
+      "width": 1160,
+      "height": 850,
+      "locale": "en-US",
+      "theme": "light",
+      "space": "demo-us-v1",
+      "captureDate": "2026-10-25",
+      "fictional": true,
+      "metadata": [
+        {
+          "marker": "0xe0",
+          "bytes": 14,
+          "type": "JFIF"
+        }
+      ],
+      "fixtureReferences": [
+        "website/finance-example.mjs"
+      ],
+      "source": "Actual SecondU v0.2.1 interface and authored fictional data. Original 1160x850 product viewport copied without alteration. Native Finance cards shown through the website presentation layout; illustrative values and authored example prices, with no live connection or trading.",
+      "visualReview": "Individually viewed at original size in the matching language and theme. Current navigation and native controls retained. No private records, credentials, browser chrome or developer tools. All displayed cards, numerical totals, dates, data sources and illustrative-credit explanation fit the viewport.",
+      "presentation": "portfolio"
+    },
+    {
+      "file": "finance-portfolio-en-dark.jpg",
+      "sha256": "b582ff8b9a3f8c59021058b4b84e387febe52ffa17200591a4050baf0c041a8a",
+      "format": "image/jpeg",
+      "width": 1160,
+      "height": 850,
+      "locale": "en-US",
+      "theme": "dark",
+      "space": "demo-us-v1",
+      "captureDate": "2026-10-25",
+      "fictional": true,
+      "metadata": [
+        {
+          "marker": "0xe0",
+          "bytes": 14,
+          "type": "JFIF"
+        }
+      ],
+      "fixtureReferences": [
+        "website/finance-example.mjs"
+      ],
+      "source": "Actual SecondU v0.2.1 interface and authored fictional data. Original 1160x850 product viewport copied without alteration. Native Finance cards shown through the website presentation layout; illustrative values and authored example prices, with no live connection or trading.",
+      "visualReview": "Individually viewed at original size in the matching language and theme. Current navigation and native controls retained. No private records, credentials, browser chrome or developer tools. All displayed cards, numerical totals, dates, data sources and illustrative-credit explanation fit the viewport.",
+      "presentation": "portfolio"
+    },
+    {
+      "file": "finance-portfolio-zh.jpg",
+      "sha256": "a8897579e8b7d67c8d643f6d4909273fed4bd0d58fb7bd64390a9fc021519e10",
+      "format": "image/jpeg",
+      "width": 1160,
+      "height": 850,
+      "locale": "zh-CN",
+      "theme": "light",
+      "space": "demo-cn-v1",
+      "captureDate": "2026-10-25",
+      "fictional": true,
+      "metadata": [
+        {
+          "marker": "0xe0",
+          "bytes": 14,
+          "type": "JFIF"
+        }
+      ],
+      "fixtureReferences": [
+        "website/finance-example.mjs"
+      ],
+      "source": "Actual SecondU v0.2.1 interface and authored fictional data. Original 1160x850 product viewport copied without alteration. Native Finance cards shown through the website presentation layout; illustrative values and authored example prices, with no live connection or trading.",
+      "visualReview": "Individually viewed at original size in the matching language and theme. Current navigation and native controls retained. No private records, credentials, browser chrome or developer tools. All displayed cards, numerical totals, dates, data sources and illustrative-credit explanation fit the viewport.",
+      "presentation": "portfolio"
+    },
+    {
+      "file": "finance-portfolio-zh-dark.jpg",
+      "sha256": "e9d32069dd4f14dac678c1b2af2965095cac8f5500579d8fedeb44cc02787dcc",
+      "format": "image/jpeg",
+      "width": 1160,
+      "height": 850,
+      "locale": "zh-CN",
+      "theme": "dark",
+      "space": "demo-cn-v1",
+      "captureDate": "2026-10-25",
+      "fictional": true,
+      "metadata": [
+        {
+          "marker": "0xe0",
+          "bytes": 14,
+          "type": "JFIF"
+        }
+      ],
+      "fixtureReferences": [
+        "website/finance-example.mjs"
+      ],
+      "source": "Actual SecondU v0.2.1 interface and authored fictional data. Original 1160x850 product viewport copied without alteration. Native Finance cards shown through the website presentation layout; illustrative values and authored example prices, with no live connection or trading.",
+      "visualReview": "Individually viewed at original size in the matching language and theme. Current navigation and native controls retained. No private records, credentials, browser chrome or developer tools. All displayed cards, numerical totals, dates, data sources and illustrative-credit explanation fit the viewport.",
+      "presentation": "portfolio"
     }
   ]
 }

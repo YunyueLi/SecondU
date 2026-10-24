@@ -11,6 +11,7 @@ import { validLifeDate, lifeDateStart } from './life-date.mjs';
 import { timelineMedia } from './timeline-media.mjs';
 import { HttpError, id, now } from './store.mjs';
 import { taskEventActivity } from './task-event-activity.mjs';
+import {currency as financeCurrency} from './finance/arithmetic.mjs';
 export function text(value, field, max=200000, required=true) { if(typeof value!=='string' || (required && !value.trim()) || value.length>max) throw new HttpError(400,`${field} 无效或过长`); return value.trim(); }
 export function choice(value,values,field) { if(!values.includes(value)) throw new HttpError(400,`${field} 无效`); return value; }
 export function bool(value,field) { if(typeof value!=='boolean') throw new HttpError(400,`${field} 必须为布尔值`); return value; }
@@ -63,14 +64,24 @@ export function createEntity(store, collection, body, existing) {
       if(!Array.isArray(value.messages) || value.messages.length>1000)throw new HttpError(400,'messages 无效');
       entity.messages=value.messages.map(m=>{store.require('people',m.senderId);store.require('sources',m.sourceId);return {id:typeof m.id==='string'?m.id:id('message'),senderId:m.senderId,sourceId:m.sourceId,content:text(m.content,'content',30000),time:m.time&&Number.isFinite(Date.parse(m.time))?m.time:now()};});break;
     case 'automations': {
-      str('title',300); str('prompt',30000); entity.enabled=bool(value.enabled??false,'enabled'); entity.trigger=choice(value.trigger,['daily','interval','source_import'],'trigger'); entity.mode=choice(value.mode??'demo',['live','demo'],'mode'); entity.agentIds=refs(store,value.agentIds??[],'agents','agentIds');
-      const projectId=projectReference(store,value.projectId,{runnable:true});if(projectId)entity.projectId=projectId;
-      if(value.connectionId){entity.connectionId=text(value.connectionId,'connectionId',200);store.require('modelConnections',entity.connectionId);}
-      if(value.digitalTwinEnabled!==undefined)entity.digitalTwinEnabled=bool(value.digitalTwinEnabled,'digitalTwinEnabled');
-      if(value.contextRequest!==undefined)entity.contextRequest=normalizeContextRequest(value.contextRequest);
-      if(value.connectorIds!==undefined)entity.connectorIds=connectorSelection(store,value.connectorIds);
-      entity.contextFactIds=refs(store,value.contextFactIds??[],'facts','contextFactIds');
-      if(value.approvalMode!==undefined)entity.approvalMode=approvalMode(value.approvalMode,{nullable:true});
+      entity.kind=choice(value.kind??'agent_task',['agent_task','finance_weekly'],'kind');
+      str('title',300); str('prompt',30000); entity.enabled=bool(value.enabled??false,'enabled'); entity.trigger=choice(value.trigger,['daily','interval','source_import'],'trigger'); entity.mode=choice(value.mode??(entity.kind==='finance_weekly'?'live':'demo'),['live','demo'],'mode');
+      if(entity.kind==='finance_weekly'){
+        if(entity.trigger!=='interval'||value.intervalMinutes!==10080)throw new HttpError(400,'本机财务周报使用每七天一次的安排。','finance_weekly_schedule');
+        if(value.projectId||value.connectionId||value.digitalTwinEnabled===true||value.contextRequest||value.agentIds?.length||value.connectorIds?.length||value.contextFactIds?.length)throw new HttpError(400,'本机财务周报不配置模型、助理、项目或外部连接。','finance_weekly_local_only');
+        if(entity.mode==='demo'&&entity.enabled)throw new HttpError(400,'示例财务周报只能保存为停用配置。','finance_weekly_demo_disabled');
+        entity.agentIds=[];entity.contextFactIds=[];entity.connectorIds=[];entity.digitalTwinEnabled=false;
+        if(value.financeCurrency!==undefined&&value.financeCurrency!==null&&value.financeCurrency!=='')entity.financeCurrency=financeCurrency(value.financeCurrency);
+      }else{
+        entity.agentIds=refs(store,value.agentIds??[],'agents','agentIds');
+        const projectId=projectReference(store,value.projectId,{runnable:true});if(projectId)entity.projectId=projectId;
+        if(value.connectionId){entity.connectionId=text(value.connectionId,'connectionId',200);store.require('modelConnections',entity.connectionId);}
+        if(value.digitalTwinEnabled!==undefined)entity.digitalTwinEnabled=bool(value.digitalTwinEnabled,'digitalTwinEnabled');
+        if(value.contextRequest!==undefined)entity.contextRequest=normalizeContextRequest(value.contextRequest);
+        if(value.connectorIds!==undefined)entity.connectorIds=connectorSelection(store,value.connectorIds);
+        entity.contextFactIds=refs(store,value.contextFactIds??[],'facts','contextFactIds');
+        if(value.approvalMode!==undefined)entity.approvalMode=approvalMode(value.approvalMode,{nullable:true});
+      }
       if(entity.trigger==='daily'){str('time',5);if(!/^([01]\d|2[0-3]):[0-5]\d$/.test(entity.time))throw new HttpError(400,'time 应为本机时间 HH:mm');}
       if(entity.trigger==='interval'){const n=value.intervalMinutes;if(!Number.isFinite(n)||n<1||n>525600)throw new HttpError(400,'间隔应为 1–525600 分钟');entity.intervalMinutes=n;}
       entity.nextRunAt=entity.enabled && entity.trigger!=='source_import' ? nextRunAt(entity) : undefined;

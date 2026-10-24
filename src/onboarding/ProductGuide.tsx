@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Button } from '@openai/apps-sdk-ui/components/Button';
-import { ArrowLeft, ArrowRight, CheckCircleFilled, Brain, User, Group, Folder, Glasses, Link, Loop, Desktop, InfoCircle } from '@openai/apps-sdk-ui/components/Icon';
+import { ArrowLeft, ArrowRight, CheckCircleFilled, Brain, User, Group, Folder, Glasses, Link, Loop, Desktop, InfoCircle, Chart, Settings } from '@openai/apps-sdk-ui/components/Icon';
 import { Popover } from '@openai/apps-sdk-ui/components/Popover';
 import { Dialog, ErrorNotice } from '../components';
 import { t, getLocale } from '../i18n';
@@ -13,7 +13,7 @@ import './guide.css';
 export { hasSeenProductGuide } from './guideContent';
 export type ProductGuideProps = {presentation?:'desktop'|'mobile';onClose:()=>void;onNavigate:(target:string)=>void;initialChapter?:GuideChapterId};
 
-const chapterIcons = { vision: User, cognition: Brain, life: Desktop, experts: Group, projects: Folder, devices: Glasses, world: Link, history: Loop };
+const chapterIcons = { vision: User, cognition: Brain, life: Desktop, experts: Group, projects: Folder, finance: Chart, setup: Settings, devices: Glasses, world: Link, history: Loop };
 
 export function ProductGuide({presentation='desktop',onClose,onNavigate,initialChapter}:ProductGuideProps) {
   const [scopeOpen,setScopeOpen]=useState(false);

@@ -1,11 +1,12 @@
-export const productRoutes = ['example-chat','example-decision','assistant','building','self','life','conversations','timeline','relationships','sources','projects','artifacts','automations','settings/model','settings/connectors','settings/computer','settings/appearance','devices','agents','agents/market','agents/network','agents/dating'] as const;
+export const productRoutes = ['finance','finance/accounts','finance/holdings','finance/market','finance/liabilities','finance/transactions','finance/planning','example-chat','example-decision','assistant','building','self','life','conversations','timeline','relationships','sources','projects','artifacts','automations','settings/model','settings/connectors','settings/computer','settings/appearance','devices','agents','agents/market','agents/network','agents/dating'] as const;
 export type ProductRoute = typeof productRoutes[number];
 export const productNavigationEvent = 'secondu-website-navigate';
 export function isProductRoute(value: unknown): value is ProductRoute { return typeof value==='string' && (productRoutes as readonly string[]).includes(value); }
 export function openProductRoute(route: ProductRoute, trigger?: HTMLElement) {
- // Touch and Safari clicks need not focus a button. Carry the actual opener so
- // the expanded workspace can restore focus to the control that launched it.
- window.dispatchEvent(new CustomEvent(productNavigationEvent,{detail:{route,trigger}}));
+ // Open the existing workspace over the current section. Carry the actual
+ // opener because touch and Safari clicks need not focus the launch button.
+ const opener=trigger??(document.activeElement instanceof HTMLElement?document.activeElement:undefined);
+ window.dispatchEvent(new CustomEvent(productNavigationEvent,{detail:{route,trigger:opener}}));
 }
 
 export function productExampleUrl(language: 'zh' | 'en', theme?: 'light' | 'dark') {

@@ -1,0 +1,163 @@
+.connector-discovery {
+  container: connector-directory / inline-size;
+  display: grid;
+  gap: 28px;
+  min-width: 0;
+}
+
+.connector-directory-section { min-width: 0; }
+.connector-discovery .connector-directory-section > h3 {
+  margin: 0 0 10px;
+  color: var(--color-text);
+  font-size: var(--hither-font-section-title, 16px);
+  font-weight: 550;
+  line-height: 24px;
+}
+.connector-directory-rows {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px 20px;
+  min-width: 0;
+}
+
+.connector-directory-row {
+  width: 100%;
+  height: auto;
+  min-width: 0;
+  padding: 10px 8px;
+  border-radius: 10px;
+  text-align: start;
+  white-space: normal;
+  align-self: stretch;
+}
+/* The SDK owns the button and focus behavior; this named child owns row layout. */
+.connector-directory-row-layout {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) 28px;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+}
+.connector-directory-row-copy { display: grid; gap: 3px; min-width: 0; }
+.connector-directory-row-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 7px;
+  min-width: 0;
+}
+.connector-directory-row-heading > :is(strong,h3) {
+  margin: 0;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--color-text);
+  font-size: var(--hither-font-label, 14px);
+  font-weight: 550;
+  line-height: 21px;
+}
+.connector-directory-row-description {
+  margin: 0;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  color: var(--color-text-secondary);
+  font-size: var(--hither-font-caption, 13px);
+  font-weight: 400;
+  line-height: 19px;
+}
+.connector-directory-row-status { display: inline-flex; min-width: 0; max-width: 100%; }
+.connector-directory-row-status .connector-status-badge { font-size: 11px; line-height: 16px; }
+:is(.connector-directory-row,.connector-connected-row) .connector-service-icon {
+  width: 40px;
+  height: 40px;
+  min-width: 0;
+  background: transparent;
+}
+:is(.connector-directory-row,.connector-connected-row) .connector-service-icon img,
+:is(.connector-directory-row,.connector-connected-row) .connector-service-icon svg { width: 32px; height: 32px; }
+:is(.connector-directory-row,.connector-connected-row) .connector-service-icon.is-local > svg { width: 27px; height: 27px; }
+.connector-directory-row-action {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: var(--color-text-secondary);
+}
+.connector-directory-row-action > svg { width: 18px; height: 18px; }
+.connector-directory-row:hover .connector-directory-row-action { color: var(--color-text); }
+
+.connector-catalog {
+  container: connector-connections / inline-size;
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+.connector-directory-row--manage .connector-directory-row-layout {
+  grid-template-columns: 40px minmax(0, 1fr) auto;
+}
+.connector-directory-row--manage .connector-directory-row-action {
+  display: flex;
+  gap: 6px;
+  width: auto;
+  height: auto;
+  border-radius: 0;
+  font-size: var(--hither-font-caption, 13px);
+  font-weight: 400;
+  line-height: 20px;
+  white-space: nowrap;
+}
+.connector-directory-row--manage .connector-directory-row-action > svg { width: 16px; height: 16px; }
+.connector-connected-row {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 6px 12px;
+  min-width: 0;
+  padding: 10px 8px;
+}
+.connector-connected-row .connector-tool-count {
+  font-size: var(--hither-font-meta, 12px);
+  line-height: 18px;
+  font-weight: 400;
+  white-space: nowrap;
+}
+.connector-connected-row-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  min-width: 0;
+}
+.connector-connected-row-actions > :last-child { margin-left: 8px; }
+.connector-connected-row-error {
+  grid-column: 2 / -1;
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--hither-font-caption, 13px);
+  line-height: 20px;
+  overflow-wrap: anywhere;
+}
+@container connector-connections (max-width: 640px) {
+  .connector-connected-row { grid-template-columns: 40px minmax(0, 1fr); }
+  .connector-connected-row-actions { grid-column: 2; justify-content: flex-start; flex-wrap: wrap; }
+}
+@container connector-connections (max-width: 440px) {
+  .connector-directory-row--manage,.connector-connected-row { padding-inline: 4px; }
+  .connector-directory-row--manage .connector-directory-row-layout { column-gap: 8px; }
+  .connector-directory-row--manage .connector-directory-row-action { font-size: 12px; gap: 3px; }
+}
+
+/* TrueLayer's official SVG follows color-scheme, including an explicit app theme. */
+.connector-service-icon.service-truelayer { color-scheme: light; }
+[data-theme=dark] .connector-service-icon.service-truelayer,
+:root.dark .connector-service-icon.service-truelayer { color-scheme: dark; }
+
+@container connector-directory (max-width: 560px) {
+  .connector-directory-rows { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+  .connector-directory-row { padding-inline: 4px; }
+}

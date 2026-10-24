@@ -1,7 +1,7 @@
 import {BottomSheet} from './shared/BottomSheet';
 import './design-system/settings-type-scale.css';
 import { t, getLocale } from './i18n';
-import React, { useEffect, useRef, useId } from 'react';
+import React, { useEffect, useRef, useId, useContext, useLayoutEffect, createContext } from 'react';
 import { createPortal } from 'react-dom';
 import type { TaskStatus } from '../shared/contracts';
 import { Button } from '@openai/apps-sdk-ui/components/Button';
@@ -24,10 +24,20 @@ export function TaskBadge({ status }: { status: TaskStatus }) {
 export function ErrorNotice({ error }: { error?: string | null }) { return error ? <Alert color="danger" variant="soft" title={t("操作未完成", "Action failed")} description={error} /> : null; }
 export function Busy({ label = t("正在加载", "Loading") }: { label?: string }) { return <div className="busy-state" role="status"><LoadingIndicator /><span>{label}</span></div>; }
 export function Empty({ title, description, action }: { title: string; description?: string; action?: React.ReactNode }) { return <EmptyMessage fill="none"><EmptyMessage.Title>{title}</EmptyMessage.Title>{description && <EmptyMessage.Description>{description}</EmptyMessage.Description>}{action && <EmptyMessage.ActionRow>{action}</EmptyMessage.ActionRow>}</EmptyMessage>; }
+// The shell supplies one navigation control; each workspace places it in its
+// existing heading. Registration keeps a fallback available during empty views.
+export const PageNavigationContext = createContext<{ button: React.ReactNode; register: () => () => void } | null>(null);
+export function PageNavigation({ className = '' }: { className?: string }) {
+  const navigation = useContext(PageNavigationContext);
+  const register = navigation?.register;
+  useLayoutEffect(() => register?.(), [register]);
+  return navigation ? <span className={`page-heading-navigation ${className}`}>{navigation.button}</span> : null;
+}
 export function PageHeading({ title, description, compactDescription, illustration, decoration, action, className = '' }: { title: React.ReactNode; description?: React.ReactNode; compactDescription?: string; illustration?: string; decoration?: ThemeDecorationKind; action?: React.ReactNode; className?: string }) {
+  const navigation = useContext(PageNavigationContext);
   const artwork = decoration || decorationForIllustration(illustration);
-  return <header className={`page-heading ${illustration || artwork ? 'has-illustration' : ''} ${className}`}>
-    <div className="page-heading-intro">{artwork ? <ThemeDecoration kind={artwork} className="page-heading-art"/> : illustration && <img className="page-heading-art" src={illustration} alt="" aria-hidden="true" draggable={false} />}<div className="page-heading-copy"><h1>{title}</h1>{description && <p><span className={compactDescription ? 'page-description-full' : undefined}>{description}</span>{compactDescription && <span className="page-description-compact">{compactDescription}</span>}</p>}</div></div>
+  return <header className={`page-heading ${illustration || artwork ? 'has-illustration' : ''} ${navigation ? 'has-page-navigation' : ''} ${className}`}>
+    <div className="page-heading-intro"><PageNavigation/>{artwork ? <ThemeDecoration kind={artwork} className="page-heading-art"/> : illustration && <img className="page-heading-art" src={illustration} alt="" aria-hidden="true" draggable={false} />}<div className="page-heading-copy"><h1>{title}</h1>{description && <p><span className={compactDescription ? 'page-description-full' : undefined}>{description}</span>{compactDescription && <span className="page-description-compact">{compactDescription}</span>}</p>}</div></div>
     {action && <div className="page-heading-actions">{action}</div>}
   </header>;
 }

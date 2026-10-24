@@ -45,3 +45,5 @@ jobs:
         run: npm run build
       - name: Run synthetic local tests
         run: npm test
+      - name: Validate website finance examples and presentation
+        run: node --test website/*.test.mjs

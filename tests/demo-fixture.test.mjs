@@ -27,7 +27,7 @@ test('new demo is a coherent fictional product-engineer life with family, teache
  assert.match(store.meta('profile').description,/2016.*2020.*月之暗面/);assert.equal(store.meta('profile').demo,true);
  assert.equal(store.meta('profile').name,'万叶');assert.equal(store.meta('profile').englishName,undefined);assert.equal(store.meta('profile').demoLocale,'zh-CN');
  assert.equal(store.list('people').filter(person=>person.portrait?.entries.length).length,22);
- assert.equal(store.settings().provider,'moonshot');assert.equal(store.settings().model,'kimi-k3');
+ assert.equal(store.settings().provider,'moonshot');assert.equal(store.settings().model,'kimi-k3.1-pro');
  assert.equal(store.list('people').length,22);assert.ok(store.list('relationships').length>=30);assert.ok(store.list('conversations').reduce((sum,item)=>sum+item.messages.length,0)>=140);
  for(const role of ['母亲','父亲','妹妹','大学导师','高中班主任','同事，算法工程师','同事，测试工程师','同事，产品运营'])assert.ok(store.list('people').some(person=>person.role===role),role);
  assert.ok(store.list('events').some(event=>event.date==='2016-09'&&event.endDate==='2020-06'));

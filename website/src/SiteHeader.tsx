@@ -1,10 +1,13 @@
 import {useEffect,useState} from 'react';
-import {Button} from '@openai/apps-sdk-ui/components/Button';
+import {Button,ButtonLink} from '@openai/apps-sdk-ui/components/Button';
 import {Menu} from '@openai/apps-sdk-ui/components/Menu';
-import {Hamburger} from '@openai/apps-sdk-ui/components/Icon';
-import {LanguageSwitcher,useSiteLanguage} from './site-language';
-import {ThemeSwitcher} from './site-theme';
+import {Download,Hamburger} from '@openai/apps-sdk-ui/components/Icon';
+import {useSiteLanguage} from './site-language';
+import {openProductRoute} from './product-navigation';
+import review from '../../docs/review.json';
 import './site-header.css';
+
+const desktopDownload = `https://github.com/YunyueLi/SecondU/releases/download/${review.latestRelease.version}/SecondU-${review.latestRelease.version}-macos-arm64.zip`;
 
 const sectionIds=['experience','capabilities','future','benchmark','build'];
 
@@ -30,11 +33,21 @@ export default function SiteHeader(){
  },[]);
  const links=[{href:'#experience',label:t('体验产品','Experience')},{href:'#capabilities',label:t('产品能力','Capabilities')},{href:'#future',label:t('未来方向','Future directions')},{href:'#benchmark',label:t('评测','Benchmark')},{href:'#build',label:t('开发进展','Development')}];
  return <header className={`site-masthead${scrolled?' is-scrolled':''}`}>
-  <div className="site-masthead-frost" aria-hidden="true"><span/></div>
   <div className="site-masthead-in">
    <a className="site-brand" href="#" aria-label={t('SecondU 首页','SecondU home')}><img src="./assets/secondu-mark.svg" alt=""/><img src="./assets/secondu-wordmark.svg" alt="SecondU"/></a>
    <nav className="site-masthead-links" aria-label={t('网站导航','Website navigation')}>{links.map(link=><a key={link.href} href={link.href} aria-current={activeSection===link.href.slice(1)?'location':undefined}>{link.label}</a>)}</nav>
-   <div className="site-masthead-tools"><a className="site-masthead-github" href="https://github.com/YunyueLi/SecondU" target="_blank" rel="noreferrer"><GitHubMark/>GitHub</a><div className="site-masthead-language"><LanguageSwitcher/></div><div className="site-masthead-theme"><ThemeSwitcher/></div><div className="site-masthead-mobile"><Menu><Menu.Trigger><Button uniform pill color="secondary" variant="ghost" size="md" aria-label={t('打开网站导航','Open website navigation')}><Hamburger/></Button></Menu.Trigger><Menu.Content align="end" minWidth={220}><div className="site-masthead-menu">{links.map(link=><Menu.Link as="a" href={link.href} key={link.href} aria-current={activeSection===link.href.slice(1)?'location':undefined}>{link.label}</Menu.Link>)}<Menu.Separator/><Menu.Link as="a" href="https://github.com/YunyueLi/SecondU" target="_blank" rel="noreferrer"><GitHubMark/>GitHub</Menu.Link></div></Menu.Content></Menu></div></div>
+   <div className="site-masthead-tools">
+    <a className="site-masthead-github" href="https://github.com/YunyueLi/SecondU" target="_blank" rel="noreferrer" aria-label="GitHub" title="GitHub"><GitHubMark/></a>
+    <ButtonLink as="a" className="site-masthead-download" href={desktopDownload} color="secondary" variant="ghost" pill={false} uniform size="md" aria-label={t('下载 SecondU macOS 版','Download SecondU for macOS')} title={t('下载 macOS 版（Apple 芯片）','Download for macOS (Apple silicon)')}><Download/></ButtonLink>
+    <button type="button" className="site-masthead-try" onClick={event=>openProductRoute('example-chat',event.currentTarget)}>{t('体验 SecondU','Try SecondU')}</button>
+    <div className="site-masthead-mobile"><Menu><Menu.Trigger><Button uniform pill={false} color="secondary" variant="ghost" size="md" aria-label={t('打开网站导航','Open website navigation')}><Hamburger/></Button></Menu.Trigger><Menu.Content align="end" minWidth={240}><div className="site-masthead-menu">
+     {links.map(link=><Menu.Link as="a" href={link.href} key={link.href} aria-current={activeSection===link.href.slice(1)?'location':undefined}>{link.label}</Menu.Link>)}
+     <Menu.Separator/>
+     <Menu.Link as="a" href={desktopDownload}><Download/>{t('下载桌面版','Download for desktop')}</Menu.Link>
+     <Menu.Link as="a" href="https://github.com/YunyueLi/SecondU" target="_blank" rel="noreferrer"><GitHubMark/>GitHub</Menu.Link>
+
+    </div></Menu.Content></Menu></div>
+   </div>
   </div>
  </header>;
 }

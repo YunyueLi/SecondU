@@ -123,21 +123,11 @@ html:not([data-motion=reduced]) .expert-showcase-stage .ag-pass-swing{animation:
 
 /* Tabs, search and filters share one toolbar; only narrow screens wrap it. */
 .expert-library-shell{display:flex;flex-direction:column;flex:1;min-height:0;width:100%;max-width:1240px;margin:0 auto;overflow:hidden}
-.expert-directory-toolbar{column-gap:12px;row-gap:12px;margin-bottom:16px}
-.expert-directory-toolbar>div:has(input){min-width:160px;max-width:none;flex:1;margin-left:auto}
-.expert-directory-toolbar .expert-view-modes{flex:0 0 auto}.expert-directory-toolbar .expert-view-modes>div{gap:12px}.expert-directory-toolbar .expert-view-modes button{font-size:12px;white-space:nowrap}
-.expert-directory-toolbar .expert-all-domains{height:30px;min-height:30px;padding-inline:5px;font-size:12px;white-space:nowrap}.expert-directory-toolbar .expert-all-domains svg{width:12px;height:12px}
 .expert-domain-popover>.expert-any-domain{padding:7px 8px;margin:0 0 13px;width:100%}
 .expert-domain-popover>.expert-any-domain[aria-pressed=true]{background:var(--color-surface-secondary)}
-@media(max-width:850px){.expert-directory-toolbar{gap:8px}.expert-directory-toolbar>div:has(input){min-width:110px}.expert-directory-toolbar .expert-view-modes>div{gap:9px}}
-@media(max-width:700px){.expert-directory-toolbar{flex-wrap:wrap;gap:10px}.expert-directory-toolbar>div:has(input){order:3;flex:1 1 200px;min-width:160px}.expert-directory-toolbar .expert-view-modes{margin-left:auto}.expert-directory-toolbar .expert-all-domains{order:4;margin-left:0}.expert-badge-browser{grid-template-rows:100px minmax(400px,1fr)}.expert-choice-panel{min-height:100px}.expert-choice-list{min-height:90px}}
+@media(max-width:700px){.expert-badge-browser{grid-template-rows:100px minmax(400px,1fr)}.expert-choice-panel{min-height:100px}.expert-choice-list{min-height:90px}}
 
 /* Domain controls have the same type scale, height and quiet selection style. */
-.expert-directory-toolbar .expert-view-modes button{height:30px;padding:4px 8px;border:0;border-radius:7px;font-size:13px;line-height:22px;font-weight:400;color:var(--color-text-secondary);background:transparent}
-.expert-directory-toolbar .expert-view-modes button[aria-pressed=true]{background:var(--color-surface-secondary);color:var(--color-text);font-weight:500}
-.expert-directory-toolbar .expert-view-modes>div{gap:2px}
-.expert-directory-toolbar .expert-domain-trigger{height:30px;min-height:30px;padding:4px 7px;min-width:0;border-radius:7px;font-size:13px;font-weight:400;color:var(--color-text-secondary);background:transparent}
-.expert-directory-toolbar .expert-domain-trigger>span{gap:5px}.expert-directory-toolbar .expert-domain-trigger svg{width:16px;height:16px}.expert-directory-toolbar .expert-domain-trigger svg:last-child{width:12px;height:12px}
 .expert-domain-popover button{display:flex;align-items:center;gap:7px;font-size:12px;min-height:34px;padding:7px 5px}
 .expert-domain-popover button>svg{width:16px;height:16px;flex-shrink:0;color:var(--color-text-secondary)}
 .expert-domain-popover section>div{gap:4px}.expert-domain-popover h3{font-size:11px;font-weight:450}.expert-domain-popover>.expert-any-domain{margin-bottom:12px}
@@ -152,7 +142,4 @@ html:not([data-motion=reduced]) .expert-showcase-stage .ag-pass-swing{animation:
 .expert-showcase-stage .ag-pass-front>.ag-avatar{width:var(--badge-avatar-size)!important;height:var(--badge-avatar-size)!important}
 .expert-showcase-stage .ag-pass-owner{font-size:10px;line-height:18px;margin:0}
 @media(max-width:850px){.expert-showcase-stage .ag-pass-stage{--badge-avatar-size:56px;--badge-title-row:26px;--badge-copy-row:38px;--badge-owner-row:18px;--badge-row-gap:3px}.expert-showcase-stage .ag-pass-front p{font-size:11px;line-height:18px;max-height:36px}}
-@media(max-width:700px){.expert-directory-toolbar{gap:9px}.expert-directory-toolbar .expert-domain-trigger{order:0;margin:0}.expert-directory-toolbar .expert-view-modes{order:4;margin-left:0}.expert-directory-toolbar>div:has(input){order:3;min-width:170px;flex:1}.expert-directory-toolbar>button:last-child:not(.expert-domain-trigger){order:5;margin-left:auto}.saved-agent-browser .expert-directory-toolbar>[role=button]{order:4;min-width:96px}.expert-showcase-stage .ag-pass-stage{--badge-avatar-size:51px;--badge-title-row:25px;--badge-copy-row:35px;--badge-owner-row:17px;--badge-row-gap:3px}.expert-showcase-stage .ag-pass-front p{font-size:11px;line-height:17px;max-height:34px}.expert-showcase-stage .ag-pass-owner{font-size:9px;line-height:16px}.saved-agent-actions>button{font-size:11px}.expert-domain-popover section>div{grid-template-columns:repeat(3,minmax(0,1fr))}.expert-domain-popover button{font-size:11px;gap:5px}.expert-domain-popover button>svg{width:15px;height:15px}}
-@media(max-width:700px){.saved-agent-browser .ag-directory-toolbar>button:last-child:not(.expert-domain-trigger){order:5;margin-left:auto;flex:none;width:auto;min-width:0;padding:4px 7px;font-size:12px}.saved-agent-browser .ag-directory-toolbar>button:last-child:not(.expert-domain-trigger) svg{width:17px;height:17px}}
-
-.expert-directory-toolbar{row-gap:12px;margin-bottom:16px}
+@media(max-width:700px){.expert-showcase-stage .ag-pass-stage{--badge-avatar-size:51px;--badge-title-row:25px;--badge-copy-row:35px;--badge-owner-row:17px;--badge-row-gap:3px}.expert-showcase-stage .ag-pass-front p{font-size:11px;line-height:17px;max-height:34px}.expert-showcase-stage .ag-pass-owner{font-size:9px;line-height:16px}.saved-agent-actions>button{font-size:11px}.expert-domain-popover section>div{grid-template-columns:repeat(3,minmax(0,1fr))}.expert-domain-popover button{font-size:11px;gap:5px}.expert-domain-popover button>svg{width:15px;height:15px}}

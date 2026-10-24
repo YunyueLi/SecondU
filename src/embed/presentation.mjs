@@ -1,6 +1,7 @@
 import { parseParentOrigin } from './scroll-bridge.mjs';
+import { proactiveExampleTaskId, withProactiveExample } from './proactive-example.mjs';
 
-const presentations = new Set(['materials', 'assistant', 'assets', 'automations']);
+const presentations = new Set(['materials', 'sources', 'proactive', 'assistant', 'assets', 'automations', 'decision', 'specialists']);
 
 /** The report uses the real product in a separate, read-only example window. */
 export function installPresentation(view) {
@@ -8,6 +9,8 @@ export function installPresentation(view) {
   const mode = url.searchParams.get('presentation');
   if (!url.pathname.endsWith('/embed.html') || !presentations.has(mode) || url.searchParams.get('space') !== 'demo-cn-v1') return () => {};
   const doc = view.document;
+  const previousPresentation = doc.documentElement?.getAttribute('data-secondu-presentation');
+  doc.documentElement?.setAttribute('data-secondu-presentation', mode);
   const parentOrigin = parseParentOrigin(url.searchParams.get('parentOrigin'));
   const embedded = view.parent !== view;
   // Product panels may focus their input on the next animation frame. In this
@@ -33,13 +36,22 @@ export function installPresentation(view) {
     if (target.pathname.startsWith('/api/') && !['GET', 'HEAD'].includes(method)) {
       return Promise.resolve(new view.Response(JSON.stringify({error: '演示仅用于查看，不保存更改。'}), {status: 403, headers: {'Content-Type': 'application/json'}}));
     }
-    return originalFetch.call(view, input, init);
+    const response = originalFetch.call(view, input, init);
+    if (mode === 'proactive' && method === 'GET' && target.origin === url.origin && target.pathname === '/api/spaces/demo-cn-v1/bootstrap') {
+      return response.then(async result => {
+        if (!result.ok) return result;
+        return new view.Response(JSON.stringify(withProactiveExample(await result.json())), {
+          status: result.status, headers: {'Content-Type': 'application/json'},
+        });
+      });
+    }
+    return response;
   };
 
   let visible = !embedded, playing = !view.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let timer, index = 0, misses = 0, disposed = false;
   const announce = (reason = '') => {
-    if (embedded && parentOrigin) view.parent.postMessage({type: 'secondu-presentation-state', mode, playing, step: index, reason}, parentOrigin);
+    if (embedded && parentOrigin) view.parent.postMessage({type: 'secondu-presentation-state', mode, playing, step: index, reason, ...(mode === 'proactive' ? {scene: view.location.hash === `#task/${proactiveExampleTaskId}` ? 'reminder' : 'connections'} : {})}, parentOrigin);
   };
   const shown = element => element && !element.closest('[hidden],[inert]') && element.getClientRects().length && !element.disabled;
   const find = (selector, text) => [...doc.querySelectorAll(selector)].find(element => shown(element) && (!text || (element.getAttribute('aria-label') || element.textContent || '').trim().includes(text)));
@@ -75,6 +87,10 @@ export function installPresentation(view) {
     return true;
   };
   const escape = () => { (doc.activeElement || doc.body).dispatchEvent(new view.KeyboardEvent('keydown', {key: 'Escape', code: 'Escape', bubbles: true, cancelable: true})); return true; };
+  const route = (hash, ready) => () => {
+    if (view.location.hash !== `#${hash}`) { view.location.hash = hash; return false; }
+    return !!find(ready);
+  };
   const steps = {
     materials: [
       scroll('.twin-building-stage', 'start'),
@@ -83,9 +99,39 @@ export function installPresentation(view) {
       click('.twin-capture-purpose button', '只用于这次'), click('.twin-capture-purpose button', '用于了解我'),
       click('button[aria-label="收起接入面板"]'), scroll('.twin-building-stage', 'start'),
     ],
+    sources: Array.from({length: 7}, (_, item) => click('.material-gallery-navigation button', `第 ${item + 1} 项`)),
+    proactive: [
+      route('settings/connectors', '.connector-service-grid'),
+      click('.connector-service-card', '查看 GitHub 连接方式'),
+      click('.connector-detail-dialog > header button', '关闭'),
+      route(`task/${proactiveExampleTaskId}`, '.task-thread'),
+    ],
     assistant: [click('.composer-twin-trigger'), escape, click('.project-picker'), escape, click('.composer-approval-picker'), escape],
     assets: [click('.library-tabs button', '成果'), click('.library-tabs button', '来源'), click('.library-tools button[aria-label="列表视图"]'), click('.library-tools button[aria-label="网格视图"]'), click('.library-tools button', '新建'), escape, click('.library-tabs button', '全部')],
     automations: [click('.automations-workspace button', '新建自动化'), click('.automation-form [role="button"][aria-haspopup="dialog"]', '每天固定时间'), escape, click('.automation-form-actions button', '取消')],
+    // The local product uses this task's real route, not the website alias:
+    // #task/demo-decision-task-zh. Only view tabs change; no draft is entered.
+    decision: [
+      click('.task-artifacts .artifact-message-card', '打开文件 职业方向讨论提纲.md'),
+      click('.artifact-toolbar button', '预览'),
+      click('.artifact-toolbar button', '编辑'),
+      click('.artifact-toolbar button', '版本'),
+      click('.artifact-toolbar button', '预览'),
+      click('.workbench-panel button[data-close-workbench]'),
+    ],
+    // Saved-agent badges expose a role face; work history lives in the real
+    // settings panel. Account and model controls are viewed, never changed.
+    specialists: ['agent-writer', 'agent-planner'].flatMap(id => [
+      click(`.saved-agent-browser [data-saved-agent-id$="${id}"]`),
+      click('.saved-agent-browser button[aria-label="角色说明"]'),
+      click('.saved-agent-browser button[aria-label="翻回工牌正面"]'),
+      click('.saved-agent-actions button', '设置与记录'),
+      click('.ag-agent-details-dialog .agent-work-tabs button', '账号与权限'),
+      () => !!find('.ag-agent-details-dialog .agent-resources') && !find('.ag-agent-details-dialog .agent-resource-hint[role="status"]'),
+      click('.ag-agent-details-dialog .agent-work-tabs button', '工作记录'),
+      click('.ag-agent-details-dialog .agent-work-tabs button', '模型'),
+      click('.ag-agent-details-dialog > header button[aria-label="关闭"]'),
+    ]),
   }[mode];
   const stopTimer = () => { view.clearTimeout(timer); timer = undefined; };
   const tick = () => {
@@ -95,7 +141,7 @@ export function installPresentation(view) {
     if (sidebar && sidebar.getAttribute('aria-expanded') === 'true') sidebar.click();
     if (steps[index]()) {
       misses = 0; index = (index + 1) % steps.length; announce();
-      timer = view.setTimeout(tick, index === 0 ? 3200 : 1800);
+      timer = view.setTimeout(tick, mode === 'proactive' ? index === 0 ? 7000 : 3000 : index === 0 ? 3200 : 1800);
     } else if (++misses < 40) timer = view.setTimeout(tick, 250);
     else { playing = false; announce('当前步骤暂不可用'); }
   };
@@ -116,6 +162,14 @@ export function installPresentation(view) {
   };
   const message = event => {
     if (!parentOrigin || event.origin !== parentOrigin || event.source !== view.parent || event.data?.type !== 'secondu-presentation-control') return;
+    const sceneRoutes = {connections: 'settings/connectors', reminder: `task/${proactiveExampleTaskId}`};
+    if (mode === 'proactive' && Object.hasOwn(sceneRoutes, event.data.scene)) {
+      playing = false; stopTimer();
+      view.location.hash = sceneRoutes[event.data.scene];
+      index = event.data.scene === 'reminder' ? 0 : 1;
+      announce('已暂停，可直接操作界面');
+      return;
+    }
     if (typeof event.data.visible === 'boolean') visible = event.data.visible;
     if (typeof event.data.playing === 'boolean') playing = event.data.playing;
     announce(); tick();
@@ -131,6 +185,8 @@ export function installPresentation(view) {
   if (!embedded) timer = view.setTimeout(tick, 1000);
   return () => {
     disposed = true; stopTimer(); view.fetch = originalFetch;
+    if (previousPresentation == null) doc.documentElement?.removeAttribute('data-secondu-presentation');
+    else doc.documentElement?.setAttribute('data-secondu-presentation', previousPresentation);
     if (elementPrototype.focus === presentationFocus) elementPrototype.focus = originalFocus;
     for (const name of Object.keys(originalStorage)) prototype[name] = originalStorage[name];
     for (const type of ['pointerdown', 'keydown', 'click']) doc.removeEventListener(type, pauseForUser, true);

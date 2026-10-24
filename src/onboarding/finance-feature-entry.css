@@ -1,0 +1,6 @@
+.finance-feature-row { display:flex; align-items:center; min-width:0; gap:4px; }
+.finance-feature-row>.suggestion-row { flex:1; min-width:0; }
+.finance-feature-copy { display:flex; align-items:center; flex-wrap:wrap; gap:4px 8px; }
+.finance-feature-entry .finance-feature-dismiss { flex:none; width:28px; height:28px; min-height:28px; color:var(--color-text-secondary); }
+.finance-feature-dismiss svg { width:12px; height:12px; }
+.assistant-workspace.is-mobile .finance-feature-entry { margin-top:8px; padding:0; }

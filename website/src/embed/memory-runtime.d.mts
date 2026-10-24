@@ -3,6 +3,7 @@ import type { CanonicalExample } from './fixture';
 export class ExampleError extends Error { status: number; code: string; constructor(message: string, status?: number, code?: string); }
 export class ExampleRuntime {
   data: Bootstrap;
+  example: CanonicalExample;
   constructor(example: CanonicalExample);
   loadDevelopmentResponses(responses: Record<string, unknown>): void;
   chooseChat(): string | undefined;

@@ -3,12 +3,13 @@ import type { Bootstrap, ModelConnection, ModelConnectionList, ProviderSettings 
 import { Button } from '@openai/apps-sdk-ui/components/Button';
 import { Badge } from '@openai/apps-sdk-ui/components/Badge';
 import { Menu } from '@openai/apps-sdk-ui/components/Menu';
-import { Plus, ApiKey, Check, Edit, Trash, DotsHorizontalMoreMenu } from '@openai/apps-sdk-ui/components/Icon';
+import { Plus, ApiKey, Check, CheckCircle, Warning, Edit, Trash, DotsHorizontalMoreMenu } from '@openai/apps-sdk-ui/components/Icon';
 import { Dialog, ErrorNotice, when } from '../components';
 import { api, write, messageOf } from '../api';
 import { t } from '../i18n';
 import { useUnsavedChanges } from '../useUnsavedChanges';
 import { modelIdIssue } from '../../shared/model-validation.mjs';
+import { demoModelLabel } from '../../shared/demo-model.mjs';
 import { ProviderMark, providerName, protocolName } from './providers';
 import { ModelOnboarding } from './ModelOnboarding';
 import './models.css';
@@ -32,7 +33,7 @@ function ModelShowcase({ data }: { data: Bootstrap }) {
     <div className="model-feedback"><p className="model-testing-note" role="status">{t('示例空间仅展示模型配置。请在桌面版的个人空间中连接和测试模型。', 'The example space displays model settings. Connect and test models in your personal space in the desktop app.')}</p></div>
     <div className="model-connections">{(data.modelConnections || []).map(connection => <article key={connection.id} className="model-connection">
       <span className="model-connection-mark"><ProviderMark provider={connection.provider} size={25}/></span>
-      <div className="model-connection-copy"><div className="model-connection-name"><h3>{connection.name}</h3>{connection.id === data.defaultConnectionId && <Badge color="secondary" variant="soft" size="sm">{t('默认', 'Default')}</Badge>}</div><p className="model-connection-model">{providerName(connection.provider)} · {connection.model}</p></div>
+      <div className="model-connection-copy"><div className="model-connection-name"><h3>{demoModelLabel(connection.model)}</h3>{connection.id === data.defaultConnectionId && <Badge color="secondary" variant="soft" size="sm">{t('默认', 'Default')}</Badge>}</div><p className="model-connection-model">{providerName(connection.provider)} · {connection.model}</p></div>
       <span className="model-connection-state">{t('示例配置', 'Example configuration')}</span>
     </article>)}</div>
     {!data.modelConnections?.length && <p className="model-local-note">{t('此示例尚未配置模型。', 'This example has no model configuration.')}</p>}
@@ -48,6 +49,7 @@ function PersonalModelSettings({ data, onRefresh, presentation='desktop' }: Mode
   useUnsavedChanges({ unsaved: false, busy: !!busy });
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
+  const [testErrors, setTestErrors] = useState<Record<string, string>>({});
   const sequence = useRef(0);
   const [management, setManagement] = useState<{ connection: ModelConnection; kind: 'key' | 'delete' }>();
   useEffect(() => { if (data.modelConnections) { setConnections(data.modelConnections); setDefaultId(data.defaultConnectionId); } }, [data.modelConnections, data.defaultConnectionId]);
@@ -56,17 +58,18 @@ function PersonalModelSettings({ data, onRefresh, presentation='desktop' }: Mode
     try { const result = await api<ModelConnectionList>('/model-connections'); setConnections(result.connections); setDefaultId(result.defaultConnectionId); await onRefresh(); }
     catch (err) { setError(t(`更改已保存，但刷新未完成：${messageOf(err)}`, `Changes were saved, but refresh failed: ${messageOf(err)}`)); }
   }
-  async function saved(connection: ModelConnection) { setError(''); setConnections(current => current.some(item => item.id === connection.id) ? current.map(item => item.id === connection.id ? connection : item) : [...current, connection]); await refresh(); }
+  async function saved(connection: ModelConnection) { setError(''); setTestErrors(current => ({ ...current, [connection.id]: '' })); setConnections(current => current.some(item => item.id === connection.id) ? current.map(item => item.id === connection.id ? connection : item) : [...current, connection]); await refresh(); }
   async function action(connection: ModelConnection, kind: 'test' | 'default') {
     if (busy) return;
     const invalidModel = kind === 'test' ? modelIssueMessage(connection.provider, connection.model) : '';
-    if (invalidModel) { setError(invalidModel); return; }
+    if (invalidModel) { setTestErrors(current => ({ ...current, [connection.id]: invalidModel })); return; }
     setBusy(`${connection.id}:${kind}`); setError(''); setNotice('');
+    if (kind === 'test') setTestErrors(current => ({ ...current, [connection.id]: '' }));
     try {
       if (kind === 'default') { const result = await write<{ connection: ModelConnection; defaultConnectionId: string }>(`/model-connections/${connection.id}/default`); setDefaultId(result.defaultConnectionId); setNotice(t(`已将“${connection.name}”设为默认连接。`, `“${connection.name}” is now the default connection.`)); }
-      else { const result = await write<TestResult>(`/model-connections/${connection.id}/test`); setConnections(current => current.map(item => item.id === connection.id ? { ...item, lastTest: result } : item)); if (result.ok) setNotice(t(`“${connection.name}”的文本测试通过。`, `The text test passed for “${connection.name}”.`)); else setError(result.message); }
+      else { const result = await write<TestResult>(`/model-connections/${connection.id}/test`); setConnections(current => current.map(item => item.id === connection.id ? { ...item, lastTest: result } : item)); }
       await refresh();
-    } catch (err) { setError(messageOf(err)); }
+    } catch (err) { if (kind === 'test') setTestErrors(current => ({ ...current, [connection.id]: messageOf(err) })); else setError(messageOf(err)); }
     finally { setBusy(''); }
   }
   function edit(connection?: ModelConnection) { setError(''); setNotice(''); setOnboarding({ connection, key: ++sequence.current }); }
@@ -86,12 +89,17 @@ function PersonalModelSettings({ data, onRefresh, presentation='desktop' }: Mode
     <div className="model-feedback" aria-live="polite"><ErrorNotice error={error} />{notice && <p className="model-saved"><Check />{notice}</p>}</div>
     <div className="model-connections">{connections.map(connection => {
       const inUse=connection.id===defaultId||data.agents.some(agent=>agent.connectionId===connection.id)||data.tasks.some(task=>task.connectionId===connection.id);
-      const status=modelIdIssue(connection.provider,connection.model)?t('请检查模型 ID','Check model ID'):!connection.hasKey?t('待填写密钥','Key required'):!connection.lastTest?t('尚未测试','Not tested'):connection.lastTest.ok?t('文本测试通过','Text test passed'):t('测试未通过','Test failed');
+      const testing = busy === `${connection.id}:test`;
+      const testError = testErrors[connection.id] || (!connection.lastTest?.ok ? connection.lastTest?.message : '') || '';
+      const valid = !modelIdIssue(connection.provider, connection.model) && connection.hasKey;
+      const passed = valid && !testError && !!connection.lastTest?.ok;
+      const status=testing?t('正在测试','Testing'):modelIdIssue(connection.provider,connection.model)?t('请检查模型 ID','Check model ID'):!connection.hasKey?t('待填写密钥','Key required'):testError?t('测试未通过','Test failed'):!connection.lastTest?t('尚未测试','Not tested'):passed?t('文本测试通过','Text test passed'):t('测试未通过','Test failed');
       return <article key={connection.id} className="model-connection">
         <span className="model-connection-mark"><ProviderMark provider={connection.provider} size={25}/></span>
         <div className="model-connection-copy"><div className="model-connection-name"><Button color="secondary" variant="ghost" size="sm" disabled={!!busy} onClick={()=>edit(connection)} aria-label={t(`编辑连接 ${connection.name}`,`Edit connection ${connection.name}`)}><h3>{connection.name}</h3></Button>{connection.id===defaultId&&<Badge color="secondary" variant="soft" size="sm">{t('默认','Default')}</Badge>}</div><p className="model-connection-model" title={`${connection.model} (${protocolName(connection.api)})`}>{connection.model}</p></div>
-        <span className={`model-connection-state ${!connection.hasKey?'needs-key':connection.lastTest?.ok?'is-passed':''}`} title={connection.lastTest?`${status} (${when(connection.lastTest.at)})`:status}><i aria-hidden="true"/>{status}</span>
+        <div className="model-connection-state" role="status" aria-live="polite" title={connection.lastTest ? `${status} (${when(connection.lastTest.at)})` : status}><Badge color={testing ? 'secondary' : passed ? 'success' : testError ? 'danger' : 'secondary'} variant="soft" size="sm">{!testing && (passed ? <CheckCircle /> : testError ? <Warning /> : null)}{status}</Badge></div>
         <div className="model-connection-actions"><Button color="secondary" variant="ghost" size="sm" disabled={!!busy||!connection.hasKey} loading={busy===`${connection.id}:test`} onClick={()=>void action(connection,'test')}>{t('测试','Test')}</Button><Menu><Menu.Trigger><Button color="secondary" variant="ghost" size="sm" uniform disabled={!!busy} aria-label={t(`管理连接 ${connection.name}`,`Manage connection ${connection.name}`)}><DotsHorizontalMoreMenu/></Button></Menu.Trigger><Menu.Content align="end" width={210} minWidth="auto"><Menu.Item onSelect={()=>edit(connection)}><Edit/>{t('编辑连接','Edit connection')}</Menu.Item><Menu.Item disabled={connection.id===defaultId} onSelect={()=>void action(connection,'default')}><Check/>{t('设为默认','Set as default')}</Menu.Item><Menu.Separator/><Menu.Item disabled={!connection.hasKey} onSelect={()=>{setError('');setManagement({connection,kind:'key'});}}><ApiKey/>{t('移除密钥','Remove key')}</Menu.Item><Menu.Item disabled={inUse} onSelect={()=>{setError('');setManagement({connection,kind:'delete'});}}><Trash/>{t('删除连接','Delete connection')}</Menu.Item></Menu.Content></Menu></div>
+        {testError && !testing && <p className="model-connection-test-error" role="alert">{testError}</p>}
       </article>;
     })}</div>
     {!connections.length && <div className="model-empty"><ApiKey /><h3>{t("连接你常用的模型", "Connect your models")}</h3><p>{t("添加连接后，可设为全局默认，也可分配给单独的助理。", "Use a connection as your global default or assign it to an assistant.")}</p><Button color="primary" onClick={() => edit()}>{t("添加第一个连接", "Add your first connection")}</Button></div>}

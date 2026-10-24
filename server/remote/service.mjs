@@ -4,7 +4,7 @@ import { HttpError } from '../http-error.mjs';
 import { getAttachment } from '../attachments.mjs';
 import { validateConnectionModel } from '../connections.mjs';
 import { assertTaskExecution } from '../execution-policy.mjs';
-import { PROTOCOL, RUN_STATUSES, stamp, digest, clean, fail, identifier, plainObject, boundedString, relativeFile, inputManifest, modelSettings, MAX_FILE_BYTES } from './common.mjs';
+import { PROTOCOL, RUN_STATUSES, terminal, stamp, digest, clean, fail, identifier, plainObject, boundedString, relativeFile, inputManifest, modelSettings, MAX_FILE_BYTES } from './common.mjs';
 import { SshRemoteTransport, runtimePackage, sshArgs } from './transport.mjs';
 import { taskEventActivity } from '../task-event-activity.mjs';
 
@@ -47,7 +47,31 @@ export class RemoteComputerService {
   }
   mutable(){if(this.closed)throw new HttpError(503,'当前空间已关闭。','remote_space_closed');if(this.executionPolicy==='showcase')throw new HttpError(403,'示例空间不能连接远端电脑或运行任务。请切换到真实空间。','showcase_read_only');}
   close(){this.closed=true;} // Closing an observer must never send remote cancel.
-  list(){return {computers:this.store.list(computerCollection),connections:this.store.list('modelConnections').map(connection=>({...this.store.publicConnection(connection),revision:connection.revision??1})),readOnly:this.executionPolicy==='showcase',protocol:PROTOCOL};}
+  list(){
+    const version=runtimePackage().version;
+    const computers=this.store.list(computerCollection).map(computer=>computer.status==='ready'&&computer.runtime?.version!==version?{...computer,status:'saved',lastError:{code:'remote_runtime_changed',message:'本机运行组件已有更新，请重新准备远端运行组件。'}}:computer);
+    return {computers:computers.filter(computer=>!computer.archivedAt),archivedComputers:computers.filter(computer=>computer.archivedAt),connections:this.store.list('modelConnections').map(connection=>({...this.store.publicConnection(connection),revision:connection.revision??1})),readOnly:this.executionPolicy==='showcase',protocol:PROTOCOL};
+  }
+  activeComputer(computerId){const computer=this.store.require(computerCollection,computerId);if(computer.archivedAt)throw fail('这台电脑已移除，请先恢复连接记录并重新检查。','remote_computer_archived',409);return computer;}
+  archiveComputer(computerId,body){
+    this.mutable();plainObject(body,['expectedRevision'],'移除电脑');const computer=this.store.require(computerCollection,computerId);
+    if(body.expectedRevision!==computer.revision)throw fail('电脑配置已变化，请刷新后再移除。','remote_computer_changed',409);
+    if(computer.archivedAt)return {computer};
+    const runs=this.store.list(runCollection).filter(run=>run.computerId===computerId);
+    if(runs.some(run=>!terminal(run.status)||run.dispatch!=='submitted'||run.observation?.status!=='connected'||run.executorUnconfirmed||run.approvals?.length||this.pending.has(run.id)||this.observing.has(run.id)))throw fail('这台电脑仍有运行中或状态未确认的任务，请先停止任务并重新核对结果。','remote_computer_busy',409);
+    // Archive only this local connection record. Run bindings and remote files
+    // remain intact so historical tasks can still be inspected and downloaded.
+    const now=stamp(),next={...computer,archivedAt:now,updatedAt:now,revision:computer.revision+1};
+    this.store.put(computerCollection,next);return {computer:next};
+  }
+  restoreComputer(computerId,body){
+    this.mutable();plainObject(body,['expectedRevision'],'恢复电脑');const computer=this.store.require(computerCollection,computerId);
+    if(body.expectedRevision!==computer.revision)throw fail('电脑配置已变化，请刷新后再恢复。','remote_computer_changed',409);
+    if(!computer.archivedAt)return {computer};
+    const {archivedAt,probe,runtime,lastError,...saved}=computer;
+    const next={...saved,status:'saved',revision:computer.revision+1,updatedAt:stamp()};
+    this.store.put(computerCollection,next);return {computer:next};
+  }
   getRun(runId){return publicRun(this.store.require(runCollection,identifier(runId)));}
   runSnapshot(runId){return this.getRun(runId);}
   writeRun(run){this.store.put(runCollection,run);if(this.onRunChanged)try{this.onRunChanged(publicRun(run));}catch(error){this.lastObserverError=errorValue(error);console.warn('[remote-observer]',/^[a-zA-Z0-9_-]{1,100}$/.test(error?.code??'')?error.code:'observer_failed');}return run;}
@@ -60,6 +84,7 @@ export class RemoteComputerService {
   runs(computerId){this.store.require(computerCollection,computerId);return {runs:this.store.list(runCollection).filter(run=>run.computerId===computerId).map(publicRun).reverse()};}
   saveComputer(body,existing){
     this.mutable();plainObject(body,['name','host','user','port','workspaceRoot',...(existing?['expectedRevision']:[])],'远端电脑');
+    if(existing?.archivedAt)this.activeComputer(existing.id);
     if(existing&&body.expectedRevision!==existing.revision)throw fail('电脑配置已变化，请刷新后再修改。','remote_computer_changed',409);
     const merged={...existing,...body},host=boundedString(merged.host,253,'主机'),name=boundedString(merged.name,100,'电脑名称'),user=merged.user?boundedString(merged.user,64,'远端用户名'):undefined,port=merged.port??22;
     sshArgs({host,user,port},'');
@@ -68,18 +93,29 @@ export class RemoteComputerService {
     this.store.put(computerCollection,computer);return {computer};
   }
   async probe(computerId,body={}){
-    this.mutable();plainObject(body,[]);const computer=this.store.require(computerCollection,computerId);
+    this.mutable();plainObject(body,[]);const computer=this.activeComputer(computerId);
     try{
       const probe=validateProbe(await this.transport.probe(computer));
       if(this.closed)return {computer};
+      const changed=computer.probe&&['workspaceRoot','nodePath','codexPath'].some(key=>computer.probe[key]!==probe[key]);
+      let runtimeReady=false;
+      if(computer.runtime&&!changed){
+        const pkg=runtimePackage();
+        if(computer.runtime.version===pkg.version&&computer.runtime.protocol===PROTOCOL){
+          const checked=await this.transport.verifyRuntime({...computer,probe},pkg);
+          if(checked?.protocol!==PROTOCOL||checked.version!==pkg.version||typeof checked.valid!=='boolean')throw protocolError();
+          runtimeReady=checked.valid;
+        }
+      }
+      if(this.closed)return {computer};
       const current=this.store.require(computerCollection,computerId);if(current.revision!==computer.revision)throw fail('探测期间电脑配置已变化，请重新检查。','remote_computer_changed',409);
-      const changed=current.probe&&['workspaceRoot','nodePath','codexPath'].some(key=>current.probe[key]!==probe[key]);
-      const next={...current,probe,revision:current.revision+(changed?1:0),status:current.runtime&&!changed?'ready':'saved',updatedAt:stamp()};if(changed)delete next.runtime;delete next.lastError;this.store.put(computerCollection,next);return {computer:next};
+      const invalidated=changed||computer.runtime&&!runtimeReady;
+      const next={...current,probe,revision:current.revision+(invalidated?1:0),status:runtimeReady?'ready':'saved',updatedAt:stamp()};if(!runtimeReady)delete next.runtime;delete next.lastError;this.store.put(computerCollection,next);return {computer:next};
     }catch(error){if(!this.closed){const current=this.store.require(computerCollection,computerId);if(current.revision===computer.revision)this.store.put(computerCollection,{...current,status:'unavailable',lastError:errorValue(error),updatedAt:stamp()});}throw error;}
   }
   async prepare(computerId,body){
     this.mutable();plainObject(body,['installRuntime']);if(body.installRuntime!==true)throw fail('请明确确认在这台电脑安装运行组件。','remote_install_consent');
-    const computer=this.store.require(computerCollection,computerId);if(!computer.probe)throw fail('请先检查远端电脑的运行条件。','remote_not_probed',409);
+    const computer=this.activeComputer(computerId);if(!computer.probe)throw fail('请先检查远端电脑的运行条件。','remote_not_probed',409);
     const pkg=runtimePackage(),runtime=validateRuntime(await this.transport.prepare(computer,pkg),pkg);
     if(this.closed)return {computer};
     const current=this.store.require(computerCollection,computerId);if(current.revision!==computer.revision)throw fail('准备期间电脑配置已变化，请重新检查。','remote_computer_changed',409);
@@ -88,7 +124,7 @@ export class RemoteComputerService {
   start(computerId,body){
     this.mutable();plainObject(body,['requestId','prompt','modelConnectionId','modelRevision','computerRevision','credentialConsent','taskId','files','durationMs'],'远端任务');
     const requestId=identifier(body.requestId),prompt=boundedString(body.prompt,50000,'任务内容');
-    const computer=this.store.require(computerCollection,computerId),connection=this.store.connection(identifier(body.modelConnectionId));
+    const computer=this.activeComputer(computerId),connection=this.store.connection(identifier(body.modelConnectionId));
     if(!revision(body.computerRevision)||!revision(body.modelRevision)||body.computerRevision!==computer.revision||body.modelRevision!==(connection.revision??1))throw fail('电脑或模型配置已变化，请重新核对后确认本次远端使用。','remote_consent_changed',409);
     if(body.credentialConsent!==true)throw fail('请确认将所选模型凭据用于这次远端任务。','remote_credential_consent');
     if(computer.status!=='ready'||!computer.probe||!computer.runtime)throw fail('请先检查并准备远端运行组件。','remote_not_prepared',409);
@@ -166,6 +202,8 @@ export class RemoteComputerService {
     const [computerId,action,runId,operation]=parts;
     if(!computerId){if(method==='GET')return this.list();if(method==='POST')return this.saveComputer(body);}
     if(computerId){this.store.require(computerCollection,identifier(computerId));if(!action&&method==='PUT')return this.saveComputer(body,this.store.require(computerCollection,computerId));
+      if(!action&&method==='DELETE')return this.archiveComputer(computerId,body);
+      if(action==='restore'&&method==='POST')return this.restoreComputer(computerId,body);
       if(action==='probe'&&method==='POST')return this.probe(computerId,body);
       if(action==='prepare'&&method==='POST')return this.prepare(computerId,body);
       if(action==='runs'){

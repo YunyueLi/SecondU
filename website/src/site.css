@@ -32,8 +32,8 @@
 .site-footer-cols{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr));gap:30px!important;font-size:14px!important;color:var(--site-ink)!important}
 .site-footer-cols>div{display:flex;flex-direction:column;align-items:flex-start;gap:5px}
 .site-footer-cols h3{font-size:14px;font-weight:400;color:var(--site-muted);margin:0 0 9px}
-.site-footer-cols a{display:flex;align-items:center;min-height:30px;line-height:1.5}
-.site-footer-cols a:hover{color:white;text-decoration:underline;text-underline-offset:4px}
+.site-footer-cols :is(a,button){display:flex;align-items:center;min-height:30px;line-height:1.5}
+.site-footer-cols :is(a,button):hover{color:white;text-decoration:underline;text-underline-offset:4px}
 .site-footer-bar{margin-top:46px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px;font:12px/1.7 var(--site-font);color:var(--site-muted)}
 .site-footer-bar p{font:inherit;text-align:left;flex:1;margin:0}
 .site-footer-preferences{display:flex;align-items:center;gap:24px}
@@ -50,7 +50,7 @@
 .site-choice-label{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .site-choice-icon:empty{display:none}.site-choice-icon{display:inline-flex;flex:none}.site-choice svg{width:15px;height:15px;flex:none}
 .site-choice-menu{font:13px/1.5 var(--site-font);color:var(--site-ink)}.site-choice-option{display:flex;align-items:center;gap:10px;min-height:24px}.site-choice-option svg{display:block;width:16px;height:16px;color:var(--site-muted)}.site-footer-preferences{gap:8px}
-.site-footer .site-choice{color:var(--site-ink);background:var(--site-raised)}
+.site-ending .site-choice{color:var(--site-ink);background:var(--site-raised)}
 .cap-display label>.site-choice{max-width:62%;min-width:0}.cap-display label>[data-size]{max-width:62%}
 :where(.site-development,.cap-navigation,.future-direction-list) button:hover:not(:disabled){color:var(--site-ink)}
 .site-pill:active,.future-primary:active:not(:disabled){transform:translateY(1px)}
@@ -112,3 +112,56 @@ html:lang(en) .site-privacy p,html:lang(en) .site-privacy dd,html:lang(en) .site
  .site-hero.site-hero-portrait .site-hero-object{margin-top:12px}
  html:lang(en) .site-hero.site-hero-portrait .site-hero-copy h1>span{display:block;text-wrap:balance}
 }
+
+/* The closing invitation and footer each have one clear visual hierarchy. */
+.site-open{display:block;padding-block:72px;text-align:center}
+.site-open>div{max-width:760px;margin-inline:auto}
+.site-open h2{font-size:clamp(30px,3vw,44px);line-height:1.2;margin:0 0 18px}
+.site-open p{max-width:620px;margin:0 auto;color:var(--site-muted);font-size:16px}
+.site-open-actions{justify-content:center;margin:26px 0 18px}
+.site-open .site-install-guide{font-size:13px;color:var(--site-muted)}
+.site-footer{--site-bg:#111;--site-ink:#eee;--site-muted:#999;--site-line:#333;background:#111;font-family:var(--site-font)}
+.site-footer-in{padding-top:12px;border-top:0}
+.site-footer-social{display:flex;align-items:center;gap:12px;margin-top:28px}
+.site-footer-social>a{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:#2d2d2d;color:#f5f5f5;transition:background .15s}
+.site-footer-social>a:hover{background:#444}
+.site-footer-social svg{width:21px;height:21px}
+.site-ending .site-footer-preferences{display:flex;align-items:center;gap:28px;margin-top:28px}
+.site-ending .site-footer-preferences .site-choice{background:transparent;border:0;border-radius:6px;padding:8px 0;font-size:15px;min-height:40px;color:#b7b7b7;gap:9px}
+.site-ending .site-footer-preferences .site-choice:hover,.site-ending .site-footer-preferences .site-choice[data-state=open]{background:transparent;color:#fff}
+.site-ending .site-choice-label{font-weight:400}
+.site-ending .site-choice>svg{width:14px;height:14px}
+.site-ending .site-choice-icon svg{width:17px;height:17px}
+.site-footer-cols{font-size:15px!important;color:#999!important;gap:48px!important}
+.site-footer-cols>div{gap:9px}
+.site-footer-cols h3{font-size:15px;font-weight:500;line-height:1.5;color:#eee;margin:0 0 9px}
+.site-footer-cols :is(a,button){padding:0;border:0;background:transparent;color:inherit;font:inherit;line-height:1.6;min-height:28px;text-align:left}
+.site-footer-cols :is(a,button):hover{color:#eee;text-decoration:none}
+.site-footer-bar{margin-top:64px;padding-top:24px;border-top:1px solid #292929;color:#858585}
+@media(max-width:720px){.site-open{padding-block:52px}.site-open p{font-size:14px}.site-footer-in{padding-top:8px}.site-ending .site-footer-preferences{gap:24px}.site-footer-cols{gap:32px 24px!important;font-size:14px!important}.site-footer-cols h3{font-size:14px}.site-footer-bar{margin-top:42px}}
+
+/* Website choices keep the SDK radio semantics; the indicator is a light check. */
+[role=menu]:has(>.site-choice-menu){--menu-radius:12px;--menu-gutter:8px;--menu-item-padding:8px;--menu-item-gap:8px;--menu-font-size:14px;--menu-line-height:20px;border-radius:12px;box-shadow:none}
+.site-choice-menu{font:14px/20px var(--site-font)}
+.site-choice-item>div>div:first-child{display:none}
+.site-choice-item .site-choice-option{display:flex;align-items:center;width:100%;min-height:20px;gap:8px}
+.site-choice-item .site-choice-option>span:nth-last-child(2){flex:1;white-space:nowrap}
+.site-choice-item .site-choice-check{width:16px;height:16px;flex:none;margin-left:auto;color:#0088ff}
+.site-choice-item .site-choice-option svg{width:16px;height:16px}
+[role=menu]:has(>.site-choice-menu[data-surface=dark]){--color-text:#fff;--color-surface-elevated:#1f1f1f;--menu-item-background-color:#ffffff0d;background:#1f1f1f;color:#fff;color-scheme:dark}
+.site-choice-menu[data-surface=dark]{color:#fff;--site-ink:#fff;--site-muted:#d4d4d4}
+.site-choice[data-state=open] .site-choice-chevron{transform:rotate(180deg)}
+.site-choice-chevron{transition:transform .15s}
+.site-ending .site-footer-preferences{gap:16px;margin-left:-10px}
+.site-ending .site-footer-preferences .site-choice{--button-background-color:#ffffff0d;--button-background-color-active:#ffffff14;--button-text-color:#c7c7c7;--button-text-color-hover:#fff;--button-ring-color:#8c83ff;--button-gap:8px;--button-icon-size:16px;min-height:32px;height:32px;border-radius:12px;padding:6px 10px;font-size:14px;line-height:20px;color:#c7c7c7}
+.site-ending .site-choice-icon svg{width:16px;height:16px}
+.site-ending .site-choice-chevron{width:16px;height:16px}
+.site-invitation{--site-bg:#111;background:#111}
+.site-invitation .site-open{display:block;padding-top:64px;padding-bottom:68px;text-align:left}
+.site-invitation .site-open>div{max-width:760px;margin:0}
+.site-invitation .site-open h2{font-size:clamp(32px,4vw,48px);line-height:1.2;margin:0 0 22px}
+.site-invitation .site-open p{max-width:620px;font-size:16px;margin:0;color:var(--site-muted)}
+.site-invitation .site-open-actions{justify-content:flex-start;margin:26px 0 18px}
+@media(max-width:720px){.site-invitation .site-open{padding-top:48px;padding-bottom:52px}.site-invitation .site-open p{font-size:14px}.site-choice-menu .site-choice-option{min-height:20px}}
+
+.site-contact-moon{display:block;width:27px;height:27px;flex:none;border-radius:50%;background-color:#ddd;background-position:26% 50%;background-size:200% 100%;background-repeat:no-repeat;box-shadow:inset -3px -1px 5px #0004}

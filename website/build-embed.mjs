@@ -5,6 +5,7 @@ import path from 'node:path';
 import { mkdir, cp, readFile, readdir, lstat } from 'node:fs/promises';
 import { exportCanonicalExamples } from './export-examples.mjs';
 import { portableMemoryDomain, portableMemoryImport } from './browser-memory.mjs';
+import { portableFinanceDates } from './browser-finance.mjs';
 import { createCanonicalExampleModule, partitionCanonicalExampleData } from './example-module.mjs';
 
 /** Build the real product App with a website-only in-memory adapter. */
@@ -13,6 +14,10 @@ export async function buildEmbeddedProduct({ root, output, base, artwork }) {
   const productRoot = path.join(root, 'src');
   const apiSource = path.join(productRoot, 'api');
   const apiAdapter = path.join(directory, 'src/embed/api.ts');
+  const financeApiSource = path.join(productRoot, 'finance/api');
+  const financeApiAdapter = path.join(directory, 'src/embed/finance-api.ts');
+  const financeArithmetic = path.join(root, 'server/finance/arithmetic.mjs');
+  const financeDates = portableFinanceDates(await readFile(path.join(root, 'server/finance/journal.mjs'), 'utf8'), financeArithmetic);
   const isolatedStorage = path.join(directory, 'src/embed/storage.ts');
   const serverStore = path.join(root, 'server/store.mjs');
   const memoryModule = path.join(root, 'server/memory-import.mjs');
@@ -33,7 +38,7 @@ export async function buildEmbeddedProduct({ root, output, base, artwork }) {
     if (typeof brand[field] !== 'string' || !brand[field].startsWith('/brand/') || !assets.includes(brand[field].slice(1))) throw new Error(`Embedded brand asset is missing from the reviewed allowlist: ${field}`);
   }
   for (const file of assets) {
-    if (typeof file !== 'string' || !/^(art|brand|fonts|icons)\//.test(file) || file.split('/').some(part => part === '..' || part === '.')) throw new Error('Invalid embedded product public asset.');
+    if (typeof file !== 'string' || !/^(art|brand|fonts|icons|finance\/brands)\//.test(file) || file.split('/').some(part => part === '..' || part === '.')) throw new Error('Invalid embedded product public asset.');
     const source = path.join(root, 'public', file);
     if (!(await lstat(source)).isFile()) throw new Error('Embedded public assets must be regular files.');
     if (artwork?.urlFor(file)) continue;
@@ -48,9 +53,11 @@ export async function buildEmbeddedProduct({ root, output, base, artwork }) {
       name: 'website-product-isolation', enforce: 'pre',
       resolveId(source, importer) {
         const image = artwork?.resolveImport(source, importer); if (image) return image;
+        if (importer?.split('?')[0].startsWith(path.join(root, 'server/finance/') ) && source === './journal.mjs') return '\0secondu-finance-dates';
+        if (importer && source.startsWith('.') && path.resolve(path.dirname(importer.split('?')[0]), source).replace(/\.tsx?$/, '') === financeApiSource) return financeApiAdapter;
         if (source === 'virtual:secondu-canonical-examples') return '\0secondu-canonical-examples';
         if (source === 'virtual:secondu-development-examples') return '\0secondu-development-examples';
-        if (importer?.split('?')[0] === memoryModule && source === 'node:crypto') return path.join(directory, 'src/embed/runtime-hash.mjs');
+        if ([memoryModule, financeArithmetic].includes(importer?.split('?')[0]) && source === 'node:crypto') return path.join(directory, 'src/embed/runtime-hash.mjs');
         if (importer?.split('?')[0] === memoryModule && source === './domain.mjs') return '\0secondu-memory-domain';
         if (importer && portableModules.has(importer.split('?')[0]) && path.resolve(path.dirname(importer), source) === serverStore) return path.join(directory, 'src/embed/runtime-store.mjs');
         if (importer && source.startsWith('.') && path.resolve(path.dirname(importer.split('?')[0]), source).replace(/\.tsx?$/, '') === apiSource) return apiAdapter;
@@ -60,11 +67,17 @@ export async function buildEmbeddedProduct({ root, output, base, artwork }) {
         if (id === '\0secondu-canonical-examples') return createCanonicalExampleModule(partitionedExamples.initial);
         if (id === '\0secondu-development-examples') return createCanonicalExampleModule(partitionedExamples.development);
         if (id === '\0secondu-memory-domain') return memoryDomain;
+        if (id === '\0secondu-finance-dates') return financeDates;
       },
       transform(code, id) {
         const file = id.split('?')[0];
         if (/\.(?:m?js|tsx?)$/.test(file)) code = artwork?.rewriteSource(code, { avatar: file === path.join(productRoot, 'UserAvatar.tsx') }) ?? code;
         if (file === memoryModule) return portableMemoryImport(code);
+        if (file === path.join(productRoot, 'finance/model.ts')) code = code.replace("export const today = () => new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Shanghai' }).format(new Date());", "export const today = () => '2026-10-25';");
+        if (file === path.join(productRoot, 'finance/PositionEditor.tsx')) {
+          code = `import {financeFetch as __website_financeFetch} from ${JSON.stringify(financeApiAdapter)};\n` + code;
+          code = code.replaceAll('fetch(financeUrl(', '__website_financeFetch(financeUrl(');
+        }
         if (file === path.join(productRoot, 'cognition/PersonalOverview.tsx')) code = code.replace('action={!data.profile.demo&&<MemoryImportEntry', 'action={<MemoryImportEntry');
         if (file === path.join(productRoot, 'cognition/MemoryImport.tsx')) {
           code = `import {memoryExample as __website_memoryExample} from ${JSON.stringify(path.join(directory, 'src/embed/memory-example.ts'))};\nimport {downloadExampleFile as __website_download} from ${JSON.stringify(apiAdapter)};\n` + code;
@@ -82,7 +95,7 @@ export async function buildEmbeddedProduct({ root, output, base, artwork }) {
           brandRewritten = true;
           return { code: JSON.stringify(config), map: null };
         }
-        if (/\.css$/.test(file)) return (artwork?.rewriteCss(code) ?? code).replaceAll('https://cdn.openai.com/common/fonts/katex/', `${embeddedBase}fonts/`).replace(/url\((['"]?)\/(art|brand|fonts|icons)\//g, `url($1${embeddedBase}$2/`);
+        if (/\.css$/.test(file)) return (artwork?.rewriteCss(code) ?? code).replaceAll('https://cdn.openai.com/common/fonts/katex/', `${embeddedBase}fonts/`).replace(/url\((['"]?)\/(art|brand|fonts|icons|finance\/brands)\//g, `url($1${embeddedBase}$2/`);
         if (!file.startsWith(`${productRoot}${path.sep}`) && !file.startsWith(path.join(root, 'shared') + path.sep)) return;
         if (!/\.(?:m?js|tsx?)$/.test(file)) return;
         const source = ts.createSourceFile(file, code, ts.ScriptTarget.Latest, true, file.endsWith('.tsx') ? ts.ScriptKind.TSX : ts.ScriptKind.TS);
@@ -92,11 +105,11 @@ export async function buildEmbeddedProduct({ root, output, base, artwork }) {
           // dynamic filenames, so rewriting only quoted literals misses them.
           if (ts.isStringLiteralLike(node) || ts.isTemplateHead(node)) {
             const start = node.getStart(source) + 1;
-            if (/^\/(art|brand|fonts|icons)\//.test(node.text) && code[start] === '/') edits.push({ start, end: start + 1, text: embeddedBase });
+            if (/^\/(art|brand|fonts|icons|finance\/brands)\//.test(node.text) && code[start] === '/') edits.push({ start, end: start + 1, text: embeddedBase });
             // Inline style templates have url('/icons/...') before their first
             // interpolation. Rewrite just that URL, never arbitrary prose.
             const raw = node.getText(source);
-            for (const match of raw.matchAll(/url\((?:\\?['"])?(\/(?:art|brand|fonts|icons)\/)/g)) {
+            for (const match of raw.matchAll(/url\((?:\\?['"])?(\/(?:art|brand|fonts|icons|finance\/brands)\/)/g)) {
               const slash = node.getStart(source) + match.index + match[0].length - match[1].length;
               edits.push({ start: slash, end: slash + 1, text: embeddedBase });
             }
@@ -129,7 +142,7 @@ export async function buildEmbeddedProduct({ root, output, base, artwork }) {
         for (const chunk of Object.values(bundle)) if (chunk.type === 'chunk' && chunk.isEntry) collect(chunk.fileName);
         const developmentChunk = Object.values(bundle).find(chunk => chunk.type === 'chunk' && Object.hasOwn(chunk.modules, '\0secondu-development-examples'));
         if (!developmentChunk || initialChunks.has(developmentChunk.fileName)) throw new Error('Development records must remain outside the initial product module graph.');
-        for (const asset of Object.values(bundle)) if (asset.type === 'asset' && asset.fileName.endsWith('.css') && typeof asset.source === 'string') asset.source = (artwork?.rewriteCss(asset.source) ?? asset.source).replaceAll('https://cdn.openai.com/common/fonts/katex/', `${embeddedBase}fonts/`).replace(/url\((['"]?)\/(art|brand|fonts|icons)\//g, `url($1${embeddedBase}$2/`);
+        for (const asset of Object.values(bundle)) if (asset.type === 'asset' && asset.fileName.endsWith('.css') && typeof asset.source === 'string') asset.source = (artwork?.rewriteCss(asset.source) ?? asset.source).replaceAll('https://cdn.openai.com/common/fonts/katex/', `${embeddedBase}fonts/`).replace(/url\((['"]?)\/(art|brand|fonts|icons|finance\/brands)\//g, `url($1${embeddedBase}$2/`);
       },
     }, tailwindcss()],
     build: { outDir, emptyOutDir: false, sourcemap: false, chunkSizeWarningLimit: 2000, rollupOptions: { input: path.join(directory, 'embed.html') } },
@@ -143,7 +156,8 @@ export async function buildEmbeddedProduct({ root, output, base, artwork }) {
   for (const name of files.filter(name => name.endsWith('.js'))) {
     const code = await readFile(path.join(outDir, 'assets', name), 'utf8');
     if (brandFields.some(field => code.includes(JSON.stringify(brand[field])) || code.includes(`'${brand[field]}'`))) throw new Error('An unprefixed JSON brand asset entered the embedded product bundle.');
-    if (/['"`]\/(?:art|brand|fonts|icons)\//.test(code)) throw new Error('An unprefixed public asset entered the embedded product bundle.');
+    if (/['"`]\/(?:art|brand|fonts|icons|finance\/brands)\//.test(code)) throw new Error('An unprefixed public asset entered the embedded product bundle.');
+    if (code.includes('财务服务返回了无法读取的结果，请重试。')) throw new Error('The production finance API entered the website product bundle.');
     if (code.includes('The local service returned an unreadable response.')) throw new Error('The production API implementation entered the website product bundle.');
   }
 }

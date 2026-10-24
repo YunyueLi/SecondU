@@ -165,3 +165,63 @@ test('material presentation uses its own document root and clamps scrolling with
     assert.deepEqual(positions, [{target: 'root', top: 900, behavior: 'smooth'}]);
   } finally { dispose(); }
 });
+
+for (const mode of ['decision', 'specialists', 'sources', 'proactive']) {
+  test(`${mode} keeps API writes blocked and reports a missing real interface`, async () => {
+    const {view, control, timers, posts, network} = fixture(`/embed.html?space=demo-cn-v1&presentation=${mode}&parentOrigin=http%3A%2F%2F127.0.0.1%3A58621`);
+    view.document.querySelectorAll = () => [];
+    const dispose = installPresentation(view);
+    try {
+      assert.equal(posts.at(-1).data.mode, mode);
+      assert.equal(posts.at(-1).data.reason, 'ready');
+      assert.equal((await view.fetch('/api/spaces/demo-cn-v1/tasks', {method: 'POST'})).status, 403);
+      assert.equal(network.length, 0);
+      control({visible: true, playing: true});
+      for (let retry = 0; retry < 39; retry++) {
+        const callback = [...timers.values()][0];
+        assert.equal(typeof callback, 'function');
+        callback();
+      }
+      assert.equal(timers.size, 0);
+      assert.equal(posts.at(-1).data.playing, false);
+      assert.equal(posts.at(-1).data.reason, '当前步骤暂不可用');
+    } finally { dispose(); }
+  });
+}
+
+test('proactive examples preserve real connector state and remain isolated from ordinary bootstrap reads', async () => {
+  const base = {tasks: [{id: 'existing-task'}], sources: [{id: 'existing-source'}], connectors: []};
+  const {view, network} = fixture('/embed.html?space=demo-cn-v1&presentation=proactive');
+  view.fetch = async (...args) => { network.push(args); return new Response(JSON.stringify(base)); };
+  const dispose = installPresentation(view);
+  try {
+    const result = await (await view.fetch('/api/spaces/demo-cn-v1/bootstrap')).json();
+    assert.deepEqual(result.connectors, []);
+    assert.equal(result.tasks.length, 2);
+    assert.equal(result.tasks[1].mode, 'demo');
+    assert.match(result.tasks[1].messages[0].content, /预置演示资料/);
+    assert.match(result.sources[1].text, /不来自已连接的账号/);
+    assert.deepEqual(await (await view.fetch('/api/spaces/personal/bootstrap')).json(), base);
+    assert.deepEqual(await (await view.fetch('https://example.test/api/spaces/demo-cn-v1/bootstrap')).json(), base);
+    assert.equal(base.tasks.length, 1);
+    assert.equal((await view.fetch('/api/spaces/demo-cn-v1/connectors', {method: 'POST'})).status, 403);
+    assert.equal(network.length, 3);
+  } finally { dispose(); }
+  assert.deepEqual(await (await view.fetch('/api/spaces/demo-cn-v1/bootstrap')).json(), base);
+});
+
+test('proactive scene navigation accepts only trusted parent messages and known read-only routes', () => {
+  const {view, control, posts} = fixture('/embed.html?space=demo-cn-v1&presentation=proactive&parentOrigin=http%3A%2F%2F127.0.0.1%3A58621#settings/connectors');
+  const dispose = installPresentation(view);
+  try {
+    control({scene: 'reminder'}, 'https://example.test');
+    assert.equal(view.location.hash, '#settings/connectors');
+    control({scene: 'personal'});
+    assert.equal(view.location.hash, '#settings/connectors');
+    control({scene: 'reminder'});
+    assert.equal(view.location.hash, '#task/embed-proactive-example');
+    assert.equal(posts.at(-1).data.playing, false);
+    control({scene: 'connections'});
+    assert.equal(view.location.hash, '#settings/connectors');
+  } finally { dispose(); }
+});

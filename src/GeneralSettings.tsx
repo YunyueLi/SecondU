@@ -1,4 +1,3 @@
-import { Check } from '@openai/apps-sdk-ui/components/Icon';
 import { Select } from '@openai/apps-sdk-ui/components/Select';
 import type { Appearance, AppearanceStatus } from './appearance';
 import { compactSelectProps } from './compactSelect';
@@ -35,7 +34,6 @@ export function GeneralSettings({ value, status, onChange, data, onRefresh }: { 
       <ProactiveContactSetting data={data} onRefresh={onRefresh} />
     </div>
     {executionError&&<p role="alert" className="artwork-error">{executionError}</p>}
-    <p className="general-save-status settings-save-status" role="status">{status.error ? t('保存未完成', 'Not saved') : status.saving ? t('正在保存', 'Saving') : <><Check />{t('已保存', 'Saved')}</>}</p>
     {status.error && <p role="alert" className="artwork-error">{status.error}</p>}
     <UpdateSettings />
   </>;

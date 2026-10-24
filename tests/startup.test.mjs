@@ -5,6 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import {createRequire} from 'node:module';
 import {DatabaseSync} from 'node:sqlite';
+import {appearanceAccentOptions,defaultAppearance} from '../shared/appearance-options.mjs';
 const require=createRequire(import.meta.url);
 const {startupHtml,writeStartupDocument,initialWindowBounds,readStartupAppearance,backendIdentityMatches,selectBackendPort,RETRY_URL}=require('../desktop/startup.cjs');
 const root=path.resolve(import.meta.dirname,'..');
@@ -28,6 +29,25 @@ test('native failure is escaped and uses a local explicit retry with saved appea
  assert.match(html,/Could not start SecondU/);assert.ok(html.includes(`href="${RETRY_URL}"`));
  assert.ok(html.includes('&lt;script&gt;'));assert.ok(!html.includes('<script>'));
  assert.ok(html.includes("default-src 'none'"));assert.ok(!html.includes('background-image:'));
+});
+test('native startup keeps every saved accent and colors the embedded mark from the shared palette',()=>{
+ for(const option of appearanceAccentOptions){
+  const html=startupHtml(root,{appearance:{accent:option.id}});
+  assert.ok(html.includes(`data-accent="${option.id}"`));
+  const encoded=html.match(/<span class="startup-seal"><img src="data:image\/svg\+xml;base64,([^"]+)"/)[1];
+  const svg=Buffer.from(encoded,'base64').toString('utf8');
+  assert.match(svg,new RegExp(`<circle\\b[^>]*fill="${option.color}"`));
+  assert.match(svg,/<g fill="none" stroke="currentColor"/,'only the accent dot changes');
+ }
+ const invalid=startupHtml(root,{appearance:{accent:'unknown'}});
+ assert.ok(invalid.includes(`data-accent="${defaultAppearance.accent}"`));
+});
+test('new startup CSS colors match the persisted appearance palette',()=>{
+ const css=readFileSync(path.join(root,'shared/startup.css'),'utf8');
+ for(const id of ['teal','amber']){
+  const {color}=appearanceAccentOptions.find(option=>option.id===id);
+  assert.ok(css.includes(`.startup-screen[data-accent=${id}]{--startup-accent:${color}}`));
+ }
 });
 test('native artwork is loaded from a local document instead of an oversized navigation URL',()=>{
  const directory=mkdtempSync(path.join(os.tmpdir(),'secondu-startup-document-'));
@@ -70,4 +90,13 @@ test('an old backend keeps its port while native startup selects a free port',as
  states.set(58648,{occupied:true,value:{status:'ok',...expected}});
  assert.deepEqual(await selectBackendPort([...states.keys()],async port=>states.get(port),expected),{port:58648,reuse:true});
  assert.equal(await selectBackendPort([58645,58646],async port=>states.get(port),expected),undefined);
+});
+
+
+test('native startup uses a validated custom accent without injecting CSS',()=>{
+ const html=startupHtml(root,{appearance:{accent:'#d28ca4'}});
+ assert.ok(html.includes('--startup-accent:#d28ca4'));
+ assert.ok(html.includes('data-accent="#d28ca4"'));
+ const invalid=startupHtml(root,{appearance:{accent:'#fff;display:none'}});
+ assert.equal(invalid.includes('#fff;display:none'),false);
 });

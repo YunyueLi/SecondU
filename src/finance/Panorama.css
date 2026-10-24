@@ -1,0 +1,109 @@
+.finance-panorama { --panorama-visual-gap:clamp(24px,3cqi,40px); min-width:0; color:var(--color-text); container:panorama / inline-size; }
+/* Views share the section's content edges. Charts own their internal columns,
+   rather than adding independent centered reading-width containers. */
+.finance-panorama :is(.asset-allocation,.panorama-all,.panorama-incomplete) { width:100%; min-width:0; }
+.finance-panorama .panorama-controls { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:16px; }
+.finance-panorama .panorama-money { display:flex; align-items:baseline; justify-content:flex-end; gap:6px; min-width:0; font-variant-numeric:tabular-nums; white-space:nowrap; }
+.finance-panorama .panorama-money strong { font-size:14px; font-weight:550; line-height:1.5; }
+.finance-panorama .panorama-money small { color:var(--color-text-secondary); font-size:12px; font-weight:400; }
+.finance-panorama .panorama-institution-heading { display:flex; align-items:center; gap:12px; width:100%; padding:10px 8px; border:0; border-radius:var(--hither-radius-control,8px); background:transparent; text-align:left; color:inherit; cursor:pointer; }
+.finance-panorama .panorama-institution-heading:hover,.finance-panorama .panorama-products>button:hover,.finance-panorama .panorama-holding>summary:hover { background:var(--color-surface-secondary); }
+.finance-panorama .panorama-institution-heading:focus-visible,.finance-panorama .panorama-products>button:focus-visible,.finance-panorama .panorama-holding>summary:focus-visible { outline:2px solid var(--color-ring); outline-offset:2px; }
+.finance-panorama .panorama-institution-name { display:grid; gap:2px; min-width:0; flex:1; }
+.finance-panorama .panorama-institution-name strong { font-size:14px; font-weight:500; line-height:1.5; }
+.finance-panorama .panorama-institution-name small { color:var(--color-text-secondary); font-size:12px; line-height:1.5; overflow-wrap:anywhere; }
+.finance-panorama .panorama-institution-heading>svg,.finance-panorama .panorama-products>button>svg { width:16px; height:16px; flex-shrink:0; color:var(--color-text-secondary); }
+.finance-panorama .panorama-products { padding-left:44px; }
+.finance-panorama .panorama-products>button { display:flex; align-items:center; gap:12px; width:100%; padding:8px; border:0; border-radius:var(--hither-radius-control,8px); color:inherit; background:transparent; text-align:left; font-size:13px; cursor:pointer; }
+.finance-panorama .panorama-products>button>span:first-child { flex:1; min-width:0; }
+.finance-panorama .panorama-products .panorama-money strong { font-size:13px; font-weight:400; }
+.finance-panorama .panorama-note,.finance-panorama .panorama-incomplete p { color:var(--color-text-secondary); font-size:13px; line-height:1.7; margin:12px 0; }
+.finance-panorama .panorama-institution-tabs { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:24px; }
+.finance-panorama .panorama-institution-tabs button { min-height:44px; max-width:100%; padding-inline:12px; font-size:14px; }
+.finance-panorama .panorama-institution-label { color:var(--color-text); font-weight:500; }
+.finance-panorama .panorama-institution-currency { color:var(--color-text-secondary); font-size:12px; }
+.finance-panorama .panorama-drill-heading { display:flex; align-items:center; justify-content:space-between; gap:16px; margin:0 0 20px; }
+.finance-panorama .panorama-drill-heading>div { display:flex; align-items:center; gap:10px; min-width:0; }
+.finance-panorama .panorama-drill-heading h3 { margin:0; font-size:16px; font-weight:550; }
+.finance-panorama .panorama-drill-heading>.panorama-money strong { font-size:18px; }
+.finance-panorama .panorama-account { margin:0 0 24px; }
+.finance-panorama .panorama-account>header { display:flex; align-items:baseline; justify-content:space-between; gap:16px; }
+.finance-panorama .panorama-account>header>div { min-width:0; }
+.finance-panorama .panorama-account h4 { margin:0; font-size:14px; font-weight:500; line-height:1.6; }
+.finance-panorama .panorama-account p { margin:3px 0 0; font-size:12px; color:var(--color-text-secondary); line-height:1.6; }
+.finance-panorama .panorama-account-actions { display:flex; flex-wrap:wrap; gap:4px; margin:4px 0 8px; }
+.finance-panorama .panorama-holdings { display:grid; gap:2px; }
+.finance-panorama .panorama-holding>summary { display:flex; align-items:center; gap:10px; padding:10px 8px; list-style:none; border-radius:var(--hither-radius-control,8px); cursor:pointer; }
+.finance-panorama .panorama-holding>summary::-webkit-details-marker { display:none; }
+.finance-panorama .panorama-holding>summary>svg { width:16px; height:16px; color:var(--color-text-secondary); flex-shrink:0; }
+.finance-panorama .panorama-holding[open]>summary>svg { transform:rotate(90deg); }
+.finance-panorama .panorama-holding-name { display:grid; gap:2px; min-width:0; flex:1; }
+.finance-panorama .panorama-holding-name strong { font-size:13px; font-weight:500; line-height:1.5; overflow-wrap:anywhere; }
+.finance-panorama .panorama-holding-name small { font-size:11px; color:var(--color-text-secondary); line-height:1.5; }
+.finance-panorama .panorama-holding-facts { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:16px; margin:4px 0 12px; padding:8px 8px 8px 42px; }
+.finance-panorama .panorama-holding-facts dt { margin-bottom:4px; font-size:12px; color:var(--color-text-secondary); }
+.finance-panorama .panorama-holding-facts dd { margin:0; font-size:13px; font-variant-numeric:tabular-nums; }
+.finance-panorama .panorama-holding-facts .panorama-money { justify-content:flex-start; flex-wrap:wrap; }
+.finance-panorama .panorama-holding-facts .panorama-money strong { font-size:13px; font-weight:400; }
+.finance-panorama .panorama-currency-section { margin-top:24px; }
+.finance-panorama .panorama-currency-section h3 { margin:0 0 8px; font-size:13px; font-weight:550; color:var(--color-text-secondary); }
+.finance-panorama .panorama-currency-section>div { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px 24px; }
+@container panorama (max-width:700px) {
+  .finance-panorama .panorama-currency-section>div { grid-template-columns:minmax(0,1fr); }
+  .finance-panorama .panorama-drill-heading { align-items:flex-start; flex-wrap:wrap; gap:8px; }
+  .finance-panorama .panorama-drill-heading>.panorama-money { padding-left:42px; }
+  .finance-panorama .panorama-account>header { flex-wrap:wrap; gap:6px; }
+  .finance-panorama .panorama-holding-facts { grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; padding-left:8px; }
+  .finance-panorama .panorama-institution-heading { display:grid; grid-template-columns:32px minmax(0,1fr) 16px; gap:4px 10px; }
+  .finance-panorama .panorama-institution-heading>.brand-icon { grid-row:1/3; }
+  .finance-panorama .panorama-institution-heading>.panorama-money { grid-column:2; justify-content:flex-start; }
+  .finance-panorama .panorama-institution-heading>svg { grid-column:3; grid-row:1/3; }
+  .finance-panorama .panorama-products>button { flex-wrap:wrap; gap:4px 8px; }
+  .finance-panorama .panorama-products>button>.panorama-money { flex-basis:100%; order:3; justify-content:flex-start; }
+  .finance-panorama .panorama-holding>summary { display:grid; grid-template-columns:24px minmax(0,1fr) 16px; gap:4px 8px; }
+  .finance-panorama .panorama-holding>summary>.brand-icon { grid-row:1/3; }
+  .finance-panorama .panorama-holding>summary>.panorama-money { grid-column:2; justify-content:flex-start; }
+  .finance-panorama .panorama-holding>summary>svg { grid-column:3; grid-row:1/3; }
+}
+
+.finance-panorama :is(.panorama-summary,.panorama-institution-name small,.panorama-holding-name small,.panorama-account p) { display:flex; flex-wrap:wrap; gap:4px 8px; }
+
+.finance-panorama .panorama-header-actions { display:flex; align-items:center; gap:12px; }
+.finance-panorama .panorama-summary { font-size:12px; }
+.dialog-overlay>.app-dialog.finance-panorama-fullscreen { display:flex; flex-direction:column; width:min(1280px,100%); height:min(900px,calc(100dvh - 2 * var(--dialog-edge) - env(safe-area-inset-top) - env(safe-area-inset-bottom))); padding:24px; overflow:hidden; border-radius:var(--hither-radius-dialog,16px); }
+.finance-panorama-fullscreen>header { margin-bottom:20px; }
+.finance-panorama-fullscreen .panorama-fullscreen-workspace,.finance-panorama-fullscreen .bottom-sheet-content { display:flex; flex:1; min-height:0; overflow:hidden; }
+.finance-panorama-fullscreen .panorama-fullscreen-workspace { max-width:none; margin:0; padding:0; }
+.finance-panorama-fullscreen .panorama-fullscreen-workspace>.finance-panorama { display:flex; flex:1; flex-direction:column; min-height:0; }
+.finance-panorama-fullscreen .panorama-fullscreen-controls { display:grid; flex:none; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:12px; padding-bottom:16px; }
+.finance-panorama-fullscreen .panorama-fullscreen-controls .panorama-controls { margin:0; }
+.finance-panorama-fullscreen .panorama-fullscreen-controls>span { align-self:start; padding-block:7px; font-size:12px; line-height:18px; color:var(--color-text-secondary); }
+.finance-panorama-fullscreen .panorama-fullscreen-content { display:flex; flex:1; flex-direction:column; min-height:0; overflow:auto; overscroll-behavior:contain; scrollbar-gutter:stable; padding:0 4px 4px; }
+/* Share only spare height around the complete view. When content grows taller
+   than the viewport, both spacers collapse to zero and the top stays reachable. */
+.finance-panorama-fullscreen .panorama-fullscreen-content::before,
+.finance-panorama-fullscreen .panorama-fullscreen-content::after { content:""; flex:1 0 0; }
+.finance-panorama-fullscreen .panorama-fullscreen-content>* { flex:0 0 auto; }
+@container panorama (max-width:760px) {
+  .finance-panorama-fullscreen .panorama-fullscreen-content::before,
+  .finance-panorama-fullscreen .panorama-fullscreen-content::after { display:none; }
+}
+.bottom-sheet.finance-panorama-fullscreen { width:100%; height:var(--mobile-viewport-height,100dvh); max-height:none; border-radius:0; padding:calc(12px + env(safe-area-inset-top)) 16px calc(16px + env(safe-area-inset-bottom)); }
+.bottom-sheet.finance-panorama-fullscreen>.bottom-sheet-handle { display:none; }
+.bottom-sheet.finance-panorama-fullscreen>header { margin-bottom:0; }
+@media(max-width:700px) {
+  .finance-panorama .panorama-header-actions { gap:4px; }
+  .finance-panorama .panorama-header-actions .panorama-summary { display:none; }
+  .dialog-overlay:has(>.finance-panorama-fullscreen) { padding:0; }
+  .dialog-overlay>.app-dialog.finance-panorama-fullscreen { width:100%; height:100dvh; max-height:100dvh; border:0; border-radius:0; padding:max(12px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(16px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left)); }
+  .finance-panorama-fullscreen .panorama-fullscreen-controls { gap:8px; }
+}
+
+.finance-panorama .panorama-currency-section>header,.finance-panorama .panorama-holdings>header { display:flex; align-items:baseline; justify-content:space-between; gap:12px; margin-bottom:8px; }
+.finance-panorama .panorama-currency-section>header h3 { margin:0; }
+.finance-panorama .panorama-holdings { margin-top:12px; }
+.finance-panorama .panorama-holdings>header { padding:0 8px; margin-bottom:2px; }
+.finance-panorama .panorama-holdings>header h5 { margin:0; font-size:12px; font-weight:500; color:var(--color-text-secondary); }
+.finance-panorama .panorama-holdings>header .panorama-money strong { font-size:12px; font-weight:400; color:var(--color-text-secondary); }
+.finance-panorama .panorama-holding-facts time { font-size:12px; overflow-wrap:anywhere; }
+.finance-panorama .panorama-account:focus { outline:2px solid var(--color-border); outline-offset:6px; border-radius:var(--hither-radius-control,8px); }

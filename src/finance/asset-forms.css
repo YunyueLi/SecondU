@@ -1,0 +1,11 @@
+.finance-asset-details-fields { display:grid;gap:20px;min-width:0; }
+.finance-asset-fields-grid { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px; }
+.finance-asset-owned-value { margin:0;font-size:var(--hither-font-label,14px);line-height:22px; }
+.finance-asset-owned-value>strong { font-weight:550;font-variant-numeric:tabular-nums; }
+.finance-linked-liabilities { display:grid;gap:12px;border:0;margin:0;padding:0;min-width:0; }
+.finance-linked-liabilities>legend { padding:0;margin-bottom:8px;font-size:var(--hither-font-label,14px);line-height:22px;font-weight:500; }
+@media(max-width:540px) { .finance-asset-fields-grid { grid-template-columns:minmax(0,1fr); } }
+
+@container finance-dialog (max-width:480px) {
+  .finance-asset-fields-grid { grid-template-columns:minmax(0,1fr); }
+}
