@@ -8,10 +8,10 @@ User-visible changes are recorded here. Product decisions and implementation his
 
 - Add a native finance workspace with overview, accounts, holdings, market data, liabilities, income and spending, and planning. Inspect asset structure, allocation and account details, customize 13 overview components, and keep original currencies, dates and valuation sources visible.
 - Record transactions manually or import local CSV files with column mapping and a confirmation preview. Manage bills, subscriptions, recurring income, budgets, goals, credit records, scenario calculations and local weekly reports; prepare scoped finance snapshots as unsent conversation attachments.
-- Add read-only account adapters for Moomoo, Plaid, Teller, TrueLayer, Interactive Brokers Flex and SnapTrade, with preview, account selection, explicit mapping and synchronization. Availability depends on your own account, region, provider products and permissions; broker statement and cached data retain their source dates.
-- Add official financial research connections for Alpha Vantage, Morningstar, FactSet, Daloopa, Fiscal.ai, Quartr Pro, Crunchbase, Financial Modeling Prep and LSEG, with service-specific setup and access requirements.
-- Expand bilingual onboarding to ten chapters with Personal Finance and Set Up Your Workspace. New scenes use actual components and fictional data, with working entries into finance and computer settings.
-- Add a complete, independent fictional Finance example for Alex Morgan, an AI infrastructure engineer in San Mateo: 11 asset accounts, 19 positions, 119 transactions and 22 recurring plans, with identical USD totals in both languages. The website presents six native views: overview, portfolio, structure, allocation, details and holdings.
+- Add account integrations for Moomoo, Plaid, Teller, TrueLayer, Interactive Brokers Flex and SnapTrade, with preview, account selection, mapping and synchronization.
+- Add financial research connections for Alpha Vantage, Morningstar, FactSet, Daloopa, Fiscal.ai, Quartr Pro, Crunchbase, Financial Modeling Prep and LSEG.
+- Expand bilingual onboarding to ten chapters with Personal Finance and Set Up Your Workspace, including direct entries into finance and computer settings.
+- Add a complete bilingual Finance example with six interactive website views: overview, portfolio, structure, allocation, details and holdings.
 
 ### Changed
 
@@ -20,7 +20,7 @@ User-visible changes are recorded here. Product decisions and implementation his
 - Use compact home suggestions with separate prompt and source previews, dismiss/restore controls and conversation-specific text drafts. Keep attachment actions in one composer entry and improve narrow-screen tools, project links and navigation.
 - Share one persisted accent across the interface and activity glow: six solid colors, Spectrum and a custom color. Spectrum with Subtle activity is the default; the composer uses a soft breathing glow only while work is running and respects reduced motion, pause and completion.
 - Open website feature previews over the current reading position, preserve the mounted workspace and unsent drafts, and restore scroll and focus on close. Center the website navigation and simplify its footer, public contact links, theme and language choices.
-- Update unconnected public examples to display Kimi K3.1 Pro, while retaining their authored conversations and keeping saved personal model connections unchanged. Refresh bilingual product media and add native Finance overview and portfolio images.
+- Update the model configuration shown in public examples to Kimi K3.1 Pro. Refresh bilingual product media and add Finance overview and portfolio images.
 - Maintain the desktop and web dependencies: Electron 44.9.3, MCP client/server 2.3.1, Vite 8.3.5 and Zod 4.6.7, with scoped KaTeX and transitive dependency patches.
 
 ### Fixed
@@ -30,7 +30,7 @@ User-visible changes are recorded here. Product decisions and implementation his
 - Correct stretched segmented controls, small institution labels, duplicate form labels, low-contrast navigation, blurry financial-service icons and responsive layouts across settings, finance and Agent pages.
 - Use a declared market time zone for quote timestamps, falling back to the browser's local zone. Keep date-only NAV observations on their original calendar date and show the actual time zone and offset in timestamp details.
 
-See the [release notes](docs/releases/v0.2.1.md), [v0.2.1 version page](https://github.com/YunyueLi/SecondU/releases/tag/v0.2.1) and [finance guide](docs/FINANCE.md) for setup and limits. Publication, package and update-feed verification are recorded separately from source changes.
+See the [release notes](docs/releases/v0.2.1.md), [v0.2.1 version page](https://github.com/YunyueLi/SecondU/releases/tag/v0.2.1) and [finance guide](docs/FINANCE.md).
 
 ## 0.2.0 — 2026-10-20
 

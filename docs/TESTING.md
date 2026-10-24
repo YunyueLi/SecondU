@@ -85,3 +85,8 @@ Rendered checks separately cover DOCX/XLSX/PPTX previews and DOCX saved versions
 
 
 The final native-chrome follow-up separately verified normal/collapsed navigation, macOS fullscreen and restore, work-panel expansion/Escape, and all three header tabs. The Chinese 520 px history toolbar and corrected complete Office walkthrough note have rendered evidence. A shutdown lifecycle failure was reproduced, fixed, covered by 2 lifecycle tests, and checked by an actual quit/relaunch/quit cycle. American example project browsing now passes 11 US/policy checks, including four real fixture listings and rejection of mismatched/private folders, missing markers, traversal and execution. These are scoped checks, not a replacement for the earlier full suite. See [final native follow-up](DEVELOPMENT.md#2026-10-01-最终原生顶部与引导复核).
+
+
+## v0.2.1 delivery verification — 2026-10-25
+
+The release at `9532abbbb43d4dd5d869cfe0ddcd15dd5356a267` passed macOS and Ubuntu CI, 1,166 local tests with 13 configured skips, and all 23 website finance tests. The packaged Electron 44.9.3 / Node 24.22.0 / SQLite 3.53.4 runtime verified its service identity, 30 frontend assets and 24 poster hashes. Native finance entry, saving and quit/reopen persistence passed. Public downloads matched the sealed archive and update feed, Ed25519 verification passed, and the installed app reported 0.2.1 as the current version. The deployed website and both rendered GitHub READMEs were checked on desktop and at 390px, including dark-mode finance and the expanded workspace.

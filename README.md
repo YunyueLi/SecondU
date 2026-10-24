@@ -46,9 +46,9 @@ The **runnable desktop prototype** establishes this foundation. Cross-device con
 
 ### Grow your twin from one piece of material
 
-The **Grow your twin** workspace brings together seven entry points: **existing sources, text and notes, photos and videos, conversations, existing memory, connected sources, and your own thoughts**. Existing materials stay in the same library. The connection entry manages services; it does not imply that their data has already synced.
+The **Grow your twin** workspace brings together seven entry points: **existing sources, text and notes, photos and videos, conversations, existing memory, connected sources, and your own thoughts**. Existing materials stay in the same library, with connected services managed from the connection entry.
 
-For direct input, choose **Help understand me** or **Only this time**. In personal space, submitting saves the material and starts processing when a model and local runtime are configured; otherwise, it saves the material for later. Other imports preserve originals first, and you start processing from the source details. Photos and videos share the library; video storage and playback are supported, but video understanding is not yet available.
+For direct input, choose **Help understand me** or **Only this time**. In personal space, submitting saves the material and starts processing when a model and local runtime are configured; otherwise, it saves the material for later. Other imports preserve originals first, and you start processing from the source details. Photos and videos share the library, with storage and playback for your original media.
 
 **Save material → model processing → your review → a new task draft.** Suggested facts, people and experiences include their evidence. Accept, correct or skip each item. Confirmed personal material joins your records; session-only material keeps its processing and review history outside your long-term profile. Failures retain the material and reason, and retries are explicit.
 
@@ -65,7 +65,7 @@ Your profile, timeline, relationships and sources make understanding inspectable
 
 ### Think through an important choice
 
-[Open the career discussion example](https://yunyueli.github.io/SecondU/product/embed.html?space=demo-us-v1&lang=en#example-decision) to see how experience, working preferences and life outside work inform a comparison of possible directions. Four exchanges and an editable outline live in the real task workspace. This is an authored fictional example: no model was called, no career preference became a profile fact, and no outreach or application was sent.
+[Open the career discussion example](https://yunyueli.github.io/SecondU/product/embed.html?space=demo-us-v1&lang=en#example-decision) to see how experience, working preferences and life outside work inform a comparison of possible directions. Four exchanges and an editable outline live in the real task workspace.
 
 <p><a href="https://yunyueli.github.io/SecondU/product/embed.html?space=demo-us-v1&lang=en#example-decision"><picture>
       <source media="(prefers-color-scheme: dark)" srcset="docs/readme-assets/decision-support-en-dark.jpg">
@@ -83,22 +83,22 @@ Talk to a specialist or form a team with a lead. Follow delegated work, status a
 
 ### Keep finances in view
 
-The Finance workspace brings together **overview, accounts, holdings, market data, liabilities, transactions and planning**. Record cash, investments and other asset types; retain original currencies and observation dates; inspect exchange-rate conversions and the difference between recorded balances and quote-based estimates. Customize 13 overview components, record transactions manually or import a CSV, and manage bills, subscriptions, budgets, savings goals, credit records, weekly reports and planning scenarios. Selected records can accompany a question as an inspectable context snapshot. [Finance capabilities and boundaries](docs/FINANCE.md)
+The Finance workspace brings together **overview, accounts, holdings, market data, liabilities, transactions and planning**. Record cash, investments and other asset types; retain original currencies and observation dates; inspect exchange-rate conversions and the difference between recorded balances and quote-based estimates. Customize 13 overview components, record transactions manually or import a CSV, and manage bills, subscriptions, budgets, savings goals, credit records, weekly reports and planning scenarios. Selected records can accompany a question as an inspectable context snapshot. [Finance guide](docs/FINANCE.md)
 
-Supported account providers use read-only connections with explicit setup and provider authorization. Availability depends on the provider, region and account permissions; a directory entry does not mean an account is connected. Financial research sources are listed separately from account connections. SecondU does not place trades, transfer funds or pay bills.
+Choose an account provider in **Settings → Connectors**, preview your accounts and match them to your records before synchronizing. Browse financial research services in the same directory.
 
-The [website's finance story](https://yunyueli.github.io/SecondU/?lang=en#finance) follows **Alex Morgan**, a fictional AI infrastructure engineer in San Mateo. Both languages share an October 25, 2026 snapshot with 11 asset accounts, 19 positions, 119 transactions and 22 recurring plans, including retirement savings, vested employer stock and foreign-currency assets. It reconciles to **USD 729,096.75 in assets, USD 16,480.75 in recorded liabilities and USD 712,616.00 in net assets**. This is an independent, read-only Finance example; the person, records, prices and exchange rates are authored fiction, and no real account is connected.
+The [website's finance story](https://yunyueli.github.io/SecondU/?lang=en#finance) brings retirement savings, employer stock, foreign-currency assets, everyday spending and long-term plans together in one bilingual example.
 
 Explore six views: **Overview, Portfolio, Structure, Allocation, Details and Holdings**. Overview brings together net assets, spending categories, monthly spending and upcoming payments; Portfolio combines investments, holding quotes and a recorded credit score. Open the full workspace from any preview without losing your place on the website. Quote timestamps use the example's Pacific time zone, with the actual zone available in the full timestamp.
 
 <p><a href="https://yunyueli.github.io/SecondU/product/embed.html?space=demo-us-v1&lang=en#finance"><picture>
       <source media="(prefers-color-scheme: dark)" srcset="docs/readme-assets/finance-overview-en-dark.jpg">
-      <img src="docs/readme-assets/finance-overview-en.jpg" width="1160" alt="Alex Morgan's fictional finance overview: net asset trend, spending categories, monthly spending and upcoming payments">
+      <img src="docs/readme-assets/finance-overview-en.jpg" width="1160" alt="Finance overview: net asset trend, spending categories, monthly spending and upcoming payments">
     </picture></a></p>
 
 <p><a href="https://yunyueli.github.io/SecondU/product/embed.html?space=demo-us-v1&lang=en#finance"><picture>
       <source media="(prefers-color-scheme: dark)" srcset="docs/readme-assets/finance-portfolio-en-dark.jpg">
-      <img src="docs/readme-assets/finance-portfolio-en.jpg" width="1160" alt="Actual SecondU portfolio components showing Alex Morgan's fictional investments, holding quotes and credit record">
+      <img src="docs/readme-assets/finance-portfolio-en.jpg" width="1160" alt="SecondU investment portfolio, holding quotes and credit record">
     </picture></a></p>
 
 ### Choose how the workspace fits your work
@@ -114,7 +114,7 @@ Edit files beside the conversation, save versions and revisit earlier content. R
 | Also included | Current capability |
 | --- | --- |
 | Personal finance | Accounts, assets, holdings, quotes, spending and planning; manual/CSV records and supported read-only provider connections. [Details](docs/FINANCE.md) |
-| Execution computers | Local runtime checks, configured SSH hosts and explicit task-computer selection. Remote access requires its own setup and verification. |
+| Execution computers | Check local runtimes, manage SSH computers and choose the execution computer for each task. |
 | Files and previews | Markdown, code, tables, static HTML/SVG, images and PDF. Office originals are preserved, with optional local LibreOffice PDF previews. |
 | Messaging | OpenClaw setup for 13 channels. Slack/Discord history import and confirmed sending, with explicit account and conversation scope. |
 | Context for other AI apps | Versioned context exports and explicitly authorized read-only MCP snapshots. [Interoperability](docs/INTEROPERABILITY.md) |
@@ -124,11 +124,11 @@ Edit files beside the conversation, save versions and revisit earlier content. R
 
 ### Continue when relevant material changes
 
-Enable **Let my twin contact me** in settings to consider new or updated sources in the current local space alongside active work. A read-only model evaluation prepares a sourced analysis, draft or judgment before deciding whether a new contribution belongs in a normal, replyable conversation. The setting is off by default; failed or deferred evaluations do not automatically replay. The local service must be running. Phone push notifications and proactive messages through external channels are not included. [Implementation and limits](docs/PROACTIVE_CONTACT.md)
+Enable **Let my twin contact me** in settings to consider new or updated sources in the current local space alongside active work. A read-only model evaluation prepares a sourced analysis, draft or judgment before deciding whether a new contribution belongs in a normal, replyable conversation. Enable it while the local service is running. [Proactive contact](docs/PROACTIVE_CONTACT.md)
 
 ### Continue on a smaller screen
 
-The mobile entry reuses the same sources, twin-building flow and task components to view material, review understanding and continue conversations. It is available in the local browser; connecting an actual phone requires a separately configured private connection. Opening the view does not expose the service or establish cloud synchronization or background wake-up.
+The mobile entry reuses the same sources, twin-building flow and task components to view material, review understanding and continue conversations. It is available in the local browser; connecting an actual phone requires a separately configured private connection.
 
 ## Personal-context benchmark
 
@@ -143,16 +143,16 @@ The primary comparison uses the same model and an 8,000-character context cap. R
 | Hard constraints met, where applicable | 36 / 36 | 32 / 36 |
 | Required source coverage, where applicable | 40 / 40 | 36 / 40 |
 
-**What needs work:** SecondU missed required sources in H03 and H04. All four replies appropriately asked for clarification, but failed the end-to-end decision requirement. R04's second SecondU call timed out after 180 seconds and was not retried. These remain in the denominators; a transport failure does not establish retrieval quality.
+**What needs work:** SecondU missed required sources in H03 and H04. All four replies appropriately asked for clarification, but failed the end-to-end decision requirement. R04's second SecondU call timed out after 180 seconds and was not retried. All five cases remain in the reported totals.
 
-No-context is a separate visible-information calibration: **47 / 48** calls met its requirements; one returned truncated JSON, preserved without repair. The run uses one model and synthetic, author-confirmed records. It does not establish a general quality, speed or token-efficiency advantage, and does not test automatic fact extraction or long-term real-user outcomes. The [12-call historical baseline](benchmarks/results/2026-10-01/) and [12-call pilot](benchmarks/results/2026-10-01-v2/pilot/) remain separate from formal results.
+No-context is a separate visible-information calibration: **47 / 48** calls met its requirements; one returned truncated JSON, preserved without repair. The run evaluates one model on synthetic, author-confirmed records, measuring decisions and source use across the stated scenarios. The [12-call historical baseline](benchmarks/results/2026-10-01/) and [12-call pilot](benchmarks/results/2026-10-01-v2/pilot/) remain separate from formal results.
 
 ## Get started
 
 | Start here | What to expect |
 | --- | --- |
-| **[Try it in your browser](https://yunyueli.github.io/SecondU/product/embed.html?space=demo-us-v1&lang=en#example-chat)** | The real app with fictional bilingual examples and page-local summary import. Imported content and edits reset on refresh; no model execution or account connection. |
-| **[Download the desktop app](https://github.com/YunyueLi/SecondU/releases/tag/v0.2.1)** | Apple Silicon Mac, macOS 13+. Includes Node. Ad-hoc signed, not Apple-notarized. |
+| **[Try it in your browser](https://yunyueli.github.io/SecondU/product/embed.html?space=demo-us-v1&lang=en#example-chat)** | Explore bilingual examples, import a summary and edit content in the current page. Reload to start again. |
+| **[Download the desktop app](https://github.com/YunyueLi/SecondU/releases/tag/v0.2.1)** | Apple Silicon Mac, macOS 13+. Includes Node. See the quick start for installation. |
 | **Run from source** | Node.js 22.18+ and npm. Use the commands below, then open [localhost:58645](http://127.0.0.1:58645). |
 
 ```sh
@@ -164,8 +164,6 @@ npm start
 ```
 
 Choose an example space to explore without credentials. To run real tasks, enter personal space, install **Codex CLI** separately and configure your own model connection. [Setup and troubleshooting](QUICKSTART.md)
-
-The examples display **Kimi K3.1 Pro** as an unconnected model configuration. Their conversations are prewritten; browsing them does not call a model or change your saved personal connections.
 
 ## Your data, your permissions
 
@@ -184,7 +182,7 @@ The [12-direction roadmap](docs/ROADMAP.md) describes current foundations, next 
 | Context beyond one screen | Communication and real-world resources; multimodal continuity across devices; authorized expertise distribution |
 | A network built around people | A2A collaboration and service transactions; social and relationship discovery; continuously improving personal assets |
 
-**Development status:** [v0.2.1](docs/releases/v0.2.1.md) adds the Finance workspace, configurable sidebar modules, local/SSH computer settings, an expanded connector directory, home suggestions and appearance refinements. Twin building, original materials, candidate review, task drafts, mobile layouts and local proactive contact remain part of the product. Context, tasks, teams and files continue to share the existing data and execution runtime. Automation and proactive contact require the local service to be running. Physical devices, remote hosts and external accounts need separate acceptance. Synchronization, cloud observation, calls, payments and matching remain planned; marketplace and Dating retain their **Dev** labels. macOS arm64 has native delivery; Linux CI covers source builds and tests. [Verified scope](docs/PROTOTYPE.md#当前证据与限制)
+**Latest release:** [v0.2.1](docs/releases/v0.2.1.md) adds the Finance workspace, configurable sidebar modules, local/SSH computer settings, an expanded connector directory, home suggestions and appearance refinements. Desktop releases support macOS arm64. [Product walkthrough](docs/PROTOTYPE.md)
 
 ## How it works
 

@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "baselineCommit": "e9a89928abda00a737b148c5c29b48575edba89c",
   "title": "SecondU 的产品判断、实现与验证",
-  "summary": "财务、项目与官网体验已完成本地检查，用户确认预览后进入 v0.2.1 最终交付，正在核对文档素材、原生安装包、官网和更新源。",
+  "summary": "v0.2.1 带来完整财务工作区，并同步改进导航、电脑设置、首页、外观及中英文产品展示。",
   "stages": [
     {
       "id": "research",
@@ -60,12 +60,12 @@
     {
       "id": "delivery",
       "title": "验证并交付本机版本",
-      "summary": "正在完成 v0.2.1 的文档素材、原生包、公开下载、官网和更新源交付。",
-      "status": "in_progress",
+      "summary": "v0.2.1 的源码、安装包、文档素材、官网和应用内更新已交付。",
+      "status": "verified",
       "document": "DEVELOPMENT.md",
-      "summaryEn": "Completing v0.2.1 documentation, media, native packaging, public downloads, website and update-feed delivery.",
+      "summaryEn": "v0.2.1 source, desktop package, documentation, media, website and in-app updates are delivered.",
       "titleEn": "Verify and deliver",
-      "section": "2026-10-25 最终交付与发布"
+      "section": "2026-10-25 v0.2.1 公开交付"
     }
   ],
   "iterations": [
@@ -411,13 +411,14 @@
       "titleEn": "Finance workspace and product-wide refinement",
       "summary": "加入七页财务、账户与研究服务；改进导航、电脑、首页、外观、对话及响应式，并更新十章引导和使用说明。",
       "summaryEn": "Add seven finance pages and account and research services; refine navigation, computers, home, appearance, conversations and responsive layouts, with ten-chapter onboarding and updated guidance.",
-      "status": "partial",
+      "status": "verified",
       "evidence": [
         "finance-source-v021",
-        "finance-ui-v021"
+        "finance-ui-v021",
+        "public-release-v021"
       ],
       "document": "DEVELOPMENT.md",
-      "section": "2026-10-25 v0.2.1 发布准备"
+      "section": "2026-10-25 v0.2.1 公开交付"
     },
     {
       "id": "project-local-preview-20261025",
@@ -1113,6 +1114,18 @@
       "detailEn": "The file page has been inspected, with a 390px content width at a 390px viewport and no horizontal overflow. Folder return and keyboard tab interaction are still being checked. User acceptance is pending; the preceding full regression does not cover this later revision.",
       "document": "DEVELOPMENT.md",
       "section": "2026-10-25 项目页再次修正与本地预览"
+    },
+    {
+      "id": "public-release-v021",
+      "title": "v0.2.1 公开交付",
+      "titleEn": "v0.2.1 public delivery",
+      "scope": "版本标签、安装包、更新源与官网。",
+      "scopeEn": "Release tag, desktop package, update feed and website.",
+      "status": "verified",
+      "detail": "macOS 与 Ubuntu CI、官网部署、原生保存与重开、公开下载校验和应用内更新检查通过。中英文文档、24 张海报及 16 个动效同步完成。",
+      "detailEn": "macOS and Ubuntu CI, website deployment, native save/reopen, public download verification and in-app update checks passed. Bilingual documentation, 24 posters and 16 motion files are aligned.",
+      "document": "DEVELOPMENT.md",
+      "section": "2026-10-25 v0.2.1 公开交付"
     }
   ],
   "boundaries": [
@@ -1296,52 +1309,24 @@
       "detailEn": "v0.2.0 delivers seven material entry points, original preservation and personal review, a mobile layout, and local proactive contact off by default.",
       "commit": "5185f9163cf50ea6a559326c40b8c142ffe905dd",
       "iteration": "personal-twin-growth-v020"
+    },
+    {
+      "id": "finance-workspace-v021-release",
+      "at": "2026-10-24T23:36:08Z",
+      "title": "把个人财务带入工作区",
+      "titleEn": "Bring personal finance into your workspace",
+      "detail": "v0.2.1 提供账户、资产、收支与规划，扩展连接、导航和电脑设置，完善双语官网与产品引导。",
+      "detailEn": "v0.2.1 brings accounts, assets, transactions and planning together, expands connections, navigation and computer setup, and refreshes the bilingual website and product guide.",
+      "commit": "9532abbbb43d4dd5d869cfe0ddcd15dd5356a267",
+      "iteration": "finance-workspace-v021"
     }
   ],
   "titleEn": "SecondU: product decisions, implementation and evidence",
-  "summaryEn": "Local finance, project and website checks are complete. Following preview acceptance, v0.2.1 delivery is verifying documentation, media, the native package, website and update feed.",
+  "summaryEn": "v0.2.1 adds a complete Finance workspace and improves navigation, computer setup, home, appearance and bilingual product presentation.",
   "latestRelease": {
-    "version": "v0.2.0",
-    "publishedAt": "2026-10-19T16:47:35Z",
-    "commit": "5185f9163cf50ea6a559326c40b8c142ffe905dd",
-    "url": "https://github.com/YunyueLi/SecondU/releases/tag/v0.2.0"
-  },
-  "currentProgress": {
-    "id": "v021-final-delivery",
-    "date": "2026-10-25",
-    "status": "in_progress",
-    "title": "完成财务与工作区更新交付",
-    "titleEn": "Deliver finance and workspace updates",
-    "summary": "财务、项目与官网体验已完成本地检查，用户确认预览后进入 v0.2.1 最终交付，正在核对文档素材、原生安装包、官网和更新源。",
-    "summaryEn": "Local finance, project and website checks are complete. Following preview acceptance, v0.2.1 delivery is verifying documentation, media, the native package, website and update feed.",
-    "completed": [
-      {
-        "zh": "七个财务页面、六个官网展示视图及完整美元虚构数据已检查。",
-        "en": "Seven finance pages, six website views and the complete fictional USD dataset have been checked."
-      },
-      {
-        "zh": "最新页脚、导航、项目页、明暗主题及窄屏预览完成检查，用户确认继续整体交付。",
-        "en": "The latest footer, navigation, project page, themes and narrow preview were checked; the user approved completion of the delivery."
-      },
-      {
-        "zh": "依赖修补及锁文件重新安装完成，财务测试与图标部署触发纳入持续检查。",
-        "en": "Dependency patches and locked clean installs completed; finance tests and asset deployment triggers are included in CI."
-      },
-      {
-        "zh": "中英文 README 与指南同步完成，24 张海报、16 个动效及全部引用和校验值通过核对。",
-        "en": "Bilingual READMEs and guides are aligned; 24 posters, 16 motion files, references and checksums have been verified."
-      }
-    ],
-    "pending": [
-      {
-        "zh": "原生安装包、安装后运行及公开交付检查。",
-        "en": "Native packaging, installed-app runtime and public-delivery checks."
-      },
-      {
-        "zh": "GitHub 发布、官网部署、匿名下载与更新源验证。",
-        "en": "GitHub release, website deployment, anonymous downloads and update-feed verification."
-      }
-    ],
-    "iteration": "finance-workspace-v021"
+    "version": "v0.2.1",
+    "publishedAt": "2026-10-24T23:36:08Z",
+    "commit": "9532abbbb43d4dd5d869cfe0ddcd15dd5356a267",
+    "url": "https://github.com/YunyueLi/SecondU/releases/tag/v0.2.1"
   }
 }
