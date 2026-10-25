@@ -1,14 +1,14 @@
 <p align="center">
-  <a href="https://yunyueli.github.io/SecondU/?lang=zh"><img src="public/brand/secondu-app-icon.svg" width="88" height="88" alt="SecondU"></a>
+  <a href="https://secondu.ungetsu.net/?lang=zh"><img src="public/brand/secondu-app-icon.svg" width="88" height="88" alt="SecondU"></a>
 </p>
 <h1 align="center">SecondU</h1>
 <p align="center"><strong>你的数字分身。</strong><br>从懂你，到为你行动。</p>
 <p align="center">以个人数字分身为核心的开源智能体产品。</p>
 <p align="center">
-  <a href="https://yunyueli.github.io/SecondU/product/embed.html?space=demo-cn-v1&lang=zh#example-chat"><strong>在线体验</strong></a>&nbsp;&nbsp;&nbsp;
+  <a href="https://secondu.ungetsu.net/product/embed.html?space=demo-cn-v1&lang=zh#example-chat"><strong>在线体验</strong></a>&nbsp;&nbsp;&nbsp;
   <a href="https://github.com/YunyueLi/SecondU/releases/tag/v0.2.1"><strong>下载 macOS 版</strong></a>&nbsp;&nbsp;&nbsp;
   <a href="QUICKSTART.md">快速开始</a>&nbsp;&nbsp;&nbsp;
-  <a href="https://yunyueli.github.io/SecondU/benchmark/?lang=zh">Benchmark</a>&nbsp;&nbsp;&nbsp;
+  <a href="https://secondu.ungetsu.net/benchmark/?lang=zh">Benchmark</a>&nbsp;&nbsp;&nbsp;
   <a href="README.md">English</a>
 </p>
 <p align="center">
@@ -16,7 +16,7 @@
 </p>
 
 <p align="center">
-  <a href="https://yunyueli.github.io/SecondU/product/embed.html?space=demo-cn-v1&lang=zh#example-chat">
+  <a href="https://secondu.ungetsu.net/product/embed.html?space=demo-cn-v1&lang=zh#example-chat">
     <picture>
       <source media="(prefers-reduced-motion: reduce) and (prefers-color-scheme: dark)" srcset="docs/readme-assets/task-workspace-zh-dark.jpg">
       <source media="(prefers-reduced-motion: reduce)" srcset="docs/readme-assets/task-workspace-zh.jpg">
@@ -26,7 +26,7 @@
   </a>
 </p>
 
-<p align="center"><sub>截图来自实际产品界面，内容为虚构示例。无需账号或模型密钥，即可<a href="https://yunyueli.github.io/SecondU/product/embed.html?space=demo-cn-v1&lang=zh#example-chat">直接体验产品</a>，或浏览<a href="https://yunyueli.github.io/SecondU/?lang=zh">官网</a>。</sub></p>
+<p align="center"><sub>截图来自实际产品界面，内容为虚构示例。无需账号或模型密钥，即可<a href="https://secondu.ungetsu.net/product/embed.html?space=demo-cn-v1&lang=zh#example-chat">直接体验产品</a>，或浏览<a href="https://secondu.ungetsu.net/?lang=zh">官网</a>。</sub></p>
 
 ## 让理解延续到下一件事
 
@@ -57,7 +57,7 @@ SecondU 持续理解你的背景、经历、价值观、偏好、关系和长期
 个人画像、时间轴、关系与来源让理解可以检查和修订。用户为任务选择背景，检查实际取用的内容；审阅后的理解可以带入可编辑任务草稿，由本人补充目标后发送。面对工作、学习或生活选择，系统结合经历、偏好和当前条件梳理取舍，决定仍由本人作出。[查看五分钟体验主线](docs/PROTOTYPE.md#连接模型后五分钟验证主线)，或核对[合成材料的上下文对照](docs/CONTEXT-BENCHMARK.md)。
 
 <p>
-  <a href="https://yunyueli.github.io/SecondU/product/embed.html?space=demo-cn-v1&lang=zh#self">
+  <a href="https://secondu.ungetsu.net/product/embed.html?space=demo-cn-v1&lang=zh#self">
     <picture>
       <source media="(prefers-reduced-motion: reduce) and (prefers-color-scheme: dark)" srcset="docs/readme-assets/personal-context-zh-dark.jpg">
       <source media="(prefers-reduced-motion: reduce)" srcset="docs/readme-assets/personal-context-zh.jpg">
@@ -69,9 +69,9 @@ SecondU 持续理解你的背景、经历、价值观、偏好、关系和长期
 
 ### 把重要选择讨论清楚
 
-[打开职业方向讨论示例](https://yunyueli.github.io/SecondU/product/embed.html?space=demo-cn-v1&lang=zh#example-decision)，查看已有经历、工作方式和生活安排如何进入方向比较。四轮问答与讨论提纲都在真实任务工作区，提纲可以继续编辑。
+[打开职业方向讨论示例](https://secondu.ungetsu.net/product/embed.html?space=demo-cn-v1&lang=zh#example-decision)，查看已有经历、工作方式和生活安排如何进入方向比较。四轮问答与讨论提纲都在真实任务工作区，提纲可以继续编辑。
 
-<p><a href="https://yunyueli.github.io/SecondU/product/embed.html?space=demo-cn-v1&lang=zh#example-decision"><picture>
+<p><a href="https://secondu.ungetsu.net/product/embed.html?space=demo-cn-v1&lang=zh#example-decision"><picture>
       <source media="(prefers-color-scheme: dark)" srcset="docs/readme-assets/decision-support-zh-dark.jpg">
       <img src="docs/readme-assets/decision-support-zh.jpg" width="1280" alt="万叶在实际任务工作区讨论职业选择，右侧展示可编辑的比较提纲">
     </picture></a></p>
@@ -80,7 +80,7 @@ SecondU 持续理解你的背景、经历、价值观、偏好、关系和长期
 
 创建专业 Agent，单独对话，或围绕一件事组建团队。指定负责人，按需委派专家，查看每项工作的执行者、状态和结果。项目目录、模型连接与操作审批共同限定实际工作环境。
 
-<p><a href="https://yunyueli.github.io/SecondU/product/embed.html?space=demo-cn-v1&lang=zh#agents"><picture>
+<p><a href="https://secondu.ungetsu.net/product/embed.html?space=demo-cn-v1&lang=zh#agents"><picture>
       <source media="(prefers-color-scheme: dark)" srcset="docs/readme-assets/specialists-zh-dark.jpg">
       <img src="docs/readme-assets/specialists-zh.jpg" width="1280" alt="SecondU 中文虚构示例空间中的专业 Agent">
     </picture></a></p>
@@ -91,16 +91,16 @@ SecondU 持续理解你的背景、经历、价值观、偏好、关系和长期
 
 在「设置 → 连接器」选择账户服务，预览账户并与已有记录对应后同步。金融研究服务也可从连接器目录中查找和配置。
 
-[官网财务展示](https://yunyueli.github.io/SecondU/?lang=zh#finance)将退休储蓄、公司股票、外币资产、日常收支与长期计划放在同一个双语示例中，展示各项记录如何共同形成资产全景。
+[官网财务展示](https://secondu.ungetsu.net/?lang=zh#finance)将退休储蓄、公司股票、外币资产、日常收支与长期计划放在同一个双语示例中，展示各项记录如何共同形成资产全景。
 
 可连续查看**概览、投资、结构、占比、明细、持仓**六个视图。概览展示净资产变化、分类支出、本月支出与即将到期；投资展示投资组合、持仓行情与已记录的信用评分。点击预览在原处打开完整工作区，关闭后回到之前的阅读位置。示例行情使用太平洋时区，完整时间提示保留实际时区。
 
-<p><a href="https://yunyueli.github.io/SecondU/product/embed.html?space=demo-cn-v1&lang=zh#finance"><picture>
+<p><a href="https://secondu.ungetsu.net/product/embed.html?space=demo-cn-v1&lang=zh#finance"><picture>
       <source media="(prefers-color-scheme: dark)" srcset="docs/readme-assets/finance-overview-zh-dark.jpg">
       <img src="docs/readme-assets/finance-overview-zh.jpg" width="1160" alt="财务概览：净资产变化、分类支出、本月支出和即将到期">
     </picture></a></p>
 
-<p><a href="https://yunyueli.github.io/SecondU/product/embed.html?space=demo-cn-v1&lang=zh#finance"><picture>
+<p><a href="https://secondu.ungetsu.net/product/embed.html?space=demo-cn-v1&lang=zh#finance"><picture>
       <source media="(prefers-color-scheme: dark)" srcset="docs/readme-assets/finance-portfolio-zh-dark.jpg">
       <img src="docs/readme-assets/finance-portfolio-zh.jpg" width="1160" alt="SecondU 投资组合、持仓行情与信用记录">
     </picture></a></p>
@@ -136,7 +136,7 @@ SecondU 持续理解你的背景、经历、价值观、偏好、关系和长期
 
 ## 个人上下文评测
 
-[**打开交互式 Benchmark**](https://yunyueli.github.io/SecondU/benchmark/?lang=zh)**：24 个合成场景、六个维度、三种上下文条件、各重复两次；计划调用 144 次，实际返回 143 次。** 可逐题检查两个轮次、实际输入、模型原文、引用来源与失败原因。[评测方法与复现](docs/CONTEXT-BENCHMARK.md) · [冻结计划与完整证据](benchmarks/results/2026-10-01-v2/)
+[**打开交互式 Benchmark**](https://secondu.ungetsu.net/benchmark/?lang=zh)**：24 个合成场景、六个维度、三种上下文条件、各重复两次；计划调用 144 次，实际返回 143 次。** 可逐题检查两个轮次、实际输入、模型原文、引用来源与失败原因。[评测方法与复现](docs/CONTEXT-BENCHMARK.md) · [冻结计划与完整证据](benchmarks/results/2026-10-01-v2/)
 
 主要对照使用同一模型和 8,000 字符上下文上限：原始资料采用 BM25 检索，SecondU 采用产品实际的确认、纠正和上下文选择流程。
 
@@ -155,7 +155,7 @@ SecondU 持续理解你的背景、经历、价值观、偏好、关系和长期
 
 | 方式 | 可以做什么 |
 | --- | --- |
-| **[在线体验](https://yunyueli.github.io/SecondU/product/embed.html?space=demo-cn-v1&lang=zh#example-chat)** | 浏览双语示例、导入摘要并在当前页面编辑内容；刷新后重新开始。 |
+| **[在线体验](https://secondu.ungetsu.net/product/embed.html?space=demo-cn-v1&lang=zh#example-chat)** | 浏览双语示例、导入摘要并在当前页面编辑内容；刷新后重新开始。 |
 | **[下载桌面版](https://github.com/YunyueLi/SecondU/releases/tag/v0.2.1)** | 适用于 Apple Silicon Mac，要求 macOS 13+，已内置 Node 运行时。安装步骤见快速开始。 |
 | **从源码运行** | 需要 Node.js 22.18+ 和 npm。执行下方命令后，打开 [localhost:58645](http://127.0.0.1:58645)。 |
 
@@ -192,11 +192,11 @@ API 只监听回环地址；凭据保存于限制权限的独立本机文件。�
 
 ## 实现结构
 
-[![个人理解如何用于行动并持续更新](docs/diagrams/understanding-loop-zh.svg)](https://yunyueli.github.io/SecondU/architecture/understanding-loop-zh.html)
+[![个人理解如何用于行动并持续更新](docs/diagrams/understanding-loop-zh.svg)](https://secondu.ungetsu.net/architecture/understanding-loop-zh.html)
 
-[查看可交互的理解反馈图](https://yunyueli.github.io/SecondU/architecture/understanding-loop-zh.html)
+[查看可交互的理解反馈图](https://secondu.ungetsu.net/architecture/understanding-loop-zh.html)
 
-[查看完整执行架构](https://yunyueli.github.io/SecondU/architecture/harness-zh.html)
+[查看完整执行架构](https://secondu.ungetsu.net/architecture/harness-zh.html)
 
 界面采用 **React 和官方 OpenAI Apps SDK UI**；本机 **Node.js 服务与 SQLite** 维护资料、任务状态和文件版本。执行底层复用 **Codex CLI app-server**，SecondU 实现个人上下文装配、持久任务、团队调度、权限与成果工作区。
 
@@ -232,4 +232,4 @@ API 只监听回环地址；凭据保存于限制权限的独立本机文件。�
 
 项目代码采用 [MIT](LICENSE)。第三方代码、插画、品牌标识与字体保留各自许可，详见[第三方说明](THIRD_PARTY_NOTICES.md)。SecondU 为独立项目，与 OpenAI 或模型提供方无官方从属关系。旧名称 **Hither** 保留在部分内部标识与资料路径中，用于兼容已有状态。
 
-<p><sub><a href="https://yunyueli.github.io/SecondU/?lang=zh">移动鼠标，发现藏在首页的 2ndU。</a></sub></p>
+<p><sub><a href="https://secondu.ungetsu.net/?lang=zh">移动鼠标，发现藏在首页的 2ndU。</a></sub></p>

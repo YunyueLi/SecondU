@@ -61,6 +61,7 @@ for (const [source, name] of [
   [path.join(directory, 'node_modules/three/LICENSE'), 'Three-LICENSE.txt'],
   [path.join(directory, 'node_modules/@openai/apps-sdk-ui/LICENSE'), 'Apps-SDK-UI-LICENSE.txt'],
   [path.join(root, 'node_modules/katex/LICENSE'), 'KaTeX-LICENSE.txt'],
+  [path.join(root, 'docs/licenses/flag-icons-7.6.0.txt'), 'flag-icons-7.6.0.txt'],
   [path.join(root, 'docs/licenses/website-dependencies.txt'), 'website-dependencies.txt'],
   [path.join(root, 'docs/licenses/runtime-dependencies.txt'), 'runtime-dependencies.txt'],
   [path.join(root, 'THIRD_PARTY_NOTICES.md'), 'THIRD_PARTY_NOTICES.md'],

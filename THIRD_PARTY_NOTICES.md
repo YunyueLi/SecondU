@@ -27,7 +27,7 @@ Codex CLI and LibreOffice are separately installed runtimes, not bundled copies 
 
 The website has a separate [lockfile](website/package-lock.json). Its installed production dependencies, including React 19.1.1, Apps SDK UI 0.2.2 and Three.js 0.185.1, are recorded in [website-dependencies.txt](docs/licenses/website-dependencies.txt). Three.js uses the MIT license; see the [official source](https://github.com/mrdoob/three.js). After installing the website dependencies, regenerate this snapshot with `node scripts/license-notices.mjs --website`.
 
-The website serves EB Garamond Variable and Noto Serif SC Variable from local Fontsource packages (`@fontsource-variable/eb-garamond` and `@fontsource-variable/noto-serif-sc`, both 5.3.0). Both fonts use the SIL Open Font License 1.1. Their full copyright and license texts are retained in the website dependency snapshot. The fonts are not fetched from a third-party font service.
+The homepage uses Albert Sans Variable from `@fontsource-variable/albert-sans` 5.3.0, with platform CJK sans-serif fallbacks. EB Garamond Variable and Noto Serif SC Variable remain available to existing website surfaces from local Fontsource packages (`@fontsource-variable/eb-garamond` and `@fontsource-variable/noto-serif-sc`, both 5.3.0). These fonts use the SIL Open Font License 1.1. Their full copyright and license texts are retained in the website dependency snapshot. The fonts are not fetched from a third-party font service.
 
 The browser memory-import adapter uses `@noble/hashes` 2.4.0 for synchronous SHA-256 under the MIT license. Its source and copyright notice are retained in the website dependency snapshot. This dependency is limited to the public website and does not add a desktop runtime dependency.
 

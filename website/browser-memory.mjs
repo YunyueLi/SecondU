@@ -11,10 +11,14 @@ export function portableMemoryDomain(code, storeImport) {
     return node.getText(source);
   });
   const entity = functions.get('createEntity'), statements = entity?.body?.statements;
-  if (!statements || statements.length !== 5 || !ts.isSwitchStatement(statements[3]) || !ts.isReturnStatement(statements[4])) throw new Error('Review changed createEntity before publishing the browser importer');
-  const facts = statements[3].caseBlock.clauses.find(node => ts.isCaseClause(node) && node.expression.text === 'facts');
+  const dispatchIndex=statements?.findIndex(ts.isSwitchStatement)??-1;
+  // Agent-only host initialization cannot run for browser fact imports. Keep
+  // rejecting any new shared or fact-related pre-dispatch statements.
+  const agentOnly=statement=>ts.isIfStatement(statement)&&!statement.elseStatement&&ts.isBinaryExpression(statement.expression)&&statement.expression.operatorToken.kind===ts.SyntaxKind.EqualsEqualsEqualsToken&&ts.isIdentifier(statement.expression.left)&&statement.expression.left.text==='collection'&&ts.isStringLiteral(statement.expression.right)&&statement.expression.right.text==='agents';
+  if (!statements || dispatchIndex<3 || statements.length!==dispatchIndex+2 || !statements.slice(3,dispatchIndex).every(agentOnly) || !ts.isReturnStatement(statements[dispatchIndex+1])) throw new Error('Review changed createEntity before publishing the browser importer');
+  const facts = statements[dispatchIndex].caseBlock.clauses.find(node => ts.isCaseClause(node) && node.expression.text === 'facts');
   if (!facts) throw new Error('Missing canonical fact constructor');
-  return `import {HttpError,id,now} from ${JSON.stringify(storeImport)};\n${helpers.join('\n')}\nexport function createEntity(store,collection,body,existing){\n${statements.slice(0,3).map(node=>node.getText(source)).join('\n')}\nswitch(collection){${facts.getText(source)}\ndefault:throw new HttpError(405,'Browser memory imports only create facts');}\n${statements[4].getText(source)}\n}`;
+  return `import {HttpError,id,now} from ${JSON.stringify(storeImport)};\n${helpers.join('\n')}\nexport function createEntity(store,collection,body,existing){\n${statements.slice(0,3).map(node=>node.getText(source)).join('\n')}\nswitch(collection){${facts.getText(source)}\ndefault:throw new HttpError(405,'Browser memory imports only create facts');}\n${statements[dispatchIndex+1].getText(source)}\n}`;
 }
 
 export function portableMemoryImport(code) {

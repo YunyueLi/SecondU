@@ -1,0 +1,18 @@
+{
+  "purpose": "Three quiet abstract oil painting covers for the privacy principles, generated in this task",
+  "prompts": [
+    {
+      "id": "privacy-space-v1",
+      "prompt": "Create one premium editorial oil painting cover for a SecondU website card, landscape 16:9. Confident broad loose palette-knife strokes on linen, abstract rather than a detailed scene. Two large fields only: luminous ivory meeting rich cobalt blue, a very soft lavender horizon between. A quiet sheltered expanse evokes one's own private space. Elegant restrained composition, visible tactile pigment, large strokes, very little detail. No people, no faces, no birds, no boats, no flowers, no buildings, no objects, no icons, no lettering, no text, no UI, no borders. Full bleed artwork. Sophisticated modern painterly material, not 3D, not photorealistic, not watercolor. Colors should feel related to cream and lilac with a fresh confident blue."
+    },
+    {
+      "id": "privacy-choice-v1",
+      "prompt": "Create one premium editorial oil painting cover for a SecondU website card, landscape 16:9. Confident broad loose palette-knife strokes on linen, abstract rather than a literal scene. Two or three large fields only: muted teal, lilac and warm pale cream. A single wide sweeping curve moves from lower left toward an open ivory area at upper right, evoking freedom to choose a direction. Elegant restrained composition, tactile pigment, broad strokes, very little detail. No people, no faces, no birds, no boats, no flowers, no buildings, no objects, no icons, no lettering, no text, no UI, no borders. Full bleed artwork. Sophisticated modern painterly material, not 3D, not photorealistic, not watercolor. A sibling artwork to a cream/lilac/cobalt abstract card cover."
+    },
+    {
+      "id": "privacy-control-v1",
+      "prompt": "Create one premium editorial oil painting cover for a SecondU website card, landscape 16:9. Confident broad loose palette-knife strokes on linen, abstract rather than a detailed scene. Two large fields only: a luminous warm apricot and cream band of light surrounded by deep violet and soft lilac strokes. Open spacious composition, broad horizontal brush gestures, evoking a calm moment of clarity and personal control. Tactile pigment, very little detail. No people, no faces, no birds, no boats, no flowers, no buildings, no objects, no icons, no lettering, no text, no UI, no borders. Full bleed artwork. Sophisticated modern painterly material, not 3D, not photorealistic, not watercolor. A sibling artwork to cream/lilac/cobalt and teal abstract card covers."
+    }
+  ],
+  "processing": "Converted to WebP at width 1200 with quality 86; source PNGs retained locally."
+}

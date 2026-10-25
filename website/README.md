@@ -44,6 +44,10 @@ Rebuild with the default base before publishing to Pages. `site.json` defines th
 
 ## Product media
 
+The homepage's visual system is scoped to `.site-home` in `src/visual-refresh.css`. The opening portrait and live workspace share one painted stage; editorial feature spreads alternate with the dark expert showcase and closing invitation. Product frames retain the canonical application UI. The existing brand and editorial fonts are preserved, with separate desktop and narrow-screen composition and light/dark palettes.
+
+`src/art/memory-landscape-day.webp` and `src/art/memory-landscape-night.webp` are original generated oil paintings. Their complete prompts and processing notes are recorded in `src/art/landscapes.prompt.json`; Vite emits versioned asset URLs. The source portrait remains separate and retains its particle animation and reduced-motion still. When expanding the live workspace, the opening stage lifts above the sticky navigation so the dialog and its controls remain reachable.
+
 `src/ProductPreview.tsx` displays product captures from `docs/readme-assets/`, with separate language and theme variants. Finance overview and portfolio images also appear in the README. `manifest.json` and `motion-manifest.json` record dimensions, source files and hashes. Reduced-motion preferences select static images, and off-screen previews pause.
 
 The hero uses Three.js. Roadmap artwork and its source information are stored in `public/art/roadmap/`. Fonts, artwork and dependency licenses are served locally. Regenerate dependency notices with:

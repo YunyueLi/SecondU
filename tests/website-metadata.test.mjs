@@ -23,10 +23,10 @@ test('both static documents expose their own language, canonical and consistent 
     for (const kind of ['name="description"', 'property="og:description"', 'name="twitter:description"']) {
       assert.ok(html.includes(`<meta ${kind} content="${metadata.description}">`));
     }
-    assert.ok(html.includes('<link rel="alternate" hreflang="zh-CN" href="https://yunyueli.github.io/SecondU/">'));
-    assert.ok(html.includes('<link rel="alternate" hreflang="en" href="https://yunyueli.github.io/SecondU/en.html">'));
+    assert.ok(html.includes('<link rel="alternate" hreflang="zh-CN" href="https://secondu.ungetsu.net/">'));
+    assert.ok(html.includes('<link rel="alternate" hreflang="en" href="https://secondu.ungetsu.net/en.html">'));
     assert.ok(html.includes(metadata.noscript));
-    assert.ok(html.includes('property="og:image" content="https://yunyueli.github.io/SecondU/assets/secondu-share.jpg"'));
+    assert.ok(html.includes('property="og:image" content="https://secondu.ungetsu.net/assets/secondu-share.jpg"'));
     assert.ok(html.includes('property="og:image:type" content="image/jpeg"'));
     assert.ok(html.includes('property="og:image:width" content="1200"'));
     assert.ok(html.includes('property="og:image:height" content="630"'));

@@ -1,0 +1,16 @@
+{
+  "createdAt": "2026-10-25",
+  "generator": "Built-in image generation tool",
+  "purpose": "Original SecondU website artwork. The night painting is a color and lighting edit of the day painting.",
+  "assets": [
+    {
+      "file": "memory-landscape-day.webp",
+      "prompt": "Use case: stylized-concept\nAsset type: original panoramic background painting for the SecondU personal digital twin website, not a website mockup.\nPrimary request: a sophisticated contemporary oil painting of an imagined quiet landscape, conveying personal memory, warmth and possibility. Broad flowing lilac and deep violet landforms curve gently toward a distant warm ivory and pale gold horizon; a few restrained dusty blue strokes. Real, tactile, confident oil brushwork and subtle canvas texture, like a large gallery painting. Elegant and atmospheric, with strong large shapes and no tiny details. Color palette: warm cream #F6F0E5, mist lavender #C9B8DA, purple #79628F, muted golden light #DDC89D, a little inky aubergine. Composition: extremely wide panoramic 16:9 landscape; upper third and left third mostly light cream with delicate color, the richest violet brushwork along the lower third and far right. Keep the upper-left light enough for dark website text over it. Soft natural light, generous open space. Paint should feel handmade and dimensional rather than a smooth digital gradient. No people, no faces, no objects, no buildings, no UI, no borders, no typography, no logos, no watermark. This is a finished background artwork for a mature, warm technology brand."
+    },
+    {
+      "file": "memory-landscape-night.webp",
+      "prompt": "Use case: lighting-weather\nAsset type: complementary night painting background for the SecondU expert showcase and closing invitation.\nEdit the supplied original landscape painting into a nocturnal color variation. Preserve the panoramic composition, flowing hills, confident tactile oil brushwork and soft distant horizon. Change the light and palette to deep aubergine, charcoal purple, muted violet and restrained warm gold along the far horizon. The upper left must be uniformly dark enough for warm ivory website headings, while the lower right has richer violet brushwork. Sophisticated painterly atmosphere with depth and visible pigment, not neon or a digital gradient. Keep the scene abstract and quiet. No people, objects, stars, moon, UI, text, logos, borders or watermark. Output a complete wide landscape painting."
+    }
+  ],
+  "processing": "WebP encoding at quality 88; original composition preserved. Existing SecondU portrait and product UI remain separate."
+}

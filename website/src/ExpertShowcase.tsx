@@ -18,6 +18,7 @@ export default function ExpertShowcase(){
  const [turn,setTurn]=useState(0),[faces,setFaces]=useState<Record<string,'identity'|'role'|'history'>>({});
  const [playing,setPlaying]=useState(()=>!matchMedia('(prefers-reduced-motion: reduce)').matches),[dragging,setDragging]=useState(false);
  const [hovered,setHovered]=useState(false),[focused,setFocused]=useState(false),[inView,setInView]=useState(false),[hidden,setHidden]=useState(()=>document.hidden);
+ const picker=useRef<HTMLDivElement>(null);
  const entered=useRef(false);
  const [reduced,setReduced]=useState(()=>matchMedia('(prefers-reduced-motion: reduce)').matches);
  const stage=useRef<HTMLDivElement>(null),drag=useRef<{x:number;y:number;id:number}|null>(null);
@@ -26,6 +27,7 @@ export default function ExpertShowcase(){
  useEffect(()=>{if(!stage.current)return;const observer=new IntersectionObserver(entries=>setInView(entries.some(entry=>entry.isIntersecting&&entry.intersectionRatio>=.28)),{threshold:[0,.28,.6]});observer.observe(stage.current);return()=>observer.disconnect();},[]);
  useEffect(()=>{const change=()=>setHidden(document.hidden);document.addEventListener('visibilitychange',change);return()=>document.removeEventListener('visibilitychange',change);},[]);
  useEffect(()=>{if(!playing||reduced||hovered||focused||!inView||hidden)return;if(!entered.current){entered.current=true;setTurn(value=>value+1);}const timer=window.setInterval(()=>setTurn(value=>value+1),6000);return()=>clearInterval(timer);},[playing,reduced,hovered,focused,inView,hidden]);
+ useEffect(()=>{const list=picker.current,button=list?.querySelector<HTMLButtonElement>('[aria-pressed="true"]');if(!list||!button)return;const left=button.offsetLeft-(list.clientWidth-button.offsetWidth)/2;list.scrollTo({left,behavior:reduced?'instant':'smooth'});},[current,reduced]);
  function choose(index:number){setPlaying(false);const forward=modulo(index-current);setTurn(value=>value+(forward>templates.length/2?forward-templates.length:forward));}
  function step(direction:number){setPlaying(false);setTurn(value=>value+direction);}
  function pointerDown(event:PointerEvent<HTMLDivElement>){if((event.target as Element).closest('button,a,.ag-pass-reading'))return;drag.current={x:event.clientX,y:event.clientY,id:event.pointerId};event.currentTarget.setPointerCapture(event.pointerId);setDragging(true);}
@@ -46,7 +48,7 @@ export default function ExpertShowcase(){
    })}
   </div>
   <div className="site-experts-orbit-footer"><div className="site-expert-caption" aria-live={playing&&!hovered&&!focused?'off':'polite'}><h3>{expertText(template.name,language)}</h3><p>{expertText(template.description,language)}</p></div><div className="site-experts-controls"><button type="button" onClick={()=>step(-1)} aria-label={t('上一位专家','Previous expert')}><ArrowLeft/></button><span className="site-experts-count">{String(current+1).padStart(2,'0')} <span>/ {String(templates.length).padStart(2,'0')}</span></span><button type="button" onClick={()=>step(1)} aria-label={t('下一位专家','Next expert')}><ArrowRight/></button>{!reduced&&<button className="site-experts-motion" type="button" onClick={toggleMotion} aria-label={playing?t('暂停工牌轮播','Pause badge rotation'):t('播放工牌轮播','Play badge rotation')} aria-pressed={playing}>{playing?<Pause/>:<Play/>}</button>}</div></div>
-  <div className="site-experts-picker" role="group" aria-label={t('选择专家','Choose an expert')}>{templates.map((item,index)=><button key={item.id} type="button" aria-pressed={index===current} onClick={()=>choose(index)}>{expertText(item.name,language)}</button>)}</div>
+  <div ref={picker} className="site-experts-picker" role="group" aria-label={t('选择专家','Choose an expert')}>{templates.map((item,index)=><button key={item.id} type="button" aria-pressed={index===current} onClick={()=>choose(index)}>{expertText(item.name,language)}</button>)}</div>
   <div className={`site-experts-workspace${expertScreen?'':' without-screen'}`}><div><h3>{t('从一张工牌，走进一支团队。','From an expert card to a working team.')}</h3><p>{t('为专家配置模型、知识和工具。围绕任务组建团队，由负责人拆解工作，再回到同一个空间查看讨论与成果。','Configure each expert’s model, knowledge and tools. Build a team around a task, give a lead responsibility for coordination, and keep the discussion and results together.')}</p><button className="site-experts-link" onClick={event=>openProductRoute('agents',event.currentTarget)}>{t('进入专家工作区','Open the expert workspace')}</button></div>{expertScreen&&<ProductPreview kind="specialists" route="agents" alt={t('SecondU 中文专家工作区，展示真实专家和协作入口','SecondU English expert workspace, showing real specialists and collaboration controls')} action={t('进入专家工作区','Open the expert workspace')} className="site-experts-screen"/>}</div>
  </section>;
 }

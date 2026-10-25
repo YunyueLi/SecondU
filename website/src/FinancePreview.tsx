@@ -5,8 +5,10 @@ import {useSiteTheme} from './site-theme';
 import {openProductRoute} from './product-navigation';
 import {financePreviewViews as views,type FinancePreviewView} from './embed/finance-presentation';
 import './finance-story.css';
+import PreviewChrome from './PreviewChrome';
+import SiteGlow from './SiteGlow';
 
-const WIDTH=1160,HEIGHT=850;
+const WIDTH=1160,HEIGHT=816;
 
 /** The real website product, with its native Finance views selected for this preview. */
 export default function FinancePreview(){
@@ -51,10 +53,13 @@ export default function FinancePreview(){
  },[playing,view]);
  const labels={overview:t('概览','Overview'),portfolio:t('投资','Portfolio'),structure:t('结构','Structure'),allocation:t('占比','Allocation'),details:t('明细','Details'),holdings:t('持仓','Holdings')};
  return <div ref={host} className="cap-story-visual finance-story-visual" data-load-state={ready?'ready':slow?'slow':'loading'} data-demonstration={playing?'playing':'paused'} data-view={view}>
+  <SiteGlow radius={12} active={visible&&!hidden&&!paused}/>
+  <div className="preview-window"><PreviewChrome/>
   <div ref={viewport} className="finance-preview-viewport">
    {near&&<iframe key={attempt} ref={frame} src={source} title={t('SecondU 真实资产管理界面，使用虚构示例','The real SecondU asset-management interface with fictional examples')} width={WIDTH} height={HEIGHT} tabIndex={-1} aria-hidden="true" sandbox="allow-scripts allow-same-origin" loading="eager" onLoad={()=>send(true)}/>}
    {!ready&&<div className="finance-preview-loading" role="status">{slow?t('示例仍在载入，可进入完整工作区查看。','The preview is still loading. Open the full workspace to explore.'):t('正在打开财务概览……','Opening the finance overview…')}</div>}
    <button type="button" className="finance-preview-open" onClick={event=>openProductRoute(view==='holdings'?'finance/holdings':'finance',event.currentTarget)} aria-label={t('打开完整资产管理工作区','Open the full asset-management workspace')}><span className="product-preview-enter">{t('进入体验','Explore the workspace')}</span></button>
+  </div>
   </div>
   <div className="finance-preview-caption">
    <div className="finance-preview-views" role="group" aria-label={t('切换资产管理展示','Choose an asset-management view')}>{views.map(item=><button type="button" key={item} disabled={!ready} aria-pressed={view===item} onClick={()=>{setPaused(true);setView(item);}}>{labels[item]}</button>)}</div>

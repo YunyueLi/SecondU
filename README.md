@@ -1,14 +1,14 @@
 <p align="center">
-  <a href="https://yunyueli.github.io/SecondU/?lang=en"><img src="public/brand/secondu-app-icon.svg" width="88" height="88" alt="SecondU"></a>
+  <a href="https://secondu.ungetsu.net/?lang=en"><img src="public/brand/secondu-app-icon.svg" width="88" height="88" alt="SecondU"></a>
 </p>
 <h1 align="center">SecondU</h1>
 <p align="center"><strong>Your digital twin.</strong><br>From understanding to action.</p>
 <p align="center">An open-source agent product built around a personal digital twin.</p>
 <p align="center">
-  <a href="https://yunyueli.github.io/SecondU/product/embed.html?space=demo-us-v1&lang=en#example-chat"><strong>Try SecondU</strong></a>&nbsp;&nbsp;&nbsp;
+  <a href="https://secondu.ungetsu.net/product/embed.html?space=demo-us-v1&lang=en#example-chat"><strong>Try SecondU</strong></a>&nbsp;&nbsp;&nbsp;
   <a href="https://github.com/YunyueLi/SecondU/releases/tag/v0.2.1"><strong>Download for macOS</strong></a>&nbsp;&nbsp;&nbsp;
   <a href="QUICKSTART.md">Quick start</a>&nbsp;&nbsp;&nbsp;
-  <a href="https://yunyueli.github.io/SecondU/benchmark/?lang=en">Benchmark</a>&nbsp;&nbsp;&nbsp;
+  <a href="https://secondu.ungetsu.net/benchmark/?lang=en">Benchmark</a>&nbsp;&nbsp;&nbsp;
   <a href="README.zh-CN.md">简体中文</a>
 </p>
 <p align="center">
@@ -16,7 +16,7 @@
 </p>
 
 <p align="center">
-  <a href="https://yunyueli.github.io/SecondU/product/embed.html?space=demo-us-v1&lang=en#example-chat">
+  <a href="https://secondu.ungetsu.net/product/embed.html?space=demo-us-v1&lang=en#example-chat">
     <picture>
       <source media="(prefers-reduced-motion: reduce) and (prefers-color-scheme: dark)" srcset="docs/readme-assets/task-workspace-en-dark.jpg">
       <source media="(prefers-reduced-motion: reduce)" srcset="docs/readme-assets/task-workspace-en.jpg">
@@ -26,7 +26,7 @@
   </a>
 </p>
 
-<p align="center"><sub>Actual application states with fictional example data. <a href="https://yunyueli.github.io/SecondU/product/embed.html?space=demo-us-v1&lang=en#example-chat">Try the app</a> without an account or model key, or visit the <a href="https://yunyueli.github.io/SecondU/?lang=en">product website</a>.</sub></p>
+<p align="center"><sub>Actual application states with fictional example data. <a href="https://secondu.ungetsu.net/product/embed.html?space=demo-us-v1&lang=en#example-chat">Try the app</a> without an account or model key, or visit the <a href="https://secondu.ungetsu.net/?lang=en">product website</a>.</sub></p>
 
 ## Understanding that carries forward
 
@@ -56,7 +56,7 @@ For direct input, choose **Help understand me** or **Only this time**. In person
 
 Your profile, timeline, relationships and sources make understanding inspectable and correctable. Choose context for a task and check what was actually used. Reviewed understanding can become an editable task draft that you finish and send. For work, learning or life choices, use your experiences, preferences and current constraints to discuss trade-offs. The decision remains yours. [Follow the five-minute walkthrough](docs/PROTOTYPE.md#连接模型后五分钟验证主线), or inspect the [synthetic context comparison](docs/CONTEXT-BENCHMARK.md).
 
-<p><a href="https://yunyueli.github.io/SecondU/product/embed.html?space=demo-us-v1&lang=en#self"><picture>
+<p><a href="https://secondu.ungetsu.net/product/embed.html?space=demo-us-v1&lang=en#self"><picture>
       <source media="(prefers-reduced-motion: reduce) and (prefers-color-scheme: dark)" srcset="docs/readme-assets/personal-context-en-dark.jpg">
       <source media="(prefers-reduced-motion: reduce)" srcset="docs/readme-assets/personal-context-en.jpg">
       <source media="(prefers-color-scheme: dark)" srcset="docs/readme-assets/personal-context-en-dark.gif">
@@ -65,9 +65,9 @@ Your profile, timeline, relationships and sources make understanding inspectable
 
 ### Think through an important choice
 
-[Open the career discussion example](https://yunyueli.github.io/SecondU/product/embed.html?space=demo-us-v1&lang=en#example-decision) to see how experience, working preferences and life outside work inform a comparison of possible directions. Four exchanges and an editable outline live in the real task workspace.
+[Open the career discussion example](https://secondu.ungetsu.net/product/embed.html?space=demo-us-v1&lang=en#example-decision) to see how experience, working preferences and life outside work inform a comparison of possible directions. Four exchanges and an editable outline live in the real task workspace.
 
-<p><a href="https://yunyueli.github.io/SecondU/product/embed.html?space=demo-us-v1&lang=en#example-decision"><picture>
+<p><a href="https://secondu.ungetsu.net/product/embed.html?space=demo-us-v1&lang=en#example-decision"><picture>
       <source media="(prefers-color-scheme: dark)" srcset="docs/readme-assets/decision-support-en-dark.jpg">
       <img src="docs/readme-assets/decision-support-en.jpg" width="1280" alt="Caspian discusses a career choice in the real workspace, with an editable comparison outline">
     </picture></a></p>
@@ -76,7 +76,7 @@ Your profile, timeline, relationships and sources make understanding inspectable
 
 Talk to a specialist or form a team with a lead. Follow delegated work, status and results. Project directories, model connections and approvals define the working environment.
 
-<p><a href="https://yunyueli.github.io/SecondU/product/embed.html?space=demo-us-v1&lang=en#agents"><picture>
+<p><a href="https://secondu.ungetsu.net/product/embed.html?space=demo-us-v1&lang=en#agents"><picture>
       <source media="(prefers-color-scheme: dark)" srcset="docs/readme-assets/specialists-en-dark.jpg">
       <img src="docs/readme-assets/specialists-en.jpg" width="1280" alt="Specialists in the English fictional workspace">
     </picture></a></p>
@@ -87,16 +87,16 @@ The Finance workspace brings together **overview, accounts, holdings, market dat
 
 Choose an account provider in **Settings → Connectors**, preview your accounts and match them to your records before synchronizing. Browse financial research services in the same directory.
 
-The [website's finance story](https://yunyueli.github.io/SecondU/?lang=en#finance) brings retirement savings, employer stock, foreign-currency assets, everyday spending and long-term plans together in one bilingual example.
+The [website's finance story](https://secondu.ungetsu.net/?lang=en#finance) brings retirement savings, employer stock, foreign-currency assets, everyday spending and long-term plans together in one bilingual example.
 
 Explore six views: **Overview, Portfolio, Structure, Allocation, Details and Holdings**. Overview brings together net assets, spending categories, monthly spending and upcoming payments; Portfolio combines investments, holding quotes and a recorded credit score. Open the full workspace from any preview without losing your place on the website. Quote timestamps use the example's Pacific time zone, with the actual zone available in the full timestamp.
 
-<p><a href="https://yunyueli.github.io/SecondU/product/embed.html?space=demo-us-v1&lang=en#finance"><picture>
+<p><a href="https://secondu.ungetsu.net/product/embed.html?space=demo-us-v1&lang=en#finance"><picture>
       <source media="(prefers-color-scheme: dark)" srcset="docs/readme-assets/finance-overview-en-dark.jpg">
       <img src="docs/readme-assets/finance-overview-en.jpg" width="1160" alt="Finance overview: net asset trend, spending categories, monthly spending and upcoming payments">
     </picture></a></p>
 
-<p><a href="https://yunyueli.github.io/SecondU/product/embed.html?space=demo-us-v1&lang=en#finance"><picture>
+<p><a href="https://secondu.ungetsu.net/product/embed.html?space=demo-us-v1&lang=en#finance"><picture>
       <source media="(prefers-color-scheme: dark)" srcset="docs/readme-assets/finance-portfolio-en-dark.jpg">
       <img src="docs/readme-assets/finance-portfolio-en.jpg" width="1160" alt="SecondU investment portfolio, holding quotes and credit record">
     </picture></a></p>
@@ -132,7 +132,7 @@ The mobile entry reuses the same sources, twin-building flow and task components
 
 ## Personal-context benchmark
 
-[**Explore the interactive benchmark**](https://yunyueli.github.io/SecondU/benchmark/?lang=en): **24 authored synthetic cases, six dimensions, three context conditions and two repetitions — 144 planned calls, 143 returned.** The page lets you inspect each case, repetition, exact input, original reply, source and failure. [Method and reproduction](docs/CONTEXT-BENCHMARK.md) · [Frozen plan and evidence](benchmarks/results/2026-10-01-v2/)
+[**Explore the interactive benchmark**](https://secondu.ungetsu.net/benchmark/?lang=en): **24 authored synthetic cases, six dimensions, three context conditions and two repetitions — 144 planned calls, 143 returned.** The page lets you inspect each case, repetition, exact input, original reply, source and failure. [Method and reproduction](docs/CONTEXT-BENCHMARK.md) · [Frozen plan and evidence](benchmarks/results/2026-10-01-v2/)
 
 The primary comparison uses the same model and an 8,000-character context cap. Raw-record retrieval uses BM25; SecondU uses its production confirmation, revision and context-selection path.
 
@@ -151,7 +151,7 @@ No-context is a separate visible-information calibration: **47 / 48** calls met 
 
 | Start here | What to expect |
 | --- | --- |
-| **[Try it in your browser](https://yunyueli.github.io/SecondU/product/embed.html?space=demo-us-v1&lang=en#example-chat)** | Explore bilingual examples, import a summary and edit content in the current page. Reload to start again. |
+| **[Try it in your browser](https://secondu.ungetsu.net/product/embed.html?space=demo-us-v1&lang=en#example-chat)** | Explore bilingual examples, import a summary and edit content in the current page. Reload to start again. |
 | **[Download the desktop app](https://github.com/YunyueLi/SecondU/releases/tag/v0.2.1)** | Apple Silicon Mac, macOS 13+. Includes Node. See the quick start for installation. |
 | **Run from source** | Node.js 22.18+ and npm. Use the commands below, then open [localhost:58645](http://127.0.0.1:58645). |
 
@@ -186,11 +186,11 @@ The [12-direction roadmap](docs/ROADMAP.md) describes current foundations, next 
 
 ## How it works
 
-[![How personal context carries forward](docs/diagrams/understanding-loop-en.svg)](https://yunyueli.github.io/SecondU/architecture/understanding-loop-en.html)
+[![How personal context carries forward](docs/diagrams/understanding-loop-en.svg)](https://secondu.ungetsu.net/architecture/understanding-loop-en.html)
 
-[Explore the understanding loop](https://yunyueli.github.io/SecondU/architecture/understanding-loop-en.html)
+[Explore the understanding loop](https://secondu.ungetsu.net/architecture/understanding-loop-en.html)
 
-[Explore the execution architecture](https://yunyueli.github.io/SecondU/architecture/harness-en.html)
+[Explore the execution architecture](https://secondu.ungetsu.net/architecture/harness-en.html)
 
 **React and official OpenAI Apps SDK UI** power the interface; **Node.js and SQLite** persist state. **Codex CLI app-server** supplies execution. SecondU adds context, task and team orchestration, permissions and versioned files.
 
@@ -226,4 +226,4 @@ Contribute to context quality, recovery, files, accessibility or integrations. R
 
 Project code is [MIT licensed](LICENSE); third-party assets retain their [own licenses](THIRD_PARTY_NOTICES.md). SecondU is independent of OpenAI and model providers. **Hither** remains in legacy identifiers and data paths.
 
-<p><sub><a href="https://yunyueli.github.io/SecondU/?lang=en">Move your cursor to discover the 2ndU hidden on the homepage.</a></sub></p>
+<p><sub><a href="https://secondu.ungetsu.net/?lang=en">Move your cursor to discover the 2ndU hidden on the homepage.</a></sub></p>

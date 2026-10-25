@@ -21,12 +21,3 @@
 .cap-config a{color:inherit;font:inherit;text-underline-offset:5px;text-decoration-thickness:1px;padding:10px 0;white-space:nowrap}.cap-config a:focus-visible{outline:2px solid currentColor;outline-offset:5px}
 
 .cap-config>p{max-width:390px;line-height:1.8;flex:1}.cap-config>div{flex:1.4}
-
-@media(min-width:721px){
- .cap-stories>.cap-story:nth-child(odd):not(.without-screen){grid-template-columns:minmax(0,1.55fr) minmax(0,.76fr)}
- .cap-stories>.cap-story:nth-child(odd):not(.without-screen)>.cap-story-intro{grid-column:2;grid-row:1}
- .cap-stories>.cap-story:nth-child(odd):not(.without-screen)>.cap-story-visual{grid-column:1;grid-row:1}
-}
-@media(min-width:721px) and (max-width:1000px){
- .cap-stories>.cap-story:nth-child(odd):not(.without-screen){grid-template-columns:minmax(0,1.3fr) minmax(0,.85fr)}
-}

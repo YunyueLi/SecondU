@@ -9,6 +9,7 @@ import { syncExampleLanguage, exampleDownloadName, exampleChatRoute, exampleDeci
 import { isDecisionExampleTask } from '../../../shared/demo-decision.mjs';
 import { isProductRoute } from '../product-navigation';
 import { replaceExampleRoute } from './navigation.mjs';
+import {scrollableWithin} from './scroll.mjs';
 import { installFinancePresentation } from './finance-presentation';
 import './finance-presentation.css';
 import '../../../src/styles.css';
@@ -43,7 +44,8 @@ function syncLanguage(value: 'zh' | 'en') {
   syncExampleLanguage(value);
   if (mobile) { if (!location.hash) replaceExampleRoute(window, 'new'); return; }
   if (location.hash === '#example-decision' || isDecisionExampleTask(location.hash.replace(/^#task\//,''))) replaceExampleRoute(window, exampleDecisionRoute(value));
-  else if (location.hash === '#example-chat' || !location.hash || previous !== nextSpace && /^#(?:task|agents|projects|artifacts)\//.test(location.hash)) replaceExampleRoute(window, exampleChatRoute(value));
+  else if (!location.hash) replaceExampleRoute(window, 'assistant');
+  else if (location.hash === '#example-chat' || previous !== nextSpace && /^#(?:task|agents|projects|artifacts)\//.test(location.hash)) replaceExampleRoute(window, exampleChatRoute(value));
 }
 function applyLanguage(value: 'zh' | 'en') { syncLanguage(value); setLocale(value === 'en' ? 'en' : 'zh-CN'); }
 applyTheme(); applyLanguage(query.get('lang') === 'en' ? 'en' : 'zh');
@@ -111,17 +113,24 @@ addEventListener('keydown', event => {
     parent.postMessage({ type: 'secondu-example-collapse' }, location.origin);
   }
 });
-let interacted = false;
-function takeOverExample(){interacted=true;if(!standalone)parent.postMessage({type:'secondu-example-interaction'},location.origin);}
+function takeOverExample(){if(!standalone)parent.postMessage({type:'secondu-example-interaction'},location.origin);}
 addEventListener('pointerdown',takeOverExample);
 addEventListener('keydown',takeOverExample);
-addEventListener('wheel', event => {
-  // Before takeover, scrolling continues the landing page. After a click or
-  // keyboard action, the real app owns scrolling so documents remain readable.
-  if (expanded || interacted || event.ctrlKey || event.metaKey) return;
-  event.preventDefault();
-  parent.postMessage({ type: 'secondu-example-scroll', deltaY: Math.max(-1000, Math.min(1000, event.deltaY)) }, location.origin);
-}, { passive: false });
+function continuePage(deltaY:number){parent.postMessage({type:'secondu-example-scroll',deltaY:Math.max(-1000,Math.min(1000,deltaY))},location.origin);}
+addEventListener('wheel',event=>{
+ if(standalone||expanded||event.ctrlKey||event.metaKey)return;
+ if((event.target as Element|null)?.closest('.workbench-surface,[role=dialog],textarea,[contenteditable=true]')&&scrollableWithin(event.target,event.deltaY))return;
+ event.preventDefault();event.stopImmediatePropagation();continuePage(event.deltaY);
+},{passive:false,capture:true});
+let touchY:number|undefined;
+addEventListener('touchstart',event=>{touchY=event.touches.length===1?event.touches[0].clientY:undefined;},{passive:true});
+addEventListener('touchmove',event=>{
+ if(standalone||expanded||touchY===undefined||event.touches.length!==1)return;
+ const next=event.touches[0].clientY,deltaY=touchY-next;touchY=next;
+ if((event.target as Element|null)?.closest('.workbench-surface,[role=dialog],textarea,[contenteditable=true]')&&scrollableWithin(event.target,deltaY))return;
+ event.preventDefault();event.stopImmediatePropagation();continuePage(deltaY);
+},{passive:false,capture:true});
+addEventListener('touchend',()=>{touchY=undefined;},{passive:true});
 // Files open on user input. Opening one on load would focus the real workbench
 // and scroll the host page away from its hero before the visitor takes over.
 if (standalone) {

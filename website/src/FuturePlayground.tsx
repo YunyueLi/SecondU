@@ -1,7 +1,8 @@
-import {useEffect,useId,useState} from 'react';
+import {useEffect,useRef,useState} from 'react';
 import {Button} from '@openai/apps-sdk-ui/components/Button';
-import {Brain,ChatCompose,Calendar,Groups,FolderDocumentsFinder,Terminal,ConnectApps,Mobile,Lightbulb,CompareArrows,UserHeart,BookClock,Compass} from '@openai/apps-sdk-ui/components/Icon';
+import {Brain,ChatCompose,Calendar,Groups,FolderDocumentsFinder,Terminal,ConnectApps,Mobile,Lightbulb,CompareArrows,UserHeart,BookClock,ArrowLeft,ArrowRight} from '@openai/apps-sdk-ui/components/Icon';
 import {useSiteLanguage} from './site-language';
+import SiteGlow from './SiteGlow';
 import {openProductRoute,type ProductRoute} from './product-navigation';
 import RoadmapEmblem from './RoadmapEmblem';
 import './future-playground.css';
@@ -37,43 +38,29 @@ export default function FuturePlayground(){
  ];
  const directionIcons=[Brain,ChatCompose,Calendar,Groups,FolderDocumentsFinder,Terminal,ConnectApps,Mobile,Lightbulb,CompareArrows,UserHeart,BookClock];
  const [direction,setDirection]=useState(0);
- const [inlineDetail,setInlineDetail]=useState(()=>matchMedia('(max-width:980px)').matches);
- useEffect(()=>{const media=matchMedia('(max-width:980px)');const update=()=>setInlineDetail(media.matches);media.addEventListener('change',update);return()=>media.removeEventListener('change',update);},[]);
- const selected=directions[direction];
- const experience=experiences[direction];
+ const navigation=useRef<HTMLElement>(null);
  const activeStage=stages.findIndex(stage=>stage.items.includes(direction));
- const curveId=useId().replaceAll(':','');
- function select(index:number){setDirection(index);}
- const detail=<div className={`future-direction-detail${inlineDetail?' is-inline':''}`} id="future-direction-detail" aria-live="polite">
-    <div className={`future-detail-scene future-detail-scene-${activeStage}`} aria-hidden="true"><span className="future-scene-number">{String(activeStage+1).padStart(2,'0')}</span><i className="future-scene-orbit"/><i className="future-scene-orbit future-scene-orbit-inner"/><RoadmapEmblem stage={activeStage}/></div>
-    <div className="future-detail-content">
-     <div className="future-detail-heading"><span className="future-detail-status">{selected.status}</span><h3>{selected.name}</h3></div>
-     <div className="future-detail-panels">
-      <div className="future-detail-panel"><h4>{t('今天可以体验','Available today')}</h4><p>{selected.now}</p>{experience&&<Button className="future-detail-experience" color="secondary" variant="ghost" onClick={event=>openProductRoute(experience.route,event.currentTarget)}>{experience.action}</Button>}</div>
-      <div className="future-detail-panel future-detail-next"><h4>{t('接下来','What comes next')}</h4><p>{selected.next}</p></div>
-     </div>
-     <a className="future-full-roadmap" href="https://github.com/YunyueLi/SecondU/blob/main/docs/ROADMAP.md" target="_blank" rel="noreferrer">{t('查看完整路线','View the full roadmap')}</a>
-    </div>
-   </div>;
+ const currentStage=stages[activeStage];
+ useEffect(()=>{const nav=navigation.current,button=nav?.querySelector<HTMLButtonElement>('[aria-pressed="true"]');if(nav&&button)nav.scrollTo({left:button.offsetLeft-(nav.clientWidth-button.offsetWidth)/2,behavior:'instant'});},[activeStage]);
+ function moveStage(step:number){const next=(activeStage+step+stages.length)%stages.length;setDirection(stages[next].items[0]);}
  return <section className="site-section future-playground" id="future">
-  <div className="site-section-head"><span className="future-status"><Compass/>{t('发展路线','The path ahead')}</span><h2><span>{t('同一个你，','The same you, ')}</span><span>{t('走向更大的世界。','in a wider world.')}</span></h2><p>{t('从持续理解你，到跨设备协作、分享专长与建立新的联系。选择一个方向，看看今天能体验什么，接下来还要完成什么。','From understanding you to working across devices, sharing expertise and making new connections. Choose a direction to explore what works today and what comes next.')}</p></div>
-  <div className="future-roadmap">
-   <div className="future-route-landscape">
-    <svg className="future-route-curve future-route-curve-wide" viewBox="0 0 1000 240" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id={`${curveId}-wide`}><stop stopColor="var(--future-gold)"/><stop offset=".48" stopColor="var(--future-lilac)"/><stop offset="1" stopColor="var(--future-gold)"/></linearGradient></defs><path className="future-route-ribbon" d="M-25 188C35 188 53 166 100 166C196 166 204 60 300 60S404 166 500 166S604 60 700 60S804 166 900 166S973 207 1025 198"/><path className="future-route-thread" stroke={`url(#${curveId}-wide)`} d="M-25 184C35 184 53 162 100 162C196 162 204 56 300 56S404 162 500 162S604 56 700 56S804 162 900 162S973 203 1025 194"/><path className="future-route-trace" d="M-25 184C35 184 53 162 100 162C196 162 204 56 300 56S404 162 500 162S604 56 700 56S804 162 900 162S973 203 1025 194" pathLength="1000"/></svg>
-    <ol className="future-route" aria-label={t('产品发展路线','Product development path')}>
-     {stages.map(({title,items},stage)=><li key={stage} className={activeStage===stage?'is-active':''}>
-      {inlineDetail&&stage<stages.length-1&&<svg className="future-stage-connector" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path className="future-route-thread" d={stage%2?'M61 0C61 50 27 50 27 100':'M27 0C27 50 61 50 61 100'}/></svg>}
-      <button className="future-route-stage" type="button" aria-pressed={activeStage===stage} aria-controls="future-direction-detail" onClick={()=>select(activeStage===stage?direction:items[0])}>
-       <span className="future-route-symbol"><RoadmapEmblem stage={stage}/></span>
-       <span className="future-route-number">{String(stage+1).padStart(2,'0')}</span>
-       <span className="future-route-title">{title}</span>
-      </button>
-      <div className="future-route-directions">{items.map(index=>{const ItemIcon=directionIcons[index];return <button key={index} type="button" aria-pressed={direction===index} aria-controls="future-direction-detail" onClick={()=>select(index)}><ItemIcon/><span>{directions[index].name}</span></button>;})}</div>
-      {inlineDetail&&activeStage===stage&&detail}
-     </li>)}
-    </ol>
+  <div className="site-section-head"><h2>{t('同一个你，走向更大的世界。','The same you, in a wider world.')}</h2><p>{t('从持续理解你，到跨设备协作、分享专长与建立新的联系。选择一个方向，看看今天能体验什么，接下来还要完成什么。','From understanding you to working across devices, sharing expertise and making new connections. Explore what works today and what comes next.')}</p></div>
+  <div className="future-stage">
+   <div className="future-stage-navigation">
+    <nav ref={navigation} aria-label={t('产品发展路线','Product development path')}>{stages.map((stage,index)=><button key={stage.title} type="button" aria-pressed={activeStage===index} aria-controls="future-direction-detail" onClick={()=>setDirection(stage.items[0])}>{stage.title}</button>)}</nav>
+    <div className="future-stage-arrows"><button type="button" onClick={()=>moveStage(-1)} aria-label={t('上一个发展阶段','Previous roadmap stage')}><ArrowLeft/></button><button type="button" onClick={()=>moveStage(1)} aria-label={t('下一个发展阶段','Next roadmap stage')}><ArrowRight/></button></div>
    </div>
-   {!inlineDetail&&detail}
+   <div className="future-mobile-controls"><button type="button" onClick={()=>moveStage(-1)} aria-label={t('上一个发展阶段','Previous roadmap stage')}><ArrowLeft/></button><div><strong>{currentStage.title}</strong><span>{activeStage+1} / {stages.length}</span></div><button type="button" onClick={()=>moveStage(1)} aria-label={t('下一个发展阶段','Next roadmap stage')}><ArrowRight/></button></div>
+   <div className="future-stage-stack" id="future-direction-detail"><SiteGlow radius={16}/>{directions.map((entry,index)=>{
+    const stageIndex=stages.findIndex(stage=>stage.items.includes(index)),entryStage=stages[stageIndex],entryExperience=experiences[index],active=direction===index;
+    return <div key={entry.name} className="future-stage-detail" data-active={active} aria-hidden={!active||undefined} inert={!active}>
+     <div className="future-stage-heading"><span>{entry.status}</span><h3>{entry.name}</h3></div>
+     <div className="future-stage-art" aria-hidden="true"><RoadmapEmblem stage={stageIndex}/></div>
+     <div className="future-stage-directions" role="group" aria-label={entryStage.title}>{entryStage.items.map(item=>{const ItemIcon=directionIcons[item];return <button type="button" key={item} aria-pressed={direction===item} onClick={()=>setDirection(item)}><ItemIcon/>{directions[item].name}</button>;})}</div>
+     <div className="future-stage-panels"><div><h4>{t('今天可以体验','Available today')}</h4><p>{entry.now}</p>{entryExperience&&<Button variant="ghost" color="secondary" onClick={event=>openProductRoute(entryExperience.route,event.currentTarget)}>{entryExperience.action}</Button>}</div><div><h4>{t('接下来','What comes next')}</h4><p>{entry.next}</p></div></div>
+     <a className="future-full-roadmap" href="https://github.com/YunyueLi/SecondU/blob/main/docs/ROADMAP.md" target="_blank" rel="noreferrer">{t('查看完整路线','View the full roadmap')}<ArrowRight/></a>
+    </div>;
+   })}</div>
   </div>
  </section>;
 }

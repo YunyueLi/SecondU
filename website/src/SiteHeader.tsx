@@ -33,13 +33,14 @@ export default function SiteHeader(){
  },[]);
  const links=[{href:'#experience',label:t('体验产品','Experience')},{href:'#capabilities',label:t('产品能力','Capabilities')},{href:'#future',label:t('未来方向','Future directions')},{href:'#benchmark',label:t('评测','Benchmark')},{href:'#build',label:t('开发进展','Development')}];
  return <header className={`site-masthead${scrolled?' is-scrolled':''}`}>
+  <span className="site-masthead-glass" aria-hidden="true"/>
   <div className="site-masthead-in">
    <a className="site-brand" href="#" aria-label={t('SecondU 首页','SecondU home')}><img src="./assets/secondu-mark.svg" alt=""/><img src="./assets/secondu-wordmark.svg" alt="SecondU"/></a>
    <nav className="site-masthead-links" aria-label={t('网站导航','Website navigation')}>{links.map(link=><a key={link.href} href={link.href} aria-current={activeSection===link.href.slice(1)?'location':undefined}>{link.label}</a>)}</nav>
    <div className="site-masthead-tools">
     <a className="site-masthead-github" href="https://github.com/YunyueLi/SecondU" target="_blank" rel="noreferrer" aria-label="GitHub" title="GitHub"><GitHubMark/></a>
     <ButtonLink as="a" className="site-masthead-download" href={desktopDownload} color="secondary" variant="ghost" pill={false} uniform size="md" aria-label={t('下载 SecondU macOS 版','Download SecondU for macOS')} title={t('下载 macOS 版（Apple 芯片）','Download for macOS (Apple silicon)')}><Download/></ButtonLink>
-    <button type="button" className="site-masthead-try" onClick={event=>openProductRoute('example-chat',event.currentTarget)}>{t('体验 SecondU','Try SecondU')}</button>
+    <button type="button" className="site-masthead-try" onClick={event=>openProductRoute('assistant',event.currentTarget)}>{t('体验 SecondU','Try SecondU')}</button>
     <div className="site-masthead-mobile"><Menu><Menu.Trigger><Button uniform pill={false} color="secondary" variant="ghost" size="md" aria-label={t('打开网站导航','Open website navigation')}><Hamburger/></Button></Menu.Trigger><Menu.Content align="end" minWidth={240}><div className="site-masthead-menu">
      {links.map(link=><Menu.Link as="a" href={link.href} key={link.href} aria-current={activeSection===link.href.slice(1)?'location':undefined}>{link.label}</Menu.Link>)}
      <Menu.Separator/>

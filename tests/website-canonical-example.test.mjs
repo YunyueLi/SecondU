@@ -119,6 +119,9 @@ test('browser SHA matches desktop import and export hashes', { skip: !existsSync
 
 test('isolated browser fact validation preserves canonical revisions', async () => {
   const module = portableMemoryDomain(readFileSync(new URL('../server/domain.mjs', import.meta.url), 'utf8'), new URL('../website/src/embed/runtime-store.mjs', import.meta.url).href);
+  assert.doesNotMatch(module,/capabilityService/);
+  const changed=readFileSync(new URL('../server/domain.mjs',import.meta.url),'utf8').replace('  switch(collection) {',"  if(collection==='facts')entity.unreviewed=true;\n  switch(collection) {");
+  assert.throws(()=>portableMemoryDomain(changed,'./store.mjs'),/Review changed createEntity/);
   const { createEntity } = await import(`data:text/javascript;base64,${Buffer.from(module).toString('base64')}`);
   const runtime = new ExampleRuntime(examples.zh), source = runtime.data.sources[0];
   const candidate = createEntity(runtime, 'facts', { statement: 'Synthetic reviewed preference', sourceIds: [source.id] });

@@ -36,3 +36,6 @@
 .embedded-product-caption button:disabled{opacity:.45;cursor:default}
 .embedded-product-caption button.embedded-product-motion{display:inline-flex;align-items:center;justify-content:center;width:36px;min-height:36px;padding:8px;flex:none}
 .embedded-product-motion svg{width:16px;height:16px}
+
+.embedded-product-frame{pointer-events:auto;width:var(--product-width,1440px);height:var(--product-height,900px)}
+.embedded-product.is-expanded .embedded-product-frame{width:100%;height:100%}

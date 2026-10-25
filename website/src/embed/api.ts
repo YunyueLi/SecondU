@@ -13,7 +13,12 @@ const exportContents = new Map<string, string>();
 export const exampleDownloadName = (url: string) => downloadNames.get(url);
 const language = (): ExampleLanguage => getLocale() === 'en' ? 'en' : 'zh';
 const runtime = (lang = language()) => {
-  if (!stores.has(lang)) stores.set(lang, new ExampleRuntime(createWebsiteExample(lang)));
+  if (!stores.has(lang)) {
+    const example = new ExampleRuntime(createWebsiteExample(lang));
+    // Website presentation only: these two capabilities are visible from arrival.
+    example.response('/settings/navigation', 'PUT', {migrate:{pinned:['agents','finance'],financeExpanded:false,agentsExpanded:false}});
+    stores.set(lang, example);
+  }
   return stores.get(lang)!;
 };
 let lastBootstrap: Bootstrap | undefined;

@@ -12,7 +12,7 @@ export function openProductRoute(route: ProductRoute, trigger?: HTMLElement) {
 export function productExampleUrl(language: 'zh' | 'en', theme?: 'light' | 'dark') {
  const query = new URLSearchParams({space: language === 'zh' ? 'demo-cn-v1' : 'demo-us-v1', lang: language});
  if (theme) query.set('theme', theme);
- return `${import.meta.env.BASE_URL}product/embed.html?${query}#example-chat`;
+ return `${import.meta.env.BASE_URL}product/embed.html?${query}#assistant`;
 }
 
 export function mobileExampleUrl(language: 'zh' | 'en') {
