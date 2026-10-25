@@ -848,3 +848,6 @@ GitHub Release 与应用内版本说明统一使用英文和简体中文，集�
 发布使用独立工作区，只包含官网、相关测试、字体许可与入口链接；其他正在开发的财务、专家和原生程序修改未混入。本地独立发布构建与类型检查通过，72 项官网相关检查通过。实际浏览器已检查 1280px 桌面与 410px 窄屏首屏、浅深色切换、原型内新对话操作、Agents／财务可见、自动播放门槛、连续两次滚动接续及能力卡片内边距。此前反馈及旧构建检查保留为历史证据，不代表用户已接受本轮全部视觉。
 
 新入口配置为 https://secondu.ungetsu.net/ ，沿用 GitHub Pages 托管。根路径、双语 canonical、分享图、站点地图及 README 入口同步更新。旧 GitHub Pages 入口保留，通过托管平台重定向继续使用；上线状态与旧链接实际验证另补充。
+
+
+上线补充：官网提交 `a5ae1e2` 已推送，GitHub Actions [40220877267](https://github.com/YunyueLi/SecondU/actions/runs/40220877267) 的构建与部署均成功。Cloudflare 新增 `secondu` CNAME 至 `yunyueli.github.io`，仅 DNS；GitHub 证书状态 approved，已开启 HTTPS 强制跳转，HTTPS 主站实际返回 200，无需跳过证书校验。正式域名实际浏览器已打开，主页显示新视觉和默认新对话，Agents 与财务可见。新中英文页、产品示例，以及旧 GitHub 首页、英文页、产品示例与评测链接均经实际请求返回 200，旧路径与语言参数在重定向后保留。
