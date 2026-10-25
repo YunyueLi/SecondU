@@ -3,7 +3,7 @@ import { useSiteLanguage } from './site-language';
 import { useSiteTheme } from './site-theme';
 import './embedded-product.css';
 import {isProductRoute,productNavigationEvent,type ProductRoute} from './product-navigation';
-import {Pause,Play} from '@openai/apps-sdk-ui/components/Icon';
+import {CloseBold,Pause,Play} from '@openai/apps-sdk-ui/components/Icon';
 import {StartupScreen} from '../../src/StartupScreen';
 
 const WIDTH = 1440, HEIGHT = 900;
@@ -149,7 +149,7 @@ export default function EmbeddedProduct() {
     <div ref={stage} className="embedded-product-stage" style={{ minHeight: expanded ? stageHeight.current : undefined, backgroundImage: `url(${import.meta.env.BASE_URL}assets/pencil-garden.png)` }}>
       <div ref={workspace} className="embedded-product-window" tabIndex={-1} role={expanded ? 'dialog' : 'region'} aria-modal={expanded || undefined} aria-label={expanded ? t('完整产品体验', 'Expanded product workspace') : t('可操作的产品示例', 'Interactive product example')}>
         {expanded && <span className="embedded-product-focus-guard" tabIndex={0} onFocus={() => frame.current?.focus()} />}
-        <div className="embedded-product-chrome"><span className="embedded-product-dots" aria-hidden="true"><i /><i /><i /></span><span>SecondU</span><span className="embedded-product-badge">{expanded ? <button type="button" ref={closeButton} className="embedded-product-close" onClick={() => setExpanded(false)} aria-label={t('收起产品体验', 'Close expanded workspace')}>{t('收起', 'Close')} <span aria-hidden="true">×</span></button> : t('虚构示例', 'Fictional example')}</span></div>
+        <div className="embedded-product-chrome"><span className="embedded-product-dots" aria-hidden="true"><i /><i /><i /></span><span>SecondU</span><span className="embedded-product-badge">{expanded ? <button type="button" ref={closeButton} className="embedded-product-close" onClick={() => setExpanded(false)} aria-label={t('收起产品体验', 'Close expanded workspace')}><span>{t('收起', 'Close')}</span><CloseBold aria-hidden="true" focusable="false"/></button> : t('虚构示例', 'Fictional example')}</span></div>
         <div className="embedded-product-viewport" ref={viewport} style={{ '--product-height': `${HEIGHT}px` } as React.CSSProperties}>
           {/* Forms dispatch their local submit handlers; the embed CSP blocks native form destinations. */}
           {near && <iframe key={attempt} ref={frame} src={source} title={t('SecondU 完整工作区：导航、对话与可编辑成果', 'Full SecondU workspace: navigation, conversation and editable results')} sandbox="allow-scripts allow-same-origin allow-downloads allow-modals allow-forms" loading="eager" onLoad={()=>send(state.current.route,true)} onError={()=>setLoadError(true)} className="embedded-product-frame" width={WIDTH} height={HEIGHT} />}

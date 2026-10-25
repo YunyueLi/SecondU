@@ -27,8 +27,10 @@
 
 /* Native traffic-light centres (desktop/main.cjs, y=21 + 7) and workspace
    toolbars share y=28. The toggle follows the native controls by 14px. */
-.app-shell.desktop-mode {
+body:has(.app-shell.desktop-mode) {
   --native-titlebar-height:56px;
+}
+.app-shell.desktop-mode {
   --native-controls-height:var(--native-titlebar-height);
   --native-controls-width:80px;
   --shell-sidebar-toggle-left:88px;
@@ -39,6 +41,18 @@
   --native-controls-width:0px;
   --shell-sidebar-toggle-left:16px;
   --shell-header-inset:56px;
+}
+/* Dialogs are portalled beside the shell. Keep their surface below the native
+   buttons, including short/narrow windows; vertical flex shrink preserves each
+   dialog's own height limit while fitting the space left below the title bar. */
+body:has(.app-shell.desktop-mode:not([data-window-fullscreen=true]))>.dialog-overlay {
+  flex-direction:column;
+  padding-top:max(var(--native-titlebar-height),env(safe-area-inset-top));
+  -webkit-app-region:no-drag;
+}
+body:has(.app-shell.desktop-mode:not([data-window-fullscreen=true]))>.dialog-overlay>.app-dialog {
+  flex-shrink:1;
+  min-height:0;
 }
 .app-shell.desktop-mode .app-sidebar {
   position:relative;

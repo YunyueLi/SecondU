@@ -23,9 +23,9 @@
 @media(max-width:560px){.embedded-product-stage{padding:10px}.embedded-product-chrome{height:26px}.embedded-product-caption button{padding:8px;font-size:12px}.embedded-product-caption{padding-top:12px}.embedded-product-dots{width:80px}.embedded-product-badge{min-width:80px;font-size:10px}}
 
 .embedded-product-expand{display:inline-flex;align-items:center;gap:6px;box-shadow:inset 0 0 0 1px #8885}
-.embedded-product-close{display:inline-flex;align-items:center;gap:10px;border:0;border-radius:6px;padding:6px 9px;font:inherit;color:inherit;background:transparent;cursor:pointer}
+.embedded-product-close{display:inline-flex;align-items:center;gap:10px;border:0;border-radius:6px;padding:6px 9px;font:inherit;line-height:20px;color:inherit;background:transparent;cursor:pointer}
 .embedded-product-close:hover{background:#8882}.embedded-product-close:focus-visible{outline:2px solid currentColor;outline-offset:2px}
-.embedded-product-close span{font-size:20px;line-height:1}
+.embedded-product-close>svg{display:block;width:20px;height:20px;flex:none}
 .embedded-product-focus-guard{position:absolute;width:1px;height:1px;overflow:hidden;opacity:0}
 .embedded-product.is-expanded .embedded-product-window{position:fixed;inset:12px;z-index:200;display:flex;flex-direction:column;box-shadow:0 0 0 100vmax #0009,0 16px 60px #0005}
 .embedded-product.is-expanded .embedded-product-chrome{height:42px;flex:none}

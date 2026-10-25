@@ -2,6 +2,13 @@
 
 User-visible changes are recorded here. Product decisions and implementation history are available in [Development](docs/DEVELOPMENT.md) and [Iteration](docs/ITERATION.md).
 
+## Unreleased / 待发布
+
+- Keep enlarged dialogs below the macOS window controls and fit their content to short or narrow windows.
+- Align the website's expanded-workspace close label and icon in both languages and themes.
+- 放大弹窗避开 macOS 窗口按钮，并适应矮窗口和窄窗口的可用空间。
+- 官网完整体验的收起文字与关闭图标在中英文、明暗主题下统一对齐。
+
 ## 0.2.1 — 2026-10-25
 
 ### Added
