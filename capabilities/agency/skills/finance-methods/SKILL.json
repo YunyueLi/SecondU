@@ -1,0 +1,15 @@
+{
+  "interface": {
+    "display_name": "预算与现金流",
+    "localized": {
+      "title": {
+        "zh": "预算与现金流",
+        "en": "Budgeting and cash flow"
+      },
+      "description": {
+        "zh": "对比预算和实际收支，整理差额、现金流与费用预测。",
+        "en": "Compare budgets with actual spending and prepare cash-flow and expense forecasts."
+      }
+    }
+  }
+}

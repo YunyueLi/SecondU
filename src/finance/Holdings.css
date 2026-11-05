@@ -1,7 +1,6 @@
 /* Layout only. Reading rhythm, rows and expansion surfaces come from finance-data-view.css. */
 :where(.finance-workspace,.finance-settings) .holdings-page { min-width:0; container:finance-holdings / inline-size; }
 :where(.finance-workspace,.finance-settings) .holdings-icon { width:18px; height:18px; flex:0 0 18px; }
-:where(.finance-workspace,.finance-settings) .holdings-toolbar :is(button:not([data-state]),input:not([aria-hidden="true"]),[role="button"],[role="combobox"]),:where(.finance-workspace,.finance-settings) .holdings-position-controls :is(button,[role="button"],[role="combobox"]),:where(.finance-workspace,.finance-settings) .holdings-position-detail-heading>button { min-height:32px; height:32px; border-radius:var(--hither-radius-control,8px); font-size:14px; line-height:22px; }
 :where(.finance-workspace,.finance-settings) .holdings-heading h2 { display:flex; align-items:center; gap:8px; }
 :where(.finance-workspace,.finance-settings) .holdings-heading h2>.holdings-icon { color:var(--color-text-secondary); }
 :where(.finance-workspace,.finance-settings) .holdings-count { font-variant-numeric:tabular-nums; }

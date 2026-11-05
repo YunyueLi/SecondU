@@ -1,8 +1,36 @@
-.finance-context-card { width:min(100%,600px);min-width:0;container-type:inline-size;border:1px solid var(--color-border-subtle);border-radius:var(--hither-radius-panel);background:var(--color-surface);padding:16px;color:var(--color-text); }
-.finance-context-card-heading { display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px; }
-.finance-context-card-heading>span { display:flex;align-items:center;gap:8px; }
-.finance-context-card-heading strong { font-size:14px;line-height:22px;font-weight:550; }
-.finance-context-card-heading svg { width:18px;height:18px; }
+.finance-context-trigger { display:flex;align-items:center;gap:10px;width:100%;min-width:0;padding:8px;border:0;border-radius:8px;background:transparent;color:var(--color-text);text-align:left;cursor:pointer; }
+.finance-context-trigger:hover { background:var(--color-surface-secondary); }
+.finance-context-trigger:focus-visible { outline:2px solid var(--color-text);outline-offset:2px; }
+.finance-context-icon { display:grid;place-items:center;flex:none;width:36px;height:40px;border-radius:8px;background:var(--color-surface-secondary);color:var(--color-text-secondary); }
+.finance-context-trigger .finance-context-icon svg { width:20px;height:20px; }
+.finance-context-trigger-copy { display:flex;flex:1;flex-direction:column;gap:2px;min-width:0; }
+.finance-context-trigger-copy strong,.finance-context-pending strong { font-size:13px;font-weight:550;line-height:20px; }
+.finance-context-trigger-copy small,.finance-context-pending small { display:block;font-size:12px;line-height:18px;color:var(--color-text-secondary); }
+.finance-context-trigger>svg { flex:none;width:16px;height:16px;color:var(--color-text-secondary); }
+.finance-context-pending { display:flex;align-items:center;gap:10px;padding:8px; }
+.finance-context-pending>svg { width:20px;height:20px;flex:none; }
+.finance-context-pending a { font-size:12px;text-decoration:underline;text-underline-offset:3px; }
+.message-attachments .finance-context-attachment { width:min(100%,320px);border:1px solid var(--color-border-subtle);border-radius:11px;padding:4px;background:var(--color-surface); }
+.dialog-overlay .finance-context-dialog { display:flex;flex-direction:column;width:min(720px,100%);max-height:min(760px,calc(100dvh - 2 * var(--dialog-edge)));padding:24px;overflow:hidden; }
+.finance-context-dialog>header { margin-bottom:8px; }
+.finance-context-preview-meta { display:flex;align-items:center;justify-content:space-between;gap:12px;flex:none;margin-bottom:20px;font-size:12px;line-height:18px;color:var(--color-text-secondary); }
+.finance-context-preview-meta a { display:inline-flex;align-items:center;gap:6px;text-decoration:underline;text-underline-offset:3px; }
+.finance-context-preview-actions { display:flex;align-items:center;gap:10px; }
+.finance-context-preview-meta svg { width:14px;height:14px; }
+.finance-context-dialog>.finance-context-tabs { flex:none;margin-bottom:12px; }
+.finance-context-body { min-height:0;overflow-y:auto;overscroll-behavior:contain;container-type:inline-size;padding-right:4px; }
+.finance-context-body>.finance-context-rows { margin-top:0; }
+.finance-context-body .finance-context-rows>div { padding:12px 0;border-bottom:1px solid var(--color-border-subtle); }
+.finance-context-account-group+section { margin-top:24px; }
+.finance-context-account-group>h3 { margin:8px 0;font-size:14px;line-height:22px;font-weight:550; }
+.finance-context-account-group>.finance-context-rows { margin-top:0; }
+.finance-context-body .finance-context-recorded { display:block;margin-top:2px; }
+.finance-context-scope { padding-top:8px; }
+.finance-context-scope p { margin:8px 0;font-size:12px;line-height:20px;color:var(--color-text-secondary); }
+@media(max-width:520px){
+  .dialog-overlay .finance-context-dialog { padding:20px 16px; }
+  .finance-context-trigger { gap:8px; }
+}
 .finance-context-rows { display:grid;gap:4px;margin-top:12px; }
 .finance-context-rows>div { display:flex;align-items:center;justify-content:space-between;gap:16px;padding:8px 0;font-size:14px;line-height:22px; }
 .finance-context-rows>div>span { min-width:0;overflow-wrap:anywhere; }
@@ -23,7 +51,6 @@
 .finance-context-detail { margin-top:12px; }
 .finance-context-detail>summary { cursor:pointer;font-size:12px;line-height:18px;padding:6px 0;color:var(--color-text-secondary); }
 .finance-context-detail>summary:focus-visible { outline:2px solid var(--color-text);outline-offset:2px; }
-.finance-context-raw pre { max-height:260px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;background:var(--color-surface-secondary);padding:12px;border-radius:8px;font-size:12px;line-height:18px;margin:6px 0 0; }
 .finance-context-assumptions { margin:6px 0;display:grid;gap:8px; }
 .finance-context-assumptions>div { display:flex;justify-content:space-between;gap:12px;font-size:12px;line-height:18px; }
 .finance-context-assumptions dt { color:var(--color-text-secondary); }
@@ -35,17 +62,4 @@
   .finance-context-metrics>div>small { grid-column:1/-1; }
   .finance-context-rows>div { align-items:flex-start;flex-direction:column;gap:4px; }
   .finance-context-rows strong { align-self:flex-end; }
-}
-.finance-context-sources { display:grid;gap:24px;min-width:0;overflow-wrap:anywhere; }
-.finance-context-sources h3 { font-size:16px;line-height:24px;font-weight:550; }
-.finance-context-sources section>div { padding:12px 0;overflow-wrap:anywhere; }
-.finance-context-sources strong { font-size:14px;line-height:22px;font-weight:500; }
-.finance-context-sources p { margin:4px 0;font-size:14px;line-height:22px; }
-.finance-context-sources small { font-size:12px;line-height:18px;color:var(--color-text-secondary); }
-.message-attachments .finance-context-attachment { display:flex;align-items:flex-start;flex-direction:column;gap:8px;max-width:100%;width:600px; }
-
-.finance-context-sources>section { min-width:0; }
-@container finance-dialog (max-width:400px) {
-  .finance-context-sources .finance-context-rows>div { align-items:flex-start; flex-direction:column; gap:4px; }
-  .finance-context-sources .finance-context-rows strong { align-self:flex-end; }
 }

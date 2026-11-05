@@ -6,7 +6,9 @@ import { EventEmitter } from 'node:events';
 import { spawn, execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { mkdir, realpath, mkdtemp, readFile, rm } from 'node:fs/promises';
-import { accessSync, constants, statSync } from 'node:fs';
+import { statSync } from 'node:fs';
+import { codexCommand } from './codex-runtime.mjs';
+export { codexCommand } from './codex-runtime.mjs';
 import path from 'node:path';
 import os from 'node:os';
 import { inlineImage, ATTACHMENT_COUNT, MULTIMODAL_REQUEST_LIMIT } from './attachment-input.mjs';
@@ -36,26 +38,6 @@ async function verifyExtractionProtocol({nativeSchema}) {
   if(!supported.environments||nativeSchema&&!supported.outputSchema)throw runtimeError('本机 Codex 不支持所需的隔离抽取或结构化输出协议，未启动模型。','CODEX_EXTRACTION_UNSUPPORTED');
 }
 
-export function codexCommand() {
-  const configured=process.env.HITHER_CODEX_BIN || process.env.HITHER_CODEX_BINARY;
-  if(configured)return configured;
-  const executable=file=>{try{accessSync(file,constants.X_OK);return statSync(file).isFile();}catch{return false;}};
-  for(const directory of (process.env.PATH??'').split(path.delimiter).filter(Boolean)){
-    const candidate=path.resolve(directory,process.platform==='win32'?'codex.exe':'codex');
-    if(executable(candidate))return candidate;
-  }
-  if(process.platform==='darwin'){
-    const candidates=['/opt/homebrew/bin/codex','/usr/local/bin/codex'];
-    for(const apps of ['/Applications',path.join(os.homedir(),'Applications')]){
-      candidates.push(path.join(apps,'Codex.app/Contents/Resources/codex'));
-      for(const app of ['Codex.app','ChatGPT.app'])candidates.push(path.join(apps,app,'Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex'));
-    }
-    const installed=candidates.find(executable);
-    if(installed)return installed;
-  }
-  return 'codex';
-}
-
 function runtimeError(message, code = 'CODEX_RUNTIME_ERROR') {
   return Object.assign(new Error(message), { code });
 }
@@ -66,7 +48,7 @@ function cancelledError() {
 
 function redact(value, secret) {
   const text = String(value ?? '');
-  return secret ? text.split(secret).join('[已隐藏凭据]') : text;
+  return (Array.isArray(secret)?secret:[secret]).filter(Boolean).reduce((result,item)=>result.split(item).join('[已隐藏凭据]'),text);
 }
 
 function deferred() {
@@ -241,10 +223,11 @@ function providerConfig(settings) {
  */
 export async function runCodex({ workspace, settings, apiKey, prompt='', images=[], threadId,
   onEvent = () => {}, onApproval, signal, codexHome, approvalMode = 'ask', dynamicTools = [], onDynamicTool, allowSubagents = true,
+  skills = [], skillReadRoots = [], skillEnvironment = {},
   extractOnly = false, outputSchema, verifyExtraction = verifyExtractionProtocol,
   transportFactory = options => new AppServerTransport(options), requestTimeoutMs = 20_000 } = {}) {
   if (signal?.aborted) throw cancelledError();
-  if(extractOnly&&(dynamicTools.length||threadId))throw runtimeError('材料抽取不能提供工具或恢复其他任务会话。','INVALID_EXTRACTION_SCOPE');
+  if(extractOnly&&(dynamicTools.length||threadId||skills.length||skillReadRoots.length||Object.keys(skillEnvironment).length))throw runtimeError('材料抽取不能提供工具、技能或恢复其他任务会话。','INVALID_EXTRACTION_SCOPE');
   if(outputSchema!==undefined&&(!extractOnly||!outputSchema||typeof outputSchema!=='object'||Array.isArray(outputSchema)))throw runtimeError('结构化输出只用于明确的材料抽取。','INVALID_EXTRACTION_SCHEMA');
   if(extractOnly){await verifyExtraction({nativeSchema:outputSchema!==undefined});if(signal?.aborted)throw cancelledError();allowSubagents=false;}
   const policy = extractOnly?{approvalPolicy:'never',approvalsReviewer:'user',access:'read-only'}:runtimePolicy(approvalMode);
@@ -262,6 +245,10 @@ export async function runCodex({ workspace, settings, apiKey, prompt='', images=
   if (isWithin(workspace, codexHome) || isWithin(codexHome, workspace)) {
     throw runtimeError('运行时状态目录与任务工作目录必须相互独立。', 'INVALID_WORKSPACE');
   }
+  if(!Array.isArray(skills)||skills.length>12||!Array.isArray(skillReadRoots)||skillReadRoots.length>4||skills.some(item=>typeof item?.name!=='string'||typeof item?.path!=='string'||!isWithin(codexHome,item.path)))throw runtimeError('任务技能范围无效。','INVALID_SKILL_SCOPE');
+  const readRoots=[];for(const root of skillReadRoots){if(typeof root!=='string'||!path.isAbsolute(root))throw runtimeError('技能读取目录无效。','INVALID_SKILL_SCOPE');const real=await realpath(root);if(real===workspace||isWithin(root,workspace))throw runtimeError('技能目录不能扩大任务写入范围。','INVALID_SKILL_SCOPE');readRoots.push(real);}
+  if(!skillEnvironment||typeof skillEnvironment!=='object'||Array.isArray(skillEnvironment)||Object.entries(skillEnvironment).some(([key,value])=>!/^[A-Z][A-Z0-9_]{0,99}$/.test(key)||key!=='SECONDU_NODE_MODULES'&&/^(?:HOME|USERPROFILE|CODEX_HOME|PATH|SHELL|ENV|BASH_ENV|NODE_OPTIONS|NODE_PATH|PYTHONPATH|PYTHONHOME|LD_.*|DYLD_.*|HITHER_.*|SECONDU_.*)$/.test(key)||typeof value!=='string'||value.length>10000))throw runtimeError('技能环境配置无效。','INVALID_SKILL_ENVIRONMENT');
+  const secrets=[apiKey,...Object.entries(skillEnvironment).filter(([key])=>key!=='SECONDU_NODE_MODULES').map(([,value])=>value)];
   const config = {
     ...(allowSubagents ? {} : {'features.multi_agent':false,'features.multi_agent_v2':false}),
     ...(extractOnly?Object.fromEntries(EXTRACTION_DISABLED_FEATURES.map(feature=>[`features.${feature}`,false])):{}),
@@ -272,10 +259,11 @@ export async function runCodex({ workspace, settings, apiKey, prompt='', images=
     // This named profile instead permits minimal OS reads and this directory only.
     ...(!extractOnly&&approvalMode === 'full' ? { sandbox_mode: 'danger-full-access' } : {
       default_permissions: 'hither',
-      'permissions.hither.filesystem': { ':minimal': 'read', [workspace]: extractOnly?'read':'write' },
+      'permissions.hither.filesystem': { ':minimal': 'read', [workspace]: extractOnly?'read':'write',...Object.fromEntries(readRoots.map(root=>[root,'read'])) },
       'permissions.hither.network.enabled': false,
     }),
-    'shell_environment_policy.inherit': 'none',
+    'shell_environment_policy.inherit': Object.keys(skillEnvironment).length?'all':'none',
+    ...(Object.keys(skillEnvironment).length?{'shell_environment_policy.include_only':Object.keys(skillEnvironment)}:{}),
     'shell_environment_policy.set': { PATH: process.env.PATH || '/usr/bin:/bin', HOME: workspace },
     allow_login_shell: false, project_doc_max_bytes: 0,
     web_search: 'disabled', 'analytics.enabled': false,
@@ -287,11 +275,11 @@ export async function runCodex({ workspace, settings, apiKey, prompt='', images=
   // Keep local protocol bridges on loopback; remote providers keep their proxy.
   const env = { PATH: process.env.PATH || '/usr/bin:/bin', HOME: codexHome, CODEX_HOME: codexHome,
     NO_PROXY: 'localhost,127.0.0.1,::1', no_proxy: 'localhost,127.0.0.1,::1',
-    [API_KEY_ENV]: apiKey, RUST_LOG: 'error' };
+    ...skillEnvironment,[API_KEY_ENV]: apiKey, RUST_LOG: 'error' };
   for (const key of ['SystemRoot', 'WINDIR', 'COMSPEC', 'PATHEXT', 'LANG', 'LC_ALL']) {
     if (process.env[key]) env[key] = process.env[key];
   }
-  const transport = transportFactory({ cwd: workspace, env, secret: apiKey, requestTimeoutMs,
+  const transport = transportFactory({ cwd: workspace, env, secret: secrets, requestTimeoutMs,
     args: Object.entries(config).flatMap(([key, value]) => ['-c', `${key}=${toml(value)}`]) });
   const done = deferred();
   const stopped = deferred();
@@ -310,8 +298,8 @@ export async function runCodex({ workspace, settings, apiKey, prompt='', images=
   const stop = error => { stopError ||= error; stopped.reject(stopError); };
   const emit = event => {
     const { activity, ...fields } = event;
-    const lifecycle = taskEventActivity(activity, value => redact(value, apiKey));
-    const safe = { ...fields, label: redact(event.label, apiKey), ...(event.detail === undefined ? {} : { detail: redact(event.detail, apiKey) }), ...(lifecycle ? {activity:lifecycle} : {}) };
+    const lifecycle = taskEventActivity(activity, value => redact(value, secrets));
+    const safe = { ...fields, label: redact(event.label, secrets), ...(event.detail === undefined ? {} : { detail: redact(event.detail, secrets) }), ...(lifecycle ? {activity:lifecycle} : {}) };
     eventQueue = eventQueue.then(() => onEvent(safe));
     eventQueue.catch(stop);
     return eventQueue;
@@ -460,8 +448,8 @@ export async function runCodex({ workspace, settings, apiKey, prompt='', images=
         decision = await Promise.race([Promise.resolve().then(() => onApproval({
           id: `codex-${currentThread}-${params.turnId || currentTurn}-${String(id)}`,
           title: command ? '批准这一次本机命令' : '批准这一次文件修改',
-          description: redact(params.reason || '审批仅适用于列出的这一次操作。', apiKey),
-          details: redact(details, apiKey),
+          description: redact(params.reason || '审批仅适用于列出的这一次操作。', secrets),
+          details: redact(details, secrets),
         })), stopped.promise]);
       }
       if (wasCancelled) return;
@@ -472,7 +460,7 @@ export async function runCodex({ workspace, settings, apiKey, prompt='', images=
   });
   try {
     await emit({ type: 'runtime.connecting', label: '正在连接本机运行时' });
-    await request('initialize', { clientInfo, capabilities: { experimentalApi: extractOnly || dynamicTools.length > 0 || approvalMode === 'auto' } });
+    await request('initialize', { clientInfo, capabilities: { experimentalApi: extractOnly || skills.length > 0 || dynamicTools.length > 0 || approvalMode === 'auto' } });
     transport.notify('initialized');
     const effective = (await request('config/read', { includeLayers: false })).config;
     if(extractOnly&&EXTRACTION_DISABLED_FEATURES.some(feature=>effective?.features?.[feature]!==false))throw runtimeError('本机 Codex 未确认关闭材料抽取的工具能力，未启动模型。','CODEX_EXTRACTION_UNSUPPORTED');
@@ -484,9 +472,15 @@ export async function runCodex({ workspace, settings, apiKey, prompt='', images=
       throw runtimeError('本机 Codex 未确认所选审批策略，已停止运行；没有改用更宽松的策略。', 'CODEX_APPROVAL_POLICY_UNSUPPORTED');
     }
     if (!extractOnly&&approvalMode === 'full' ? effective?.sandbox_mode !== 'danger-full-access' || effective?.default_permissions != null : effective?.default_permissions !== 'hither' || fs?.[':minimal'] !== 'read' || fs?.[workspace] !== (extractOnly?'read':'write')
-      || Object.entries(fs || {}).some(([key, value]) => value != null && ![':minimal', workspace].includes(key))
+      || Object.entries(fs || {}).some(([key, value]) => value != null && (![':minimal', workspace,...readRoots].includes(key)||readRoots.includes(key)&&value!=='read'))||readRoots.some(root=>fs?.[root]!=='read')
       || effective?.permissions?.hither?.network?.enabled !== false) {
       throw runtimeError('本机 Codex 未确认任务目录权限配置，已停止运行。请升级到支持命名权限配置的版本。', 'CODEX_SANDBOX_UNSUPPORTED');
+    }
+    if(skills.length){
+      const discovered=await request('skills/list',{cwds:[workspace],forceReload:true});
+      const available=(discovered.data??[]).flatMap(item=>item.skills??[]);
+      if(skills.some(skill=>!available.some(item=>item.name===skill.name&&item.path===skill.path&&item.enabled!==false)))throw runtimeError('执行器未确认加载所选技能，未启动模型。请检查技能格式与运行时版本。','CODEX_SKILLS_UNAVAILABLE');
+      await emit({type:'capability.skills_loaded',label:'执行器已加载本轮专业技能',detail:JSON.stringify(skills.map(({name,path})=>({name,path})))});
     }
     const threadParams = { cwd: workspace, model: settings.model.trim(), modelProvider: 'hither',
       approvalPolicy: policy.approvalPolicy, approvalsReviewer: policy.approvalsReviewer,
@@ -499,7 +493,7 @@ export async function runCodex({ workspace, settings, apiKey, prompt='', images=
     if (!currentThread) throw runtimeError('Codex 未返回会话标识。', 'CODEX_PROTOCOL_ERROR');
     await emit({ type: 'runtime.thread', label: threadId ? '已恢复任务会话' : '已创建任务会话', detail: currentThread });
     const turn = await request('turn/start', { threadId: currentThread, cwd: workspace,
-      input: [...(prompt.trim()?[{type:'text',text:prompt,text_elements:[]}]:[]),...imageInput], model: settings.model.trim(),
+      input: [...(prompt.trim()?[{type:'text',text:prompt,text_elements:[]}]:[]),...imageInput,...skills.map(({name,path})=>({type:'skill',name,path}))], model: settings.model.trim(),
       ...(['low', 'medium', 'high', 'max'].includes(settings.reasoningEffort) ? { effort: settings.reasoningEffort } : {}),
       approvalPolicy: policy.approvalPolicy, approvalsReviewer: policy.approvalsReviewer,
       ...(extractOnly?{environments:[],permissions:'hither',...(outputSchema!==undefined?{outputSchema}:{})}:approvalMode === 'full' ? { sandboxPolicy: { type: 'dangerFullAccess' } } : {}) });
@@ -511,10 +505,10 @@ export async function runCodex({ workspace, settings, apiKey, prompt='', images=
     const final = all.filter(item => item.phase === 'final_answer');
     const text = (final.length ? final : all.slice(-1)).map(item => item.text).join('\n\n');
     await emit({ type: 'runtime.completed', label: '运行时已完成本轮任务' });
-    return { text: redact(text, apiKey), threadId: currentThread };
+    return { text: redact(text, secrets), threadId: currentThread };
   } catch (error) {
     if (!(error instanceof Error)) error = runtimeError(String(error));
-    error.message = redact(error.message, apiKey);
+    error.message = redact(error.message, secrets);
     if (currentThread) error.threadId = currentThread;
     throw error;
   } finally {

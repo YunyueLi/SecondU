@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "version": "0.165.0",
+  "artifacts": {
+    "darwin-arm64": {
+      "target": "aarch64-apple-darwin",
+      "url": "https://registry.npmjs.org/@openai/codex/-/codex-0.165.0-darwin-arm64.tgz",
+      "integrity": "sha512-MQ/Z0Xw9v08DHunnzodi9NwA844MI3+RO72IM8o0Lr/UemnlEoBMCxpojstxX6mf5ZQwUrIg0yekDd9cFZ29hg=="
+    },
+    "darwin-x64": {
+      "target": "x86_64-apple-darwin",
+      "url": "https://registry.npmjs.org/@openai/codex/-/codex-0.165.0-darwin-x64.tgz",
+      "integrity": "sha512-mxMtlntnUq0Xb8rjvHph3Ws045Q82BLbeKRRdkN70Es9mho/D/Blh1ShZvzQOnsoeVw8lbV9fOLjW1vncoufKQ=="
+    },
+    "linux-x64": {
+      "target": "x86_64-unknown-linux-musl",
+      "url": "https://registry.npmjs.org/@openai/codex/-/codex-0.165.0-linux-x64.tgz",
+      "integrity": "sha512-FotDc7bVHwaommtsdDP8PPrH0a5IwC/t8H/LhdEcH4EBqgeYFRCtptiHcuwgvNRCLbTbOyFE/Ur6GzYCljgaSQ=="
+    }
+  }
+}

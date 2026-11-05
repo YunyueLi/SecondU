@@ -1,0 +1,16 @@
+{
+  "interface": {
+    "displayName": "就诊与照护准备",
+    "shortDescription": "Health information and care preparation",
+    "localized": {
+      "title": {
+        "zh": "就诊与照护准备",
+        "en": "Appointment and care preparation"
+      },
+      "description": {
+        "zh": "整理已有健康记录、就诊问题和日常照护安排。",
+        "en": "Organize existing health records, questions for an appointment and daily care plans."
+      }
+    }
+  }
+}

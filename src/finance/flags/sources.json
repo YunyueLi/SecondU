@@ -1,0 +1,52 @@
+{
+  "project": "flag-icons",
+  "version": "7.6.0",
+  "license": "MIT",
+  "assets": [
+    {
+      "file": "cn.svg",
+      "sha256": "981da9bdf82d48e31691f20578cefcb26cf7d0bd95e4ebd5c0df00bdfe988c1a",
+      "url": "https://raw.githubusercontent.com/lipis/flag-icons/v7.6.0/flags/4x3/cn.svg"
+    },
+    {
+      "file": "us.svg",
+      "sha256": "e7be4240cf57987926673708f09233be1ab6bdf35acc7b86bd32a263f197a2a7",
+      "url": "https://raw.githubusercontent.com/lipis/flag-icons/v7.6.0/flags/4x3/us.svg"
+    },
+    {
+      "file": "hk.svg",
+      "sha256": "d9d142b2b97ec3b8190bff3802072c1b4f15573a679eead89a0ce59986dcad0c",
+      "url": "https://raw.githubusercontent.com/lipis/flag-icons/v7.6.0/flags/4x3/hk.svg"
+    },
+    {
+      "file": "sg.svg",
+      "sha256": "25de9044c2e2775f7ccf9c1df02dd02342f915715b22c43248452b7ae24079a5",
+      "url": "https://raw.githubusercontent.com/lipis/flag-icons/v7.6.0/flags/4x3/sg.svg"
+    },
+    {
+      "file": "eu.svg",
+      "sha256": "67040ccd286857e513262bc59a6825ea8520b3e6990e42f1075712c072460c09",
+      "url": "https://raw.githubusercontent.com/lipis/flag-icons/v7.6.0/flags/4x3/eu.svg"
+    },
+    {
+      "file": "gb.svg",
+      "sha256": "c8be1e7208798a4ae692ee1e937065d498bb29e741943f6172b29118b8ed8066",
+      "url": "https://raw.githubusercontent.com/lipis/flag-icons/v7.6.0/flags/4x3/gb.svg"
+    },
+    {
+      "file": "jp.svg",
+      "sha256": "bfea80baf9989383dc4bf7ca594ed95be0df0ff125bfc88d0bfa878eb0198022",
+      "url": "https://raw.githubusercontent.com/lipis/flag-icons/v7.6.0/flags/4x3/jp.svg"
+    },
+    {
+      "file": "au.svg",
+      "sha256": "cbb2206c5e59a25d79228306af973666a191e163f0ae337681f447977e6edb18",
+      "url": "https://raw.githubusercontent.com/lipis/flag-icons/v7.6.0/flags/4x3/au.svg"
+    },
+    {
+      "file": "ca.svg",
+      "sha256": "345ec9dac057e203f1331b2d3f9f473789864edaee1182a26bc261356bcf72f1",
+      "url": "https://raw.githubusercontent.com/lipis/flag-icons/v7.6.0/flags/4x3/ca.svg"
+    }
+  ]
+}

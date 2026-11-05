@@ -6,19 +6,21 @@
 
 | Requirement | Used for |
 | --- | --- |
-| Node.js 22.18+ and npm | Recommended baseline for install, source build, SQLite and TypeScript-importing tests. `package.json` retains a 22.13 runtime minimum. |
+| Node.js 22.19+ and npm | Needed for source builds and tests. Desktop packages include Node. |
 | macOS 13+ for the Electron desktop; Linux for source checks | Desktop releases target Apple Silicon; Linux supports source builds and local tests. |
-| Codex CLI, optional for browsing | Required for real model tasks; install separately following the official [Codex repository](https://github.com/openai/codex). |
+| Codex CLI, optional for browsing | v0.3.0 desktop packages include a pinned copy. Source runs and older archives require a separately installed CLI. |
 | Your own model credentials | Required only for real provider calls, configured in the application. |
 | LibreOffice, optional | Local DOCX/XLSX/PPTX preview conversion. Original Office downloads do not require it. |
 
 ## Use a macOS release archive
 
-Download the macOS app archive from the [v0.2.1 release page](https://github.com/YunyueLi/SecondU/releases/tag/v0.2.1), extract it, then open `SecondU.app`. This build is for **Apple Silicon (arm64), macOS 13+**, with Electron and Node included.
+Download the macOS app archive from the [v0.3.0 release page](https://github.com/YunyueLi/SecondU/releases/tag/v0.3.0), extract it, then open `SecondU.app`. This build is for **Apple Silicon (arm64), macOS 13+**, with Electron and Node included.
 
 The app uses ad-hoc signing. If macOS blocks the first launch, use the per-application opening option in System Settings → Privacy & Security. To run from source, follow the steps below.
 
-Choose a fictional example to explore without credentials. Real tasks still require a separately installed Codex CLI and your own model connection. Optional Office previews require local LibreOffice.
+Choose a fictional example to explore without credentials. Real tasks use the bundled CLI and require your own model connection. Optional Office previews require local LibreOffice.
+
+Desktop packages from **v0.3.0** include Codex CLI, its companion binaries and notices. Users of those packages only configure their model connection; no separate Codex App, CLI or Node install is needed. CLI upgrades follow SecondU app updates. Older archives are unchanged. [Version management and release checks](docs/CODEX-RUNTIME.md)
 
 ## Browse without a model key
 
@@ -32,19 +34,19 @@ npm start
 
 Open <http://127.0.0.1:58645> and choose the Chinese or English example. Browse personal context, conversations, artifacts and saved versions. See the [product walkthrough](docs/PROTOTYPE.md).
 
-## Explore v0.2.1
+## Explore v0.3.0
 
-The ten-chapter product guide includes **Personal finance** and **Set up your workspace**, with direct entry points into the new workspaces. [Version highlights](docs/releases/v0.2.1.md)
+The ten-chapter product guide includes **Personal finance** and **Set up your workspace**, with direct entry points into the new workspaces. [Version highlights](docs/releases/v0.3.0.md)
 
 1. Open the sidebar's module chooser and pin **Finance**, **Agents** or **Library**. Expand a group to browse its sections; your choice belongs to the current space.
 2. In personal space, open **Finance**. Start with a manually recorded account or review the available read-only account providers in **Settings → Connectors**. Record the original currency and date. Add holdings, transactions or a CSV import as needed, then browse bills, subscriptions, budgets, goals and planning. [Finance guide](docs/FINANCE.md)
-3. Explore **Overview, Portfolio, Structure, Allocation, Details and Holdings** in the [website's finance story](https://yunyueli.github.io/SecondU/?lang=en#finance), then [open the full finance workspace](https://yunyueli.github.io/SecondU/product/embed.html?space=demo-us-v1&lang=en#finance). Use the desktop app to add your own records, connect accounts and update quotes.
+3. Explore **Overview, Portfolio, Structure, Allocation, Details and Holdings** in the [website's finance story](https://secondu.ungetsu.net/?lang=en#finance), then [open the full finance workspace](https://secondu.ungetsu.net/product/embed.html?space=demo-us-v1&lang=en#finance). Use the desktop app to add your own records, connect accounts and update quotes.
 4. Open **Settings → Computer** to check local runtimes or configure an SSH computer, then choose the execution computer in a task draft.
 5. Use home suggestions to start a task, browse tool and research connections in the directory, and adjust backgrounds, theme or motion in **Settings → Appearance**.
 
 ## Run a real task
 
-1. Install Codex CLI separately. Confirm `codex --version` in your terminal, or set `HITHER_CODEX_BIN` to its executable path before starting the service.
+1. For a v0.3.0 desktop package, use its included CLI. For source runs or older archives, install Codex CLI separately and confirm `codex --version`, or set `HITHER_CODEX_BIN` before starting the service. Installed current-source packages always use their owned component.
 2. Enter personal space and open Settings → Model connections. Select a provider, enter your own credential, then select and explicitly test a model.
 3. Create a small local task, such as writing a Markdown preparation list.
 4. Inspect actual task events and file contents. Edit one line, save a new version, reopen it and compare downloads from both versions.
@@ -97,7 +99,8 @@ The native wrapper selects ports 58645–58649. It reuses a server only if the a
 | `.hither/` | Default source-checkout data, ignored by Git. |
 | `~/Library/Application Support/Hither/` | Retained macOS desktop data root; the store is under `data/`. |
 | `HITHER_DATA_DIR` | Explicit store directory override. |
-| `HITHER_CODEX_BIN` | Explicit Codex executable path (`HITHER_CODEX_BINARY` is a legacy alias). |
+| `HITHER_CODEX_BIN` | Source runs only: explicit Codex executable path (`HITHER_CODEX_BINARY` is a legacy alias). Packaged apps use the bundled CLI. |
+| `HITHER_USER_DATA_DIR` | Optional isolated desktop profile for acceptance and development; includes browser preferences and the default `data/` directory. |
 | `PORT` | Standalone backend port; defaults to 58645. |
 
 Use a new data directory for isolated experiments. Do not delete or overwrite existing data to resolve a startup problem. Before a backup, stop the services that use the store and copy the whole data directory. Credentials live separately within that directory and need the same care as the database.

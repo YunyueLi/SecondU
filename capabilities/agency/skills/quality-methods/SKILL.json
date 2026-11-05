@@ -1,0 +1,15 @@
+{
+  "interface": {
+    "display_name": "上线前检查",
+    "localized": {
+      "title": {
+        "zh": "上线前检查",
+        "en": "Release review"
+      },
+      "description": {
+        "zh": "按真实使用流程检查产品，列出问题和修复后的复查结果。",
+        "en": "Check real user flows and report defects plus the results of follow-up checks."
+      }
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "interface": {
+    "displayName": "财务测算与情景比较",
+    "shortDescription": "Financial analysis",
+    "localized": {
+      "title": {
+        "zh": "财务测算与情景比较",
+        "en": "Financial scenarios"
+      },
+      "description": {
+        "zh": "按收入、成本等假设计算结果，比较不同方案的变化。",
+        "en": "Calculate outcomes from income and cost assumptions and compare scenarios."
+      }
+    }
+  }
+}

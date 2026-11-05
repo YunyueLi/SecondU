@@ -1,0 +1,15 @@
+{
+  "interface": {
+    "display_name": "游戏规则与数值",
+    "localized": {
+      "title": {
+        "zh": "游戏规则与数值",
+        "en": "Game rules and balancing"
+      },
+      "description": {
+        "zh": "设计玩法、奖励和成长节奏，整理规则与数值表。",
+        "en": "Design gameplay, rewards and progression, with documented rules and balance tables."
+      }
+    }
+  }
+}

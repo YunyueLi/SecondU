@@ -1,0 +1,16 @@
+{
+  "interface": {
+    "displayName": "营销方案与文案",
+    "shortDescription": "Marketing and growth",
+    "localized": {
+      "title": {
+        "zh": "营销方案与文案",
+        "en": "Marketing plans and copy"
+      },
+      "description": {
+        "zh": "明确受众和卖点，准备渠道文案、预算和效果指标。",
+        "en": "Define an audience and proposition, then prepare channel copy, budgets and metrics."
+      }
+    }
+  }
+}

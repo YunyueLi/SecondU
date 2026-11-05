@@ -1,0 +1,7 @@
+{
+  "upstream": "https://github.com/deepseek-ai/deepseek-harness",
+  "revision": "22ddee3792402c3e70ec5f86a63c3e3e895a2f60",
+  "path": "packages/skill/skill-office/assets",
+  "license": "MIT",
+  "adaptation": "Consolidated seven workflows, replaced Harness host tools and Python environment with SecondU dependency discovery, bundled Node libraries and the independently licensed LibreOffice Kit 0.2.2. Retained source, saved-file verification and formula-cache distinctions."
+}

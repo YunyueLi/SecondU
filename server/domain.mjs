@@ -12,6 +12,7 @@ import { timelineMedia } from './timeline-media.mjs';
 import { HttpError, id, now } from './store.mjs';
 import { taskEventActivity } from './task-event-activity.mjs';
 import {currency as financeCurrency} from './finance/arithmetic.mjs';
+import {capabilityService} from './capabilities/service.mjs';
 export function text(value, field, max=200000, required=true) { if(typeof value!=='string' || (required && !value.trim()) || value.length>max) throw new HttpError(400,`${field} 无效或过长`); return value.trim(); }
 export function choice(value,values,field) { if(!values.includes(value)) throw new HttpError(400,`${field} 无效`); return value; }
 export function bool(value,field) { if(typeof value!=='boolean') throw new HttpError(400,`${field} 必须为布尔值`); return value; }
@@ -21,6 +22,7 @@ export function createEntity(store, collection, body, existing) {
   const value={...existing,...body}, entity={id:existing?.id ?? id(collection.slice(0,-1))};
   const str=(key,max=10000,required=true)=>entity[key]=text(value[key]??(required?undefined:''),key,max,required);
   const sourceRefs=()=>entity.sourceIds=refs(store,value.sourceIds??[],'sources','sourceIds');
+  if(collection==='agents'){const capabilities=capabilityService(store).normalizeBinding(body.capabilities,existing?.capabilities);if(capabilities)entity.capabilities=capabilities;}
   switch(collection) {
     case 'projects': return createProject(store,body,existing);
     case 'sources': {
@@ -122,6 +124,7 @@ export function assertDeletable(store,collection,key) {
   if(collection==='goalLists'&&store.list('goals').some(goal=>(goal.listId||'goal-list-inbox')===key))targets.push('goals');
   if(collection==='sources') for(const c of ['facts','people','relationships','events','goals']) if(store.list(c).some(e=>e.sourceIds?.includes(key)))targets.push(c);
   if(collection==='sources' && store.list('conversations').some(c=>c.messages.some(m=>m.sourceId===key||m.sourceIds?.includes(key))))targets.push('conversations');
+  if(collection==='sources' && store.list('agents').some(agent=>agent.capabilities?.sourceIds.includes(key)))targets.push('agents');
   if(collection==='sources' && store.list('tasks').some(task=>task.proactive?.sourceId===key))targets.push('tasks');
   if(collection==='sources' && store.list('twinCaptures').some(capture=>capture.sourceId===key||capture.upstreamSourceId===key))targets.push('twinCaptures');
   if(collection==='people') for(const c of ['relationships','events','conversations']) if(store.list(c).some(e=>e.from===key||e.to===key||e.personIds?.includes(key)))targets.push(c);

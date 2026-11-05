@@ -1,0 +1,15 @@
+{
+  "interface": {
+    "display_name": "增长方案测试",
+    "localized": {
+      "title": {
+        "zh": "增长方案测试",
+        "en": "Growth experiments"
+      },
+      "description": {
+        "zh": "设计获客或留存实验，明确预算、指标和停止条件。",
+        "en": "Plan acquisition or retention experiments with budgets, metrics and stopping criteria."
+      }
+    }
+  }
+}

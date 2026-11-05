@@ -123,7 +123,7 @@ export function DesktopQuitGuard() {
       flushSync(() => setFrozen(false));
       if (focus?.isConnected) focus.focus({ preventScroll: true });
     };
-    const unprepare = bridge.onPrepareToQuit(() => prepareDesktopQuit(() => {
+    const unprepare = bridge.onPrepareToQuit(request => prepareDesktopQuit(() => {
       const state = unsavedChanges.read();
       return { unsaved: state.unsaved || hasSessionDrafts(sessionStorage), busy: state.busy };
     }, () => {
@@ -134,7 +134,7 @@ export function DesktopQuitGuard() {
       for (const [element] of inert) element.inert = true;
       flushSync(() => setFrozen(true));
       overlay.current?.focus({ preventScroll: true });
-    }));
+    }, request));
     const uncancel = bridge.onQuitCancelled(release);
     return () => { unprepare(); uncancel(); for (const name of inputEvents) document.removeEventListener(name, blockInput, true); for (const [element, wasInert] of inert) element.inert = wasInert; };
   }, []);

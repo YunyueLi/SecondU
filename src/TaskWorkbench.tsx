@@ -1,7 +1,8 @@
+import type {WorkflowSelection} from './agents/workflowModel';
 import { useEffect, useState } from 'react';
 import { Button } from '@openai/apps-sdk-ui/components/Button';
 import { LoadingIndicator } from '@openai/apps-sdk-ui/components/Indicator';
-import { Desktop, Document, CloseBold, ArrowRight, Stop, Code, CheckCircle, Clock, ChevronRight, User } from '@openai/apps-sdk-ui/components/Icon';
+import { Desktop, Document, CloseBold, ArrowRight, Stop, Code, CheckCircle, Clock, ChevronRight, ChevronLeft, User } from '@openai/apps-sdk-ui/components/Icon';
 import type { Bootstrap, Task, TaskEvent } from '../shared/contracts';
 import { TaskEventDetails } from './design-system/TaskActivity';
 import { activityEventType, visibleTaskEvents } from './design-system/taskActivityEvents';
@@ -14,7 +15,7 @@ import { t, getLocale } from './i18n';
 import './task-workbench.css';
 import {TeamRunGraph} from './agents/TeamRunGraph';
 
-export type WorkbenchTab = 'files' | 'activity' | 'computer';
+export type WorkbenchTab = 'files' | 'activity' | 'computer' | 'workflow';
 function currentActivityTask(task: Task): Task {
   const turn = taskConversationTurns(task).at(-1);
   return turn ? {...task, events:turn.events, messages:turn.messages, status:turn.status} : task;
@@ -46,7 +47,7 @@ export function TaskProgress({task, fileCount, onOpen, onEvent}:{task:Task;fileC
   </div>;
 }
 
-export function TaskWorkbench({data,task,tab,eventId,onEvent,onTab,onArtifact,onRefresh}:{data:Bootstrap;task:Task;tab:WorkbenchTab;eventId?:string;onEvent:(event:TaskEvent)=>void;onTab:(tab:WorkbenchTab)=>void;onArtifact:(id:string)=>void;onRefresh:()=>Promise<void>}) {
+export function TaskWorkbench({data,task,tab,eventId,workflowSelection,onWorkflowSelection,onEvent,onTab,onArtifact,onRefresh,onClose}:{onClose?:()=>void;data:Bootstrap;task:Task;tab:WorkbenchTab;eventId?:string;workflowSelection?:WorkflowSelection;onWorkflowSelection?:(selection:WorkflowSelection)=>void;onEvent:(event:TaskEvent)=>void;onTab:(tab:WorkbenchTab)=>void;onArtifact:(id:string)=>void;onRefresh:()=>Promise<void>}) {
   const currentTask=currentActivityTask(task), now=useTaskClock(currentTask);
   const activity=buildTaskActivityModel(currentTask,now), history=buildTaskActivityModel(task,now);
   const artifacts=data.artifacts.filter(item=>item.taskId===task.id&&item.classification!=='reply_snapshot');
@@ -58,17 +59,18 @@ export function TaskWorkbench({data,task,tab,eventId,onEvent,onTab,onArtifact,on
   const selectedAction=history.actions.find(action=>action.eventIds.includes(selected?.id||''));
   const operationStatus=activityActionStatusLabel(selectedAction?.status||'unknown');
   const selectedLabel=selected&&activityEventLabel(selected);
-  const titles={files:t('任务文件','Task files'),activity:selectedLabel?t(selectedLabel.zh,selectedLabel.en):t('任务进展','Task progress'),computer:t('执行电脑','Execution computer')};
+  const workflowOperations=tab==='activity'&&!!task.teamRuns?.length;
+  const titles={workflow:t('工作流详情','Workflow details'),files:t('任务文件','Task files'),activity:workflowOperations?t('操作记录','Operations'):selectedLabel?t(selectedLabel.zh,selectedLabel.en):t('任务进展','Task progress'),computer:t('执行电脑','Execution computer')};
   const Icon=tab==='files'?Document:tab==='computer'?Desktop:Code;
+  if(tab==='workflow')return <TeamRunGraph onClose={onClose} initialSelection={workflowSelection} onSelectionChange={onWorkflowSelection} task={task} agents={data.agents} data={data} onRefresh={onRefresh} onArtifact={onArtifact} onActivity={()=>onTab('activity')} onEvent={onEvent}/>;
   return <section className="task-workbench" aria-label={titles[tab]}>
-    <header className="workbench-header"><Icon/><strong title={titles[tab]}>{titles[tab]}</strong></header>
+    <header className={`workbench-header${workflowOperations?' workbench-header-nested':''}`}>{workflowOperations?<Button className="workbench-back" color="secondary" variant="ghost" size="sm" uniform aria-label={t('返回工作流','Back to workflow')} onClick={()=>onTab('workflow')}><ChevronLeft/></Button>:<Icon/>}<h2 title={titles[tab]}>{titles[tab]}</h2></header>
     <div className="workbench-body">
       {tab==='files'&&<>{artifacts.length?<div className="workbench-files">{artifacts.map(artifact=><ArtifactCard key={artifact.id} artifact={artifact} onOpen={()=>onArtifact(artifact.id)}/>)}</div>:<div className="workbench-empty"><Document/><h3>{t('还没有生成文件','No files yet')}</h3><p>{t('任务生成的文件会保存在这里。','Files created by this task appear here.')}</p></div>}</>}
       {tab==='activity'&&<>
         <div className="workbench-current-state" data-status={activity.status}><span>{t('当前状态','Current status')}</span><strong>{t(status.zh,status.en)}</strong>{elapsed&&<small title={t('本轮经过时间，包含等待批准','Elapsed time for this turn, including approval waits')}>{t(elapsed.zh,elapsed.en)}</small>}</div>
-        <TeamRunGraph task={task} agents={data.agents}/>
-        {plan.length>0&&<ol className="workbench-plan">{plan.map((step,index)=>{const running=activity.status==='running'&&!activity.stopping&&!activity.remote?.unconfirmed&&activity.review?.status!=='running'&&step.status==='running';return <li key={index} data-status={step.status==='completed'?'completed':running?'in_progress':'pending'}>{step.status==='completed'?<CheckCircle/>:running?<Clock/>:<span className="plan-dot"/>}<span>{step.text}</span></li>;})}</ol>}
-        {selected?<><div className="workbench-event-meta" data-status={selectedAction?.status}><span>{t(operationStatus.zh,operationStatus.en)}</span><time>{new Date(selected.createdAt).toLocaleTimeString(getLocale(),{hour:'2-digit',minute:'2-digit'})}</time></div><div className="workbench-operation"><TaskEventDetails event={selected}/></div>{artifacts.filter(file=>file.origin?.eventIds?.includes(selected.id)).map(file=><ArtifactCard key={file.id} artifact={file} onOpen={()=>onArtifact(file.id)}/>)}</>:!task.teamRuns?.length&&<p className="workbench-note">{t('这轮还没有操作记录。','No operations have been recorded for this turn.')}</p>}
+        {!task.teamRuns?.length&&plan.length>0&&<ol className="workbench-plan">{plan.map((step,index)=>{const running=activity.status==='running'&&!activity.stopping&&!activity.remote?.unconfirmed&&activity.review?.status!=='running'&&step.status==='running';return <li key={index} data-status={step.status==='completed'?'completed':running?'in_progress':'pending'}>{step.status==='completed'?<CheckCircle/>:running?<Clock/>:<span className="plan-dot"/>}<span>{step.text}</span></li>;})}</ol>}
+        {selected?<>{workflowOperations&&selectedLabel&&<h3 className="workbench-operation-title">{t(selectedLabel.zh,selectedLabel.en)}</h3>}<div className="workbench-event-meta" data-status={selectedAction?.status}><span>{t(operationStatus.zh,operationStatus.en)}</span><time>{new Date(selected.createdAt).toLocaleTimeString(getLocale(),{hour:'2-digit',minute:'2-digit'})}</time></div><div className="workbench-operation"><TaskEventDetails event={selected}/></div>{artifacts.filter(file=>file.origin?.eventIds?.includes(selected.id)).map(file=><ArtifactCard key={file.id} artifact={file} onOpen={()=>onArtifact(file.id)}/>)}</>:<p className="workbench-note">{t('这轮还没有操作记录。','No operations have been recorded for this turn.')}</p>}
         {events.length>1&&<details className="workbench-history"><summary>{t('其他操作','Other operations')}<span>{events.length}</span></summary><ol>{[...events].reverse().map(event=>{const label=activityEventLabel(event);return <li key={event.id}><button aria-current={selected?.id===event.id?'step':undefined} onClick={()=>onEvent(event)}><span>{t(label.zh,label.en)}</span><time>{new Date(event.createdAt).toLocaleTimeString(getLocale(),{hour:'2-digit',minute:'2-digit'})}</time></button></li>;})}</ol></details>}
       </>}
       {tab==='computer'&&<><div className="workbench-computer"><Desktop/><div><strong>{data.computer.name}</strong><span className="workbench-computer-state"><span>{t('本机执行','Local execution')}</span><span>{data.computer.status==='online'?t('在线','Online'):t('离线','Offline')}</span></span></div></div>{project&&<a className="workbench-project" href={`#projects/${project.id}`}>{project.name}<ArrowRight/></a>}<ScreenContextPanel key={task.id} task={task} onRefresh={onRefresh}/><Button color="secondary" variant="ghost" size="sm" onClick={()=>onTab('activity')}><Code/>{t('查看本次操作记录','View task operations')}</Button><details className="workbench-details"><summary>{t('执行位置','Execution location')}</summary><dl><dt>{t('工作目录','Workspace')}</dt><dd>{project?.path||data.computer.workspace}</dd><dt>{t('执行环境','Runtime')}</dt><dd>{task.mode==='demo'?t('示例记录','Example record'):data.computer.codexAvailable?'Codex app-server':t('尚未配置','Not configured')}</dd></dl></details></>}

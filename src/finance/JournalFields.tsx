@@ -23,5 +23,5 @@ export function JournalCategoryField({ id, value, custom, onChange, disabled, ki
   const generated = useId();
   const controlId = id || generated;
   const options = [...categoryOptions(kind, value && !custom ? [value] : []), { value: '__custom__', label: '自定义类别' }];
-  return <div className="journal-category-field"><Select id={controlId} pill={false} value={custom ? '__custom__' : value || 'uncategorized'} options={options} disabled={disabled} onChange={option => onChange(option.value === '__custom__' ? '' : option.value, option.value === '__custom__')} />{custom && <Input value={value} onChange={event => onChange(event.target.value, true)} aria-label="自定义类别名称" placeholder="填写类别名称" maxLength={100} disabled={disabled} required />}</div>;
+  return <div className="journal-category-field"><Select id={controlId} value={custom ? '__custom__' : value || 'uncategorized'} options={options} disabled={disabled} onChange={option => onChange(option.value === '__custom__' ? '' : option.value, option.value === '__custom__')} />{custom && <Input value={value} onChange={event => onChange(event.target.value, true)} aria-label="自定义类别名称" placeholder="填写类别名称" maxLength={100} disabled={disabled} required />}</div>;
 }

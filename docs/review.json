@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "baselineCommit": "e9a89928abda00a737b148c5c29b48575edba89c",
   "title": "SecondU 的产品判断、实现与验证",
-  "summary": "v0.2.1 带来完整财务工作区，并同步改进导航、电脑设置、首页、外观及中英文产品展示。",
+  "summary": "v0.3.0 整合内置执行组件、专家工作流、聊天成果、财务与界面改进。",
   "stages": [
     {
       "id": "research",
@@ -50,22 +50,22 @@
     {
       "id": "current-review",
       "title": "完善当前体验",
-      "summary": "美国虚构财务示例、六视图、项目页及官网明暗与窄屏检查完成，最新预览已由用户确认。",
+      "summary": "v0.3.0 指定路径与本地候选已检查，用户确认发布。",
       "status": "verified",
       "document": "DEVELOPMENT.md",
-      "summaryEn": "The fictional US finance example, six views, project page, website themes and narrow layouts have been checked, and the latest preview accepted.",
+      "summaryEn": "The v0.3.0 candidate and scoped flows were checked and publication was approved.",
       "titleEn": "Refine the current experience",
-      "section": "2026-10-25 最终交付与发布"
+      "section": "2026-11-05 v0.3.0 统一发布与本地产物清理"
     },
     {
       "id": "delivery",
       "title": "验证并交付本机版本",
-      "summary": "v0.2.1 的源码、安装包、文档素材、官网和应用内更新已交付。",
-      "status": "verified",
+      "summary": "v0.3.0 源码、桌面包、更新源与官网统一交付，公开结果单独核验。",
+      "status": "documented",
       "document": "DEVELOPMENT.md",
-      "summaryEn": "v0.2.1 source, desktop package, documentation, media, website and in-app updates are delivered.",
+      "summaryEn": "v0.3.0 brings source, desktop archive, update feed and website into one release, with public delivery checked separately.",
       "titleEn": "Verify and deliver",
-      "section": "2026-10-25 v0.2.1 公开交付"
+      "section": "2026-11-05 v0.3.0 统一发布与本地产物清理"
     }
   ],
   "iterations": [
@@ -1322,7 +1322,7 @@
     }
   ],
   "titleEn": "SecondU: product decisions, implementation and evidence",
-  "summaryEn": "v0.2.1 adds a complete Finance workspace and improves navigation, computer setup, home, appearance and bilingual product presentation.",
+  "summaryEn": "v0.3.0 integrates the bundled runtime, expert workflows, conversation artifacts, finance and interface refinements.",
   "latestRelease": {
     "version": "v0.2.1",
     "publishedAt": "2026-10-24T23:36:08Z",

@@ -13,6 +13,11 @@ const officeFormats = {
 };
 const legacyOfficeMimes = { doc: 'application/msword', xls: 'application/vnd.ms-excel', ppt: 'application/vnd.ms-powerpoint' };
 
+/** Team storage paths stay stable; readers see the member's original file name. */
+export function artifactDisplayName(artifact) {
+  return artifact.teamOrigin?.sourcePath || artifact.name;
+}
+
 /** Extension wins over a broad runtime text/code classification. Never execute JSX/TSX. */
 export function artifactFormat(artifact) {
   const name = artifact.name.toLowerCase().replace(/\s*\([^)]*\)\s*$/, '');

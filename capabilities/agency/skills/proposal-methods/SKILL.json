@@ -1,0 +1,15 @@
+{
+  "interface": {
+    "display_name": "客户方案与投标书",
+    "localized": {
+      "title": {
+        "zh": "客户方案与投标书",
+        "en": "Proposals and bids"
+      },
+      "description": {
+        "zh": "根据客户需求编写方案，说明交付范围、优势和依据。",
+        "en": "Write proposals around client requirements, with scope, strengths and supporting evidence."
+      }
+    }
+  }
+}

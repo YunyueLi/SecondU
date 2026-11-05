@@ -1,0 +1,116 @@
+{
+  "name": "secondu-team-product-delivery",
+  "version": "1.0.0",
+  "description": "Turn evidence into product decisions, engineering checks and a reviewable delivery plan.",
+  "license": "MIT",
+  "author": {
+    "name": "SecondU contributors"
+  },
+  "expertType": "team",
+  "agentName": "product-delivery-lead",
+  "agents": [
+    "agents/product-delivery-lead.md",
+    "agents/research.md",
+    "agents/product.md",
+    "agents/engineering.md",
+    "agents/review.md"
+  ],
+  "displayName": {
+    "zh": "产品发布评审团",
+    "en": "Product delivery team"
+  },
+  "displayDescription": {
+    "zh": "从需求证据到产品取舍、工程可行性与发布验收，形成可执行的交付方案。",
+    "en": "Turn evidence into product decisions, engineering checks and a reviewable delivery plan."
+  },
+  "teamInfo": {
+    "leadAgent": "product-delivery-lead",
+    "memberAgents": [
+      "research",
+      "product",
+      "engineering",
+      "review"
+    ]
+  },
+  "quickPrompts": [
+    {
+      "zh": "根据这份需求和现有方案，评审下一版本的范围、风险和验收条件。",
+      "en": "Review this requirement and proposal for next-release scope, risks and acceptance."
+    }
+  ],
+  "secondu": {
+    "workflow": [
+      {
+        "id": "evidence",
+        "title": {
+          "zh": "整理需求证据",
+          "en": "Establish evidence"
+        },
+        "members": [
+          "research"
+        ],
+        "after": [],
+        "description": {
+          "zh": "逐条整理用户材料、已知行为与待验证假设。保留原文出处；没有用户研究时明确证据缺口。交付 evidence.md。",
+          "en": "Separate supplied evidence from assumptions with source references; expose missing research. Deliver evidence.md."
+        },
+        "required": true
+      },
+      {
+        "id": "scope",
+        "title": {
+          "zh": "确定方案与范围",
+          "en": "Define scope"
+        },
+        "members": [
+          "product"
+        ],
+        "after": [
+          "evidence"
+        ],
+        "description": {
+          "zh": "读取证据文件，比较至少两种适用方案；给出目标用户、取舍、最小范围、排除项、度量和验收草案。交付 proposal.md。",
+          "en": "Read evidence and compare viable options. State audience, trade-offs, minimum scope, exclusions, metrics and draft acceptance. Deliver proposal.md."
+        },
+        "required": true
+      },
+      {
+        "id": "feasibility",
+        "title": {
+          "zh": "核对工程可行性",
+          "en": "Check feasibility"
+        },
+        "members": [
+          "engineering"
+        ],
+        "after": [
+          "scope"
+        ],
+        "description": {
+          "zh": "核对已提供代码或架构；未提供时只列待检查问题。说明依赖、复杂度、迁移和失败路径，禁止把估计称为实测。交付 feasibility.md。",
+          "en": "Inspect supplied implementation or architecture; otherwise identify open checks. Record dependencies, complexity, migration and failures, distinguishing estimates from measurements. Deliver feasibility.md."
+        },
+        "required": true
+      },
+      {
+        "id": "acceptance",
+        "title": {
+          "zh": "复核发布条件",
+          "en": "Review acceptance"
+        },
+        "members": [
+          "review"
+        ],
+        "after": [
+          "scope",
+          "feasibility"
+        ],
+        "description": {
+          "zh": "打开前序文件，检查需求、方案和可行性是否冲突；按关键路径设计可执行验收，列出阻断项、负责人和通过依据。交付 acceptance.md。",
+          "en": "Open prior deliverables, check contradictions, and derive executable acceptance by critical path. Identify blockers, owners and evidence. Deliver acceptance.md."
+        },
+        "required": true
+      }
+    ]
+  }
+}

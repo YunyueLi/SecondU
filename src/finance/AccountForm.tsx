@@ -1,3 +1,4 @@
+import {CurrencySelect} from './CurrencySelect';
 import { useId, useRef, useState, type FormEvent } from 'react';
 import { Button } from '@openai/apps-sdk-ui/components/Button';
 import { Input } from '@openai/apps-sdk-ui/components/Input';
@@ -50,14 +51,14 @@ export function AccountForm({ account, kind = 'asset', displayCurrency = 'CNY', 
   };
   return <form className="update-form finance-record-form finance-account-form" onSubmit={save}>
     {account ? <p className="form-footnote">{accountTypeLabel(account)}，当前{liability ? '待偿' : '记录'} {money(account.bookAmount || account.amount, hidden)} {account.currency}，{date(account.asOf)}</p> : <>
-      <Field label={liability ? '负债类型' : '资产类型'}><Select id={`${formId}-type`} value={classification} options={classificationOptions} OptionView={FinanceTypeOption} TriggerView={FinanceTypeOption} onChange={option => { setClassification(option.value); changed(); }} disabled={saving} pill={false} /></Field>
+      <Field label={liability ? '负债类型' : '资产类型'}><Select id={`${formId}-type`} value={classification} options={classificationOptions} OptionView={FinanceTypeOption} TriggerView={FinanceTypeOption} onChange={option => { setClassification(option.value); changed(); }} disabled={saving} /></Field>
       <Field label={liability ? '负债名称' : valued ? '资产名称' : '账户名称'}><Input id={`${formId}-name`} value={name} onChange={event => { setName(event.target.value); changed(); }} placeholder={liability ? '例如：信用卡、住房贷款' : valued ? '例如：自住房、车辆或保单名称' : '例如：储蓄账户、证券账户'} autoComplete="off" maxLength={100} required disabled={saving} /></Field>
-      <Field label={valued ? '估值币种' : '账户币种'}><Select id={`${formId}-currency`} value={currency} options={currencies} onChange={option => { setCurrency(option.value); changed(); }} disabled={saving} pill={false} /></Field>
+      <Field label={valued ? '估值币种' : '账户币种'}><CurrencySelect id={`${formId}-currency`} value={currency} options={currencies} onChange={option => { setCurrency(option.value); changed(); }} disabled={saving} /></Field>
     </>}
     {valued ? <AssetDetailsFields assetType={classification} currency={currency} asOf={asOf} draft={details} onChange={next => { setDetails(next); changed(); }} state={state} disabled={saving} hidden={hidden} /> : <Field label={`${liability ? '待偿金额' : account ? '新的账户余额' : '当前账户余额'}（${currency}）`}><Input id={`${formId}-amount`} inputMode="decimal" value={amount} onChange={event => { setAmount(event.target.value); changed(); }} placeholder="0.00" required autoComplete="off" disabled={saving} /></Field>}
     <Field label={valued ? '估值日期' : '记录日期'}><Input id={`${formId}-date`} type="date" value={asOf} onChange={event => { setAsOf(event.target.value); changed(); }} required disabled={saving} /></Field>
     <Field label={`${account ? '记录说明' : '账户说明'}（可选）`}><Textarea id={`${formId}-note`} rows={2} value={account ? note : description} onChange={event => { account ? setNote(event.target.value) : setDescription(event.target.value); changed(); }} placeholder={liability ? '例如：账单日或还款安排' : '例如：包含现金与基金的账户总额'} maxLength={500} disabled={saving} /></Field>
     {error && <p className="form-error" role="alert">{error}</p>}
-    <div className="dialog-actions"><Button type="submit" color="primary" pill={false} loading={saving}>{submitLabel || (account ? '保存更新' : liability ? '添加负债' : valued ? '添加资产' : '添加账户')}</Button></div>
+    <div className="dialog-actions"><Button type="submit" color="primary" loading={saving}>{submitLabel || (account ? '保存更新' : liability ? '添加负债' : valued ? '添加资产' : '添加账户')}</Button></div>
   </form>;
 }

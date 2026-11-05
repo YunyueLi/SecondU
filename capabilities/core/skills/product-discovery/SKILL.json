@@ -1,0 +1,16 @@
+{
+  "interface": {
+    "displayName": "需求梳理与交互设计",
+    "shortDescription": "Product discovery and design",
+    "localized": {
+      "title": {
+        "zh": "需求梳理与交互设计",
+        "en": "Requirements and interaction design"
+      },
+      "description": {
+        "zh": "整理用户问题，设计操作流程，写清每一步的页面状态。",
+        "en": "Clarify user problems, design flows, and describe the page states at each step."
+      }
+    }
+  }
+}

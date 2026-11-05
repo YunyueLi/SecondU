@@ -1,18 +1,17 @@
 import { useUnsavedChanges } from '../useUnsavedChanges';
 import {useEffect,useRef,useState} from 'react';
-import {Button,ButtonLink} from '@openai/apps-sdk-ui/components/Button';
+import {Button} from '@openai/apps-sdk-ui/components/Button';
 import {Checkbox} from '@openai/apps-sdk-ui/components/Checkbox';
 import {Textarea} from '@openai/apps-sdk-ui/components/Textarea';
 import {Select} from '@openai/apps-sdk-ui/components/Select';
 import {Badge} from '@openai/apps-sdk-ui/components/Badge';
 import {Menu} from '@openai/apps-sdk-ui/components/Menu';
-import {ArrowLeft,ArrowRight,Brain,CheckCircle,ChevronDown,CloseBold,Document,Download,Edit,FileUpload} from '@openai/apps-sdk-ui/components/Icon';
+import {ArrowLeft,ArrowRight,CheckCircle,ChevronDown,CloseBold,Document,Download,Edit,FileUpload} from '@openai/apps-sdk-ui/components/Icon';
 import type {MemoryImportPreview,MemoryImportResult,MemoryImportReviewResult,MemoryLayer} from '../../shared/memory-import';
 import {APIError,apiUrl,messageOf,write} from '../api';
 import {Dialog,ErrorNotice,Field} from '../components';
 import {ProviderMark} from '../models/providers';
 import {t} from '../i18n';
-import {currentSpace} from '../space';
 import './memory-import.css';
 
 const LIMIT=256*1024;
@@ -120,12 +119,4 @@ export function MemoryImportEntry({onRefresh,onPrepareTask,compact=false}:{onRef
  useEffect(()=>{if(!onPrepareTask)return;const listener=()=>{if(location.hash==='#self/import')setOpen(true);};window.addEventListener('hashchange',listener);return()=>window.removeEventListener('hashchange',listener);},[onPrepareTask]);
  function close(){setOpen(false);if(location.hash==='#self/import')location.hash='self';}
  return <><div className={`memory-import-entry ${compact?'is-compact':''}`}>{!compact&&<div><strong>{t('从已有理解开始','Start with context you already have')}</strong><p>{t('带入记忆，核对理解，再用于第一项任务。','Bring your context, review it, then use it in your first task.')}</p></div>}<div className="memory-import-entry-actions"><Button color="secondary" variant="outline" size="sm" onClick={()=>{if(onPrepareTask)setOpen(true);else location.hash='self/import';}}><FileUpload/>{t('导入已有记忆','Import existing context')}</Button><Menu><Menu.Trigger><Button color="secondary" variant="ghost" size="sm"><Download/>{t('导出','Export')}</Button></Menu.Trigger><Menu.Content align="end" minWidth={180}><Menu.Item onSelect={()=>{window.location.href=apiUrl('/digital-twin/export?format=json');}}>{t('标准 JSON','Standard JSON')}</Menu.Item><Menu.Item onSelect={()=>{window.location.href=apiUrl('/digital-twin/export?format=markdown');}}>Markdown</Menu.Item></Menu.Content></Menu></div></div>{open&&onPrepareTask&&<MemoryImport onClose={close} onRefresh={onRefresh} onPrepareTask={onPrepareTask}/>}</>;
-}
-
-/** A dismissible value entry for an empty personal workspace; it never opens itself. */
-export function MemoryImportWelcome(){
- const key=`secondu-context-intro-dismissed-v1:${currentSpace()}`;
- const [hidden,setHidden]=useState(()=>{try{return localStorage.getItem(key)==='1';}catch{return false;}});
- if(hidden)return null;
- return <section className="memory-import-welcome" aria-label={t('从已有理解开始','Start with your existing context')}><Brain aria-hidden="true"/><div><strong>{t('不必从头介绍自己','You do not have to start from scratch')}</strong><p>{t('带入已有的偏好与目标，核对后就能用于对话。','Bring your preferences and goals into the conversation, after a quick review.')}</p></div><ButtonLink as="a" href="#self/import" color="secondary" variant="outline" size="sm">{t('导入已有记忆','Import context')}<ArrowRight/></ButtonLink><Button uniform color="secondary" variant="ghost" size="sm" aria-label={t('暂时跳过，可从个人画像重新打开','Skip for now. Reopen from your personal profile.')} onClick={()=>{setHidden(true);try{localStorage.setItem(key,'1');}catch{}}}><CloseBold/></Button></section>;
 }

@@ -46,7 +46,7 @@ export function AllocationDonut({groups,currency,hidden,onSelect,label=t('资产
           <strong className="allocation-donut-amount">{hidden?'••••':money(group.amount)}</strong>
           <span className="allocation-donut-bar" aria-hidden="true"><i/></span><span className="allocation-donut-share">{share}</span>
         </button>;})}
-        {ordered.length>6&&<Button className="allocation-donut-more" aria-expanded={expanded} aria-controls={legendId} variant="ghost" color="secondary" pill={false} size="sm" onClick={()=>setExpanded(!expanded)}>{expanded?t('收起','Show less'):t(`查看其余 ${ordered.length-visible.length} 项`,`Show ${ordered.length-visible.length} more`)}</Button>}
+        {ordered.length>6&&<Button className="allocation-donut-more" aria-expanded={expanded} aria-controls={legendId} variant="ghost" color="secondary" size="sm" onClick={()=>setExpanded(!expanded)}>{expanded?t('收起','Show less'):t(`查看其余 ${ordered.length-visible.length} 项`,`Show ${ordered.length-visible.length} more`)}</Button>}
       </div>
     </div>
     {!hidden&&excluded.length>0&&<p className="allocation-donut-note" id={noteId}>{excluded.some(group=>group.amount<0n)?t('含负值资产；占比按正值计算。','Includes negative assets; shares use positive amounts.'):t(`${excluded.length} 项余额为零。`,`${excluded.length} items have a zero balance.`)}</p>}

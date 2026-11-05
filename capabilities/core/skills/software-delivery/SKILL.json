@@ -1,0 +1,16 @@
+{
+  "interface": {
+    "displayName": "代码开发与排错",
+    "shortDescription": "Software delivery",
+    "localized": {
+      "title": {
+        "zh": "代码开发与排错",
+        "en": "Coding and debugging"
+      },
+      "description": {
+        "zh": "根据需求实现代码，复现错误，检查修复是否有效。",
+        "en": "Implement code, reproduce issues, and check whether fixes work."
+      }
+    }
+  }
+}

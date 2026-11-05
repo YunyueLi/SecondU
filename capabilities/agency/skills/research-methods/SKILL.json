@@ -1,0 +1,15 @@
+{
+  "interface": {
+    "display_name": "文献与多来源综述",
+    "localized": {
+      "title": {
+        "zh": "文献与多来源综述",
+        "en": "Research synthesis"
+      },
+      "description": {
+        "zh": "汇总多份研究，比较证据强弱，列出共识、分歧和出处。",
+        "en": "Compare findings across studies, assess evidence, and cite agreements and disagreements."
+      }
+    }
+  }
+}

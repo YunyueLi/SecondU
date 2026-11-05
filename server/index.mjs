@@ -1,3 +1,4 @@
+import {programArguments} from './workflow-program.mjs';
 import {reviseTaskMessage} from './message-revisions.mjs';
 import { approvalMode, executionSettings, saveExecutionSettings } from './execution-settings.mjs';
 import { createDevelopmentReader } from './development-review.mjs';
@@ -11,6 +12,8 @@ import { ImCliService } from './im-cli.mjs';
 import { ImSetupService } from './im-setup.mjs';
 import { TwinMcpGrants } from './twin-mcp-grants.mjs';
 import { AgentResourcesService } from './agent-resources.mjs';
+import {capabilityService} from './capabilities/service.mjs';
+import {previewCapabilityDraft} from './capabilities/authoring.mjs';
 import { saveProfile } from './profile.mjs';
 import { ConnectorService, connectorSelection, publicConnector, saveConnector, deleteConnector } from './connectors.mjs';
 import http from 'node:http';
@@ -99,6 +102,7 @@ export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJEC
   const imSetup=new ImSetupService(store,{im,executionPolicy:policy,...imSetupOptions});
   const twinMcpGrants=new TwinMcpGrants(store);
   const resources=new AgentResourcesService(store,{im,runCli:runResourceCli});
+  const capabilities=capabilityService(store);
   let twinBuilding;
   const runner=new TaskRunner(store,{runCodex,scheduler,connectors,executionPolicy:policy,canSchedule:()=>updateLifecycle.accepting,onSourcesChanged:()=>twinBuilding?.syncSources()});
   twinBuilding=new TwinBuildingService(store,{runner,executionPolicy:policy});
@@ -111,7 +115,7 @@ export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJEC
   remoteTasks.connect(remoteComputers);
   const computerRuntime=_computerRuntime??createComputerRuntime(computerInfo,probeComputer);
   const computer=()=>({id:'local',name:os.hostname(),platform:process.platform,status:'online',workspace:store.workspace,...computerRuntime.snapshot()});
-  const bootstrap=()=>({version:VERSION,executionSettings:executionSettings(store),...(policy?{executionPolicy:policy}:{}),connectors:connectors.list(),attachments:store.list('attachments').map(publicAttachment),defaultAgentAvatarStyle:defaultAgentAvatarStyle(store),dailyActivities:dailyActivity(store),twinBuilding:twinBuilding.snapshot(),profile:store.meta('profile'),...Object.fromEntries(collections.map(c=>[c,c==='projects'?store.list(c).map(project=>publicProject(project,store.protectedDataDirectory)):store.list(c)])),settings:store.settings(),modelConnections:store.connectionList(),defaultConnectionId:store.defaultConnectionId(),computer:computer()});
+  const bootstrap=()=>({version:VERSION,executionSettings:executionSettings(store),...(policy?{executionPolicy:policy}:{}),capabilities:capabilities.snapshot(),connectors:connectors.list(),attachments:store.list('attachments').map(publicAttachment),defaultAgentAvatarStyle:defaultAgentAvatarStyle(store),dailyActivities:dailyActivity(store),twinBuilding:twinBuilding.snapshot(),profile:store.meta('profile'),...Object.fromEntries(collections.map(c=>[c,c==='projects'?store.list(c).map(project=>publicProject(project,store.protectedDataDirectory)):store.list(c)])),settings:store.settings(),modelConnections:store.connectionList(),defaultConnectionId:store.defaultConnectionId(),computer:computer()});
   let server;
   const finance=new FinanceService(store,{...financeOptions,executionPolicy:policy,space:_spaceKey,origin:()=>`http://127.0.0.1:${server?.address()?.port??_parentPort?.()}`,routePrefix:_spaceKey==='main'?'/api/finance':`/api/spaces/${_spaceKey}/finance`});
   const childApps=new Map();
@@ -177,9 +181,44 @@ export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJEC
     const artworkUpload=resource==='settings'&&key==='artwork'&&parts.length===3&&method==='PUT';
     const binaryArtifactUpload=resource==='artifacts'&&!key&&method==='POST';
     const attachmentUpload=resource==='attachments'&&!key&&parts.length===2&&method==='POST';
-    const body=['POST','PUT','PATCH','DELETE'].includes(method)?await readJson(req,binaryArtifactUpload?BINARY_ARTIFACT_JSON_LIMIT:attachmentUpload?Math.ceil(STORED_ATTACHMENT_LIMIT/3)*4+4096:artworkUpload?12*1024*1024:(avatarUpload||profileUpload)?4*1024*1024+4096:2*1024*1024):{};
+    const body=['POST','PUT','PATCH','DELETE'].includes(method)?await readJson(req,resource==='capabilities'&&key==='preview'?28*1024*1024:binaryArtifactUpload?BINARY_ARTIFACT_JSON_LIMIT:attachmentUpload?Math.ceil(STORED_ATTACHMENT_LIMIT/3)*4+4096:artworkUpload?12*1024*1024:(avatarUpload||profileUpload)?4*1024*1024+4096:2*1024*1024):{};
     if(profileUpload&&!Object.hasOwn(body,'avatarDataUrl')&&Buffer.byteLength(JSON.stringify(body))>2*1024*1024)throw new HttpError(413,'请求内容过大','body_too_large');
     guardExecutionRoute(policy,{resource,key,action,operation:parts[4],method,body},store);
+    if(resource==='capabilities'){
+      if(method==='GET'&&!key)return respond(res,200,capabilities.snapshot());
+      if(method==='GET'&&key==='drafts')return respond(res,200,store.list('tasks').filter(task=>task.capabilityAuthoring).sort((a,b)=>b.updatedAt.localeCompare(a.updatedAt)).slice(0,30).map(task=>{const draft=store.get('capabilityDrafts',task.id);return {taskId:task.id,title:task.title,status:task.status,...(draft?{draft:{name:draft.package.name,summary:draft.summary,digest:draft.digest,versions:draft.versions.length,updatedAt:draft.updatedAt}}:{})};}));
+      if(method==='POST'&&key==='drafts'&&action)return respond(res,200,previewCapabilityDraft(capabilities,action));
+      if(method==='POST'&&key==='author'){
+        const kind=choice(body.kind,['expert','team','skill'],'能力类型'),prompt=text(body.prompt,'需求描述',6000);
+        let baseFiles;if(body.base){const result=capabilities.exportDefinition({kind:body.base.kind,id:body.base.id});baseFiles=Object.fromEntries(Object.entries(result.files).map(([name,bytes])=>[name,bytes.toString('utf8')]));}
+        const task=createTask(store,{title:prompt.slice(0,60),prompt,mode:'live',agentIds:[],contextFactIds:[],digitalTwinEnabled:false,connectorIds:[],connectionId:body.connectionId,approvalMode:'ask'});
+        store.put('tasks',{...task,capabilityAuthoring:{kind,...(baseFiles?{baseFiles}:{})}});
+        try{runner.start(task.id);}catch(error){store.put('tasks',{...store.require('tasks',task.id),status:'needs_input',error:runner.cleanError(error.message)});}
+        return respond(res,201,store.require('tasks',task.id));
+      }
+      if(method==='POST'&&key==='export-definition'){
+        const result=capabilities.exportDefinition(body);
+        return respond(res,200,body.download?{filename:result.preview.filename,data:result.bytes().toString('base64')}:result.preview);
+      }
+      if(method==='POST'&&key==='preview')return respond(res,200,body.url?await capabilities.previewGitHub(body):capabilities.preview(body));
+      if(method==='GET'&&key==='preview'&&action)return respond(res,200,capabilities.readFile(undefined,url.searchParams.get('path'),action));
+      if(method==='GET'&&key&&action==='file')return respond(res,200,capabilities.readFile(key,url.searchParams.get('path')));
+      if(method==='POST'&&key==='install')return respond(res,201,capabilities.install(body));
+      if(method==='POST'&&key&&action==='create-expert')return respond(res,201,store.put('agents',createEntity(store,'agents',capabilities.expertDraft(key,body))));
+      if(method==='POST'&&key&&action==='create-team'){
+        const plan=capabilities.teamDraft(key,body);
+        const result=store.transaction(()=>{const agents=plan.members.map(member=>store.put('agents',createEntity(store,'agents',member.draft)));const memberId=definitionId=>agents[plan.members.findIndex(member=>member.definitionId===definitionId)].id;const workflow=plan.definition.workflow?.map(stage=>({id:stage.id,title:stage.title[body.locale==='en'?'en':'zh'],description:stage.description[body.locale==='en'?'en':'zh'],agentIds:stage.memberExpertIds.map(memberId),after:stage.after,required:stage.required}));const room=createRoom(store,{title:plan.name,kind:'group',agentIds:agents.map(agent=>agent.id),mode:policy==='showcase'?'demo':'live',team:{leadAgentId:agents[0].id,maxNodes:Math.max(8,agents.length*3),...(workflow?{workflow}:{})}});return {agents,room};});
+        return respond(res,201,result);
+      }
+      if(method==='DELETE'&&key==='preview'&&action)return respond(res,200,capabilities.discard(action));
+      if(key&&action==='export'&&method==='GET'){const bytes=capabilities.export(key);res.writeHead(200,{'Content-Type':'application/zip','Content-Length':bytes.length,'Content-Disposition':`attachment; filename="${capabilities.record(key).id}.zip"`,'Cache-Control':'no-store'});return res.end(bytes);}
+      if(key&&action==='environment'&&method==='PUT')return respond(res,200,capabilities.saveEnvironment(key,body));
+      if(key&&action==='restore'&&method==='POST')return respond(res,200,capabilities.restore(key));
+      if(key&&action==='rollback'&&method==='POST')return respond(res,200,capabilities.rollback(key,body));
+      if(key&&!action&&method==='PUT')return respond(res,200,capabilities.configure(key,body));
+      if(key&&!action&&method==='DELETE')return respond(res,200,capabilities.remove(key));
+      throw new HttpError(405,'能力包不支持该操作。');
+    }
     if(resource==='computer'){
       if(key!=='probe'||parts.length!==3)throw new HttpError(404,'本机检测接口不存在。','not_found');
       if(method!=='POST')throw new HttpError(405,'重新检测需要 POST 请求。','computer_probe_method_not_allowed');
@@ -318,6 +357,14 @@ export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJEC
       throw new HttpError(405,'连接器不支持该操作。');
     }
     if(resource==='agent-rooms'){
+      if(method==='POST'&&action==='run-workflow'){
+        const room=store.require('agentRooms',key);if(!room.team?.program)throw new HttpError(400,'此会话尚未保存参数化脚本。','workflow_program_missing');
+        const args=programArguments(room.team.program,body.args??{},{requireAll:true});
+        const result=roomTask(store,runner,key,{prompt:'运行「'+room.title+'」\n\n'+room.team.program.parameters.map(p=>p.label+'：'+(typeof args[p.name]==='boolean'?(args[p.name]?'开启':'关闭'):args[p.name]??'未填写')).join('；'),run:false});
+        runner.mutate(result.task.id,task=>{task.team.program.args=args;task.title=room.title;});
+        const task=runner.start(result.task.id,{directWorkflow:true});return respond(res,201,{room:store.require('agentRooms',key),task});
+      }
+
       if(method==='PUT'&&key&&action==='reactions'&&parts.length===4)return respond(res,200,saveRoomReaction(store,key,body));
       if(method==='GET'&&!action)return respond(res,200,key?store.require('agentRooms',key):store.list('agentRooms'));
       if(method==='POST'&&!key)return respond(res,201,createRoom(store,body));
@@ -384,6 +431,14 @@ export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJEC
       if(method==='GET'&&action==='trace')return respond(res,200,taskTrace(store.require('tasks',key)));
       if(method==='POST'&&!key)return respond(res,201,createTask(store,body));
       if(method==='POST'&&action==='revise')return respond(res,201,reviseTaskMessage(store,runner,key,body));
+      if(method==='POST'&&action==='resume-workflow'){if(typeof body.runId!=='string'||!body.runId||Object.keys(body).some(k=>k!=='runId'))throw new HttpError(400,'请指定要继续的原运行。','workflow_run_required');return respond(res,200,runner.start(key,{resumeRunId:body.runId}));}
+      if(method==='POST'&&action==='workflow')return respond(res,200,runner.controlWorkflow(key,body));
+      if(method==='POST'&&action==='save-workflow'){
+        const task=store.require('tasks',key),run=task.teamRuns?.find(item=>item.id===body.runId);
+        if(!run?.workflow?.length)throw new HttpError(400,'这轮还没有可保存的阶段流程。','workflow_unavailable');
+        const room=createRoom(store,{title:body.title||run.title||task.title,kind:'group',agentIds:task.agentIds,mode:task.mode,team:{leadAgentId:run.leadAgentId,maxNodes:run.limits?.nodes,concurrency:run.limits?.concurrency,workflow:run.configuration?.program?run.workflow.map(({inputArtifactIds,...stage})=>stage):run.workflow.map(({id,title,agentIds,after,required,connectionIds})=>({id,title,agentIds,after,required,connectionIds,description:''})),...(run.configuration?.program?{program:{...run.configuration.program,args:{}}}:{}),defaultConnectionId:run.defaultConnectionId,reviewBeforeRun:true}});
+        return respond(res,201,room);
+      }
       if(method==='POST'&&action==='run')return respond(res,200,runner.start(key));
       if(method==='POST'&&action==='message')return respond(res,200,runner.message(key,body.content,body.attachmentIds));
       if(method==='POST'&&action==='cancel')return respond(res,200,await runner.cancel(key));

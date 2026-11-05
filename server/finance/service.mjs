@@ -1,4 +1,5 @@
 import path from 'node:path';
+import {initializeFinanceExample} from './example.mjs';
 import {FinanceProviderConnections} from './provider-connections.mjs';
 import {NativeFinanceStore,projectFinance} from './store.mjs';
 import {LocalFinanceAdapter} from './adapter.mjs';
@@ -26,6 +27,8 @@ function mergedMarket(upstream,native){
 export class FinanceService{
   constructor(store,{executionPolicy,origin,routePrefix='/api/finance',space='main',now=()=>Date.now(),adapterOptions={},appKeyOptions={},oauthOptions={},providerOptions={},marketOptions={},marketRefreshIntervalMs=60000}={}){
     this.store=store;this.now=now;this.origin=origin;this.routePrefix=routePrefix;this.space=space;this.executionPolicy=executionPolicy;
+    if(executionPolicy==='showcase')initializeFinanceExample(store,store.meta('profile').demoLocale==='en'?'en':'zh');
+    this.example=this.isDemo()?store.get('meta','financeExample')?.value:null;
     this.native=new NativeFinanceStore(store,{now});
     this.journal=new FinanceJournal(store,{now});
     this.providers=new FinanceProviderConnections(this,providerOptions);
@@ -52,16 +55,16 @@ export class FinanceService{
     return {config,upstream,projected,state:this.journalState(projected)};
   }
   project(upstream){
-    const nativeMarket=this.market.getState(),quoteIds=new Set(this.marketPositions().map(row=>financeQuoteDefinition(row).id));
-    const market=mergedMarket(upstream?.market,{...nativeMarket,quotes:nativeMarket.quotes.filter(row=>row.kind==='fx'||quoteIds.has(row.id))});
+    const nativeMarket=this.example?.market??this.market.getState(),quoteIds=new Set(this.marketPositions().map(row=>financeQuoteDefinition(row).id));
+    const market=mergedMarket(upstream?.market,{...nativeMarket,quotes:this.example?nativeMarket.quotes:nativeMarket.quotes.filter(row=>row.kind==='fx'||quoteIds.has(row.id))});
     return projectFinance(this.native.document(),market,upstream);
   }
   journalState(projected){
     const journal=this.journal.read(),analysis=this.analyze(journal,projected);
-    return {...projected,journal,analysis,revision:digest({finance:projected.revision,journal:journal.revision})};
+    return {...projected,journal,analysis,...(this.example?{example:this.example.metadata}:{}),revision:digest({finance:projected.revision,journal:journal.revision})};
   }
   analyze(journal,state,options={}){
-    const today=journalToday(this.now());
+    const today=this.example?.metadata.asOf??journalToday(this.now());
     return analyzeFinanceJournal(journal,{today,month:options.month??today.slice(0,7),currency:options.currency??state.metadata.onboarding.displayCurrency,rates:state.valuation.rates});
   }
   async state(){return (await this.load()).state;}
@@ -131,7 +134,7 @@ export class FinanceService{
     }
     if(route==='journal/weekly'&&method==='POST'){
       fields(body,['through','currency']);const state=await this.state();
-      const report=buildFinanceWeeklyReport(state.journal,{through:body.through,currency:body.currency??state.metadata.onboarding.displayCurrency,rates:state.valuation.rates,today:journalToday(this.now())});
+      const report=buildFinanceWeeklyReport(state.journal,{through:body.through??this.example?.metadata.asOf,currency:body.currency??state.metadata.onboarding.displayCurrency,rates:state.valuation.rates,today:this.example?.metadata.asOf??journalToday(this.now())});
       return {status:200,value:{report}};
     }
     if(route.startsWith('journal/')){

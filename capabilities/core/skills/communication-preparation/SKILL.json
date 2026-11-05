@@ -1,0 +1,16 @@
+{
+  "interface": {
+    "displayName": "沟通措辞与演练",
+    "shortDescription": "Communication preparation",
+    "localized": {
+      "title": {
+        "zh": "沟通措辞与演练",
+        "en": "Conversation preparation"
+      },
+      "description": {
+        "zh": "根据对象和目的起草消息，练习如何说明诉求与边界。",
+        "en": "Draft messages for the recipient and purpose; rehearse requests and boundaries."
+      }
+    }
+  }
+}

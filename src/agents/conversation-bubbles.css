@@ -1,27 +1,88 @@
-/* Role-based direct and group chats keep identity and conversational turns visible. */
-.ag-conversation{--ag-message-indent:42px}
-.ag-conversation .ag-message{gap:10px;margin-bottom:18px}
-.ag-conversation .ag-message-body{flex:0 1 auto;max-width:min(640px,calc(100% - 44px))}
-.ag-conversation .ag-message-user .ag-message-body{max-width:min(640px,calc(100% - 44px))}
-/* Quotes and author details may be wider than a short reply. Size the bubble independently. */
-.ag-conversation .ag-message-user .ag-message-body>.ag-reply-reference{width:fit-content;max-width:min(420px,100%);margin-inline-start:auto}
-.ag-conversation .ag-message-author{height:auto;min-height:22px;gap:8px;margin-bottom:5px;flex-wrap:wrap}
-.ag-conversation .ag-message-author strong{font-size:13px;font-weight:500}
-.ag-conversation .ag-message-author time{font-size:11px}
-.ag-conversation .ag-message-assistant .ag-message-bubble{padding:11px 15px;border-radius:4px 17px 17px;background:var(--color-surface-secondary)}
-.ag-conversation .ag-message-user .ag-message-bubble{width:fit-content;max-width:100%;margin-inline-start:auto;box-sizing:border-box;padding:11px 15px;border-radius:17px 4px 17px 17px;background:color-mix(in srgb,var(--color-text) 9%,var(--color-surface))}
-.ag-conversation .ag-message-bubble .rich-text{line-height:1.75}
-.ag-conversation .ag-message-bubble{transition:background-color .18s ease-out}
-.ag-conversation .ag-message-bubble pre{max-width:100%;overflow:auto}
-.ag-conversation .ag-message-actions{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:2px;margin-top:3px;min-height:26px}
-.ag-conversation .ag-message-actions button:not(.message-reaction-chip){min-height:26px;height:26px;min-width:26px;padding:4px}
-.ag-conversation .ag-message-entry:has(>.ag-message-files)>.ag-message{margin-bottom:5px}
-.ag-conversation .ag-message-files{max-width:min(640px,calc(100% - var(--ag-message-indent)));margin:0 0 18px var(--ag-message-indent);gap:7px}
-.ag-conversation .ag-message-entry:has(>.ag-message-user)>.ag-message-files{margin-inline:0 var(--ag-message-indent);margin-left:auto}
-@media(max-width:600px){.ag-conversation{--ag-message-indent:40px}.ag-conversation .ag-message{gap:8px;margin-bottom:16px}.ag-conversation .ag-message-body,.ag-conversation .ag-message-user .ag-message-body{max-width:calc(100% - 40px)}.ag-conversation .ag-message-assistant .ag-message-bubble,.ag-conversation .ag-message-user .ag-message-bubble{padding:10px 12px}.ag-conversation .ag-message-author strong{font-size:12px}}
+/* A shared conversation surface: quiet chrome, readable bubbles and a light composer. */
+.ag-chat-only{--ag-message-indent:32px;--ag-reading-gutter:28px}
+.ag-chat-only .ag-conversation{container-type:inline-size;container-name:agent-conversation;--ag-message-indent:32px;background:var(--color-surface)}
+.ag-chat-only .ag-room-header{min-height:68px;padding:12px 24px;border-bottom:0;background:var(--color-surface);gap:10px}
+.ag-chat-only .ag-room-heading{gap:10px;padding:3px 0}
+.ag-chat-only .ag-room-heading strong{font-size:15px;font-weight:550;line-height:22px}
+.ag-chat-only .ag-room-heading small{font-size:12px;line-height:16px;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ag-chat-only .ag-header-actions{gap:3px}
+.ag-chat-only .ag-header-actions>[data-color]{font-size:11px}
+.ag-chat-only .ag-message-column{width:100%;max-width:760px;padding:12px var(--ag-reading-gutter) 20px}
+.ag-chat-only .ag-day-separator{font-size:11px;line-height:18px;margin:16px 0 24px;color:var(--color-text-secondary)}
+.ag-chat-only .ag-message{gap:8px;margin-bottom:24px;align-items:flex-start}
+.ag-chat-only .ag-message-avatar{width:24px;height:24px;margin-top:24px;border-radius:50%}
+.ag-chat-only .ag-message-avatar .ag-avatar{border-radius:50%}
+.ag-chat-only .ag-message-body{flex:0 1 auto;max-width:calc(100% - var(--ag-message-indent));min-width:0}
+.ag-chat-only .ag-message-author{height:auto;min-height:18px;line-height:18px;margin:0 15px 6px;font-size:12px;gap:6px}
+.ag-chat-only .ag-message-author strong{font-weight:400;color:var(--color-text-secondary)}
+.ag-chat-only .ag-message-bubble{border-radius:18px;padding:11px 15px;background:var(--color-surface-secondary);line-height:1.7}
+.ag-chat-only .ag-message-bubble .rich-text{font-size:var(--hither-font-body);line-height:24px}
+.ag-chat-only .ag-message-bubble .rich-text p{margin-block:0 9px}
+.ag-chat-only .ag-message-bubble .rich-text>:last-child{margin-bottom:0}
+.ag-chat-only .ag-message-bubble .rich-text ul,.ag-chat-only .ag-message-bubble .rich-text ol{margin-block:8px;padding-left:19px}
+.ag-chat-only .ag-message-bubble .rich-text li{margin-block:4px;line-height:24px}
+.ag-chat-only .ag-message-bubble pre{max-width:100%;overflow:auto}
+.ag-chat-only .ag-message-user .ag-message-body{max-width:85%}
+.ag-chat-only .ag-message-user .ag-message-bubble{background:var(--color-text);color:var(--color-surface);border-radius:18px}
+/* Message actions may be wider than a short reply; they must not size its bubble. */
+.ag-chat-only .ag-message-user .ag-message-bubble:not(:has(>.message-revision-editor)){width:fit-content;max-width:100%;margin-inline-start:auto}
+.ag-chat-only .ag-message-user .ag-message-bubble .rich-text{color:inherit}
+.ag-chat-only .ag-message-user .ag-message-bubble a{color:inherit;text-decoration:underline}
+.ag-chat-only .ag-message-user .ag-message-bubble code{color:inherit;background:color-mix(in srgb,var(--color-surface) 14%,transparent)}
+.ag-chat-only .ag-message-actions{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;height:auto;min-height:28px;margin:4px 0 -8px;gap:1px}
+.ag-chat-only .ag-message-actions button{min-height:28px;height:28px;min-width:28px;padding:3px;color:var(--color-text-secondary)}
+.ag-chat-only .ag-message-actions svg{width:13px;height:13px}
+.ag-chat-only .ag-compose-area{padding:8px var(--ag-reading-gutter) 18px;background:var(--color-surface)}
+.ag-chat-only .ag-compose-column{max-width:704px}
+.ag-chat-only .ag-composer.composer{display:block;--composer-activity-radius:27px;padding:0;border:0;border-radius:27px;background:var(--color-surface-secondary);box-shadow:none;backdrop-filter:none}
+.ag-chat-only .ag-composer.composer:focus-within{box-shadow:0 0 0 1px var(--color-border-subtle)}
+.ag-chat-only .ag-composer .composer-main-layer{display:grid;grid-template-columns:32px minmax(0,1fr) auto;align-items:center;background:transparent;border-radius:27px;padding:10px 12px;gap:3px 6px}
+.ag-chat-only .ag-composer .composer-input{padding:0}
+.ag-chat-only .ag-composer.is-compact .composer-input{grid-row:1;grid-column:2}
+.ag-chat-only .ag-composer.is-compact .composer-leading{grid-row:1;grid-column:1}
+.ag-chat-only .ag-composer.is-compact .composer-trailing{grid-row:1;grid-column:3}
+.ag-chat-only .ag-composer textarea{font-size:14px;line-height:23px;padding:6px 5px;min-height:35px}
+.ag-chat-only .ag-composer .composer-leading{gap:3px}
+.ag-chat-only .ag-composer .composer-trailing{gap:3px}
+.ag-chat-only .ag-composer .composer-trailing button{font-size:12px}
+.ag-chat-only .ag-composer .composer-add-trigger{width:32px;height:32px;min-height:32px;background:var(--color-surface);border-radius:50%}
+.ag-chat-only .ag-composer .composer-trailing>button:last-child{border-radius:50%;height:32px;width:32px;min-height:32px}
+.ag-chat-only .ag-composer .composer-trailing>button:last-child svg{width:17px;height:17px}
+.ag-chat-only .ag-compose-note{font-size:12px;line-height:20px}
+.ag-chat-only .collaboration-event{margin:0 auto 20px}
+.ag-chat-only .collaboration-event button{font-size:12px}
+.ag-chat-only .collaboration-deliverables{margin-top:4px;margin-bottom:16px}
+.ag-chat-only .ag-message-entry:has(.collaboration-deliverables)>.ag-message{margin-bottom:12px}
+.ag-chat-only .workbench-surface{border-left-color:var(--color-border-subtle)}
+@container agent-conversation (max-width:560px){
+ .ag-chat-only .ag-room-header{padding:10px 14px;min-height:62px}
+ .ag-chat-only .ag-room-heading strong{font-size:14px}
+ .ag-chat-only .ag-room-heading small{max-width:220px;font-size:12px}
+ .ag-chat-only .ag-header-actions>[data-color]{display:none}
+ .ag-chat-only .ag-message-column{padding:8px 16px 18px}
+ .ag-chat-only .ag-message-body{flex:0 1 auto;max-width:calc(100% - 32px)}
+ .ag-chat-only .ag-message-user .ag-message-body{max-width:90%}
+ .ag-chat-only .ag-message-bubble{padding:10px 12px;border-radius:16px}
+ .ag-chat-only .ag-message-author{margin-inline:12px}
+ .ag-chat-only .ag-message-bubble .rich-text{font-size:var(--hither-font-body);line-height:24px}
+ .ag-chat-only .ag-compose-area{padding:7px 12px max(12px,env(safe-area-inset-bottom))}
+ .ag-chat-only .ag-composer .composer-main-layer{padding:8px 10px}
+ .ag-chat-only .ag-composer .composer-input{grid-column:1/-1;grid-row:1}
+ .ag-chat-only .ag-composer .composer-leading{grid-row:2;grid-column:1}
+ .ag-chat-only .ag-composer .composer-trailing{grid-row:2;grid-column:2/-1;justify-self:end}
+ .ag-chat-only .ag-composer .composer-context-usage{width:25px}
+ .ag-chat-only .collaboration-deliverables{width:calc(100% - 32px)}
+}
+@media(hover:hover) and (pointer:fine){.ag-chat-only .ag-message-actions{opacity:0;transition:opacity 120ms}.ag-chat-only .ag-message:hover .ag-message-actions,.ag-chat-only .ag-message:focus-within .ag-message-actions{opacity:1}}
+@media(prefers-reduced-motion:reduce){.ag-chat-only .ag-message-actions{transition:none}}
+
+.ag-chat-only .ag-message-user .ag-message-body>.ag-reply-reference{width:fit-content;max-width:100%;margin-inline-start:auto}
+.ag-chat-only .ag-message-bubble:has(>.message-revision-editor){padding:0;background:transparent;color:var(--color-text);border-radius:0}
+
+@container agent-conversation (max-width:560px){.ag-chat-only .ag-composer.is-compact .composer-main-layer{grid-template-columns:32px minmax(0,1fr) auto}.ag-chat-only .ag-composer.is-compact .composer-input{grid-row:1;grid-column:2/-1}.ag-chat-only .ag-composer.is-compact .composer-leading{grid-row:1;grid-column:1}.ag-chat-only .ag-composer.is-compact .composer-trailing{grid-row:2;grid-column:2/-1}}
 
 .ag-conversation .ag-message-entry[tabindex="-1"]:focus{outline:none!important;box-shadow:none!important}
-.ag-conversation .ag-message-entry.is-revealed .ag-message-bubble{background-color:color-mix(in srgb,var(--color-text) 13%,var(--color-surface))}
+.ag-conversation .ag-message-entry.is-revealed .ag-message-bubble{outline:2px solid var(--color-border);outline-offset:3px}
 @media(prefers-reduced-motion:reduce){.ag-conversation .ag-message-bubble{transition:none}}
 [data-motion=reduced] .ag-conversation .ag-message-bubble{transition:none}
 
@@ -31,3 +92,42 @@
 .ag-conversation .ag-message-followup>.ag-message-files{width:100%;max-width:100%;margin:0;gap:8px}
 .ag-conversation .ag-message-followup.has-files>.ag-message-actions{margin-top:0}
 @media(max-width:600px){.ag-conversation .ag-message-followup.has-files{grid-template-columns:minmax(0,1fr);position:relative;margin-top:34px}.ag-conversation .ag-message-followup.has-files>.ag-message-actions{position:absolute;right:0;top:-31px}.ag-conversation .ag-message-followup>.ag-message-files{width:min(390px,100%)}}
+
+.ag-chat-only .ag-message-scroll{overflow-anchor:none}
+.ag-chat-only .ag-composer .composer-main-layer-phone{display:flex;flex-direction:column;align-items:stretch;gap:0}
+
+/* Conversation states use the same reading column as messages. */
+.ag-chat-only .ag-message.is-continuation{padding-left:32px;margin-top:-14px}
+.ag-chat-only .ag-message.is-continuation .ag-message-body{max-width:100%}
+.collaboration-record.is-continuation>article{padding-left:32px}
+.collaboration-record.is-continuation{margin-top:-8px}
+.workflow-reuse{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;margin:16px 0 20px;padding:12px 0;border-top:1px solid var(--color-border-subtle)}
+.workflow-reuse>div{flex:1;min-width:180px}.workflow-reuse strong{font-size:13px;line-height:21px;font-weight:500}.workflow-reuse p{margin:3px 0 0;font-size:12px;line-height:20px;color:var(--color-text-secondary)}.workflow-reuse>details{width:100%;font-size:12px;line-height:20px}.workflow-reuse summary{cursor:pointer;color:var(--color-text-secondary)}.workflow-reuse ol{padding-left:20px}.workflow-reuse li{margin:8px 0}
+.workflow-review-conversation{background:var(--color-surface-secondary);border:0;margin:12px 0 20px;border-radius:16px}
+.workflow-review-conversation .workflow-review-body{padding:16px 18px 4px}
+.workflow-review-conversation .workflow-review-state{margin-bottom:6px}
+.workflow-review-conversation .workflow-review-body>header{margin-bottom:10px}
+.workflow-review-summary{list-style:decimal;margin:0;padding-left:20px;display:grid;gap:7px;font-size:13px;line-height:21px}
+.workflow-review-summary li{padding-left:2px}.workflow-review-summary small{display:block;color:var(--color-text-secondary);font-size:12px;line-height:19px}
+.workflow-review-output{font-size:12px;line-height:20px;margin:12px 0;color:var(--color-text-secondary);overflow-wrap:anywhere}
+.workflow-review-inputs{font-size:12px;line-height:20px;margin:10px 0}.workflow-review-inputs>summary{display:flex;align-items:center;gap:6px;cursor:pointer}.workflow-review-inputs>summary svg{width:12px;height:12px}.workflow-review-inputs:not([open])>summary svg{transform:rotate(-90deg)}
+.workflow-review-details{margin:8px 0 12px;padding-top:12px;border-top:1px solid var(--color-border-subtle)}
+.workflow-review-conversation>footer{position:static;justify-content:flex-start;gap:8px;flex-wrap:wrap;padding:10px 18px 16px;border-radius:0 0 16px 16px}
+.workflow-review-conversation>footer>button{min-height:32px;font-size:12px}
+.workflow-review-conversation .workflow-disclosure{font-size:12px;margin:0;padding:5px 0}
+.workflow-revision{padding:8px 0 12px;display:grid;gap:8px;font-size:13px}.workflow-revision>div{display:flex;gap:8px}.workflow-revision textarea{font-size:14px}
+.workflow-decision-receipt{font-size:12px;line-height:20px;color:var(--color-text-secondary);margin:8px 0 12px;max-width:100%}
+.workflow-decision-receipt>summary{display:flex;align-items:center;gap:7px;cursor:pointer;min-height:32px}.workflow-decision-receipt>summary>svg{width:14px;height:14px;flex:none}.workflow-decision-receipt>summary>span{flex:none}.workflow-decision-receipt small{font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.workflow-decision-receipt>summary>svg:last-child{margin-left:auto}.workflow-decision-receipt:not([open])>summary>svg:last-child{transform:rotate(-90deg)}.workflow-decision-receipt>p{margin:6px 0 8px 21px;white-space:pre-wrap;overflow-wrap:anywhere}
+.conversation-attention{font-size:13px;line-height:22px;min-width:0}.conversation-attention>strong{font-weight:500}.conversation-attention p{margin:6px 0;color:var(--color-text-secondary);white-space:pre-wrap;overflow-wrap:anywhere}.conversation-attention[data-state=failed]>strong{color:var(--color-text-danger)}
+.ag-chat-only .approval-history{margin:8px 0 14px;font-size:12px;line-height:20px}.ag-chat-only .approval-history summary{font-size:12px}.ag-chat-only .approval-history summary>svg{width:14px;height:14px}
+@media(prefers-reduced-motion:reduce){.workflow-dependency,.collaboration-pulse{animation:none;transition:none}}
+[data-motion=reduced] .workflow-dependency,[data-motion=reduced] .collaboration-pulse{animation:none;transition:none}
+.ag-chat-only .ag-room-task{padding:12px 0 0;margin:8px 0 20px;gap:10px}
+.ag-chat-only .approval-card{padding:16px 18px;border:0;background:var(--color-surface-secondary);border-radius:16px}
+.ag-chat-only .approval-card h3{font-size:14px;line-height:22px}.ag-chat-only .approval-card p{font-size:13px;line-height:22px;margin-top:8px}
+.ag-chat-only .approval-card .row{flex-wrap:wrap;gap:8px}
+.ag-chat-only .approval-actions{justify-content:flex-start;flex-wrap:wrap;margin-top:14px}
+.ag-chat-only .approval-actions button{min-height:32px;font-size:12px}
+.ag-chat-only .ag-message-entry:has(>.approval-history)>.ag-message{margin-bottom:12px}
+.ag-chat-only .approval-history summary>span{flex:0 1 auto}.ag-chat-only .approval-history summary>small{margin-left:8px}
+@container agent-conversation (max-width:560px){.workflow-review-conversation>footer>button,.workflow-revision button,.ag-room-task>.approval-card .approval-actions button{min-height:44px}.workflow-review-conversation>footer{padding-top:6px}.workflow-review-inputs>summary,.workflow-review-conversation .workflow-disclosure{min-height:40px}.workflow-reuse>button{min-height:44px}}

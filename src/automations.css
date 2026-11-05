@@ -41,7 +41,7 @@
 .automations-device-dot.is-online { background:var(--color-text-primary); }
 .automations-footer p { font-size:var(--hither-font-meta); line-height:1.8; color:var(--color-text-secondary); }
 .automations-footer p>span { display:block; font-size:var(--hither-font-meta); color:var(--color-text-tertiary); }
-.automation-editor-dialog { width:min(580px,calc(100vw - 40px)); }
+.automation-editor-dialog { width:min(580px,100%); }
 .automation-form { display:flex; flex-direction:column; gap:19px; }
 .automation-form .form-field { margin:0;gap:7px;min-width:0; }.automation-form .field-hint { margin:0; }
 .automation-form .field-label { font-size:12px; font-weight:500; }
@@ -49,11 +49,11 @@
 .automation-trigger-note { display:flex; align-items:flex-start; gap:8px; color:var(--color-text-secondary); font-size:var(--hither-font-meta); line-height:1.7; padding-top:24px; }
 .automation-trigger-note>svg { width:17px; height:17px; flex-shrink:0; margin-top:1px; }
 .automation-agent-field { border:0; padding:0; margin:0; }
-.automation-agent-field legend { font-size:12px; font-weight:500; }
+.automation-agent-field legend { font-size:var(--hither-font-label); font-weight:500; }
 .automation-agent-field>p { color:var(--color-text-secondary); font-size:var(--hither-font-meta); line-height:1.7; margin-top:6px; }
 .automation-agent-choices { display:flex; align-items:center; flex-wrap:wrap; gap:12px 20px; margin-top:13px; }
 .automation-enable-row { display:flex; align-items:center; justify-content:space-between; gap:16px; padding-top:18px; border-top:1px solid var(--color-border-subtle); }
-.automation-enable-row strong { font-weight:500; font-size:12px; }
+.automation-enable-row strong { font-weight:500; font-size:var(--hither-font-label); }
 .automation-enable-row p { font-size:var(--hither-font-meta); color:var(--color-text-secondary); line-height:1.7; margin-top:5px; }
 .automation-form-note { color:var(--color-text-secondary); font-size:var(--hither-font-meta); line-height:1.8; background:var(--color-surface-secondary); padding:12px 14px; border-radius:10px; }
 .automation-form-actions { display:flex; align-items:center; justify-content:flex-end; gap:8px; padding-top:16px; border-top:1px solid var(--color-border-subtle); }

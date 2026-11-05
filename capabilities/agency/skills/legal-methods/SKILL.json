@@ -1,0 +1,15 @@
+{
+  "interface": {
+    "display_name": "业务合规检查",
+    "localized": {
+      "title": {
+        "zh": "业务合规检查",
+        "en": "Business compliance review"
+      },
+      "description": {
+        "zh": "检查业务流程和协议，列出适用规则与待核实问题。",
+        "en": "Review business processes and agreements against relevant rules; list open questions."
+      }
+    }
+  }
+}

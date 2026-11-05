@@ -45,5 +45,13 @@ jobs:
         run: npm run build
       - name: Run synthetic local tests
         run: npm test
+      - name: Prepare the pinned Codex runtime
+        run: |
+          node scripts/package-codex-runtime.mjs .local/ci-codex
+          echo "HITHER_CODEX_BIN=$PWD/.local/ci-codex/bin/codex" >> "$GITHUB_ENV"
+      - name: Validate the pinned CLI against local protocol and permission fixtures
+        env:
+          HITHER_TEST_REAL_CODEX: '1'
+        run: node --test tests/codex.test.mjs tests/codex-extraction-runtime.test.mjs tests/codex-runtime-integration.test.mjs
       - name: Validate website finance examples and presentation
         run: node --test website/*.test.mjs

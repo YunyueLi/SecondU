@@ -17,7 +17,7 @@ const ROOT = path.resolve(__dirname, '..');
 const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
 const packaged = manifest.hitherPackaged === true;
 // The visible name must not move existing tasks, browser drafts or credentials.
-const userData = path.join(app.getPath('appData'), brand.compatibility.userDataDirectory);
+const userData = process.env.HITHER_USER_DATA_DIR ? path.resolve(process.env.HITHER_USER_DATA_DIR) : path.join(app.getPath('appData'), brand.compatibility.userDataDirectory);
 fs.mkdirSync(userData, { recursive: true, mode: 0o700 });
 app.setPath('userData', userData);
 let port = 58645;
@@ -48,7 +48,7 @@ function sendToRenderer(channel, value) {
   const contents = mainWindow.webContents;
   if (!contents.isDestroyed() && new URL(contents.getURL() || 'about:blank').origin === origin) contents.send(channel, value);
 }
-function checkRendererForQuit() {
+function checkRendererForQuit({ discardUnsaved = false } = {}) {
   if (!mainWindow || mainWindow.isDestroyed()) return Promise.resolve({ unsaved: false, busy: false });
   const contents = mainWindow.webContents;
   // Startup/error documents have no editor. A loaded app must answer itself.
@@ -63,7 +63,7 @@ function checkRendererForQuit() {
     };
     const timer = setTimeout(() => finish(new QuitBlocked('renderer_unavailable')), 5000);
     ipcMain.on('hither:quit-readiness', reply);
-    contents.send('hither:prepare-to-quit', { requestId });
+    contents.send('hither:prepare-to-quit', { requestId, discardUnsaved });
   });
 }
 const quitCoordinator = createQuitCoordinator({
@@ -88,25 +88,35 @@ function requestQuit({ token } = {}) {
   }
   if (quitAttempt) return quitAttempt;
   quitAttempt = (async () => {
+    let discardUnsaved = false;
     try {
-      if (fatalQuitError) throw fatalQuitError;
-      if (startupAttempt) await startupAttempt;
-      const expectedToken = pendingRelaunchToken;
-      await quitCoordinator.prepare({ updating: !!expectedToken || ['ready', 'awaiting-relaunch', 'installing'].includes(updater?.getState().phase), mayCommit: () => !expectedToken || updater.isRelaunchPending(expectedToken) });
-      if (expectedToken && !updater.isRelaunchPending(expectedToken)) { fatalQuitError = new QuitBlocked('relaunch_failed', { recoverable: false }); throw fatalQuitError; }
-      allowQuit = true; quitting = true;
-      if (expectedToken) {
-        pendingRelaunchToken = undefined;
-        try { updater.resumeRelaunch(expectedToken); }
-        catch { fatalQuitError = new QuitBlocked('relaunch_failed', { recoverable: false }); throw fatalQuitError; }
-      } else app.quit();
-    } catch (error) {
-      allowQuit = false; quitting = false;
-      if (error.recoverable === false) fatalQuitError = error;
-      else expectedBackendExit = false;
-      const options = { type: 'info', message: nt('暂未退出 SecondU', 'SecondU is still open'), detail: quitProblem(error), buttons: [nt('返回', 'Return')], noLink: true };
-      if (mainWindow && !mainWindow.isDestroyed()) await dialog.showMessageBox(mainWindow, options);
-      else await dialog.showMessageBox(options);
+      for (;;) {
+        try {
+          if (fatalQuitError) throw fatalQuitError;
+          if (startupAttempt) await startupAttempt;
+          const expectedToken = pendingRelaunchToken;
+          await quitCoordinator.prepare({ discardUnsaved, updating: !!expectedToken || ['ready', 'awaiting-relaunch', 'installing'].includes(updater?.getState().phase), mayCommit: () => !expectedToken || updater.isRelaunchPending(expectedToken) });
+          if (expectedToken && !updater.isRelaunchPending(expectedToken)) { fatalQuitError = new QuitBlocked('relaunch_failed', { recoverable: false }); throw fatalQuitError; }
+          allowQuit = true; quitting = true;
+          if (expectedToken) {
+            pendingRelaunchToken = undefined;
+            try { updater.resumeRelaunch(expectedToken); }
+            catch { fatalQuitError = new QuitBlocked('relaunch_failed', { recoverable: false }); throw fatalQuitError; }
+          } else app.quit();
+          return;
+        } catch (error) {
+          allowQuit = false; quitting = false;
+          if (error.recoverable === false) fatalQuitError = error;
+          else expectedBackendExit = false;
+          const canDiscard = error.reason === 'unsaved_changes' && error.recoverable !== false;
+          const options = { type: canDiscard ? 'warning' : 'info', message: nt('暂未退出 SecondU', 'SecondU is still open'),
+            detail: canDiscard ? nt('还有未保存的修改或未发送的草稿。返回可继续处理；选择“不保存并退出”将放弃这些内容，已经保存的对话和资料会保留。', 'There are unsaved changes or unsent drafts. Return to keep working, or choose “Quit Without Saving” to discard them. Saved conversations and files will be kept.') : quitProblem(error),
+            buttons: canDiscard ? [nt('返回', 'Return'), nt('不保存并退出', 'Quit Without Saving')] : [nt('返回', 'Return')], defaultId: 0, cancelId: 0, noLink: true };
+          const result = mainWindow && !mainWindow.isDestroyed() ? await dialog.showMessageBox(mainWindow, options) : await dialog.showMessageBox(options);
+          if (canDiscard && result.response === 1) { discardUnsaved = true; continue; }
+          return;
+        }
+      }
     } finally { quitAttempt = undefined; }
   })();
   return quitAttempt;

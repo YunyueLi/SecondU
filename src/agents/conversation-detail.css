@@ -1,0 +1,38 @@
+/* Shared chrome for collaboration and member conversations. */
+.conversation-detail-header {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex:none;
+  min-width:0;
+  min-height:76px;
+  padding:16px;
+}
+.conversation-detail-header>div { flex:1; min-width:0; }
+.conversation-detail-header :is(h2,strong) {
+  display:block;
+  margin:0;
+  font-size:15px;
+  line-height:22px;
+  font-weight:550;
+}
+.conversation-detail-header>div>:is(span,small) {
+  display:block;
+  margin-top:2px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  font-size:12px;
+  line-height:18px;
+  color:var(--color-text-secondary);
+}
+.conversation-detail-header>button {
+  flex:none;
+  min-height:32px;
+  height:32px;
+  font-size:12px;
+  line-height:20px;
+}
+.conversation-detail-header>button:first-child { width:28px; min-width:28px; padding:0; }
+.conversation-detail-header>button svg { width:16px; height:16px; }
+@media(max-width:600px) { .conversation-detail-header { padding:14px 12px; min-height:72px; } }

@@ -26,7 +26,7 @@ import { TwinBuilding } from './TwinBuilding';
 import { SourceDetail } from './SourceDetail';
 import { SourceTextImport } from './SourceImport';
 
-interface Props { presentation?:'desktop'|'mobile';view: string; data: Bootstrap; onRefresh: () => Promise<void>; onCreateTask: (prompt: string, contextFactIds?: string[], agentIds?: string[]) => void | Promise<void> }
+interface Props { presentation?:'desktop'|'mobile';showBuildingProfileLink?:boolean;view: string; data: Bootstrap; onRefresh: () => Promise<void>; onCreateTask: (prompt: string, contextFactIds?: string[], agentIds?: string[]) => void | Promise<void> }
 const statusLabels = (): Record<FactStatus, string> => ({ confirmed: t("已确认", "Confirmed"), inferred: t("推断", "Inferred"), candidate: t("待确认", "To confirm"), superseded: t("已替代", "Superseded") });
 const kindLabels = (): Record<FactKind, string> => ({ preference: t("偏好", "Preferences"), value: t("价值取向", "Values"), capability: t("能力", "Capabilities"), constraint: t("约束", "Constraints"), identity: t("身份", "Identity"), decision: t("决定", "Decisions") });
 const factOptions = () => Object.entries(kindLabels()).map(([value, label]) => ({ value, label }));
@@ -34,7 +34,7 @@ const preferenceDomainLabels = (): Record<PreferenceDomain, string> => ({ work: 
 const preferenceDomainOptions = () => Object.entries(preferenceDomainLabels()).map(([value,label])=>({value,label}));
 const statusOptions = () => Object.entries(statusLabels()).map(([value, label]) => ({ value, label }));
 
-export function CognitionWorkspace({ view, data, onRefresh, onCreateTask, presentation='desktop' }: Props) {
+export function CognitionWorkspace({ view, data, onRefresh, onCreateTask, presentation='desktop',showBuildingProfileLink=true }: Props) {
   const [taskError, setTaskError] = useState('');
   const [sourceId, setSourceId] = useState<string>();
   const createTask: Props['onCreateTask'] = async (...args) => { setTaskError(''); try { await onCreateTask(...args); } catch (error) { setTaskError(messageOf(error)); } };
@@ -44,7 +44,7 @@ export function CognitionWorkspace({ view, data, onRefresh, onCreateTask, presen
     return <SourcePill key={id} title={title} compact={compact} onOpen={() => setSourceId(id)} />;
   })}</div> : null;
   return <div className={`cognition-workspace${presentation==='mobile'?' is-mobile':''} ${view === 'conversations' || view === 'relationships' ? 'is-immersive' : ''}`}><ErrorNotice error={taskError} />
-    {view === 'building' ? <TwinBuilding data={data} showProfileLink={presentation!=='mobile'} onRefresh={onRefresh} onCreateTask={createTask} /> :
+    {view === 'building' ? <TwinBuilding data={data} showProfileLink={presentation!=='mobile'&&showBuildingProfileLink} onRefresh={onRefresh} onCreateTask={createTask} /> :
       view === 'conversations' ? <ConversationInbox data={data} refs={refs} onRefresh={onRefresh} /> :
       view === 'timeline' ? <LifeTimeline data={data} refs={refs} onRefresh={onRefresh} onAsk={prompt=>createTask(prompt,[])} /> :
       view === 'relationships' ? <RelationshipGraph data={data} refs={refs} onRefresh={onRefresh} /> :

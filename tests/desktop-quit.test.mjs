@@ -71,6 +71,20 @@ test('unconfirmed backend failure remains a stop even if the child later disappe
   await assert.rejects(coordinator.prepare(), /shutdown_timeout/);
   assert.equal(releases, 0);
 });
+test('discard requests require a fresh clean renderer acknowledgement and still respect backend activity', async () => {
+  const requests = []; let ready = false, called = 0;
+  const child = new Child();
+  const coordinator = createQuitCoordinator({ checkRenderer: async request => { requests.push(request); return { unsaved: !ready, busy: false }; }, getBackend: () => { called++; return child; }, isBackendReused: () => false, cancelRenderer: () => {} });
+  await assert.rejects(coordinator.prepare({ discardUnsaved: true }), /unsaved_changes/);
+  assert.equal(called, 0);
+  assert.deepEqual(requests, [{ discardUnsaved: true }]);
+  ready = true;
+  const attempt = coordinator.prepare({ discardUnsaved: true });
+  await Promise.resolve();
+  child.reply({ ready: false, reason: 'active_tasks', activeCount: 1 });
+  await assert.rejects(attempt, /active_tasks/);
+  assert.equal(child.sent.some(value => value.type === 'second-u:commit-quit'), false);
+});
 test('preload exports only update actions and booleans, never native events or relaunch tokens', () => {
   const ipcRenderer = new EventEmitter(); const sent = []; let exposed;
   ipcRenderer.send = (name, value) => sent.push({ name, value });
@@ -79,8 +93,10 @@ test('preload exports only update actions and booleans, never native events or r
   assert.equal(exposed.updates.resumeRelaunch, undefined);
   ipcRenderer.emit('hither:prepare-to-quit', { sender: 'native' }, { requestId: 'first' });
   assert.equal(sent[0].value.busy, true);
-  const stop = exposed.updates.onPrepareToQuit(() => ({ unsaved: false, busy: false, privateDraft: 'not shared' }));
-  ipcRenderer.emit('hither:prepare-to-quit', {}, { requestId: 'second' });
+  let request;
+  const stop = exposed.updates.onPrepareToQuit(value => { request = value; return { unsaved: false, busy: false, privateDraft: 'not shared' }; });
+  ipcRenderer.emit('hither:prepare-to-quit', {}, { requestId: 'second', discardUnsaved: true, relaunchToken: 'not shared' });
+  assert.deepEqual(JSON.parse(JSON.stringify(request)), { discardUnsaved: true });
   assert.deepEqual(JSON.parse(JSON.stringify(sent[1].value)), { requestId: 'second', unsaved: false, busy: false });
   stop();
 });

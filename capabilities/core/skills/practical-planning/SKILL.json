@@ -1,0 +1,16 @@
+{
+  "interface": {
+    "displayName": "日程与日常整理",
+    "shortDescription": "Practical planning",
+    "localized": {
+      "title": {
+        "zh": "日程与日常整理",
+        "en": "Everyday planning"
+      },
+      "description": {
+        "zh": "安排时间和待办，整理资料，检查时间冲突与遗漏。",
+        "en": "Arrange schedules and tasks, organize material, and check conflicts and omissions."
+      }
+    }
+  }
+}

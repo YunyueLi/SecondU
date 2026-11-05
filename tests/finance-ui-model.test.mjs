@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { accountBrand, accountAmount, displayAccounts, money, summaryFor } from '../src/finance/model.ts';
+import { accountBrand, accountAmount, displayAccounts, displayCurrencyOptions, financeSummaryScope, money, summaryFor } from '../src/finance/model.ts';
 
 const account = { id: 'usd', name: 'Example account', kind: 'asset', currency: 'USD', amount: '100.00', asOf: '2026-10-24' };
 const rates = [{ currency: 'CNY', rate: '1', baseCurrency: 'CNY' }, { currency: 'USD', rate: '7', baseCurrency: 'CNY' }, { currency: 'HKD', rate: '0.9', baseCurrency: 'CNY' }];
@@ -8,6 +8,15 @@ const fixture = () => ({
   accounts: [{ ...account }], liabilities: [],
   valuation: { currency: 'CNY', baseCurrency: 'CNY', rates, convertedAccounts: [{ accountId: 'usd', kind: 'asset', originalAmount: '100.00', amount: '700.00' }] },
   portfolio: { baseCurrency: 'CNY', rates, accounts: [{ accountId: 'usd', estimatedAmount: '110.00' }], convertedAccounts: [{ accountId: 'usd', kind: 'asset', originalAmount: '110.00', amount: '770.00' }] },
+});
+
+test('reporting currency offers RMB once while retaining an existing CNH quote basis explicitly', () => {
+  assert.equal(displayCurrencyOptions().filter(option => ['CNY','CNH'].includes(option.value)).length, 1);
+  assert.equal(displayCurrencyOptions().some(option => option.value === 'CNH'), false);
+  assert.match(displayCurrencyOptions('CNH').find(option => option.value === 'CNH').label, /CNH/);
+  const state={accounts:[],liabilities:[],valuation:{rates:[{currency:'CNH',rate:'0.99',baseCurrency:'CNY'}]}};
+  assert.equal(accountAmount(state,{id:'offshore',currency:'CNH',amount:'100.00'},'CNY'),'99.00');
+  assert.equal(accountAmount({...state,valuation:{rates:[]}},{id:'offshore',currency:'CNH',amount:'100.00'},'CNY'),null);
 });
 
 test('summary and account shares use the projected balance after a price update', () => {
@@ -82,4 +91,26 @@ test('institution identity controls account grouping independently of its data s
   assert.equal(accountBrand({ ...account, provider: 'moomoo' }), 'moomoo');
   assert.equal(accountBrand({ ...account, id: 'icbc-legacy', provider: 'manual' }), 'icbc');
   assert.equal(accountBrand({ ...account, provider: 'manual' }), account.id);
+});
+
+
+test('overview retains every currency after an account filter or a display-currency change', () => {
+  const state=fixture();
+  state.accounts.push({...account,id:'cny',currency:'CNY',amount:'700.00'});
+  state.liabilities.push({...account,id:'debt-hkd',kind:'liability',currency:'HKD',amount:'100.00'});
+  const overview=financeSummaryScope('overview','CNY','USD');
+  assert.deepEqual(overview,{currency:'CNY',nativeCurrency:undefined});
+  const cny=summaryFor(state,overview.currency,overview.nativeCurrency);
+  assert.equal(cny.accounts.length,2);
+  assert.equal(cny.liabilityCount,1);
+  assert.equal(cny.assets,'1470.00');
+  assert.equal(cny.liabilities,'90.00');
+  const usdScope=financeSummaryScope('overview','USD','USD');
+  const usd=summaryFor(state,usdScope.currency,usdScope.nativeCurrency);
+  assert.equal(usd.accounts.length,2);
+  assert.equal(usd.liabilityCount,1);
+  assert.equal(usd.assets,'210.00');
+  assert.equal(usd.liabilities,'12.86');
+  for(const page of ['accounts','liabilities'])assert.deepEqual(financeSummaryScope(page,'CNY','USD'),{currency:'USD',nativeCurrency:'USD'});
+  assert.deepEqual(financeSummaryScope('accounts','CNY','ALL'),{currency:'CNY',nativeCurrency:undefined});
 });

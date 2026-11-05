@@ -1,0 +1,16 @@
+{
+  "interface": {
+    "displayName": "行程与出行准备",
+    "shortDescription": "Travel research and planning",
+    "localized": {
+      "title": {
+        "zh": "行程与出行准备",
+        "en": "Travel planning"
+      },
+      "description": {
+        "zh": "比较路线、时间和费用，整理行程与预订注意事项。",
+        "en": "Compare routes, timing and costs, then prepare itineraries and booking considerations."
+      }
+    }
+  }
+}

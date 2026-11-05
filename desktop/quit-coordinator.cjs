@@ -57,12 +57,12 @@ function stopOwnedBackend(child, { timeoutMs = 15000, onCommitting = () => {}, m
 function createQuitCoordinator({ checkRenderer, getBackend, isBackendReused, cancelRenderer, onCommitting, timeoutMs }) {
   let pending, terminalFailure;
   return {
-    prepare({ updating = false, mayCommit = () => true } = {}) {
+    prepare({ updating = false, discardUnsaved = false, mayCommit = () => true } = {}) {
       if (terminalFailure) return Promise.reject(terminalFailure);
       if (pending) return pending;
       pending = (async () => {
         try {
-          const state = await checkRenderer();
+          const state = await checkRenderer({ discardUnsaved });
           if (state?.unsaved !== false || state?.busy !== false) throw new QuitBlocked(state?.busy ? 'pending_operations' : 'unsaved_changes');
           if (updating && isBackendReused()) throw new QuitBlocked('backend_reused');
           if (!mayCommit()) throw new QuitBlocked('update_cancelled');

@@ -1,0 +1,15 @@
+{
+  "interface": {
+    "display_name": "数据整理流程",
+    "localized": {
+      "title": {
+        "zh": "数据整理流程",
+        "en": "Data processing"
+      },
+      "description": {
+        "zh": "编写收集、清洗和汇总数据的流程，检查缺失与重复。",
+        "en": "Build data collection, cleanup and aggregation steps; check missing and duplicate records."
+      }
+    }
+  }
+}

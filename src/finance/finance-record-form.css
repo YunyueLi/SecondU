@@ -5,7 +5,7 @@ form.finance-record-form {
 }
 .finance-record-form .form-field {
   min-width:0;
-  gap:8px;
+  gap:6px;
   margin:0;
 }
 .finance-record-form .field-label {
@@ -22,8 +22,8 @@ form.finance-record-form {
 form.finance-record-form :is(.form-footnote,.field-hint) {
   margin:0;
   color:var(--color-text-secondary);
-  font-size:12px;
-  line-height:18px;
+  font-size:var(--hither-font-caption);
+  line-height:1.7;
   overflow-wrap:anywhere;
 }
 form.finance-record-form>.form-error { margin:0; }

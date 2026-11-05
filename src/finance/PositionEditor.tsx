@@ -48,10 +48,10 @@ export function PositionEditor({ state, initialId, hidden, onSaved }: { state: a
   };
   if (!item) return <Alert color="info" variant="soft" title="正在准备持仓记录" description="可编辑持仓加载后，即可更新数量、成本和记录市值。" />;
   return <form className="update-form finance-record-form position-editor" onSubmit={save}>
-    <Field label="持仓"><Select pill={false} id="position-id" value={id} onChange={option => choose(option.value)} disabled={saving} options={items.map((row: any) => ({ value: row.positionId || row.id, label: row.name || row.symbol || row.positionId, description: `${state.accounts.find((account: any) => account.id === row.accountId)?.name || row.accountId}，${row.symbol || ''}` }))} /></Field>
+    <Field label="持仓"><Select id="position-id" value={id} onChange={option => choose(option.value)} disabled={saving} options={items.map((row: any) => ({ value: row.positionId || row.id, label: row.name || row.symbol || row.positionId, description: `${state.accounts.find((account: any) => account.id === row.accountId)?.name || row.accountId}，${row.symbol || ''}` }))} /></Field>
     <div className="finance-record-field-grid">
       <Field label="持有数量"><Input id="position-quantity" inputMode="decimal" value={quantity} onChange={event => { setQuantity(event.target.value); changed(); }} placeholder="数量或份额" required disabled={saving} /></Field>
-      <Field label="持仓币种"><Select pill={false} id="position-currency" placeholder="选择币种" value={currency} onChange={option => { setCurrency(option.value); changed(); }} options={['USD', 'HKD', 'CNY', 'CNH', 'SGD'].map(code => ({ value: code, label: code }))} disabled={saving || Boolean(item.identity?.currency)} /></Field>
+      <Field label="持仓币种"><Select id="position-currency" placeholder="选择币种" value={currency} onChange={option => { setCurrency(option.value); changed(); }} options={['USD', 'HKD', 'CNY', 'CNH', 'SGD'].map(code => ({ value: code, label: code }))} disabled={saving || Boolean(item.identity?.currency)} /></Field>
       <Field label="成本均价（可选）"><Input id="position-cost" inputMode="decimal" value={cost} onChange={event => { setCost(event.target.value); setCostTouched(true); changed(); }} placeholder={hidden && !costTouched ? "留空保留原成本" : "按券商显示填写"} disabled={saving} /></Field>
       <Field label={`记录市值（${currency}）`}><Input id="position-value" inputMode="decimal" value={value} onChange={event => { setValue(event.target.value); changed(); }} placeholder="券商显示的持仓市值" required disabled={saving} /></Field>
     </div>
@@ -60,6 +60,6 @@ export function PositionEditor({ state, initialId, hidden, onSaved }: { state: a
     <Field label="记录说明（可选）"><Textarea id="position-note" rows={2} value={note} onChange={event => { setNote(event.target.value); changed(); }} maxLength={500} placeholder="例如：券商 App 中的最新持仓" disabled={saving} /></Field>
 
     {error && <p className="form-error" role="alert">{error}</p>}
-    <div className="dialog-actions"><Button type="submit" color="primary" pill={false} loading={saving}>保存持仓</Button></div>
+    <div className="dialog-actions"><Button type="submit" color="primary" loading={saving}>保存持仓</Button></div>
   </form>;
 }

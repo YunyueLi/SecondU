@@ -1,0 +1,12 @@
+.workflow-model-select{height:32px;min-width:0;max-width:100%;width:auto;justify-content:flex-start;padding-inline:9px;gap:7px;border-radius:var(--radius-sm);font-size:12px}
+.workflow-model-select>span:first-child{min-width:0;flex:1;text-align:left}
+.workflow-model-trigger{display:flex;align-items:center;gap:7px;min-width:0;max-width:100%}
+.workflow-model-trigger>.model-provider-mark,.workflow-model-trigger>svg{flex:none;width:16px;height:16px}
+.workflow-model-trigger>span:not(.model-provider-mark){min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;line-height:20px}
+.workflow-model-trigger>small{flex:none;color:var(--color-text-secondary);font-size:10px;line-height:18px;padding:0 5px;border-radius:var(--radius-xs);background:var(--color-surface-tertiary)}
+.workflow-model-option{display:flex;align-items:center;gap:10px;min-width:0;padding:3px 0}
+.workflow-model-mark{display:flex;align-items:center;justify-content:center;flex:0 0 24px;width:24px;height:24px}.workflow-model-mark>svg{width:20px;height:20px}
+.workflow-model-copy{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;text-align:left}.workflow-model-copy strong{font-size:13px;font-weight:500;line-height:20px;white-space:normal;overflow-wrap:anywhere}.workflow-model-copy small{font-size:11px;line-height:17px;color:var(--color-text-secondary);white-space:normal;overflow-wrap:anywhere}
+.workflow-model-option[data-unavailable=true] .workflow-model-copy small{color:var(--color-text-warning)}
+.workflow-model-badge{display:inline-flex;align-items:center;gap:7px;min-width:0;font-size:13px;line-height:20px}.workflow-model-badge>.model-provider-mark,.workflow-model-badge>svg{flex:none;width:18px;height:18px}.workflow-model-badge>span:not(.model-provider-mark){overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}.workflow-model-badge.is-compact{font-size:11px;line-height:18px;gap:5px;color:var(--color-text-secondary)}.workflow-model-badge.is-compact>.model-provider-mark,.workflow-model-badge.is-compact>svg{width:13px;height:13px}
+.workflow-model-origin{display:flex;align-items:center;flex-wrap:wrap;gap:6px;font-size:11px;line-height:18px;color:var(--color-text-secondary)}.workflow-model-origin>span+span:before{content:'·';margin-right:6px}

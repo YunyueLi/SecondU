@@ -19,7 +19,9 @@ export function contextViews(snapshot){
 }
 export function initialContextView(snapshot){
   const views=contextViews(snapshot);
+  const subject={overview:'accounts',assets:'accounts',liabilities:'accounts',holdings:'holdings'}[snapshot.section];
   return views.find(row=>['weekly','scenario'].includes(row.value))?.value||
+    views.find(row=>row.value===subject)?.value||
     (snapshot.schema==='secondu.finance-transactions.v1'?'transactions':views.find(row=>row.value==='spending')?.value)||views[0]?.value||'';
 }
 export function contextAccountValues(row){
@@ -29,6 +31,15 @@ export function contextAccountValues(row){
     estimated:estimated===null?null:{amount:estimated,currency:contextText(valuation?.currency)||contextText(row.currency),date:contextText(valuation?.asOf)},
     stale:row.readStatus==='stale'||valuation?.status==='stale',reconciliationRequired:valuation?.reconciliationRequired===true,
   };
+}
+const decimalKey=value=>value===null?null:value.replace(/^\+/, '').replace(/^(-?)0+(?=\d)/,'$1').replace(/(\.\d*?)0+$/,'$1').replace(/\.$/,'').replace(/^-0$/,'0');
+export function contextAccountPresentation(row,formatDate=contextText){
+  const value=contextAccountValues(row),primary=value.estimated||value.recorded;
+  const differs=!!value.estimated&&(value.estimated.currency!==value.recorded.currency||decimalKey(value.estimated.amount)!==decimalKey(value.recorded.amount));
+  const dates=[];
+  if(value.recorded.date)dates.push(`记录 ${formatDate(value.recorded.date)}`);
+  if(value.estimated?.date&&value.estimated.date!==value.recorded.date)dates.push(`估值 ${formatDate(value.estimated.date)}`);
+  return {primary,secondary:differs?value.recorded:null,dates,status:[value.stale?'保留上次值':'',value.reconciliationRequired?'余额待核对':''].filter(Boolean).join(' · ')};
 }
 export function contextScope(snapshot){
   return [

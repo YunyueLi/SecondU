@@ -1,0 +1,16 @@
+{
+  "interface": {
+    "displayName": "学习计划与练习",
+    "shortDescription": "Learning and scholarly work",
+    "localized": {
+      "title": {
+        "zh": "学习计划与练习",
+        "en": "Study plans and practice"
+      },
+      "description": {
+        "zh": "围绕学习目标安排材料和练习，根据答案讲解难点。",
+        "en": "Plan materials and exercises around a learning goal and explain gaps from the answers."
+      }
+    }
+  }
+}

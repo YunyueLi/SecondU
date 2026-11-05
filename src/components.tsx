@@ -33,12 +33,15 @@ export function PageNavigation({ className = '' }: { className?: string }) {
   useLayoutEffect(() => register?.(), [register]);
   return navigation ? <span className={`page-heading-navigation ${className}`}>{navigation.button}</span> : null;
 }
-export function PageHeading({ title, description, compactDescription, illustration, decoration, action, className = '' }: { title: React.ReactNode; description?: React.ReactNode; compactDescription?: string; illustration?: string; decoration?: ThemeDecorationKind; action?: React.ReactNode; className?: string }) {
+export function PageHeading({ title, description, compactDescription, illustration, decoration, action, compactAction, className = '' }: { title: React.ReactNode; description?: React.ReactNode; compactDescription?: string; illustration?: string; decoration?: ThemeDecorationKind; action?: React.ReactNode; compactAction?: React.ReactNode; className?: string }) {
   const navigation = useContext(PageNavigationContext);
   const artwork = decoration || decorationForIllustration(illustration);
+  const descriptionContent=description&&<><span className={compactDescription ? 'page-description-full' : undefined}>{description}</span>{compactDescription&&<span className="page-description-compact">{compactDescription}</span>}</>;
+  const actions=navigation&&compactAction!==undefined?compactAction:action;
   return <header className={`page-heading ${illustration || artwork ? 'has-illustration' : ''} ${navigation ? 'has-page-navigation' : ''} ${className}`}>
-    <div className="page-heading-intro"><PageNavigation/>{artwork ? <ThemeDecoration kind={artwork} className="page-heading-art"/> : illustration && <img className="page-heading-art" src={illustration} alt="" aria-hidden="true" draggable={false} />}<div className="page-heading-copy"><h1>{title}</h1>{description && <p><span className={compactDescription ? 'page-description-full' : undefined}>{description}</span>{compactDescription && <span className="page-description-compact">{compactDescription}</span>}</p>}</div></div>
-    {action && <div className="page-heading-actions">{action}</div>}
+    <div className="page-heading-topbar"><div className="page-heading-intro"><PageNavigation/>{artwork ? <ThemeDecoration kind={artwork} className="page-heading-art"/> : illustration && <img className="page-heading-art" src={illustration} alt="" aria-hidden="true" draggable={false} />}<div className="page-heading-copy"><h1>{title}</h1>{!navigation&&descriptionContent&&<p>{descriptionContent}</p>}</div></div>
+    {actions&&<div className="page-heading-actions">{actions}</div>}</div>
+    {navigation&&descriptionContent&&<p className="page-heading-description">{descriptionContent}</p>}
   </header>;
 }
 export function PageToolbar({children,className='',label}:{children:React.ReactNode;className?:string;label?:string}) {
@@ -52,10 +55,12 @@ export function RichText({children,className}:{children:string;className?:string
 export function Dialog({ title, children, onClose, className = '' }: { title: string; children: React.ReactNode; onClose: () => void; className?:string }) {
   const mobile=document.body.classList.contains('mobile-root');
   const ref = useRef<HTMLDivElement>(null);
+  // Capture before child inputs apply autoFocus during the mount commit.
+  const openerRef = useRef(document.activeElement as HTMLElement | null);
   const closeRef = useRef(onClose); closeRef.current = onClose;
   useEffect(() => {
     if(mobile)return;
-    const opener = document.activeElement as HTMLElement | null;
+    const opener = openerRef.current;
     const shell = document.querySelector<HTMLElement>('.app-shell');
     const wasInert = shell?.inert || false;
     if (shell) shell.inert = true;

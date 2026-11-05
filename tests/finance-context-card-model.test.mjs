@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {parseFinanceContext,initialContextView,contextViews,contextAccountValues,contextScope,contextAmount} from '../src/finance/context-card-model.mjs';
+import {parseFinanceContext,initialContextView,contextViews,contextAccountValues,contextAccountPresentation,contextScope,contextAmount} from '../src/finance/context-card-model.mjs';
 const base={schema:'secondu.finance-context.v1',accounts:[{name:'示例银行',amount:'100.00',currency:'CNY',asOf:'2026-10-01'}],analysis:{spending:{categories:[{category:'food',total:{amount:'10.00'}}]}}};
 
 test('weekly and scenario attachments open the object being discussed, with background sections still inspectable',()=>{
@@ -10,6 +10,8 @@ test('weekly and scenario attachments open the object being discussed, with back
   const scenario={...base,scenario:{assumptions:{months:1},points:[{month:1,baseline:'10.00',planned:'20.00'}]}};
   assert.equal(initialContextView(scenario),'scenario');
   assert.equal(initialContextView(base),'spending');
+  assert.equal(initialContextView({...base,section:'overview'}),'accounts');
+  assert.equal(initialContextView({...base,section:'holdings',holdingValuations:[{}]}),'holdings');
   assert.equal(initialContextView({schema:'secondu.finance-transactions.v1',transactions:[{amount:'0.00'}]}),'transactions');
 });
 
@@ -26,6 +28,18 @@ test('account snapshots retain both exact book and estimated values with indepen
 test('scope discloses financial memories, credit and plan records even when an object-specific tab is selected',()=>{
   const value={...base,journal:{transactions:[{},{}],memories:[{}],creditRecords:[{}],budgets:[{}],goals:[{}],recurring:[{}],netWorthHistory:[{}]}};
   assert.deepEqual(contextScope(value).map(row=>[row.label,row.count]),[['账户',1],['交易',2],['周期计划',1],['信用记录',1],['目标',1],['预算',1],['财务记忆',1],['净资产快照',1]]);
+});
+
+test('preview consolidates equal balances without rounding distinct values or dropping relevant state',()=>{
+  const row={amount:'00100.00',currency:'CNY',asOf:'2026-10-01',valuation:{estimatedAmount:'+100.000',currency:'CNY'}};
+  assert.equal(contextAccountPresentation(row).secondary,null);
+  assert.deepEqual(contextAccountPresentation(row).dates,['记录 2026-10-01']);
+  assert.equal(contextAccountPresentation({...row,valuation:{estimatedAmount:'100.001',currency:'CNY'}}).secondary.amount,'00100.00');
+  assert.equal(contextAccountPresentation({...row,valuation:{estimatedAmount:'100.00',currency:'USD'}}).secondary.currency,'CNY');
+  const large={amount:'9007199254740993.01',currency:'USD',valuation:{estimatedAmount:'9007199254740993.02',status:'stale',reconciliationRequired:true}};
+  assert.equal(contextAccountPresentation(large).secondary.amount,'9007199254740993.01');
+  assert.equal(contextAccountPresentation(large).status,'保留上次值 · 余额待核对');
+  assert.deepEqual(contextAccountPresentation({amount:'0',currency:'CNY'}).dates,[]);
 });
 
 test('parsing preserves missing FX originals and zero without coercing malformed values or executing text',()=>{

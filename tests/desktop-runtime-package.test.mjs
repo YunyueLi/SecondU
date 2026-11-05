@@ -40,7 +40,8 @@ test('packaged service starts and reads finance with only its copied production 
   const directory=await temporary(t),packaged=path.join(directory,'app');
   await mkdir(packaged);
   await copyDesktopRuntime(root,packaged);
-  for(const name of ['server','shared'])await cp(path.join(root,name),path.join(packaged,name),{recursive:true});
+  for(const name of ['server','shared','capabilities'])await cp(path.join(root,name),path.join(packaged,name),{recursive:true});
+  const expectedPackages=(await Promise.all((await readdir(path.join(root,'capabilities'),{withFileTypes:true})).filter(entry=>entry.isDirectory()).map(async entry=>JSON.parse(await readFile(path.join(root,'capabilities',entry.name,'plugin.json'),'utf8')).name))).sort();
   const manifest=JSON.parse(await readFile(path.join(root,'package.json'),'utf8'));
   await writeFile(path.join(packaged,'package.json'),JSON.stringify({name:manifest.name,version:manifest.version,type:'module',hitherPackaged:true}));
   const program=`
@@ -56,6 +57,7 @@ test('packaged service starts and reads finance with only its copied production 
       const origin='http://127.0.0.1:'+app.server.address().port;
       const health=await fetch(origin+'/api/health');assert.equal(health.status,200);assert.equal((await health.json()).version,VERSION);
       const finance=await fetch(origin+'/api/finance/state');assert.equal(finance.status,200);assert.deepEqual((await finance.json()).accounts,[]);
+      const capabilities=await fetch(origin+'/api/capabilities');assert.equal(capabilities.status,200);const packages=(await capabilities.json()).packages;assert.deepEqual(packages.map(item=>item.id).sort(),${JSON.stringify(expectedPackages)});assert(packages.find(item=>item.id==='secondu-office').skills[0].checks.every(check=>check.available));
       console.log('Independent packaged service and XML runtime passed');
     }finally{await app.close();}
   `;

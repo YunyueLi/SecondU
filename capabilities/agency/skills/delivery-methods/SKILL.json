@@ -1,0 +1,15 @@
+{
+  "interface": {
+    "display_name": "项目计划与交接",
+    "localized": {
+      "title": {
+        "zh": "项目计划与交接",
+        "en": "Project planning"
+      },
+      "description": {
+        "zh": "拆分任务，明确负责人和时间，整理进度与交接清单。",
+        "en": "Break down work, assign owners and dates, and prepare progress and handover notes."
+      }
+    }
+  }
+}

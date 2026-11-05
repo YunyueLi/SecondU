@@ -1,6 +1,5 @@
 .finance-workspace,.finance-settings {
   --line:var(--color-border-subtle); --muted:var(--color-text-secondary);
-  --control-radius-sm:var(--hither-radius-control,8px); --control-radius-md:var(--hither-radius-control,8px); --control-radius-lg:var(--hither-radius-control,8px); --control-radius-xl:var(--hither-radius-control,8px);
   min-width:0; color:var(--color-text); font-family:var(--font-sans); font-size:var(--hither-font-body,14px); line-height:22px;
 }
 .finance-workspace { width:100%; max-width:var(--page-content-width,1240px); margin-inline:auto; padding:0 var(--page-padding-inline,36px) 40px; container:finance / inline-size; }
@@ -10,8 +9,6 @@
 .finance-workspace :is(h1,h2,h3,p,dl),.finance-settings :is(h1,h2,h3,p,dl) { margin:0; }
 .finance-workspace :is(button,a) svg,.finance-settings :is(button,a) svg { flex-shrink:0; }
 .finance-workspace :is(button:not([data-variant]),summary):focus-visible,.finance-settings :is(button:not([data-variant]),summary):focus-visible { outline:2px solid var(--color-text); outline-offset:-2px; }
-.finance-workspace :is(button,a)[data-variant],.finance-settings :is(button,a)[data-variant] { border-radius:var(--hither-radius-control,8px); }
-.finance-workspace :is(button,a)[data-variant]::before,.finance-settings :is(button,a)[data-variant]::before { border-radius:inherit; }
 /* Match the shared PageHeading typography and page insets. Keep its top inset
    inside the sticky header so the first wheel movement cannot shift the title. */
 .finance-workspace .page-heading.finance-page-heading,.finance-workspace .page-heading.market-heading { position:sticky; top:0; z-index:20; min-height:0; padding:var(--page-padding-top,28px) 0 16px; margin:0; gap:12px; flex-wrap:nowrap; isolation:isolate; background:var(--color-surface); }
@@ -21,9 +18,9 @@
 .finance-workspace .finance-heading-leading>button { flex-shrink:0; }
 .finance-workspace .finance-heading-actions,.finance-workspace .market-heading-actions { display:flex; gap:8px; align-items:center; flex-shrink:0; }
 .finance-workspace .finance-heading-actions :is(button,a) { flex-shrink:0; }
-.finance-page-holdings .finance-holdings-desktop-actions { display:flex; align-items:center; gap:8px; }
-.finance-page-holdings .finance-holdings-compact-actions { display:none; align-items:center; gap:4px; }
-.finance-holdings-menu-item { min-height:44px; display:flex; align-items:center; }
+.finance-workspace .finance-desktop-actions { display:flex; align-items:center; gap:8px; }
+.finance-workspace .finance-heading-short{display:none}
+.finance-workspace .finance-compact-actions { display:none; align-items:center; gap:4px; }
 .finance-workspace .finance-status-message { display:flex; align-items:center; justify-content:space-between; gap:16px; margin:12px 0 20px; font-size:var(--hither-font-caption,13px); color:var(--color-text-secondary); }
 .finance-workspace .finance-error { margin:12px 0 20px; display:flex; flex-direction:column; align-items:flex-start; gap:8px; }
 .finance-workspace .finance-error>[role=alert] { width:100%; }
@@ -36,7 +33,13 @@
 .finance-workspace .finance-liability-summary { justify-content:flex-start; gap:12px; }
 .finance-workspace .finance-liability-summary dt { color:var(--color-text-secondary); font-size:12px; line-height:18px; }
 .finance-workspace .finance-liability-summary dd { margin:0; font-size:14px; line-height:22px; font-weight:500; font-variant-numeric:tabular-nums; }
-.finance-workspace .finance-currency-toolbar>div:first-child { min-width:0; max-width:100%; overflow:auto; }
+.finance-workspace .finance-display-currency { display:flex;align-items:center;gap:8px;min-width:0;max-width:100%; }
+.finance-display-currency>label { flex:none;font-size:var(--hither-font-caption);color:var(--color-text-secondary); }
+.finance-display-currency>[role="button"] { min-width:0;flex:0 1 auto; }
+@container finance (max-width:440px) {
+  .finance-workspace .finance-currency-toolbar { align-items:flex-start;flex-wrap:wrap;gap:4px 12px; }
+  .finance-workspace .finance-currency-toolbar>button { margin-left:auto; }
+}
 .finance-workspace .finance-currency-toolbar>button { flex:none; }
 .finance-workspace .finance-metrics { display:grid; grid-template-columns:1.45fr 1fr 1fr; gap:24px; padding:12px 0 0; margin:0 0 24px; }
 .finance-workspace .finance-metrics>div,.finance-workspace .finance-metrics>button { min-width:0; text-align:left; background:transparent; color:inherit; border:0; border-radius:8px; padding:0; }
@@ -152,9 +155,6 @@ body.mobile-root .finance-notice { right:16px;bottom:calc(88px + env(safe-area-i
   .finance-workspace .finance-section-heading>span { font-size:11px; }
 }
 @container finance (max-width:480px) {
-  .finance-workspace .page-heading.finance-page-heading,.finance-workspace .page-heading.market-heading { flex-wrap:wrap; }
-  .finance-workspace .page-heading .page-heading-intro { width:100%; flex-basis:100%; }
-  .finance-workspace .page-heading .page-heading-actions { width:100%; justify-content:flex-end; }
   .finance-workspace .page-heading .page-heading-actions { gap:4px; }
   .finance-workspace .finance-heading-actions { margin-left:auto; }
   .finance-workspace .finance-ask-button .finance-action-label { display:none; }
@@ -165,18 +165,24 @@ body.mobile-root .finance-notice { right:16px;bottom:calc(88px + env(safe-area-i
 }
 @container finance (max-width:600px) {
   .finance-workspace .finance-filter-toolbar { grid-template-columns:repeat(2,minmax(0,1fr)); }
-  .finance-workspace.finance-page-holdings .page-heading.finance-page-heading { flex-wrap:nowrap; align-items:center; gap:8px; padding-block:12px; }
-  .finance-workspace.finance-page-holdings .finance-page-heading .page-heading-intro { width:auto; flex:1 1 auto; align-items:center; gap:8px; }
-  .finance-workspace.finance-page-holdings .finance-page-heading .page-heading-navigation { margin-block:0; }
-  .finance-workspace.finance-page-holdings .finance-page-heading .page-heading-actions { width:auto; flex:0 0 auto; margin:0; gap:4px; flex-wrap:nowrap; }
-  .finance-workspace.finance-page-holdings .finance-page-heading h1 { white-space:nowrap; overflow-wrap:normal; }
-  .finance-workspace.finance-page-holdings .finance-heading-leading { gap:8px; }
-  .finance-page-holdings .finance-holdings-desktop-actions { display:none; }
-  .finance-page-holdings .finance-holdings-compact-actions { display:flex; }
-  .finance-page-holdings .finance-holdings-compact-actions>button { min-height:44px; height:44px; flex:none; }
-  .finance-page-holdings .finance-holdings-compact-actions>button[aria-label="更多持仓操作"] { width:44px; min-width:44px; }
-  .finance-workspace.finance-page-holdings .finance-page-heading .workspace-navigation-button { width:44px; min-width:44px; height:44px; min-height:44px; }
 }
+@container finance (max-width:800px) {
+  .finance-workspace .finance-heading-full{display:none}
+  .finance-workspace .finance-heading-short{display:inline}
+  .finance-workspace .page-heading.page-heading:is(.finance-page-heading,.market-heading) { min-height:var(--compact-header-height); flex-wrap:nowrap; align-items:center; gap:var(--compact-header-gap); padding-block:8px; }
+  .finance-workspace .page-heading.page-heading .page-heading-intro { width:auto; flex:1 1 auto; align-items:center; gap:var(--compact-header-gap); }
+  .finance-workspace .page-heading.page-heading .page-heading-navigation { margin-block:0; }
+  .finance-workspace .page-heading.page-heading .page-heading-actions { width:auto; flex:0 0 auto; margin:0; gap:4px; flex-wrap:nowrap; }
+  .finance-workspace .page-heading.page-heading h1 { font-size:var(--compact-header-title-size);line-height:var(--compact-header-title-line-height);white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+  .finance-workspace .finance-heading-leading { gap:8px; }
+  .finance-workspace .finance-heading-leading>span { min-width:0;overflow:hidden;text-overflow:ellipsis; }
+  .finance-workspace .finance-desktop-actions { display:none; }
+  .finance-workspace .finance-compact-actions { display:flex; }
+  .finance-workspace .finance-compact-actions>:is(button,a),.finance-workspace .finance-market-refresh { min-height:40px;height:40px;min-width:40px;flex:none; }
+  .finance-workspace .finance-compact-actions>.finance-manage-link,.finance-workspace .finance-market-refresh { width:40px;padding:0; }
+  .finance-workspace .finance-market-refresh .finance-action-label { display:none; }
+}
+@media(max-width:800px){.finance-workspace{padding-inline:var(--compact-header-inset)}}
 @media(max-width:600px) {
   .finance-workspace { padding:0 var(--page-padding-inline,16px) 32px; }
   .finance-settings .position-form-grid { grid-template-columns:1fr; }
@@ -193,10 +199,8 @@ body.mobile-root .finance-notice { right:16px;bottom:calc(88px + env(safe-area-i
 }
 
 /* Finance forms use the product dialog and typography tokens, including portal roots. */
-.app-dialog.finance-settings { container:finance-dialog / inline-size; min-width:0; padding:24px;border-radius:var(--hither-radius-dialog,16px); }
+.app-dialog.finance-settings { container:finance-dialog / inline-size; min-width:0; }
 .bottom-sheet.finance-settings { container:finance-dialog / inline-size; }
-.app-dialog.finance-settings>header { margin-bottom:24px;gap:16px; }
-.app-dialog.finance-settings>header>h2 { font-size:var(--hither-font-modal-title,18px);line-height:26px;font-weight:600; }
 .finance-settings :is(.journal-field,.finance-plan-field,.finance-asset-field)>label { font-size:var(--hither-font-label,14px);line-height:22px;font-weight:500; }
 .finance-settings .update-form>label { margin-top:20px; }
 .finance-settings .update-form>label:first-child { margin-top:0; }
@@ -214,10 +218,6 @@ body.mobile-root .finance-notice { right:16px;bottom:calc(88px + env(safe-area-i
   .finance-settings .finance-detail-list :is(dt,dd) { flex:1; }
   .finance-settings .finance-account-hero strong { font-size:22px; line-height:30px; }
 }
-@media(max-width:480px) {
-  .app-dialog.finance-settings { padding:20px 16px; }
-  .app-dialog.finance-settings>header { margin-bottom:20px; gap:12px; }
-}
 
 /* In short windows, leave the content visible instead of stacking several
    sticky toolbars above it. A single table heading can remain in view. */
@@ -232,3 +232,5 @@ body.mobile-root .finance-notice { right:16px;bottom:calc(88px + env(safe-area-i
   .finance-workspace .market-table thead th,
   .finance-workspace .journal-transactions-table thead th { top:0; }
 }
+
+.finance-example-note{margin:0 0 16px;color:var(--color-text-secondary);font-size:var(--hither-font-meta);line-height:1.5}

@@ -204,9 +204,15 @@ test('a real forked backend stays alive after prepare and exits only after commi
   t.after(() => { if (child.exitCode === null) child.kill(); rmSync(directory, { recursive: true, force: true }); });
   const messages = []; child.on('message', value => messages.push(value));
   const exited = once(child, 'exit');
-  await until(() => messages.some(value => value.type === 'fixture-ready'));
+  // Cold module loading under concurrent CI is outside the quit protocol.
+  const [started] = await once(child, 'message', {signal: AbortSignal.timeout(15000)});
+  assert.equal(started.type, 'fixture-ready');
+  const prepared = once(child, 'message', {signal: AbortSignal.timeout(15000)});
   child.send({ type: 'second-u:prepare-quit', requestId: 'real-process' });
-  await until(() => messages.some(value => value.ready === true));
+  const [reply] = await prepared;
+  assert.equal(reply.type, 'second-u:quit-readiness');
+  assert.equal(reply.requestId, 'real-process');
+  assert.equal(reply.ready, true);
   assert.equal(child.exitCode, null);
   child.send({ type: 'second-u:commit-quit', requestId: 'real-process' });
   const [code, signal] = await exited;

@@ -30,11 +30,11 @@ export function AssetAllocation({state,currency,nativeCurrency,hidden,scope='all
   const accountName=(id:string)=>state.accounts.find(account=>account.id===id)?.name||id;
   return <div className="asset-allocation">
     {active?<section className="asset-allocation-details" aria-label={t(`${groupName(active)}资产明细`, `${groupName(active)} asset details`)}>
-      <header><Button color="secondary" variant="ghost" pill={false} uniform size="sm" aria-label={t("返回资产类型分布","Back to asset types")} onClick={()=>setSelected(null)}><ArrowLeft/></Button><FinanceIcon kind={active.type}/><h3>{groupName(active)}</h3><strong>{money(active.amount,hidden)} <small>{currency}</small></strong></header>
+      <header><Button color="secondary" variant="ghost" uniform size="sm" aria-label={t("返回资产类型分布","Back to asset types")} onClick={()=>setSelected(null)}><ArrowLeft/></Button><FinanceIcon kind={active.type}/><h3>{groupName(active)}</h3><strong>{money(active.amount,hidden)} <small>{currency}</small></strong></header>
       <div className="asset-allocation-items">{active.items.map(item=><div key={item.id} className="asset-allocation-item">
         <div><strong>{itemName(item)}</strong><span>{accountName(item.accountId)}</span><small>{date(item.asOf)}{item.basis==='position'?t("，持仓市值",", holding value"):item.basis==='subtotal'?t("，账户分项",", account breakdown"):item.basis==='remainder'?t("，账户差额",", account difference"):t("，记录估值",", recorded valuation")}</small></div>
         <div><strong>{money(item.amount,hidden)} <small>{item.currency}</small></strong>{item.currency!==currency&&<small>{item.converted===null?t("待折算","Conversion pending"):t(`折合 ${money(item.converted,hidden)} ${currency}`,`Equivalent to ${money(item.converted,hidden)} ${currency}`)}</small>}</div>
-        <Button color="secondary" variant="ghost" pill={false} size="sm" onClick={()=>item.positionId?onHolding(item.accountId):onAccount(item.accountId)}>{item.positionId?t("查看持仓","View holdings"):t("账户详情","Account details")}<ArrowRight/></Button>
+        <Button color="secondary" variant="ghost" size="sm" onClick={()=>item.positionId?onHolding(item.accountId):onAccount(item.accountId)}>{item.positionId?t("查看持仓","View holdings"):t("账户详情","Account details")}<ArrowRight/></Button>
       </div>)}</div>
     </section>:<>
       {rows.length>0&&<AllocationDonut embedded={embedded} groups={rows} currency={currency} hidden={hidden} label={unconverted.length?t(`${label}（已折算部分）`, `${label} (converted portion)`):label} onSelect={id=>setSelected(id)}/>}

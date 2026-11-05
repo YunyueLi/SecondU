@@ -1,10 +1,12 @@
+import type {WorkflowSelection} from './agents/workflowModel';
+import {WorkflowCard} from './agents/WorkflowCard';
+import {CapabilityDraftResult} from './agents/CapabilityAuthoring';
 import {isTaskActivityRunning} from './design-system/taskActivityModel';
 import {HomeSuggestions} from './home/HomeSuggestions';
 import {spaceStorageKey} from './space';
 import {readComposerDrafts,saveComposerDrafts} from './composer/draft-storage.mjs';
 import {ExampleExecutionNotice} from './ExampleExecutionNotice';
 import { useUnsavedChanges } from './useUnsavedChanges';
-import {MemoryImportWelcome} from './cognition/MemoryImport';
 import {ConnectorPicker} from './connectors/Connectors';
 import {ComposerTools,DigitalTwinMode,ComposerContextBar} from './composer/ComposerTools';
 import { useAttachments, AttachmentDrafts, MessageAttachments } from './composer/attachments';
@@ -82,6 +84,7 @@ export function AssistantWorkspace({ presentation='desktop', active=true, connec
   const [workbenchOpen,setWorkbenchOpen]=useState(false);
   const [workbenchTab,setWorkbenchTab]=useState<WorkbenchTab>();
   const [workbenchEventId,setWorkbenchEventId]=useState<string>();
+  const [workflowSelection,setWorkflowSelection]=useState<WorkflowSelection>();
   const artifactOpenerRef = useRef<HTMLElement | null>(null);
   const composerRef = useRef<HTMLTextAreaElement>(null);
   const endRef = useRef<HTMLDivElement>(null);
@@ -102,7 +105,7 @@ export function AssistantWorkspace({ presentation='desktop', active=true, connec
   const panelOpen=workbenchOpen&&(!!artifact||!!workbenchTab);
   const turns=task?taskConversationTurns(task,data.facts):[];
   function rememberWorkbenchOpener(){if(panelOpen)return;const active=document.activeElement;artifactOpenerRef.current=active instanceof HTMLElement&&!active.closest('[data-radix-popper-content-wrapper]')?active:document.querySelector<HTMLElement>('[data-task-resources-trigger]');}
-  function openWorkbench(tab:WorkbenchTab){rememberWorkbenchOpener();setWorkbenchOpen(true);setWorkbenchTab(tab);if(tab==='activity')setWorkbenchEventId(undefined);}
+  function openWorkbench(tab:WorkbenchTab,selection?:WorkflowSelection){setWorkflowSelection(selection);rememberWorkbenchOpener();setWorkbenchOpen(true);setWorkbenchTab(tab);if(tab==='activity')setWorkbenchEventId(undefined);}
   function closeWorkbench(){if(artifactDirty&&!window.confirm(t('还有未保存的修改，仍然关闭？','You have unsaved changes. Close anyway?')))return;setWorkbenchOpen(false);requestAnimationFrame(()=>{if(artifactOpenerRef.current?.isConnected)artifactOpenerRef.current.focus({preventScroll:true});});}
   function openEvent(event:TaskEvent){openWorkbench('activity');setWorkbenchEventId(event.id);}
   const taskArtifacts = data.artifacts.filter(item => item.taskId === task?.id && item.classification !== 'reply_snapshot');
@@ -144,7 +147,7 @@ export function AssistantWorkspace({ presentation='desktop', active=true, connec
     <ComposerSurface activity={!exampleRevision&&isTaskActivityRunning(task)} home={!task&&!mobile} mobileSlots={mobile?{attachments:composerAttachments,input:composerInput,leading:composerLeading,trailing:composerTrailing}:undefined} compact={compactComposer} context={!task&&!mobile&&<ComposerContextBar><ProjectPicker data={data} value={projectId} onChange={setProjectId} disabled={busy}/>{contextTools}<ComputerContext computer={data.computer}/></ComposerContextBar>} onDragOver={attachments.onDragOver} onDrop={event=>{if(!busy)attachments.onDrop(event);else event.preventDefault();}} onSubmit={event=>{event.preventDefault();void send();}}>
       {composerAttachments}{composerLeading}{composerInput}{composerTrailing}
     </ComposerSurface>
-    {configurationMissing&&(!mobile||connected)&&<SetupHint href={!modelReady?'#settings/model':'#settings'} action={!modelReady?t('连接模型','Connect a model'):t('前往设置','Open settings')}>{project&&project.execution.status!=='ready'?t('请先为项目选择本地目录。','Choose a local folder for this project.'):!modelReady?t('连接后即可开始对话。','Connect to start a conversation.'):t('请先启用本机执行环境。','Set up the runtime on this computer.')}</SetupHint>}
+    {configurationMissing&&(task||modelReady)&&(!mobile||connected)&&<SetupHint href={!modelReady?'#settings/model':'#settings'} action={!modelReady?t('连接模型','Connect a model'):t('前往设置','Open settings')}>{project&&project.execution.status!=='ready'?t('请先为项目选择本地目录。','Choose a local folder for this project.'):!modelReady?t('连接后即可开始对话。','Connect to start a conversation.'):t('请先启用本机执行环境。','Set up the runtime on this computer.')}</SetupHint>}
   </div>;
   const continueTaskAction = task && (task.status === 'queued' || task.status === 'interrupted' || task.status === 'failed') && !configurationMissing && !example && !financeReport ? <Button color="secondary" variant="outline" size="sm" disabled={busy} onClick={() => action('run')}>{t("继续任务", "Continue task")}<ArrowRight /></Button> : null;
   return <div className={`assistant-workspace ${mobile?'is-mobile':''} ${panelOpen ? 'with-artifact' : ''} ${task ? 'has-task' : 'is-home'}`}>
@@ -155,9 +158,7 @@ export function AssistantWorkspace({ presentation='desktop', active=true, connec
         {!task ? <section className="assistant-welcome">
           <div className="welcome-start"><div className="welcome-artwork"><WelcomeLettering /></div><div className="welcome-intro"><h1>{t("今天想做些什么？", "What shall we work on?")}</h1></div>
           {!mobile&&composer}
-          {!data.profile.demo&&!data.facts.length&&!data.tasks.length&&<MemoryImportWelcome/>}
           <HomeSuggestions data={data} disabled={busy} onDraft={(suggestion,nextProjectId)=>{replacePrompt(prompt.trim()?`${prompt.trimEnd()}\n\n${suggestion}`:suggestion);if(nextProjectId&&!prompt.trim())setProjectId(nextProjectId);requestAnimationFrame(()=>composerRef.current?.focus({preventScroll:true}));}}/>
-
           </div></section> : <div className="task-thread"><RevisionNavigation task={task} tasks={data.tasks} rooms={data.agentRooms}/>{project&&<nav className="task-project-navigation" aria-label={t('关联项目','Linked project')}><ButtonLink as="a" color="secondary" variant="ghost" size="sm" gutterSize="3xs" opticallyAlign="start" pill={false} className="task-project-reference" href={`#projects/${project.id}`} title={project.name}><Folder/><span>{project.name}</span><ChevronRight/></ButtonLink></nav>}
           {example&&!mobile && <span className="demo-thread-note">{t("示例", "Example")}</span>}
           {task.interaction==='task' && task.agentIds.length > 1 && <div className="task-agents"><Agent />{task.agentIds.map(id => data.agents.find(agent => agent.id === id)?.name || t("未命名角色", "Unnamed agent")).join(t('、', ', '))} {t("参与此任务", "on this task")}</div>}
@@ -181,10 +182,12 @@ export function AssistantWorkspace({ presentation='desktop', active=true, connec
               {!exampleRevision&&<TaskActivity task={turnTask} agents={data.agents} onEvent={openEvent}/>}
             </div>}</Fragment>;
           })}</div>
+          <WorkflowCard task={task} data={data} onOpen={selection=>openWorkbench('workflow',selection)} onRefresh={onRefresh}/>
           {task.approvals.map(approval => <TaskApproval key={approval.id} approval={approval} busy={busy||example} onDecision={decision => { void action('approval', { approvalId: approval.id, decision }); }} />)}
           {task.error && <Alert key={`${task.id}:${task.error}`} color="danger" variant="outline" className="assistant-task-failure" indicator={<Warning className="assistant-task-failure-icon" aria-hidden="true"/>} title={t("这一步没有完成", "This step did not finish")} description={<details className="assistant-task-error-details"><summary>{t('查看错误详情','View error details')}<ChevronRight/></summary><pre>{task.error}</pre></details>} actions={continueTaskAction} actionsPlacement="end" actionsClassName="assistant-task-failure-actions"/>}
           {exampleRevision?<p className="task-state-note" role="status">{t("修改版本已保存。示例可查看与继续编辑，不会执行任务。","Revision saved. You can review and edit this example; it will not run.")}</p>:statusDescription[task.status] && <p className="task-state-note">{statusDescription[task.status]}</p>}
           {!task.error && continueTaskAction}
+          {task.capabilityAuthoring&&<CapabilityDraftResult task={task} onRefresh={onRefresh}/>}
           {taskArtifacts.length > 0 && <div className="task-artifacts"><h3>{t("生成的文件", "Created files")}</h3>{taskArtifacts.map(item => <ArtifactCard key={item.id} artifact={item} onOpen={() => openArtifact(item.id)} />)}</div>}
           <div ref={endRef} />
         </div>}
@@ -192,7 +195,7 @@ export function AssistantWorkspace({ presentation='desktop', active=true, connec
       {mobile&&unread&&<Button color="secondary" variant="outline" className="mobile-latest" onClick={()=>{followLatest.current=true;scrollRef.current?.scrollTo({top:scrollRef.current.scrollHeight,behavior:'smooth'});setUnread(false);}}>{t('查看最新消息','Latest messages')}<ArrowUp/></Button>}
       {financeReport?<div className="finance-report-actions"><span>{t('本机财务摘要','Local finance summary')}</span><ButtonLink href="#automations" color="secondary" variant="outline" pill={false}>{t('管理自动化','Manage automation')}<ArrowRight/></ButtonLink></div>:(task||mobile) && composer}
     </div>
-    {panelOpen && task && <WorkbenchPane presentation={mobile?'mobile':'desktop'} title={t("任务工作区","Task workspace")} onClose={closeWorkbench}><WorkbenchPanel data={data} task={task} tab={workbenchTab||'files'} artifactId={openArtifactId} eventId={workbenchEventId} onEvent={openEvent} onTab={setWorkbenchTab} onClose={closeWorkbench} onArtifact={openArtifact} onDirtyChange={setArtifactDirty} onRefresh={onRefresh}/></WorkbenchPane>}
+    {panelOpen && task && <WorkbenchPane presentation={mobile?'mobile':'desktop'} title={t("任务工作区","Task workspace")} onClose={closeWorkbench}><WorkbenchPanel data={data} task={task} tab={workbenchTab||'files'} artifactId={openArtifactId} eventId={workbenchEventId} workflowSelection={workflowSelection} onEvent={openEvent} onTab={tab=>{setWorkbenchTab(tab);setWorkflowSelection(undefined);}} onClose={closeWorkbench} onArtifact={openArtifact} onDirtyChange={setArtifactDirty} onRefresh={onRefresh}/></WorkbenchPane>}
     {taskId && !task && <div className="missing-task"><Empty title={t("找不到这个任务", "Task not found")} description={t("它可能不属于当前本地空间。", "It may belong to another workspace.")} action={<ButtonLink as="a" color="primary" href="#assistant">{t("回到助理", "New chat")}</ButtonLink>} /></div>}
   </div>;
 }

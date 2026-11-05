@@ -1,4 +1,4 @@
-import { teamConfiguration, assertTeamProvider } from './team-runs.mjs';
+import { teamConfiguration, assertTeamProvider, TEAM_MAXIMUMS } from './team-runs.mjs';
 import { approvalMode } from './execution-settings.mjs';
 import { connectorSelection } from './connectors.mjs';
 import { HttpError, id, now } from './store.mjs';
@@ -20,7 +20,7 @@ export function createRoom(store, body, existing) {
   const digitalTwinEnabled=v.digitalTwinEnabled===undefined?undefined:bool(v.digitalTwinEnabled,'digitalTwinEnabled');
   const connectorIds=v.connectorIds===undefined?undefined:connectorSelection(store,v.connectorIds);
   const kind=choice(v.kind??(agentIds.length>1?'group':'direct'),['direct','group'],'kind');
-  if(kind==='direct' ? agentIds.length!==1 : agentIds.length<2||agentIds.length>12)throw new HttpError(400,'私聊需选择 1 个 Agent，群聊需选择 2–12 个 Agent。');
+  if(kind==='direct' ? agentIds.length!==1 : agentIds.length<2||agentIds.length>(v.team?TEAM_MAXIMUMS.members:12))throw new HttpError(400,'私聊需选择 1 位成员，群聊支持 2–12 位，负责人团队支持 2–24 位。');
   const team=teamConfiguration(v.team,agentIds,kind);
   const stamp=now(),projectId=projectReference(store,v.projectId);
   const lastTask=existing?.taskIds.at(-1)?store.get('tasks',existing.taskIds.at(-1)):undefined;

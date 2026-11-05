@@ -1,0 +1,15 @@
+{
+  "interface": {
+    "display_name": "产品规划与取舍",
+    "localized": {
+      "title": {
+        "zh": "产品规划与取舍",
+        "en": "Product planning"
+      },
+      "description": {
+        "zh": "比较用户需求与实现成本，整理优先级和产品路线图。",
+        "en": "Weigh user needs against delivery effort, then outline priorities and a product roadmap."
+      }
+    }
+  }
+}

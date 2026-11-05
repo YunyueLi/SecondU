@@ -1,3 +1,4 @@
+import {CurrencySelect} from './CurrencySelect';
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { Alert } from '@openai/apps-sdk-ui/components/Alert';
 import { Button } from '@openai/apps-sdk-ui/components/Button';
@@ -97,7 +98,7 @@ export function FinanceCsvImport({ state, onSaved, onCancel }: FinanceCsvImportP
     <div className="finance-csv-file">
       <div><strong className="finance-data-name">{file ? file.name : '选择交易 CSV'}</strong><p className="finance-data-meta">UTF-8 编码，第一行为列名；最多 {MAX_CSV_TRANSACTIONS.toLocaleString('zh-CN')} 条交易、20 MB。</p></div>
       <input ref={fileInput} id={`${formId}-file`} type="file" accept=".csv,text/csv" className="finance-csv-file-input" aria-label="选择本机 CSV 文件" disabled={busy || Boolean(saved)} onChange={event => { void chooseFile(event.target.files?.[0]); event.target.value = ''; }} />
-      <Button type="button" color="secondary" variant="outline" pill={false} disabled={busy || Boolean(saved)} loading={reading} onClick={() => fileInput.current?.click()}>{file ? '更换文件' : '选择 CSV 文件'}</Button>
+      <Button type="button" color="secondary" variant="outline" disabled={busy || Boolean(saved)} loading={reading} onClick={() => fileInput.current?.click()}>{file ? '更换文件' : '选择 CSV 文件'}</Button>
     </div>
     {!file && <p className="finance-data-meta">文件只在本机解析，确认后保存到本机财务记录。</p>}
     {file && !preview && <>
@@ -106,22 +107,22 @@ export function FinanceCsvImport({ state, onSaved, onCancel }: FinanceCsvImportP
       <div className="finance-csv-mapping">
         {fields.map(field => <div key={field.key} className="finance-csv-field">
           <label htmlFor={`${formId}-${field.key}`}>{field.label}{field.required && <span className="finance-data-meta">（必填）</span>}</label>
-          <Select id={`${formId}-${field.key}`} value={mapping[field.key] === undefined ? '' : String(mapping[field.key])} options={[{ value: '', label: field.required ? '请选择 CSV 列' : field.fallback || '不导入该字段' }, ...columnOptions]} onChange={option => changeMapping(field.key, option.value)} disabled={busy} pill={false} />
+          <Select id={`${formId}-${field.key}`} value={mapping[field.key] === undefined ? '' : String(mapping[field.key])} options={[{ value: '', label: field.required ? '请选择 CSV 列' : field.fallback || '不导入该字段' }, ...columnOptions]} onChange={option => changeMapping(field.key, option.value)} disabled={busy} />
           {mapping[field.key] !== undefined && <span className="finance-csv-sample finance-data-meta" title={file.document.rows[0]?.cells[mapping[field.key]!] || '空值'}>首行：{file.document.rows[0]?.cells[mapping[field.key]!] || '空值'}</span>}
         </div>)}
       </div>
       <header className="finance-data-section-heading"><h3>格式与默认值</h3></header>
       <div className="finance-csv-defaults">
-        <div className="finance-csv-field finance-csv-wide"><label htmlFor={`${formId}-date-format`}>日期格式</label><Select id={`${formId}-date-format`} value={defaults.dateFormat} options={dateOptions} onChange={option => changeDefault('dateFormat', option.value as CsvDateFormat)} disabled={busy} pill={false} /></div>
-        <div className="finance-csv-field"><label htmlFor={`${formId}-default-kind`}>默认交易类型</label><Select id={`${formId}-default-kind`} value={defaults.kind} options={typeOptions} onChange={option => changeDefault('kind', option.value as FinanceTransaction['kind'])} disabled={busy} pill={false} /></div>
-        <div className="finance-csv-field"><label htmlFor={`${formId}-default-currency`}>默认币种</label><Select id={`${formId}-default-currency`} value={defaults.currency} options={currencyOptions} onChange={option => changeDefault('currency', option.value)} disabled={busy} pill={false} /></div>
-        <div className="finance-csv-field"><label htmlFor={`${formId}-default-account`}>默认账户<span className="finance-data-meta">（可选）</span></label><Select id={`${formId}-default-account`} value={defaults.accountId || ''} options={accountOptions} onChange={option => changeDefault('accountId', option.value || null)} disabled={busy} pill={false} /></div>
-        <div className="finance-csv-field"><label htmlFor={`${formId}-default-to-account`}>默认转入账户<span className="finance-data-meta">（仅转账）</span></label><Select id={`${formId}-default-to-account`} value={defaults.toAccountId || ''} options={accountOptions} onChange={option => changeDefault('toAccountId', option.value || null)} disabled={busy} pill={false} /></div>
+        <div className="finance-csv-field finance-csv-wide"><label htmlFor={`${formId}-date-format`}>日期格式</label><Select id={`${formId}-date-format`} value={defaults.dateFormat} options={dateOptions} onChange={option => changeDefault('dateFormat', option.value as CsvDateFormat)} disabled={busy} /></div>
+        <div className="finance-csv-field"><label htmlFor={`${formId}-default-kind`}>默认交易类型</label><Select id={`${formId}-default-kind`} value={defaults.kind} options={typeOptions} onChange={option => changeDefault('kind', option.value as FinanceTransaction['kind'])} disabled={busy} /></div>
+        <div className="finance-csv-field"><label htmlFor={`${formId}-default-currency`}>默认币种</label><CurrencySelect id={`${formId}-default-currency`} value={defaults.currency} options={currencyOptions} onChange={option => changeDefault('currency', option.value)} disabled={busy} /></div>
+        <div className="finance-csv-field"><label htmlFor={`${formId}-default-account`}>默认账户<span className="finance-data-meta">（可选）</span></label><Select id={`${formId}-default-account`} value={defaults.accountId || ''} options={accountOptions} onChange={option => changeDefault('accountId', option.value || null)} disabled={busy} /></div>
+        <div className="finance-csv-field"><label htmlFor={`${formId}-default-to-account`}>默认转入账户<span className="finance-data-meta">（仅转账）</span></label><Select id={`${formId}-default-to-account`} value={defaults.toAccountId || ''} options={accountOptions} onChange={option => changeDefault('toAccountId', option.value || null)} disabled={busy} /></div>
       </div>
       <p className="finance-data-meta">默认值用于未映射或为空的单元格。账户列须填当前空间的账户 ID。支出正数表示消费、负数表示退款；收入和转账须大于零，转账不计入收支。</p>
     </>}
     {preview && <>
-      <header className="finance-data-section-heading"><h3>{saved ? '导入结果' : '导入预览'}</h3>{!saved && <Button type="button" color="secondary" variant="ghost" pill={false} size="sm" disabled={busy} onClick={() => { setPreview(null); setError(''); }}>返回列映射</Button>}</header>
+      <header className="finance-data-section-heading"><h3>{saved ? '导入结果' : '导入预览'}</h3>{!saved && <Button type="button" color="secondary" variant="ghost" size="sm" disabled={busy} onClick={() => { setPreview(null); setError(''); }}>返回列映射</Button>}</header>
       {saved ? <Alert color="success" variant="soft" title="交易已保存" description={saved.replayed ? `本批 ${preview.totalRows} 条交易已导入，未重复新增。` : `新增 ${saved.createdCount} 条，跳过已导入的 ${saved.deduplicatedCount} 条。`} /> : <div className="finance-data-summary"><span>共 {preview.totalRows} 条，{preview.transactions.length} 条通过检查</span>{errorRows > 0 && <span>{errorRows} 行需要修正</span>}</div>}
       {preview.errors.length > 0 && <div className="finance-csv-errors" role="alert"><strong>有 {preview.errors.length} 处错误，整批尚未保存。</strong><ul>{preview.errors.slice(0, 50).map((item, index) => <li key={`${item.row}-${item.field}-${index}`}>第 {item.row} 行{item.field === 'row' ? '' : `，${fields.find(field => field.key === item.field)?.label}`}：{item.message}</li>)}</ul>{preview.errors.length > 50 && <p>当前显示前 50 处错误。修正文件并重新选择后可继续检查其余错误。</p>}</div>}
       {pageRows.length > 0 && <div className="finance-csv-preview" role="region" aria-label="待导入交易预览，可横向滚动" tabIndex={0}><table className="finance-data-table"><colgroup><col className="finance-csv-col-row" /><col className="finance-csv-col-date" /><col className="finance-csv-col-kind" /><col className="finance-csv-col-merchant" /><col className="finance-csv-col-amount" /><col className="finance-csv-col-account" /></colgroup><thead><tr><th scope="col">CSV 行</th><th scope="col">日期</th><th scope="col">类型</th><th scope="col">商户 / 分类</th><th scope="col" className="finance-csv-number">金额</th><th scope="col">账户</th></tr></thead><tbody>{pageRows.map(record => <tr key={record.idempotencyKey}>
@@ -136,15 +137,15 @@ export function FinanceCsvImport({ state, onSaved, onCancel }: FinanceCsvImportP
         <div className="finance-csv-mobile-account finance-data-meta">账户：{accountName(record.accountId)}{record.kind === 'transfer' && <span>，转入 {accountName(record.toAccountId)}</span>}</div>
         {record.note && <p className="finance-csv-mobile-note finance-data-meta">{record.note}</p>}
       </li>)}</ul></div>}
-      {pageCount > 1 && <nav className="finance-csv-pagination" aria-label="预览分页"><Button type="button" color="secondary" variant="ghost" pill={false} size="sm" disabled={page === 0 || busy} onClick={() => setPage(value => value - 1)}>上一页</Button><span className="finance-data-meta">第 {page + 1} / {pageCount} 页</span><Button type="button" color="secondary" variant="ghost" pill={false} size="sm" disabled={page + 1 >= pageCount || busy} onClick={() => setPage(value => value + 1)}>下一页</Button></nav>}
+      {pageCount > 1 && <nav className="finance-csv-pagination" aria-label="预览分页"><Button type="button" color="secondary" variant="ghost" size="sm" disabled={page === 0 || busy} onClick={() => setPage(value => value - 1)}>上一页</Button><span className="finance-data-meta">第 {page + 1} / {pageCount} 页</span><Button type="button" color="secondary" variant="ghost" size="sm" disabled={page + 1 >= pageCount || busy} onClick={() => setPage(value => value + 1)}>下一页</Button></nav>}
       {!saved && <p className="finance-data-meta">保存时按文件与 CSV 行号核对重复记录。同日同金额的不同记录会分别保留。</p>}
     </>}
     {error && <Alert color="danger" variant="soft" title={saved ? '列表需要刷新' : '导入需要处理'} description={error} />}
     <div className="finance-csv-actions">
-      {onCancel && <Button type="button" color="secondary" variant="ghost" pill={false} disabled={busy} onClick={onCancel}>{saved ? '关闭' : '取消'}</Button>}
-      {file && !preview && <Button type="button" color="primary" pill={false} loading={checking} disabled={busy || mapping.occurredOn === undefined || mapping.amount === undefined} onClick={() => void review()}>确认映射并预览</Button>}
-      {preview && !saved && <Button type="button" color="primary" pill={false} loading={saving} disabled={busy || Boolean(preview.errors.length) || !preview.transactions.length} onClick={() => void save()}>确认导入 {preview.totalRows} 条交易</Button>}
-      {saved && refreshFailed && <Button type="button" color="primary" pill={false} onClick={() => void applySaved(saved)}>刷新列表</Button>}
+      {onCancel && <Button type="button" color="secondary" variant="ghost" disabled={busy} onClick={onCancel}>{saved ? '关闭' : '取消'}</Button>}
+      {file && !preview && <Button type="button" color="primary" loading={checking} disabled={busy || mapping.occurredOn === undefined || mapping.amount === undefined} onClick={() => void review()}>确认映射并预览</Button>}
+      {preview && !saved && <Button type="button" color="primary" loading={saving} disabled={busy || Boolean(preview.errors.length) || !preview.transactions.length} onClick={() => void save()}>确认导入 {preview.totalRows} 条交易</Button>}
+      {saved && refreshFailed && <Button type="button" color="primary" onClick={() => void applySaved(saved)}>刷新列表</Button>}
     </div>
   </div>;
 }

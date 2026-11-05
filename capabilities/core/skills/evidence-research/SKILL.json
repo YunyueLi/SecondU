@@ -1,0 +1,16 @@
+{
+  "interface": {
+    "displayName": "资料调研与方案比较",
+    "shortDescription": "Evidence research",
+    "localized": {
+      "title": {
+        "zh": "资料调研与方案比较",
+        "en": "Research and comparisons"
+      },
+      "description": {
+        "zh": "查找一手资料，比较可选方案，给出有出处的结论。",
+        "en": "Find primary sources, compare options and provide conclusions with citations."
+      }
+    }
+  }
+}

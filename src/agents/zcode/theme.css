@@ -1,0 +1,22 @@
+@theme inline {
+  --text-ui-base: var(--hither-font-body);
+  --text-ui-base--line-height: 1.5;
+  --text-ui-sm: var(--hither-font-caption);
+  --text-ui-sm--line-height: 1.5;
+  --text-ui-xs: var(--hither-font-meta);
+  --text-ui-xs--line-height: 1.5;
+  --text-ui-2xs: 11px;
+  --text-ui-lg: var(--hither-font-section-title);
+  --color-foreground: var(--color-text);
+  --color-foreground-subtle: var(--color-text-secondary);
+  --color-foreground-subtlest: var(--color-text-tertiary);
+  --color-card: var(--color-surface);
+  --color-background: var(--color-surface);
+  --color-border: var(--color-border-subtle);
+  --color-border-hover: var(--color-border-default);
+  --color-destructive: var(--color-text-danger);
+  --color-success: var(--color-text-success);
+  --color-warning: var(--color-text-warning);
+  --color-ring: var(--color-text);
+  --color-surface-hover: var(--color-surface-tertiary);
+}

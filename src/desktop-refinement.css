@@ -58,7 +58,7 @@
 .welcome-intro p { font-size:var(--hither-font-label); margin-top:11px; }
 .home-context { gap:28px; margin-top:42px; }
 .home-understanding { background:color-mix(in srgb,var(--color-surface-secondary) 65%,transparent); padding:16px 18px; border-radius:15px; }
-.app-dialog { border-radius:22px; border:1px solid color-mix(in srgb,var(--color-text) 8%,transparent); background:color-mix(in srgb,var(--color-surface) var(--hither-panel-opacity),transparent); backdrop-filter:blur(30px); box-shadow:var(--hither-float-shadow); }
+.app-dialog { border-radius:var(--hither-radius-dialog); border:1px solid color-mix(in srgb,var(--color-text) 8%,transparent); background:color-mix(in srgb,var(--color-surface) var(--hither-panel-opacity),transparent); backdrop-filter:blur(30px); box-shadow:var(--hither-float-shadow); }
 .dialog-overlay { backdrop-filter:blur(5px); background:rgb(10 12 18 / .22); }
 /* Settings layout and typography live in settings.css. */
 .appearance-block { margin-bottom:24px; }
@@ -317,11 +317,11 @@
 .composer-trailing button[type=submit],.composer-trailing>button:last-child{width:36px;height:36px;flex-shrink:0}
 .composer-trailing button[type=submit]:disabled{background:var(--color-surface-tertiary);color:var(--color-text-tertiary)}
 .composer .composer-model-picker{font-size:13px;padding-inline:6px}
-.composer.is-expanded{grid-template-columns:36px minmax(0,1fr) auto;border-radius:24px;padding:10px 12px}
-.composer.is-expanded .composer-input{grid-column:1/-1;grid-row:2;padding:0 6px 5px}.composer.is-expanded .composer-leading{grid-row:3}.composer.is-expanded .composer-trailing{grid-row:3}.composer>.attachment-drafts,.composer>.attachment-limit{grid-column:1/-1;grid-row:1}
+.composer.is-expanded{grid-template-columns:auto minmax(0,1fr);border-radius:24px;padding:10px 12px}
+.composer.is-expanded .composer-input{grid-column:1/-1;grid-row:2;padding:0 6px 5px}.composer.is-expanded .composer-leading{grid-row:3}.composer.is-expanded .composer-trailing{grid-column:2;grid-row:3;justify-self:end;max-width:100%}.composer>.attachment-drafts,.composer>.attachment-limit{grid-column:1/-1;grid-row:1}
 .composer-add-trigger{width:36px;height:36px}.composer-tools-popover{padding:6px}.composer-add-files{width:100%;justify-content:flex-start!important;font-size:14px!important}.composer-tools-popover .context-menu-main{padding:13px 10px}.composer-tools-popover .context-menu-footer{padding:10px;border-top:1px solid var(--color-border-subtle)}.composer-project-picker{padding:8px 10px}.composer-project-picker .project-picker{width:100%}
 .welcome-start .welcome-intro h1{font-size:28px;font-weight:400;letter-spacing:0;line-height:1.4}.welcome-start .welcome-intro{margin-bottom:34px}.welcome-start .welcome-artwork{margin-bottom:18px}
-@media(max-width:600px){.composer .composer-model-name{max-width:76px}.composer-trailing{gap:0}.composer,.is-home .composer{gap:3px;padding:7px}.composer .composer-input textarea{font-size:15px}.welcome-start .welcome-intro h1{font-size:25px}.composer .composer-model-picker{font-size:12px}}
+@media(max-width:600px){.composer-trailing{gap:0}.composer,.is-home .composer{gap:3px;padding:7px}.composer .composer-input textarea{font-size:15px}.welcome-start .welcome-intro h1{font-size:25px}.composer .composer-model-picker{font-size:12px}}
 .ag-composer.composer{display:grid;min-height:56px}.ag-composer.composer .composer-input textarea{padding:4px 0!important;min-height:24px!important}.ag-composer .ag-reply-reference{grid-column:1/-1;grid-row:1;margin:3px 0 8px}.ag-composer:has(>.ag-reply-reference)>.attachment-drafts{grid-row:2}.ag-composer:has(>.ag-reply-reference) .composer-input{grid-row:3}.ag-composer:has(>.ag-reply-reference) .composer-leading,.ag-composer:has(>.ag-reply-reference) .composer-trailing{grid-row:4}.composer-model-picker>span>svg:first-child{display:none}.composer:has(.attachment-limit) .attachment-limit{grid-row:auto}
 
 .composer{position:relative;z-index:1}

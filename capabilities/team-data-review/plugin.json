@@ -1,0 +1,113 @@
+{
+  "name": "secondu-team-data-review",
+  "version": "1.0.0",
+  "description": "Audit data definitions and quality, run reproducible analysis and independently verify calculations.",
+  "license": "MIT",
+  "author": {
+    "name": "SecondU contributors"
+  },
+  "expertType": "team",
+  "agentName": "data-review-lead",
+  "agents": [
+    "agents/data-review-lead.md",
+    "agents/data.md",
+    "agents/analysis.md",
+    "agents/review.md"
+  ],
+  "displayName": {
+    "zh": "数据分析与复核团",
+    "en": "Data analysis and review team"
+  },
+  "displayDescription": {
+    "zh": "先审数据口径和质量，再做可复算分析，由独立成员复核计算与结论。",
+    "en": "Audit data definitions and quality, run reproducible analysis and independently verify calculations."
+  },
+  "teamInfo": {
+    "leadAgent": "data-review-lead",
+    "memberAgents": [
+      "data",
+      "analysis",
+      "review"
+    ]
+  },
+  "quickPrompts": [
+    {
+      "zh": "分析这份数据，解释关键变化，并交付可复算表格和结论。",
+      "en": "Analyze this dataset, explain key changes and deliver a reproducible workbook and findings."
+    }
+  ],
+  "secondu": {
+    "workflow": [
+      {
+        "id": "audit",
+        "title": {
+          "zh": "核对数据",
+          "en": "Audit data"
+        },
+        "members": [
+          "data"
+        ],
+        "after": [],
+        "description": {
+          "zh": "检查粒度、主键、日期、币种、缺失、重复、异常与连接关系。保存计算输入与排除记录；不能用补造数据掩盖缺项。交付 audit.md 和可复用清洗结果。",
+          "en": "Check grain, keys, dates, currencies, missingness, duplicates, outliers and joins. Preserve inputs and exclusions without fabricated replacements. Deliver audit.md and reusable cleaned data."
+        },
+        "required": true
+      },
+      {
+        "id": "analysis",
+        "title": {
+          "zh": "分析与建模",
+          "en": "Analyze data"
+        },
+        "members": [
+          "analysis"
+        ],
+        "after": [
+          "audit"
+        ],
+        "description": {
+          "zh": "基于已审数据计算指标、分解变化，保留公式及假设，避免把相关性当因果。按任务需要输出带公式的 analysis.xlsx 与 analysis.md。",
+          "en": "Compute metrics and decompose changes from audited data, keeping formulas and assumptions. Do not infer causation from correlation. Produce analysis.xlsx and analysis.md where appropriate."
+        },
+        "required": true
+      },
+      {
+        "id": "review",
+        "title": {
+          "zh": "独立复算",
+          "en": "Recompute independently"
+        },
+        "members": [
+          "review"
+        ],
+        "after": [
+          "analysis"
+        ],
+        "description": {
+          "zh": "打开实际交付文件，独立复算总量、分母、增长率和至少一个边界情形。核对公式缓存、图表与文字是否一致。交付 checks.md，失败明确指出。",
+          "en": "Open actual outputs and independently verify totals, denominators, growth and a boundary case. Check formula caches, charts and prose. Deliver checks.md with explicit failures."
+        },
+        "required": true
+      },
+      {
+        "id": "delivery",
+        "title": {
+          "zh": "整理最终结果",
+          "en": "Prepare final delivery"
+        },
+        "members": [
+          "data"
+        ],
+        "after": [
+          "review"
+        ],
+        "description": {
+          "zh": "根据复核修正分析；重新计算或渲染发生变化的文件，记录已修正和未解决的问题。保留运行方法。",
+          "en": "Repair findings from review, recalculate or render changed files and retain reproduction steps and unresolved issues."
+        },
+        "required": true
+      }
+    ]
+  }
+}

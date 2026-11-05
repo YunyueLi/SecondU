@@ -6,7 +6,7 @@
 <p align="center">An open-source agent product built around a personal digital twin.</p>
 <p align="center">
   <a href="https://secondu.ungetsu.net/product/embed.html?space=demo-us-v1&lang=en#example-chat"><strong>Try SecondU</strong></a>&nbsp;&nbsp;&nbsp;
-  <a href="https://github.com/YunyueLi/SecondU/releases/tag/v0.2.1"><strong>Download for macOS</strong></a>&nbsp;&nbsp;&nbsp;
+  <a href="https://github.com/YunyueLi/SecondU/releases/tag/v0.3.0"><strong>Download for macOS</strong></a>&nbsp;&nbsp;&nbsp;
   <a href="QUICKSTART.md">Quick start</a>&nbsp;&nbsp;&nbsp;
   <a href="https://secondu.ungetsu.net/benchmark/?lang=en">Benchmark</a>&nbsp;&nbsp;&nbsp;
   <a href="README.zh-CN.md">简体中文</a>
@@ -27,6 +27,8 @@
 </p>
 
 <p align="center"><sub>Actual application states with fictional example data. <a href="https://secondu.ungetsu.net/product/embed.html?space=demo-us-v1&lang=en#example-chat">Try the app</a> without an account or model key, or visit the <a href="https://secondu.ungetsu.net/?lang=en">product website</a>.</sub></p>
+
+**v0.3.0:** A bundled runtime, reviewable team plans, workflow reuse and continuation, improved finance previews and responsive layouts. [Release notes](docs/releases/v0.3.0.md).
 
 ## Understanding that carries forward
 
@@ -74,7 +76,7 @@ Your profile, timeline, relationships and sources make understanding inspectable
 
 ### Bring the right expertise and tools together
 
-Talk to a specialist or form a team with a lead. Follow delegated work, status and results. Project directories, model connections and approvals define the working environment.
+Talk to a specialist or describe a goal to a team. Review the proposed stages, member models and expected results, then confirm execution. Inspect each member’s session and file handoffs; save a workflow and start its next run with fresh materials. Project directories, model connections and approvals define the working environment.
 
 <p><a href="https://secondu.ungetsu.net/product/embed.html?space=demo-us-v1&lang=en#agents"><picture>
       <source media="(prefers-color-scheme: dark)" srcset="docs/readme-assets/specialists-en-dark.jpg">
@@ -152,8 +154,8 @@ No-context is a separate visible-information calibration: **47 / 48** calls met 
 | Start here | What to expect |
 | --- | --- |
 | **[Try it in your browser](https://secondu.ungetsu.net/product/embed.html?space=demo-us-v1&lang=en#example-chat)** | Explore bilingual examples, import a summary and edit content in the current page. Reload to start again. |
-| **[Download the desktop app](https://github.com/YunyueLi/SecondU/releases/tag/v0.2.1)** | Apple Silicon Mac, macOS 13+. Includes Node. See the quick start for installation. |
-| **Run from source** | Node.js 22.18+ and npm. Use the commands below, then open [localhost:58645](http://127.0.0.1:58645). |
+| **[Download the desktop app](https://github.com/YunyueLi/SecondU/releases/tag/v0.3.0)** | Apple Silicon Mac, macOS 13+. Includes Node. See the quick start for installation. |
+| **Run from source** | Node.js 22.19+ and npm. Use the commands below, then open [localhost:58645](http://127.0.0.1:58645). |
 
 ```sh
 git clone https://github.com/YunyueLi/SecondU.git
@@ -163,7 +165,7 @@ npm run build
 npm start
 ```
 
-Choose an example space to explore without credentials. To run real tasks, enter personal space, install **Codex CLI** separately and configure your own model connection. [Setup and troubleshooting](QUICKSTART.md)
+Choose an example space to explore without credentials. SecondU v0.3.0 bundles a pinned **Codex CLI** and updates it with the app. Configure your own model connection for real tasks. Source runs still require a separate CLI. [Setup and troubleshooting](QUICKSTART.md) · [Runtime version management](docs/CODEX-RUNTIME.md)
 
 ## Your data, your permissions
 
@@ -182,7 +184,7 @@ The [12-direction roadmap](docs/ROADMAP.md) describes current foundations, next 
 | Context beyond one screen | Communication and real-world resources; multimodal continuity across devices; authorized expertise distribution |
 | A network built around people | A2A collaboration and service transactions; social and relationship discovery; continuously improving personal assets |
 
-**Latest release:** [v0.2.1](docs/releases/v0.2.1.md) adds the Finance workspace, configurable sidebar modules, local/SSH computer settings, an expanded connector directory, home suggestions and appearance refinements. Desktop releases support macOS arm64. [Product walkthrough](docs/PROTOTYPE.md)
+**Latest release:** [v0.3.0](docs/releases/v0.3.0.md) bundles the runtime and adds reviewable expert workflows, collaboration details and finance improvements. Desktop releases support macOS arm64. [Product walkthrough](docs/PROTOTYPE.md)
 
 ## How it works
 

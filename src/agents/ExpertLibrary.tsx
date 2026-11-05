@@ -53,6 +53,6 @@ export function ExpertLibrary({data,onCreated,onOpen,onRefresh}:Props){
       </>:<div className="expert-showcase-empty"><p>{t('从目录中选择一位专家','Choose an expert from the catalogue')}</p></div>}
     </section>
     </div>
-    {preview&&<ExpertPreview key={preview.template.id} item={preview} avatarStyle={avatarStyle} onClose={()=>setPreview(undefined)} onCreated={async agent=>{await onCreated(agent);setPreview(undefined);}}/>}
+    {preview&&<ExpertPreview key={preview.template.id} item={preview} data={data} avatarStyle={avatarStyle} onClose={()=>setPreview(undefined)} onCreated={async agent=>{await onCreated(agent);setPreview(undefined);}}/>}
   </div>;
 }

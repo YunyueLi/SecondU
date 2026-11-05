@@ -10,3 +10,14 @@
 .settings-type-scale .settings-type-heading{font-size:var(--hither-font-settings-heading);font-weight:550;line-height:1.4}
 .settings-type-scale .settings-type-support{font-size:var(--hither-font-caption);line-height:1.7;color:var(--color-text-secondary)}
 .settings-type-scale .settings-type-meta{font-size:var(--hither-font-meta);line-height:1.6;color:var(--color-text-secondary)}
+
+/* Field rhythm is shared by configuration editors and the catalogue. */
+.app-dialog.settings-type-scale .form-field{gap:6px}
+
+/* Editors share spacing with finance forms; their content decides the maximum width. */
+.app-dialog:is(.configuration-dialog,.finance-settings){padding:24px}
+.app-dialog:is(.configuration-dialog,.finance-settings)>header{margin-bottom:24px;gap:16px}
+@media(max-width:480px){
+  .app-dialog:is(.configuration-dialog,.finance-settings){padding:20px 16px}
+  .app-dialog:is(.configuration-dialog,.finance-settings)>header{margin-bottom:20px;gap:12px}
+}

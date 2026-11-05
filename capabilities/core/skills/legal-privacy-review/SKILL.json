@@ -1,0 +1,16 @@
+{
+  "interface": {
+    "displayName": "条款与隐私资料整理",
+    "shortDescription": "Legal and privacy research",
+    "localized": {
+      "title": {
+        "zh": "条款与隐私资料整理",
+        "en": "Terms and privacy research"
+      },
+      "description": {
+        "zh": "核对合同或隐私条款，整理出处、风险和需要咨询的问题。",
+        "en": "Review contract or privacy clauses and organize sources, risks and questions for advice."
+      }
+    }
+  }
+}

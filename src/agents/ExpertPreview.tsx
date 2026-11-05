@@ -1,6 +1,8 @@
+import {CapabilityFields} from './CapabilityFields';
+import {capabilityUiPreviewEnabled} from './capabilityPreview';
 import { useUnsavedChanges } from '../useUnsavedChanges';
 import { useEffect, useState } from 'react';
-import type { AgentProfile } from '../../shared/contracts';
+import type { AgentProfile,Bootstrap } from '../../shared/contracts';
 import { Button } from '@openai/apps-sdk-ui/components/Button';
 import { Input } from '@openai/apps-sdk-ui/components/Input';
 import { Textarea } from '@openai/apps-sdk-ui/components/Textarea';
@@ -15,7 +17,7 @@ import './expert-preview.css';
 
 const reasonKind=(reason:ExpertReason)=>reason.kind==='goal'?t('当前目标','Active goal'):reason.kind==='fact'?t('已确认背景','Confirmed context'):t('个人介绍','Profile');
 
-export function ExpertPreview({item,avatarStyle,onClose,onCreated}:{item:ExpertRecommendation;avatarStyle:AgentProfile['avatarStyle'];onClose:()=>void;onCreated:(agent:AgentProfile)=>Promise<void>}){
+export function ExpertPreview({item,avatarStyle,data,onClose,onCreated}:{data:Bootstrap;item:ExpertRecommendation;avatarStyle:AgentProfile['avatarStyle'];onClose:()=>void;onCreated:(agent:AgentProfile)=>Promise<void>}){
   const {template}=item;
   const [name,setName]=useState(expertText(template.name,getLocale()));
   const [focusId,setFocusId]=useState(item.focusId),[answer,setAnswer]=useState('');
@@ -26,7 +28,8 @@ export function ExpertPreview({item,avatarStyle,onClose,onCreated}:{item:ExpertR
   useEffect(()=>{const media=window.matchMedia('(min-width: 761px)');const update=()=>setReasonsOpen(media.matches);media.addEventListener('change',update);return()=>media.removeEventListener('change',update);},[]);
   const focus=template.focuses.find(option=>option.id===focusId)||template.focuses[0];
   const draft=expertDraft(template,getLocale(),name,focusId,answer);
-  async function add(){if(busy||!name.trim())return;setBusy(true);setError('');try{const agent=created||await write<AgentProfile>('/agents',draft);setCreated(agent);await onCreated(agent);}catch(err){setError(messageOf(err));}finally{setBusy(false);}}
+  const [capabilities,setCapabilities]=useState(draft.capabilities!);
+  async function add(){if(busy||!name.trim())return;setBusy(true);setError('');try{const agent=created||await write<AgentProfile>('/agents',{...draft,capabilities});setCreated(agent);await onCreated(agent);}catch(err){setError(messageOf(err));}finally{setBusy(false);}}
   return <Dialog title={t('添加专家','Add an expert')} className="expert-preview-dialog settings-type-scale" onClose={()=>{if(!busy)onClose();}}>
     <form className="expert-preview-form" onSubmit={event=>{event.preventDefault();void add();}}>
       <div className="expert-preview">
@@ -43,6 +46,7 @@ export function ExpertPreview({item,avatarStyle,onClose,onCreated}:{item:ExpertR
           <Field label={t('助理名称','Agent name')}><Input size="md" value={name} disabled={busy||!!created} onChange={event=>setName(event.target.value)} maxLength={200} aria-label={t('专家名称','Expert name')}/></Field>
           <Field label={t('工作重点','Working focus')} hint={expertText(focus.instruction,getLocale())}><Select size="md" aria-label={t('专家工作重点','Expert working focus')} value={focusId} disabled={busy||!!created} onChange={option=>setFocusId(option.value)} options={template.focuses.map(option=>({value:option.id,label:expertText(option.title,getLocale())}))}/></Field>
           <Field label={expertText(template.question,getLocale())} hint={t('选填，会保存在角色说明中。','Optional. Saved in the role instructions.')}><Textarea size="md" rows={2} value={answer} onChange={event=>setAnswer(event.target.value)} maxLength={600} disabled={busy||!!created} aria-label={t('个性化设置','Personalization')} placeholder={t('写下希望这位助理记住的工作偏好','Add a working preference for this agent')}/></Field>
+          {capabilityUiPreviewEnabled&&<details className="expert-saved-instructions"><summary>{t('专业能力、工具与资料','Skills, tools and knowledge')} · {capabilities.skillIds.length}</summary><CapabilityFields value={capabilities} onChange={setCapabilities} data={data} disabled={busy||!!created}/></details>}
           <details className="expert-saved-instructions"><summary>{t('角色说明','Role instructions')}</summary><p tabIndex={0} aria-label={t('完整角色说明','Full role instructions')}>{draft.instructions}</p></details>
         </section>
       </div>

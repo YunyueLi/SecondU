@@ -1,9 +1,10 @@
-import { cp, mkdir, readFile, writeFile, access, rename, lstat } from 'node:fs/promises';
-import { existsSync } from 'node:fs';
+import { cp, mkdir, mkdtemp, readFile, writeFile, access, rename, lstat } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { copyDesktopRuntime } from '../scripts/package-twin-mcp.mjs';
+import { packageCodexRuntime } from '../scripts/package-codex-runtime.mjs';
+import { replacePackagedApp } from './package-output.mjs';
 import { applyUpdaterPlist, buildUpdater, embedUpdater, signUpdaterApp, validateUpdaterConfig } from './build-updater.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -18,13 +19,13 @@ await access(path.join(root, 'dist/index.html'));
 execFileSync(process.execPath, [path.join(root, 'node_modules/electron/install.js')], { stdio: 'inherit' });
 const updaterBuild = await buildUpdater({root});
 const deliverable = path.join(root, `out/${brand.desktop.bundleName}.app`);
-const output = path.join(root, `.local/package-${Date.now()}/${brand.desktop.bundleName}.app`);
-await mkdir(path.dirname(output), { recursive: true });
+await mkdir(path.join(root, '.local'), { recursive: true });
+const output = path.join(await mkdtemp(path.join(root, '.local/package-')), `${brand.desktop.bundleName}.app`);
 await cp(path.join(root, 'node_modules/electron/dist/Electron.app'), output, { recursive: true, verbatimSymlinks: true, filter: includePackageFile });
 const resources = path.join(output, 'Contents/Resources');
 const packaged = path.join(resources, 'app');
 await mkdir(packaged, { recursive: true });
-for (const name of ['dist', 'server', 'desktop', 'shared', 'docs', 'README.md', 'README.zh-CN.md', 'QUICKSTART.md', 'CONTRIBUTING.md', 'SECURITY.md', 'CHANGELOG.md', 'THIRD_PARTY_NOTICES.md', 'LICENSE']) {
+for (const name of ['dist', 'server', 'desktop', 'shared', 'capabilities', 'docs', 'README.md', 'README.zh-CN.md', 'QUICKSTART.md', 'CONTRIBUTING.md', 'SECURITY.md', 'CHANGELOG.md', 'THIRD_PARTY_NOTICES.md', 'LICENSE']) {
   await cp(path.join(root, name), path.join(packaged, name), { recursive: true, filter: includePackageFile });
 }
 // These reviewed, synthetic attachments make CONTEXT-BENCHMARK.md usable offline.
@@ -42,6 +43,7 @@ for (const relative of publicBenchmarkAttachments) {
   await cp(path.join(root, relative), path.join(packaged, relative), { filter: includePackageFile });
 }
 await copyDesktopRuntime(root, packaged);
+await packageCodexRuntime({root, output:path.join(packaged,'runtime/codex')});
 await embedUpdater(output, {root, build: updaterBuild});
 await writeFile(path.join(packaged, 'package.json'), JSON.stringify({ name: brand.compatibility.applicationId, productName: brand.name, [brand.compatibility.packagedFlag]: true, version, type: 'module', main: 'desktop/main.cjs' }, null, 2));
 await rename(path.join(output, 'Contents/MacOS/Electron'), path.join(output, 'Contents/MacOS',brand.desktop.executable));
@@ -58,6 +60,5 @@ await writeFile(plist, info);
 // applied inside out to our bridge and the containing app, not recursively.
 await signUpdaterApp(output);
 await mkdir(path.dirname(deliverable), { recursive: true });
-if (existsSync(deliverable)) await rename(deliverable, path.join(root, `out/${brand.desktop.bundleName}.previous-${Date.now()}.app`));
-await rename(output, deliverable);
+await replacePackagedApp(output, deliverable);
 console.log(deliverable);

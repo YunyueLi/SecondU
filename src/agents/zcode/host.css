@@ -1,0 +1,38 @@
+@import './upstream-workflow.css';
+
+.zcode-workflow {
+  --ui-font-size:14px;
+  --color-workflow-rule:color-mix(in srgb,var(--color-text) 6%,transparent);
+  --color-workflow-trace:color-mix(in srgb,var(--color-text) 30%,transparent);
+  --color-workflow-trace-strong:color-mix(in srgb,var(--color-text) 55%,transparent);
+  font-size:14px;line-height:1.5;min-width:0;max-width:100%;
+}
+.zcode-workflow .bg-surface{background:var(--color-surface-secondary)}
+/* SDK controls keep the same dimensions as the rest of SecondU. */
+.zcode-workflow .zc-button {flex-shrink:0}
+.zcode-workflow .zc-button>span {gap:6px}
+.zcode-workflow .zc-button svg{width:16px;height:16px}
+.zc-person{display:inline-flex;overflow:hidden;border-radius:4px;flex-shrink:0}
+.zc-person .ag-avatar{width:100%!important;height:100%!important}
+.zc-host-timeline{padding:28px 24px 24px;min-width:0;border-bottom:1px solid var(--color-border-subtle)}
+.zc-host-pane[data-layout=horizontal] [data-testid=workflow-run-usage]{margin-top:8px}
+.zc-host-pane [data-testid=workflow-run-phases]{padding-top:14px;padding-bottom:14px}
+.zcode-workflow .wf-arrive{animation:none}
+.zcode-workflow .wf-agent-pill{border-radius:var(--hither-radius-control)}
+.zcode-workflow button{font-family:inherit}
+.zcode-workflow [data-testid=workflow-run-phases]{flex:0 0 auto;overflow:visible}
+.zc-host-pane{margin:0;min-height:100%;background:var(--color-surface)}
+.zc-host-actions{display:flex;gap:8px;align-items:center;padding:10px 16px;border-bottom:1px solid var(--color-border-subtle)}
+.zc-host-config{padding:12px 16px;border-bottom:1px solid var(--color-border-subtle)}
+.zc-save-label{display:none}
+@container wf-card (min-width:480px){.zc-save-label{display:inline}}
+
+/* A tiny split pane keeps the deliverable readable; its preview opens on demand. */
+@container wf-card (max-width:320px){
+  [data-workflow-completion-card] .wf-tile[data-variant=row]{grid-template-columns:minmax(0,1fr)}
+  [data-workflow-completion-card] [data-testid=workflow-artifact-row-frame]{display:none}
+  [data-workflow-completion-card] [data-testid=workflow-artifact-row-detail]{white-space:nowrap}
+}
+@container wf-card (max-width:260px){
+  [data-workflow-completion-card] [data-testid=workflow-completion-figures]{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:12px}
+}

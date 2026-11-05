@@ -57,16 +57,16 @@ export function TransactionForm({ state, record, preset, onSaved, onCancel }: {
     } catch (failure) { setError(failure instanceof Error ? failure.message : '交易保存失败，请重试。'); }
     finally { setSaving(false); }
   };
-  if (record?.source.kind === 'connector') return <div className="journal-form"><p>此交易由已连接账户同步，无法在此编辑。请在来源账户更正后重新同步。</p><div className="journal-form-actions">{onCancel && <Button color="secondary" variant="ghost" pill={false} onClick={onCancel}>返回</Button>}<ButtonLink href="#settings/connectors" color="primary" pill={false}>管理连接</ButtonLink></div></div>;
+  if (record?.source.kind === 'connector') return <div className="journal-form"><p>此交易由已连接账户同步，无法在此编辑。请在来源账户更正后重新同步。</p><div className="journal-form-actions">{onCancel && <Button color="secondary" variant="ghost" onClick={onCancel}>返回</Button>}<ButtonLink href="#settings/connectors" color="primary">管理连接</ButtonLink></div></div>;
   return <form className="journal-form" onSubmit={save}>
     <div className="journal-form-grid">
-      <div className="journal-field"><label htmlFor={`${id}-kind`}>交易类型</label><Select id={`${id}-kind`} pill={false} value={kind} disabled={saving} options={[{ value: 'expense', label: '支出' }, { value: 'income', label: '收入' }, { value: 'refund', label: '支出退款' }, { value: 'transfer', label: '账户间转账' }]} onChange={option => { setKind(option.value as EntryKind); changed(); }} /></div>
+      <div className="journal-field"><label htmlFor={`${id}-kind`}>交易类型</label><Select id={`${id}-kind`} value={kind} disabled={saving} options={[{ value: 'expense', label: '支出' }, { value: 'income', label: '收入' }, { value: 'refund', label: '支出退款' }, { value: 'transfer', label: '账户间转账' }]} onChange={option => { setKind(option.value as EntryKind); changed(); }} /></div>
       <div className="journal-field"><label htmlFor={`${id}-date`}>交易日期</label><Input id={`${id}-date`} type="date" max={today()} value={occurredOn} onChange={event => { setOccurredOn(event.target.value); changed(); }} required disabled={saving} /></div>
     </div>
     {initial?.recurringId && <div className="journal-field"><label htmlFor={`${id}-occurrence`}>对应账单日期</label><Input id={`${id}-occurrence`} type="date" value={recurringOccurrenceOn} onChange={event => { setRecurringOccurrenceOn(event.target.value); changed(); }} required disabled={saving} /><p className="journal-form-hint">填写这笔付款或收款对应的计划日期，可补记往期账单。交易日期仍填写实际发生日。</p></div>}
     <div className="journal-form-grid journal-amount-grid">
       <div className="journal-field"><label htmlFor={`${id}-amount`}>{kind === 'refund' ? '退款金额' : '原币金额'}</label><Input id={`${id}-amount`} inputMode="decimal" value={amount} onChange={event => { setAmount(event.target.value); changed(); }} placeholder="0.00" required autoComplete="off" disabled={saving} /></div>
-      <div className="journal-field"><label htmlFor={`${id}-currency`}>币种</label><Select id={`${id}-currency`} pill={false} value={currency} options={journalCurrencyOptions} onChange={option => { setCurrency(option.value); changed(); }} disabled={saving} /></div>
+      <div className="journal-field"><label htmlFor={`${id}-currency`}>币种</label><Select id={`${id}-currency`} value={currency} options={journalCurrencyOptions} onChange={option => { setCurrency(option.value); changed(); }} disabled={saving} /></div>
     </div>
     <div className="journal-field"><label htmlFor={`${id}-merchant`}>{kind === 'income' ? '收入来源' : kind === 'transfer' ? '转账说明' : '商户或交易对象'}<span>（可选）</span></label><Input id={`${id}-merchant`} value={merchant} onChange={event => { setMerchant(event.target.value); changed(); }} maxLength={300} disabled={saving} placeholder={kind === 'income' ? '例如：工资、稿费' : '例如：商店、餐厅'} autoComplete="off" /></div>
     <div className="journal-form-grid">
@@ -74,14 +74,14 @@ export function TransactionForm({ state, record, preset, onSaved, onCancel }: {
       <div className="journal-field"><label htmlFor={`${id}-subcategory`}>子类别<span>（可选）</span></label><Input id={`${id}-subcategory`} value={subcategory} onChange={event => { setSubcategory(event.target.value); changed(); }} maxLength={100} disabled={saving} placeholder="进一步分类" /></div>
     </div>
     <div className={kind === 'transfer' ? 'journal-form-grid' : undefined}>
-      <div className="journal-field"><label htmlFor={`${id}-account`}>{kind === 'transfer' ? '转出账户' : kind === 'income' || kind === 'refund' ? '收款账户' : '付款账户'}</label><Select id={`${id}-account`} pill={false} value={accountId} options={journalAccountOptions(state, accountId)} onChange={option => { setAccountId(option.value); changed(); }} disabled={saving} /></div>
-      {kind === 'transfer' && <div className="journal-field"><label htmlFor={`${id}-to-account`}>转入账户</label><Select id={`${id}-to-account`} pill={false} value={toAccountId} options={journalAccountOptions(state, toAccountId).filter(option => !option.value || option.value !== accountId)} onChange={option => { setToAccountId(option.value); changed(); }} disabled={saving} /></div>}
+      <div className="journal-field"><label htmlFor={`${id}-account`}>{kind === 'transfer' ? '转出账户' : kind === 'income' || kind === 'refund' ? '收款账户' : '付款账户'}</label><Select id={`${id}-account`} value={accountId} options={journalAccountOptions(state, accountId)} onChange={option => { setAccountId(option.value); changed(); }} disabled={saving} /></div>
+      {kind === 'transfer' && <div className="journal-field"><label htmlFor={`${id}-to-account`}>转入账户</label><Select id={`${id}-to-account`} value={toAccountId} options={journalAccountOptions(state, toAccountId).filter(option => !option.value || option.value !== accountId)} onChange={option => { setToAccountId(option.value); changed(); }} disabled={saving} /></div>}
     </div>
     <div className="journal-field"><label htmlFor={`${id}-note`}>备注<span>（可选）</span></label><Textarea id={`${id}-note`} rows={2} value={note} onChange={event => { setNote(event.target.value); changed(); }} maxLength={1000} disabled={saving} /></div>
     {kind === 'refund' && <p className="journal-form-hint">退款会冲减所选类别的支出，保留退款发生日期。</p>}
     {kind === 'transfer' && <p className="journal-form-hint">转账单独记录，收支统计会排除这笔金额。账户余额单独维护。</p>}
     {initial?.recurringId && <p className="journal-form-hint">这笔记录关联 {recurringOccurrenceOn} 的账单；保存后按实际金额核对本期付款。</p>}
     {error && <p className="form-error" role="alert">{error}</p>}
-    <div className="dialog-actions">{onCancel && <Button color="secondary" variant="ghost" pill={false} disabled={saving} onClick={onCancel}>取消</Button>}<Button type="submit" color="primary" pill={false} loading={saving}>{record ? '保存修改' : '保存交易'}</Button></div>
+    <div className="dialog-actions">{onCancel && <Button color="secondary" variant="ghost" disabled={saving} onClick={onCancel}>取消</Button>}<Button type="submit" color="primary" loading={saving}>{record ? '保存修改' : '保存交易'}</Button></div>
   </form>;
 }

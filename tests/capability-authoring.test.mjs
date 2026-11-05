@@ -1,0 +1,28 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {mkdtempSync,rmSync} from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import {createApp} from '../server/index.mjs';
+
+const packageFiles=revision=>[{path:'plugin.json',content:JSON.stringify({name:'synthetic-author',version:`1.0.${revision}`,displayName:'Synthetic research expert',description:'Review supplied evidence.',expertType:'agent',agentName:'researcher',agents:['agents']})},{path:'agents/researcher.md',content:`---\nname: researcher\ndisplayName: Synthetic reviewer\ndescription: Check supplied evidence\n---\nUse only provided evidence. Revision ${revision}.`}];
+async function fixture(t,runCodex,policy='personal'){
+ const directory=mkdtempSync(path.join(os.tmpdir(),'secondu-authoring-')),app=createApp({dataDir:directory,seed:false,scheduler:false,executionPolicy:policy,computerInfo:{codexAvailable:false},runCodex});const connection=app.store.connection();app.store.setKey(connection,'synthetic-author-key');await new Promise(resolve=>app.server.listen(0,'127.0.0.1',resolve));t.after(async()=>{await app.close();rmSync(directory,{recursive:true,force:true});});
+ const request=async(route,body,method='POST')=>{const response=await fetch(`http://127.0.0.1:${app.server.address().port}/api/${route}`,{method,headers:{'Content-Type':'application/json'},...(body===undefined?{}:{body:JSON.stringify(body)})});return {status:response.status,value:await response.json()};};return {app,request,settled:async id=>{await app.runner.active.get(id)?.promise;return app.store.require('tasks',id);}};
+}
+test('authoring uses the actual runner tool, preserves revisions, and requires review before installation',async t=>{
+ let calls=0;const f=await fixture(t,async args=>{calls++;assert(args.dynamicTools.some(tool=>tool.name==='secondu_submit_capability_draft'));assert(!args.prompt.includes('private-profile-marker'));assert(args.prompt.includes('installedSkills'));const invalid=await args.onDynamicTool({tool:'secondu_submit_capability_draft',arguments:{summary:'Malformed',files:[{path:'../outside',content:'bad'}]}});assert.equal(invalid.success,false);const valid=await args.onDynamicTool({tool:'secondu_submit_capability_draft',arguments:{summary:'A reviewable synthetic draft.',files:packageFiles(calls)}});assert.equal(valid.success,true);return {text:'The draft is saved for review.'};});
+ f.app.store.setMeta('profile',{name:'Private',description:'private-profile-marker'});
+ const created=await f.request('capabilities/author',{kind:'expert',prompt:'Design a supplied-evidence reviewer.'});assert.equal(created.status,201);let task=await f.settled(created.value.id);assert.equal(task.status,'completed',task.error);assert.equal(task.digitalTwinEnabled,false);assert.equal(f.app.store.list('capabilityPackages').length,0);assert.equal(f.app.store.list('agents').length,0);assert(task.events.some(event=>event.type==='capability.draft'));
+ const revised=await f.request(`tasks/${task.id}/message`,{content:'Clarify the review criteria.'});assert.equal(revised.status,200);task=await f.settled(task.id);assert.equal(task.status,'completed',task.error);assert.equal(f.app.store.require('capabilityDrafts',task.id).versions.length,2);
+ const preview=await f.request(`capabilities/drafts/${task.id}`,{});assert.equal(preview.status,200);assert.equal(preview.value.package.version,'1.0.2');assert.equal(f.app.store.list('capabilityPackages').length,0);
+ const installed=await f.request('capabilities/install',{previewId:preview.value.previewId});assert.equal(installed.status,201);assert.equal(f.app.store.list('agents').length,0);const expert=await f.request(`capabilities/${installed.value.id}/create-expert`,{definitionId:installed.value.experts[0].id});assert.equal(expert.status,201);assert.equal(f.app.store.require('agents',expert.value.id).name,'Synthetic reviewer');
+});
+test('authoring failures do not invent a draft and example spaces never invoke the model',async t=>{
+ let called=0;const f=await fixture(t,async()=>{called++;throw new Error('Synthetic provider unavailable');});const result=await f.request('capabilities/author',{kind:'skill',prompt:'Create an evidence-checking skill.'});const task=await f.settled(result.value.id);assert.equal(task.status,'failed');assert.equal(f.app.store.list('capabilityDrafts').length,0);assert.equal(called,1);
+ const example=await fixture(t,async()=>{throw new Error('Must never run');},'showcase');const blocked=await example.request('capabilities/author',{kind:'expert',prompt:'Generate'});assert.equal(blocked.status,403);assert.equal(example.app.store.list('tasks').length,0);
+});
+test('adaptation copies only explicit saved instructions, and does not mutate the source expert',async t=>{
+ const f=await fixture(t,async args=>{assert(args.prompt.includes('Existing method.'));assert(!args.prompt.includes('private-source-text'));return {text:'Please clarify the intended audience.'};});f.app.store.put('sources',{id:'private-source',title:'Private',text:'private-source-text'});f.app.store.put('agents',{id:'existing-expert',name:'Existing',role:'Review',instructions:'Existing method.',createdAt:new Date().toISOString(),capabilities:{skillIds:[],connectorIds:[],sourceIds:['private-source']}});
+ const result=await f.request('capabilities/author',{kind:'expert',prompt:'Adapt to teaching.',base:{kind:'expert',id:'existing-expert'}});const task=await f.settled(result.value.id);assert.equal(task.status,'completed',task.error);assert.equal(f.app.store.require('agents','existing-expert').instructions,'Existing method.');assert.equal(f.app.store.list('capabilityDrafts').length,0);
+});

@@ -63,8 +63,22 @@ test('closed editors and other spaces retain session draft protection without in
   function storage(entries){return {length:entries.length,key:index=>entries[index][0],getItem:key=>entries.find(item=>item[0]===key)?.[1]??null};}
   assert.equal(hasSessionDrafts(storage([['hither.agent-room.draft.fixture','unsent'] ])),true);
   assert.equal(hasSessionDrafts(storage([['hither.space.personal:hither.artifact.fixture','{"content":"draft","baseContent":"saved","baseVersion":1}']])),true);
+  assert.equal(hasSessionDrafts(storage([['hither.space.personal:secondu.desktop.shared-drafts','{"another-task":"unsent text"}']])),true);
+  assert.equal(hasSessionDrafts(storage([['hither.space.demo-cn-v1:secondu.mobile.shared-drafts','{"new":"unsent text"}']])),true);
+  for (const value of ['{}', '[]', 'null', 'invalid', '{"new":"  ","other":42}']) assert.equal(hasSessionDrafts(storage([['secondu.desktop.shared-drafts',value]])),false);
   assert.equal(hasSessionDrafts(storage([['hither.agent-room.draft.fixture','  '],['unrelated','private']])),false);
   for(const value of ['{}','null','invalid','{"content":""}','{"content":"saved","baseContent":"saved","baseVersion":1}']) assert.equal(hasSessionDrafts(storage([['hither.artifact.fixture',value]])),false);
   assert.equal(hasSessionDrafts(storage([['hither.artifact.fixture','{"content":"","baseContent":"deleted text","baseVersion":1}']])),true);
   assert.equal(hasSessionDrafts(storage([['unrelated:hither.agent-room.draft.fixture','text'],['hither.space.unknown:hither.agent-room.draft.fixture','text']])),false);
+});
+test('an explicit discard freezes unsaved editing, but never bypasses pending work or failed readers', () => {
+  let frozen = 0;
+  const freeze = () => { frozen++; };
+  const discard = { discardUnsaved: true };
+  assert.deepEqual(prepareDesktopQuit(() => ({ unsaved: true, busy: false }), freeze, discard), { unsaved: false, busy: false });
+  assert.equal(frozen, 1);
+  assert.deepEqual(prepareDesktopQuit(() => ({ unsaved: true, busy: true }), freeze, discard), { unsaved: true, busy: true });
+  assert.deepEqual(prepareDesktopQuit(() => { throw Error('unavailable'); }, freeze, discard), { unsaved: true, busy: true });
+  assert.deepEqual(prepareDesktopQuit(() => ({}), freeze, discard), { unsaved: true, busy: true });
+  assert.equal(frozen, 1);
 });

@@ -23,13 +23,13 @@ export function guardExecutionRoute(policy,{resource,key,action,operation,method
   if(!policy)return;
   const mutate=!['GET','HEAD'].includes(method);
   if(policy==='showcase'){
-    const execution=resource==='tasks'&&['run','message','approval'].includes(action)||resource==='agent-rooms'&&['messages','tasks'].includes(action)||resource==='automations'&&action==='run';
+    const execution=resource==='tasks'&&['run','message','approval'].includes(action)||resource==='agent-rooms'&&['messages','tasks'].includes(action)||resource==='automations'&&action==='run'||resource==='capabilities'&&key==='author';
     const external=resource==='computers'&&mutate||resource==='delegations'&&mutate||resource==='connectors'&&(action==='test'||action==='oauth'&&['start','refresh','revoke'].includes(operation))||resource==='agent-resources'&&action==='probe'||resource==='im-connections'&&['probe','preview','commit'].includes(action)||resource==='im-outbox'&&['prepare','send'].includes(action)||resource==='model-connections'&&action==='test'||resource==='settings'&&key==='provider'&&action==='test';
     const localFiles=resource==='projects'&&(key==='choose-directory'||action==='files'&&!authoredExampleProject(store,key));
     const realMode=mutate&&['tasks','agent-rooms','automations'].includes(resource)&&body.mode==='live';
     const schedule=resource==='automations'&&mutate&&body.enabled===true;
     const modelConfiguration=resource==='model-connections'&&!action||resource==='settings'&&key==='provider'&&!action;
-    const credentials=mutate&&!modelConfiguration&&(body.apiKey||body.token||body.clientSecret||body.oauth?.clientSecret);
+    const credentials=resource==='capabilities'&&action==='environment'&&mutate||mutate&&!modelConfiguration&&(body.apiKey||body.token||body.clientSecret||body.oauth?.clientSecret);
     if(execution||external||localFiles||realMode||schedule||credentials)throw new HttpError(403,'当前为示例模式。配置已可编辑，实际执行或连接账户请进入个人空间。','showcase_read_only');
     return;
   }

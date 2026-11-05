@@ -1,0 +1,16 @@
+{
+  "interface": {
+    "displayName": "翻译与本地化",
+    "shortDescription": "Localization and global work",
+    "localized": {
+      "title": {
+        "zh": "翻译与本地化",
+        "en": "Translation and localization"
+      },
+      "description": {
+        "zh": "按目标地区调整语言、术语和格式，核对原文含义。",
+        "en": "Adapt language, terminology and formats for the target region while checking meaning."
+      }
+    }
+  }
+}

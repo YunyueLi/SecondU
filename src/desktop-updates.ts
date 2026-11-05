@@ -17,12 +17,13 @@ export type UpdateState = {
   totalBytes?: number;
 };
 export type UnsavedChanges = { unsaved: boolean; busy: boolean };
+export type DesktopQuitRequest = { discardUnsaved: boolean };
 export type DesktopUpdatesBridge = {
   get: () => Promise<UpdateState>;
   check: () => Promise<UpdateState>;
   show: () => Promise<UpdateState>;
   onChange: (callback: (state: UpdateState) => void) => () => void;
-  onPrepareToQuit: (callback: () => UnsavedChanges) => () => void;
+  onPrepareToQuit: (callback: (request: DesktopQuitRequest) => UnsavedChanges) => () => void;
   onQuitCancelled: (callback: () => void) => () => void;
 };
 
@@ -112,6 +113,13 @@ export function hasSessionDrafts(storage: Pick<Storage, 'length' | 'key' | 'getI
       try { currentSpace(`?space=${encodeURIComponent(namespace[1])}`); } catch { continue; }
       draftKey = namespace[2];
     }
+    if (/^secondu\.(desktop|mobile)\.shared-drafts$/.test(draftKey)) {
+      try {
+        const drafts = JSON.parse(storage.getItem(key) || '{}');
+        if (drafts && typeof drafts === 'object' && !Array.isArray(drafts) && Object.values(drafts).some(value => typeof value === 'string' && value.trim())) return true;
+      } catch { /* Ignore entries that the composer cannot restore. */ }
+      continue;
+    }
     const match = /^hither\.(artifact|agent-room\.draft)\.(.+)$/.exec(draftKey);
     if (!match) continue;
     const value = storage.getItem(key);
@@ -127,10 +135,16 @@ export function hasSessionDrafts(storage: Pick<Storage, 'length' | 'key' | 'getI
   return false;
 }
 
-export function prepareDesktopQuit(read: () => UnsavedChanges, freeze: () => void): UnsavedChanges {
+export function prepareDesktopQuit(read: () => UnsavedChanges, freeze: () => void, request?: DesktopQuitRequest): UnsavedChanges {
   try {
     const state = read();
-    if (!state.unsaved && !state.busy) freeze();
+    if (typeof state.unsaved !== 'boolean' || typeof state.busy !== 'boolean') return { unsaved: true, busy: true };
+    // Only the native confirmation can request this. Pending operations still
+    // block, and input freezes before the backend is allowed to stop.
+    if (!state.busy && (!state.unsaved || request?.discardUnsaved === true)) {
+      freeze();
+      return { unsaved: false, busy: false };
+    }
     return { unsaved: state.unsaved === true, busy: state.busy === true };
   } catch { return { unsaved: true, busy: true }; }
 }

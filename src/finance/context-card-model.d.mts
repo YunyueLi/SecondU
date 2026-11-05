@@ -7,3 +7,4 @@ export function contextViews(snapshot:ContextSnapshot):Array<{value:string;label
 export function initialContextView(snapshot:ContextSnapshot):string;
 export function contextAccountValues(row:ContextSnapshot):{recorded:{amount:string|null;currency:string;date:string};estimated:{amount:string;currency:string;date:string}|null;stale:boolean;reconciliationRequired:boolean};
 export function contextScope(snapshot:ContextSnapshot):Array<{label:string;count:number}>;
+export function contextAccountPresentation(row:ContextSnapshot,formatDate?:(date:string)=>string):{primary:{amount:string|null;currency:string;date:string};secondary:{amount:string|null;currency:string;date:string}|null;dates:string[];status:string};

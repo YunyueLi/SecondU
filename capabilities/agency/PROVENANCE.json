@@ -1,0 +1,73 @@
+{
+  "source": "https://github.com/msitarzewski/agency-agents",
+  "revision": "b37b5bb33b78f2c1d6567d98e25ca818e3259219",
+  "license": "MIT",
+  "adaptation": "Original source files retained as references. Skill entrypoints select workflow and review methods without adopting fictitious identity, automatic approvals, fixed performance targets or host-specific tools.",
+  "files": [
+    {
+      "path": "product/product-manager.md",
+      "sha256": "4a3fe4661e72e5173877bcba7c362392181774b20efc27ac1789171e98676c9d",
+      "skill": "product-methods"
+    },
+    {
+      "path": "engineering/engineering-frontend-developer.md",
+      "sha256": "71eeb60cbeedd94b41b2e5852d8986c909e8d150c324b4bb99e3b184ae202094",
+      "skill": "frontend-methods"
+    },
+    {
+      "path": "engineering/engineering-data-engineer.md",
+      "sha256": "3f6f629f0e4e00a0010bcd98675cb5183cca89b29b6d3fe2f6db2db474c2d800",
+      "skill": "data-methods"
+    },
+    {
+      "path": "research/research-synthesist.md",
+      "sha256": "3618b4a2a73523147731ae38ac4096cea0e83a7de930f55ea9ea6c69e3c77f30",
+      "skill": "research-methods"
+    },
+    {
+      "path": "marketing/marketing-growth-hacker.md",
+      "sha256": "6938b4fccaf4447e8c4b8fd071ce383a484cd3fb72583d87ac9835fa9741a7c7",
+      "skill": "growth-methods"
+    },
+    {
+      "path": "marketing/marketing-content-creator.md",
+      "sha256": "26ddce44f057068a3935c13d53becd3c57385fb47fcdcfdd891b80269070b3d5",
+      "skill": "content-methods"
+    },
+    {
+      "path": "support/support-finance-tracker.md",
+      "sha256": "3a024aff6e2f348fbe48d5b59b4d2128596c9372867f322274f27e8112464b64",
+      "skill": "finance-methods"
+    },
+    {
+      "path": "support/support-legal-compliance-checker.md",
+      "sha256": "08d938c5666e41b3cf197c2f7b37070d7f39aca62b7147d157200eb6dbeeced6",
+      "skill": "legal-methods"
+    },
+    {
+      "path": "sales/sales-proposal-strategist.md",
+      "sha256": "84c42e0ae7e11e6b239b7f921bdb0c33398102f94998c2eaa41114a3a46dc4c9",
+      "skill": "proposal-methods"
+    },
+    {
+      "path": "project-management/project-management-project-shepherd.md",
+      "sha256": "0feb647366d78b61c1633b12e370ffb1dea52facb9d750ef6c952de1e996031c",
+      "skill": "delivery-methods"
+    },
+    {
+      "path": "testing/testing-reality-checker.md",
+      "sha256": "6d32fcdb114233e13902ec6372d50293b120e85d490b5e81d372c29808f988a1",
+      "skill": "quality-methods"
+    },
+    {
+      "path": "game-development/game-designer.md",
+      "sha256": "203c4d7f0358a628ea21e3b9c16980f28003bd035b5cfd41a2daec04f6b84e5a",
+      "skill": "game-methods"
+    },
+    {
+      "path": "marketing/marketing-china-market-localization-strategist.md",
+      "sha256": "7f6351003b0d6525c7f44870078252d4616287953e33dcace3c8b7da2e9e4325",
+      "skill": "localization-methods"
+    }
+  ]
+}

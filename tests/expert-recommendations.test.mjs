@@ -32,7 +32,7 @@ test('no matching evidence produces no personalization and sample provenance rem
 test('creating a template draft cannot copy recommendation evidence or change existing agents',()=>{
  const data=context({facts:[fact('private','个人敏感标记：React 项目预算 123456')],goals:[goal('private-goal','私人目标：写作书信')]});
  const before=structuredClone(data);const existing={id:'custom',name:'Mine',instructions:'Do not replace my instructions',role:'custom',createdAt:'2026-01-01'};const prior=structuredClone(existing);
- const matches=recommendExperts(data);for(const item of matches){const draft=expertDraft(item.template,'zh-CN',' My expert ',item.focusId);assert(!draft.instructions.includes('123456'));assert(!draft.instructions.includes('私人目标'));assert.equal(draft.name,'My expert');assert.deepEqual(Object.keys(draft).sort(),['instructions','name','role']);assert.equal(existingExpert([existing],item.template),undefined);}
+ const matches=recommendExperts(data);for(const item of matches){const draft=expertDraft(item.template,'zh-CN',' My expert ',item.focusId);assert(!draft.instructions.includes('123456'));assert(!draft.instructions.includes('私人目标'));assert.equal(draft.name,'My expert');assert.deepEqual(Object.keys(draft).sort(),['capabilities','instructions','name','role']);assert.equal(existingExpert([existing],item.template),undefined);}
  assert.deepEqual(data,before);assert.deepEqual(existing,prior);
  const template=EXPERT_TEMPLATES[0];const added={...existing,...expertDraft(template,'en','Reviewer',template.focuses[0].id)};assert.equal(existingExpert([added],template),added);
 });

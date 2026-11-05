@@ -11,6 +11,8 @@ import { t } from '../i18n';
 import { ConnectionSelect } from '../models/ConnectionSelect';
 import { ProviderMark } from '../models/providers';
 import { AgentResources } from './AgentResources';
+import {AgentToolBindings} from './AgentToolBindings';
+import {capabilityUiPreviewEnabled} from './capabilityPreview';
 import { isSelfAgent } from './agentProfiles';
 import './agent-work-panel.css';
 
@@ -30,13 +32,14 @@ export function AgentWorkPanel({ agent, data, initialView = 'model', resourceKin
   const [view, setView] = useState<AgentPanelView>(initialView);
   const [modelState, setModelState] = useState<AgentPanelState>({ dirty: false, busy: false });
   const [resourceDirty, setResourceDirty] = useState(false), [resourceBusy, setResourceBusy] = useState(false);
+  const [bindingDirty,setBindingDirty]=useState(false),[bindingBusy,setBindingBusy]=useState(false);
   const [resourceVisit, setResourceVisit] = useState(initialView === 'resources' ? subject : '');
-  const state = { dirty: modelState.dirty || resourceDirty, busy: modelState.busy || resourceBusy };
+  const state = { dirty: modelState.dirty || resourceDirty || bindingDirty, busy: modelState.busy || resourceBusy || bindingBusy };
   useUnsavedChanges({ unsaved: state.dirty, busy: state.busy });
   const stateRef = useRef(state); stateRef.current = state;
   const content = useRef<HTMLDivElement>(null);
   const tasks = data.tasks.filter(task => self ? !task.agentIds.length : task.agentIds.includes(agent.id)).sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
-  useEffect(() => { onStateChange(state); }, [modelState.dirty, modelState.busy, resourceDirty, resourceBusy, onStateChange]);
+  useEffect(() => { onStateChange(state); }, [modelState.dirty, modelState.busy, resourceDirty, resourceBusy, bindingDirty, bindingBusy, onStateChange]);
   useEffect(() => {
     setModelState({ dirty: false, busy: false }); setResourceDirty(false); setResourceBusy(false);
     setView(initialView); setResourceVisit(initialView === 'resources' ? subject : ''); content.current?.scrollTo({ top: 0 });
@@ -56,7 +59,7 @@ export function AgentWorkPanel({ agent, data, initialView = 'model', resourceKin
     </SegmentedControl>
     <div className="agent-work-content" ref={content}>
       <div className="agent-work-section" hidden={view !== 'model'}><AgentModelPanel key={subject} agent={agent} data={data} onRefresh={onRefresh} onStateChange={setModelState} onSettings={() => act(onSettings)} /></div>
-      <div className="agent-work-section agent-work-resources" hidden={view !== 'resources'}>{resourceVisit === subject && <AgentResources key={subject} data={data} agentId={subject} isSelf={self} embedded onRefresh={onRefresh} onDirtyChange={setResourceDirty} onBusyChange={setResourceBusy} requestedKind={resourceKind ? { kind: resourceKind, sequence: 1 } : undefined} />}</div>
+      <div className={`agent-work-section agent-work-resources${capabilityUiPreviewEnabled&&!self?' has-tool-bindings':''}`} hidden={view !== 'resources'}>{resourceVisit === subject && <><AgentResources key={subject} data={data} agentId={subject} isSelf={self} embedded onRefresh={onRefresh} onDirtyChange={setResourceDirty} onBusyChange={setResourceBusy} requestedKind={resourceKind ? { kind: resourceKind, sequence: 1 } : undefined} />{capabilityUiPreviewEnabled&&!self&&<AgentToolBindings key={`bindings-${subject}`} agent={agent} data={data} onRefresh={onRefresh} onDirtyChange={setBindingDirty} onBusyChange={setBindingBusy}/>}</>}</div>
       <div className="agent-work-section" hidden={view !== 'history'}><div className="agent-work-history">{tasks.length ? tasks.map(task => <button key={task.id} type="button" onClick={() => act(() => onTask(task.id))}><span><strong>{task.title}</strong><small>{new Date(task.updatedAt).toLocaleDateString()}</small></span><TaskBadge status={task.status} /><ArrowRight /></button>) : <p className="agent-work-empty">{t('还没有工作记录', 'No work yet')}</p>}</div></div>
     </div>
   </div>;

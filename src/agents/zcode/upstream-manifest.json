@@ -1,0 +1,336 @@
+{
+  "commit": "3c5b227649371507ddc4eb46ac5133afe6db1cab",
+  "files": [
+    {
+      "source": "packages/ui/src/components/workflow-graph/types.ts",
+      "target": "components/workflow-graph/types.ts",
+      "upstreamSha256": "863fca1c28f469509fcf346b27dc16702ed7c1ff4b31de3a1cca5f944a268aad"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-graph/name-pattern.ts",
+      "target": "components/workflow-graph/name-pattern.ts",
+      "upstreamSha256": "905a4e15940bc14eaad7bf103a43c75e37033eb4f1f7e8e668d68afa62403a14"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-graph/lane-name.ts",
+      "target": "components/workflow-graph/lane-name.ts",
+      "upstreamSha256": "aa820c4fc8cddba905f75af8d8d41c43fe771013b36ef186cf0e1aa935b9cf91"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-graph/phase-name.ts",
+      "target": "components/workflow-graph/phase-name.ts",
+      "upstreamSha256": "c3568ad3a1d7c2a7aa4f11b24a6bd3eddb33bbe48457218a89b20bc1a5c2cf4e"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-graph/instance-phases.ts",
+      "target": "components/workflow-graph/instance-phases.ts",
+      "upstreamSha256": "b85490e0259dc453edfde9ecee27a0fc8df9e86ffa8656e8b026a4fab4fe30f4"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-graph/run-status.ts",
+      "target": "components/workflow-graph/run-status.ts",
+      "upstreamSha256": "ff151e56c52e02202c1b5a24d6531a2af173aa1f749db4ef5301eba65c32d330"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-graph/participant-model.ts",
+      "target": "components/workflow-graph/participant-model.ts",
+      "upstreamSha256": "c636c52d6383b5d03934b2eb5f781a8ae313b51bda0bd2d3a188e2ae15be0938"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-graph/phase-model.ts",
+      "target": "components/workflow-graph/phase-model.ts",
+      "upstreamSha256": "74361d3a9d7f491c72264d9443150331941d798a07627586dc1a0c8104897672"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-timeline/timeline-cache.ts",
+      "target": "components/workflow-timeline/timeline-cache.ts",
+      "upstreamSha256": "6aee99ea65966b5e1a09c914b4f8c780e127bc9562c7e1eb81e2f61627b5dc17"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-timeline/timeline-bands.ts",
+      "target": "components/workflow-timeline/timeline-bands.ts",
+      "upstreamSha256": "d347716e1d35b82aec34230d90bc97493920cce665d08d22a2ec1535364323fe"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-timeline/stage-lamps.ts",
+      "target": "components/workflow-timeline/stage-lamps.ts",
+      "upstreamSha256": "fb773773cf2f2271c0e008c4764aa07578b4ca1fd86a754023137bf5c7e19ed2"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-timeline/timeline-holes.ts",
+      "target": "components/workflow-timeline/timeline-holes.ts",
+      "upstreamSha256": "55f174ed51dcdcc0fbf8ae076d8a6ffa512226edb1f0bc26493e0bdf5d96ded1"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-timeline/station-observation.ts",
+      "target": "components/workflow-timeline/station-observation.ts",
+      "upstreamSha256": "704cbdf0bdc97b27a2daaa785d60bf1782ba9b1150e8716d7b831aa57d0df6fc"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-timeline/timeline-model.ts",
+      "target": "components/workflow-timeline/timeline-model.ts",
+      "upstreamSha256": "5c06e1ae6e471a65ecb8e285b12cb75d04d1b5630b9a3b87de9493c5139db7b1"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-timeline/roster-model.ts",
+      "target": "components/workflow-timeline/roster-model.ts",
+      "upstreamSha256": "4a6825c022e4fba86f9da23bd3431725e8d82fc9325c585ed8fdc1fa409d14e4"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-timeline/use-typewriter.ts",
+      "target": "components/workflow-timeline/use-typewriter.ts",
+      "upstreamSha256": "315176c8333aca3239cfdd2776251fcc8b078816cd8140cba9386a2d980fc71c"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-timeline/workflow-face-motion.ts",
+      "target": "components/workflow-timeline/workflow-face-motion.ts",
+      "upstreamSha256": "292c2cad70f9c1a67f7f295da887d665295b489f70f77714b9998479930d947a"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-timeline/WorkflowAgentFace.tsx",
+      "target": "components/workflow-timeline/WorkflowAgentFace.tsx",
+      "upstreamSha256": "0d3b1db8ae17cc9f0e5daba64fcc068476602040924a6286514dc29d236d013a"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-timeline/WorkflowAgentPill.tsx",
+      "target": "components/workflow-timeline/WorkflowAgentPill.tsx",
+      "upstreamSha256": "ccb40ac5c8b663beee63e0b36328568a6b8da330f1d991c036db32ceada00435"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-timeline/WorkflowRosterParts.tsx",
+      "target": "components/workflow-timeline/WorkflowRosterParts.tsx",
+      "upstreamSha256": "35a3087060d8555496f4deb37ee3fd10217051b01c2531a4270ba3d9a4bab8d5"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-timeline/WorkflowMoreRow.tsx",
+      "target": "components/workflow-timeline/WorkflowMoreRow.tsx",
+      "upstreamSha256": "c91917433f68fd0da9924da409d10598d82db5ed5220c43589d37c23e23cf6b4"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-timeline/timeline-geometry.ts",
+      "target": "components/workflow-timeline/timeline-geometry.ts",
+      "upstreamSha256": "2306035f5c3c8f594c5bd386e4d4df023ac1a13f6b598a3e4b619d58424ab331"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-timeline/WorkflowMarchLight.tsx",
+      "target": "components/workflow-timeline/WorkflowMarchLight.tsx",
+      "upstreamSha256": "1461d599fd47d4ea890a0f0008ec9035d7fa6699c3c7bbbb3c798b01b3e0077d"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-timeline/WorkflowStreamChevrons.tsx",
+      "target": "components/workflow-timeline/WorkflowStreamChevrons.tsx",
+      "upstreamSha256": "698b62503e475d5070687cf22d669835c18cd54c146bb8a8d1ac44c4593e8c72"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-timeline/WorkflowTimelineArcs.tsx",
+      "target": "components/workflow-timeline/WorkflowTimelineArcs.tsx",
+      "upstreamSha256": "6b43774997c638ee316eec28a4a387ad929d3bb909624fde62fb3bbddce0f146"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-timeline/timeline-frames.ts",
+      "target": "components/workflow-timeline/timeline-frames.ts",
+      "upstreamSha256": "0ebb444dc9ea5cc7b3ab030c2bda53b2b27a3ead706804a24c8221b5ae97fd06"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-timeline/WorkflowTimelineFills.tsx",
+      "target": "components/workflow-timeline/WorkflowTimelineFills.tsx",
+      "upstreamSha256": "d5b87fed9d3acd837f366a5514f276542c82fa8c92e33f99c38a79b71c900af3"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-timeline/timeline-ledge.ts",
+      "target": "components/workflow-timeline/timeline-ledge.ts",
+      "upstreamSha256": "7097dd6656c821b8775f03653c0eaaa2b2af571af388de86f95d237acab3169d"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-timeline/WorkflowHoleParts.tsx",
+      "target": "components/workflow-timeline/WorkflowHoleParts.tsx",
+      "upstreamSha256": "6b26e2a9815bb53d681353c577dc51669d56ae51acd8812760c86624129f6714"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-timeline/WorkflowStationMeta.tsx",
+      "target": "components/workflow-timeline/WorkflowStationMeta.tsx",
+      "upstreamSha256": "73c9369cb680c66f2333f75ea6f929df6876094a598eed83c2d199fa6f907c73"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-graph/run-status-presentation.ts",
+      "target": "components/workflow-graph/run-status-presentation.ts",
+      "upstreamSha256": "d831877dbaec88fe7250f95fdde97e8ea354693c6bc1b573b7108477e307946b"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-timeline/use-timeline-viewport.ts",
+      "target": "components/workflow-timeline/use-timeline-viewport.ts",
+      "upstreamSha256": "ae988ec2729c2f783ea39e3d69431f0db026650e92b5742ffa9dd261d0fcf543"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-timeline/WorkflowTimelineLedge.tsx",
+      "target": "components/workflow-timeline/WorkflowTimelineLedge.tsx",
+      "upstreamSha256": "a5f57f502ff6e2455b0afa165f1da20541c3c44b47c17c7edb135fe675a2118a"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-timeline/use-fill-growth.ts",
+      "target": "components/workflow-timeline/use-fill-growth.ts",
+      "upstreamSha256": "1d1dcd57a01ce7723dc08b49a8fdf12f3de858e8013d4259ecff123cd722561c"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-timeline/WorkflowTimelineStation.tsx",
+      "target": "components/workflow-timeline/WorkflowTimelineStation.tsx",
+      "upstreamSha256": "b44cf9aa77855f4e0a57ddd3efbc2ba38d31de5de6e7bf80a5c91b9d32b6114b"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-timeline/WorkflowTimelineTracks.tsx",
+      "target": "components/workflow-timeline/WorkflowTimelineTracks.tsx",
+      "upstreamSha256": "c3ef089cdfc9ae7408d88eb60fd1e9cb28789f71c689953ae2475a92fde00b14"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-timeline/WorkflowTimeline.tsx",
+      "target": "components/workflow-timeline/WorkflowTimeline.tsx",
+      "upstreamSha256": "c17cc7cf089e32922827142a4e675486f4e120e4ebcfcb6ec57e0eb0f1551807"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-timeline/WorkflowCardChrome.tsx",
+      "target": "components/workflow-timeline/WorkflowCardChrome.tsx",
+      "upstreamSha256": "d44fba6ba1f393f02ffa9eb6d0c1265abf7e47b16045b0cfe0d3789837d978fd"
+    },
+    {
+      "source": "packages/ui/src/app-shell/workflow-artifacts/artifactPresentation.tsx",
+      "target": "app-shell/workflow-artifacts/artifactPresentation.tsx",
+      "upstreamSha256": "6d8b54aae5457083c5b2e589c87ce25cd1e3d18a1ae0432e06a354b3948d887a"
+    },
+    {
+      "source": "packages/ui/src/lib/workDuration.ts",
+      "target": "lib/workDuration.ts",
+      "upstreamSha256": "8d959f5f7f307301ef08e239c5eaae47f39a27899013d8f5c827c4b041ed8300"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-timeline/WorkflowArtifactPill.tsx",
+      "target": "components/workflow-timeline/WorkflowArtifactPill.tsx",
+      "upstreamSha256": "1121459366d094a40403e10d59aaee530ae61b235c18f8eb99f1e4bc5367f44e"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-timeline/WorkflowArtifactTile.tsx",
+      "target": "components/workflow-timeline/WorkflowArtifactTile.tsx",
+      "upstreamSha256": "0b77e320e6841ae246b4b7d901970db204d29ae67d8a6b2990a3b0b66327dad5"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-timeline/WorkflowArtifactIndex.tsx",
+      "target": "components/workflow-timeline/WorkflowArtifactIndex.tsx",
+      "upstreamSha256": "c8813ecabbd6402a7609ba35bf999f6b2f57f4131debb202167668249ae65374"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-timeline/WorkflowArtifactRow.tsx",
+      "target": "components/workflow-timeline/WorkflowArtifactRow.tsx",
+      "upstreamSha256": "4af3d3b239f9021138530b999a691410dd75f1c2aac240df5784720433fc4017"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-timeline/WorkflowCompletionArtifacts.tsx",
+      "target": "components/workflow-timeline/WorkflowCompletionArtifacts.tsx",
+      "upstreamSha256": "2a69696146bd58c0510ff7cab42819c59ac4de8d87075dbb1037db1185bda4eb"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-timeline/WorkflowCompletionCard.tsx",
+      "target": "components/workflow-timeline/WorkflowCompletionCard.tsx",
+      "upstreamSha256": "ea119de6f23893265d823b0c2b4bda8c7021d2df7cdadc5f05afe9ff4e567662"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-timeline/WorkflowRoll.tsx",
+      "target": "components/workflow-timeline/WorkflowRoll.tsx",
+      "upstreamSha256": "26dde7267510ac0cbd3603fa51bfa0fb660c42d82f640396614f94c070da122b"
+    },
+    {
+      "source": "packages/ui/src/app-shell/workflowRunQuestions.ts",
+      "target": "app-shell/workflowRunQuestions.ts",
+      "upstreamSha256": "4b4cc5a4e0615d1abd65047dd6229009534a8a00471dcdac330b902c2b22ea59"
+    },
+    {
+      "source": "packages/ui/src/app-shell/WorkflowRunQuestionRow.tsx",
+      "target": "app-shell/WorkflowRunQuestionRow.tsx",
+      "upstreamSha256": "5abd3d11c607edd3e96690af0d893d1741eff92c7ec1e6ff47b592ae4aae014e"
+    },
+    {
+      "source": "packages/ui/src/chat-input-toolbar/thoughtLevelLabels.ts",
+      "target": "chat-input-toolbar/thoughtLevelLabels.ts",
+      "upstreamSha256": "693ea0a5a6ca57389a753cfc066410c26815b7ccafe1aaa40a955bf9409d0b1c"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-timeline/subagent-model-label.ts",
+      "target": "components/workflow-timeline/subagent-model-label.ts",
+      "upstreamSha256": "14740713e3880506b6c328d0a41135d31f5222c2ea0f7bd62f6cf99d5da46799"
+    },
+    {
+      "source": "packages/ui/src/app-shell/workflowRunSpine.ts",
+      "target": "app-shell/workflowRunSpine.ts",
+      "upstreamSha256": "b95dcb97a153fc7dac945adb247b8561e50092f20da1f1a485953e68070ee8cb"
+    },
+    {
+      "source": "packages/ui/src/app-shell/WorkflowRunSpineParts.tsx",
+      "target": "app-shell/WorkflowRunSpineParts.tsx",
+      "upstreamSha256": "891ba1a8c18e72c0b86d0b948e9fa58df5e5419e5ffba3219570c4e13956b2b8"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-timeline/timeline-pill-activity.ts",
+      "target": "components/workflow-timeline/timeline-pill-activity.ts",
+      "upstreamSha256": "8382b6145fc9358c8a6143d94afdfe9188791c62d401b67d4b1471b273a98d54"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-timeline/workflowRunSettings.ts",
+      "target": "components/workflow-timeline/workflowRunSettings.ts",
+      "upstreamSha256": "414941ddfef51f3e33a4c9c599042cbfc2a440f0344f7c8ade7c0e90562aeba9"
+    },
+    {
+      "source": "packages/ui/src/app-shell/workflowRunThrottle.ts",
+      "target": "app-shell/workflowRunThrottle.ts",
+      "upstreamSha256": "f0364e854ed48eef6a87c78dcd286d5253d86da85dd0a72a78d81726a3e45565"
+    },
+    {
+      "source": "packages/ui/src/app-shell/workflowRunPanel.ts",
+      "target": "app-shell/workflowRunPanel.ts",
+      "upstreamSha256": "ee76aca15616c846e536c1cbeb25736444afa1646cc0c2b30b53c04248177b23"
+    },
+    {
+      "source": "packages/ui/src/app-shell/WorkflowRunPhasePills.tsx",
+      "target": "app-shell/WorkflowRunPhasePills.tsx",
+      "upstreamSha256": "3d5d907f4db6855d5af9c541d4749482da59b92d796339001b8f166c1bed244a"
+    },
+    {
+      "source": "packages/ui/src/app-shell/WorkflowRunHoleParts.tsx",
+      "target": "app-shell/WorkflowRunHoleParts.tsx",
+      "upstreamSha256": "4ecdf6311a335a685a2adde82fce8b8632944fd14386ea18c461764b9113af5e"
+    },
+    {
+      "source": "packages/ui/src/app-shell/WorkflowRunFillFrames.tsx",
+      "target": "app-shell/WorkflowRunFillFrames.tsx",
+      "upstreamSha256": "98c0ffdb3c3c094da16a347a14a946a7b718d5695db991e51c689d2dbf7ad397"
+    },
+    {
+      "source": "packages/ui/src/app-shell/WorkflowRunPhaseList.tsx",
+      "target": "app-shell/WorkflowRunPhaseList.tsx",
+      "upstreamSha256": "f15eb7855cc6a614ecec7fa17d48609356bab79fcda4556a977ee7cd2233d7d4"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-timeline/WorkflowTruncatedNotice.tsx",
+      "target": "components/workflow-timeline/WorkflowTruncatedNotice.tsx",
+      "upstreamSha256": "93a850c5b4fc0dcf928d83ba5813f3bbb2d4f3ff8cd1e143040fbf6fd1901b59"
+    },
+    {
+      "source": "packages/ui/src/components/workflow-graph/use-now-ticker.ts",
+      "target": "components/workflow-graph/use-now-ticker.ts",
+      "upstreamSha256": "852f54783b5767ee7378941fb7dbbb1386d9fd64f3bb1ef1f608ca51c61eaa09"
+    },
+    {
+      "source": "packages/ui/src/app-shell/WorkflowRunSidePaneSections.tsx",
+      "target": "app-shell/WorkflowRunSidePaneSections.tsx",
+      "upstreamSha256": "de7a93de5e143aa2e3bbf2fa8a8ceb7426815ebdb373d354423cbfaf53b3bad2"
+    }
+  ],
+  "adapters": [
+    "ControlHintTooltip.tsx",
+    "app-shell/workflow-artifacts/presets/index.ts",
+    "components/lib/utils.ts",
+    "components/ui/button.tsx",
+    "i18n/IntlProvider.tsx",
+    "lib/fileDisplay.tsx",
+    "lib/zcodeSessionProjection.ts",
+    "project-workflow/WorkflowRunSaveControls.tsx",
+    "v4/composer/modelTriggerDisplay.ts"
+  ]
+}

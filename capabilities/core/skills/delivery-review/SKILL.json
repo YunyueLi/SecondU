@@ -1,0 +1,16 @@
+{
+  "interface": {
+    "displayName": "文档与成果检查",
+    "shortDescription": "Delivery review",
+    "localized": {
+      "title": {
+        "zh": "文档与成果检查",
+        "en": "Deliverable review"
+      },
+      "description": {
+        "zh": "对照要求检查文档、代码或方案，列出错误和遗漏。",
+        "en": "Review documents, code or plans against the request and list errors and omissions."
+      }
+    }
+  }
+}

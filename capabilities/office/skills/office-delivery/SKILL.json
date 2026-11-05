@@ -1,0 +1,25 @@
+{
+  "interface": {
+    "display_name": "Word、Excel 与 PPT",
+    "localized": {
+      "title": {
+        "zh": "Word、Excel 与 PPT",
+        "en": "Word, Excel and PowerPoint"
+      },
+      "description": {
+        "zh": "制作文档、表格和演示稿，检查公式与排版，导出 PDF。",
+        "en": "Create documents, spreadsheets and slides; check formulas and layout, and export PDFs."
+      }
+    }
+  },
+  "secondu": {
+    "requires": {
+      "node": [
+        "docx",
+        "exceljs",
+        "pptxgenjs",
+        "@deepseek-ai/libreoffice-kit"
+      ]
+    }
+  }
+}

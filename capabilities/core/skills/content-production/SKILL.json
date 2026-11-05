@@ -1,0 +1,16 @@
+{
+  "interface": {
+    "displayName": "写作与改稿",
+    "shortDescription": "Content production",
+    "localized": {
+      "title": {
+        "zh": "写作与改稿",
+        "en": "Writing and editing"
+      },
+      "description": {
+        "zh": "把提纲或草稿整理成文章、邮件和报告，检查事实与表达。",
+        "en": "Turn outlines and drafts into articles, emails or reports; check facts and wording."
+      }
+    }
+  }
+}

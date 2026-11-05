@@ -82,12 +82,24 @@ test('rate selection uses all upstream collections and rejects invalid currencie
 test('native finance is isolated across original, personal and fictional spaces; demos never invoke providers or adapters',async t=>{
  let external=0;const fetchImpl=async()=>{external++;throw new Error('must not call');},f=await fixture(t,{financeOptions:{adapterOptions:{fetchImpl},appKeyOptions:{fetchImpl},oauthOptions:{fetchImpl},marketOptions:{fetchImpl}}});
  await f.api('finance/accounts',account());await f.api('spaces/personal',{});await f.api('spaces/demo-cn-v1',{});
- assert.equal((await f.api('spaces/personal/finance/state')).value.accounts.length,0);assert.equal((await f.api('spaces/demo-cn-v1/finance/state')).value.accounts.length,0);
+ assert.equal((await f.api('spaces/personal/finance/state')).value.accounts.length,0);const demo=(await f.api('spaces/demo-cn-v1/finance/state')).value;
+ assert.equal(demo.example.fictional,true);assert.ok(demo.accounts.length>8);assert.ok(demo.positions.items.length>10);assert.equal(demo.valuation.net,'712616.00');assert.equal(demo.analysis.month,'2026-10');
+ assert.equal(demo.market.quotes[0].status,'example');assert.ok(!demo.accounts.some(row=>row.name==='Example savings'));
+ await f.reopen();const restored=(await f.api('spaces/demo-cn-v1/finance/state')).value;assert.deepEqual(restored.accounts,demo.accounts);assert.equal(restored.journal.transactions.length,demo.journal.transactions.length);
+ assert.equal((await f.api('finance/state')).value.accounts.length,1);assert.equal((await f.api('spaces/personal/finance/state')).value.accounts.length,0);
  const demoDirectory=path.join(f.directory,'spaces','demo-cn-v1');writeFileSync(path.join(demoDirectory,'finance-adapter.json'),JSON.stringify({version:1,origin:'http://127.0.0.1:59131'}));
  assert.equal((await f.api('spaces/demo-cn-v1/finance/state')).status,200);
  assert.equal((await f.api('spaces/demo-cn-v1/finance/connections/moomoo/appkey/status')).value.connected,false);
  assert.equal((await f.api('spaces/demo-cn-v1/finance/connections/moomoo/start',{})).status,403);
  assert.equal((await f.api('spaces/demo-cn-v1/finance/market/refresh',{})).value.refreshed,false);assert.equal(external,0);
+});
+
+test('showcase initialization preserves an existing local finance ledger',async t=>{
+ const options={executionPolicy:'personal'},f=await fixture(t,options);
+ await f.api('finance/accounts',account());const before=(await f.api('finance/state')).value;
+ options.executionPolicy='showcase';await f.reopen();
+ const after=(await f.api('finance/state')).value;
+ assert.deepEqual(after.accounts,before.accounts);assert.equal(after.example,undefined);assert.equal(after.accounts.length,1);
 });
 
 test('adapter sends only allowed methods to the exact configured loopback service and preserves native additions',async t=>{

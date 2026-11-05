@@ -1,3 +1,6 @@
+import {capabilityUiPreviewEnabled} from './capabilityPreview';
+import {CapabilityFields,emptyCapabilities} from './CapabilityFields';
+import {CapabilityManager} from './CapabilityManager';
 import { useUnsavedChanges } from '../useUnsavedChanges';
 import { ProjectPicker } from '../ProjectWorkspace';
 import { t } from '../i18n';
@@ -24,17 +27,19 @@ import './source-agent.css';
 import QRCode from 'qrcode';
 import { AgentSharingDialog } from './AgentSharingDialog';
 
-export function AgentEditor({ agent, data, onClose, onSaved }: { agent?:AgentProfile; data:Bootstrap; onClose:()=>void; onSaved:(agent:AgentProfile)=>Promise<void> }) {
+export function AgentEditor({ agent, data, onClose, onSaved, onRefresh }: { agent?:AgentProfile; data:Bootstrap; onRefresh:()=>Promise<void>; onClose:()=>void; onSaved:(agent:AgentProfile)=>Promise<void> }) {
   const [section,setSection]=useState<'identity'|'instructions'|'model'>('identity');const [avatarOpen,setAvatarOpen]=useState(false);
   const [name,setName]=useState(agent?.name||'');const [role,setRole]=useState(agent?.role||'');const [instructions,setInstructions]=useState(agent?.instructions||'');const [busy,setBusy]=useState(false);const [error,setError]=useState('');
   const [savedId,setSavedId]=useState(agent?.id);const [connectionId,setConnectionId]=useState(agent?.connectionId||'default');const [avatarStyle,setAvatarStyle]=useState<AvatarStyle>(validAvatarStyle(agent?.avatarStyle||data.defaultAgentAvatarStyle));const [avatarStyleChanged,setAvatarStyleChanged]=useState(false);const [avatarUpload,setAvatarUpload]=useState<string>();const [clearAvatar,setClearAvatar]=useState(false);
-  const draftSnapshot=JSON.stringify({name,role,instructions,connectionId,avatarStyle,avatarUpload,clearAvatar});
+  const [capabilities,setCapabilities]=useState(agent?.capabilities??emptyCapabilities());
+  const [managingSkills,setManagingSkills]=useState(false);
+  const draftSnapshot=JSON.stringify({name,role,instructions,connectionId,avatarStyle,avatarUpload,clearAvatar,capabilities});
   const [savedSnapshot,setSavedSnapshot]=useState(draftSnapshot);
   useUnsavedChanges({unsaved:draftSnapshot!==savedSnapshot,busy});
   const defaultModel=data.modelConnections?.find(connection=>connection.id===data.defaultConnectionId);
 
-  return <Dialog className="ag-editor-dialog" title={agent?t("编辑助理", "Edit agent"):t("创建助理", "Create agent")} onClose={onClose}><form className="ag-form" onSubmit={async event=>{event.preventDefault();if(busy)return;setBusy(true);setError('');let profileSaved=false;try{
-    let saved=await write<AgentProfile>(savedId?`/agents/${savedId}`:'/agents',{name:name.trim(),role:role.trim(),instructions:instructions.trim()||role.trim(),connectionId:connectionId==='default'?null:connectionId,...(agent||avatarStyleChanged?{avatarStyle}:{}),clearAvatar},savedId?'PUT':'POST');setSavedId(saved.id);profileSaved=true;
+  return <Dialog className="ag-editor-dialog configuration-dialog settings-type-scale" title={agent?t("编辑助理", "Edit agent"):t("创建助理", "Create agent")} onClose={onClose}><form className="ag-form" onSubmit={async event=>{event.preventDefault();if(busy)return;setBusy(true);setError('');let profileSaved=false;try{
+    let saved=await write<AgentProfile>(savedId?`/agents/${savedId}`:'/agents',{name:name.trim(),role:role.trim(),instructions:instructions.trim()||role.trim(),...(capabilityUiPreviewEnabled?{capabilities:{skillIds:capabilities.skillIds,outputContract:capabilities.outputContract}}:{}),connectionId:connectionId==='default'?null:connectionId,...(agent||avatarStyleChanged?{avatarStyle}:{}),clearAvatar},savedId?'PUT':'POST');setSavedId(saved.id);profileSaved=true;
     if(avatarUpload)saved=await write<AgentProfile>(`/agents/${saved.id}/avatar`,{dataUrl:avatarUpload});setSavedSnapshot(draftSnapshot);await onSaved(saved);
   }catch(err){setError(`${profileSaved&&avatarUpload?t("角色资料已保存。头像上传或刷新未完成，重试保存即可。 ", "The agent profile was saved. The avatar upload or refresh did not finish. Save again to retry. "):''}${messageOf(err)}`);}finally{setBusy(false);}}}>
     <nav className="ag-editor-tabs" aria-label={t('编辑内容','Agent settings')}>
@@ -46,10 +51,10 @@ export function AgentEditor({ agent, data, onClose, onSaved }: { agent?:AgentPro
       <Field label={t('名字','Name')}><Input value={name} onChange={e=>setName(e.target.value)} maxLength={80} placeholder={t('例如：产品经理','For example: Product manager')}/></Field>
       <Field label={t('负责什么','Role')}><Input value={role} onChange={e=>setRole(e.target.value)} maxLength={200} placeholder={t('用一句话说清楚','Describe its role in one sentence')}/></Field>
     </div>
-    <div className="ag-editor-panel" hidden={section!=='instructions'}><Field label={t('怎样与你一起工作','How it works with you')}><Textarea value={instructions} onChange={e=>setInstructions(e.target.value)} rows={7} maxLength={3000} placeholder={t('例如：先澄清要解决的问题，再拆出今天能验证的一步。','For example: clarify the problem, then find one step we can validate today.')}/></Field><small className="ag-editor-count">{instructions.length} / 3000</small></div>
+    <div className="ag-editor-panel" hidden={section!=='instructions'}><Field label={t('怎样与你一起工作','How it works with you')}><Textarea value={instructions} onChange={e=>setInstructions(e.target.value)} rows={7} maxLength={30000} placeholder={t('例如：先澄清要解决的问题，再拆出今天能验证的一步。','For example: clarify the problem, then find one step we can validate today.')}/></Field><small className="ag-editor-count">{instructions.length} / 30000</small>{capabilityUiPreviewEnabled&&<details className="ag-work-capabilities"><summary>{t('技能与交付要求','Skills and delivery requirements')}</summary><CapabilityFields sections="work" value={capabilities} onChange={setCapabilities} data={data} disabled={busy}/><div className="capability-skill-actions"><Button color="secondary" variant="ghost" size="sm" onClick={()=>setManagingSkills(true)}>{t('管理技能','Manage skills')}</Button></div></details>}</div>
     <div className="ag-editor-panel" hidden={section!=='model'}><Field label={t('使用的模型','Model')}><ConnectionSelect value={connectionId} onChange={setConnectionId} connections={data.modelConnections||[]} defaultConnection={defaultModel} inheritValue="default" disabled={busy}/></Field><p className="ag-muted">{t('更改从下一轮对话生效。','Changes apply on the next turn.')}</p></div>
     <ErrorNotice error={error}/><div className="ag-form-actions"><Button color="secondary" variant="ghost" onClick={onClose}>{t("取消", "Cancel")}</Button><Button color="primary" type="submit" loading={busy} disabled={!name.trim()||!role.trim()}>{agent?t("保存更改", "Save changes"):t("创建助理", "Create agent")}</Button></div>
-  </form></Dialog>;
+  </form>{managingSkills&&<Dialog title={t('技能包','Skill packages')} className="capability-dialog configuration-dialog settings-type-scale" onClose={()=>setManagingSkills(false)}><CapabilityManager data={data} onRefresh={onRefresh}/></Dialog>}</Dialog>;
 }
 
 export { RoomEditor } from './RoomEditor';

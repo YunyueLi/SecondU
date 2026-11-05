@@ -1,14 +1,15 @@
-import { journalSourceLabel } from './journal-source.mjs';
 import {useEffect,useState} from 'react';
 import {Button} from '@openai/apps-sdk-ui/components/Button';
 import {SegmentedControl} from '@openai/apps-sdk-ui/components/SegmentedControl';
-import {Document,ArrowRight} from '@openai/apps-sdk-ui/components/Icon';
+import {Document,ChevronRight,Download,Eye,EyeOff} from '@openai/apps-sdk-ui/components/Icon';
 import {Dialog} from '../components';
+import {getLocale} from '../i18n';
 import {FinanceCategoryBars,FinanceTrend} from './FinanceCharts';
 import {categoryLabel} from './journal-categories';
 import {money} from './model';
+import {createFinanceTimeFormatter} from './time';
 import {useHiddenAmounts} from './api';
-import {contextText as text,contextRows as rows,contextAmount as amount,parseFinanceContext,contextViews,initialContextView,contextAccountValues,contextScope,type ContextSnapshot as Snapshot} from './context-card-model.mjs';
+import {contextText as text,contextRows as rows,contextAmount as amount,parseFinanceContext,contextViews,initialContextView,contextAccountPresentation,contextScope,type ContextSnapshot as Snapshot} from './context-card-model.mjs';
 import './finance-context-card.css';
 
 const financeNames=/^(?:财务快照|账户快照|财务周报|交易记录 .+)\.json$/;
@@ -42,44 +43,60 @@ function ScenarioContext({scenario,hidden}:{scenario:Snapshot;hidden:boolean}){
   </div>;
 }
 function AccountRows({records,hidden}:{records:Snapshot[];hidden:boolean}){
-  return <div className="finance-context-rows">{records.map((row,index)=>{const value=contextAccountValues(row);return <div key={text(row.id)||index}><span>{text(row.name)}<small>记录日期：{value.recorded.date||'未提供'}</small>{value.estimated&&<small>估值日期：{value.estimated.date||'未提供'}</small>}{(value.stale||value.reconciliationRequired)&&<small>{[value.stale?'保留上次值':'',value.reconciliationRequired?'余额待核对':''].filter(Boolean).join('，')}</small>}</span><strong>{value.estimated&&<span><small>估算余额 </small>{money(value.estimated.amount,hidden)} <small>{value.estimated.currency}</small></span>}<span><small>记录余额 </small>{money(value.recorded.amount,hidden)} <small>{value.recorded.currency}</small></span></strong></div>;})}</div>;
+  const formatTime=createFinanceTimeFormatter(getLocale());
+  return <div className="finance-context-rows">{records.map((row,index)=>{
+    const value=contextAccountPresentation(row,date=>formatTime(date)?.text||date),originalDates=contextAccountPresentation(row).dates.join(' · ');
+    return <div key={text(row.id)||index}>
+      <span>{text(row.name)}{value.dates.length>0&&<small title={originalDates}>{value.dates.join(' · ')}</small>}{value.status&&<small>{value.status}</small>}</span>
+      <strong><span>{money(value.primary.amount,hidden)} <small>{value.primary.currency}</small></span>{value.secondary&&<small className="finance-context-recorded">记录 {money(value.secondary.amount,hidden)} {value.secondary.currency}</small>}</strong>
+    </div>;
+  })}</div>;
 }
 
 /** Historical cards only read the attached original, never today's balances. */
-export function FinanceContextCard({url,file}:{url?:string;file?:File}){
-  const [snapshot,setSnapshot]=useState<Snapshot|null>(null),[original,setOriginal]=useState(''),[error,setError]=useState(''),[tab,setTab]=useState(''),[open,setOpen]=useState(false),[expanded,setExpanded]=useState(false),[hidden,setHidden]=useHiddenAmounts();
+export function FinanceContextCard({url,file,name}:{url?:string;file?:File;name?:string}){
+  const [snapshot,setSnapshot]=useState<Snapshot|null>(null),[downloadUrl,setDownloadUrl]=useState(''),[error,setError]=useState(''),[tab,setTab]=useState(''),[open,setOpen]=useState(false),[hidden,setHidden]=useHiddenAmounts();
   useEffect(()=>{
-    const controller=new AbortController();setSnapshot(null);setOriginal('');setError('');setExpanded(false);
+    const controller=new AbortController();setSnapshot(null);setError('');const objectUrl=file?URL.createObjectURL(file):'';setDownloadUrl(objectUrl||url||'');
     const read=async()=>{
       let content:string;
       if(file){if(file.size>4*1024*1024)throw new Error('快照过大，请下载原件核对。');content=await file.text();}
       else{if(!url||!/^\/api\/(?:spaces\/[a-zA-Z0-9_-]+\/)?attachments\/[a-zA-Z0-9_-]+$/.test(url))throw new Error('无法读取本地快照。');const response=await fetch(url,{signal:controller.signal,cache:'no-store'});if(!response.ok)throw new Error('快照读取失败，请下载原件核对。');content=await response.text();}
       if(content.length>4*1024*1024)throw new Error('快照过大，请下载原件核对。');
-      const value=parseFinanceContext(content);if(!controller.signal.aborted){setSnapshot(value);setOriginal(content);setTab(initialContextView(value));}
+      const value=parseFinanceContext(content);if(!controller.signal.aborted){setSnapshot(value);setTab(initialContextView(value));}
     };
-    void read().catch(failure=>{if(!controller.signal.aborted)setError(failure instanceof SyntaxError?'快照格式无法读取，请下载原件核对。':failure instanceof Error?failure.message:'快照读取失败。');});return()=>controller.abort();
+    void read().catch(failure=>{if(!controller.signal.aborted)setError(failure instanceof SyntaxError?'快照格式无法读取，请下载原件核对。':failure instanceof Error?failure.message:'快照读取失败。');});return()=>{controller.abort();if(objectUrl)URL.revokeObjectURL(objectUrl);};
   },[url,file]);
-  if(error)return <p className="finance-context-caption" role="alert">{error}</p>;
-  if(!snapshot)return <p className="finance-context-caption" role="status">正在读取财务快照…</p>;
+  const fallbackTitle=(file?.name||name||'财务记录').replace(/\.json$/,'').replace('财务快照','财务记录').replace('账户快照','账户记录');
+  if(!snapshot)return <div className="finance-context-pending"><Document/><span><strong>{fallbackTitle}</strong><small role={error?'alert':'status'}>{error||'正在读取…'}</small>{error&&downloadUrl&&<a href={downloadUrl} download={file?.name||name}>下载原始文件</a>}</span></div>;
   const accounts=rows(snapshot.accounts),holdings=rows(snapshot.holdingValuations),transactions=rows(snapshot.journal?.transactions||snapshot.transactions),categories=rows(snapshot.analysis?.spending?.categories),history=rows(snapshot.journal?.netWorthHistory);
   const code=text(snapshot.analysis?.currency)||text(accounts[0]?.currency),currencyHistory=history.filter(row=>row.currency===code),options=contextViews(snapshot),chosen=options.some(option=>option.value===tab)?tab:options[0]?.value;
-  const chosenRows=chosen==='accounts'?accounts:chosen==='holdings'?holdings:transactions,visibleRows=expanded?chosenRows:chosenRows.slice(0,6);
-  const title=snapshot.weeklyReport?'财务周报':snapshot.scenario?'情景测算':snapshot.schema==='secondu.finance-transactions.v1'?'交易记录':'财务快照',scope=contextScope(snapshot),coverage=snapshot.journal?.transactionCoverage;
-  const raw=<details className="finance-context-detail finance-context-raw"><summary>展开原始 JSON</summary>{hidden?<div className="finance-context-caption">金额已隐藏。<Button type="button" color="secondary" variant="ghost" size="sm" pill={false} onClick={()=>setHidden(false)}>显示金额以核对原始快照</Button></div>:<pre tabIndex={0}>{original}</pre>}</details>;
-  return <section className="finance-context-card" aria-label={`${file?'发送前的':'对话中的'}${title}`}>
-    <div className="finance-context-card-heading"><span><Document/><strong>{title}</strong></span><Button type="button" color="secondary" variant="ghost" pill={false} size="sm" onClick={()=>setOpen(true)}>查看来源<ArrowRight/></Button></div>
-    {options.length>1&&<div className="finance-context-tabs"><SegmentedControl value={chosen} onChange={value=>{setTab(value);setExpanded(false);}} size="sm" pill={false} aria-label="财务快照内容">{options.map(option=><SegmentedControl.Option key={option.value} value={option.value}>{option.label}</SegmentedControl.Option>)}</SegmentedControl></div>}
+  const visibleRows=chosen==='accounts'?accounts:chosen==='holdings'?holdings:transactions;
+  const title=snapshot.weeklyReport?'财务周报':snapshot.scenario?'情景测算':snapshot.schema==='secondu.finance-transactions.v1'?'交易记录':file?.name==='账户快照.json'||name==='账户快照.json'?'账户记录':'财务记录',scope=contextScope(snapshot),coverage=snapshot.journal?.transactionCoverage;
+  const summary=[accounts.length?`${accounts.length} 个账户`:'',holdings.length?`${holdings.length} 项持仓`:'',transactions.length?`${transactions.length} 笔交易`:''].filter(Boolean).slice(0,2).join(' · ')||'查看内容';
+  const date=(text(snapshot.observedAt)||text(snapshot.analysis?.today)).slice(0,10);
+  const formatTime=createFinanceTimeFormatter(getLocale());
+  return <>
+    <button type="button" className="finance-context-trigger" aria-label={`预览${title}`} onClick={()=>setOpen(true)}>
+      <span className="finance-context-icon"><Document/></span><span className="finance-context-trigger-copy"><strong>{title}</strong><small>{summary}</small></span><ChevronRight/>
+    </button>
+    {open&&<Dialog title={title} className="finance-context-dialog" onClose={()=>setOpen(false)}>
+      <div className="finance-context-preview-meta"><span>{date}</span><div className="finance-context-preview-actions"><Button type="button" color="secondary" variant="ghost" size="sm" uniform aria-label={hidden?'显示金额':'隐藏金额'} title={hidden?'显示金额':'隐藏金额'} onClick={()=>setHidden(!hidden)}>{hidden?<EyeOff/>:<Eye/>}</Button><a href={downloadUrl} download={file?.name||name||'财务记录.json'}><Download/>下载原始文件</a></div></div>
+      {options.length>1&&<div className="finance-context-tabs"><SegmentedControl value={chosen} onChange={setTab} size="sm" aria-label="财务记录内容">{options.map(option=><SegmentedControl.Option key={option.value} value={option.value}>{option.label}</SegmentedControl.Option>)}</SegmentedControl></div>}
+      <div className="finance-context-body">
     {chosen==='weekly'&&<WeeklyContext report={snapshot.weeklyReport} hidden={hidden}/>}
     {chosen==='scenario'&&<ScenarioContext scenario={snapshot.scenario} hidden={hidden}/>}
     {chosen==='spending'&&<FinanceCategoryBars rows={categories.map(row=>({id:text(row.category),name:categoryLabel(text(row.category)),amount:amount(row.total?.amount),count:typeof row.total?.recordCount==='number'?row.total.recordCount:0,byCurrency:row.total?.byCurrency,complete:row.total?.complete}))} currency={code} hidden={hidden}/>}
-    {chosen==='accounts'&&<AccountRows records={visibleRows} hidden={hidden}/>}
-    {chosen==='holdings'&&<div className="finance-context-rows">{visibleRows.map((row,index)=><div key={text(row.id)||index}><span>{text(row.name)||text(row.symbol)}<small>{text(row.sourceName)||'来源未注明'}</small><small>估值日期：{text(row.quoteAsOf)||text(row.asOf)||'未提供'}{row.status==='stale'||row.readStatus==='stale'?'，保留上次值':''}{row.positionCurrent===false?'，历史持仓':''}</small></span><strong>{money(amount(row.currentMarketValue??row.estimatedMarketValue??row.marketValue),hidden)} <small>{text(row.valuationCurrency)||text(row.recordedCurrency)}</small></strong></div>)}</div>}
+    {chosen==='accounts'&&<>{accounts.some(row=>row.kind!=='liability')&&<section className="finance-context-account-group"><h3>资产账户</h3><AccountRows records={accounts.filter(row=>row.kind!=='liability')} hidden={hidden}/></section>}{accounts.some(row=>row.kind==='liability')&&<section className="finance-context-account-group"><h3>负债账户</h3><AccountRows records={accounts.filter(row=>row.kind==='liability')} hidden={hidden}/></section>}</>}
+    {chosen==='holdings'&&<div className="finance-context-rows">{visibleRows.map((row,index)=>{
+      const date=text(row.quoteAsOf)||text(row.asOf),time=formatTime(date),metadata=[date?`估值 ${time?.text||date}`:'',row.status==='stale'||row.readStatus==='stale'?'保留上次值':'',row.positionCurrent===false?'历史持仓':''].filter(Boolean);
+      return <div key={text(row.id)||index}><span>{text(row.name)||text(row.symbol)}{row.sourceName&&<small>{text(row.sourceName)}</small>}{metadata.length>0&&<small title={time?.title||date}>{metadata.join(' · ')}</small>}</span><strong>{money(amount(row.currentMarketValue??row.estimatedMarketValue??row.marketValue),hidden)} <small>{text(row.valuationCurrency)||text(row.recordedCurrency)}</small></strong></div>;
+    })}</div>}
     {chosen==='transactions'&&<div className="finance-context-rows">{visibleRows.map((row,index)=><div key={text(row.id)||index}><span>{text(row.merchant)||categoryLabel(text(row.category))}<small>{text(row.occurredOn)}，{row.kind==='transfer'?'转账':row.kind==='income'?'收入':'支出'}</small></span><strong>{money(amount(row.amount),hidden)} <small>{text(row.currency)}</small></strong></div>)}</div>}
-    {['accounts','holdings','transactions'].includes(chosen)&&chosenRows.length>6&&<Button type="button" color="secondary" variant="ghost" pill={false} size="sm" aria-expanded={expanded} onClick={()=>setExpanded(!expanded)}>{expanded?'收起':`显示全部 ${chosenRows.length} 条`}</Button>}
     {chosen==='accounts'&&currencyHistory.length>1&&<FinanceTrend label="快照中的净资产记录" hidden={hidden} currency={code} series={[{name:'净资产',points:currencyHistory.map(row=>({label:text(row.date),value:amount(row.valuation?.net)}))}]}/>}
-    <p className="finance-context-caption">快照日期：{text(snapshot.observedAt)||text(snapshot.analysis?.today)||'未提供'}{!snapshot.weeklyReport&&!snapshot.scenario&&(text(snapshot.analysis?.month)||text(snapshot.month))?`，所选月份：${text(snapshot.analysis?.month)||text(snapshot.month)}`:''}</p>
-    {!!scope.length&&<p className="finance-context-caption">附件范围：{scope.map(item=>`${item.count} 条${item.label}`).join('，')}。{coverage?.truncated?`交易共 ${coverage.available} 条，本快照包含 ${coverage.included} 条。`:''}</p>}
-    {raw}
-    {open&&<Dialog title="本次对话使用的财务记录" className="finance-settings finance-detail-dialog" onClose={()=>setOpen(false)}><div className="finance-context-sources">{snapshot.weeklyReport&&<section><h3>周报来源</h3><p>{text(snapshot.weeklyReport.current?.from)} 至 {text(snapshot.weeklyReport.current?.through)}</p><p>包含 {Array.isArray(snapshot.weeklyReport.sources?.recordIds)?snapshot.weeklyReport.sources.recordIds.length:0} 条来源记录。</p></section>}{snapshot.scenario&&<section><h3>情景测算来源</h3><p>测算假设、逐月余额及对比结果保存在此附件中。</p></section>}{accounts.length>0&&<section><h3>账户记录</h3><AccountRows records={accounts} hidden={hidden}/></section>}{transactions.length>0&&<section><h3>交易记录</h3>{transactions.map((row,index)=><div key={text(row.id)||index}><strong>{text(row.merchant)||categoryLabel(text(row.category))}</strong><p>{text(row.occurredOn)}，{money(amount(row.amount),hidden)} {text(row.currency)}</p><small>{journalSourceLabel(row.source)}，记录标识：{text(row.id)}</small></div>)}</section>}{holdings.length>0&&<section><h3>持仓估值</h3>{holdings.map((row,index)=><div key={text(row.id)||index}><strong>{text(row.name)||text(row.symbol)}</strong><p>{text(row.sourceName)} {text(row.quoteAsOf)||text(row.asOf)}</p><small>记录标识：{text(row.id)}</small></div>)}</section>}{raw}</div></Dialog>}
-  </section>;
+        {!options.length&&<p className="finance-context-caption">这份记录尚无可预览的明细。</p>}
+        {!!scope.length&&<details className="finance-context-detail finance-context-scope"><summary>包含的记录</summary><p>{scope.map(item=>`${item.count} 条${item.label}`).join('，')}</p>{coverage?.truncated&&<p>交易共 {coverage.available} 条，已包含 {coverage.included} 条。</p>}</details>}
+      </div>
+    </Dialog>}
+  </>;
 }

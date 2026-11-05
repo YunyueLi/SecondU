@@ -1,0 +1,833 @@
+/* 工作流图·行进边（docs/dynamic-workflow/presentation.md「Rails and arcs」）：控制流进入正在运行的站所走的
+ * 那条边**亮着、不动**——它说的是过去（控制流走了这条边），动作属于正在运行的灯（下面的 wf-beat）。
+ * 光是灯的颜色，在灯那一头最亮、朝控制流来的方向淡去，像灯照亮了自己来的路。之前是一条沿边滚动的
+ * 警示色虚线，读起来像「还在从上一站往这一站赶路」。
+ * 平轨道是一条 border，光叠在 ::after 上：1.5px、圆头，从远端的全透明到 80% 处的满色，右端越过轨道
+ * 末端 4px 好贴到光晕上。SVG 里的边（弧、分叉与汇合曲线、脊线的曲线）由 WorkflowMarchLight.tsx 画一条
+ * .wf-lit 路径，描边是沿路径首尾铺的渐变。全是静止的墨，reduced-motion 下无需改动。 */
+.wf-rail-march::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: -4px;
+  top: -1.25px;
+  height: 1.5px;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, transparent, var(--color-warning) 80%);
+}
+.wf-lit {
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+
+/* 流轨（docs/dynamic-workflow/presentation.md「Stream rails」）：站头行上的流轨把 border 变透明，线改由
+ * ::before 画，正中留出 22px 的缺口给三枚 chevron（WorkflowStreamChevrons.tsx）。线本身不动、不亮；
+ * 正在流的 chevron 沿流向依次亮起（wf-stream-flow，每枚相隔 0.15s）——这是边上唯一允许的动作，因为
+ * 它说的正是「东西此刻正从上一站往下一站走」。reduced-motion 下停在满色。 */
+.wf-rail-stream {
+  border-top-color: transparent;
+}
+.wf-rail-stream::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -1px;
+  height: 1px;
+  border-radius: 9999px;
+  background: linear-gradient(
+    90deg,
+    var(--color-foreground-subtlest) calc(50% - 11px),
+    transparent calc(50% - 11px) calc(50% + 11px),
+    var(--color-foreground-subtlest) calc(50% + 11px)
+  );
+}
+@keyframes wf-stream-flow {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  40% {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .wf-stream-flow {
+    animation: wf-stream-flow 1.2s var(--wf-ease, ease-in-out) infinite;
+  }
+}
+
+/* 侧栏脊线（docs/dynamic-workflow/presentation.md「The spine」）：行进段是两截 1.5px 的竖条，按
+ * data-rail-position 选渐变——上一节的下半截从透明淡入到七成，运行那一节的上半截从七成涨到满、一直亮进
+ * 灯里，整节穿过的 full 是平的七成。脊线的灯与卡上的灯同一个类（wf-lamp-running），一起搏动。 */
+.wf-spine-march[data-rail-position="below"] {
+  background: linear-gradient(
+    180deg,
+    transparent,
+    color-mix(in oklab, var(--color-warning) 70%, transparent)
+  );
+}
+.wf-spine-march[data-rail-position="above"] {
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--color-warning) 70%, transparent),
+    var(--color-warning)
+  );
+}
+.wf-spine-march[data-rail-position="full"] {
+  background: color-mix(in oklab, var(--color-warning) 70%, transparent);
+}
+
+/* 工作流时间线·运动词汇（docs/dynamic-workflow/presentation.md「The pill」）：四个时长
+ * 一条曲线，卡片、确认窗与侧栏清单共用。到场 / 弹入 / 展开 / 换词只动 opacity 与 transform，
+ * 灯与墨迹只动颜色；从不动布局属性。reduced-motion 下全部归零，循环停在静止帧。 */
+.wf-motion {
+  --wf-t-fast: 120ms;
+  --wf-t-base: 160ms;
+  --wf-t-enter: 200ms;
+  --wf-t-ink: 320ms;
+  --wf-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  /* 正在运行的灯的心跳周期；脊线与卡共用。 */
+  --wf-beat: 1.6s;
+}
+.wf-pill {
+  box-shadow: inset 0 0 0 1px transparent;
+  transition:
+    background-color var(--wf-t-base) var(--wf-ease),
+    box-shadow var(--wf-t-base) var(--wf-ease),
+    transform var(--wf-t-fast) var(--wf-ease);
+}
+.wf-pill-avatar {
+  transition:
+    transform var(--wf-t-base) var(--wf-ease),
+    background-color var(--wf-t-base) var(--wf-ease);
+}
+.wf-pill-name {
+  transition: color var(--wf-t-base) var(--wf-ease);
+}
+.wf-pill-go {
+  opacity: 0;
+  transform: scale(0.6);
+  transition:
+    opacity var(--wf-t-base) var(--wf-ease),
+    transform var(--wf-t-base) var(--wf-ease),
+    color var(--wf-t-base) var(--wf-ease);
+}
+.wf-pill-open:hover,
+.wf-pill-open:focus-visible {
+  background-color: var(--color-surface-hover);
+  box-shadow: inset 0 0 0 1px
+    color-mix(in oklab, var(--wf-avatar, var(--color-border-hover)) 35%, transparent);
+}
+/* 代理胶囊仅用底色反馈悬停，避免彩色描边抢占状态层级。 */
+.wf-agent-pill:hover {
+  box-shadow: none;
+}
+.wf-pill-open:hover .wf-pill-avatar,
+.wf-pill-open:focus-visible .wf-pill-avatar {
+  transform: scale(1.08);
+  background-color: color-mix(
+    in oklab,
+    var(--wf-avatar, var(--color-border-hover)) 30%,
+    transparent
+  );
+}
+.wf-pill-open:hover .wf-pill-name,
+.wf-pill-open:focus-visible .wf-pill-name {
+  color: var(--color-foreground);
+}
+.wf-pill-open:hover .wf-pill-go,
+.wf-pill-open:focus-visible .wf-pill-go {
+  opacity: 1;
+  transform: none;
+  color: var(--color-foreground-subtle);
+}
+/* 产物药丸的方形瓦片（追记「产物药丸」）：墨灰，悬停时抬到 hover 色、字形转前景色；不像头像那样
+ * 放大——形状说「什么」，不抢颜色说「谁」的戏。 */
+.wf-pill-tile {
+  transition:
+    background-color var(--wf-t-base) var(--wf-ease),
+    color var(--wf-t-base) var(--wf-ease);
+}
+.wf-pill-open:hover .wf-pill-tile,
+.wf-pill-open:focus-visible .wf-pill-tile {
+  background-color: var(--color-hover);
+  color: var(--color-foreground);
+}
+/* 尾槽里 ↗ 顶替状态标记：标记缩出、箭头缩入，同一格、同一拍。 */
+.wf-pill-open:hover .wf-mark,
+.wf-pill-open:focus-visible .wf-mark {
+  opacity: 0;
+  transform: scale(0.6);
+}
+.wf-pill-open:active {
+  transform: scale(0.985);
+}
+/* 「还有 n 个」那一行（追记「五枚药丸与一扇门」）：三张脸叠成一叠、各带一圈底色描边好分开，悬停时
+ * 扇开两格。它是一扇门不是状态，所以 ↗ 不等悬停就在（没有状态标记可让位，空尾槽读作「没东西」）。 */
+.wf-more-face {
+  border-radius: 35%;
+  box-shadow: 0 0 0 1.5px var(--color-background);
+  transition: margin-left var(--wf-t-base) var(--wf-ease);
+}
+.wf-more-deck > * + * {
+  margin-left: -5px;
+}
+.wf-more-row:hover .wf-more-deck > * + *,
+.wf-more-row:focus-visible .wf-more-deck > * + * {
+  margin-left: -2px;
+}
+.wf-pill-go-rest {
+  opacity: 1;
+  transform: none;
+}
+/* 迷你量条（追记「阶段名册」）的段宽随计数过渡，读作「又结算了几个」。 */
+.wf-meter-seg {
+  transition: flex-grow var(--wf-t-ink) var(--wf-ease);
+}
+/* 完成卡的产物瓦片（docs/dynamic-workflow/transcript-and-notifications.md「Artifact tiles」）：悬停时预览框的边
+ * 抬到 hover 色、说明行的 kind 瓦片与名字转前景、尾槽里 ↗ 顶替版本号——与药丸同一套语法，
+ * 只是「抬起」落在预览框上而不是整块底色上。
+ * 结构（WorkflowArtifactTile 文件头的 Bug 原因）：预览框是按钮的**兄弟**，按钮用 ::after 铺满整张瓦片
+ * 接住点击；所以框的悬停态从瓦片容器上用 :has() 读按钮的状态，焦点环也画在容器上。 */
+.wf-tile-hit::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 0.5rem;
+}
+.wf-tile:has(.wf-tile-hit:focus-visible) {
+  outline: 2px solid color-mix(in oklab, var(--color-ring) 40%, transparent);
+  outline-offset: 2px;
+  border-radius: 0.5rem;
+}
+.wf-tile-frame {
+  transition:
+    border-color var(--wf-t-base) var(--wf-ease),
+    transform var(--wf-t-fast) var(--wf-ease);
+}
+.wf-tile:has(.wf-tile-open:hover) .wf-tile-frame,
+.wf-tile:has(.wf-tile-open:focus-visible) .wf-tile-frame {
+  border-color: var(--color-border-hover);
+}
+.wf-tile-open:hover .wf-pill-tile,
+.wf-tile-open:focus-visible .wf-pill-tile {
+  background-color: var(--color-hover);
+  color: var(--color-foreground);
+}
+.wf-tile-open:hover .wf-pill-go,
+.wf-tile-open:focus-visible .wf-pill-go {
+  opacity: 1;
+  transform: none;
+  color: var(--color-foreground-subtle);
+}
+.wf-tile-open:hover .wf-mark,
+.wf-tile-open:focus-visible .wf-mark {
+  opacity: 0;
+  transform: scale(0.6);
+}
+.wf-tile:has(.wf-tile-open:active) .wf-tile-frame {
+  transform: scale(0.99);
+}
+/* 产物索引的行（docs/dynamic-workflow/transcript-and-notifications.md「The index」）：交付物行之后的其余产物是一行行
+ * 文字，不是框。悬停 / 聚焦时整行填 surface-hover（像侧栏行），kind 图标转前景，尾槽里 ↗ 顶替版本号——
+ * 与药丸同一套语法，只是没有底色也没有描边：一行文字的抬起只需要一层填色。「还有 N 个」那一行是
+ * 一扇门，↗ 不等悬停就在（wf-pill-go-rest）。 */
+.wf-line {
+  transition: background-color var(--wf-t-base) var(--wf-ease);
+}
+.wf-line-icon {
+  transition: color var(--wf-t-base) var(--wf-ease);
+}
+.wf-line-open:hover,
+.wf-line-open:focus-visible {
+  background-color: var(--color-surface-hover);
+}
+.wf-line-open:hover .wf-line-icon,
+.wf-line-open:focus-visible .wf-line-icon {
+  color: var(--color-foreground);
+}
+.wf-line-open:hover .wf-pill-go,
+.wf-line-open:focus-visible .wf-pill-go {
+  opacity: 1;
+  transform: none;
+  color: var(--color-foreground-subtle);
+}
+.wf-line-open:hover .wf-mark,
+.wf-line-open:focus-visible .wf-mark {
+  opacity: 0;
+  transform: scale(0.6);
+}
+/* 预览区里的文档缩略：按 2× 排版再缩到一半——是内容的缩略，不是把界面字号调小。
+ * 盒子的宽**和高**都按倍数放大再缩回框内：只放宽不放高，缩后的盒子只盖住框的上半截，下半截空白。 */
+.wf-preview-doc {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 200%;
+  transform: scale(0.5);
+  transform-origin: top left;
+  padding: 22px 26px;
+  overflow: hidden;
+  animation: wf-arrive var(--wf-t-ink, 320ms) var(--wf-ease, ease);
+}
+.wf-station {
+  transition: color var(--wf-t-base) var(--wf-ease);
+}
+.wf-lamp {
+  transition:
+    background-color var(--wf-t-ink) var(--wf-ease),
+    border-color var(--wf-t-ink) var(--wf-ease),
+    box-shadow var(--wf-t-base) var(--wf-ease);
+}
+/* 正在运行的灯（presentation.md「Lamps」）：常亮的 3px 光晕，加每 1.6s 一下心跳（wf-beat）——灯鼓到 1.12 倍
+ * 再落回，同时从光晕边缘放出一圈环，涨到灯外 8px 时淡尽。环是第二层 box-shadow，静止时透明；灯是页面上
+ * 唯一在走时钟的东西。reduced-motion 下只剩常亮的光晕。 */
+.wf-lamp-running {
+  box-shadow:
+    0 0 0 3px color-mix(in oklab, var(--color-warning) 20%, transparent),
+    0 0 0 3px transparent;
+}
+/* 留白（docs/dynamic-workflow/presentation.md「Holes on the timeline」）：等待中的虚线灯带 3px **常亮**的
+ * 警示色光晕——不搏动，那里没有东西在跑，run 在等主代理写代码。尾巴留白的残段向右淡出：脚本的结尾
+ * 还没写下。补全行草稿线上的邻站 40% 墨：它们只是上下文。 */
+.wf-lamp-hole-waiting {
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-warning) 20%, transparent);
+}
+.wf-tail-stub {
+  -webkit-mask-image: linear-gradient(90deg, #000, transparent);
+  mask-image: linear-gradient(90deg, #000, transparent);
+}
+.wf-ghost {
+  opacity: 0.4;
+}
+/* 补全的框（docs/dynamic-workflow/presentation.md「Filled with phases」「The stroke」）：一根 1px、轨道同墨的线，
+ * 路径 pathLength = 1。静止时透明、虚线偏移 1；指针或键盘焦点落在头上（data-fill-on）时偏移 420ms 走到 0——
+ * 一笔从名字的右端画出、收在笔上；离开时整根线 160ms 淡出，淡完才把偏移、颜色与线宽拨回去（不倒着擦掉）。
+ * 新鲜的两秒是动画而不是过渡：框在那一帧刚挂载，已经是亮的，没有「之前」可过渡。 */
+.wf-fill-frame {
+  fill: none;
+  stroke: var(--color-workflow-trace);
+  stroke-width: 1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  opacity: 0;
+  transition:
+    opacity 160ms var(--wf-ease),
+    stroke-dashoffset 0s linear 160ms,
+    stroke 0s linear 160ms,
+    stroke-width 0s linear 160ms;
+}
+.wf-fill-frame[data-fill-on="true"] {
+  opacity: 1;
+  stroke-dashoffset: 0;
+  transition:
+    stroke-dashoffset 420ms var(--wf-ease),
+    opacity 0s;
+}
+.wf-fill-frame-fresh {
+  stroke: var(--color-warning);
+  stroke-width: 1.5;
+  animation: wf-fill-stroke 420ms var(--wf-ease);
+}
+@keyframes wf-fill-stroke {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.wf-fill-head {
+  transition: color var(--wf-t-base) var(--wf-ease);
+}
+.wf-station-open:hover .wf-lamp[data-lamp="pending"] {
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-foreground) 10%, transparent);
+}
+.wf-station-open:hover .wf-lamp[data-lamp="done"] {
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-success) 18%, transparent);
+}
+.wf-station-open:hover .wf-lamp[data-lamp="failed"] {
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-destructive) 18%, transparent);
+}
+.wf-ink {
+  transition:
+    stroke var(--wf-t-ink) var(--wf-ease),
+    fill var(--wf-t-ink) var(--wf-ease),
+    border-color var(--wf-t-ink) var(--wf-ease);
+}
+/* 入场动画不带 fill：只声明 from 帧，播完即交还给悬停过渡（标记让位、按下缩放）。 */
+.wf-arrive {
+  animation: wf-arrive var(--wf-t-enter) var(--wf-ease);
+}
+.wf-mark {
+  transform-origin: center;
+  animation: wf-mark 180ms var(--wf-ease);
+  transition:
+    opacity var(--wf-t-base) var(--wf-ease),
+    transform var(--wf-t-base) var(--wf-ease);
+}
+.wf-unfold {
+  animation: wf-unfold var(--wf-t-enter) var(--wf-ease);
+}
+.wf-swap {
+  display: inline-block;
+  animation: wf-swap var(--wf-t-enter) var(--wf-ease);
+}
+.wf-draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: wf-draw 420ms var(--wf-ease) forwards;
+}
+.wf-caret {
+  animation: wf-caret 1s step-end infinite;
+}
+/* 草稿的笔（追记「书写效果」）：轨道段从左伸出、灯落地，然后名字逐字写出。 */
+.wf-rail-grow {
+  transform-origin: left center;
+  animation: wf-rail-grow var(--wf-t-base) var(--wf-ease);
+}
+.wf-land {
+  animation: wf-land var(--wf-t-enter) var(--wf-ease);
+}
+/* 补全的生长（docs/dynamic-workflow/presentation.md「Holes on the timeline」的「Growth」）：插入列右侧的站
+ * 从 −插入宽度（`--wf-slide`）滑到布局位置，320ms；播完即是布局位置，无需再提交。 */
+.wf-slide {
+  animation: wf-slide 320ms var(--wf-ease);
+}
+/* 轮尾摘要（追记「轮尾摘要」）：展开 / 收起时外框高度在两个值之间过渡；展开时药丸挂载、依次
+ * 落地（wf-arrive + 30 ms 错位），收起时只收高度。 */
+.wf-digest-plot {
+  transition: height var(--wf-t-ink) var(--wf-ease);
+}
+/* 边檐（docs/dynamic-workflow/presentation.md「Overflow: the ledge」）：时间线自由滚动，原生滚动条隐藏；
+ * 折到檐上的站在内容里淡出（160 ms 后 visibility 才切，淡出期间不可点也不可聚焦）；檐上的灯悬停
+ * 放大 1.25；底部 2px 滚动条静止时隐形，指针在时间线上或正在滚 / 拖时露出，悬停轨道加粗到 4px。 */
+.wf-scroller {
+  scrollbar-width: none;
+}
+.wf-scroller::-webkit-scrollbar {
+  display: none;
+}
+.wf-foldable {
+  transition:
+    opacity var(--wf-t-base) var(--wf-ease),
+    visibility 0s linear 0s;
+}
+.wf-folded {
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity var(--wf-t-base) var(--wf-ease),
+    visibility 0s linear var(--wf-t-base);
+}
+.wf-ledge-lamp {
+  transition: transform var(--wf-t-base) var(--wf-ease);
+}
+.wf-ledge-lamp:hover,
+.wf-ledge-lamp:focus-visible {
+  transform: scale(1.25);
+}
+.wf-sb {
+  opacity: 0;
+  transition:
+    opacity var(--wf-t-base) var(--wf-ease),
+    height var(--wf-t-fast) var(--wf-ease);
+}
+.wf-timeline:hover .wf-sb,
+.wf-sb[data-scrolling="true"],
+.wf-sb[data-dragging="true"] {
+  opacity: 1;
+}
+.wf-sb:hover,
+.wf-sb[data-dragging="true"] {
+  height: 4px;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .wf-lamp-running {
+    animation: wf-beat var(--wf-beat, 1.6s) var(--wf-ease, ease-in-out) infinite;
+  }
+}
+/* 工作区 transcript（docs/dynamic-workflow/presentation.md「The pill」视觉修订）：
+ * 条目依次到场（wf-arrive + 每张错 24 ms，封顶 360 ms）；章头的横线从左长出；命令输出的尾巴
+ * 与展开面板从上方落下；落点那个条目到位后底色亮一下再退回（一次，不是常驻的焦点带）；
+ * 运行中的动词扫光；状态词换值时旧词退场新词进场（wf-swap）。全部只动 opacity / transform /
+ * background-color；reduced-motion 下到场、落点与扫光都归零。 */
+.wf-ws-entry {
+  transition: background-color var(--wf-t-base) var(--wf-ease);
+}
+.wf-ws-landed {
+  animation: wf-ws-land 1.4s var(--wf-ease) 1;
+}
+/* 详情页的落点（追记「五枚药丸与一扇门」）：节头到位后底色持 400 ms 再用 800 ms 退回，一次。 */
+.wf-landed {
+  animation: wf-land 1.2s var(--wf-ease) 1;
+}
+@keyframes wf-land {
+  0%,
+  33% {
+    background-color: var(--color-surface-hover);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wf-landed {
+    animation: none;
+  }
+}
+.wf-ws-body {
+  animation: wf-unfold var(--wf-t-enter) var(--wf-ease);
+}
+.wf-ws-peek {
+  animation: wf-unfold var(--wf-t-enter) var(--wf-ease);
+  -webkit-mask-image:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.35), #000 40%),
+    linear-gradient(90deg, #000 82%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.35), #000 40%),
+    linear-gradient(90deg, #000 82%, transparent);
+  mask-composite: intersect;
+}
+.wf-ws-rule {
+  transform-origin: left center;
+  animation: wf-rail-grow var(--wf-t-ink) var(--wf-ease);
+}
+.wf-ws-shine {
+  color: transparent;
+  background: linear-gradient(
+    90deg,
+    var(--color-foreground-subtle) 0%,
+    var(--color-foreground) 40%,
+    var(--color-foreground-subtle) 80%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: wf-ws-shine 2.4s linear infinite;
+}
+@keyframes wf-ws-land {
+  0% {
+    background-color: transparent;
+  }
+  20% {
+    background-color: var(--color-surface-hover);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+@keyframes wf-ws-shine {
+  to {
+    background-position: 200% 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wf-ws-landed,
+  .wf-ws-body,
+  .wf-ws-peek,
+  .wf-ws-rule {
+    animation: none;
+  }
+  .wf-ws-shine {
+    animation: none;
+    color: var(--color-foreground-subtle);
+    background: none;
+  }
+}
+/* 瓦片脸：身份色不随表情改变，动作只作用于眼睛，机身始终静止。 */
+.wf-face {
+  min-width: 20px;
+  min-height: 20px;
+  flex-shrink: 0;
+  --wf-face-body: #54b9a6;
+  --wf-face-eye: #ffffff;
+  --wf-face-x: 0px;
+  --wf-face-y: 0px;
+}
+.wf-face-eyes {
+  transform: translate(var(--wf-face-x), var(--wf-face-y));
+  transition: transform 360ms ease-in-out;
+}
+.wf-face-lids {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.wf-face [data-eye-expression] {
+  display: none;
+}
+.wf-face[data-expression="dots"] [data-eye-expression="dots"],
+.wf-face[data-expression="pill"] [data-eye-expression="pill"] {
+  display: inline;
+}
+.wf-face[data-expression="happy"] [data-eye-expression="happy"] {
+  display: inline;
+}
+.wf-face[data-expression="sleepy"] [data-eye-expression="sleepy"] {
+  display: inline;
+}
+.wf-face[data-expression="focused"] [data-eye-expression="focused"] {
+  display: inline;
+}
+.wf-face[data-expression="sad"] [data-eye-expression="sad"] {
+  display: inline;
+}
+.wf-face[data-expression="confused"] [data-eye-expression="confused"] {
+  display: inline;
+}
+
+.wf-face[data-motion="blink"] .wf-face-lids {
+  animation: wf-face-blink var(--wf-face-blink-time, 230ms) ease-in-out var(--wf-face-blinks, 2);
+}
+.wf-face[data-motion="morph"] .wf-face-lids {
+  animation: wf-face-morph 180ms ease-in-out;
+}
+.wf-face[data-motion="hop"] .wf-face-bounce {
+  animation: wf-face-hop 240ms ease-in-out var(--wf-face-hops, 2);
+}
+.wf-face-closed {
+  opacity: 0;
+}
+.wf-face[data-motion="blink"] .wf-face-closed {
+  animation: wf-face-closed-blink var(--wf-face-blink-time, 230ms) ease-in-out
+    var(--wf-face-blinks, 2);
+}
+.wf-face[data-motion="morph"] .wf-face-closed {
+  animation: wf-face-closed-morph 180ms ease-in-out;
+}
+@keyframes wf-face-blink {
+  0%,
+  70%,
+  100% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+  35% {
+    transform: scaleY(0.333333);
+    opacity: 0;
+  }
+}
+@keyframes wf-face-closed-blink {
+  0%,
+  70%,
+  100% {
+    opacity: 0;
+  }
+  35% {
+    opacity: 1;
+  }
+}
+@keyframes wf-face-morph {
+  0%,
+  100% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+  40%,
+  50% {
+    transform: scaleY(0.333333);
+    opacity: 0;
+  }
+}
+@keyframes wf-face-closed-morph {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  40%,
+  50% {
+    opacity: 1;
+  }
+}
+.wf-face[data-motion="float"] .wf-face-bounce {
+  animation: wf-face-float 600ms ease-in-out var(--wf-face-floats, 1);
+}
+.wf-face[data-motion="shake"] .wf-face-bounce {
+  animation: wf-face-shake 90ms linear var(--wf-face-shakes, 3);
+}
+@keyframes wf-face-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-0.5px);
+  }
+  70% {
+    transform: translateY(0.5px);
+  }
+}
+@keyframes wf-face-shake {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(-0.9px, -0.35px);
+  }
+  75% {
+    transform: translate(0.9px, 0.35px);
+  }
+}
+.wf-face[data-motion="dots-wave"] [data-eye-expression="dots"] circle {
+  animation: wf-face-dot-float 500ms ease-in-out both;
+}
+.wf-face[data-motion="dots-wave"] [data-eye-expression="dots"] circle:nth-child(2) {
+  animation-delay: 200ms;
+}
+.wf-face[data-motion="dots-wave"] [data-eye-expression="dots"] circle:nth-child(3) {
+  animation-delay: 400ms;
+}
+@keyframes wf-face-dot-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-1.5px);
+  }
+}
+@keyframes wf-face-hop {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  35% {
+    transform: translateY(-1px);
+  }
+  70% {
+    transform: translateY(0.7px);
+  }
+}
+@keyframes wf-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+@keyframes wf-mark {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+}
+@keyframes wf-unfold {
+  from {
+    opacity: 0;
+    transform: translateY(-3px);
+  }
+}
+@keyframes wf-swap {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+}
+@keyframes wf-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes wf-caret {
+  50% {
+    opacity: 0;
+  }
+}
+@keyframes wf-rail-grow {
+  from {
+    transform: scaleX(0);
+  }
+}
+@keyframes wf-land {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+}
+@keyframes wf-slide {
+  from {
+    transform: translateX(var(--wf-slide, 0px));
+  }
+}
+@keyframes wf-beat {
+  0% {
+    transform: scale(1);
+    box-shadow:
+      0 0 0 3px color-mix(in oklab, var(--color-warning) 20%, transparent),
+      0 0 0 3px color-mix(in oklab, var(--color-warning) 35%, transparent);
+  }
+  12% {
+    transform: scale(1.12);
+  }
+  40% {
+    transform: scale(1);
+  }
+  70%,
+  100% {
+    box-shadow:
+      0 0 0 3px color-mix(in oklab, var(--color-warning) 20%, transparent),
+      0 0 0 8px color-mix(in oklab, var(--color-warning) 0%, transparent);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wf-arrive,
+  .wf-mark,
+  .wf-unfold,
+  .wf-swap,
+  .wf-draw,
+  .wf-caret,
+  .wf-rail-grow,
+  .wf-land,
+  .wf-slide,
+  .wf-fill-frame-fresh {
+    animation: none;
+  }
+  .wf-draw {
+    stroke-dashoffset: 0;
+  }
+  .wf-pill,
+  .wf-pill-avatar,
+  .wf-pill-tile,
+  .wf-pill-name,
+  .wf-pill-go,
+  .wf-mark,
+  .wf-station,
+  .wf-lamp,
+  .wf-ink,
+  .wf-tile-frame,
+  .wf-line,
+  .wf-line-icon,
+  .wf-meter-seg,
+  .wf-digest-plot,
+  .wf-foldable,
+  .wf-folded,
+  .wf-ledge-lamp,
+  .wf-fill-frame,
+  .wf-fill-head,
+  .wf-sb {
+    transition: none;
+  }
+  /* 框的亮态选择器更具体，得单独关掉：reduced-motion 下框整根出现、整根消失，不画笔。 */
+  .wf-fill-frame[data-fill-on="true"] {
+    transition: none;
+  }
+  .wf-preview-doc {
+    animation: none;
+  }
+  /* 瓦片脸：动作归零、不跟随指针；表情本身仍按状态显示——它是信息不是装饰。 */
+  .wf-face [data-eye-expression="dots"] circle,
+  .wf-face-body,
+  .wf-face-lids,
+  .wf-face-closed,
+  .wf-face-eyes,
+  .wf-face-bounce {
+    animation: none;
+    transition: none;
+  }
+}

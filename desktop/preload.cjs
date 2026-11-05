@@ -5,7 +5,7 @@ ipcRenderer.on('hither:prepare-to-quit', (_event, value) => {
   let unsaved = false, busy = quitReaders.size === 0;
   for (const read of quitReaders) {
     try {
-      const state = read();
+      const state = read(Object.freeze({ discardUnsaved: value.discardUnsaved === true }));
       unsaved ||= state?.unsaved !== false; busy ||= state?.busy !== false;
     } catch { unsaved = true; busy = true; }
   }

@@ -1,4 +1,4 @@
-import type { FinanceAccount, FinanceState } from './types';
+import type { FinanceAccount, FinanceSection, FinanceState } from './types';
 import {isValuedAssetType} from '../../shared/asset-taxonomy.mjs';
 import {getLocale, subscribeLocale, t} from '../i18n.ts';
 import {financeAssetTypeLabel} from './labels.ts';
@@ -6,12 +6,21 @@ import {financeAssetTypeLabel} from './labels.ts';
 const currencyOptions = () => [
   { value: 'CNY', label: t('人民币 CNY', 'Chinese yuan CNY') }, { value: 'USD', label: t('美元 USD', 'US dollar USD') },
   { value: 'HKD', label: t('港元 HKD', 'Hong Kong dollar HKD') }, { value: 'SGD', label: t('新加坡元 SGD', 'Singapore dollar SGD') },
-  { value: 'CNH', label: t('离岸人民币 CNH', 'Offshore yuan CNH') }, { value: 'EUR', label: t('欧元 EUR', 'Euro EUR') },
+  { value: 'CNH', label: t('人民币（离岸报价）CNH', 'Renminbi (offshore quote) CNH') }, { value: 'EUR', label: t('欧元 EUR', 'Euro EUR') },
   { value: 'GBP', label: t('英镑 GBP', 'Pound sterling GBP') }, { value: 'JPY', label: t('日元 JPY', 'Japanese yen JPY') },
   { value: 'AUD', label: t('澳元 AUD', 'Australian dollar AUD') }, { value: 'CAD', label: t('加元 CAD', 'Canadian dollar CAD') },
 ];
 export let currencies = currencyOptions();
 subscribeLocale(() => { currencies = currencyOptions(); });
+// A reporting currency selector offers RMB once. Preserve a previously selected
+// CNH quote basis until the user chooses another option; never rewrite balances.
+export function displayCurrencyOptions(current?:string){
+  return currencies.filter(option=>option.value!=='CNH'||current==='CNH').map(option=>option.value==='CNH'?{...option,label:t('人民币 · 当前采用 CNH 报价','Renminbi · current CNH quote basis')}:option);
+}
+export function financeSummaryScope(page:FinanceSection,displayCurrency:string,accountCurrencyFilter='ALL'){
+  const nativeCurrency=(page==='accounts'||page==='liabilities')&&accountCurrencyFilter!=='ALL'?accountCurrencyFilter:undefined;
+  return {currency:nativeCurrency||displayCurrency,nativeCurrency};
+}
 export const today = () => new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Shanghai' }).format(new Date());
 function exactDecimal(value: unknown) {
   const match = String(value ?? '').match(/^([+-]?)(\d+)(?:\.(\d+))?$/);

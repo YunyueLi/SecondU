@@ -1,0 +1,15 @@
+{
+  "interface": {
+    "display_name": "中文市场与渠道调研",
+    "localized": {
+      "title": {
+        "zh": "中文市场与渠道调研",
+        "en": "China market research"
+      },
+      "description": {
+        "zh": "比较小红书、抖音等渠道，整理受众特点和内容建议。",
+        "en": "Compare channels such as Xiaohongshu and Douyin, with audience and content findings."
+      }
+    }
+  }
+}

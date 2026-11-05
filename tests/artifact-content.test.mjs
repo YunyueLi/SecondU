@@ -61,8 +61,8 @@ test('collection stores original binary bytes, metadata and both versions; HTTP 
   const f = await fixture(t), workspace = f.app.store.taskWorkspace(f.task.id), firstPdf = pdf('First version');
   writeFileSync(path.join(workspace, 'pixel.png'), png); writeFileSync(path.join(workspace, 'report.pdf'), firstPdf);
   const collected = f.app.runner.collectWorkspace(f.task.id, new Map());
-  assert.deepEqual(collected, { count: 2, bytes: png.length + firstPdf.length, skipped: 0 });
   const records = f.app.store.list('artifacts');
+  assert.deepEqual(collected, { count: 2, bytes: png.length + firstPdf.length, skipped: 0, artifactIds: records.map(artifact => artifact.id) });
   for (const artifact of records) {
     assert.equal(artifact.encoding, 'data-url'); assert.equal(artifact.versions[0].encoding, 'data-url');
     const expected = artifact.name.endsWith('.png') ? png : firstPdf;

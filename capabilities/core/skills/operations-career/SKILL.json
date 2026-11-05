@@ -1,0 +1,16 @@
+{
+  "interface": {
+    "displayName": "工作安排与求职准备",
+    "shortDescription": "Operations and career",
+    "localized": {
+      "title": {
+        "zh": "工作安排与求职准备",
+        "en": "Work and career preparation"
+      },
+      "description": {
+        "zh": "整理行动计划、会议待办，或基于真实经历准备求职材料。",
+        "en": "Prepare action plans, meeting follow-ups or career materials based on actual experience."
+      }
+    }
+  }
+}

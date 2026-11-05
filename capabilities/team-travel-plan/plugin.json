@@ -1,0 +1,96 @@
+{
+  "name": "secondu-team-travel-plan",
+  "version": "1.0.0",
+  "description": "Verify destination conditions, budget and transport, then build an adjustable itinerary.",
+  "license": "MIT",
+  "author": {
+    "name": "SecondU contributors"
+  },
+  "expertType": "team",
+  "agentName": "travel-plan-lead",
+  "agents": [
+    "agents/travel-plan-lead.md",
+    "agents/research.md",
+    "agents/budget.md",
+    "agents/planner.md"
+  ],
+  "displayName": {
+    "zh": "出行研究与规划团",
+    "en": "Travel planning team"
+  },
+  "displayDescription": {
+    "zh": "核对目的地条件、预算和交通，再将可靠信息组成可调整的行程。",
+    "en": "Verify destination conditions, budget and transport, then build an adjustable itinerary."
+  },
+  "teamInfo": {
+    "leadAgent": "travel-plan-lead",
+    "memberAgents": [
+      "research",
+      "budget",
+      "planner"
+    ]
+  },
+  "quickPrompts": [
+    {
+      "zh": "根据时间、预算和偏好，比较出行方案并给出行程和备选。",
+      "en": "Compare travel options within these dates, budget and preferences, then provide an itinerary and alternatives."
+    }
+  ],
+  "secondu": {
+    "workflow": [
+      {
+        "id": "facts",
+        "title": {
+          "zh": "核对出行条件",
+          "en": "Verify conditions"
+        },
+        "members": [
+          "research"
+        ],
+        "after": [],
+        "description": {
+          "zh": "核实交通、时区、营业时间和预订条件，记录查询日期；未确定价格和规则显式标注。交付 sources.md。",
+          "en": "Check transport, timezones, opening hours and booking conditions with lookup dates. Mark uncertain prices and rules. Deliver sources.md."
+        },
+        "required": true
+      },
+      {
+        "id": "budget",
+        "title": {
+          "zh": "比较预算",
+          "en": "Compare budget"
+        },
+        "members": [
+          "budget"
+        ],
+        "after": [
+          "facts"
+        ],
+        "description": {
+          "zh": "统一比较口径，保留原币、换算依据、税费与浮动范围；计算总额和缓冲，不进行购买。交付 budget.csv。",
+          "en": "Compare costs consistently, retaining original currencies, conversion basis, taxes and uncertainty. Compute totals and buffers without purchases. Deliver budget.csv."
+        },
+        "required": true
+      },
+      {
+        "id": "plan",
+        "title": {
+          "zh": "安排与复核行程",
+          "en": "Plan and review"
+        },
+        "members": [
+          "planner"
+        ],
+        "after": [
+          "facts",
+          "budget"
+        ],
+        "description": {
+          "zh": "检查移动时间、休息、天气备选及不能同时满足的约束。交付逐日行程与准备清单，注明仍需确认的预订。",
+          "en": "Check travel time, rest, alternatives and conflicting constraints. Deliver a daily itinerary and checklist with unconfirmed bookings clearly marked."
+        },
+        "required": true
+      }
+    ]
+  }
+}

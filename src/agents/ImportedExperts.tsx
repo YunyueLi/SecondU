@@ -1,0 +1,20 @@
+import {useState} from 'react';
+import type {AgentProfile,Bootstrap} from '../../shared/contracts';
+import type {CapabilityExpert,AgentCapabilities} from '../../shared/capabilities';
+import {Button} from '@openai/apps-sdk-ui/components/Button';
+import {Input} from '@openai/apps-sdk-ui/components/Input';
+import {Select} from '@openai/apps-sdk-ui/components/Select';
+import {Dialog,Field,ErrorNotice} from '../components';
+import {CapabilityFields,emptyCapabilities,skillTitle} from './CapabilityFields';
+import {write,messageOf} from '../api';
+import {getLocale,t} from '../i18n';
+
+export function ImportedExperts({data,onCreated}:{data:Bootstrap;onCreated:(agent:AgentProfile)=>Promise<void>}){
+ const [selected,setSelected]=useState<CapabilityExpert>(),[name,setName]=useState(''),[capabilities,setCapabilities]=useState<AgentCapabilities>(emptyCapabilities),[mapping,setMapping]=useState<Record<string,string>>({}),[busy,setBusy]=useState(false),[error,setError]=useState('');
+ const language=getLocale()==='en'?'en':'zh',packages=data.capabilities?.packages??[],experts=(data.capabilities?.experts??[]).filter(expert=>packages.some(pack=>pack.id===expert.packageId&&!pack.builtin)),skills=data.capabilities?.skills??[];
+ if(!experts.length)return null;
+ async function create(){if(!selected||busy)return;setBusy(true);setError('');try{const binding={...capabilities,skillIds:[...new Set([...capabilities.skillIds,...Object.values(mapping)])]};const agent=await write<AgentProfile>(`/capabilities/${selected.packageId}/create-expert`,{definitionId:selected.id,locale:language,name,capabilities:binding,skillMappings:mapping});await onCreated(agent);setSelected(undefined);}catch(err){setError(messageOf(err));}finally{setBusy(false);}}
+ return <section className="capability-imported-experts"><details className="capability-disclosure" open><summary>{t('已导入的专家','Imported experts')}<span>{experts.length}</span></summary><div className="capability-package-list">{experts.map(expert=><article className="capability-package-row" key={expert.id}><div className="capability-package-copy"><h3>{expert.title[language]}</h3><p>{expert.role[language]}</p><div className="capability-package-meta"><span>{packages.find(pack=>pack.id===expert.packageId)?.name}</span><span>{expert.version}</span></div></div><Button color="secondary" variant="outline" size="sm" onClick={()=>{setSelected(expert);setName(expert.title[language]);setCapabilities({...emptyCapabilities(),skillIds:expert.skillIds,outputContract:expert.outputContract});setMapping({});setError('');}}>{t('配置并创建','Configure and create')}</Button></article>)}</div></details>
+  {selected&&<Dialog title={selected.title[language]} className="capability-dialog configuration-dialog settings-type-scale" onClose={()=>{if(!busy)setSelected(undefined);}}><form className="capability-fields" onSubmit={event=>{event.preventDefault();void create();}}><Field label={t('名字','Name')}><Input value={name} maxLength={200} disabled={busy} onChange={event=>setName(event.target.value)}/></Field><details className="capability-disclosure"><summary>{t('工作说明','Instructions')}</summary><pre className="capability-file-content">{selected.instructions}</pre></details>{selected.unresolvedSkills.map(missing=><Field key={missing} label={t(`为 ${missing} 选择已安装技能`,`Map ${missing} to an installed skill`)}><Select value={mapping[missing]??''} placeholder={t('选择对应技能','Choose a skill')} disabled={busy} onChange={option=>setMapping({...mapping,[missing]:option.value})} options={skills.filter(skill=>skill.enabled).map(skill=>({value:skill.id,label:`${skillTitle(skill)} · ${skill.packageId}`}))}/></Field>)}<CapabilityFields value={capabilities} onChange={setCapabilities} data={data} disabled={busy}/><ErrorNotice error={error}/><div className="ag-form-actions"><Button color="secondary" variant="ghost" disabled={busy} onClick={()=>setSelected(undefined)}>{t('取消','Cancel')}</Button><Button color="primary" type="submit" loading={busy} disabled={!name.trim()||selected.unresolvedSkills.some(missing=>!mapping[missing])}>{t('创建专家','Create expert')}</Button></div></form></Dialog>}
+ </section>;
+}

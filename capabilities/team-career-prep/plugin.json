@@ -1,0 +1,95 @@
+{
+  "name": "secondu-team-career-prep",
+  "version": "1.0.0",
+  "description": "Map role requirements to real experience, improve materials and test them through interview questions.",
+  "license": "MIT",
+  "author": {
+    "name": "SecondU contributors"
+  },
+  "expertType": "team",
+  "agentName": "career-prep-lead",
+  "agents": [
+    "agents/career-prep-lead.md",
+    "agents/role.md",
+    "agents/editor.md",
+    "agents/interviewer.md"
+  ],
+  "displayName": {
+    "zh": "求职准备与面试团",
+    "en": "Career preparation team"
+  },
+  "displayDescription": {
+    "zh": "将岗位要求与真实经历逐项对应，打磨材料并用追问检验表达。",
+    "en": "Map role requirements to real experience, improve materials and test them through interview questions."
+  },
+  "teamInfo": {
+    "leadAgent": "career-prep-lead",
+    "memberAgents": [
+      "role",
+      "editor",
+      "interviewer"
+    ]
+  },
+  "quickPrompts": [
+    {
+      "zh": "根据岗位说明与我的真实经历，完善求职材料并准备一轮模拟面试。",
+      "en": "Use the role description and my real experience to improve application materials and prepare a mock interview."
+    }
+  ],
+  "secondu": {
+    "workflow": [
+      {
+        "id": "requirements",
+        "title": {
+          "zh": "拆解岗位要求",
+          "en": "Analyze requirements"
+        },
+        "members": [
+          "role"
+        ],
+        "after": [],
+        "description": {
+          "zh": "从原始岗位说明提炼职责、能力和评判信号，区分明确要求与推测，不推断雇主未公开偏好。交付 role.md。",
+          "en": "Extract responsibilities, capabilities and evaluation signals from the role description; separate stated requirements from inference. Deliver role.md."
+        },
+        "required": true
+      },
+      {
+        "id": "evidence",
+        "title": {
+          "zh": "匹配真实经历",
+          "en": "Map real experience"
+        },
+        "members": [
+          "editor"
+        ],
+        "after": [
+          "requirements"
+        ],
+        "description": {
+          "zh": "把用户提供的真实项目与要求对应；保留职责边界和数据出处。补充问题列为待确认，不填造履历。交付材料草稿与证据表。",
+          "en": "Map supplied projects to requirements, preserving ownership and evidence for metrics. Leave gaps as questions rather than fabricating a resume. Deliver drafts and an evidence matrix."
+        },
+        "required": true
+      },
+      {
+        "id": "practice",
+        "title": {
+          "zh": "设计追问与复核",
+          "en": "Prepare interview practice"
+        },
+        "members": [
+          "interviewer"
+        ],
+        "after": [
+          "evidence"
+        ],
+        "description": {
+          "zh": "针对证据不足、取舍和失败经验设计追问；提供评价标准及演练顺序，区分模拟答法和用户事实。交付 interview.md。",
+          "en": "Probe evidence gaps, trade-offs and failures with evaluation criteria and a practice sequence. Distinguish example wording from user facts. Deliver interview.md."
+        },
+        "required": true
+      }
+    ]
+  }
+}

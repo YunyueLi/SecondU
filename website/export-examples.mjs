@@ -6,7 +6,6 @@ import { fileURLToPath } from 'node:url';
 import { createApp } from '../server/index.mjs';
 import { listProjectFiles } from '../server/projects.mjs';
 import { defaultAppearance } from '../server/local-appearance.mjs';
-import { createFinanceExample } from './finance-example.mjs';
 
 // Run the exact desktop initialization chain in a new, owned temporary root.
 // No existing data-directory option is accepted. No socket is ever opened.
@@ -36,7 +35,7 @@ export async function exportCanonicalExamples() {
         developmentRoot: projectRoot, _allowDemoSpace: false });
       try {
         const bootstrap = app.bootstrap();
-        const responses = { '/finance/state': createFinanceExample(app.store, language) };
+        const responses = { '/finance/state': await readRoute(app, '/finance/state') };
         for (const route of ['/finance/connections', '/finance/connections/moomoo/status', '/finance/connections/moomoo/appkey/status']) responses[route] = await readRoute(app, route);
         for (const route of ['/runtime/capabilities', '/computers', '/delegations', '/im-setup', '/im-connections', '/im-outbox', '/agent-resources', '/settings/appearance', '/settings/artwork/info', '/development/review']) responses[route] = await readRoute(app, route);
         for (const provider of responses['/finance/connections'].providers) {

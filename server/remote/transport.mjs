@@ -8,7 +8,7 @@ import { PROTOCOL, MAX_REQUEST, fail, clean } from './common.mjs';
 // credentials, personal sources, node_modules, or user-selected paths are copied.
 export const RUNTIME_FILES = Object.freeze([
   'server/remote/common.mjs','server/remote/locking.mjs','server/remote/rpc.mjs','server/remote/worker.mjs',
-  'server/codex.mjs','server/team-runs.mjs','server/execution-settings.mjs','server/chat-bridge.mjs','server/provider-headers.mjs',
+  'server/codex.mjs','server/codex-runtime.mjs','shared/codex-runtime.json','server/team-runs.mjs','shared/workflow-state.mjs','server/execution-settings.mjs','server/chat-bridge.mjs','server/provider-headers.mjs',
   'server/provider-test.mjs','server/attachment-input.mjs','server/http-error.mjs','server/task-event-activity.mjs',
   'server/identity.mjs','server/workspace-files.mjs','shared/brand.json','shared/provider-presets.mjs',
 ]);

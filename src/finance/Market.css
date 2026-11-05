@@ -1,10 +1,8 @@
 /* Typography follows the shared page title, section, body and caption roles. */
 :where(.finance-workspace,.finance-settings) .market-page { min-width:0; container-type:inline-size; }
-:where(.finance-workspace,.finance-settings) .market-page svg { width:16px; height:16px; flex-shrink:0; }
 :where(.finance-workspace,.finance-settings) .market-heading { display:flex; align-items:center; justify-content:space-between; gap:16px; margin:0; }
 :where(.finance-workspace,.finance-settings) .market-heading h1 { margin:0; color:var(--color-text,#111); }
 :where(.finance-workspace,.finance-settings) .market-heading-actions { display:flex; align-items:center; gap:8px; flex-shrink:0; }
-:where(.finance-workspace,.finance-settings) .market-heading-actions>button,:where(.finance-workspace,.finance-settings) .market-toolbar :is(button:not([data-state]),input:not([aria-hidden="true"]),[role="button"],[role="combobox"]) { min-height:32px; height:32px; border-radius:8px; font-size:14px; line-height:22px; }
 :where(.finance-workspace,.finance-settings) .market-alert { margin:16px 0; }
 :where(.finance-workspace,.finance-settings) .market-alert>div { border-radius:12px; }
 :where(.finance-workspace,.finance-settings) .market-toolbar { display:flex; align-items:center; justify-content:space-between; gap:12px; min-width:0; margin:0; padding:8px 0; position:sticky; top:var(--finance-header-height,64px); z-index:15; background:var(--color-surface); }

@@ -1,0 +1,545 @@
+{
+  "version": "1.0.0",
+  "domains": {
+    "product": {
+      "skillIds": [
+        "secondu-core/product-discovery",
+        "agency-methods/product-methods",
+        "secondu-office/office-delivery"
+      ],
+      "name": {
+        "zh": "产品研究与设计",
+        "en": "Product discovery and design"
+      },
+      "deliverables": {
+        "zh": [
+          "需求与证据对应",
+          "交互状态及验收条件"
+        ],
+        "en": [
+          "Requirements linked to evidence",
+          "Interaction states and acceptance criteria"
+        ]
+      },
+      "checks": {
+        "zh": [
+          "可追溯的用户证据",
+          "主流程、失败状态与窄屏均可检验"
+        ],
+        "en": [
+          "Traceable user evidence",
+          "Main, failure and narrow-screen flows are testable"
+        ]
+      }
+    },
+    "engineering": {
+      "skillIds": [
+        "secondu-core/software-delivery",
+        "agency-methods/frontend-methods"
+      ],
+      "name": {
+        "zh": "工程实现与调试",
+        "en": "Software delivery"
+      },
+      "deliverables": {
+        "zh": [
+          "实现或可定位的审查意见",
+          "运行与回归记录"
+        ],
+        "en": [
+          "Implementation or actionable review findings",
+          "Runtime and regression evidence"
+        ]
+      },
+      "checks": {
+        "zh": [
+          "问题可复现、修正可验证",
+          "变更范围与数据兼容性明确"
+        ],
+        "en": [
+          "Reproducible issue and verified fix",
+          "Explicit change scope and data compatibility"
+        ]
+      }
+    },
+    "games": {
+      "skillIds": [
+        "secondu-core/game-systems",
+        "agency-methods/game-methods"
+      ],
+      "name": {
+        "zh": "游戏与空间体验",
+        "en": "Game and spatial systems"
+      },
+      "deliverables": {
+        "zh": [
+          "规则与状态图",
+          "调参与试玩记录"
+        ],
+        "en": [
+          "Rules and state transitions",
+          "Tuning and playtest record"
+        ]
+      },
+      "checks": {
+        "zh": [
+          "循环能完成且失败可恢复",
+          "数值假设与实测结果分开"
+        ],
+        "en": [
+          "Completable loop and recoverable failures",
+          "Assumptions separated from playtest results"
+        ]
+      }
+    },
+    "data": {
+      "skillIds": [
+        "secondu-core/data-analysis",
+        "agency-methods/data-methods",
+        "secondu-office/office-delivery"
+      ],
+      "name": {
+        "zh": "数据分析与复现",
+        "en": "Data analysis"
+      },
+      "deliverables": {
+        "zh": [
+          "口径与数据质量说明",
+          "可复算结果与图表"
+        ],
+        "en": [
+          "Definitions and data quality notes",
+          "Reproducible results and figures"
+        ]
+      },
+      "checks": {
+        "zh": [
+          "合计、分母和连接粒度一致",
+          "结论不超过样本与方法支持范围"
+        ],
+        "en": [
+          "Consistent totals, denominators and join grain",
+          "Conclusions supported by sample and method"
+        ]
+      }
+    },
+    "marketing": {
+      "skillIds": [
+        "secondu-core/marketing-growth",
+        "agency-methods/growth-methods",
+        "secondu-office/office-delivery"
+      ],
+      "name": {
+        "zh": "营销与增长实验",
+        "en": "Marketing and growth"
+      },
+      "deliverables": {
+        "zh": [
+          "定位与渠道内容",
+          "实验及预算安排"
+        ],
+        "en": [
+          "Positioning and channel assets",
+          "Experiment and budget plan"
+        ]
+      },
+      "checks": {
+        "zh": [
+          "文案主张有依据",
+          "成功指标、护栏与停止条件完整"
+        ],
+        "en": [
+          "Supported claims",
+          "Success metrics, guardrails and stopping rules"
+        ]
+      }
+    },
+    "creation": {
+      "skillIds": [
+        "secondu-core/content-production",
+        "agency-methods/content-methods",
+        "secondu-office/office-delivery"
+      ],
+      "name": {
+        "zh": "内容策划与编辑",
+        "en": "Content production"
+      },
+      "deliverables": {
+        "zh": [
+          "可直接使用的成稿",
+          "必要的来源与修改说明"
+        ],
+        "en": [
+          "Ready-to-use draft",
+          "Necessary sources and edit notes"
+        ]
+      },
+      "checks": {
+        "zh": [
+          "原意、事实与语气一致",
+          "完整阅读检查结构及重复"
+        ],
+        "en": [
+          "Preserved meaning, facts and voice",
+          "Whole-artifact structural review"
+        ]
+      }
+    },
+    "sales": {
+      "skillIds": [
+        "secondu-core/commercial-planning"
+      ],
+      "name": {
+        "zh": "商务提案与客户协作",
+        "en": "Commercial planning"
+      },
+      "deliverables": {
+        "zh": [
+          "提案或谈判准备",
+          "范围、责任与后续安排"
+        ],
+        "en": [
+          "Proposal or negotiation brief",
+          "Scope, ownership and follow-up"
+        ]
+      },
+      "checks": {
+        "zh": [
+          "承诺与可交付范围匹配",
+          "价格及关键条款可核对"
+        ],
+        "en": [
+          "Promises match deliverable scope",
+          "Auditable pricing and material terms"
+        ]
+      }
+    },
+    "finance": {
+      "skillIds": [
+        "secondu-core/financial-analysis",
+        "agency-methods/finance-methods",
+        "secondu-office/office-delivery"
+      ],
+      "name": {
+        "zh": "财务分析与情景模型",
+        "en": "Financial analysis"
+      },
+      "deliverables": {
+        "zh": [
+          "有来源的财务模型",
+          "假设、情景与敏感性"
+        ],
+        "en": [
+          "Source-backed financial model",
+          "Assumptions, scenarios and sensitivity"
+        ]
+      },
+      "checks": {
+        "zh": [
+          "币种、日期及余额核对",
+          "输入、公式与结论可追溯"
+        ],
+        "en": [
+          "Reconciled currencies, dates and balances",
+          "Traceable inputs, formulas and conclusions"
+        ]
+      }
+    },
+    "operations": {
+      "skillIds": [
+        "secondu-core/operations-career",
+        "agency-methods/delivery-methods",
+        "secondu-office/office-delivery"
+      ],
+      "name": {
+        "zh": "运营、职业与协同",
+        "en": "Operations and career"
+      },
+      "deliverables": {
+        "zh": [
+          "行动安排或职业材料",
+          "责任、时间与证据"
+        ],
+        "en": [
+          "Action plan or career material",
+          "Owners, timing and evidence"
+        ]
+      },
+      "checks": {
+        "zh": [
+          "经历和结果不编造",
+          "依赖及未决事项明确"
+        ],
+        "en": [
+          "No invented experience or outcomes",
+          "Clear dependencies and open decisions"
+        ]
+      }
+    },
+    "quality": {
+      "skillIds": [
+        "secondu-core/delivery-review",
+        "agency-methods/quality-methods"
+      ],
+      "name": {
+        "zh": "交付质量与验证",
+        "en": "Delivery review"
+      },
+      "deliverables": {
+        "zh": [
+          "可定位、可复现的问题",
+          "验收证据与剩余限制"
+        ],
+        "en": [
+          "Actionable reproducible findings",
+          "Acceptance evidence and limits"
+        ]
+      },
+      "checks": {
+        "zh": [
+          "按原始目标检查实际产物",
+          "修复后重验受影响路径"
+        ],
+        "en": [
+          "Inspect actual output against the request",
+          "Recheck affected paths after fixes"
+        ]
+      }
+    },
+    "legal": {
+      "skillIds": [
+        "secondu-core/legal-privacy-review",
+        "agency-methods/legal-methods"
+      ],
+      "name": {
+        "zh": "条款、隐私与合规研究",
+        "en": "Legal and privacy research"
+      },
+      "deliverables": {
+        "zh": [
+          "条款或数据流审查",
+          "依据、风险及待确认项"
+        ],
+        "en": [
+          "Clause or data-flow review",
+          "Authority, risks and open questions"
+        ]
+      },
+      "checks": {
+        "zh": [
+          "适用地区、时点与版本明确",
+          "引用能回到原条款或权威来源"
+        ],
+        "en": [
+          "Clear jurisdiction, date and version",
+          "Traceable clauses or primary authority"
+        ]
+      }
+    },
+    "industry": {
+      "skillIds": [
+        "secondu-core/evidence-research"
+      ],
+      "name": {
+        "zh": "证据研究与决策",
+        "en": "Evidence research"
+      },
+      "deliverables": {
+        "zh": [
+          "有来源的调研与比较",
+          "采用判断及验证边界"
+        ],
+        "en": [
+          "Source-backed research and comparison",
+          "Adoption decisions and validation boundaries"
+        ]
+      },
+      "checks": {
+        "zh": [
+          "原文、版本与事实核对",
+          "事实、推断与未知分开"
+        ],
+        "en": [
+          "Verified originals, versions and claims",
+          "Facts, inferences and unknowns separated"
+        ]
+      }
+    },
+    "global": {
+      "skillIds": [
+        "secondu-core/global-localization",
+        "agency-methods/localization-methods",
+        "secondu-office/office-delivery"
+      ],
+      "name": {
+        "zh": "本地化与跨境研究",
+        "en": "Localization and global work"
+      },
+      "deliverables": {
+        "zh": [
+          "本地化成品或市场比较",
+          "术语、地区与适配记录"
+        ],
+        "en": [
+          "Localized artifact or market comparison",
+          "Terminology and adaptation record"
+        ]
+      },
+      "checks": {
+        "zh": [
+          "语言与格式适合目标地区",
+          "地区规则有当前来源"
+        ],
+        "en": [
+          "Locale-appropriate language and formats",
+          "Current sources for local requirements"
+        ]
+      }
+    },
+    "education": {
+      "skillIds": [
+        "secondu-core/learning-research"
+      ],
+      "name": {
+        "zh": "学习设计与学术阅读",
+        "en": "Learning and scholarly work"
+      },
+      "deliverables": {
+        "zh": [
+          "适配水平的学习材料",
+          "练习反馈或文献证据"
+        ],
+        "en": [
+          "Level-appropriate learning material",
+          "Practice feedback or literature evidence"
+        ]
+      },
+      "checks": {
+        "zh": [
+          "答案、推导与引用可核对",
+          "难度和反馈匹配学习目标"
+        ],
+        "en": [
+          "Verifiable solutions, derivations and references",
+          "Difficulty and feedback match the goal"
+        ]
+      }
+    },
+    "life": {
+      "skillIds": [
+        "secondu-core/practical-planning"
+      ],
+      "name": {
+        "zh": "日常安排与资料整理",
+        "en": "Practical planning"
+      },
+      "deliverables": {
+        "zh": [
+          "可执行安排或整理结果",
+          "时间、预算与依赖"
+        ],
+        "en": [
+          "Executable plan or organized artifact",
+          "Timing, budget and dependencies"
+        ]
+      },
+      "checks": {
+        "zh": [
+          "符合已有约束和决定",
+          "原始资料及恢复路径保留"
+        ],
+        "en": [
+          "Fits actual constraints and decisions",
+          "Original material and recovery paths preserved"
+        ]
+      }
+    },
+    "health": {
+      "skillIds": [
+        "secondu-core/care-preparation"
+      ],
+      "name": {
+        "zh": "健康信息与照护准备",
+        "en": "Health information and care preparation"
+      },
+      "deliverables": {
+        "zh": [
+          "照护安排或就诊准备",
+          "事实、问题与可靠资料"
+        ],
+        "en": [
+          "Care plan or appointment preparation",
+          "Facts, questions and reliable sources"
+        ]
+      },
+      "checks": {
+        "zh": [
+          "不虚构诊断和治疗效果",
+          "风险提示与实际情况相称"
+        ],
+        "en": [
+          "No fabricated diagnoses or treatment effects",
+          "Risk guidance proportionate to the situation"
+        ]
+      }
+    },
+    "travel": {
+      "skillIds": [
+        "secondu-core/travel-research"
+      ],
+      "name": {
+        "zh": "出行研究与行程",
+        "en": "Travel research and planning"
+      },
+      "deliverables": {
+        "zh": [
+          "有依据的行程及备选",
+          "费用、时间与预订条件"
+        ],
+        "en": [
+          "Source-backed itinerary and alternatives",
+          "Costs, timing and booking terms"
+        ]
+      },
+      "checks": {
+        "zh": [
+          "时区、换乘与营业时间可行",
+          "价格和规则标明查询时点"
+        ],
+        "en": [
+          "Feasible timezones, transfers and opening hours",
+          "Dated price and rule checks"
+        ]
+      }
+    },
+    "relationships": {
+      "skillIds": [
+        "secondu-core/communication-preparation"
+      ],
+      "name": {
+        "zh": "沟通准备与关系协作",
+        "en": "Communication preparation"
+      },
+      "deliverables": {
+        "zh": [
+          "可直接使用的表达或演练",
+          "边界、诉求与下一步"
+        ],
+        "en": [
+          "Usable wording or rehearsal",
+          "Boundaries, requests and next steps"
+        ]
+      },
+      "checks": {
+        "zh": [
+          "他人动机不当作事实",
+          "语气符合关系和用户意图"
+        ],
+        "en": [
+          "No unsupported claims about motives",
+          "Tone fits the relationship and user intent"
+        ]
+      }
+    }
+  }
+}

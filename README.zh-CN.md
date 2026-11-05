@@ -6,7 +6,7 @@
 <p align="center">以个人数字分身为核心的开源智能体产品。</p>
 <p align="center">
   <a href="https://secondu.ungetsu.net/product/embed.html?space=demo-cn-v1&lang=zh#example-chat"><strong>在线体验</strong></a>&nbsp;&nbsp;&nbsp;
-  <a href="https://github.com/YunyueLi/SecondU/releases/tag/v0.2.1"><strong>下载 macOS 版</strong></a>&nbsp;&nbsp;&nbsp;
+  <a href="https://github.com/YunyueLi/SecondU/releases/tag/v0.3.0"><strong>下载 macOS 版</strong></a>&nbsp;&nbsp;&nbsp;
   <a href="QUICKSTART.md">快速开始</a>&nbsp;&nbsp;&nbsp;
   <a href="https://secondu.ungetsu.net/benchmark/?lang=zh">Benchmark</a>&nbsp;&nbsp;&nbsp;
   <a href="README.md">English</a>
@@ -27,6 +27,8 @@
 </p>
 
 <p align="center"><sub>截图来自实际产品界面，内容为虚构示例。无需账号或模型密钥，即可<a href="https://secondu.ungetsu.net/product/embed.html?space=demo-cn-v1&lang=zh#example-chat">直接体验产品</a>，或浏览<a href="https://secondu.ungetsu.net/?lang=zh">官网</a>。</sub></p>
+
+**v0.3.0**：内置执行组件，支持确认分工后协作、复用流程和中断后继续，改进财务对话与窄屏布局。[完整更新说明](docs/releases/v0.3.0.md)。
 
 ## 让理解延续到下一件事
 
@@ -78,7 +80,7 @@ SecondU 持续理解你的背景、经历、价值观、偏好、关系和长期
 
 ### 组织合适的专家与工具
 
-创建专业 Agent，单独对话，或围绕一件事组建团队。指定负责人，按需委派专家，查看每项工作的执行者、状态和结果。项目目录、模型连接与操作审批共同限定实际工作环境。
+选择专家单独对话，或向团队描述目标与材料。查看阶段分工、成员模型和预期成果，确认后再开始执行。可以展开成员会话、检查文件交接，保存流程后带入新材料再次运行。项目目录、模型连接与操作审批共同限定实际工作环境。
 
 <p><a href="https://secondu.ungetsu.net/product/embed.html?space=demo-cn-v1&lang=zh#agents"><picture>
       <source media="(prefers-color-scheme: dark)" srcset="docs/readme-assets/specialists-zh-dark.jpg">
@@ -156,8 +158,8 @@ SecondU 持续理解你的背景、经历、价值观、偏好、关系和长期
 | 方式 | 可以做什么 |
 | --- | --- |
 | **[在线体验](https://secondu.ungetsu.net/product/embed.html?space=demo-cn-v1&lang=zh#example-chat)** | 浏览双语示例、导入摘要并在当前页面编辑内容；刷新后重新开始。 |
-| **[下载桌面版](https://github.com/YunyueLi/SecondU/releases/tag/v0.2.1)** | 适用于 Apple Silicon Mac，要求 macOS 13+，已内置 Node 运行时。安装步骤见快速开始。 |
-| **从源码运行** | 需要 Node.js 22.18+ 和 npm。执行下方命令后，打开 [localhost:58645](http://127.0.0.1:58645)。 |
+| **[下载桌面版](https://github.com/YunyueLi/SecondU/releases/tag/v0.3.0)** | 适用于 Apple Silicon Mac，要求 macOS 13+，已内置 Node 运行时。安装步骤见快速开始。 |
+| **从源码运行** | 需要 Node.js 22.19+ 和 npm。执行下方命令后，打开 [localhost:58645](http://127.0.0.1:58645)。 |
 
 ```sh
 git clone https://github.com/YunyueLi/SecondU.git
@@ -167,7 +169,7 @@ npm run build
 npm start
 ```
 
-进入示例空间即可无密钥浏览。真实任务需要进入个人空间，另行安装 **Codex CLI**，并配置自己的模型连接。[安装与排错](QUICKSTART.md)
+进入示例空间即可无密钥浏览。v0.3.0 桌面版内置 **Codex CLI**，随应用更新；配置自己的模型连接后可运行真实任务。源码直接运行仍需独立安装 CLI。[安装与排错](QUICKSTART.md) · [执行组件版本管理](docs/CODEX-RUNTIME.md)
 
 ## 资料与权限由你掌握
 
@@ -188,7 +190,7 @@ API 只监听回环地址；凭据保存于限制权限的独立本机文件。�
 | 延伸到不同场景的上下文 | 通信与现实资源；跨设备多模态体验；获准的专业能力分发 |
 | 围绕人的协作网络 | A2A 协作与服务交易；社交和恋爱匹配；持续更新的个人资产 |
 
-**最新版本**：[v0.2.1](docs/releases/v0.2.1.md) 新增财务工作区、可配置侧栏、本机与 SSH 电脑设置、扩展的连接器目录、首页建议与外观改进。桌面版支持 macOS arm64。[产品使用导览](docs/PROTOTYPE.md)
+**最新版本**：[v0.3.0](docs/releases/v0.3.0.md) 整合内置执行组件、专家工作流、聊天成果及财务改进。桌面版支持 macOS arm64。[产品使用导览](docs/PROTOTYPE.md)
 
 ## 实现结构
 

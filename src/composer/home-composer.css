@@ -1,6 +1,6 @@
 /* Home keeps writing space and a stable bottom toolbar, even with an empty draft. */
 .is-home .composer.composer-home.is-expanded .composer-main-layer {
-  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-columns: auto minmax(0, 1fr);
   row-gap: 8px;
   padding: 14px 12px 10px;
   border-radius: 26px;
@@ -15,7 +15,7 @@
   padding-block: 0 !important;
 }
 .is-home .composer.composer-home .composer-leading { grid-column: 1; grid-row: 2; gap: 3px; }
-.is-home .composer.composer-home .composer-trailing { grid-column: 3; grid-row: 2; }
+.is-home .composer.composer-home .composer-trailing { grid-column: 2; grid-row: 2; }
 .is-home .composer.composer-home:has(.attachment-drafts,.attachment-limit) .composer-input { grid-row: 2; }
 .is-home .composer.composer-home:has(.attachment-drafts,.attachment-limit) :is(.composer-leading,.composer-trailing) { grid-row: 3; }
 .is-home .composer.composer-home .composer-approval-picker { font-size: 13px; }
@@ -23,6 +23,11 @@
 .composer-computer-popover { padding: 16px; }
 .composer-computer-popover>strong { font-size: 14px; overflow-wrap: anywhere; }
 .composer-computer-popover>p { margin: 6px 0 12px; color: var(--color-text-secondary); font-size: 13px; line-height: 1.65; }
+/* Setup status follows the same text column as the actions below the composer. */
+.is-home .composer-wrap>.setup-hint { justify-content:flex-start; margin:12px 14px 0; padding-left:30px; text-align:left; }
+@media(max-width:600px) {
+  .is-home .composer-wrap>.setup-hint { margin:12px 8px 0; padding-left:29px; }
+}
 @media (max-width: 700px) {
   .is-home .composer.composer-home>.composer-context-bar .composer-computer-trigger { width:36px; min-height:36px; flex-basis:36px; }
   .is-home .composer.composer-home.is-expanded .composer-main-layer { padding: 12px 8px 8px; border-radius: 24px; }

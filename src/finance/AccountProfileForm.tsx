@@ -32,10 +32,10 @@ export function AccountProfileForm({account,state,hidden,onSaved}:{account:Finan
   };
   return <form className="update-form finance-record-form finance-account-profile-form" onSubmit={save}>
     <Field label={liability?'负债名称':'资产或账户名称'}><Input id={`${id}-name`} value={name} onChange={event=>{setName(event.target.value);changed();}} maxLength={200} required disabled={saving}/></Field>
-    <Field label={liability?'负债类型':'资产类型'}><Select id={`${id}-type`} value={classification} options={classificationOptions} OptionView={FinanceTypeOption} TriggerView={FinanceTypeOption} onChange={option=>{setClassification(option.value);changed();}} disabled={saving} pill={false}/></Field>
+    <Field label={liability?'负债类型':'资产类型'}><Select id={`${id}-type`} value={classification} options={classificationOptions} OptionView={FinanceTypeOption} TriggerView={FinanceTypeOption} onChange={option=>{setClassification(option.value);changed();}} disabled={saving}/></Field>
     <p className="form-footnote">当前记录 {money(account.bookAmount||account.amount,hidden)} {account.currency}，{date(account.asOf)}。{account.canEditAssetDetails!==true?'本地资料用于分类与展示，金额仍由来源更新。':''}</p>
     {valued&&<AssetDetailsFields assetType={classification} currency={account.currency} asOf={account.asOf} draft={details} onChange={next=>{setDetails(next);changed();}} state={state} disabled={saving} hidden={hidden}/>}
     <Field label="说明（可选）"><Textarea id={`${id}-description`} rows={3} value={description} onChange={event=>{setDescription(event.target.value);changed();}} maxLength={2000} disabled={saving}/></Field>
-    {error&&<p className="form-error" role="alert">{error}</p>}<div className="dialog-actions"><Button type="submit" color="primary" pill={false} loading={saving}>保存资料</Button></div>
+    {error&&<p className="form-error" role="alert">{error}</p>}<div className="dialog-actions"><Button type="submit" color="primary" loading={saving}>保存资料</Button></div>
   </form>;
 }

@@ -25,7 +25,7 @@
 .context-usage-popover dd{margin:0;font-variant-numeric:tabular-nums}
 .context-usage-popover footer{margin-top:14px;font-size:11px;color:var(--color-text-tertiary)}
 @keyframes context-usage-enter{from{opacity:.5;filter:blur(2px);transform:translateY(3px) scale(.98)}to{opacity:1;filter:blur(0);transform:none}}
-@media(max-width:600px){.composer-leading .composer-approval-label{display:none}.composer-leading .composer-approval-picker{padding-inline:3px}.composer-context-usage{width:28px}.composer .composer-model-picker{min-width:0}.composer .composer-model-name{overflow:hidden;text-overflow:ellipsis;max-width:76px}}
+@media(max-width:600px){.composer-leading .composer-approval-label{display:none}.composer-leading .composer-approval-picker{padding-inline:3px}.composer-context-usage{width:28px}}
 @media(prefers-reduced-motion:reduce){.context-usage-popover[data-state=open]{animation:none}.context-usage-fill{transition:none}}
 [data-motion=reduced] .context-usage-popover[data-state=open]{animation:none}
 [data-motion=reduced] .context-usage-fill{transition:none}

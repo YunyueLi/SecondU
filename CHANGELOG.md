@@ -2,12 +2,19 @@
 
 User-visible changes are recorded here. Product decisions and implementation history are available in [Development](docs/DEVELOPMENT.md) and [Iteration](docs/ITERATION.md).
 
-## Unreleased / 待发布
+## 0.3.0 — 2026-11-05
 
-- Keep enlarged dialogs below the macOS window controls and fit their content to short or narrow windows.
-- Align the website's expanded-workspace close label and icon in both languages and themes.
-- 放大弹窗避开 macOS 窗口按钮，并适应矮窗口和窄窗口的可用空间。
-- 官网完整体验的收起文字与关闭图标在中英文、明暗主题下统一对齐。
+- Bundle pinned Codex CLI 0.165.0 with the desktop app. The execution component updates with SecondU; configure a model connection to run tasks without a separate CLI installation.
+- Add reviewable workflow plans, per-member model choices, dependency scheduling, file handoffs, saved workflow reuse and continuation of interrupted runs. Reruns begin with the new goal and materials and require confirmation before dispatch.
+- Refine expert conversations, collaboration records, member sessions and result navigation. Keep real task states, replies and file provenance inspectable.
+- Show the complete fictional finance portfolio on first entry to the desktop example, using the same dated scenario as the website and preserving existing local ledgers.
+- Improve finance context attachments, currency selection, and narrow-screen pages and controls. Correct short-message bubble width and macOS dialog clearance.
+- Include capability packages and the local Office document toolchain, preserving third-party notices and the task-oriented expert entry points.
+- Integrate the published website refresh and update setup documentation.
+- Remove redundant prompts from the home composer and tighten suggestion spacing.
+- Discard obsolete temporary app copies after a successful build switch; restore the previous output if the switch fails.
+
+[Release notes / 完整版本说明](docs/releases/v0.3.0.md).
 
 ## 0.2.1 — 2026-10-25
 

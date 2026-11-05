@@ -1,0 +1,16 @@
+{
+  "interface": {
+    "displayName": "商务沟通与谈判准备",
+    "shortDescription": "Commercial planning",
+    "localized": {
+      "title": {
+        "zh": "商务沟通与谈判准备",
+        "en": "Business and negotiation preparation"
+      },
+      "description": {
+        "zh": "梳理合作诉求、报价条件和责任，准备沟通提纲。",
+        "en": "Clarify goals, pricing terms and responsibilities, then prepare a discussion outline."
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "interface": {
+    "display_name": "网页开发",
+    "localized": {
+      "title": {
+        "zh": "网页开发",
+        "en": "Web development"
+      },
+      "description": {
+        "zh": "制作网页和交互，检查手机显示、加载速度和键盘操作。",
+        "en": "Build pages and interactions; check mobile layout, loading speed and keyboard access."
+      }
+    }
+  }
+}

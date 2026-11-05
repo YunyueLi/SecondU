@@ -21,6 +21,9 @@ export function computeRuntimeRevision(root = project) {
     }
   }
   visit('server'); visit('shared');
+  // A packaged backend with an owned CLI cannot reuse a source-only listener.
+  const codexBundle=path.join(root,'runtime/codex/build.json');
+  add('codex-bundle',existsSync(codexBundle)?readFileSync(codexBundle):Buffer.from('external-cli'));
   // A reused server also serves its own UI. Vite's entry contains the hashed JS/CSS names.
   const entry = path.join(root, 'dist/index.html');
   add('client-entry', existsSync(entry) ? readFileSync(entry) : Buffer.from('not-built'));

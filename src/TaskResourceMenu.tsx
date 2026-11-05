@@ -4,13 +4,15 @@ import { Button } from '@openai/apps-sdk-ui/components/Button';
 import { Popover } from '@openai/apps-sdk-ui/components/Popover';
 import { Menu } from '@openai/apps-sdk-ui/components/Menu';
 import { Input } from '@openai/apps-sdk-ui/components/Input';
-import { Folder, Document, Desktop, Agent, ArrowRight, DotsHorizontalMoreMenu, Archive, Edit } from '@openai/apps-sdk-ui/components/Icon';
+import { Folder, Document, Desktop, ArrowRight, DotsHorizontalMoreMenu, Archive, Edit } from '@openai/apps-sdk-ui/components/Icon';
 import type { Bootstrap, Task } from '../shared/contracts';
 import type { WorkbenchTab } from './TaskWorkbench';
 import { taskResources, type TaskSourceSnapshot } from './taskResourceData';
 import { Dialog, Field, ErrorNotice } from './components';
 import { write, messageOf } from './api';
 import { t } from './i18n';
+import { AgentAvatar } from './agents/AgentIdentity';
+import { artifactDisplayName } from './artifacts/format.mjs';
 
 function ResourcesIcon(){return <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" aria-hidden="true"><circle cx="5" cy="5" r="1.8"/><circle cx="5" cy="12" r="1.8"/><circle cx="5" cy="19" r="1.8"/><path d="M11 5h10M11 12h7M11 19h10"/></svg>;}
 export function TaskResources({presentation='popover',data,tasks,projectId,agentIds,onOpen,onAgent}:{presentation?:'popover'|'sheet'|'inline';data:Bootstrap;tasks:Task[];projectId?:string;agentIds:string[];onOpen:(task:Task,tab:WorkbenchTab,artifactId?:string)=>void;onAgent?:(id:string)=>void}){
@@ -22,8 +24,8 @@ export function TaskResources({presentation='popover',data,tasks,projectId,agent
   function show(task:Task,tab:WorkbenchTab,artifactId?:string){setOpen(false);onOpen(task,tab,artifactId);}
   const content=<>
     <section><h3>{t('项目','Project')}</h3>{project?<a className="task-resource-row" href={`#projects/${project.id}`}><Folder/><span>{project.name}</span><ArrowRight/></a>:<p>{t('本次对话未关联项目','No project linked to this chat')}</p>}</section>
-    <section><h3>{t('输出文件','Created files')}<span>{resources.files.length}</span></h3>{resources.files.length?resources.files.map(file=><button className="task-resource-row" key={file.id} onClick={()=>{const task=tasks.find(item=>item.id===file.taskId);if(task)show(task,'files',file.id);}}><Document/><span>{file.name}</span><ArrowRight/></button>):<p>{t('还没有生成文件','No files created yet')}</p>}</section>
-    <section><h3>{t('参与助理','Participating agents')}<span>{agents.length}</span></h3>{agents.length?agents.map(agent=>onAgent?<button className="task-resource-row" key={agent.id} onClick={()=>{setOpen(false);onAgent(agent.id);}}><Agent/><span>{agent.name}<small>{agent.role}</small></span><ArrowRight/></button>:<div className="task-resource-row" key={agent.id}><Agent/><span>{agent.name}<small>{agent.role}</small></span></div>):<p>SecondU</p>}</section>
+    <section><h3>{t('输出文件','Created files')}<span>{resources.files.length}</span></h3>{resources.files.length?resources.files.map(file=><button className="task-resource-row" key={file.id} onClick={()=>{const task=tasks.find(item=>item.id===file.taskId);if(task)show(task,'files',file.id);}}><Document/><span>{artifactDisplayName(file)}</span><ArrowRight/></button>):<p>{t('还没有生成文件','No files created yet')}</p>}</section>
+    <section><h3>{t('参与助理','Participating agents')}<span>{agents.length}</span></h3>{agents.length?agents.map(agent=>onAgent?<button className="task-resource-row" key={agent.id} onClick={()=>{setOpen(false);onAgent(agent.id);}}><AgentAvatar agent={agent} size={28}/><span className="task-resource-copy">{agent.name}<small>{agent.role}</small></span><ArrowRight/></button>:<div className="task-resource-row" key={agent.id}><AgentAvatar agent={agent} size={28}/><span className="task-resource-copy">{agent.name}<small>{agent.role}</small></span></div>):<p>SecondU</p>}</section>
     <section><h3>{t('来源与附件','Sources and attachments')}<span>{resources.sources.length+resources.attachments.length}</span></h3>{resources.sources.map(item=><button key={`${item.taskId}:${item.id}`} className="task-resource-row" onClick={()=>{setOpen(false);setSource(item);}}><Document/><span>{item.title}<small>{t('任务保存的来源节选','Source excerpt saved with the task')}</small></span><ArrowRight/></button>)}{resources.attachments.map(item=><a className="task-resource-row" key={item.id} href={item.url} target="_blank" rel="noopener noreferrer"><Document/><span>{item.name}</span><ArrowRight/></a>)}{!resources.sources.length&&!resources.attachments.length&&<p>{t('本次对话没有已记录的来源或附件','No recorded sources or attachments in this chat')}</p>}</section>
     {latest&&<footer><Button color="secondary" variant="ghost" size="sm" onClick={()=>show(latest,'activity')}>{t('工作过程','Activity')}</Button><Button color="secondary" variant="ghost" size="sm" onClick={()=>show(latest,'computer')}><Desktop/>{t('执行电脑','Execution computer')}</Button></footer>}
   </>;

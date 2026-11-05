@@ -1,0 +1,16 @@
+{
+  "interface": {
+    "displayName": "游戏原型与试玩检查",
+    "shortDescription": "Game and spatial systems",
+    "localized": {
+      "title": {
+        "zh": "游戏原型与试玩检查",
+        "en": "Game prototyping"
+      },
+      "description": {
+        "zh": "梳理操作和反馈，制定试玩步骤，记录体验与数值问题。",
+        "en": "Outline controls and feedback, plan playtests, and record experience and balance issues."
+      }
+    }
+  }
+}

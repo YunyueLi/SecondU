@@ -1,0 +1,96 @@
+{
+  "name": "secondu-team-research-brief",
+  "version": "1.0.0",
+  "description": "Collect primary evidence, challenge it independently and prepare a traceable decision brief.",
+  "license": "MIT",
+  "author": {
+    "name": "SecondU contributors"
+  },
+  "expertType": "team",
+  "agentName": "research-brief-lead",
+  "agents": [
+    "agents/research-brief-lead.md",
+    "agents/research.md",
+    "agents/challenge.md",
+    "agents/editor.md"
+  ],
+  "displayName": {
+    "zh": "研究与决策简报团",
+    "en": "Research and decision team"
+  },
+  "displayDescription": {
+    "zh": "围绕明确问题收集一手依据、独立质疑，再整理可追溯的决策简报。",
+    "en": "Collect primary evidence, challenge it independently and prepare a traceable decision brief."
+  },
+  "teamInfo": {
+    "leadAgent": "research-brief-lead",
+    "memberAgents": [
+      "research",
+      "challenge",
+      "editor"
+    ]
+  },
+  "quickPrompts": [
+    {
+      "zh": "研究这个问题，保留一手来源、冲突证据和结论的适用条件。",
+      "en": "Research this question with primary sources, conflicting evidence and limits."
+    }
+  ],
+  "secondu": {
+    "workflow": [
+      {
+        "id": "evidence",
+        "title": {
+          "zh": "收集一手证据",
+          "en": "Collect evidence"
+        },
+        "members": [
+          "research"
+        ],
+        "after": [],
+        "description": {
+          "zh": "明确时间范围和决策问题；查找并实际打开原始来源。记录来源日期、关键事实、冲突和未知，不编造链接。交付 sources.csv 与 evidence.md。",
+          "en": "Scope the time and decision. Open primary sources and record dates, facts, conflicts and unknowns without invented links. Deliver sources.csv and evidence.md."
+        },
+        "required": true
+      },
+      {
+        "id": "challenge",
+        "title": {
+          "zh": "质疑与交叉核对",
+          "en": "Challenge findings"
+        },
+        "members": [
+          "challenge"
+        ],
+        "after": [
+          "evidence"
+        ],
+        "description": {
+          "zh": "独立核对最影响结论的事实、来源时效和推理跳跃；提出反例，区分有证据的反驳与仅仅可能。交付 review.md。",
+          "en": "Independently check decisive facts, freshness and reasoning gaps; distinguish evidenced counterexamples from possibilities. Deliver review.md."
+        },
+        "required": true
+      },
+      {
+        "id": "brief",
+        "title": {
+          "zh": "形成决策简报",
+          "en": "Write decision brief"
+        },
+        "members": [
+          "editor"
+        ],
+        "after": [
+          "evidence",
+          "challenge"
+        ],
+        "description": {
+          "zh": "依据实际证据和复核结果写出结论、可选方案、条件与下一步。明确仍未解决的争议，所有关键事实可回到来源。交付 brief.md。",
+          "en": "Synthesize evidence and review into a conclusion, options, conditions and next actions. Preserve unresolved disagreements and trace facts. Deliver brief.md."
+        },
+        "required": true
+      }
+    ]
+  }
+}

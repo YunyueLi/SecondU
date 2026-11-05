@@ -1,0 +1,15 @@
+{
+  "interface": {
+    "display_name": "内容选题与排期",
+    "localized": {
+      "title": {
+        "zh": "内容选题与排期",
+        "en": "Content planning"
+      },
+      "description": {
+        "zh": "围绕受众拟定选题、文章大纲和发布计划。",
+        "en": "Plan topics, article outlines and a publishing schedule for your audience."
+      }
+    }
+  }
+}

@@ -1,3 +1,5 @@
+import capabilityCatalogue from '../../shared/expert-capabilities.json' with {type:'json'};
+import type {AgentCapabilities} from '../../shared/capabilities';
 import type { AgentProfile, AvatarStyle, Bootstrap } from '../../shared/contracts';
 import { CATALOGUE_GROUPS } from './expertCatalogue.ts';
 import { EXPERT_DOMAINS, expertDomainById } from './expertDomains.ts';
@@ -98,10 +100,14 @@ export function recommendExperts(data:Evidence):ExpertRecommendation[] {
     return {template,reasons,score:reasons.reduce((sum,reason)=>sum+reason.score,0),focusId:matches[0]?.focusId||template.focuses[0].id};
   }).sort((a,b)=>b.score-a.score);
 }
-export function expertDraft(template:ExpertTemplate,locale:string,name:string,focusId:string,answer=''):Pick<AgentProfile,'name'|'role'|'instructions'> {
+export function expertCapabilities(template:ExpertTemplate,locale:string):AgentCapabilities {
+ const domain=capabilityCatalogue.domains[template.category as keyof typeof capabilityCatalogue.domains],language=locale==='en'?'en':'zh';
+ return {skillIds:domain?.skillIds??[],connectorIds:[],sourceIds:[],templateId:template.id,templateVersion:capabilityCatalogue.version,outputContract:{deliverables:domain?.deliverables[language]??[],checks:domain?.checks[language]??[]}};
+}
+export function expertDraft(template:ExpertTemplate,locale:string,name:string,focusId:string,answer=''):Pick<AgentProfile,'name'|'role'|'instructions'|'capabilities'> {
   const focus=template.focuses.find(item=>item.id===focusId)||template.focuses[0];
   const personal=answer.trim().slice(0,600);
-  return {name:name.trim()||expertText(template.name,locale),role:expertText(template.role,locale),instructions:`${expertText(template.instructions,locale)}\n\n${locale==='en'?'Working focus:':'工作重点：'}${expertText(focus.instruction,locale)}\n\n${expertText(commonBoundary,locale)}${personal?`\n\n${locale==='en'?'User configuration:':'用户主动填写的设置：'}\n${expertText(template.question,locale)}\n${personal}`:''}`};
+  return {capabilities:expertCapabilities(template,locale),name:name.trim()||expertText(template.name,locale),role:expertText(template.role,locale),instructions:`${expertText(template.instructions,locale)}\n\n${locale==='en'?'Working focus:':'工作重点：'}${expertText(focus.instruction,locale)}\n\n${expertText(commonBoundary,locale)}${personal?`\n\n${locale==='en'?'User configuration:':'用户主动填写的设置：'}\n${expertText(template.question,locale)}\n${personal}`:''}`};
 }
 
 const legacyExpertNames:Record<string,Copy>={"decision-facilitator": {"zh": "决策陪练", "en": "Decision facilitator"}, "paper-reader": {"zh": "论文精读伙伴", "en": "Paper reading partner"}, "fiction-coach": {"zh": "故事创作伙伴", "en": "Fiction development partner"}, "prototype-builder": {"zh": "原型搭建伙伴", "en": "Prototype builder"}, "interview-coach": {"zh": "面试陪练", "en": "Interview coach"}, "career-planner": {"zh": "职业探索伙伴", "en": "Career exploration partner"}, "negotiation-prep": {"zh": "谈判准备伙伴", "en": "Negotiation preparation partner"}, "travel-planner": {"zh": "旅行准备伙伴", "en": "Travel preparation partner"}, "fitness-planner": {"zh": "运动计划伙伴", "en": "Exercise planning partner"}, "garden-care": {"zh": "植物养护伙伴", "en": "Plant care partner"}, "pet-care": {"zh": "宠物日常照护伙伴", "en": "Pet routine companion"}, "home-organizer": {"zh": "居家整理伙伴", "en": "Home organization partner"}, "conversation-coach": {"zh": "沟通准备伙伴", "en": "Conversation preparation partner"}, "celebration-planner": {"zh": "聚会筹备伙伴", "en": "Celebration planner"}, "gift-planner": {"zh": "礼物选择伙伴", "en": "Gift planning partner"}, "conflict-prep": {"zh": "分歧沟通陪练", "en": "Conflict conversation partner"}, "boundary-coach": {"zh": "边界表达伙伴", "en": "Boundary-setting partner"}, "reflection-partner": {"zh": "日常复盘伙伴", "en": "Reflection partner"}, "music-practice": {"zh": "音乐练习伙伴", "en": "Music practice partner"}, "makers-guide": {"zh": "手作项目伙伴", "en": "Craft project partner"}};
@@ -109,5 +115,5 @@ export function existingExpert(agents:AgentProfile[],template:ExpertTemplate):Ag
   const legacy=legacyExpertNames[template.id];
   const instructions=[template.instructions.zh,template.instructions.en];
   if(legacy)instructions.push(template.instructions.zh.replace(`你是一位${template.name.zh}。`,`你是一位${legacy.zh}。`),template.instructions.en.replace(`You are a ${template.name.en.toLowerCase()}.`,`You are a ${legacy.en.toLowerCase()}.`));
-  return agents.find(agent=>instructions.some(prefix=>agent.instructions.startsWith(prefix)));
+  return agents.find(agent=>agent.capabilities?.templateId===template.id||instructions.some(prefix=>agent.instructions.startsWith(prefix)));
 }

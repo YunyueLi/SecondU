@@ -1,0 +1,64 @@
+name: Codex upstream compatibility
+
+on:
+  schedule:
+    - cron: '17 2 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: codex-upstream-compatibility
+  cancel-in-progress: false
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.upstream.outputs.version }}
+      new_version: ${{ steps.upstream.outputs.new_version }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '22'
+      - name: Compare the official stable release with our pin
+        id: upstream
+        run: node scripts/check-codex-update.mjs
+  candidate:
+    needs: discover
+    if: needs.discover.outputs.new_version == 'true'
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    env:
+      CODEX_CANDIDATE_VERSION: ${{ needs.discover.outputs.version }}
+      ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
+      HITHER_TEST_REAL_CODEX: '1'
+      HITHER_TEST_REAL_OFFICE: '0'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Stage the explicit candidate and its upstream notices
+        run: node scripts/check-codex-update.mjs --prepare
+      - name: Verify and extract the candidate
+        run: |
+          node scripts/package-codex-runtime.mjs .local/codex-candidate/runtime .local/codex-candidate/lock.json .local/codex-candidate/notices
+          echo "HITHER_CODEX_BIN=$PWD/.local/codex-candidate/runtime/bin/codex" >> "$GITHUB_ENV"
+      - name: Exercise permissions, tool execution, resume and provider protocols locally
+        run: node --test tests/codex.test.mjs tests/codex-extraction-runtime.test.mjs tests/codex-runtime-integration.test.mjs
+      - name: Record candidate outcome
+        if: always()
+        run: node -e "require('node:fs').appendFileSync(process.env.GITHUB_STEP_SUMMARY, 'Candidate ' + process.env.CODEX_CANDIDATE_VERSION + ' on ' + process.platform + '-' + process.arch + '. Review the test result before updating shared/codex-runtime.json and releasing SecondU.\n')"
