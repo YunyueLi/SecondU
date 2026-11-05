@@ -332,7 +332,11 @@ test('installed runtime initializes with an isolated home without starting a mod
   assert.equal(config.permissions.hither.network.enabled, false);
   assert.equal(config.features.multi_agent, false);
   assert.equal(config.features.multi_agent_v2, false);
-  const outside = path.join(path.dirname(workspace), 'outside.txt');
+  // The sandbox must materialize the workspace's ancestors to mount it.
+  // Check an actual private sibling directory, never an ancestor placeholder.
+  const privateSibling = path.join(path.dirname(workspace), 'private-sibling');
+  await mkdir(privateSibling, { mode: 0o700 });
+  const outside = path.join(privateSibling, 'outside.txt');
   await writeFile(outside, 'boundary-test');
   const insideFile = path.join(workspace, 'inside.txt');
   const allowed = await transport.request('command/exec', { command: ['/bin/sh', '-c', 'printf inside > "$1"', 'test', insideFile], cwd: workspace, timeoutMs: 3000 });
