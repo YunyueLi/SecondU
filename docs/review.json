@@ -61,7 +61,7 @@
       "id": "delivery",
       "title": "验证并交付本机版本",
       "summary": "v0.3.0 源码、桌面包、更新源与官网统一交付，公开结果单独核验。",
-      "status": "documented",
+      "status": "verified",
       "document": "DEVELOPMENT.md",
       "summaryEn": "v0.3.0 brings source, desktop archive, update feed and website into one release, with public delivery checked separately.",
       "titleEn": "Verify and deliver",
@@ -444,6 +444,20 @@
       "status": "in_progress",
       "document": "DEVELOPMENT.md",
       "section": "2026-10-25 官网财务展示与示例数据继续修正"
+    },
+    {
+      "id": "expert-workflows-v030",
+      "date": "2026-11-05",
+      "title": "内置执行组件与可复用的专家协作",
+      "titleEn": "Bundled runtime and reusable expert workflows",
+      "summary": "应用内置固定版本 CLI；协作方案可审阅、执行、恢复和复用，交付文件可追溯。更新财务预览、多币种、首页、窄屏及桌面退出保护。",
+      "summaryEn": "An integrated runtime powers reviewable, resumable expert workflows and traceable file handoffs. Finance previews, currency handling, navigation, narrow layouts and quit protection were refined.",
+      "status": "verified",
+      "evidence": [
+        "public-release-v030"
+      ],
+      "document": "DEVELOPMENT.md",
+      "section": "2026-11-05 v0.3.0 统一发布与本地产物清理"
     }
   ],
   "capabilities": [
@@ -1126,6 +1140,18 @@
       "detailEn": "macOS and Ubuntu CI, website deployment, native save/reopen, public download verification and in-app update checks passed. Bilingual documentation, 24 posters and 16 motion files are aligned.",
       "document": "DEVELOPMENT.md",
       "section": "2026-10-25 v0.2.1 公开交付"
+    },
+    {
+      "id": "public-release-v030",
+      "title": "v0.3.0 公开交付",
+      "titleEn": "v0.3.0 public release",
+      "scope": "公开源码、安装包与应用内更新源。",
+      "scopeEn": "Public source, installer archive and update feed.",
+      "status": "verified",
+      "detail": "macOS 和 Ubuntu 检查通过。公开安装包与签名时的 SHA-256 一致，更新描述包含相同的版本、文件长度及 Ed25519 签名。",
+      "detailEn": "macOS and Ubuntu checks passed. The public archive matches its signing-time SHA-256; the update feed identifies the same version, size and Ed25519 signature.",
+      "document": "DEVELOPMENT.md",
+      "section": "2026-11-05 v0.3.0 统一发布与本地产物清理"
     }
   ],
   "boundaries": [
@@ -1319,14 +1345,24 @@
       "detailEn": "v0.2.1 brings accounts, assets, transactions and planning together, expands connections, navigation and computer setup, and refreshes the bilingual website and product guide.",
       "commit": "9532abbbb43d4dd5d869cfe0ddcd15dd5356a267",
       "iteration": "finance-workspace-v021"
+    },
+    {
+      "id": "expert-workflows-v030-release",
+      "at": "2026-11-05T04:39:16Z",
+      "title": "用自己的模型运行专家协作",
+      "titleEn": "Run expert workflows with your own model",
+      "detail": "v0.3.0 随应用交付执行组件，支持审阅团队分工、保存和恢复工作流，以及查看成员交付的文件。",
+      "detailEn": "v0.3.0 ships the runtime with the app, supports reviewing team plans and resuming saved workflows, and exposes each member’s files.",
+      "commit": "79f4ac63117a702a5b0b82e7732adec4fd3d4311",
+      "iteration": "expert-workflows-v030"
     }
   ],
   "titleEn": "SecondU: product decisions, implementation and evidence",
   "summaryEn": "v0.3.0 integrates the bundled runtime, expert workflows, conversation artifacts, finance and interface refinements.",
   "latestRelease": {
-    "version": "v0.2.1",
-    "publishedAt": "2026-10-24T23:36:08Z",
-    "commit": "9532abbbb43d4dd5d869cfe0ddcd15dd5356a267",
-    "url": "https://github.com/YunyueLi/SecondU/releases/tag/v0.2.1"
+    "version": "v0.3.0",
+    "publishedAt": "2026-11-05T04:39:16Z",
+    "commit": "79f4ac63117a702a5b0b82e7732adec4fd3d4311",
+    "url": "https://github.com/YunyueLi/SecondU/releases/tag/v0.3.0"
   }
 }

@@ -1,10 +1,10 @@
-import { cp, mkdir, mkdtemp, readFile, writeFile, access, rename, lstat } from 'node:fs/promises';
+import { cp, mkdir, rm, readFile, writeFile, access, rename, lstat } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { copyDesktopRuntime } from '../scripts/package-twin-mcp.mjs';
 import { packageCodexRuntime } from '../scripts/package-codex-runtime.mjs';
-import { replacePackagedApp } from './package-output.mjs';
+import { replacePackagedApp, withPackageStaging } from './package-output.mjs';
 import { applyUpdaterPlist, buildUpdater, embedUpdater, signUpdaterApp, validateUpdaterConfig } from './build-updater.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -17,48 +17,52 @@ await access(path.join(root, 'dist/index.html'));
 // Electron 44 downloads its native runtime on first use, not during npm ci.
 // Run its checksum-verifying installer so a clean checkout can package directly.
 execFileSync(process.execPath, [path.join(root, 'node_modules/electron/install.js')], { stdio: 'inherit' });
-const updaterBuild = await buildUpdater({root});
 const deliverable = path.join(root, `out/${brand.desktop.bundleName}.app`);
 await mkdir(path.join(root, '.local'), { recursive: true });
-const output = path.join(await mkdtemp(path.join(root, '.local/package-')), `${brand.desktop.bundleName}.app`);
-await cp(path.join(root, 'node_modules/electron/dist/Electron.app'), output, { recursive: true, verbatimSymlinks: true, filter: includePackageFile });
-const resources = path.join(output, 'Contents/Resources');
-const packaged = path.join(resources, 'app');
-await mkdir(packaged, { recursive: true });
-for (const name of ['dist', 'server', 'desktop', 'shared', 'capabilities', 'docs', 'README.md', 'README.zh-CN.md', 'QUICKSTART.md', 'CONTRIBUTING.md', 'SECURITY.md', 'CHANGELOG.md', 'THIRD_PARTY_NOTICES.md', 'LICENSE']) {
-  await cp(path.join(root, name), path.join(packaged, name), { recursive: true, filter: includePackageFile });
-}
-// These reviewed, synthetic attachments make CONTEXT-BENCHMARK.md usable offline.
-// Never copy a benchmark run directory or local model-session logs implicitly.
-const publicBenchmarkAttachments = [
-  ...['inputs.json', 'model-results.json', 'review.json', 'review.html'].map(name => path.join('benchmarks/results/2026-10-01', name)),
-  ...['inputs.json', 'plan.json', 'model-results.json', 'review.json'].flatMap(name => [
-    path.join('benchmarks/results/2026-10-01-v2', name),
-    path.join('benchmarks/results/2026-10-01-v2/pilot', name),
-  ]),
-];
-for (const relative of publicBenchmarkAttachments) {
-  if (!(await lstat(path.join(root, relative))).isFile()) throw new Error('A public benchmark attachment must be a regular file.');
-  await mkdir(path.dirname(path.join(packaged, relative)), { recursive: true });
-  await cp(path.join(root, relative), path.join(packaged, relative), { filter: includePackageFile });
-}
-await copyDesktopRuntime(root, packaged);
-await packageCodexRuntime({root, output:path.join(packaged,'runtime/codex')});
-await embedUpdater(output, {root, build: updaterBuild});
-await writeFile(path.join(packaged, 'package.json'), JSON.stringify({ name: brand.compatibility.applicationId, productName: brand.name, [brand.compatibility.packagedFlag]: true, version, type: 'module', main: 'desktop/main.cjs' }, null, 2));
-await rename(path.join(output, 'Contents/MacOS/Electron'), path.join(output, 'Contents/MacOS',brand.desktop.executable));
-const plist = path.join(output, 'Contents/Info.plist');
-let info = await readFile(plist, 'utf8');
-for (const [key, value] of Object.entries({ CFBundleExecutable: brand.desktop.executable, CFBundleDisplayName: brand.name, CFBundleName: brand.desktop.bundleName, CFBundleIdentifier: brand.desktop.bundleIdentifier, CFBundleShortVersionString: version, CFBundleVersion: version })) {
-  info = info.replace(new RegExp(`(<key>${key}</key>\\s*<string>)[^<]*(</string>)`), `$1${value}$2`);
-}
-info = info.replace(/(<key>CFBundleIconFile<\/key>\s*<string>)[^<]*(<\/string>)/, `$1${brand.desktop.iconFile}$2`);
-info = applyUpdaterPlist(info, updaterConfig);
-await cp(path.join(root, 'desktop/assets',brand.desktop.iconFile), path.join(resources,brand.desktop.iconFile), { filter: includePackageFile });
-await writeFile(plist, info);
-// Preserve Sparkle's signed helpers and entitlements. Local ad-hoc signing is
-// applied inside out to our bridge and the containing app, not recursively.
-await signUpdaterApp(output);
-await mkdir(path.dirname(deliverable), { recursive: true });
-await replacePackagedApp(output, deliverable);
+await withPackageStaging(path.join(root, '.local'), async staging => {
+  const output = path.join(staging, `${brand.desktop.bundleName}.app`);
+  const nativeStage = path.join(staging, 'updater');
+  const updaterBuild = await buildUpdater({root, outputDir: nativeStage});
+  await cp(path.join(root, 'node_modules/electron/dist/Electron.app'), output, { recursive: true, verbatimSymlinks: true, filter: includePackageFile });
+  const resources = path.join(output, 'Contents/Resources');
+  const packaged = path.join(resources, 'app');
+  await mkdir(packaged, { recursive: true });
+  for (const name of ['dist', 'server', 'desktop', 'shared', 'capabilities', 'docs', 'README.md', 'README.zh-CN.md', 'QUICKSTART.md', 'CONTRIBUTING.md', 'SECURITY.md', 'CHANGELOG.md', 'THIRD_PARTY_NOTICES.md', 'LICENSE']) {
+    await cp(path.join(root, name), path.join(packaged, name), { recursive: true, filter: includePackageFile });
+  }
+  // These reviewed, synthetic attachments make CONTEXT-BENCHMARK.md usable offline.
+  // Never copy a benchmark run directory or local model-session logs implicitly.
+  const publicBenchmarkAttachments = [
+    ...['inputs.json', 'model-results.json', 'review.json', 'review.html'].map(name => path.join('benchmarks/results/2026-10-01', name)),
+    ...['inputs.json', 'plan.json', 'model-results.json', 'review.json'].flatMap(name => [
+      path.join('benchmarks/results/2026-10-01-v2', name),
+      path.join('benchmarks/results/2026-10-01-v2/pilot', name),
+    ]),
+  ];
+  for (const relative of publicBenchmarkAttachments) {
+    if (!(await lstat(path.join(root, relative))).isFile()) throw new Error('A public benchmark attachment must be a regular file.');
+    await mkdir(path.dirname(path.join(packaged, relative)), { recursive: true });
+    await cp(path.join(root, relative), path.join(packaged, relative), { filter: includePackageFile });
+  }
+  await copyDesktopRuntime(root, packaged);
+  await packageCodexRuntime({root, output:path.join(packaged,'runtime/codex')});
+  await embedUpdater(output, {root, build: updaterBuild});
+  await rm(nativeStage, { recursive: true });
+  await writeFile(path.join(packaged, 'package.json'), JSON.stringify({ name: brand.compatibility.applicationId, productName: brand.name, [brand.compatibility.packagedFlag]: true, version, type: 'module', main: 'desktop/main.cjs' }, null, 2));
+  await rename(path.join(output, 'Contents/MacOS/Electron'), path.join(output, 'Contents/MacOS',brand.desktop.executable));
+  const plist = path.join(output, 'Contents/Info.plist');
+  let info = await readFile(plist, 'utf8');
+  for (const [key, value] of Object.entries({ CFBundleExecutable: brand.desktop.executable, CFBundleDisplayName: brand.name, CFBundleName: brand.desktop.bundleName, CFBundleIdentifier: brand.desktop.bundleIdentifier, CFBundleShortVersionString: version, CFBundleVersion: version })) {
+    info = info.replace(new RegExp(`(<key>${key}</key>\\s*<string>)[^<]*(</string>)`), `$1${value}$2`);
+  }
+  info = info.replace(/(<key>CFBundleIconFile<\/key>\s*<string>)[^<]*(<\/string>)/, `$1${brand.desktop.iconFile}$2`);
+  info = applyUpdaterPlist(info, updaterConfig);
+  await cp(path.join(root, 'desktop/assets',brand.desktop.iconFile), path.join(resources,brand.desktop.iconFile), { filter: includePackageFile });
+  await writeFile(plist, info);
+  // Preserve Sparkle's signed helpers and entitlements. Local ad-hoc signing is
+  // applied inside out to our bridge and the containing app, not recursively.
+  await signUpdaterApp(output);
+  await mkdir(path.dirname(deliverable), { recursive: true });
+  await replacePackagedApp(output, deliverable);
+});
 console.log(deliverable);
