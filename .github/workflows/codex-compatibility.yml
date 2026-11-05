@@ -57,6 +57,9 @@ jobs:
         run: |
           node scripts/package-codex-runtime.mjs .local/codex-candidate/runtime .local/codex-candidate/lock.json .local/codex-candidate/notices
           echo "HITHER_CODEX_BIN=$PWD/.local/codex-candidate/runtime/bin/codex" >> "$GITHUB_ENV"
+      - name: Enable the verified Linux sandbox helper on restricted Ubuntu runners
+        if: runner.os == 'Linux'
+        run: bash .github/scripts/ci-bwrap-profile.sh .local/codex-candidate/runtime
       - name: Exercise permissions, tool execution, resume and provider protocols locally
         run: node --test tests/codex.test.mjs tests/codex-extraction-runtime.test.mjs tests/codex-runtime-integration.test.mjs
       - name: Record candidate outcome
