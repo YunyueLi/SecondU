@@ -11,7 +11,7 @@ export const desktopRuntimePackages=Object.freeze([
   ...twinMcpRuntimePackages,
   'fast-xml-parser','@nodable/entities','fast-xml-builder','is-unsafe',
   'path-expression-matcher','strnum','xml-naming','anynum',
-  'yaml','fflate','docx','exceljs','pptxgenjs','@deepseek-ai/libreoffice-kit',
+  'yaml','fflate','docx','exceljs','pptxgenjs','@deepseek-ai/libreoffice-kit','pdfjs-dist',
 ]);
 const dependencyEntries=value=>JSON.stringify(Object.entries(value??{}).sort(([a],[b])=>a.localeCompare(b)));
 

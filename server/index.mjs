@@ -53,6 +53,9 @@ import { getNavigationPreferences, saveNavigationPreferences } from './navigatio
 import { saveAttachment, getAttachment, publicAttachment, attachmentResponse, STORED_ATTACHMENT_LIMIT } from './attachments.mjs';
 import { UpdateLifecycle, installQuitIpc } from './update-lifecycle.mjs';
 import { FinanceService } from './finance/service.mjs';
+import { LibraryService } from './library.mjs';
+import { chooseLibraryFiles } from './file-picker.mjs';
+import { streamLibraryFile } from './library-media.mjs';
 
 const here=path.dirname(fileURLToPath(import.meta.url));
 const PROJECT=path.resolve(here,'..');
@@ -87,7 +90,7 @@ function createComputerRuntime(computerInfo,probeComputer){
   };
 }
 
-export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJECT,'.hither'),seed=true,seedLocale='zh-CN',runCodex,runImCli,runResourceCli,scheduler=true,computerInfo,probeComputer,chooseDirectory=chooseProjectDirectory,distDir=path.join(PROJECT,'dist'),executionPolicy,modelFetch=fetch,remoteTransport,developmentRoot=PROJECT,officePreviewOptions,imSetupOptions,financeOptions,_allowDemoSpace=true,_parentPort,_protectedDataDirectory,_updateLifecycle,_computerRuntime,_spaceKey='main'}={}) {
+export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJECT,'.hither'),seed=true,seedLocale='zh-CN',runCodex,runImCli,runResourceCli,scheduler=true,computerInfo,probeComputer,chooseDirectory=chooseProjectDirectory,chooseFiles=chooseLibraryFiles,distDir=path.join(PROJECT,'dist'),executionPolicy,modelFetch=fetch,remoteTransport,developmentRoot=PROJECT,officePreviewOptions,imSetupOptions,financeOptions,_allowDemoSpace=true,_parentPort,_protectedDataDirectory,_updateLifecycle,_computerRuntime,_spaceKey='main'}={}) {
   const updateLifecycle=_updateLifecycle??new UpdateLifecycle();
   const store=new Store(dataDir,{seed,seedLocale,protectedDataDirectory:_protectedDataDirectory});
   const policy=resolveExecutionPolicy(executionPolicy,store.meta('profile'));
@@ -97,7 +100,8 @@ export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJEC
     ensureDecisionExample(store);
   }
   const spaceId=createHash('sha256').update(path.resolve(store.directory)).digest('hex').slice(0,24);
-  const connectors=new ConnectorService(store,{blockedPorts:()=>[58644,58645,server?.address()?.port,_parentPort?.()],oauth:{requestGate:(req,work)=>updateLifecycle.runRequest(req,work)}});
+  const library=new LibraryService(store,{automatic:scheduler&&policy!=='showcase',canRun:()=>updateLifecycle.accepting});
+  const connectors=new ConnectorService(store,{library,blockedPorts:()=>[58644,58645,server?.address()?.port,_parentPort?.()],oauth:{requestGate:(req,work)=>updateLifecycle.runRequest(req,work)}});
   const im=new ImCliService(store,{runCli:runImCli});
   const imSetup=new ImSetupService(store,{im,executionPolicy:policy,...imSetupOptions});
   const twinMcpGrants=new TwinMcpGrants(store);
@@ -123,7 +127,7 @@ export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJEC
     if(childApps.has(space))return childApps.get(space);
     const directory=localSpaceDirectory(store.directory,space,{create});
     if(!directory||(!create&&!existsSync(path.join(directory,'hither.sqlite'))))throw new HttpError(404,'尚未创建此空间，请从设置进入。','space_missing');
-    const app=createApp({dataDir:directory,seed:isExampleSpace(space),seedLocale:space===US_SPACE?'en':'zh-CN',executionPolicy:isExampleSpace(space)?'showcase':'personal',runCodex,runImCli,runResourceCli,scheduler,chooseDirectory,distDir,modelFetch,remoteTransport,developmentRoot,officePreviewOptions,imSetupOptions,financeOptions,_allowDemoSpace:false,_parentPort:()=>server.address()?.port,_protectedDataDirectory:store.protectedDataDirectory,_updateLifecycle:updateLifecycle,_computerRuntime:computerRuntime,_spaceKey:space});
+    const app=createApp({dataDir:directory,seed:isExampleSpace(space),seedLocale:space===US_SPACE?'en':'zh-CN',executionPolicy:isExampleSpace(space)?'showcase':'personal',runCodex,runImCli,runResourceCli,scheduler,chooseDirectory,chooseFiles,distDir,modelFetch,remoteTransport,developmentRoot,officePreviewOptions,imSetupOptions,financeOptions,_allowDemoSpace:false,_parentPort:()=>server.address()?.port,_protectedDataDirectory:store.protectedDataDirectory,_updateLifecycle:updateLifecycle,_computerRuntime:computerRuntime,_spaceKey:space});
     childApps.set(space,app);return app;
   }
   function guard(req) {
@@ -249,6 +253,44 @@ export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJEC
     if(avatarUpload)return respond(res,200,saveAgentAvatar(store,key,body));
     if(resource==='health'&&method==='GET')return respond(res,200,{application:'hither-desktop',version:VERSION,revision:runtimeRevision,status:'ok',spaceId});
     if(resource==='bootstrap'&&method==='GET')return respond(res,200,bootstrap());
+    if(resource==='library'){
+      const params=Object.fromEntries(url.searchParams);
+      if(key==='storage'&&!action){
+        if(method==='GET')return respond(res,200,library.storageStatus());
+        if(method==='PUT')return respond(res,200,library.updateStorage(body));
+      }
+      if(key==='choose-files'&&!action&&method==='POST'){
+        if(Object.keys(body).length)throw new HttpError(400,'文件选择不接受路径或命令参数。','invalid_picker_request');
+        const controller=new AbortController();const cancel=()=>{if(!res.writableFinished)controller.abort();};res.once('close',cancel);
+        try{return respond(res,200,{paths:await chooseFiles({signal:controller.signal})});}finally{res.removeListener('close',cancel);}
+      }
+      if(key==='collections'){
+        if(method==='POST'&&!action)return respond(res,201,library.createCollection(body));
+        if(method==='PUT'&&action&&!parts[4])return respond(res,200,library.renameCollection(action,body.name));
+        if(method==='POST'&&action&&parts[4]==='files')return respond(res,200,await library.addCollectionFiles(action,body.paths));
+        if(method==='GET'&&action&&parts[4]==='issues')return respond(res,200,library.collectionIssues(action,params));
+      }
+      if(key==='existing-attachments'){
+        if(method==='GET'&&!action)return respond(res,200,library.enumerateExistingAttachments(params));
+        if(method==='GET'&&action==='status')return respond(res,200,library.existingAttachmentsStatus());
+        if(method==='POST'&&action==='scan')return respond(res,202,library.scanExistingAttachments());
+      }
+      if(method==='GET'&&key==='roots')return respond(res,200,{items:library.roots()});
+      if(method==='POST'&&key==='roots'&&!action)return respond(res,201,await library.register(body));
+      if(method==='POST'&&key==='roots'&&action&&parts[4]){library.action(action,parts[4]);return respond(res,200,{items:library.roots()});}
+      if(method==='GET'&&key==='documents'&&!action)return respond(res,200,library.list({...params,direct:params.direct==='true'}));
+      if(method==='GET'&&key==='folders')return respond(res,200,library.folders(params));
+      if(method==='GET'&&key==='search')return respond(res,200,library.search(params));
+      if(key==='documents'&&action){
+        if(method==='GET'&&!parts[4])return respond(res,200,library.read(action,params));
+        if(method==='GET'&&parts[4]==='versions')return respond(res,200,{items:library.versions(action)});
+        if(method==='POST'&&parts[4]==='evidence')return respond(res,201,library.evidence(action,body));
+        if(['GET','HEAD'].includes(method)&&parts[4]==='original'){
+          return streamLibraryFile(await library.original(action),req,res,{inline:params.inline==='true'});
+        }
+      }
+      throw new HttpError(404,'资料库接口不存在。','not_found');
+    }
     if(resource==='twin-building'){
       if(parts.length===2&&method==='GET')return respond(res,200,twinBuilding.snapshot());
       if(key==='captures'&&parts.length===3&&method==='POST')return respond(res,201,twinBuilding.create(body));
@@ -519,7 +561,7 @@ export function createApp({dataDir=process.env.HITHER_DATA_DIR??path.join(PROJEC
   server=http.createServer(handleRequest);
   server.requestTimeout=30000;server.headersTimeout=10000;
   let closing;
-  return {server,store,runner,twinBuilding,connectors,finance,delegations,remoteComputers,remoteTasks,bootstrap,handleRequest,updateLifecycle,close(){return closing??=(async()=>{await finance.close();for(const app of childApps.values())await app.close();await connectors.close();await imSetup.close();remoteComputers.close();await runner.close();await twinBuilding.settled();await delegations.close();if(server.listening)await new Promise((resolve,reject)=>server.close(error=>error?reject(error):resolve()));store.close();if(!_updateLifecycle)updateLifecycle.dispose();})();}};
+  return {server,store,runner,twinBuilding,connectors,library,finance,delegations,remoteComputers,remoteTasks,bootstrap,handleRequest,updateLifecycle,close(){return closing??=(async()=>{await library.close();await finance.close();for(const app of childApps.values())await app.close();await connectors.close();await imSetup.close();remoteComputers.close();await runner.close();await twinBuilding.settled();await delegations.close();if(server.listening)await new Promise((resolve,reject)=>server.close(error=>error?reject(error):resolve()));store.close();if(!_updateLifecycle)updateLifecycle.dispose();})();}};
 }
 
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){

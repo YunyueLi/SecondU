@@ -21,6 +21,7 @@ import { HITHER_IDENTITY, HITHER_LANGUAGE_POLICY } from './identity.mjs';
 import { getAppearance } from './local-appearance.mjs';
 import { messageInput, taskAttachmentInput } from './attachments.mjs';
 import { personalContextFor, contextSourceRecords } from './personal-context.mjs';
+import { libraryEvidenceState } from './library-evidence.mjs';
 import { artifactContentMetadata, binaryArtifactMime, encodeBinaryArtifact, BINARY_ARTIFACT_LIMIT, ARTIFACT_COLLECTION_LIMIT } from './artifact-content.mjs';
 import { officeType, officeInspectionContent } from './office-content.mjs';
 import { taskEventActivity } from './task-event-activity.mjs';
@@ -53,7 +54,8 @@ export function evidenceFor(store,records,{budgetChars=12000,maxSourceChars=3000
     }):undefined;
     if(selectedMemory&&!selectedMemory.length){omit(sourceId);continue;}
     const excerpt=selectedMemory?[...new Set(selectedMemory)].join('\n\n').slice(0,limit):source.text.slice(offset,offset+limit);
-    evidence.sources.push({id:source.id,title:source.title,kind:source.kind,demo:source.demo,excerpt,sha256:createHash('sha256').update(source.text).digest('hex'),truncated:excerpt!==source.text,...(selectedMemory?{selection:'selected_import_entries'}:bounded?{offset}: {})});
+    const libraryEvidence=libraryEvidenceState(store,source);
+    evidence.sources.push({id:source.id,title:source.title,kind:source.kind,demo:source.demo,excerpt,sha256:createHash('sha256').update(source.text).digest('hex'),truncated:excerpt!==source.text,...(libraryEvidence?{libraryEvidence}:{}),...(selectedMemory?{selection:'selected_import_entries'}:bounded?{offset}: {})});
     evidence.totalExcerptChars+=excerpt.length;
   }
   if(bounded){
@@ -66,6 +68,7 @@ export function buildPrompt(task,facts,agent,previous=[],evidence={trust:'untrus
   const current=currentMessage(task);
   const prior=previous.map(({agent,text})=>({agent,text:text.slice(0,task.roomId?1600:4000),truncated:text.length>(task.roomId?1600:4000)})).slice(-8);
   return [HITHER_IDENTITY,HITHER_LANGUAGE_POLICY,`本轮界面语言：${locale==='en'?'英语':'中文'}。`,task.projectId?`你正在 ${brand.name} 中用户绑定的本机项目目录执行任务。可按当前任务需要读取和编辑项目文件，不能擅自访问目录外的私人资料。`:`你正在 ${brand.name} 的独立任务工作区执行一个用户授权的任务。`,
+    '资料证据的 libraryEvidence 若标记 newer_version 或 unverified，不能把旧引用当成已核验的当前情况。通过本轮已选择的资料库连接检索当前版本；没有权限或新证据时说明需要复核。文件改变不等于个人事实已被否定，不能自动改写本人确认的记忆。',
     '用户当前消息决定本轮任务。背景、历史项目、过往要求和其他成员的输出仅供参考；只有当前消息明确继续同一事项时才沿用，不得自动恢复旧计划。问候、致谢和闲聊用一至两句自然回复。',
     task.proactive?`本对话最初由 SecondU 主动发起${task.proactive.evaluationTaskId?'，此前只读评估写出了一份分析或草稿，没有执行外部动作':'，应用提示未经模型判断'}。它不是用户请求，也不代表用户已接受建议。只处理下面用户当前回复；所附来源为当前版本的未验证材料。用户略过或拒绝不代表长期偏好，不能据此改写个人认知。`:'',
     '群聊按你的角色回答当前问题，只补充有价值的新观点；不要复述前面成员的全文，也不要因为其输出很长就延长自己的回复。讨论和提问默认只在对话中回答。',

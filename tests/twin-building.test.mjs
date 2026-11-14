@@ -61,10 +61,11 @@ test('legacy exploration review keeps the original identity and metadata without
   const result=await f.api(`twin-building/captures/${capture.id}/review`,decisions(capture));assert.equal(result.status,200);assert.equal(f.app.store.list('sources').length,1);assert.deepEqual(f.app.store.require('sources',source.id),source);assert.deepEqual(f.app.store.list('facts')[0].sourceIds,[source.id]);assert.equal(f.app.twinBuilding.get(capture.id).sourceId,capture.sourceId);
 });
 
-test('long source exploration retains the entire original but labels and validates the actual bounded model input',async t=>{
-  const f=await fixture(t),full=fixtureText+'A'.repeat(50000)+'SYNTHETIC_UNSENT_TAIL',source=(await f.api('sources',{title:'Long synthetic source',text:full})).value;
+test('long source exploration reads every part and retains the entire original',async t=>{
+  const f=await fixture(t,{model:({capture,options})=>({text:output(capture,options.prompt.includes('SYNTHETIC_TAIL')?[{kind:'fact',value:{kind:'constraint',statement:'SYNTHETIC_TAIL'},evidence:[{sourceId:capture.sourceId,excerpt:'SYNTHETIC_TAIL'}]}]:[])})}),full=fixtureText+'A'.repeat(50000)+'SYNTHETIC_TAIL',source=(await f.api('sources',{title:'Long synthetic source',text:full})).value;
   const response=await f.api(`twin-building/sources/${source.id}/explore`,{idempotencyKey:'long-fixture'});await f.app.twinBuilding.settled();const capture=f.app.twinBuilding.get(response.value.id);
-  assert.equal(capture.status,'review',capture.error);assert.equal(capture.text,full);assert.equal(capture.textTruncated,true);assert.match(capture.events.at(-1).label,/40000/);assert.doesNotMatch(f.calls[0].prompt,/SYNTHETIC_UNSENT_TAIL/);
+  assert.equal(capture.status,'review',capture.error);assert.equal(capture.text,full);assert.equal(capture.textTruncated,undefined);assert.equal(capture.processing.nextPart,2);assert.equal(f.calls.length,2);assert.doesNotMatch(f.calls[0].prompt,/SYNTHETIC_TAIL/);assert.match(f.calls[1].prompt,/SYNTHETIC_TAIL/);
+  assert.equal(capture.candidates.length,1);const evidence=capture.candidates[0].evidence[0];assert.equal(full.slice(evidence.start,evidence.end),evidence.excerpt);assert.equal(f.app.store.list('facts').length,0);
 });
 
 test('existing TaskRunner produces review candidates and explicit review writes linked facts, people and events atomically',async t=>{
@@ -303,4 +304,71 @@ test('automation saves context, connector and project selection and passes them 
   const created=await f.api('automations',body);assert.equal(created.status,201);const task=(await f.api(`automations/${created.value.id}/run`,{})).value;await f.app.runner.active.get(task.id)?.promise;
   for(const key of ['projectId','connectionId','digitalTwinEnabled','contextRequest','contextFactIds','connectorIds','approvalMode'])assert.deepEqual(task[key],body[key],key);
   assert.equal(f.app.store.require('tasks',task.id).status,'completed');assert.equal(f.calls[0].workspace,project.path);
+});
+
+test('failed later part resumes after restart without replaying saved parts or duplicating overlapping candidates',async t=>{
+  let attempts=0,active=0,peak=0;
+  const f=await fixture(t,{model:async({capture,options})=>{
+    peak=Math.max(peak,++active);try{
+      if(++attempts===2)throw new Error('Synthetic interruption in second part');
+      const items=['OVERLAP_FACT','TAIL_FACT'].filter(quote=>options.prompt.includes(quote)).map(quote=>({kind:'fact',value:{kind:'constraint',statement:quote},evidence:[{sourceId:capture.sourceId,excerpt:quote}]}));
+      return {text:output(capture,items)};
+    }finally{active--;}
+  }});
+  const full='x'.repeat(39500)+'OVERLAP_FACT'+'y'.repeat(45000)+'TAIL_FACT',source=(await f.api('sources',{title:'Synthetic resumable source',text:full})).value;
+  const response=await f.api(`twin-building/sources/${source.id}/explore`,{idempotencyKey:'resume'});await f.app.twinBuilding.settled();
+  let capture=f.app.twinBuilding.get(response.value.id);assert.equal(capture.status,'failed');assert.equal(capture.processing.nextPart,1);assert.equal(capture.candidates.length,1);const firstTask=capture.processing.parts[0].taskId;
+  await f.reopen();assert.equal(attempts,2);capture=f.app.twinBuilding.get(capture.id);assert.equal(capture.processing.nextPart,1);
+  assert.equal((await f.api(`twin-building/captures/${capture.id}/retry`,{})).status,200);await f.app.twinBuilding.settled();capture=f.app.twinBuilding.get(capture.id);
+  assert.equal(capture.status,'review',capture.error);assert.equal(capture.processing.nextPart,3);assert.equal(attempts,4);assert.equal(peak,1);assert.equal(capture.processing.parts[0].taskId,firstTask);
+  assert.deepEqual(capture.candidates.map(c=>c.value.statement),['OVERLAP_FACT','TAIL_FACT']);assert.equal(capture.candidates[0].evidence.length,1);
+  for(const c of capture.candidates)for(const e of c.evidence)assert.equal(full.slice(e.start,e.end),e.excerpt);
+  assert.equal(f.app.store.list('facts').length,0);assert.equal((await f.api(`twin-building/captures/${capture.id}/review`,decisions(capture))).status,200);assert.equal(f.app.store.list('facts').length,2);
+  assert.equal((await f.api(`twin-building/captures/${capture.id}/retry`,{})).status,409);assert.equal(attempts,4);
+});
+
+test('a quote from an unsent part is rejected while earlier checkpoints remain intact',async t=>{
+  const f=await fixture(t,{model:({capture})=>({text:output(capture,[{kind:'fact',value:{kind:'constraint',statement:'FIRST_ONLY'},evidence:[{sourceId:capture.sourceId,excerpt:'FIRST_ONLY'}]}])})});
+  const source=(await f.api('sources',{title:'Synthetic scope check',text:'FIRST_ONLY'+'x'.repeat(90000)})).value;
+  const result=await f.api(`twin-building/sources/${source.id}/explore`,{idempotencyKey:'quote-scope'});await f.app.twinBuilding.settled();const capture=f.app.twinBuilding.get(result.value.id);
+  assert.equal(capture.status,'failed');assert.equal(capture.processing.nextPart,1);assert.equal(capture.candidates.length,1);assert.equal(f.calls.length,2);assert.equal(f.app.store.list('facts').length,0);
+});
+
+test('duplicate process requests do not launch concurrent parts and a changed source prevents further processing',async t=>{
+  let release,enter;const entered=new Promise(resolve=>enter=resolve);
+  const f=await fixture(t,{model:({capture})=>new Promise(resolve=>{release=()=>resolve({text:output(capture,[])});enter();})});
+  const source=(await f.api('sources',{title:'Synthetic changing source',text:'x'.repeat(90000)})).value;
+  const result=await f.api(`twin-building/sources/${source.id}/explore`,{idempotencyKey:'source-change'});await entered;
+  const repeated=await Promise.all(Array.from({length:4},()=>f.api(`twin-building/captures/${result.value.id}/process`,{})));assert.ok(repeated.every(r=>r.status===200));assert.equal(f.calls.length,1);
+  f.app.store.put('sources',{...source,text:'Changed after reading began.'});release();await f.app.twinBuilding.settled();const capture=f.app.twinBuilding.get(result.value.id);
+  assert.equal(capture.status,'failed');assert.equal(capture.processing.nextPart,0);assert.equal(f.calls.length,1);assert.equal(capture.candidates.length,0);
+  await f.api(`twin-building/captures/${capture.id}/retry`,{});assert.equal(f.calls.length,1);assert.equal(f.app.store.list('facts').length,0);
+});
+
+test('a checkpoint between parts survives reopening and waits for explicit continuation',async t=>{
+  const f=await fixture(t,{model:({capture})=>({text:output(capture,[])})});
+  const source=(await f.api('sources',{title:'Synthetic checkpoint',text:'x'.repeat(85000)})).value;
+  const capture=f.app.twinBuilding.create({title:source.title,text:source.text,purpose:'personal',idempotencyKey:'checkpoint'},{upstreamSourceId:source.id});
+  // Simulate a process ending after the atomic checkpoint and before the next task starts.
+  capture.processing.parts[0].status='completed';capture.processing.parts[0].summary='Synthetic saved summary';capture.processing.nextPart=1;f.app.store.put('twinCaptures',capture);
+  await f.reopen();assert.equal(f.calls.length,0);assert.equal(f.app.twinBuilding.get(capture.id).processing.nextPart,1);
+  await f.api(`twin-building/captures/${capture.id}/process`,{});await f.app.twinBuilding.settled();const done=f.app.twinBuilding.get(capture.id);
+  assert.equal(done.status,'review');assert.equal(done.processing.nextPart,3);assert.equal(f.calls.length,2);assert.equal(done.processing.parts[0].summary,'Synthetic saved summary');
+});
+
+test('source edits after extraction cannot be confirmed as evidence for a different original',async t=>{
+  const f=await fixture(t),source=(await f.api('sources',{title:'Synthetic review source',text:fixtureText})).value;
+  const result=await f.api(`twin-building/sources/${source.id}/explore`,{idempotencyKey:'review-version'});await f.app.twinBuilding.settled();const capture=f.app.twinBuilding.get(result.value.id);
+  f.app.store.put('sources',{...source,text:'Synthetic replacement.'});
+  const reviewed=await f.api(`twin-building/captures/${capture.id}/review`,decisions(capture));assert.equal(reviewed.status,409);assert.equal(f.app.store.list('facts').length,0);assert.equal(f.app.twinBuilding.get(capture.id).status,'review');
+});
+
+test('an attachment supplied in the first part cannot be cited by a later part',async t=>{
+  let attachment;
+  const f=await fixture(t,{model:({capture})=>({text:output(capture,capture.processing.nextPart===0?[]:[{kind:'fact',value:{kind:'constraint',statement:'Synthetic attachment fact'},evidence:[{sourceId:capture.sourceId,attachmentId:attachment.id,excerpt:'ATTACHMENT_ONLY'}]}])})});
+  attachment=saveAttachment(f.app.store,{name:'synthetic.txt',mime:'text/plain',data:Buffer.from('ATTACHMENT_ONLY').toString('base64')});
+  const source=(await f.api('sources',{title:'Synthetic attachment scope',text:'x'.repeat(50000),attachmentIds:[attachment.id]})).value;
+  const result=await f.api(`twin-building/sources/${source.id}/explore`,{idempotencyKey:'attachment-scope'});await f.app.twinBuilding.settled();const capture=f.app.twinBuilding.get(result.value.id);
+  assert.equal(capture.status,'failed');assert.equal(capture.processing.nextPart,1);assert.equal(f.calls.length,2);
+  const second=f.app.store.require('tasks',capture.processing.parts[1].taskId);assert.deepEqual(second.messages[0].attachmentIds??[],[]);assert.equal(f.app.store.list('facts').length,0);
 });

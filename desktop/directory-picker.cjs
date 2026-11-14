@@ -10,7 +10,7 @@ function trustedPickerRequest(window, event, origin) {
 
 function installDirectoryPicker({ ipcMain, dialog, getWindow, getOrigin, getLanguage = () => 'zh-CN' }) {
   let selecting = false;
-  ipcMain.handle('hither:choose-directory', async event => {
+  for (const kind of ['directory', 'files']) ipcMain.handle(`hither:choose-${kind}`, async event => {
     const window = getWindow();
     const origin = getOrigin();
     if (!trustedPickerRequest(window, event, origin)) throw new Error('This window cannot choose a project folder.');
@@ -21,10 +21,11 @@ function installDirectoryPicker({ ipcMain, dialog, getWindow, getOrigin, getLang
     window.webContents.on('did-start-navigation', navigation);
     try {
       const english=getLanguage()==='en';
-      const result = await dialog.showOpenDialog(window, { title: english?'Choose a project folder':'选择项目文件夹', buttonLabel: english?'Choose folder':'选择文件夹', properties: ['openDirectory'] });
+      const files = kind === 'files';
+      const result = await dialog.showOpenDialog(window, { title: files ? (english?'Choose library files':'选择资料文件（可多选）') : (english?'Choose a folder':'选择文件夹'), buttonLabel: english?'Choose':'选择', properties: files ? ['openFile', 'multiSelections'] : ['openDirectory'] });
       // A window reload or navigation must not receive the previous page's choice.
       if (pageChanged || getWindow() !== window || !trustedPickerRequest(window, event, origin)) throw new Error('The requesting project window changed.');
-      return result.canceled ? null : result.filePaths[0] || null;
+      return files ? (result.canceled ? [] : result.filePaths) : (result.canceled ? null : result.filePaths[0] || null);
     } finally { window.webContents.removeListener('did-start-navigation', navigation); selecting = false; }
   });
 }

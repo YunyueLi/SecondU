@@ -192,7 +192,7 @@ export function App() {
         <WorkspaceVisibility.Provider value={assistantActive}><div className="assistant-chat-host" hidden={!assistantActive}><AssistantWorkspace active={assistantActive} navigation={narrowWindow&&assistantActive?<PageNavigation/>:undefined} data={data} composition={composition} taskId={assistantRoute.view==='task'?assistantRoute.id:undefined} onRefresh={refresh} onCreateTask={createTask} /></div></WorkspaceVisibility.Provider>
         {workspaceRoute.view==='projects'&&<ProjectWorkspace key={workspaceRoute.id||'all'} data={data} id={workspaceRoute.id} onRefresh={refresh} onChat={id=>void prepareTask('',undefined,[],id)}/> }
         {workspaceRoute.view==='agents'&&<AgentWorkspace navigation={narrowWindow?<PageNavigation/>:undefined} data={data} initialRoomId={workspaceRoute.id} onRefresh={refresh} onTask={id=>navigate('task',id)} />}
-        {workspaceRoute.view==='artifacts'&&<ArtifactWorkspace data={data} id={workspaceRoute.id} onRefresh={refresh} />}
+        {workspaceRoute.view==='artifacts'&&<ArtifactWorkspace data={data} id={workspaceRoute.id} onRefresh={refresh} onAskLibrary={connectorId=>{setComposition({id:crypto.randomUUID(),prompt:t('请根据我的资料库回答：','Please answer using my library: '),agentIds:[],connectorIds:[connectorId]});navigate('assistant');}} />}
         {workspaceRoute.view==='finance'&&<FinanceWorkspace section={workspaceRoute.id} onNavigate={(section:string)=>navigate('finance',section)} presentation="desktop" onAsk={prepareFinanceQuestion}/>}
         {workspaceRoute.view==='automations'&&<AutomationWorkspace initialTemplate={workspaceRoute.id} data={data} onRefresh={refresh} onTask={id=>navigate('task',id)} />}
 

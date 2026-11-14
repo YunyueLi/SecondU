@@ -1,0 +1,146 @@
+{
+  "synthetic": true,
+  "reviewMethod": "Assistant inspected each output against authored fictional source records. Not blinded and not an independent evaluator.",
+  "cases": [
+    {
+      "caseId": "identifier",
+      "strategy": "single_excerpts",
+      "satisfiesFixture": true,
+      "citationsExact": true,
+      "note": "Supported by supplied fictional evidence or correctly abstained."
+    },
+    {
+      "caseId": "identifier",
+      "strategy": "expanded_context",
+      "satisfiesFixture": true,
+      "citationsExact": true,
+      "note": "Supported by supplied fictional evidence or correctly abstained."
+    },
+    {
+      "caseId": "chinese",
+      "strategy": "expanded_context",
+      "satisfiesFixture": true,
+      "citationsExact": true,
+      "note": "Supported by supplied fictional evidence or correctly abstained."
+    },
+    {
+      "caseId": "chinese",
+      "strategy": "single_excerpts",
+      "satisfiesFixture": true,
+      "citationsExact": true,
+      "note": "Supported by supplied fictional evidence or correctly abstained."
+    },
+    {
+      "caseId": "cross-source",
+      "strategy": "single_excerpts",
+      "satisfiesFixture": true,
+      "citationsExact": true,
+      "note": "Supported by supplied fictional evidence or correctly abstained."
+    },
+    {
+      "caseId": "cross-source",
+      "strategy": "expanded_context",
+      "satisfiesFixture": true,
+      "citationsExact": true,
+      "note": "Supported by supplied fictional evidence or correctly abstained."
+    },
+    {
+      "caseId": "identity",
+      "strategy": "expanded_context",
+      "satisfiesFixture": true,
+      "citationsExact": true,
+      "note": "Supported by supplied fictional evidence or correctly abstained."
+    },
+    {
+      "caseId": "identity",
+      "strategy": "single_excerpts",
+      "satisfiesFixture": true,
+      "citationsExact": true,
+      "note": "Supported by supplied fictional evidence or correctly abstained."
+    },
+    {
+      "caseId": "correction",
+      "strategy": "single_excerpts",
+      "satisfiesFixture": true,
+      "citationsExact": true,
+      "note": "Supported by supplied fictional evidence or correctly abstained."
+    },
+    {
+      "caseId": "correction",
+      "strategy": "expanded_context",
+      "satisfiesFixture": true,
+      "citationsExact": true,
+      "note": "Supported by supplied fictional evidence or correctly abstained."
+    },
+    {
+      "caseId": "exception",
+      "strategy": "expanded_context",
+      "satisfiesFixture": true,
+      "citationsExact": true,
+      "note": "Supported by supplied fictional evidence or correctly abstained."
+    },
+    {
+      "caseId": "exception",
+      "strategy": "single_excerpts",
+      "satisfiesFixture": true,
+      "citationsExact": true,
+      "note": "Supported by supplied fictional evidence or correctly abstained."
+    },
+    {
+      "caseId": "long-update",
+      "strategy": "single_excerpts",
+      "satisfiesFixture": false,
+      "citationsExact": true,
+      "note": "Safely abstained, but missed available evidence."
+    },
+    {
+      "caseId": "long-update",
+      "strategy": "expanded_context",
+      "satisfiesFixture": true,
+      "citationsExact": true,
+      "note": "Supported by supplied fictional evidence or correctly abstained."
+    },
+    {
+      "caseId": "english",
+      "strategy": "expanded_context",
+      "satisfiesFixture": true,
+      "citationsExact": true,
+      "note": "Supported by supplied fictional evidence or correctly abstained."
+    },
+    {
+      "caseId": "english",
+      "strategy": "single_excerpts",
+      "satisfiesFixture": true,
+      "citationsExact": true,
+      "note": "Supported by supplied fictional evidence or correctly abstained."
+    },
+    {
+      "caseId": "semantic-gap",
+      "strategy": "single_excerpts",
+      "satisfiesFixture": false,
+      "citationsExact": true,
+      "note": "Safely abstained, but missed available evidence."
+    },
+    {
+      "caseId": "semantic-gap",
+      "strategy": "expanded_context",
+      "satisfiesFixture": true,
+      "citationsExact": true,
+      "note": "Supported; weekend preference remains scoped, and absent evidence remains unanswered."
+    },
+    {
+      "caseId": "absent",
+      "strategy": "expanded_context",
+      "satisfiesFixture": true,
+      "citationsExact": true,
+      "note": "Supported by supplied fictional evidence or correctly abstained."
+    },
+    {
+      "caseId": "absent",
+      "strategy": "single_excerpts",
+      "satisfiesFixture": true,
+      "citationsExact": true,
+      "note": "Supported by supplied fictional evidence or correctly abstained."
+    }
+  ]
+}

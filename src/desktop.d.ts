@@ -10,6 +10,7 @@ declare global {
         onChange:(callback:(state:{platform:string;fullscreen:boolean})=>void)=>()=>void;
       };
       chooseDirectory:()=>Promise<string|null>;
+      chooseFiles?:()=>Promise<string[]>;
       setLanguage:(language:'zh-CN'|'en')=>Promise<void>;
       screenShare?: {status:()=>Promise<{
         available:boolean;

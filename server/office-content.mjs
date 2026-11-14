@@ -17,8 +17,8 @@ export function zipCrc32(data){let crc=0xffffffff;for(const byte of data)crc=crc
 function zipName(data,flags){let name;try{name=new TextDecoder('utf-8',{fatal:true}).decode(data);}catch{throw invalid();}if(!(flags&0x800)&&data.some(byte=>byte>127))throw invalid();if(!name||name.length>512||/[\\\x00-\x1f%:]/.test(name)||name.startsWith('/')||name.normalize('NFC')!==name||name.replace(/\/$/,'').split('/').some(part=>!part||part==='.'||part==='..'))throw unsafe();return name;}
 
 /** Read a bounded ZIP in memory, never extract caller-controlled paths to disk. */
-export function officeEntries(data){
- if(!Buffer.isBuffer(data)||data.length<22||data.length>8*1024*1024)throw invalid();
+export function officeEntries(data,{maxBytes=8*1024*1024}={}){
+ if(!Buffer.isBuffer(data)||data.length<22||data.length>maxBytes)throw invalid();
  let end=-1;for(let i=data.length-22;i>=Math.max(0,data.length-65557);i--)if(data.readUInt32LE(i)===0x06054b50&&i+22+data.readUInt16LE(i+20)===data.length){end=i;break;}
  if(end<0||data.readUInt16LE(end+4)||data.readUInt16LE(end+6))throw invalid();
  const count=data.readUInt16LE(end+10),size=data.readUInt32LE(end+12),start=data.readUInt32LE(end+16);
@@ -52,8 +52,8 @@ function xmlText(bytes){if(!bytes||bytes.length>OFFICE_LIMITS.xmlBytes)throw lim
 function unescape(value){try{return value.replace(/&(?:#(x[0-9a-f]+|[0-9]+)|([a-z]+));/gi,(_,number,name)=>number?String.fromCodePoint(Number.parseInt(number.replace(/^x/i,''),/^x/i.test(number)?16:10)):({amp:'&',lt:'<',gt:'>',quot:'"',apos:"'"}[name]??''));}catch{throw invalid();}}
 export function officeInspectionContent(name,data){const {entries}=validateOfficeArchive(name,data);return [...entries].flatMap(([entry,bytes])=>{const value=bytes.toString('utf8');return /\.(xml|rels)$/i.test(entry)?[value,unescape(value.replace(/<[^>]*>/g,''))]:[value];});}
 function attributes(tag){const attrs={};for(const match of tag.matchAll(/([\w:.-]+)\s*=\s*(?:"([^"]*)"|'([^']*)')/g)){if(Object.hasOwn(attrs,match[1]))throw invalid();try{attrs[match[1]]=unescape(match[2]??match[3]);}catch{throw invalid();}}return attrs;}
-export function validateOfficeArchive(name,data,{preview=false}={}){
- const type=officeType(name);if(!type)throw invalid();const entries=officeEntries(data),xml=new Map();
+export function validateOfficeArchive(name,data,{preview=false,maxBytes=8*1024*1024}={}){
+ const type=officeType(name);if(!type)throw invalid();const entries=officeEntries(data,{maxBytes}),xml=new Map();
  for(const [entry,bytes] of entries){
   if(/(?:^|\/)(?:vbaProject[^/]*|activeX|customUI)(?:\/|\.|$)|\.(?:exe|dll|com|bat|cmd|ps1|vbs|js|py|jar)$/i.test(entry))throw unsafe();
   if(preview&&(/(?:^|\/)(?:embeddings|externalLinks|queryTables)(?:\/|$)|(?:^|\/)connections\.xml$|\.(?:svg|html?|mhtml?)$/i.test(entry)||bytes.subarray(0,8).equals(Buffer.from([208,207,17,224,161,177,26,225]))))throw new HttpError(400,'此 Office 文件含嵌入对象或外部内容，暂不能安全预览；仍可下载原文件。','office_unsafe_content');

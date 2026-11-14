@@ -25,7 +25,7 @@ export function guardExecutionRoute(policy,{resource,key,action,operation,method
   if(policy==='showcase'){
     const execution=resource==='tasks'&&['run','message','approval'].includes(action)||resource==='agent-rooms'&&['messages','tasks'].includes(action)||resource==='automations'&&action==='run'||resource==='capabilities'&&key==='author';
     const external=resource==='computers'&&mutate||resource==='delegations'&&mutate||resource==='connectors'&&(action==='test'||action==='oauth'&&['start','refresh','revoke'].includes(operation))||resource==='agent-resources'&&action==='probe'||resource==='im-connections'&&['probe','preview','commit'].includes(action)||resource==='im-outbox'&&['prepare','send'].includes(action)||resource==='model-connections'&&action==='test'||resource==='settings'&&key==='provider'&&action==='test';
-    const localFiles=resource==='projects'&&(key==='choose-directory'||action==='files'&&!authoredExampleProject(store,key));
+    const localFiles=resource==='library'||resource==='projects'&&(key==='choose-directory'||action==='files'&&!authoredExampleProject(store,key));
     const realMode=mutate&&['tasks','agent-rooms','automations'].includes(resource)&&body.mode==='live';
     const schedule=resource==='automations'&&mutate&&body.enabled===true;
     const modelConfiguration=resource==='model-connections'&&!action||resource==='settings'&&key==='provider'&&!action;

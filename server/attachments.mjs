@@ -2,11 +2,11 @@ import path from 'node:path';
 import {createHash} from 'node:crypto';
 import {mkdirSync,lstatSync,realpathSync,existsSync,readFileSync,unlinkSync} from 'node:fs';
 import {HttpError,id,now,atomicWrite} from './store.mjs';
+import {libraryStorage} from './library-storage.mjs';
 
 import { ATTACHMENT_LIMIT, ATTACHMENT_COUNT, imageMime } from './attachment-input.mjs';
 export { ATTACHMENT_LIMIT, ATTACHMENT_COUNT, MULTIMODAL_REQUEST_LIMIT, imageMime, inlineImage } from './attachment-input.mjs';
 export const STORED_ATTACHMENT_LIMIT=64*1024*1024;
-const storageLimit=256*1024*1024;
 const imageTypes=new Set(['image/png','image/jpeg','image/webp','image/gif']);
 const textExtensions=new Set(['.txt','.md','.markdown','.csv','.tsv','.json','.jsonl','.yaml','.yml','.xml','.html','.htm','.css','.js','.jsx','.ts','.tsx','.py','.rs','.go','.java','.sql','.log','.sh','.toml','.ini']);
 const textMimes=new Set(['application/json','application/x-ndjson','application/xml','application/javascript','application/yaml','application/toml']);
@@ -83,12 +83,12 @@ export function saveAttachment(store,body){
     decodeText(data);kind='text';mime=mime&&mime!=='application/octet-stream'?mime:'text/plain';
   }
   mime||='application/octet-stream';
-  const existing=store.list('attachments');
-  if(existing.length>=2000||existing.reduce((total,item)=>total+item.size,0)+data.length>storageLimit)throw new HttpError(413,'当前空间的附件存储已达 256 MiB 或 2000 个文件上限。','attachment_storage_limit');
+  const storage=libraryStorage(store); storage.assertAdditional(data.length + 65536);
   directory(store,{create:true});
   const record={id:id('attachment'),name,mime,size:data.length,kind,createdAt:now(),sha256:digest(data)};
   const file=attachmentFile(store,record.id);atomicWrite(file,data);
   try{store.put('attachments',record);}catch(error){unlinkSync(file);throw error;}
+  storage.addedOriginal('attachments',data.length);
   return publicAttachment(record);
 }
 export function getAttachment(store,key){

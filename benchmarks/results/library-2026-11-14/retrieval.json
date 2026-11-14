@@ -1,0 +1,425 @@
+{
+  "schema": "secondu.library.retrieval-comparison.v1",
+  "synthetic": true,
+  "measuredAt": "2026-11-14T11:33:34.533Z",
+  "documents": 1012,
+  "characters": 666459,
+  "contextBudgetChars": 8000,
+  "indexingMs": 1898.7152090000002,
+  "summary": [
+    {
+      "strategy": "substring",
+      "sourceRecall": 0.4444444444444444,
+      "quoteRecall": 0.4444444444444444,
+      "meanMs": 0.7292497999999341,
+      "completeEvidenceCases": 4,
+      "answerQualityMeasured": false
+    },
+    {
+      "strategy": "indexed",
+      "sourceRecall": 0.8333333333333334,
+      "quoteRecall": 0.7222222222222222,
+      "meanMs": 0.2208125000000109,
+      "completeEvidenceCases": 6,
+      "answerQualityMeasured": false
+    },
+    {
+      "strategy": "indexed_with_context",
+      "sourceRecall": 0.8333333333333334,
+      "quoteRecall": 0.8333333333333334,
+      "meanMs": 0.23169580000003406,
+      "completeEvidenceCases": 7,
+      "answerQualityMeasured": false
+    }
+  ],
+  "results": [
+    {
+      "caseId": "identifier",
+      "strategy": "substring",
+      "latencyMs": 0.8554579999999987,
+      "evidenceChars": 74,
+      "evidencePaths": [
+        "项目/采购.txt"
+      ],
+      "sourceRecall": 1,
+      "quoteRecall": 1,
+      "noResultWhenAbsent": null
+    },
+    {
+      "caseId": "identifier",
+      "strategy": "indexed",
+      "latencyMs": 0.5143750000002001,
+      "evidenceChars": 74,
+      "evidencePaths": [
+        "项目/采购.txt"
+      ],
+      "sourceRecall": 1,
+      "quoteRecall": 1,
+      "noResultWhenAbsent": null
+    },
+    {
+      "caseId": "identifier",
+      "strategy": "indexed_with_context",
+      "latencyMs": 0.28329200000007404,
+      "evidenceChars": 74,
+      "evidencePaths": [
+        "项目/采购.txt"
+      ],
+      "sourceRecall": 1,
+      "quoteRecall": 1,
+      "noResultWhenAbsent": null
+    },
+    {
+      "caseId": "chinese",
+      "strategy": "substring",
+      "latencyMs": 0.970915999999761,
+      "evidenceChars": 66,
+      "evidencePaths": [
+        "资料/旅行报销.md"
+      ],
+      "sourceRecall": 1,
+      "quoteRecall": 1,
+      "noResultWhenAbsent": null
+    },
+    {
+      "caseId": "chinese",
+      "strategy": "indexed",
+      "latencyMs": 0.19458399999984977,
+      "evidenceChars": 66,
+      "evidencePaths": [
+        "资料/旅行报销.md"
+      ],
+      "sourceRecall": 1,
+      "quoteRecall": 1,
+      "noResultWhenAbsent": null
+    },
+    {
+      "caseId": "chinese",
+      "strategy": "indexed_with_context",
+      "latencyMs": 0.18708300000025702,
+      "evidenceChars": 66,
+      "evidencePaths": [
+        "资料/旅行报销.md"
+      ],
+      "sourceRecall": 1,
+      "quoteRecall": 1,
+      "noResultWhenAbsent": null
+    },
+    {
+      "caseId": "cross-source",
+      "strategy": "substring",
+      "latencyMs": 0.5938749999995707,
+      "evidenceChars": 356,
+      "evidencePaths": [
+        "项目/蓝帆-计划.md",
+        "项目/蓝帆-预算.md",
+        "项目/蓝帆-取消.md",
+        "人物/星帆公司-林宁.md",
+        "人物/蓝帆项目-林宁.md"
+      ],
+      "sourceRecall": 1,
+      "quoteRecall": 1,
+      "noResultWhenAbsent": null
+    },
+    {
+      "caseId": "cross-source",
+      "strategy": "indexed",
+      "latencyMs": 0.20145800000000236,
+      "evidenceChars": 356,
+      "evidencePaths": [
+        "项目/蓝帆-计划.md",
+        "项目/蓝帆-取消.md",
+        "项目/蓝帆-预算.md",
+        "人物/星帆公司-林宁.md",
+        "人物/蓝帆项目-林宁.md"
+      ],
+      "sourceRecall": 1,
+      "quoteRecall": 1,
+      "noResultWhenAbsent": null
+    },
+    {
+      "caseId": "cross-source",
+      "strategy": "indexed_with_context",
+      "latencyMs": 0.31929200000013225,
+      "evidenceChars": 356,
+      "evidencePaths": [
+        "项目/蓝帆-计划.md",
+        "项目/蓝帆-取消.md",
+        "项目/蓝帆-预算.md",
+        "人物/星帆公司-林宁.md",
+        "人物/蓝帆项目-林宁.md"
+      ],
+      "sourceRecall": 1,
+      "quoteRecall": 1,
+      "noResultWhenAbsent": null
+    },
+    {
+      "caseId": "identity",
+      "strategy": "substring",
+      "latencyMs": 0.6321250000000873,
+      "evidenceChars": 0,
+      "evidencePaths": [],
+      "sourceRecall": 0,
+      "quoteRecall": 0,
+      "noResultWhenAbsent": null
+    },
+    {
+      "caseId": "identity",
+      "strategy": "indexed",
+      "latencyMs": 0.19145799999978408,
+      "evidenceChars": 356,
+      "evidencePaths": [
+        "人物/星帆公司-林宁.md",
+        "项目/蓝帆-计划.md",
+        "人物/蓝帆项目-林宁.md",
+        "项目/蓝帆-取消.md",
+        "项目/蓝帆-预算.md"
+      ],
+      "sourceRecall": 1,
+      "quoteRecall": 1,
+      "noResultWhenAbsent": null
+    },
+    {
+      "caseId": "identity",
+      "strategy": "indexed_with_context",
+      "latencyMs": 0.32804099999975733,
+      "evidenceChars": 356,
+      "evidencePaths": [
+        "人物/星帆公司-林宁.md",
+        "项目/蓝帆-计划.md",
+        "人物/蓝帆项目-林宁.md",
+        "项目/蓝帆-取消.md",
+        "项目/蓝帆-预算.md"
+      ],
+      "sourceRecall": 1,
+      "quoteRecall": 1,
+      "noResultWhenAbsent": null
+    },
+    {
+      "caseId": "correction",
+      "strategy": "substring",
+      "latencyMs": 0.9029160000000047,
+      "evidenceChars": 172,
+      "evidencePaths": [
+        "生活/偏好修订.md",
+        "生活/单次例外.md"
+      ],
+      "sourceRecall": 1,
+      "quoteRecall": 1,
+      "noResultWhenAbsent": null
+    },
+    {
+      "caseId": "correction",
+      "strategy": "indexed",
+      "latencyMs": 0.2118329999998423,
+      "evidenceChars": 172,
+      "evidencePaths": [
+        "生活/偏好修订.md",
+        "生活/单次例外.md"
+      ],
+      "sourceRecall": 1,
+      "quoteRecall": 1,
+      "noResultWhenAbsent": null
+    },
+    {
+      "caseId": "correction",
+      "strategy": "indexed_with_context",
+      "latencyMs": 0.21508300000004965,
+      "evidenceChars": 172,
+      "evidencePaths": [
+        "生活/偏好修订.md",
+        "生活/单次例外.md"
+      ],
+      "sourceRecall": 1,
+      "quoteRecall": 1,
+      "noResultWhenAbsent": null
+    },
+    {
+      "caseId": "exception",
+      "strategy": "substring",
+      "latencyMs": 0.688499999999749,
+      "evidenceChars": 0,
+      "evidencePaths": [],
+      "sourceRecall": 0,
+      "quoteRecall": 0,
+      "noResultWhenAbsent": null
+    },
+    {
+      "caseId": "exception",
+      "strategy": "indexed",
+      "latencyMs": 0.1787920000001577,
+      "evidenceChars": 84,
+      "evidencePaths": [
+        "生活/单次例外.md"
+      ],
+      "sourceRecall": 0.5,
+      "quoteRecall": 0.5,
+      "noResultWhenAbsent": null
+    },
+    {
+      "caseId": "exception",
+      "strategy": "indexed_with_context",
+      "latencyMs": 0.17687500000010914,
+      "evidenceChars": 84,
+      "evidencePaths": [
+        "生活/单次例外.md"
+      ],
+      "sourceRecall": 0.5,
+      "quoteRecall": 0.5,
+      "noResultWhenAbsent": null
+    },
+    {
+      "caseId": "long-update",
+      "strategy": "substring",
+      "latencyMs": 0.6405420000000959,
+      "evidenceChars": 0,
+      "evidencePaths": [],
+      "sourceRecall": 0,
+      "quoteRecall": 0,
+      "noResultWhenAbsent": null
+    },
+    {
+      "caseId": "long-update",
+      "strategy": "indexed",
+      "latencyMs": 0.19849999999996726,
+      "evidenceChars": 2593,
+      "evidencePaths": [
+        "资料/长记录.md"
+      ],
+      "sourceRecall": 1,
+      "quoteRecall": 0,
+      "noResultWhenAbsent": null
+    },
+    {
+      "caseId": "long-update",
+      "strategy": "indexed_with_context",
+      "latencyMs": 0.3620419999997466,
+      "evidenceChars": 4068,
+      "evidencePaths": [
+        "资料/长记录.md"
+      ],
+      "sourceRecall": 1,
+      "quoteRecall": 1,
+      "noResultWhenAbsent": null
+    },
+    {
+      "caseId": "english",
+      "strategy": "substring",
+      "latencyMs": 0.7375829999996313,
+      "evidenceChars": 0,
+      "evidencePaths": [],
+      "sourceRecall": 0,
+      "quoteRecall": 0,
+      "noResultWhenAbsent": null
+    },
+    {
+      "caseId": "english",
+      "strategy": "indexed",
+      "latencyMs": 0.2114169999999831,
+      "evidenceChars": 131,
+      "evidencePaths": [
+        "资料/English.txt"
+      ],
+      "sourceRecall": 1,
+      "quoteRecall": 1,
+      "noResultWhenAbsent": null
+    },
+    {
+      "caseId": "english",
+      "strategy": "indexed_with_context",
+      "latencyMs": 0.2027090000001408,
+      "evidenceChars": 131,
+      "evidencePaths": [
+        "资料/English.txt"
+      ],
+      "sourceRecall": 1,
+      "quoteRecall": 1,
+      "noResultWhenAbsent": null
+    },
+    {
+      "caseId": "semantic-gap",
+      "strategy": "substring",
+      "latencyMs": 0.6005830000003698,
+      "evidenceChars": 0,
+      "evidencePaths": [],
+      "sourceRecall": 0,
+      "quoteRecall": 0,
+      "noResultWhenAbsent": null
+    },
+    {
+      "caseId": "semantic-gap",
+      "strategy": "indexed",
+      "latencyMs": 0.1753750000002583,
+      "evidenceChars": 0,
+      "evidencePaths": [],
+      "sourceRecall": 0,
+      "quoteRecall": 0,
+      "noResultWhenAbsent": null
+    },
+    {
+      "caseId": "semantic-gap",
+      "strategy": "indexed_with_context",
+      "latencyMs": 0.12920800000028976,
+      "evidenceChars": 0,
+      "evidencePaths": [],
+      "sourceRecall": 0,
+      "quoteRecall": 0,
+      "noResultWhenAbsent": null
+    },
+    {
+      "caseId": "absent",
+      "strategy": "substring",
+      "latencyMs": 0.6700000000000728,
+      "evidenceChars": 0,
+      "evidencePaths": [],
+      "sourceRecall": null,
+      "quoteRecall": null,
+      "noResultWhenAbsent": true
+    },
+    {
+      "caseId": "absent",
+      "strategy": "indexed",
+      "latencyMs": 0.1303330000000642,
+      "evidenceChars": 0,
+      "evidencePaths": [],
+      "sourceRecall": null,
+      "quoteRecall": null,
+      "noResultWhenAbsent": true
+    },
+    {
+      "caseId": "absent",
+      "strategy": "indexed_with_context",
+      "latencyMs": 0.11333299999978408,
+      "evidenceChars": 0,
+      "evidencePaths": [],
+      "sourceRecall": null,
+      "quoteRecall": null,
+      "noResultWhenAbsent": true
+    }
+  ],
+  "code": [
+    {
+      "name": "server/library.mjs",
+      "sha256": "206ea1d7400f94fb4e64277ef5df8d9ed037b37ec8bbae5018bb5f5051a972bf"
+    },
+    {
+      "name": "server/library-text.mjs",
+      "sha256": "f47ae752fedeffbfd6f2dc5ae57e94ad17ddde32a68fb8852c1c066f9d29273d"
+    },
+    {
+      "name": "benchmarks/library-cases.mjs",
+      "sha256": "8e20ce1256ddebc45e1658c63cdf4bbf943f5b5056b19f6f072b2ed0a98d27e6"
+    },
+    {
+      "name": "scripts/benchmark-library.mjs",
+      "sha256": "864c0e5afdc926d327e742074cee425987e9ea7945203d829d4907625de6c5cb"
+    }
+  ],
+  "limitations": [
+    "Author-created ten-case regression corpus, not a public leaderboard.",
+    "No LLM answers or semantic/graph engine measured here.",
+    "Memory and query latency are not comparable to loading a real multi-gigabyte corpus.",
+    "All modes receive identical authored keyword queries, not gold answer text.",
+    "Independent model answer and larger scale evaluation remain separate requirements."
+  ]
+}

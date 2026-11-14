@@ -1,0 +1,59 @@
+{
+  "synthetic": true,
+  "measuredAt": "2026-11-14T11:19:27.921Z",
+  "documents": 768,
+  "approximateTextMiB": 96,
+  "indexingMs": 2435.419375,
+  "repetitions": 3,
+  "summary": [
+    {
+      "mode": "eager_sources",
+      "medianMs": 242.66429100000002,
+      "medianPeakRssMiB": 319.953125
+    },
+    {
+      "mode": "indexed",
+      "medianMs": 1.142165999999996,
+      "medianPeakRssMiB": 75.546875
+    }
+  ],
+  "samples": [
+    {
+      "mode": "eager_sources",
+      "elapsedMs": 248.154208,
+      "peakRssMiB": 319.625,
+      "found": 1
+    },
+    {
+      "mode": "indexed",
+      "elapsedMs": 1.142165999999996,
+      "peakRssMiB": 75.28125,
+      "found": 1
+    },
+    {
+      "mode": "indexed",
+      "elapsedMs": 1.0932919999999982,
+      "peakRssMiB": 75.765625,
+      "found": 1
+    },
+    {
+      "mode": "eager_sources",
+      "elapsedMs": 242.66429100000002,
+      "peakRssMiB": 320.21875,
+      "found": 1
+    },
+    {
+      "mode": "eager_sources",
+      "elapsedMs": 235.08679200000003,
+      "peakRssMiB": 319.953125,
+      "found": 1
+    },
+    {
+      "mode": "indexed",
+      "elapsedMs": 1.1572080000000042,
+      "peakRssMiB": 75.546875,
+      "found": 1
+    }
+  ],
+  "scope": "Isolated fresh-process local query comparison at 96 MiB text, reproducing eager source loading versus bounded indexed search. Does not measure overall application RAM, cloud answer quality, a million-message corpus, or parsing worker peak memory."
+}

@@ -26,7 +26,7 @@ type Connection=Connector&{catalogId?:string;authMode?:AuthMode;oauth?:OAuthConf
 type Editing=Connection|ConnectorKind|CatalogService;
 type OAuthAttempt=ConnectorOAuthStart;
 function LocalIcon({kind}:{kind:ConnectorKind}){const Icon=kind==='library'?Document:kind==='project'?Folder:Code;return <Icon/>;}
-function statusLabel(connector:Connection){return ({ready:t('已连接','Connected'),untested:connector.authMode==='oauth'&&!connector.oauth?.authorized?t('待授权','Needs authorization'):t('待检查','Not checked'),error:t('连接失败','Connection failed'),unavailable:t('暂不可用','Unavailable'),disabled:t('已停用','Disabled')})[connector.status];}
+function statusLabel(connector:Connection){return ({ready:connector.kind==='mcp_http'?t('上次检查通过','Last check passed'):t('已连接','Connected'),untested:connector.authMode==='oauth'&&!connector.oauth?.authorized?t('待授权','Needs authorization'):t('待检查','Not checked'),error:t('连接失败','Connection failed'),unavailable:t('暂不可用','Unavailable'),disabled:t('已停用','Disabled')})[connector.status];}
 function matchingConnections(data:Bootstrap,service:CatalogService){return (data.connectors||[]).filter(item=>findCatalogService(item)?.id===service.id) as Connection[];}
 function initialService(value:Editing){return typeof value!=='string'&&'authMethods'in value?value:typeof value!=='string'?findCatalogService(value):undefined;}
 function external(url:string){return {href:url,target:'_blank',rel:'noreferrer noopener'};}

@@ -1,0 +1,1468 @@
+{
+  "schema": "secondu.library.model-pilot.v1",
+  "synthetic": true,
+  "startedAt": "2026-11-14T11:29:14.485Z",
+  "model": "gpt-6.1-sol",
+  "plannedCalls": 21,
+  "caseIds": [
+    "identifier",
+    "chinese",
+    "cross-source",
+    "identity",
+    "correction",
+    "exception",
+    "long-update",
+    "english",
+    "semantic-gap",
+    "absent"
+  ],
+  "codeHashes": [
+    {
+      "name": "server/library.mjs",
+      "sha256": "206ea1d7400f94fb4e64277ef5df8d9ed037b37ec8bbae5018bb5f5051a972bf"
+    },
+    {
+      "name": "server/library-text.mjs",
+      "sha256": "f47ae752fedeffbfd6f2dc5ae57e94ad17ddde32a68fb8852c1c066f9d29273d"
+    },
+    {
+      "name": "benchmarks/library-cases.mjs",
+      "sha256": "8e20ce1256ddebc45e1658c63cdf4bbf943f5b5056b19f6f072b2ed0a98d27e6"
+    },
+    {
+      "name": "scripts/benchmark-library-model.mjs",
+      "sha256": "b9494127c10d5453ab3f667c6e7873904df194854a64db61582a9cab21eb8d49"
+    },
+    {
+      "name": "scripts/fictional-model-call.mjs",
+      "sha256": "942bae79964606740defa683c377924d1a71d6cc08e4d422936d6940142d3475"
+    }
+  ],
+  "maxOutputTokensPerCall": "CLI default; same short JSON instruction, not a hard token cap",
+  "scope": "Authored fictional regression cases, one trial per condition. Compares single-query excerpts with model-authored query expansion and bounded context. No dense embedding or graph engine is evaluated.",
+  "calls": [
+    {
+      "id": "query-plan",
+      "completed": true,
+      "finishReason": "stop",
+      "reportedModel": null,
+      "latencyMs": 16572.744833,
+      "usage": {
+        "input_tokens": 9813,
+        "cached_input_tokens": 3328,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 397,
+        "reasoning_output_tokens": 43
+      },
+      "promptSha256": "f9f1753af814068a1f0915bb5abfbee1e97a3f84aaa852b4216425ee32cc40ee",
+      "text": "{\"items\":[{\"id\":\"identifier\",\"queries\":[\"雨桥-017 总价 签收日期\",\"雨桥-017 一共多少钱\",\"雨桥-017 什么时候签收\"]},{\"id\":\"chinese\",\"queries\":[\"旅行费用 报销流程\",\"出差花的钱怎么报\",\"差旅报销 发票 材料\"]},{\"id\":\"cross-source\",\"queries\":[\"蓝帆 周五 发布 延期原因\",\"蓝帆 为什么周五没发\",\"蓝帆 发布计划 变更\"]},{\"id\":\"identity\",\"queries\":[\"蓝帆 林宁 职责\",\"蓝帆 林宁负责哪块\",\"蓝帆 项目分工 林宁\"]},{\"id\":\"correction\",\"queries\":[\"开会时间 最新偏好\",\"我现在喜欢几点开会\",\"会议时间 喜好 后来改了\"]},{\"id\":\"exception\",\"queries\":[\"10月10日 早上开会 后续安排\",\"这次早上开会 以后\",\"会议时间 临时调整 长期变更\"]},{\"id\":\"long-update\",\"queries\":[\"蓝松 六月交付 后续变更\",\"蓝松 六月交付 后来怎么安排\",\"蓝松 交付时间 最新调整\"]},{\"id\":\"english\",\"queries\":[\"Cedar shipment status update\",\"what happened to the Cedar delivery\",\"Cedar shipping timeline changes\"]},{\"id\":\"semantic-gap\",\"queries\":[\"独处 社交 个人偏好\",\"我更喜欢一个人待着还是和朋友聚会\",\"聚会后累不累 一个人自在\"]},{\"id\":\"absent\",\"queries\":[\"雪岭公司 融资金额\",\"雪岭 融了多少钱\",\"雪岭 融资规模\"]}]}",
+      "parsed": {
+        "items": [
+          {
+            "id": "identifier",
+            "queries": [
+              "雨桥-017 总价 签收日期",
+              "雨桥-017 一共多少钱",
+              "雨桥-017 什么时候签收"
+            ]
+          },
+          {
+            "id": "chinese",
+            "queries": [
+              "旅行费用 报销流程",
+              "出差花的钱怎么报",
+              "差旅报销 发票 材料"
+            ]
+          },
+          {
+            "id": "cross-source",
+            "queries": [
+              "蓝帆 周五 发布 延期原因",
+              "蓝帆 为什么周五没发",
+              "蓝帆 发布计划 变更"
+            ]
+          },
+          {
+            "id": "identity",
+            "queries": [
+              "蓝帆 林宁 职责",
+              "蓝帆 林宁负责哪块",
+              "蓝帆 项目分工 林宁"
+            ]
+          },
+          {
+            "id": "correction",
+            "queries": [
+              "开会时间 最新偏好",
+              "我现在喜欢几点开会",
+              "会议时间 喜好 后来改了"
+            ]
+          },
+          {
+            "id": "exception",
+            "queries": [
+              "10月10日 早上开会 后续安排",
+              "这次早上开会 以后",
+              "会议时间 临时调整 长期变更"
+            ]
+          },
+          {
+            "id": "long-update",
+            "queries": [
+              "蓝松 六月交付 后续变更",
+              "蓝松 六月交付 后来怎么安排",
+              "蓝松 交付时间 最新调整"
+            ]
+          },
+          {
+            "id": "english",
+            "queries": [
+              "Cedar shipment status update",
+              "what happened to the Cedar delivery",
+              "Cedar shipping timeline changes"
+            ]
+          },
+          {
+            "id": "semantic-gap",
+            "queries": [
+              "独处 社交 个人偏好",
+              "我更喜欢一个人待着还是和朋友聚会",
+              "聚会后累不累 一个人自在"
+            ]
+          },
+          {
+            "id": "absent",
+            "queries": [
+              "雪岭公司 融资金额",
+              "雪岭 融了多少钱",
+              "雪岭 融资规模"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "identifier:single_excerpts",
+      "completed": true,
+      "finishReason": "stop",
+      "reportedModel": null,
+      "latencyMs": 6549.994208,
+      "usage": {
+        "input_tokens": 9732,
+        "cached_input_tokens": 7552,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 83,
+        "reasoning_output_tokens": 0
+      },
+      "promptSha256": "42e22d94d3ec1887ebe40f7f55193faa81624f2a31c7ae6fb51601661097f402",
+      "text": "{\"answer\":\"雨桥-017 的总价为 12560 元，签收日期为 2026-09-12。\",\"canAnswer\":true,\"citations\":[{\"path\":\"项目/采购.txt\",\"quote\":\"虚构材料。采购单号 雨桥-017，总价 12560 元，签收日期 2026-09-12。\"}]}",
+      "parsed": {
+        "answer": "雨桥-017 的总价为 12560 元，签收日期为 2026-09-12。",
+        "canAnswer": true,
+        "citations": [
+          {
+            "path": "项目/采购.txt",
+            "quote": "虚构材料。采购单号 雨桥-017，总价 12560 元，签收日期 2026-09-12。"
+          }
+        ]
+      }
+    },
+    {
+      "id": "identifier:expanded_context",
+      "completed": true,
+      "finishReason": "stop",
+      "reportedModel": null,
+      "latencyMs": 6045.6026249999995,
+      "usage": {
+        "input_tokens": 13146,
+        "cached_input_tokens": 7552,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 79,
+        "reasoning_output_tokens": 0
+      },
+      "promptSha256": "516d6ca784b9c0c622235de2e370eeb839396c3d0e896d2342434af527dfe14c",
+      "text": "{\"answer\":\"雨桥-017 的总价为 12560 元，签收日期为 2026-09-12。\",\"canAnswer\":true,\"citations\":[{\"path\":\"项目/采购.txt\",\"quote\":\"采购单号 雨桥-017，总价 12560 元，签收日期 2026-09-12。\"}]}",
+      "parsed": {
+        "answer": "雨桥-017 的总价为 12560 元，签收日期为 2026-09-12。",
+        "canAnswer": true,
+        "citations": [
+          {
+            "path": "项目/采购.txt",
+            "quote": "采购单号 雨桥-017，总价 12560 元，签收日期 2026-09-12。"
+          }
+        ]
+      }
+    },
+    {
+      "id": "chinese:expanded_context",
+      "completed": true,
+      "finishReason": "stop",
+      "reportedModel": null,
+      "latencyMs": 6091.842958999998,
+      "usage": {
+        "input_tokens": 14418,
+        "cached_input_tokens": 7552,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 92,
+        "reasoning_output_tokens": 0
+      },
+      "promptSha256": "c58df6552b692dea21b33798140fdbba55a271b457bc02b45a3ff20be5886465",
+      "text": "{\"answer\":\"旅行费用包括住宿680元、交通240元，合计920元；报销需附发票。材料未提供具体提交渠道、审批流程或报销期限，无法确定这些事项。\",\"canAnswer\":true,\"citations\":[{\"path\":\"资料/旅行报销.md\",\"quote\":\"旅行费用：住宿 680 元，交通 240 元。报销要附发票。\"}]}",
+      "parsed": {
+        "answer": "旅行费用包括住宿680元、交通240元，合计920元；报销需附发票。材料未提供具体提交渠道、审批流程或报销期限，无法确定这些事项。",
+        "canAnswer": true,
+        "citations": [
+          {
+            "path": "资料/旅行报销.md",
+            "quote": "旅行费用：住宿 680 元，交通 240 元。报销要附发票。"
+          }
+        ]
+      }
+    },
+    {
+      "id": "chinese:single_excerpts",
+      "completed": true,
+      "finishReason": "stop",
+      "reportedModel": null,
+      "latencyMs": 6214.823582999998,
+      "usage": {
+        "input_tokens": 9714,
+        "cached_input_tokens": 7552,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 89,
+        "reasoning_output_tokens": 0
+      },
+      "promptSha256": "166d6dbd1654bd7bfbefed4536a6baa1fcdfcfcb1c105c8c97b1920530744700",
+      "text": "{\"answer\":\"旅行费用报销需附发票。材料列明住宿费680元、交通费240元，合计920元；其他报销流程无法从现有证据确定。\",\"canAnswer\":true,\"citations\":[{\"path\":\"资料/旅行报销.md\",\"quote\":\"旅行费用：住宿 680 元，交通 240 元。报销要附发票。\"}]}",
+      "parsed": {
+        "answer": "旅行费用报销需附发票。材料列明住宿费680元、交通费240元，合计920元；其他报销流程无法从现有证据确定。",
+        "canAnswer": true,
+        "citations": [
+          {
+            "path": "资料/旅行报销.md",
+            "quote": "旅行费用：住宿 680 元，交通 240 元。报销要附发票。"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cross-source:single_excerpts",
+      "completed": true,
+      "finishReason": "stop",
+      "reportedModel": null,
+      "latencyMs": 7087.712166999998,
+      "usage": {
+        "input_tokens": 9907,
+        "cached_input_tokens": 7552,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 135,
+        "reasoning_output_tokens": 0
+      },
+      "promptSha256": "f518f9b1c1060f4e14192107520b827198abc64c1d46d23a9825fab720a9633c",
+      "text": "{\"answer\":\"蓝帆因预算尚未批准而取消原定周五发布；财务要求等待书面回复，项目需待预算批准后重新排期。\",\"canAnswer\":true,\"citations\":[{\"path\":\"项目/蓝帆-预算.md\",\"quote\":\"虚构材料。2026-10-02 蓝帆项目预算尚未批准，财务要求等待书面回复。\"},{\"path\":\"项目/蓝帆-取消.md\",\"quote\":\"虚构材料。2026-10-03 蓝帆项目：取消周五发布，待预算批准后重新排期。\"}]}",
+      "parsed": {
+        "answer": "蓝帆因预算尚未批准而取消原定周五发布；财务要求等待书面回复，项目需待预算批准后重新排期。",
+        "canAnswer": true,
+        "citations": [
+          {
+            "path": "项目/蓝帆-预算.md",
+            "quote": "虚构材料。2026-10-02 蓝帆项目预算尚未批准，财务要求等待书面回复。"
+          },
+          {
+            "path": "项目/蓝帆-取消.md",
+            "quote": "虚构材料。2026-10-03 蓝帆项目：取消周五发布，待预算批准后重新排期。"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cross-source:expanded_context",
+      "completed": true,
+      "finishReason": "stop",
+      "reportedModel": null,
+      "latencyMs": 6977.151041000005,
+      "usage": {
+        "input_tokens": 14193,
+        "cached_input_tokens": 7552,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 133,
+        "reasoning_output_tokens": 0
+      },
+      "promptSha256": "0b841e182108cb0078f9ccab37a627e92754ce83ba561b3500e49ac494c386d1",
+      "text": "{\"answer\":\"蓝帆因预算尚未批准、财务要求等待书面回复，于2026年10月3日取消了原定周五发布，待预算批准后重新排期。\",\"canAnswer\":true,\"citations\":[{\"path\":\"项目/蓝帆-预算.md\",\"quote\":\"2026-10-02 蓝帆项目预算尚未批准，财务要求等待书面回复。\"},{\"path\":\"项目/蓝帆-取消.md\",\"quote\":\"2026-10-03 蓝帆项目：取消周五发布，待预算批准后重新排期。\"}]}",
+      "parsed": {
+        "answer": "蓝帆因预算尚未批准、财务要求等待书面回复，于2026年10月3日取消了原定周五发布，待预算批准后重新排期。",
+        "canAnswer": true,
+        "citations": [
+          {
+            "path": "项目/蓝帆-预算.md",
+            "quote": "2026-10-02 蓝帆项目预算尚未批准，财务要求等待书面回复。"
+          },
+          {
+            "path": "项目/蓝帆-取消.md",
+            "quote": "2026-10-03 蓝帆项目：取消周五发布，待预算批准后重新排期。"
+          }
+        ]
+      }
+    },
+    {
+      "id": "identity:expanded_context",
+      "completed": true,
+      "finishReason": "stop",
+      "reportedModel": null,
+      "latencyMs": 5268.733625000001,
+      "usage": {
+        "input_tokens": 15471,
+        "cached_input_tokens": 7552,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 56,
+        "reasoning_output_tokens": 0
+      },
+      "promptSha256": "95b5a9f6beee79cdbe70f4a57e9ad5205e4bf0ba47400901aa9a92492ceabcaa",
+      "text": "{\"answer\":\"蓝帆项目的林宁负责验收。\",\"canAnswer\":true,\"citations\":[{\"path\":\"人物/蓝帆项目-林宁.md\",\"quote\":\"蓝帆项目的林宁负责验收。\"}]}",
+      "parsed": {
+        "answer": "蓝帆项目的林宁负责验收。",
+        "canAnswer": true,
+        "citations": [
+          {
+            "path": "人物/蓝帆项目-林宁.md",
+            "quote": "蓝帆项目的林宁负责验收。"
+          }
+        ]
+      }
+    },
+    {
+      "id": "identity:single_excerpts",
+      "completed": true,
+      "finishReason": "stop",
+      "reportedModel": null,
+      "latencyMs": 6260.163084,
+      "usage": {
+        "input_tokens": 9907,
+        "cached_input_tokens": 7552,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 114,
+        "reasoning_output_tokens": 0
+      },
+      "promptSha256": "9ff6c8028b05f665178fb1a9f7111e27b6ae17fbfccc5eaa96d88555f8c99e05",
+      "text": "{\"answer\":\"蓝帆项目的林宁负责验收。后续取消的是周五发布安排，没有证据表明其验收职责发生变化。\",\"canAnswer\":true,\"citations\":[{\"path\":\"人物/蓝帆项目-林宁.md\",\"quote\":\"蓝帆项目的林宁负责验收。\"},{\"path\":\"项目/蓝帆-取消.md\",\"quote\":\"2026-10-03 蓝帆项目：取消周五发布，待预算批准后重新排期。\"}]}",
+      "parsed": {
+        "answer": "蓝帆项目的林宁负责验收。后续取消的是周五发布安排，没有证据表明其验收职责发生变化。",
+        "canAnswer": true,
+        "citations": [
+          {
+            "path": "人物/蓝帆项目-林宁.md",
+            "quote": "蓝帆项目的林宁负责验收。"
+          },
+          {
+            "path": "项目/蓝帆-取消.md",
+            "quote": "2026-10-03 蓝帆项目：取消周五发布，待预算批准后重新排期。"
+          }
+        ]
+      }
+    },
+    {
+      "id": "correction:single_excerpts",
+      "completed": true,
+      "finishReason": "stop",
+      "reportedModel": null,
+      "latencyMs": 7476.502582999994,
+      "usage": {
+        "input_tokens": 9788,
+        "cached_input_tokens": 3328,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 127,
+        "reasoning_output_tokens": 0
+      },
+      "promptSha256": "fda2f5302fc21c1e1e121acf485d5f12bdcb6a57968749f0823e19d42de37338",
+      "text": "{\"answer\":\"你现在一般喜欢下午开会。10月10日早上的会议是单次例外，不改变这一偏好。\",\"canAnswer\":true,\"citations\":[{\"path\":\"生活/偏好修订.md\",\"quote\":\"2026-10-08：我现在改为下午开会；这项修改今后适用。\"},{\"path\":\"生活/单次例外.md\",\"quote\":\"2026-10-09：为了赶当天飞机，10月10日那一次会议放在早上；不改变以后下午开会的偏好。\"}]}",
+      "parsed": {
+        "answer": "你现在一般喜欢下午开会。10月10日早上的会议是单次例外，不改变这一偏好。",
+        "canAnswer": true,
+        "citations": [
+          {
+            "path": "生活/偏好修订.md",
+            "quote": "2026-10-08：我现在改为下午开会；这项修改今后适用。"
+          },
+          {
+            "path": "生活/单次例外.md",
+            "quote": "2026-10-09：为了赶当天飞机，10月10日那一次会议放在早上；不改变以后下午开会的偏好。"
+          }
+        ]
+      }
+    },
+    {
+      "id": "correction:expanded_context",
+      "completed": true,
+      "finishReason": "stop",
+      "reportedModel": null,
+      "latencyMs": 7097.054000000004,
+      "usage": {
+        "input_tokens": 9792,
+        "cached_input_tokens": 7552,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 129,
+        "reasoning_output_tokens": 0
+      },
+      "promptSha256": "5d6e71df5712bec5652ae472d34cb85c40f1a3dacbb0ad649da783844d9b938e",
+      "text": "{\"answer\":\"你现在一般喜欢下午开会。10月10日早上开会只是单次例外，不改变之后的偏好。\",\"canAnswer\":true,\"citations\":[{\"path\":\"生活/偏好修订.md\",\"quote\":\"2026-10-08：我现在改为下午开会；这项修改今后适用。\"},{\"path\":\"生活/单次例外.md\",\"quote\":\"2026-10-09：为了赶当天飞机，10月10日那一次会议放在早上；不改变以后下午开会的偏好。\"}]}",
+      "parsed": {
+        "answer": "你现在一般喜欢下午开会。10月10日早上开会只是单次例外，不改变之后的偏好。",
+        "canAnswer": true,
+        "citations": [
+          {
+            "path": "生活/偏好修订.md",
+            "quote": "2026-10-08：我现在改为下午开会；这项修改今后适用。"
+          },
+          {
+            "path": "生活/单次例外.md",
+            "quote": "2026-10-09：为了赶当天飞机，10月10日那一次会议放在早上；不改变以后下午开会的偏好。"
+          }
+        ]
+      }
+    },
+    {
+      "id": "exception:expanded_context",
+      "completed": true,
+      "finishReason": "stop",
+      "reportedModel": null,
+      "latencyMs": 7493.525875000007,
+      "usage": {
+        "input_tokens": 15567,
+        "cached_input_tokens": 7552,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 150,
+        "reasoning_output_tokens": 0
+      },
+      "promptSha256": "8ce5034eacf96d2eaf226fb664d26d978e882dbd961356e9e5aa5f7b34c81fc5",
+      "text": "{\"answer\":\"不意味着以后都改早上。10月10日早会是为赶飞机的一次性例外；10月8日已将今后的开会偏好改为下午，该偏好不受此次例外影响。\",\"canAnswer\":true,\"citations\":[{\"path\":\"生活/单次例外.md\",\"quote\":\"2026-10-09：为了赶当天飞机，10月10日那一次会议放在早上；不改变以后下午开会的偏好。\"},{\"path\":\"生活/偏好修订.md\",\"quote\":\"2026-10-08：我现在改为下午开会；这项修改今后适用。\"}]}",
+      "parsed": {
+        "answer": "不意味着以后都改早上。10月10日早会是为赶飞机的一次性例外；10月8日已将今后的开会偏好改为下午，该偏好不受此次例外影响。",
+        "canAnswer": true,
+        "citations": [
+          {
+            "path": "生活/单次例外.md",
+            "quote": "2026-10-09：为了赶当天飞机，10月10日那一次会议放在早上；不改变以后下午开会的偏好。"
+          },
+          {
+            "path": "生活/偏好修订.md",
+            "quote": "2026-10-08：我现在改为下午开会；这项修改今后适用。"
+          }
+        ]
+      }
+    },
+    {
+      "id": "exception:single_excerpts",
+      "completed": true,
+      "finishReason": "stop",
+      "reportedModel": null,
+      "latencyMs": 5826.550125000009,
+      "usage": {
+        "input_tokens": 9743,
+        "cached_input_tokens": 3328,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 93,
+        "reasoning_output_tokens": 0
+      },
+      "promptSha256": "33408d70cc41dad36e67f4d46ddc653819512ffaa5572d29f0ba23207a41b6a4",
+      "text": "{\"answer\":\"不是。10月10日早上开会只是为了赶当天飞机的一次例外，以后仍偏好下午开会。\",\"canAnswer\":true,\"citations\":[{\"path\":\"生活/单次例外.md\",\"quote\":\"2026-10-09：为了赶当天飞机，10月10日那一次会议放在早上；不改变以后下午开会的偏好。\"}]}",
+      "parsed": {
+        "answer": "不是。10月10日早上开会只是为了赶当天飞机的一次例外，以后仍偏好下午开会。",
+        "canAnswer": true,
+        "citations": [
+          {
+            "path": "生活/单次例外.md",
+            "quote": "2026-10-09：为了赶当天飞机，10月10日那一次会议放在早上；不改变以后下午开会的偏好。"
+          }
+        ]
+      }
+    },
+    {
+      "id": "long-update:single_excerpts",
+      "completed": true,
+      "finishReason": "stop",
+      "reportedModel": null,
+      "latencyMs": 5334.405750000005,
+      "usage": {
+        "input_tokens": 11840,
+        "cached_input_tokens": 7552,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 75,
+        "reasoning_output_tokens": 0
+      },
+      "promptSha256": "6ae338798fe658e249189e269235bd1a8f06969517a8eca0b1d84f7d8310c1b1",
+      "text": "{\"answer\":\"无法确认后来是否改变。所给证据仅说明蓝松项目原计划六月交付，没有后续变更、取消或确认安排的记录。\",\"canAnswer\":false,\"citations\":[{\"path\":\"资料/长记录.md\",\"quote\":\"虚构材料。蓝松项目原计划六月交付。\"}]}",
+      "parsed": {
+        "answer": "无法确认后来是否改变。所给证据仅说明蓝松项目原计划六月交付，没有后续变更、取消或确认安排的记录。",
+        "canAnswer": false,
+        "citations": [
+          {
+            "path": "资料/长记录.md",
+            "quote": "虚构材料。蓝松项目原计划六月交付。"
+          }
+        ]
+      }
+    },
+    {
+      "id": "long-update:expanded_context",
+      "completed": true,
+      "finishReason": "stop",
+      "reportedModel": null,
+      "latencyMs": 5912.798833000008,
+      "usage": {
+        "input_tokens": 15249,
+        "cached_input_tokens": 7552,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 99,
+        "reasoning_output_tokens": 0
+      },
+      "promptSha256": "d27c6bb59c282349e90668d58df702622cdfa6f7c05f84ea08884b937b89bbb6",
+      "text": "{\"answer\":\"改变了。蓝松项目原计划六月交付，后续修订已取消六月交付，新的交付日期尚未确定。\",\"canAnswer\":true,\"citations\":[{\"path\":\"资料/长记录.md\",\"quote\":\"蓝松项目原计划六月交付。\"},{\"path\":\"资料/长记录.md\",\"quote\":\"蓝松项目后续修订：六月交付已取消，新的日期尚未确定。\"}]}",
+      "parsed": {
+        "answer": "改变了。蓝松项目原计划六月交付，后续修订已取消六月交付，新的交付日期尚未确定。",
+        "canAnswer": true,
+        "citations": [
+          {
+            "path": "资料/长记录.md",
+            "quote": "蓝松项目原计划六月交付。"
+          },
+          {
+            "path": "资料/长记录.md",
+            "quote": "蓝松项目后续修订：六月交付已取消，新的日期尚未确定。"
+          }
+        ]
+      }
+    },
+    {
+      "id": "english:expanded_context",
+      "completed": true,
+      "finishReason": "stop",
+      "reportedModel": null,
+      "latencyMs": 6375.075708000004,
+      "usage": {
+        "input_tokens": 9712,
+        "cached_input_tokens": 7552,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 73,
+        "reasoning_output_tokens": 0
+      },
+      "promptSha256": "0eb20ee41ece1ab4a02e7dd0d2299961381f52ffe777593f60f183e78999b606",
+      "text": "{\"answer\":\"Cedar 项目的交付已推迟，等待供应商确认发货。现有证据无法确定是否已经发货或何时交付。\",\"canAnswer\":true,\"citations\":[{\"path\":\"资料/English.txt\",\"quote\":\"Project Cedar delivery was postponed until the supplier confirms the shipment.\"}]}",
+      "parsed": {
+        "answer": "Cedar 项目的交付已推迟，等待供应商确认发货。现有证据无法确定是否已经发货或何时交付。",
+        "canAnswer": true,
+        "citations": [
+          {
+            "path": "资料/English.txt",
+            "quote": "Project Cedar delivery was postponed until the supplier confirms the shipment."
+          }
+        ]
+      }
+    },
+    {
+      "id": "english:single_excerpts",
+      "completed": true,
+      "finishReason": "stop",
+      "reportedModel": null,
+      "latencyMs": 5976.666790999996,
+      "usage": {
+        "input_tokens": 9713,
+        "cached_input_tokens": 7552,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 70,
+        "reasoning_output_tokens": 0
+      },
+      "promptSha256": "0eb20ee41ece1ab4a02e7dd0d2299961381f52ffe777593f60f183e78999b606",
+      "text": "{\"answer\":\"Cedar 项目的交付已推迟，等待供应商确认发货。现有证据无法确定货物是否已发出。\",\"canAnswer\":true,\"citations\":[{\"path\":\"资料/English.txt\",\"quote\":\"Project Cedar delivery was postponed until the supplier confirms the shipment.\"}]}",
+      "parsed": {
+        "answer": "Cedar 项目的交付已推迟，等待供应商确认发货。现有证据无法确定货物是否已发出。",
+        "canAnswer": true,
+        "citations": [
+          {
+            "path": "资料/English.txt",
+            "quote": "Project Cedar delivery was postponed until the supplier confirms the shipment."
+          }
+        ]
+      }
+    },
+    {
+      "id": "semantic-gap:single_excerpts",
+      "completed": true,
+      "finishReason": "stop",
+      "reportedModel": null,
+      "latencyMs": 4553.159292000011,
+      "usage": {
+        "input_tokens": 9678,
+        "cached_input_tokens": 7552,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 34,
+        "reasoning_output_tokens": 0
+      },
+      "promptSha256": "49e76adcef270b074c622202d02e3e194148343fb765004c18f34c0fdbbd198c",
+      "text": "{\"answer\":\"没有提供相关证据，无法确定你更喜欢独处还是社交。\",\"canAnswer\":false,\"citations\":[]}",
+      "parsed": {
+        "answer": "没有提供相关证据，无法确定你更喜欢独处还是社交。",
+        "canAnswer": false,
+        "citations": []
+      }
+    },
+    {
+      "id": "semantic-gap:expanded_context",
+      "completed": true,
+      "finishReason": "stop",
+      "reportedModel": null,
+      "latencyMs": 7114.223165999996,
+      "usage": {
+        "input_tokens": 9833,
+        "cached_input_tokens": 7552,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 98,
+        "reasoning_output_tokens": 0
+      },
+      "promptSha256": "a56b0fde88763e980a40b7d38f2d1a72fe882ac9ac6a8eb6a38965cf63657e3e",
+      "text": "{\"answer\":\"根据现有记录，你更喜欢独处：周末宁愿一个人在家看书，也不去热闹的聚餐。该证据仅支持这一情境下的偏好。\",\"canAnswer\":true,\"citations\":[{\"path\":\"生活/日记.md\",\"quote\":\"2026-10-06：周末我宁愿一个人在家看书，也不去热闹的聚餐。\"}]}",
+      "parsed": {
+        "answer": "根据现有记录，你更喜欢独处：周末宁愿一个人在家看书，也不去热闹的聚餐。该证据仅支持这一情境下的偏好。",
+        "canAnswer": true,
+        "citations": [
+          {
+            "path": "生活/日记.md",
+            "quote": "2026-10-06：周末我宁愿一个人在家看书，也不去热闹的聚餐。"
+          }
+        ]
+      }
+    },
+    {
+      "id": "absent:expanded_context",
+      "completed": true,
+      "finishReason": "stop",
+      "reportedModel": null,
+      "latencyMs": 5715.415832999992,
+      "usage": {
+        "input_tokens": 9778,
+        "cached_input_tokens": 7552,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 32,
+        "reasoning_output_tokens": 0
+      },
+      "promptSha256": "721e4cf85f00e88568634fe4e150a5c6f762cd7c1c5950142927a2022e67d232",
+      "text": "{\"answer\":\"所提供证据未涉及雪岭公司的融资金额，无法确定。\",\"canAnswer\":false,\"citations\":[]}",
+      "parsed": {
+        "answer": "所提供证据未涉及雪岭公司的融资金额，无法确定。",
+        "canAnswer": false,
+        "citations": []
+      }
+    },
+    {
+      "id": "absent:single_excerpts",
+      "completed": true,
+      "finishReason": "stop",
+      "reportedModel": null,
+      "latencyMs": 5173.278374999994,
+      "usage": {
+        "input_tokens": 9684,
+        "cached_input_tokens": 7552,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 31,
+        "reasoning_output_tokens": 0
+      },
+      "promptSha256": "4794089b50943d01700ecc7deae9e7c17999ce4da10c5f82f18b14c0833ba01a",
+      "text": "{\"answer\":\"没有提供相关证据，无法确定雪岭公司的融资金额。\",\"canAnswer\":false,\"citations\":[]}",
+      "parsed": {
+        "answer": "没有提供相关证据，无法确定雪岭公司的融资金额。",
+        "canAnswer": false,
+        "citations": []
+      }
+    }
+  ],
+  "results": [
+    {
+      "caseId": "identifier",
+      "strategy": "single_excerpts",
+      "queries": [
+        "雨桥-017"
+      ],
+      "evidenceChars": 74,
+      "evidence": [
+        {
+          "path": "项目/采购.txt",
+          "text": "虚构材料。采购单号 雨桥-017，总价 12560 元，签收日期 2026-09-12。"
+        }
+      ],
+      "sourceRecall": 1,
+      "quoteRecall": 1,
+      "citationsExact": true,
+      "answer": {
+        "answer": "雨桥-017 的总价为 12560 元，签收日期为 2026-09-12。",
+        "canAnswer": true,
+        "citations": [
+          {
+            "path": "项目/采购.txt",
+            "quote": "虚构材料。采购单号 雨桥-017，总价 12560 元，签收日期 2026-09-12。"
+          }
+        ]
+      },
+      "review": "pending independent human/assistant review; exact citation alone is not answer correctness"
+    },
+    {
+      "caseId": "identifier",
+      "strategy": "expanded_context",
+      "queries": [
+        "雨桥-017 总价 签收日期",
+        "雨桥-017 一共多少钱",
+        "雨桥-017 什么时候签收"
+      ],
+      "evidenceChars": 4170,
+      "evidence": [
+        {
+          "path": "项目/采购.txt",
+          "text": "虚构材料。采购单号 雨桥-017，总价 12560 元，签收日期 2026-09-12。"
+        },
+        {
+          "path": "资料/长记录.md",
+          "text": "。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关"
+        },
+        {
+          "path": "资料/长记录.md",
+          "text": "：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n蓝松项目后续修订：六月交付已取消，新的日期尚未确定。"
+        }
+      ],
+      "sourceRecall": 1,
+      "quoteRecall": 1,
+      "citationsExact": true,
+      "answer": {
+        "answer": "雨桥-017 的总价为 12560 元，签收日期为 2026-09-12。",
+        "canAnswer": true,
+        "citations": [
+          {
+            "path": "项目/采购.txt",
+            "quote": "采购单号 雨桥-017，总价 12560 元，签收日期 2026-09-12。"
+          }
+        ]
+      },
+      "review": "pending independent human/assistant review; exact citation alone is not answer correctness"
+    },
+    {
+      "caseId": "chinese",
+      "strategy": "expanded_context",
+      "queries": [
+        "旅行费用 报销流程",
+        "出差花的钱怎么报",
+        "差旅报销 发票 材料"
+      ],
+      "evidenceChars": 5861,
+      "evidence": [
+        {
+          "path": "资料/旅行报销.md",
+          "text": "虚构材料。旅行费用：住宿 680 元，交通 240 元。报销要附发票。"
+        },
+        {
+          "path": "项目/采购.txt",
+          "text": "虚构材料。采购单号 雨桥-017，总价 12560 元，签收日期 2026-09-12。"
+        },
+        {
+          "path": "项目/蓝帆-计划.md",
+          "text": "虚构材料。2026-10-01 蓝帆项目：原计划周五发布，林宁负责验收。"
+        },
+        {
+          "path": "项目/蓝帆-取消.md",
+          "text": "虚构材料。2026-10-03 蓝帆项目：取消周五发布，待预算批准后重新排期。"
+        },
+        {
+          "path": "生活/日记.md",
+          "text": "虚构材料。2026-10-06：周末我宁愿一个人在家看书，也不去热闹的聚餐。"
+        },
+        {
+          "path": "项目/蓝帆-预算.md",
+          "text": "虚构材料。2026-10-02 蓝帆项目预算尚未批准，财务要求等待书面回复。"
+        },
+        {
+          "path": "人物/星帆公司-林宁.md",
+          "text": "虚构材料。星帆公司的林宁是设计师，擅长插画。此人不是蓝帆项目负责人林宁。"
+        },
+        {
+          "path": "生活/偏好修订.md",
+          "text": "虚构材料。2026-09-01：以前我说喜欢清晨开会。2026-10-08：我现在改为下午开会；这项修改今后适用。"
+        },
+        {
+          "path": "生活/单次例外.md",
+          "text": "虚构材料。2026-10-09：为了赶当天飞机，10月10日那一次会议放在早上；不改变以后下午开会的偏好。"
+        },
+        {
+          "path": "人物/蓝帆项目-林宁.md",
+          "text": "虚构材料。蓝帆项目的林宁负责验收。联系电话尚未提供。不要使用星帆公司同名设计师的资料。"
+        },
+        {
+          "path": "资料/长记录.md",
+          "text": "虚构材料。蓝松项目原计划六月交付。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察"
+        },
+        {
+          "path": "资料/长记录.md",
+          "text": "天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和"
+        }
+      ],
+      "sourceRecall": 1,
+      "quoteRecall": 1,
+      "citationsExact": true,
+      "answer": {
+        "answer": "旅行费用包括住宿680元、交通240元，合计920元；报销需附发票。材料未提供具体提交渠道、审批流程或报销期限，无法确定这些事项。",
+        "canAnswer": true,
+        "citations": [
+          {
+            "path": "资料/旅行报销.md",
+            "quote": "旅行费用：住宿 680 元，交通 240 元。报销要附发票。"
+          }
+        ]
+      },
+      "review": "pending independent human/assistant review; exact citation alone is not answer correctness"
+    },
+    {
+      "caseId": "chinese",
+      "strategy": "single_excerpts",
+      "queries": [
+        "旅行费用"
+      ],
+      "evidenceChars": 66,
+      "evidence": [
+        {
+          "path": "资料/旅行报销.md",
+          "text": "虚构材料。旅行费用：住宿 680 元，交通 240 元。报销要附发票。"
+        }
+      ],
+      "sourceRecall": 1,
+      "quoteRecall": 1,
+      "citationsExact": true,
+      "answer": {
+        "answer": "旅行费用报销需附发票。材料列明住宿费680元、交通费240元，合计920元；其他报销流程无法从现有证据确定。",
+        "canAnswer": true,
+        "citations": [
+          {
+            "path": "资料/旅行报销.md",
+            "quote": "旅行费用：住宿 680 元，交通 240 元。报销要附发票。"
+          }
+        ]
+      },
+      "review": "pending independent human/assistant review; exact citation alone is not answer correctness"
+    },
+    {
+      "caseId": "cross-source",
+      "strategy": "single_excerpts",
+      "queries": [
+        "蓝帆"
+      ],
+      "evidenceChars": 356,
+      "evidence": [
+        {
+          "path": "项目/蓝帆-计划.md",
+          "text": "虚构材料。2026-10-01 蓝帆项目：原计划周五发布，林宁负责验收。"
+        },
+        {
+          "path": "项目/蓝帆-取消.md",
+          "text": "虚构材料。2026-10-03 蓝帆项目：取消周五发布，待预算批准后重新排期。"
+        },
+        {
+          "path": "项目/蓝帆-预算.md",
+          "text": "虚构材料。2026-10-02 蓝帆项目预算尚未批准，财务要求等待书面回复。"
+        },
+        {
+          "path": "人物/星帆公司-林宁.md",
+          "text": "虚构材料。星帆公司的林宁是设计师，擅长插画。此人不是蓝帆项目负责人林宁。"
+        },
+        {
+          "path": "人物/蓝帆项目-林宁.md",
+          "text": "虚构材料。蓝帆项目的林宁负责验收。联系电话尚未提供。不要使用星帆公司同名设计师的资料。"
+        }
+      ],
+      "sourceRecall": 1,
+      "quoteRecall": 1,
+      "citationsExact": true,
+      "answer": {
+        "answer": "蓝帆因预算尚未批准而取消原定周五发布；财务要求等待书面回复，项目需待预算批准后重新排期。",
+        "canAnswer": true,
+        "citations": [
+          {
+            "path": "项目/蓝帆-预算.md",
+            "quote": "虚构材料。2026-10-02 蓝帆项目预算尚未批准，财务要求等待书面回复。"
+          },
+          {
+            "path": "项目/蓝帆-取消.md",
+            "quote": "虚构材料。2026-10-03 蓝帆项目：取消周五发布，待预算批准后重新排期。"
+          }
+        ]
+      },
+      "review": "pending independent human/assistant review; exact citation alone is not answer correctness"
+    },
+    {
+      "caseId": "cross-source",
+      "strategy": "expanded_context",
+      "queries": [
+        "蓝帆 周五 发布 延期原因",
+        "蓝帆 为什么周五没发",
+        "蓝帆 发布计划 变更"
+      ],
+      "evidenceChars": 5482,
+      "evidence": [
+        {
+          "path": "项目/蓝帆-计划.md",
+          "text": "虚构材料。2026-10-01 蓝帆项目：原计划周五发布，林宁负责验收。"
+        },
+        {
+          "path": "项目/蓝帆-取消.md",
+          "text": "虚构材料。2026-10-03 蓝帆项目：取消周五发布，待预算批准后重新排期。"
+        },
+        {
+          "path": "项目/蓝帆-预算.md",
+          "text": "虚构材料。2026-10-02 蓝帆项目预算尚未批准，财务要求等待书面回复。"
+        },
+        {
+          "path": "人物/星帆公司-林宁.md",
+          "text": "虚构材料。星帆公司的林宁是设计师，擅长插画。此人不是蓝帆项目负责人林宁。"
+        },
+        {
+          "path": "人物/蓝帆项目-林宁.md",
+          "text": "虚构材料。蓝帆项目的林宁负责验收。联系电话尚未提供。不要使用星帆公司同名设计师的资料。"
+        },
+        {
+          "path": "资料/长记录.md",
+          "text": "虚构材料。蓝松项目原计划六月交付。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察"
+        },
+        {
+          "path": "资料/长记录.md",
+          "text": "天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和"
+        }
+      ],
+      "sourceRecall": 1,
+      "quoteRecall": 1,
+      "citationsExact": true,
+      "answer": {
+        "answer": "蓝帆因预算尚未批准、财务要求等待书面回复，于2026年10月3日取消了原定周五发布，待预算批准后重新排期。",
+        "canAnswer": true,
+        "citations": [
+          {
+            "path": "项目/蓝帆-预算.md",
+            "quote": "2026-10-02 蓝帆项目预算尚未批准，财务要求等待书面回复。"
+          },
+          {
+            "path": "项目/蓝帆-取消.md",
+            "quote": "2026-10-03 蓝帆项目：取消周五发布，待预算批准后重新排期。"
+          }
+        ]
+      },
+      "review": "pending independent human/assistant review; exact citation alone is not answer correctness"
+    },
+    {
+      "caseId": "identity",
+      "strategy": "expanded_context",
+      "queries": [
+        "蓝帆 林宁 职责",
+        "蓝帆 林宁负责哪块",
+        "蓝帆 项目分工 林宁"
+      ],
+      "evidenceChars": 7015,
+      "evidence": [
+        {
+          "path": "人物/星帆公司-林宁.md",
+          "text": "虚构材料。星帆公司的林宁是设计师，擅长插画。此人不是蓝帆项目负责人林宁。"
+        },
+        {
+          "path": "项目/蓝帆-计划.md",
+          "text": "虚构材料。2026-10-01 蓝帆项目：原计划周五发布，林宁负责验收。"
+        },
+        {
+          "path": "人物/蓝帆项目-林宁.md",
+          "text": "虚构材料。蓝帆项目的林宁负责验收。联系电话尚未提供。不要使用星帆公司同名设计师的资料。"
+        },
+        {
+          "path": "项目/蓝帆-取消.md",
+          "text": "虚构材料。2026-10-03 蓝帆项目：取消周五发布，待预算批准后重新排期。"
+        },
+        {
+          "path": "项目/蓝帆-预算.md",
+          "text": "虚构材料。2026-10-02 蓝帆项目预算尚未批准，财务要求等待书面回复。"
+        },
+        {
+          "path": "资料/长记录.md",
+          "text": "。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关"
+        },
+        {
+          "path": "资料/长记录.md",
+          "text": "：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n蓝松项目后续修订：六月交付已取消，新的日期尚未确定。"
+        },
+        {
+          "path": "资料/长记录.md",
+          "text": "虚构材料。蓝松项目原计划六月交付。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察"
+        }
+      ],
+      "sourceRecall": 1,
+      "quoteRecall": 1,
+      "citationsExact": true,
+      "answer": {
+        "answer": "蓝帆项目的林宁负责验收。",
+        "canAnswer": true,
+        "citations": [
+          {
+            "path": "人物/蓝帆项目-林宁.md",
+            "quote": "蓝帆项目的林宁负责验收。"
+          }
+        ]
+      },
+      "review": "pending independent human/assistant review; exact citation alone is not answer correctness"
+    },
+    {
+      "caseId": "identity",
+      "strategy": "single_excerpts",
+      "queries": [
+        "蓝帆 林宁"
+      ],
+      "evidenceChars": 356,
+      "evidence": [
+        {
+          "path": "人物/星帆公司-林宁.md",
+          "text": "虚构材料。星帆公司的林宁是设计师，擅长插画。此人不是蓝帆项目负责人林宁。"
+        },
+        {
+          "path": "项目/蓝帆-计划.md",
+          "text": "虚构材料。2026-10-01 蓝帆项目：原计划周五发布，林宁负责验收。"
+        },
+        {
+          "path": "人物/蓝帆项目-林宁.md",
+          "text": "虚构材料。蓝帆项目的林宁负责验收。联系电话尚未提供。不要使用星帆公司同名设计师的资料。"
+        },
+        {
+          "path": "项目/蓝帆-取消.md",
+          "text": "虚构材料。2026-10-03 蓝帆项目：取消周五发布，待预算批准后重新排期。"
+        },
+        {
+          "path": "项目/蓝帆-预算.md",
+          "text": "虚构材料。2026-10-02 蓝帆项目预算尚未批准，财务要求等待书面回复。"
+        }
+      ],
+      "sourceRecall": 1,
+      "quoteRecall": 1,
+      "citationsExact": true,
+      "answer": {
+        "answer": "蓝帆项目的林宁负责验收。后续取消的是周五发布安排，没有证据表明其验收职责发生变化。",
+        "canAnswer": true,
+        "citations": [
+          {
+            "path": "人物/蓝帆项目-林宁.md",
+            "quote": "蓝帆项目的林宁负责验收。"
+          },
+          {
+            "path": "项目/蓝帆-取消.md",
+            "quote": "2026-10-03 蓝帆项目：取消周五发布，待预算批准后重新排期。"
+          }
+        ]
+      },
+      "review": "pending independent human/assistant review; exact citation alone is not answer correctness"
+    },
+    {
+      "caseId": "correction",
+      "strategy": "single_excerpts",
+      "queries": [
+        "开会"
+      ],
+      "evidenceChars": 172,
+      "evidence": [
+        {
+          "path": "生活/偏好修订.md",
+          "text": "虚构材料。2026-09-01：以前我说喜欢清晨开会。2026-10-08：我现在改为下午开会；这项修改今后适用。"
+        },
+        {
+          "path": "生活/单次例外.md",
+          "text": "虚构材料。2026-10-09：为了赶当天飞机，10月10日那一次会议放在早上；不改变以后下午开会的偏好。"
+        }
+      ],
+      "sourceRecall": 1,
+      "quoteRecall": 1,
+      "citationsExact": true,
+      "answer": {
+        "answer": "你现在一般喜欢下午开会。10月10日早上的会议是单次例外，不改变这一偏好。",
+        "canAnswer": true,
+        "citations": [
+          {
+            "path": "生活/偏好修订.md",
+            "quote": "2026-10-08：我现在改为下午开会；这项修改今后适用。"
+          },
+          {
+            "path": "生活/单次例外.md",
+            "quote": "2026-10-09：为了赶当天飞机，10月10日那一次会议放在早上；不改变以后下午开会的偏好。"
+          }
+        ]
+      },
+      "review": "pending independent human/assistant review; exact citation alone is not answer correctness"
+    },
+    {
+      "caseId": "correction",
+      "strategy": "expanded_context",
+      "queries": [
+        "开会时间 最新偏好",
+        "我现在喜欢几点开会",
+        "会议时间 喜好 后来改了"
+      ],
+      "evidenceChars": 172,
+      "evidence": [
+        {
+          "path": "生活/单次例外.md",
+          "text": "虚构材料。2026-10-09：为了赶当天飞机，10月10日那一次会议放在早上；不改变以后下午开会的偏好。"
+        },
+        {
+          "path": "生活/偏好修订.md",
+          "text": "虚构材料。2026-09-01：以前我说喜欢清晨开会。2026-10-08：我现在改为下午开会；这项修改今后适用。"
+        }
+      ],
+      "sourceRecall": 1,
+      "quoteRecall": 1,
+      "citationsExact": true,
+      "answer": {
+        "answer": "你现在一般喜欢下午开会。10月10日早上开会只是单次例外，不改变之后的偏好。",
+        "canAnswer": true,
+        "citations": [
+          {
+            "path": "生活/偏好修订.md",
+            "quote": "2026-10-08：我现在改为下午开会；这项修改今后适用。"
+          },
+          {
+            "path": "生活/单次例外.md",
+            "quote": "2026-10-09：为了赶当天飞机，10月10日那一次会议放在早上；不改变以后下午开会的偏好。"
+          }
+        ]
+      },
+      "review": "pending independent human/assistant review; exact citation alone is not answer correctness"
+    },
+    {
+      "caseId": "exception",
+      "strategy": "expanded_context",
+      "queries": [
+        "10月10日 早上开会 后续安排",
+        "这次早上开会 以后",
+        "会议时间 临时调整 长期变更"
+      ],
+      "evidenceChars": 7181,
+      "evidence": [
+        {
+          "path": "生活/单次例外.md",
+          "text": "虚构材料。2026-10-09：为了赶当天飞机，10月10日那一次会议放在早上；不改变以后下午开会的偏好。"
+        },
+        {
+          "path": "生活/偏好修订.md",
+          "text": "虚构材料。2026-09-01：以前我说喜欢清晨开会。2026-10-08：我现在改为下午开会；这项修改今后适用。"
+        },
+        {
+          "path": "资料/长记录.md",
+          "text": "。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关"
+        },
+        {
+          "path": "资料/长记录.md",
+          "text": "：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n蓝松项目后续修订：六月交付已取消，新的日期尚未确定。"
+        },
+        {
+          "path": "项目/采购.txt",
+          "text": "虚构材料。采购单号 雨桥-017，总价 12560 元，签收日期 2026-09-12。"
+        },
+        {
+          "path": "项目/蓝帆-计划.md",
+          "text": "虚构材料。2026-10-01 蓝帆项目：原计划周五发布，林宁负责验收。"
+        },
+        {
+          "path": "项目/蓝帆-取消.md",
+          "text": "虚构材料。2026-10-03 蓝帆项目：取消周五发布，待预算批准后重新排期。"
+        },
+        {
+          "path": "生活/日记.md",
+          "text": "虚构材料。2026-10-06：周末我宁愿一个人在家看书，也不去热闹的聚餐。"
+        },
+        {
+          "path": "项目/蓝帆-预算.md",
+          "text": "虚构材料。2026-10-02 蓝帆项目预算尚未批准，财务要求等待书面回复。"
+        },
+        {
+          "path": "资料/长记录.md",
+          "text": "虚构材料。蓝松项目原计划六月交付。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察"
+        }
+      ],
+      "sourceRecall": 1,
+      "quoteRecall": 1,
+      "citationsExact": true,
+      "answer": {
+        "answer": "不意味着以后都改早上。10月10日早会是为赶飞机的一次性例外；10月8日已将今后的开会偏好改为下午，该偏好不受此次例外影响。",
+        "canAnswer": true,
+        "citations": [
+          {
+            "path": "生活/单次例外.md",
+            "quote": "2026-10-09：为了赶当天飞机，10月10日那一次会议放在早上；不改变以后下午开会的偏好。"
+          },
+          {
+            "path": "生活/偏好修订.md",
+            "quote": "2026-10-08：我现在改为下午开会；这项修改今后适用。"
+          }
+        ]
+      },
+      "review": "pending independent human/assistant review; exact citation alone is not answer correctness"
+    },
+    {
+      "caseId": "exception",
+      "strategy": "single_excerpts",
+      "queries": [
+        "会议 偏好"
+      ],
+      "evidenceChars": 84,
+      "evidence": [
+        {
+          "path": "生活/单次例外.md",
+          "text": "虚构材料。2026-10-09：为了赶当天飞机，10月10日那一次会议放在早上；不改变以后下午开会的偏好。"
+        }
+      ],
+      "sourceRecall": 0.5,
+      "quoteRecall": 0.5,
+      "citationsExact": true,
+      "answer": {
+        "answer": "不是。10月10日早上开会只是为了赶当天飞机的一次例外，以后仍偏好下午开会。",
+        "canAnswer": true,
+        "citations": [
+          {
+            "path": "生活/单次例外.md",
+            "quote": "2026-10-09：为了赶当天飞机，10月10日那一次会议放在早上；不改变以后下午开会的偏好。"
+          }
+        ]
+      },
+      "review": "pending independent human/assistant review; exact citation alone is not answer correctness"
+    },
+    {
+      "caseId": "long-update",
+      "strategy": "single_excerpts",
+      "queries": [
+        "蓝松 交付"
+      ],
+      "evidenceChars": 2593,
+      "evidence": [
+        {
+          "path": "资料/长记录.md",
+          "text": "：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n"
+        },
+        {
+          "path": "资料/长记录.md",
+          "text": "虚构材料。蓝松项目原计划六月交付。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云"
+        }
+      ],
+      "sourceRecall": 1,
+      "quoteRecall": 0,
+      "citationsExact": true,
+      "answer": {
+        "answer": "无法确认后来是否改变。所给证据仅说明蓝松项目原计划六月交付，没有后续变更、取消或确认安排的记录。",
+        "canAnswer": false,
+        "citations": [
+          {
+            "path": "资料/长记录.md",
+            "quote": "虚构材料。蓝松项目原计划六月交付。"
+          }
+        ]
+      },
+      "review": "pending independent human/assistant review; exact citation alone is not answer correctness"
+    },
+    {
+      "caseId": "long-update",
+      "strategy": "expanded_context",
+      "queries": [
+        "蓝松 六月交付 后续变更",
+        "蓝松 六月交付 后来怎么安排",
+        "蓝松 交付时间 最新调整"
+      ],
+      "evidenceChars": 6659,
+      "evidence": [
+        {
+          "path": "资料/长记录.md",
+          "text": "。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关"
+        },
+        {
+          "path": "资料/长记录.md",
+          "text": "：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n蓝松项目后续修订：六月交付已取消，新的日期尚未确定。"
+        },
+        {
+          "path": "资料/长记录.md",
+          "text": "虚构材料。蓝松项目原计划六月交付。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察：今天看到云朵和树叶。\n虚构无关观察"
+        }
+      ],
+      "sourceRecall": 1,
+      "quoteRecall": 1,
+      "citationsExact": true,
+      "answer": {
+        "answer": "改变了。蓝松项目原计划六月交付，后续修订已取消六月交付，新的交付日期尚未确定。",
+        "canAnswer": true,
+        "citations": [
+          {
+            "path": "资料/长记录.md",
+            "quote": "蓝松项目原计划六月交付。"
+          },
+          {
+            "path": "资料/长记录.md",
+            "quote": "蓝松项目后续修订：六月交付已取消，新的日期尚未确定。"
+          }
+        ]
+      },
+      "review": "pending independent human/assistant review; exact citation alone is not answer correctness"
+    },
+    {
+      "caseId": "english",
+      "strategy": "expanded_context",
+      "queries": [
+        "Cedar shipment status update",
+        "what happened to the Cedar delivery",
+        "Cedar shipping timeline changes"
+      ],
+      "evidenceChars": 131,
+      "evidence": [
+        {
+          "path": "资料/English.txt",
+          "text": "Fictional record. Project Cedar delivery was postponed until the supplier confirms the shipment."
+        }
+      ],
+      "sourceRecall": 1,
+      "quoteRecall": 1,
+      "citationsExact": true,
+      "answer": {
+        "answer": "Cedar 项目的交付已推迟，等待供应商确认发货。现有证据无法确定是否已经发货或何时交付。",
+        "canAnswer": true,
+        "citations": [
+          {
+            "path": "资料/English.txt",
+            "quote": "Project Cedar delivery was postponed until the supplier confirms the shipment."
+          }
+        ]
+      },
+      "review": "pending independent human/assistant review; exact citation alone is not answer correctness"
+    },
+    {
+      "caseId": "english",
+      "strategy": "single_excerpts",
+      "queries": [
+        "Cedar shipment"
+      ],
+      "evidenceChars": 131,
+      "evidence": [
+        {
+          "path": "资料/English.txt",
+          "text": "Fictional record. Project Cedar delivery was postponed until the supplier confirms the shipment."
+        }
+      ],
+      "sourceRecall": 1,
+      "quoteRecall": 1,
+      "citationsExact": true,
+      "answer": {
+        "answer": "Cedar 项目的交付已推迟，等待供应商确认发货。现有证据无法确定货物是否已发出。",
+        "canAnswer": true,
+        "citations": [
+          {
+            "path": "资料/English.txt",
+            "quote": "Project Cedar delivery was postponed until the supplier confirms the shipment."
+          }
+        ]
+      },
+      "review": "pending independent human/assistant review; exact citation alone is not answer correctness"
+    },
+    {
+      "caseId": "semantic-gap",
+      "strategy": "single_excerpts",
+      "queries": [
+        "独处 社交"
+      ],
+      "evidenceChars": 0,
+      "evidence": [],
+      "sourceRecall": 0,
+      "quoteRecall": 0,
+      "citationsExact": true,
+      "answer": {
+        "answer": "没有提供相关证据，无法确定你更喜欢独处还是社交。",
+        "canAnswer": false,
+        "citations": []
+      },
+      "review": "pending independent human/assistant review; exact citation alone is not answer correctness"
+    },
+    {
+      "caseId": "semantic-gap",
+      "strategy": "expanded_context",
+      "queries": [
+        "独处 社交 个人偏好",
+        "我更喜欢一个人待着还是和朋友聚会",
+        "聚会后累不累 一个人自在"
+      ],
+      "evidenceChars": 239,
+      "evidence": [
+        {
+          "path": "生活/日记.md",
+          "text": "虚构材料。2026-10-06：周末我宁愿一个人在家看书，也不去热闹的聚餐。"
+        },
+        {
+          "path": "生活/单次例外.md",
+          "text": "虚构材料。2026-10-09：为了赶当天飞机，10月10日那一次会议放在早上；不改变以后下午开会的偏好。"
+        },
+        {
+          "path": "生活/偏好修订.md",
+          "text": "虚构材料。2026-09-01：以前我说喜欢清晨开会。2026-10-08：我现在改为下午开会；这项修改今后适用。"
+        }
+      ],
+      "sourceRecall": 1,
+      "quoteRecall": 1,
+      "citationsExact": true,
+      "answer": {
+        "answer": "根据现有记录，你更喜欢独处：周末宁愿一个人在家看书，也不去热闹的聚餐。该证据仅支持这一情境下的偏好。",
+        "canAnswer": true,
+        "citations": [
+          {
+            "path": "生活/日记.md",
+            "quote": "2026-10-06：周末我宁愿一个人在家看书，也不去热闹的聚餐。"
+          }
+        ]
+      },
+      "review": "pending independent human/assistant review; exact citation alone is not answer correctness"
+    },
+    {
+      "caseId": "absent",
+      "strategy": "expanded_context",
+      "queries": [
+        "雪岭公司 融资金额",
+        "雪岭 融了多少钱",
+        "雪岭 融资规模"
+      ],
+      "evidenceChars": 147,
+      "evidence": [
+        {
+          "path": "人物/星帆公司-林宁.md",
+          "text": "虚构材料。星帆公司的林宁是设计师，擅长插画。此人不是蓝帆项目负责人林宁。"
+        },
+        {
+          "path": "人物/蓝帆项目-林宁.md",
+          "text": "虚构材料。蓝帆项目的林宁负责验收。联系电话尚未提供。不要使用星帆公司同名设计师的资料。"
+        }
+      ],
+      "sourceRecall": null,
+      "quoteRecall": null,
+      "citationsExact": true,
+      "answer": {
+        "answer": "所提供证据未涉及雪岭公司的融资金额，无法确定。",
+        "canAnswer": false,
+        "citations": []
+      },
+      "review": "pending independent human/assistant review; exact citation alone is not answer correctness"
+    },
+    {
+      "caseId": "absent",
+      "strategy": "single_excerpts",
+      "queries": [
+        "雪岭 融资"
+      ],
+      "evidenceChars": 0,
+      "evidence": [],
+      "sourceRecall": null,
+      "quoteRecall": null,
+      "citationsExact": true,
+      "answer": {
+        "answer": "没有提供相关证据，无法确定雪岭公司的融资金额。",
+        "canAnswer": false,
+        "citations": []
+      },
+      "review": "pending independent human/assistant review; exact citation alone is not answer correctness"
+    }
+  ],
+  "finishedAt": "2026-11-14T11:31:35.695Z"
+}

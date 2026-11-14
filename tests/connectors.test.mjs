@@ -81,6 +81,57 @@ test('probe status and credentials invalidate when endpoint or token changes; st
   const result=await pending;assert.equal(result.stale,true);assert.equal(result.connector.status,'untested');
 });
 
+test('prepare refreshes a successful check and persists handshake failure without accepting changed tools',async t=>{
+  let state='ready';
+  const f=await tested(t,{handler:(message,_req,res)=>{
+    if(state==='offline'){res.writeHead(503);res.end('fixture-remote-secret');return true;}
+    if(state==='changed'&&message.method==='tools/list'){
+      res.setHeader('Content-Type','application/json');res.end(JSON.stringify({jsonrpc:'2.0',id:message.id,result:{tools:[{...tool,description:'Changed fixture contract'}]}}));return true;
+    }
+    return false;
+  }});
+  const {store,service,connector}=f;
+  const original=store.require('connectors',connector.id);
+  store.put('connectors',{...original,lastTest:{...original.lastTest,at:'2000-01-01T00:00:00.000Z'}});
+  await service.prepare([connector.id]);
+  assert.notEqual(store.require('connectors',connector.id).lastTest.at,'2000-01-01T00:00:00.000Z');
+  assert.equal(service.list()[0].status,'ready');
+  state='offline';
+  await assert.rejects(service.prepare([connector.id]),{code:'connector_http_error'});
+  assert.equal(service.list()[0].status,'error');
+  assert.equal(store.require('connectors',connector.id).lastTest.ok,false);
+  assert.doesNotMatch(JSON.stringify(service.list()),/fixture-remote-secret|fixture-connector-key/);
+  state='ready';assert.equal((await service.test(connector.id)).ok,true);
+  state='changed';
+  await assert.rejects(service.prepare([connector.id]),{code:'connector_tools_changed'});
+  const failed=store.require('connectors',connector.id);
+  assert.equal(failed.lastTest.ok,false);assert.deepEqual(failed.tools,original.tools);
+  assert.equal(service.list()[0].status,'error');
+  assert.equal(f.calls.filter(call=>call.message.method==='tools/call').length,0);
+});
+
+test('cancelled prepare leaves the previous check intact',async t=>{
+  let delay=false,seen,unblock;
+  const started=new Promise(resolve=>seen=resolve),pause=new Promise(resolve=>unblock=resolve);
+  const f=await tested(t,{handler:async message=>{if(delay&&message.method==='tools/list'){seen();await pause;}return false;}});
+  const before=f.store.require('connectors',f.connector.id).lastTest,abort=new AbortController();delay=true;
+  const pending=f.service.prepare([f.connector.id],{signal:abort.signal});await started;abort.abort();unblock();
+  await assert.rejects(pending,{name:'AbortError'});
+  assert.deepEqual(f.store.require('connectors',f.connector.id).lastTest,before);
+  assert.equal(f.service.list()[0].status,'ready');
+});
+
+test('a stale prepare cannot overwrite the newer connector configuration or its check',async t=>{
+  let delay=false,seen,unblock;
+  const started=new Promise(resolve=>seen=resolve),pause=new Promise(resolve=>unblock=resolve);
+  const f=await tested(t,{handler:async message=>{if(delay&&message.method==='tools/list'){seen();await pause;}return false;}});delay=true;
+  const pending=f.service.prepare([f.connector.id]);await started;
+  saveConnector(f.store,{enabled:false},f.store.require('connectors',f.connector.id));
+  const newer=f.store.require('connectors',f.connector.id);unblock();
+  await assert.rejects(pending,{code:'stale_connector_test'});
+  assert.deepEqual(f.store.require('connectors',f.connector.id),newer);
+});
+
 test('each remote call requires exact approval, snapshots arguments and rechecks configuration revision',async t=>{
   const f=await tested(t),{service,store,connector}=f,events=[],deniedEvents=[];
   let reviewed;

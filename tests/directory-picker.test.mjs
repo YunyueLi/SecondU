@@ -9,15 +9,24 @@ import {createDirectoryChooser} from '../server/directory-picker.mjs';
 import {createApp} from '../server/index.mjs';
 const {installDirectoryPicker}=createRequire(import.meta.url)('../desktop/directory-picker.cjs');
 
-function desktopPickerSetup(showOpenDialog){
+function desktopPickerSetup(showOpenDialog,kind='directory'){
   const origin='http://127.0.0.1:58645';
   const frame={url:origin+'/?desktop=1'};
   const window={webContents:Object.assign(new EventEmitter(),{mainFrame:frame,getURL:()=>frame.url}),isDestroyed:()=>false};
-  let handler,calls=0;
-  installDirectoryPicker({ipcMain:{handle(name,fn){assert.equal(name,'hither:choose-directory');handler=fn;}},dialog:{async showOpenDialog(parent,options){calls++;assert.equal(parent,window);assert.deepEqual(options.properties,['openDirectory']);return showOpenDialog();}},getWindow:()=>window,getOrigin:()=>origin});
+  const handlers={};let calls=0;
+  installDirectoryPicker({ipcMain:{handle(name,fn){handlers[name]=fn;}},dialog:{async showOpenDialog(parent,options){calls++;assert.equal(parent,window);assert.deepEqual(options.properties,kind==='files'?['openFile','multiSelections']:['openDirectory']);return showOpenDialog();}},getWindow:()=>window,getOrigin:()=>origin});
   const event={sender:window.webContents,senderFrame:frame};
-  return {frame,window,event,choose:(changes={})=>handler({...event,...changes}),calls:()=>calls};
+  return {frame,window,event,choose:(changes={})=>handlers[`hither:choose-${kind}`]({...event,...changes}),chooseOther:()=>handlers[`hither:choose-${kind==='files'?'directory':'files'}`](event),calls:()=>calls};
 }
+
+test('desktop multiselect returns every chosen path, rejects foreign frames and shares dialog lock with folders',async()=>{
+  const paths=Array.from({length:507},(_,i)=>`/fictional/file-${i}.txt`);
+  const f=desktopPickerSetup(async()=>({canceled:false,filePaths:paths}),'files');assert.deepEqual(await f.choose(),paths);
+  await assert.rejects(f.choose({sender:{}}),/cannot choose/);assert.equal(f.calls(),1);
+  let release;const pending=desktopPickerSetup(()=>new Promise(resolve=>{release=resolve;}),'files');
+  const first=pending.choose();await assert.rejects(pending.chooseOther(),/already open/);release({canceled:true,filePaths:[]});assert.deepEqual(await first,[]);
+  const stale=pending.choose();pending.window.webContents.emit('did-start-navigation',{isMainFrame:true});release({canceled:false,filePaths:paths});await assert.rejects(stale,/window changed/);
+});
 
 test('desktop chooser opens the native folder dialog only for its current main frame',async()=>{
   const f=desktopPickerSetup(async()=>({canceled:false,filePaths:['/tmp/chosen project']}));

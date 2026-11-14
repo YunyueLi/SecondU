@@ -17,7 +17,7 @@ function subscribe(channel, callback) {
   ipcRenderer.on(channel, listener);
   return () => ipcRenderer.removeListener(channel, listener);
 }
-// The renderer receives only the folder the user explicitly chooses.
+// The renderer receives only the files or folder the user explicitly chooses.
 contextBridge.exposeInMainWorld('hitherDesktop', Object.freeze({
   platform: process.platform,
   updates: Object.freeze({
@@ -38,6 +38,7 @@ contextBridge.exposeInMainWorld('hitherDesktop', Object.freeze({
     },
   }),
   chooseDirectory: () => ipcRenderer.invoke('hither:choose-directory'),
+  chooseFiles: () => ipcRenderer.invoke('hither:choose-files'),
   setLanguage: language => ipcRenderer.invoke('hither:set-language', language),
   screenShare: Object.freeze({status:()=>ipcRenderer.invoke('hither:screen-share-status')}),
 }));

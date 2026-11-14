@@ -63,15 +63,16 @@ export function personalContextFor(store,task,{request=task.contextRequest,at=ne
   const technical=/(?:代码|仓库|组件|接口|编译|测试|修复|bug)|\b(?:code|repository|component|compile|debug|test|api)\b/i.test(prompt);
   const domain=config.domain==='auto'?(task.projectId||technical?'project':'personal'):config.domain;
   const verification=purpose==='verification',queryTokens=tokens(prompt),profile=store.meta('profile');
-  const selfId=profile.selfPersonId??'person-self',sourceById=new Map(store.list('sources').map(source=>[source.id,source]));
+  const selfId=profile.selfPersonId??'person-self',sourceById=new Map();
+  const sourceInfo=id=>{if(!sourceById.has(id))sourceById.set(id,store.sourceInfo(id));return sourceById.get(id);};
   const project=task.projectId?store.get('projects',task.projectId):undefined,projectTokens=tokens(project?.name||'');
-  const learningByFact=new Map(store.list('taskFeedback').map(value=>[value.factId,value]));
-  const all={facts:store.list('facts'),people:store.list('people'),relationships:store.list('relationships'),events:store.list('events'),goals:store.list('goals')};
-  const existingRefs=value=>sourceRefs(value).filter(id=>sourceById.has(id));
-  const projectMatch=value=>!!project&&(score(textOf(value),projectTokens)>0||existingRefs(value).some(id=>score(sourceById.get(id).title,projectTokens)>0));
+  const existingRefs=value=>sourceRefs(value).filter(id=>!!sourceInfo(id));
+  const projectMatch=value=>!!project&&(score(textOf(value),projectTokens)>0||existingRefs(value).some(id=>score(sourceInfo(id).title,projectTokens)>0));
   const aboutSelf=/(?:我是谁|了解我|我的(?:背景|经历|情况|目标|偏好|习惯))|\b(?:about me|my background|my experience|who am i)\b/i.test(prompt);
   const result={schema:'secondu.context.v1',retrievedAt:at,request:config,domain,purpose,method:'deterministic_terms_and_explicit_references',profile:{name:profile.name,...(profile.englishName?{englishName:profile.englishName}:{}),demo:profile.demo,description:short(profile.description,600).text,descriptionTruncated:String(profile.description||'').length>600},facts:[],people:[],relationships:[],events:[],goals:[],learnings:[],unconfirmed:[],...(project?{project:{id:project.id,name:project.name,kind:project.kind,description:short(project.description,600).text,archived:project.archived,recordStatus:'recorded'}}:{}),budget:{maxChars:config.budgetChars,structuredMaxChars:Math.floor(config.budgetChars*.55),evidenceMaxChars:Math.floor(config.budgetChars*.45),usedChars:0,omitted:{facts:0,people:0,relationships:0,events:0,goals:0,learnings:0,unconfirmed:0},omittedIds:[]}};
   if(task.digitalTwinEnabled!==true){delete result.profile;delete result.project;result.disabled=true;result.budget.usedChars=JSON.stringify(result).length;return result;}
+  const learningByFact=new Map(store.list('taskFeedback').map(value=>[value.factId,value]));
+  const all={facts:store.list('facts'),people:store.list('people'),relationships:store.list('relationships'),events:store.list('events'),goals:store.list('goals')};
   const capacity=result.budget.structuredMaxChars-JSON.stringify(result).length-300;
   let used=0;
   const limits={facts:32,people:8,relationships:12,events:8,goals:10,learnings:8,unconfirmed:6};
@@ -90,7 +91,7 @@ export function personalContextFor(store,task,{request=task.contextRequest,at=ne
     if(fact.status==='confirmed')append('facts',snapshot);
     else if(verification&&['candidate','inferred'].includes(fact.status))append('unconfirmed',{...snapshot,recordType:'fact'});
   }
-  for(const fact of result.facts){const learning=learningByFact.get(fact.id);if(learning)append('learnings',{id:learning.id,factId:fact.id,factVersion:fact.version,statement:fact.statement,status:'confirmed',scope:learning.scope,sourceIds:[learning.sourceId].filter(id=>sourceById.has(id)),originalTaskId:learning.taskId});}
+  for(const fact of result.facts){const learning=learningByFact.get(fact.id);if(learning)append('learnings',{id:learning.id,factId:fact.id,factVersion:fact.version,statement:fact.statement,status:'confirmed',scope:learning.scope,sourceIds:[learning.sourceId].filter(id=>!!sourceInfo(id)),originalTaskId:learning.taskId});}
   const mentionedPeople=all.people.filter(person=>person.id!==selfId&&nameMentioned(person.name,prompt));
   const mentionedIds=new Set(mentionedPeople.map(person=>person.id));
   const relevantEvents=all.events.map((event,index)=>({event,index,score:score(event.title,queryTokens)*4+score(event.description,queryTokens)+(event.personIds?.some(id=>mentionedIds.has(id))?15:0)+(aboutSelf&&event.personIds?.includes(selfId)?2:0)+(projectMatch(event)?3:0)})).filter(item=>item.score>0&&(domain==='personal'||projectMatch(item.event)||item.event.personIds?.some(id=>mentionedIds.has(id)))).sort((a,b)=>b.score-a.score||String(b.event.date).localeCompare(String(a.event.date))||a.index-b.index);

@@ -11,6 +11,20 @@ const task=(prompt,extra={})=>({prompt,messages:[{role:'user',content:prompt}],d
 function fixture(t){const directory=mkdtempSync(path.join(os.tmpdir(),'secondu-context-')),store=new Store(directory,{seed:false});t.after(()=>{store.close();rmSync(directory,{recursive:true,force:true});});return store;}
 const source=(store,id,text)=>store.put('sources',{id,title:id,kind:'document',text,demo:true});
 
+test('selection reads only referenced source metadata and disabled context never lists collections',t=>{
+ const store=fixture(t);source(store,'linked','Very long unrelated body. '.repeat(10000));source(store,'unrelated','Must not be loaded.');
+ store.put('facts',{id:'fact',kind:'constraint',statement:'Atlas deadline',status:'confirmed',version:1,sourceIds:['linked','missing']});
+ const list=store.list.bind(store),get=store.get.bind(store),info=store.sourceInfo.bind(store),lookups=[];
+ store.list=collection=>{assert.notEqual(collection,'sources');return list(collection);};
+ store.get=(collection,id)=>{assert.notEqual(collection,'sources');return get(collection,id);};
+ store.sourceInfo=id=>{lookups.push(id);return info(id);};
+ const result=personalContextFor(store,task('Atlas deadline'));
+ assert.deepEqual(result.facts[0].sourceIds,['linked']);assert.ok(!lookups.includes('unrelated'));
+ assert.equal(lookups.filter(id=>id==='linked').length,1);
+ store.list=()=>{throw new Error('disabled context must not load collections');};
+ assert.equal(personalContextFor(store,task('Atlas',{digitalTwinEnabled:false})).disabled,true);
+});
+
 test('context joins only relevant people, recorded relationships, events and goals with status and source provenance',t=>{
  const store=fixture(t);store.setMeta('profile',{name:'测试本人',demo:true,selfPersonId:'self',description:'测试档案'});
  source(store,'confirmed-source','林舟喜欢先确认时间。');source(store,'candidate-source','UNCONFIRMED_PORTRAIT_MUST_NOT_RECALL');source(store,'event-source','和林舟于六月完成地图项目。');source(store,'goal-source','地图项目本周进行一次复盘。');

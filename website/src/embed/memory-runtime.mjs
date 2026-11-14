@@ -36,6 +36,7 @@ export class ExampleRuntime {
     Object.assign(this.example.responses, clone(responses));
   }
   list(collection) { return [...(this.data[collection] || this.extra.get(collection) || [])]; }
+  sourceInfo(key) { const source=this.data.sources.find(item=>item.id===key);return source?{id:source.id,title:source.title}:undefined; }
   setMeta(key, value) { this.put('meta', {id:key,value:clone(value)}); return clone(value); }
   get(collection, key) { return this.list(collection).find(item => item.id === key); }
   require(collection, key) { return this.get(collection, key) || fail('记录不存在。', 404, 'not_found'); }

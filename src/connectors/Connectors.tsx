@@ -10,7 +10,7 @@ import './connectors.css';
 import {ConnectorServiceGlyph} from './ConnectorServiceIcon';
 
 export function ConnectorIcon({kind}:{kind:ConnectorKind}) {const Icon=kind==='library'?Document:kind==='project'?Folder:Code;return <Icon/>;}
-function statusLabel(connector:Connector){return ({ready:t('已连接','Connected'),untested:t('待测试','Not tested'),error:t('连接失败','Connection failed'),unavailable:t('暂不可用','Unavailable'),disabled:t('已停用','Disabled')})[connector.status];}
+function statusLabel(connector:Connector){return ({ready:connector.kind==='mcp_http'?t('上次检查通过','Last check passed'):t('已连接','Connected'),untested:t('待测试','Not tested'),error:t('连接失败','Connection failed'),unavailable:t('暂不可用','Unavailable'),disabled:t('已停用','Disabled')})[connector.status];}
 
 export function ConnectorPicker({data,value,onChange,disabled=false,onManage}:{data:Pick<Bootstrap,'connectors'>;onManage?:()=>void;value:string[];onChange?:(ids:string[])=>void;disabled?:boolean}){
  const [open,setOpen]=useState(false);

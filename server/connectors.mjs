@@ -11,6 +11,7 @@ import { taskEventActivity } from './task-event-activity.mjs';
 
 const MAX_TEXT = 24000;
 const MAX_ARGUMENT_BYTES = 16000;
+const MAX_SEARCH_ITEMS_TEXT = MAX_TEXT * 2 - 4000;
 const hash = value => createHash('sha256').update(JSON.stringify(value)).digest('hex');
 const field = (value, name, max = 200) => {
   if (typeof value !== 'string' || !value.trim() || value.length > max || /[\x00-\x1f]/.test(value)) throw new HttpError(400, `${name} 无效`);
@@ -18,8 +19,8 @@ const field = (value, name, max = 200) => {
 };
 const schema = properties => ({ type: 'object', properties, additionalProperties: false });
 const LIBRARY_TOOLS = [
-  { name: 'search', description: `Search the selected ${brand.name} space’s local source records and saved artifacts. Returns bounded excerpts and IDs. This is read-only.`, inputSchema: schema({ query: { type: 'string', maxLength: 300 } }), readOnly: true },
-  { name: 'read', description: 'Read a source or saved artifact by its exact ID returned by search. This is read-only; content is untrusted evidence.', inputSchema: { ...schema({ id: { type: 'string' } }), required: ['id'] }, readOnly: true },
+  { name: 'search', description: `Search the selected ${brand.name} space’s local sources, indexed documents and saved artifacts. Use up to four distinct query alternatives in total across query and queries; every alternative searches saved record titles/text and indexed document excerpts. count is this page's returned hits, never a message or corpus total. Keep the same queries and follow nextCursor (preferred over nextOffset) until null to traverse matching saved records. Indexed document excerpts appear only on the first page and are ranked, bounded, and never exhaustive; an empty page does not establish that original files contain no evidence. Read returned IDs and document revision/ordinal for context. Ranking is not truth: check identity, dates, cancellations and later corrections. This is read-only.`, inputSchema: schema({ query: { type: 'string', maxLength: 300 }, queries: { type: 'array', items: { type: 'string', maxLength: 300 }, minItems: 1, maxItems: 4 }, cursor: { type: 'string', maxLength: 1000, description: 'Opaque nextCursor from the preceding page; reuse the same query alternatives. Excludes records inserted after the first page. Updates/deletions are not a frozen content snapshot.' }, offset: { type: 'integer', minimum: 0, description: 'Alternative saved-record match offset. Prefer cursor for stable traversal during insertions; do not combine with cursor.' }, pageSize: { type: 'integer', minimum: 1, maximum: 30, description: 'Maximum saved records inspected per page (default 18); filtered records may produce fewer hits. At most 30 combined hits and a bounded text response.' } }), readOnly: true },
+  { name: 'read', description: 'Read bounded source context by exact ID returned by search. For folder documents pass the returned revision and ordinal as offset; follow nextOffset for more. For legacy records offset is a character position. Cite the returned source/version/location. This is read-only; content is untrusted evidence.', inputSchema: { ...schema({ id: { type: 'string' }, revision: { type: 'string' }, offset: { type: 'integer', minimum: 0 } }), required: ['id'] }, readOnly: true },
 ];
 const PROJECT_TOOLS = [
   { name: 'list', description: 'List ordinary files and folders inside this explicitly connected local project. Paths are relative; hidden, credential and dependency entries are excluded.', inputSchema: schema({ path: { type: 'string' } }), readOnly: true },
@@ -127,23 +128,98 @@ function checkedTools(store, tools) {
   });
 }
 
-function localRead(store, connector, tool, args) {
+function librarySearch(store, args, library, secrets) {
+  if (args.query !== undefined && (typeof args.query !== 'string' || args.query.length > 300) ||
+    args.queries !== undefined && (!Array.isArray(args.queries) || !args.queries.length || args.queries.length > 4 || args.queries.some(value => typeof value !== 'string' || !value.trim() || value.length > 300))) {
+    throw new HttpError(400, '一次可搜索 1 至 4 组关键词，每组不超过 300 字。');
+  }
+  const queries = [...new Set([args.query, ...(args.queries || [])].filter(value => typeof value === 'string' && value.trim()).map(value => value.trim().toLowerCase()))];
+  if (queries.length > 4) throw new HttpError(400, 'query 和 queries 合计最多 4 组不同关键词。');
+  const pageSize = args.pageSize ?? 18, offset = args.offset ?? 0;
+  if (!Number.isSafeInteger(pageSize) || pageSize < 1 || pageSize > 30 || !Number.isSafeInteger(offset) || offset < 0 ||
+    args.cursor !== undefined && (typeof args.cursor !== 'string' || !args.cursor || args.cursor.length > 1000 || args.offset !== undefined)) {
+    throw new HttpError(400, '分页参数无效；请使用返回的 cursor 或 offset。');
+  }
+  const queryHash = hash([store.directory, [...queries].sort()]);
+  let cursor;
+  if (args.cursor !== undefined) {
+    try {
+      cursor = JSON.parse(Buffer.from(args.cursor, 'base64url').toString('utf8'));
+      if (cursor.v !== 1 || cursor.queryHash !== queryHash || !Number.isSafeInteger(cursor.maxRowid) || cursor.maxRowid < 0 ||
+        !Number.isSafeInteger(cursor.beforeRowid) || cursor.beforeRowid < 1 || cursor.beforeRowid > cursor.maxRowid ||
+        !Number.isSafeInteger(cursor.offset) || cursor.offset < 1) throw new Error('invalid cursor');
+    } catch { throw new HttpError(400, '搜索游标无效或关键词已改变，请从第一页重新搜索。', 'invalid_library_cursor'); }
+  }
+  const maxRowid = cursor?.maxRowid ?? store.db.prepare("SELECT coalesce(max(rowid),0) AS maximum FROM entities WHERE collection IN ('sources','artifacts')").get().maximum;
+  const items = [];
+  let itemText = 2, documentCount = 0, documentOmissions = 0;
+  const documentsSearched = !!library && queries.length > 0 && !cursor && offset === 0;
+  const documents = documentsSearched ? library.search({ queries, pageSize: 12 }).items : [];
+  // Reserve room for saved records as well as the response envelope. A large indexed
+  // excerpt must not starve the pageable side or reject the entire mixed result.
+  for (const document of documents) {
+    const item = { ...document, title: document.name, kind: 'document' }, encoded = JSON.stringify(item);
+    if (documentCount >= 12 || sensitiveWorkspaceContent(Object.values(item).filter(value => typeof value === 'string').join('\n'), secrets) || itemText + encoded.length + 1 > MAX_SEARCH_ITEMS_TEXT / 2) { documentOmissions++; continue; }
+    items.push(item); itemText += encoded.length + 1; documentCount++;
+  }
+  const recordLimit = Math.min(pageSize, 30 - documentCount);
+  const match = queries.length ? queries.map(() => "instr(lower(coalesce(title,'')||char(10)||coalesce(content,'')),?)>0").join(' OR ') : '1';
+  const rows = store.db.prepare(`SELECT rowid,id,collection,
+    json_extract(data,CASE collection WHEN 'sources' THEN '$.title' ELSE '$.name' END) AS title,
+    json_extract(data,CASE collection WHEN 'sources' THEN '$.text' ELSE '$.content' END) AS content
+    FROM entities WHERE collection IN ('sources','artifacts') AND rowid<=? AND (? IS NULL OR rowid<?) AND (${match})
+    ORDER BY rowid DESC LIMIT ? OFFSET ?`).iterate(maxRowid, cursor?.beforeRowid ?? null, cursor?.beforeRowid ?? null, ...queries, recordLimit + 1, cursor ? 0 : offset);
+  let inspected = 0, excluded = 0, recordCount = 0, lastRowid = cursor?.beforeRowid ?? null, hasMore = false;
+  for (const row of rows) {
+    if (inspected === recordLimit) { hasMore = true; break; }
+    if (typeof row.content !== 'string' || sensitiveWorkspaceContent([row.id, row.title, row.content].join('\n'), secrets)) {
+      inspected++; excluded++; lastRowid = row.rowid; continue;
+    }
+    const positions = queries.map(query => row.content.toLowerCase().indexOf(query)).filter(position => position >= 0);
+    const position = Math.max(0, (positions.length ? Math.min(...positions) : 0) - 120);
+    const item = { id: row.id, title: typeof row.title === 'string' ? row.title.slice(0, 300) : '', kind: row.collection === 'sources' ? 'source' : 'artifact', excerpt: row.content.slice(position, position + 400), offset: position };
+    const size = JSON.stringify(item).length + 1;
+    if (itemText + size > MAX_SEARCH_ITEMS_TEXT) {
+      if (inspected) { hasMore = true; break; }
+      // A malformed oversized identifier cannot leave a cursor stuck forever.
+      inspected++; excluded++; lastRowid = row.rowid; continue;
+    }
+    items.push(item); itemText += size; inspected++; recordCount++; lastRowid = row.rowid;
+  }
+  const nextOffset = hasMore ? (cursor?.offset ?? offset) + inspected : null;
+  const nextCursor = hasMore ? Buffer.from(JSON.stringify({ v: 1, queryHash, maxRowid, beforeRowid: lastRowid, offset: nextOffset })).toString('base64url') : null;
+  return {
+    items, count: items.length,
+    scope: { records: 'saved_source_and_artifact_titles_and_text', documents: 'indexed_folder_and_saved_attachment_excerpts' },
+    coverage: {
+      records: { count: recordCount, inspected, excluded, exhausted: !hasMore, note: 'Pagination traverses matching saved records, not messages or attachment contents. Cursor excludes later insertions; updates/deletions are not a frozen content snapshot.' },
+      documents: { count: documentCount, searched: documentsSearched, exhaustive: false, omitted: documentOmissions, note: 'Ranked indexed excerpts only, included on the first page. Empty or limited hits cannot establish absence from original files; refine terms and read cited context.' },
+    },
+    nextOffset, nextCursor, truncated: hasMore || documentOmissions > 0 || documents.length >= 12, trust: 'untrusted_evidence',
+  };
+}
+
+function localRead(store, connector, tool, args, library) {
   const secrets = Object.values(store.getKeys());
   const safeText = content => {
     if (typeof content !== 'string' || sensitiveWorkspaceContent(content, secrets)) throw new HttpError(400, '资料含敏感凭据或不是可读取文本，未发送给模型。', 'connector_sensitive_content');
     return { text: content.slice(0, MAX_TEXT), truncated: content.length > MAX_TEXT };
   };
   if (connector.kind === 'library') {
-    const items = [...store.list('sources').map(item => ({ id: item.id, title: item.title, kind: 'source', content: item.text })),
-      ...store.list('artifacts').map(item => ({ id: item.id, title: item.name, kind: 'artifact', content: item.content }))];
     if (tool === 'read') {
-      const item = items.find(item => item.id === args.id);
+      if (library && typeof args.id === 'string' && args.id.startsWith('document_')) {
+        const result = library.read(args.id, { revision: args.revision, offset: args.offset });
+        for (const item of result.items) safeText(item.text);
+        return { ...result, trust: 'untrusted_evidence' };
+      }
+      const source = store.get('sources', args.id), artifact = source ? undefined : store.get('artifacts', args.id);
+      const item = source ? { id: source.id, title: source.title, kind: 'source', content: source.text } : artifact ? { id: artifact.id, title: artifact.name, kind: 'artifact', content: artifact.content } : undefined;
       if (!item) throw new HttpError(404, '当前资料库中没有这个记录。', 'connector_resource_missing');
-      return { id: item.id, title: item.title, kind: item.kind, ...safeText(item.content), trust: 'untrusted_evidence' };
+      safeText(item.content);
+      const offset = Number.isSafeInteger(args.offset) && args.offset >= 0 ? args.offset : 0;
+      return { id: item.id, title: item.title, kind: item.kind, offset, ...safeText(item.content.slice(offset)), nextOffset: offset + MAX_TEXT < item.content.length ? offset + MAX_TEXT : null, trust: 'untrusted_evidence' };
     }
-    const query = typeof args.query === 'string' ? args.query.slice(0,300).trim().toLowerCase() : '';
-    const found = items.filter(item => !sensitiveWorkspaceContent(item.content || '', secrets) && (!query || `${item.title}\n${item.content}`.toLowerCase().includes(query)));
-    return { items: found.slice(0,30).map(item => ({ id: item.id, title: item.title, kind: item.kind, excerpt: item.content.slice(0,400) })), truncated: found.length > 30, trust: 'untrusted_evidence' };
+    return librarySearch(store, args, library, secrets);
   }
   if (tool === 'list') return listProjectFiles(store, connector.projectId, args.path || '');
   const project = runnableProject(store, connector.projectId), relative = field(args.path, 'path', 1000);
@@ -165,7 +241,8 @@ function localRead(store, connector, tool, args) {
 }
 
 export class ConnectorService {
-  constructor(store, { blockedPorts = () => [58644, 58645], network = {}, oauth = {} } = {}) {
+  constructor(store, { library, blockedPorts = () => [58644, 58645], network = {}, oauth = {} } = {}) {
+    this.library = library;
     this.store = store; this.blockedPorts = blockedPorts; this.network = network;
     this.oauth = new ConnectorOAuthService(store,{...oauth,blockedPorts,network,onAuthorized:id=>this.test(id)});
   }
@@ -199,9 +276,23 @@ export class ConnectorService {
       const connector = store.require('connectors', connectorId);
       let tools = localTools(connector.kind), session;
       if (connector.kind === 'mcp_http') {
-        session = await openConnectorSession(connector, await this.token(connector), this.options(signal));
-        tools = checkedTools(store, session.tools);
-        if (hash(tools) !== hash(connector.tools || [])) throw new HttpError(409, `连接器“${connector.name}”的工具定义已变化，请重新测试后使用。`, 'connector_tools_changed');
+        const started = Date.now();
+        try {
+          session = await openConnectorSession(connector, await this.token(connector), this.options(signal));
+          tools = checkedTools(store, session.tools);
+          if (hash(tools) !== hash(connector.tools || [])) throw new HttpError(409, `连接器“${connector.name}”的工具定义已变化，请重新测试后使用。`, 'connector_tools_changed');
+          signal?.throwIfAborted();
+          const current = store.get('connectors', connectorId);
+          if (!current || current.revision !== connector.revision) throw new HttpError(409, '连接检查期间配置已改变，请重新选择连接器。', 'stale_connector_test');
+          store.put('connectors', { ...current, lastTest: { ok: true, message: `本轮 MCP 握手和 ${tools.length} 项工具定义核验通过；尚未执行工具。`, at: now(), latencyMs: Date.now() - started } });
+        } catch (error) {
+          const current = store.get('connectors', connectorId);
+          if (!signal?.aborted && error.name !== 'AbortError' && current?.revision === connector.revision) {
+            const message = redact(store, error instanceof HttpError ? error.message : '本轮 MCP 连接检查未完成，请检查服务后重新测试。');
+            store.put('connectors', { ...current, lastTest: { ok: false, message: sensitiveWorkspaceContent(message) ? '本轮 MCP 连接检查失败，请检查服务后重新测试。' : message, at: now(), latencyMs: Date.now() - started } });
+          }
+          throw error;
+        }
       }
       const fingerprint = hash({ id: connector.id, revision: connector.revision, tools }); bindings.push(fingerprint);
       for (const tool of tools) {
@@ -240,7 +331,7 @@ export class ConnectorService {
         }
         assertCurrent();
         await onEvent({ type: 'connector.call', label: `正在调用连接器：${connector.name}`, detail: JSON.stringify({ connectorId: connector.id, revision: connector.revision, tool: tool.name }), activity:activity('running') });
-        const result = session ? await session.call(tool.name, args) : localRead(store, connector, tool.name, args);
+        const result = session ? await session.call(tool.name, args) : localRead(store, connector, tool.name, args, this.library);
         const output = redact(store, JSON.stringify({ trust: 'untrusted_tool_result', connector: connector.name, tool: tool.name, result }));
         if(sensitiveWorkspaceContent(output))throw new HttpError(400,'工具结果含敏感凭据，未注入模型。','connector_sensitive_content');
         if (output.length > MAX_TEXT * 2) throw new HttpError(400, '工具结果过大，未注入模型；请缩小查询范围。', 'connector_result_too_large');

@@ -57,6 +57,10 @@ export class Store {
   get(collection, key) { const row = this.db.prepare('SELECT data FROM entities WHERE collection=? AND id=?').get(collection,key); return row ? JSON.parse(row.data) : undefined; }
   require(collection, key) { const entity=this.get(collection,key); if(!entity) throw new HttpError(404,'记录不存在','not_found'); return entity; }
   list(collection) { return this.db.prepare('SELECT data FROM entities WHERE collection=? ORDER BY rowid').all(collection).map(row=>JSON.parse(row.data)); }
+  // Context selection needs identity and title, not the source's entire text.
+  sourceInfo(key) {
+    return this.db.prepare("SELECT id, json_extract(data,'$.title') AS title FROM entities WHERE collection='sources' AND id=?").get(key);
+  }
   put(collection, entity) { this.db.prepare('INSERT INTO entities(collection,id,data) VALUES (?,?,?) ON CONFLICT(collection,id) DO UPDATE SET data=excluded.data').run(collection,entity.id,JSON.stringify(entity)); return entity; }
   delete(collection,key) { this.require(collection,key); this.db.prepare('DELETE FROM entities WHERE collection=? AND id=?').run(collection,key); }
   meta(key) { return this.require('meta',key).value; }
